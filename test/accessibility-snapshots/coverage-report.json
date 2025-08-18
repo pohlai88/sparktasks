@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-08-17T17:10:50.932Z",
+  "totalFlows": 6,
+  "flows": [
+    {
+      "name": "QuickAdd-EmptyState",
+      "description": "QuickAdd form in empty state with proper ARIA labels",
+      "criticalElements": 2
+    },
+    {
+      "name": "QuickAdd-WithTasks",
+      "description": "QuickAdd form with existing tasks and search functionality",
+      "criticalElements": 2
+    },
+    {
+      "name": "TaskCard-Interactions",
+      "description": "Task card with all interaction buttons and ARIA states",
+      "criticalElements": 3
+    },
+    {
+      "name": "MoveMenu-Dialog",
+      "description": "Move task dialog with keyboard navigation and ARIA compliance",
+      "criticalElements": 3
+    },
+    {
+      "name": "Search-Results",
+      "description": "Search functionality with live results and ARIA live regions",
+      "criticalElements": 2
+    },
+    {
+      "name": "KeyboardNavigation-Focus",
+      "description": "Keyboard navigation focus states and Tab order",
+      "criticalElements": 4
+    }
+  ],
+  "snapshotFiles": [
+    "coverage-report.json",
+    "KeyboardNavigation-Focus.json",
+    "MoveMenu-Dialog.json",
+    "QuickAdd-EmptyState.json",
+    "QuickAdd-WithTasks.json",
+    "Search-Results.json",
+    "TaskCard-Interactions.json"
+  ]
+}

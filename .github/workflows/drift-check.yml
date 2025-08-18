@@ -1,0 +1,34 @@
+name: All Drift Checks
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - 'LICENSE'
+  schedule:
+    - cron: '0 3 * * 1'
+
+jobs:
+  all-drift-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install
+        run: npm ci --ignore-scripts
+      - name: SSOT validation
+        run: node tools/validate-ssot.js
+      - name: Stack
+        run: node tools/check-tech-stack.js
+      - name: Dependencies doc
+        run: node tools/check-deps-doc.js
+        env:
+          CI: true  # Enable machine-readable output
+      - name: Workspace
+        run: node tools/check-workspace-structure.js
+      - name: Env
+        run: node tools/check-env.js

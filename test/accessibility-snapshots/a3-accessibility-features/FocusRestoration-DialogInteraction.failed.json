@@ -1,0 +1,186 @@
+{
+  "role": "WebArea",
+  "name": "SparkTasks - Storage-neutral, local-first task platform",
+  "children": [
+    {
+      "role": "heading",
+      "name": "SparkTasks",
+      "level": 1
+    },
+    {
+      "role": "textbox",
+      "name": "Search tasks",
+      "haspopup": "listbox"
+    },
+    {
+      "role": "button",
+      "name": "Undo last action"
+    },
+    {
+      "role": "button",
+      "name": "Redo last undone action",
+      "disabled": true
+    },
+    {
+      "role": "button",
+      "name": "Show keyboard shortcuts"
+    },
+    {
+      "role": "button",
+      "name": "Settings"
+    },
+    {
+      "role": "textbox",
+      "name": "Quick add task"
+    },
+    {
+      "role": "button",
+      "name": "Add task via quick input"
+    },
+    {
+      "role": "text",
+      "name": "Examples:"
+    },
+    {
+      "role": "text",
+      "name": "tomorrow 4pm #ops"
+    },
+    {
+      "role": "text",
+      "name": "next week !p0 #urgent"
+    },
+    {
+      "role": "text",
+      "name": "@status:later #review"
+    },
+    {
+      "role": "text",
+      "name": "Today"
+    },
+    {
+      "role": "text",
+      "name": "1"
+    },
+    {
+      "role": "button",
+      "name": "Add task to Today column"
+    },
+    {
+      "role": "article",
+      "name": "Task: Focus Restoration Test",
+      "children": [
+        {
+          "role": "heading",
+          "name": "Focus Restoration Test",
+          "level": 3
+        },
+        {
+          "role": "text",
+          "name": "P1"
+        },
+        {
+          "role": "button",
+          "name": "Mark complete"
+        },
+        {
+          "role": "button",
+          "name": "Snooze to Later"
+        },
+        {
+          "role": "button",
+          "name": "Edit task"
+        },
+        {
+          "role": "button",
+          "name": "Move task"
+        },
+        {
+          "role": "button",
+          "name": "Delete task"
+        },
+        {
+          "role": "text",
+          "name": "j/k: navigate • m: move • space: toggle • s: snooze • e: edit • del: delete"
+        },
+        {
+          "role": "dialog",
+          "name": "Move Task",
+          "children": [
+            {
+              "role": "heading",
+              "name": "Move Task",
+              "level": 3
+            },
+            {
+              "role": "text",
+              "name": "\""
+            },
+            {
+              "role": "text",
+              "name": "Focus Restoration Test"
+            },
+            {
+              "role": "text",
+              "name": "\""
+            },
+            {
+              "role": "listbox",
+              "name": "Move to column",
+              "orientation": "vertical",
+              "children": [
+                {
+                  "role": "option",
+                  "name": "Later",
+                  "focused": true,
+                  "selected": true
+                },
+                {
+                  "role": "option",
+                  "name": "Done"
+                }
+              ]
+            },
+            {
+              "role": "text",
+              "name": "Use ↑↓ or j/k to navigate, Enter to select, Esc to cancel"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "button",
+      "name": "Exit Today list"
+    },
+    {
+      "role": "heading",
+      "name": "Later",
+      "level": 2
+    },
+    {
+      "role": "text",
+      "name": "Snoozed and future tasks will appear here"
+    },
+    {
+      "role": "heading",
+      "name": "Done",
+      "level": 2
+    },
+    {
+      "role": "text",
+      "name": "Completed tasks show here. Nice work! ✅"
+    },
+    {
+      "role": "text",
+      "name": "Storage-neutral, local-first task platform •"
+    },
+    {
+      "role": "text",
+      "name": "BYOS Architecture"
+    },
+    {
+      "role": "text",
+      "name": "Task created: Focus Restoration Test"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-08-17T17:09:55.792Z",
+  "totalFlows": 4,
+  "flows": [
+    {
+      "name": "TaskMove-MenuDialog",
+      "description": "Move task dialog with complete ARIA compliance and keyboard navigation",
+      "criticalElements": 3
+    },
+    {
+      "name": "TaskComplete-StateChange",
+      "description": "Task completion with ARIA state updates and announcements",
+      "criticalElements": 3
+    },
+    {
+      "name": "TaskSnooze-TimeSelection",
+      "description": "Snooze functionality with time picker accessibility",
+      "criticalElements": 2
+    },
+    {
+      "name": "TaskBulkOperations-MultiSelect",
+      "description": "Bulk operations with multi-select ARIA patterns",
+      "criticalElements": 3
+    }
+  ],
+  "snapshotFiles": [
+    "coverage-report.json",
+    "TaskBulkOperations-MultiSelect.json",
+    "TaskComplete-StateChange.json",
+    "TaskMove-MenuDialog.json",
+    "TaskSnooze-TimeSelection.json"
+  ]
+}

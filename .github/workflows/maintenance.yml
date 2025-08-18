@@ -1,0 +1,159 @@
+name: Maintenance Operations
+
+on:
+  schedule:
+    # Run weekly on Saturday at 03:00 UTC
+    - cron: '0 3 * * 6'
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      compact_threshold:
+        description: 'Event count threshold for compaction'
+        required: false
+        default: '2000'
+        type: string
+      rekey_prefix:
+        description: 'Prefix for rekeying operation'
+        required: false
+        default: 'app:'
+        type: string
+      sweep_prefix:
+        description: 'Prefix for integrity sweep'
+        required: false
+        default: 'app:'
+        type: string
+      sample_size:
+        description: 'Sample size for sweep (performance limit)'
+        required: false
+        default: '10000'
+        type: string
+      fix_issues:
+        description: 'Repair issues found during sweep'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: |
+          npm ci --frozen-lockfile --prefer-offline
+          
+      - name: Build project
+        run: npm run build
+        
+      - name: Run maintenance operations
+        id: maintenance
+        run: |
+          set -e
+          
+          # Use workflow inputs or defaults
+          COMPACT_THRESHOLD="${{ inputs.compact_threshold || '2000' }}"
+          REKEY_PREFIX="${{ inputs.rekey_prefix || 'app:' }}"
+          SWEEP_PREFIX="${{ inputs.sweep_prefix || 'app:' }}"
+          SAMPLE_SIZE="${{ inputs.sample_size || '10000' }}"
+          FIX_FLAG="${{ inputs.fix_issues == true && '--fix' || '' }}"
+          
+          echo "Running maintenance with:"
+          echo "  Compact threshold: $COMPACT_THRESHOLD"
+          echo "  Rekey prefix: $REKEY_PREFIX"
+          echo "  Sweep prefix: $SWEEP_PREFIX"
+          echo "  Sample size: $SAMPLE_SIZE"
+          echo "  Fix issues: ${{ inputs.fix_issues }}"
+          
+          # Run maintenance and capture output
+          node scripts/maintenance.js \
+            --compact="$COMPACT_THRESHOLD" \
+            --rekey-prefix="$REKEY_PREFIX" \
+            --sweep-prefix="$SWEEP_PREFIX" \
+            --sample="$SAMPLE_SIZE" \
+            $FIX_FLAG \
+            > maintenance.json
+            
+          # Show summary in logs
+          echo "Maintenance completed. Report summary:"
+          cat maintenance.json | jq -r '.status, .duration_ms, (.plan.types // []) | join(", ")'
+          
+        continue-on-error: true
+        
+      - name: Check maintenance status
+        run: |
+          if [ -f maintenance.json ]; then
+            STATUS=$(cat maintenance.json | jq -r '.status // "UNKNOWN"')
+            echo "Maintenance status: $STATUS"
+            
+            if [ "$STATUS" = "COMPLETED_WITH_FAILURES" ]; then
+              echo "⚠️ Maintenance completed but had failures. Check the report."
+              exit 1
+            elif [ "$STATUS" = "FATAL_ERROR" ] || [ "$STATUS" = "UNCAUGHT_ERROR" ]; then
+              echo "❌ Maintenance failed with fatal error."
+              exit 1
+            elif [ "$STATUS" = "SUCCESS" ] || [ "$STATUS" = "NO_ACTION_NEEDED" ]; then
+              echo "✅ Maintenance completed successfully."
+            else
+              echo "⚠️ Unknown maintenance status: $STATUS"
+              exit 1
+            fi
+          else
+            echo "❌ No maintenance report generated."
+            exit 1
+          fi
+          
+      - name: Upload maintenance report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: maintenance-report-${{ github.run_number }}
+          path: maintenance.json
+          retention-days: 90
+          
+      - name: Comment on failures
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let reportSummary = 'Maintenance operation failed.';
+            try {
+              if (fs.existsSync('maintenance.json')) {
+                const report = JSON.parse(fs.readFileSync('maintenance.json', 'utf8'));
+                reportSummary = `
+            ## 🔧 Maintenance Report - Failed
+            
+            **Status:** ${report.status}
+            **Timestamp:** ${report.timestamp}
+            **Duration:** ${report.duration_ms}ms
+            
+            ${report.message ? `**Message:** ${report.message}` : ''}
+            
+            **Actions Planned:** ${report.plan?.types?.join(', ') || 'None'}
+            
+            Please check the artifact for full details.
+                `.trim();
+              }
+            } catch (e) {
+              reportSummary += ` Error reading report: ${e.message}`;
+            }
+            
+            // Create an issue for failed maintenance
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔧 Maintenance Operation Failed - ${new Date().toISOString().split('T')[0]}`,
+              body: reportSummary,
+              labels: ['maintenance', 'ops', 'urgent']
+            });

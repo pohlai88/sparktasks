@@ -1,0 +1,44 @@
+{
+  // Test-specific TypeScript configuration
+  // Purpose-built for Vitest environment with enhanced type safety
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    // Essential test environment types (requires @types/node and vitest packages)
+    // "types": ["node", "vitest/globals"],
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    
+    // Strict type safety - ensures test code follows same standards as main codebase
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    
+    // Enhanced path aliases for clean test imports
+    "baseUrl": "..",
+    "paths": {
+      "@/*": ["./src/*"],           // Main source code
+      "@shared/*": ["./src/shared/*"], // Shared utilities
+      "@test/*": ["./test/*"]       // Test utilities and helpers
+    }
+  },
+  "include": [
+    // Test files in this directory
+    "**/*.ts",
+    "**/*.test.ts",
+    // Source files that tests depend on (non-test files only)
+    "../src/shared/types.ts",
+    "../src/shared/health.ts"
+  ],
+  "exclude": [
+    "../node_modules",
+    "../dist",
+    // Exclude test files from src (they have their own test runner)
+    "../src/**/*.test.ts",
+    // Exclude future example declarations to prevent conflicts
+    "./global-future.d.ts"
+  ]
+}
