@@ -1,0 +1,98 @@
+{
+  "role": "WebArea",
+  "name": "SparkTasks - Storage-neutral, local-first task platform",
+  "children": [
+    {
+      "role": "heading",
+      "name": "SparkTasks",
+      "level": 1
+    },
+    {
+      "role": "textbox",
+      "name": "Search tasks",
+      "focused": true,
+      "haspopup": "listbox"
+    },
+    {
+      "role": "button",
+      "name": "Undo last action",
+      "disabled": true
+    },
+    {
+      "role": "button",
+      "name": "Redo last undone action",
+      "disabled": true
+    },
+    {
+      "role": "button",
+      "name": "Show keyboard shortcuts"
+    },
+    {
+      "role": "button",
+      "name": "Settings"
+    },
+    {
+      "role": "textbox",
+      "name": "Quick add task"
+    },
+    {
+      "role": "button",
+      "name": "Add task via quick input"
+    },
+    {
+      "role": "text",
+      "name": "Examples:"
+    },
+    {
+      "role": "text",
+      "name": "tomorrow 4pm #ops"
+    },
+    {
+      "role": "text",
+      "name": "next week !p0 #urgent"
+    },
+    {
+      "role": "text",
+      "name": "@status:later #review"
+    },
+    {
+      "role": "heading",
+      "name": "Today",
+      "level": 2
+    },
+    {
+      "role": "text",
+      "name": "Ready to tackle the day? Add your first task and get started! 🚀"
+    },
+    {
+      "role": "button",
+      "name": "Add your first task to get started"
+    },
+    {
+      "role": "heading",
+      "name": "Later",
+      "level": 2
+    },
+    {
+      "role": "text",
+      "name": "Snoozed and future tasks will appear here"
+    },
+    {
+      "role": "heading",
+      "name": "Done",
+      "level": 2
+    },
+    {
+      "role": "text",
+      "name": "Completed tasks show here. Nice work! ✅"
+    },
+    {
+      "role": "text",
+      "name": "Storage-neutral, local-first task platform •"
+    },
+    {
+      "role": "text",
+      "name": "BYOS Architecture"
+    }
+  ]
+}
