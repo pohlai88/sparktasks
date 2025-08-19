@@ -187,4 +187,3 @@ export function QuickAddCompact({ className = '' }: { className?: string }) {
     />
   );
 }
-

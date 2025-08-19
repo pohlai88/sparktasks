@@ -47,7 +47,8 @@ src/design/tokens.ts
 ├── semantic.*       # Intent-based styling
 ├── recipe.*         # Complete component recipes
 ├── icon.*           # Icon system with margins
-└── motion.*         # Animation and transitions
+├── motion.*         # Animation and transitions
+└── dataViz.*        # Charts, graphs & analytics visualization
 ```
 
 ## 🎛️ **Token Categories**
@@ -137,6 +138,59 @@ const colors = getSemanticColors('success');
 <Icon className={getIconClasses('md', 'right')} />
 ```
 
+### Data Visualization Usage
+```typescript
+import { 
+  DESIGN_TOKENS, 
+  getChartSeriesColor, 
+  getMetricChangeColor,
+  getChartContainer 
+} from '@/design/tokens';
+
+// Chart container
+<div className={DESIGN_TOKENS.dataViz.chartContainer}>
+  <div className={DESIGN_TOKENS.dataViz.chartHeader}>
+    <h3 className={DESIGN_TOKENS.dataViz.chartTitle}>Revenue Trends</h3>
+    <span className={DESIGN_TOKENS.dataViz.chartSubtitle}>Last 30 days</span>
+  </div>
+  
+  {/* Chart content */}
+  <svg className="w-full h-64">
+    <rect fill={getChartSeriesColor(0)} />
+    <rect fill={getChartSeriesColor(1)} />
+  </svg>
+</div>
+
+// Metric cards
+<div className={DESIGN_TOKENS.dataViz.metricCard}>
+  <div className={DESIGN_TOKENS.dataViz.metricLabel}>Total Revenue</div>
+  <div className={DESIGN_TOKENS.dataViz.metricValue}>$124,589</div>
+  <div className={`${DESIGN_TOKENS.dataViz.metricChange} ${getMetricChangeColor('positive')}`}>
+    +12.5% from last month
+  </div>
+</div>
+
+// Progress indicators
+<div className={DESIGN_TOKENS.dataViz.progressContainer}>
+  <div className={DESIGN_TOKENS.dataViz.progressBar}>
+    <div 
+      className={DESIGN_TOKENS.dataViz.progressFill}
+      style={{ width: '75%' }}
+    />
+  </div>
+</div>
+
+// Dashboard layout helpers
+<div className={getChartContainer('dashboard')}>
+  <div className={getDashboardLayout('metrics')}>
+    {/* Metrics row */}
+  </div>
+  <div className={getDashboardLayout('charts')}>
+    {/* Charts section */}
+  </div>
+</div>
+```
+
 ## 🏷️ **Type System**
 
 ### Core Types
@@ -146,6 +200,14 @@ type DensityLevel = 'comfortable' | 'compact' | 'spacious';
 type ComponentSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 type ComponentVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
 type SemanticIntent = 'success' | 'warning' | 'error' | 'info';
+
+// Data Visualization Types
+type ChartSeriesIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+type MetricChangeType = 'positive' | 'negative' | 'neutral';
+type SparklineVariant = 'success' | 'warning' | 'error' | 'info';
+type ProgressVariant = 'primary' | 'success' | 'warning' | 'error';
+type ChartContainerType = 'metric' | 'chart' | 'dashboard';
+type DashboardSection = 'metrics' | 'charts' | 'analytics';
 ```
 
 ### Component-Specific Types
@@ -194,6 +256,27 @@ getSemanticAnimation(intent: 'success' | 'error' | 'loading', phase: 'enter' | '
 
 getInteractionAnimation(type: 'hover' | 'press' | 'focus')
 // Returns: string - Interaction animation classes
+```
+
+### Data Visualization Helpers
+```typescript
+getChartSeriesColor(index: ChartSeriesIndex)
+// Returns: string - Chart series color by index (0-7)
+
+getMetricChangeColor(type: MetricChangeType)
+// Returns: string - Color class for metric change indicators
+
+getSparklineColor(variant: SparklineVariant)  
+// Returns: string - Color class for sparkline charts
+
+getProgressColor(percentage: number)
+// Returns: string - Dynamic progress bar color based on percentage
+
+getChartContainer(type: ChartContainerType)
+// Returns: string - Container classes for different chart layouts
+
+getDashboardLayout(section: DashboardSection)
+// Returns: string - Layout classes for dashboard sections
 ```
 
 ## 🎯 **SSOT Integration**

@@ -3,7 +3,11 @@
  */
 
 import { BYOC, BlobRef, PutResult } from './byocTypes';
-import { Manifest, createManifest, verifyManifest } from '../domain/pack/manifest';
+import {
+  Manifest,
+  createManifest,
+  verifyManifest,
+} from '../domain/pack/manifest';
 import { Sparkpack } from '../domain/pack/types';
 
 /**
@@ -32,7 +36,7 @@ export class MemoryBYOC implements BYOC {
     this.etags.set(path, etag);
     return {
       ref: { url: `memory://${path}` },
-      etag
+      etag,
     };
   }
 
@@ -47,7 +51,7 @@ export class MemoryBYOC implements BYOC {
     const etag = this.etags.get(path);
     return {
       ...(etag && { etag }),
-      size: data.byteLength
+      size: data.byteLength,
     };
   }
 }
@@ -64,24 +68,27 @@ export async function uploadPack(
   // Convert events to JSONL for hashing
   const eventsJsonl = pack.events.map(e => JSON.stringify(e)).join('\n');
   const eventsData = new TextEncoder().encode(eventsJsonl);
-  
+
   // Compute hash for consistent ID
   const hashBuffer = await crypto.subtle.digest('SHA-256', eventsData);
   const computedHash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)))
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=/g, '');
-  
+
   // Upload events with computed hash as ID
-  const eventsResult = await byoc.putBlob(`packs/${computedHash}/events.jsonl`, eventsData.buffer);
-  
+  const eventsResult = await byoc.putBlob(
+    `packs/${computedHash}/events.jsonl`,
+    eventsData.buffer
+  );
+
   // Create and upload manifest
   const manifest = await createManifest(pack, privateKey, publicKey);
   await byoc.putJson(`packs/${computedHash}/manifest.json`, manifest);
-  
+
   return {
     manifest,
-    eventsRef: eventsResult.ref
+    eventsRef: eventsResult.ref,
   };
 }
 
@@ -96,21 +103,24 @@ export async function downloadPack(
     // Download manifest
     const manifest = await byoc.getJson<Manifest>(manifestPath);
     if (!manifest) return null;
-    
+
     // Download events using manifest hash as ID
     const packHash = manifest.content.eventsHash;
     const eventsData = await byoc.getBlob(`packs/${packHash}/events.jsonl`);
     if (!eventsData) return null;
-    
+
     // Parse JSONL to events array
     const eventsJsonl = new TextDecoder().decode(eventsData);
-    const events = eventsJsonl.split('\n').filter(line => line.trim()).map(line => JSON.parse(line));
+    const events = eventsJsonl
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => JSON.parse(line));
     const pack = { meta: manifest.content.meta, events };
-    
+
     // Verify signature and hash
     const isValid = await verifyManifest(manifest, pack);
     if (!isValid) return null;
-    
+
     return pack;
   } catch {
     return null;

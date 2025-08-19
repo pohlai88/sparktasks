@@ -4,4 +4,12 @@
  */
 
 export * from './types';
-export { appendLeaf, genProof, verifyProof, emitCheckpoint, verifyCheckpoint, setAuditHook, setPolicyHook } from './api';
+export {
+  appendLeaf,
+  genProof,
+  verifyProof,
+  emitCheckpoint,
+  verifyCheckpoint,
+  setAuditHook,
+  setPolicyHook,
+} from './api';

@@ -44,7 +44,7 @@ export class EncryptedDriver implements StorageDriver {
     // Prepare AAD
     const aadString = `${this.ns}:${key}`;
     const aad = new TextEncoder().encode(aadString);
-    
+
     // Validate envelope AAD to prevent cross-namespace/key replay
     if (envelope.aad && envelope.aad !== toB64u(aad.buffer)) {
       throw new Error(`AAD mismatch for '${key}'`);
@@ -52,7 +52,7 @@ export class EncryptedDriver implements StorageDriver {
 
     try {
       const plaintext = await decryptRecord(cryptoKey, aad, envelope);
-      
+
       // Check if key rotation is needed
       const { kid: activeKid } = await this.keys.getActiveKey();
       if (envelope.kid !== activeKid) {
@@ -71,7 +71,7 @@ export class EncryptedDriver implements StorageDriver {
         };
         await this.inner.setItem(key, JSON.stringify(rotated));
       }
-      
+
       return plaintext;
     } catch (error) {
       throw new Error(`Failed to decrypt item '${key}': ${error}`);
@@ -80,17 +80,17 @@ export class EncryptedDriver implements StorageDriver {
 
   async setItem(key: string, value: string): Promise<void> {
     const { kid, key: cryptoKey } = await this.keys.getActiveKey();
-    
+
     // Generate random IV
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    
+
     // Prepare AAD
     const aadString = `${this.ns}:${key}`;
     const aad = new TextEncoder().encode(aadString);
-    
+
     // Encrypt the value
     const { ctB64u } = await encryptRecord(cryptoKey, iv, aad, value);
-    
+
     // Create envelope
     const envelope: Envelope = {
       v: 1,
@@ -101,7 +101,7 @@ export class EncryptedDriver implements StorageDriver {
       ct: ctB64u,
       ts: new Date().toISOString(),
     };
-    
+
     // Store the envelope as JSON
     await this.inner.setItem(key, JSON.stringify(envelope));
   }

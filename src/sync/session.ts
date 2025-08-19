@@ -20,15 +20,23 @@ export async function syncOnce(
   options: SyncOptions = {}
 ): Promise<SyncResult> {
   const opts = { policy: 'remapIds' as const, dryRun: false, ...options };
-  
+
   const currentTasks = Object.values(useTaskStore.getState().byId);
-  const plan = await planSync(transport, namespace, currentTasks, opts.sinceToken, opts.policy);
-  const result = await runSync(plan, transport, namespace, { dryRun: opts.dryRun });
-  
+  const plan = await planSync(
+    transport,
+    namespace,
+    currentTasks,
+    opts.sinceToken,
+    opts.policy
+  );
+  const result = await runSync(plan, transport, namespace, {
+    dryRun: opts.dryRun,
+  });
+
   // Hydrate store if changes were applied (and not dry run)
   if (!opts.dryRun && result.completed && result.mergeReport?.applied) {
     useTaskStore.getState().hydrate();
   }
-  
+
   return result;
 }

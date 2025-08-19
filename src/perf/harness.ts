@@ -37,6 +37,6 @@ export function timeIt<T>(fn: () => T, runs: number): PerfResult {
   return {
     p50: times[p50Index],
     p95: times[p95Index],
-    mean: sum / times.length
+    mean: sum / times.length,
   };
 }

@@ -21,9 +21,10 @@ export function runQuery(
   // Text filter: case-insensitive substring match on title and tags
   if (q.text && q.text.trim()) {
     const searchText = q.text.toLowerCase();
-    filtered = filtered.filter(task => 
-      task.title.toLowerCase().includes(searchText) ||
-      task.tags.some(tag => tag.toLowerCase().includes(searchText))
+    filtered = filtered.filter(
+      task =>
+        task.title.toLowerCase().includes(searchText) ||
+        task.tags.some(tag => tag.toLowerCase().includes(searchText))
     );
   }
 
@@ -31,13 +32,14 @@ export function runQuery(
   if (qTagsLower && qTagsLower.length > 0) {
     filtered = filtered.filter(task =>
       qTagsLower!.every(reqTag =>
-        task.tags.map(t => t.toLowerCase()).includes(reqTag))
+        task.tags.map(t => t.toLowerCase()).includes(reqTag)
+      )
     );
   }
 
   // Status filter: inclusive
   if (q.status && q.status.length > 0) {
-    filtered = filtered.filter(task => 
+    filtered = filtered.filter(task =>
       q.status!.includes(task.status as 'TODAY' | 'LATER' | 'DONE' | 'ARCHIVED')
     );
   }
@@ -71,13 +73,13 @@ export function runQuery(
   if (q.snoozeActive !== undefined) {
     if (q.snoozeActive) {
       // Only tasks with active snooze (snoozeUntil > now)
-      filtered = filtered.filter(task => 
-        task.snoozeUntil && new Date(task.snoozeUntil) > now
+      filtered = filtered.filter(
+        task => task.snoozeUntil && new Date(task.snoozeUntil) > now
       );
     } else {
       // Only tasks without snooze or expired snooze
-      filtered = filtered.filter(task => 
-        !task.snoozeUntil || new Date(task.snoozeUntil) <= now
+      filtered = filtered.filter(
+        task => !task.snoozeUntil || new Date(task.snoozeUntil) <= now
       );
     }
   }
@@ -86,17 +88,17 @@ export function runQuery(
   if (q.createdFrom || q.createdTo) {
     filtered = filtered.filter(task => {
       const createdDate = new Date(task.createdAt);
-      
+
       if (q.createdFrom) {
         const fromDate = new Date(q.createdFrom);
         if (createdDate < fromDate) return false;
       }
-      
+
       if (q.createdTo) {
         const toDate = new Date(q.createdTo);
         if (createdDate > toDate) return false;
       }
-      
+
       return true;
     });
   }
@@ -125,7 +127,9 @@ export function runQuery(
 function parseBoundedDate(s: string, kind: 'from' | 'to'): Date {
   if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
     // Interpret day-only strings as whole-day bounds (UTC)
-    return new Date(`${s}T${kind === 'from' ? '00:00:00.000Z' : '23:59:59.999Z'}`);
+    return new Date(
+      `${s}T${kind === 'from' ? '00:00:00.000Z' : '23:59:59.999Z'}`
+    );
   }
   return new Date(s);
 }

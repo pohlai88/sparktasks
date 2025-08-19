@@ -1,7 +1,11 @@
 import { TaskEvent, TaskEventSchema } from './events';
 import { Task } from './schema';
 import { Snapshot, computeStateHash } from './snapshot';
-import { SyncLocalStorageDriver, createNamespace, LocalStorageDriver } from '../../storage/local';
+import {
+  SyncLocalStorageDriver,
+  createNamespace,
+  LocalStorageDriver,
+} from '../../storage/local';
 import { SyncEncryptedDriver, composeEncrypted } from '../../storage/compose';
 import { KeyringProvider } from '../../crypto/keyring';
 import type { TaskId } from '../../types/task';
@@ -14,27 +18,33 @@ const TEMP_SNAPSHOT_KEY = 'spark.snapshot.v1.tmp';
 // Default storage namespace
 let defaultStorage = createNamespace('spark', new SyncLocalStorageDriver());
 
-// Configuration API for injecting custom storage  
-export function configureStorage(prefix: string, driver: SyncLocalStorageDriver): void {
+// Configuration API for injecting custom storage
+export function configureStorage(
+  prefix: string,
+  driver: SyncLocalStorageDriver
+): void {
   defaultStorage = createNamespace(prefix, driver);
 }
 
 /**
  * Configure encrypted storage for E2EE sync
- * 
+ *
  * Replaces the default storage with encrypted wrapper that transparently
  * encrypts all eventlog and snapshot data before storage.
  */
-export function enableEncryptedStorage(prefix: string, keyring: KeyringProvider): void {
+export function enableEncryptedStorage(
+  prefix: string,
+  keyring: KeyringProvider
+): void {
   // Create async LocalStorageDriver for EncryptedDriver
   const asyncStorage = new LocalStorageDriver();
-  
+
   // Compose encrypted driver
   const encrypted = composeEncrypted(asyncStorage, prefix, keyring);
-  
+
   // Wrap in sync adapter for eventlog compatibility
   const syncEncrypted = new SyncEncryptedDriver(encrypted);
-  
+
   // Replace default storage with encrypted namespace
   // Cast to SyncLocalStorageDriver since they have the same interface
   defaultStorage = createNamespace(prefix, syncEncrypted as any);
@@ -44,7 +54,7 @@ export function appendEvent(event: TaskEvent): void {
   const existingData = defaultStorage.getItem(STORAGE_KEY);
   const newLine = JSON.stringify(event);
   const updatedData = existingData ? `${existingData}\n${newLine}` : newLine;
-  
+
   // Enhanced atomic write: temp → primary → cleanup temp
   // This ensures atomicity across all storage backends
   try {
@@ -80,7 +90,10 @@ export function loadEvents(): TaskEvent[] {
     .filter((event): event is TaskEvent => event !== null);
 }
 
-export function reduce(events: TaskEvent[], initialState?: Record<TaskId, Task>): Record<TaskId, Task> {
+export function reduce(
+  events: TaskEvent[],
+  initialState?: Record<TaskId, Task>
+): Record<TaskId, Task> {
   const tasks: Record<TaskId, Task> = initialState ? { ...initialState } : {};
 
   for (const event of events) {
@@ -147,14 +160,14 @@ export function restoreEvents(raw: string): void {
 export function getEventCount(): number {
   const data = defaultStorage.getItem(STORAGE_KEY);
   if (!data) return 0;
-  
+
   return data.split('\n').filter(line => line.trim()).length;
 }
 
 export function snapshotState(tasks: Record<TaskId, Task>): Snapshot {
   const eventCount = getEventCount();
   const stateHash = computeStateHash(tasks);
-  
+
   return {
     meta: {
       version: 1,
@@ -170,7 +183,7 @@ export function snapshotState(tasks: Record<TaskId, Task>): Snapshot {
 export function loadSnapshot(): Snapshot | null {
   const data = defaultStorage.getItem(SNAPSHOT_KEY);
   if (!data) return null;
-  
+
   try {
     return JSON.parse(data) as Snapshot;
   } catch {
@@ -197,40 +210,46 @@ export function deleteSnapshot(): void {
   defaultStorage.removeItem(TEMP_SNAPSHOT_KEY);
 }
 
-export function compactWithSnapshot(threshold: number): { tookSnapshot: boolean; trimmed: number } {
+export function compactWithSnapshot(threshold: number): {
+  tookSnapshot: boolean;
+  trimmed: number;
+} {
   const eventCount = getEventCount();
-  
+
   if (eventCount < threshold) {
     return { tookSnapshot: false, trimmed: 0 };
   }
-  
+
   try {
     // 1. Get current complete state (snapshot + tail events if snapshot exists)
     const existingSnapshot = loadSnapshot();
     const events = loadEvents();
     let tasks: Record<TaskId, Task>;
-    
+
     if (existingSnapshot) {
       // Start from existing snapshot and apply all current events as tail
-      const tailStart = events.length < existingSnapshot.meta.baseEventCount ? 0 : existingSnapshot.meta.baseEventCount;
+      const tailStart =
+        events.length < existingSnapshot.meta.baseEventCount
+          ? 0
+          : existingSnapshot.meta.baseEventCount;
       const tailEvents = events.slice(tailStart);
       tasks = reduce(tailEvents, existingSnapshot.tasks);
     } else {
       // No existing snapshot, reduce all events
       tasks = reduce(events);
     }
-    
+
     // 2. Build snapshot from complete tasks state
     const snapshot = snapshotState(tasks);
-    
+
     // 3. Save snapshot atomically
     saveSnapshot(snapshot);
-    
+
     // 4. Trim event log to keep only tail after baseEventCount
     // Since we just created a snapshot with baseEventCount = current count,
     // we trim everything (keeping zero events for now)
     defaultStorage.setItem(STORAGE_KEY, '');
-    
+
     return { tookSnapshot: true, trimmed: eventCount };
   } catch (error) {
     // 5. On error: restore previous log (atomic rollback)

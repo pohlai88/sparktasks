@@ -8,19 +8,19 @@ import type { Role } from '../membership/types';
 export interface PolicySetV1 {
   version: 1;
   minEngine?: string; // Minimum engine version required (e.g., "1.0.0")
-  rev?: number;       // Revision number for A/B testing
+  rev?: number; // Revision number for A/B testing
   rules: PolicyRule[];
 }
 
 export interface PolicyRule {
-  effect: "allow" | "deny";
+  effect: 'allow' | 'deny';
   ops?: string[]; // e.g., "invite.create", "override.accept", "recovery.create"
   actorMinRole?: Role; // Minimum role required for actor
   targetMaxRole?: Role; // Maximum role that can be targeted/issued
   nsAllow?: string[]; // Namespace allowlist
-  time?: { 
+  time?: {
     start?: string; // HH:MM format in UTC (e.g., "09:00" = 9 AM UTC)
-    end?: string;   // HH:MM format in UTC (e.g., "17:00" = 5 PM UTC)
+    end?: string; // HH:MM format in UTC (e.g., "17:00" = 5 PM UTC)
   };
   perActorDailyCap?: number; // Per-actor daily operation limit
 }
@@ -39,7 +39,7 @@ export interface Actor {
   role: Role;
 }
 
-export type PolicyResult = "allow" | "deny";
+export type PolicyResult = 'allow' | 'deny';
 
 export interface EnforcePolicyOptions {
   audit?: boolean; // Whether to emit audit events (default: true)

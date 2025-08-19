@@ -6,12 +6,15 @@ export interface UndoEntry {
   undo: TaskEvent;
 }
 
-export function deriveUndo(e: TaskEvent, before: Task | undefined): TaskEvent | null {
+export function deriveUndo(
+  e: TaskEvent,
+  before: Task | undefined
+): TaskEvent | null {
   const timestamp = new Date().toISOString();
 
   switch (e.type) {
     case 'TASK_CREATED':
-      // Created → Create a special "remove" event 
+      // Created → Create a special "remove" event
       // We'll use TASK_MOVED to ARCHIVED to represent deletion in undo
       return {
         type: 'TASK_MOVED',

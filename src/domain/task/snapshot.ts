@@ -19,12 +19,12 @@ export interface Snapshot {
  */
 function fnv1a32(str: string): string {
   let hash = 0x811c9dc5; // FNV offset basis (32-bit)
-  
+
   for (let i = 0; i < str.length; i++) {
     hash ^= str.charCodeAt(i);
     hash = Math.imul(hash, 0x01000193); // FNV prime (32-bit)
   }
-  
+
   return (hash >>> 0).toString(16); // Convert to unsigned 32-bit hex
 }
 
@@ -36,7 +36,7 @@ export function computeStateHash(tasks: Record<TaskId, Task>): string {
   const sortedTasks = Object.fromEntries(
     Object.entries(tasks).sort(([a], [b]) => a.localeCompare(b))
   );
-  
+
   // Canonicalize each task by sorting its properties and ensuring consistent structure
   const canonicalTasks = Object.fromEntries(
     Object.entries(sortedTasks).map(([id, task]) => {
@@ -52,12 +52,13 @@ export function computeStateHash(tasks: Record<TaskId, Task>): string {
         ...(task.dueDate && { dueDate: task.dueDate }),
         ...(task.notes && { notes: task.notes }),
         ...(task.snoozeUntil && { snoozeUntil: task.snoozeUntil }),
-        ...(task.tags && task.tags.length > 0 && { tags: [...task.tags].sort() }),
+        ...(task.tags &&
+          task.tags.length > 0 && { tags: [...task.tags].sort() }),
       };
       return [id, canonicalTask];
     })
   );
-  
+
   const canonicalJson = JSON.stringify(canonicalTasks);
   return fnv1a32(canonicalJson);
 }

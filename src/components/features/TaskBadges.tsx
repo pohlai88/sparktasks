@@ -241,4 +241,3 @@ export function DueDateBadge({ dueDate, className = '' }: DueDateBadgeProps) {
     </Badge>
   );
 }
-

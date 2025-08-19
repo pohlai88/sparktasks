@@ -2,14 +2,21 @@
  * Recovery bundle API for headless admin recovery
  */
 
-import type { RecoveryBundleV1, CreateRecoveryArgs, RecoverArgs } from './types';
+import type {
+  RecoveryBundleV1,
+  CreateRecoveryArgs,
+  RecoverArgs,
+} from './types';
 import { toB64u, fromB64u } from '../crypto/base64url';
 import { enforcePolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
 import type { Role } from '../membership/types';
 
 // Rate limiting store (in-memory)
-const rateLimitStore = new Map<string, { attempts: number; lastAttempt: number }>();
+const rateLimitStore = new Map<
+  string,
+  { attempts: number; lastAttempt: number }
+>();
 
 // Canonical JSON for signature consistency
 function canonicalize(obj: any): string {
@@ -28,12 +35,12 @@ function recoveryAAD(ns: string): ArrayBuffer {
 // Simple FNV-1a 32-bit hash for bundle ID generation
 function simpleHash(str: string): string {
   let hash = 0x811c9dc5; // FNV offset basis (32-bit)
-  
+
   for (let i = 0; i < str.length; i++) {
     hash ^= str.charCodeAt(i);
     hash = Math.imul(hash, 0x01000193); // FNV prime (32-bit)
   }
-  
+
   return (hash >>> 0).toString(16); // Convert to unsigned 32-bit hex
 }
 
@@ -47,12 +54,12 @@ function getBundleId(bundle: Omit<RecoveryBundleV1, 'sigB64u'>): string {
 function isRateLimited(bundleId: string): boolean {
   const now = Date.now();
   const record = rateLimitStore.get(bundleId);
-  
+
   if (!record) return false;
-  
+
   const timeSinceLastAttempt = now - record.lastAttempt;
   const requiredWait = Math.min(1000 * Math.pow(2, record.attempts - 1), 30000);
-  
+
   return timeSinceLastAttempt < requiredWait;
 }
 
@@ -65,17 +72,36 @@ function resetRateLimit(bundleId: string): void {
  * Create recovery bundle from healthy keyring
  */
 export async function createRecoveryBundle({
-  ns, keyring, issuer, passcode, expiresAt, iter = 100000, meta, actorId, actorRole, storage
-}: CreateRecoveryArgs & { actorId?: string; actorRole?: Role; storage?: StorageDriver }): Promise<RecoveryBundleV1> {
-  
+  ns,
+  keyring,
+  issuer,
+  passcode,
+  expiresAt,
+  iter = 100000,
+  meta,
+  actorId,
+  actorRole,
+  storage,
+}: CreateRecoveryArgs & {
+  actorId?: string;
+  actorRole?: Role;
+  storage?: StorageDriver;
+}): Promise<RecoveryBundleV1> {
   // Policy enforcement before creating recovery bundle
   if (storage && actorId && actorRole) {
     await enforcePolicy(
-      { ns, op: 'recovery.create', actorId, actorRole, nowISO: new Date().toISOString() },
-      storage, { audit: true, commitCap: true }
+      {
+        ns,
+        op: 'recovery.create',
+        actorId,
+        actorRole,
+        nowISO: new Date().toISOString(),
+      },
+      storage,
+      { audit: true, commitCap: true }
     );
   }
-  
+
   // Export DEK snapshot
   const backup = await keyring.exportBackup();
   const dekSnapshot = backup.deks;
@@ -83,23 +109,29 @@ export async function createRecoveryBundle({
   // Generate recovery KEK using PBKDF2 -> AES-GCM
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const keyMaterial = await crypto.subtle.importKey(
-    'raw', new TextEncoder().encode(passcode), 'PBKDF2', false, ['deriveKey']
+    'raw',
+    new TextEncoder().encode(passcode),
+    'PBKDF2',
+    false,
+    ['deriveKey']
   );
   const gcmKey = await crypto.subtle.deriveKey(
     { name: 'PBKDF2', salt: salt.buffer, iterations: iter, hash: 'SHA-256' },
     keyMaterial,
     { name: 'AES-GCM', length: 256 },
-    false, ['encrypt', 'decrypt']
+    false,
+    ['encrypt', 'decrypt']
   );
 
   // Encrypt DEK snapshot with AES-GCM
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const plaintext = new TextEncoder().encode(JSON.stringify(dekSnapshot));
   const aad = recoveryAAD(ns);
-  
+
   const ciphertext = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv, additionalData: aad },
-    gcmKey, plaintext
+    gcmKey,
+    plaintext
   );
 
   // Create bundle for signing
@@ -114,7 +146,7 @@ export async function createRecoveryBundle({
     pubB64u: issuer.pubB64u,
     ctB64u: toB64u(ciphertext),
     ivB64u: toB64u(iv.buffer),
-    ...(meta && { meta })
+    ...(meta && { meta }),
   };
 
   // Sign canonical JSON
@@ -129,9 +161,12 @@ export async function createRecoveryBundle({
  * Recover DEKs from bundle using passcode
  */
 export async function recoverFromBundle({
-  ns, keyring, bundle, passcode, options = {}
+  ns,
+  keyring,
+  bundle,
+  passcode,
+  options = {},
 }: RecoverArgs): Promise<{ imported: number }> {
-
   // Validate bundle version
   if (bundle.v !== 1) throw new Error('Unsupported recovery bundle version');
 
@@ -157,47 +192,65 @@ export async function recoverFromBundle({
   const canonical = canonicalize(bundleForSig);
   const messageBytes = new TextEncoder().encode(canonical);
   const signature = fromB64u(bundle.sigB64u);
-  
+
   let publicKeyB64u = bundle.pubB64u; // Default: embedded key
   if (options.keyRegistry) {
     // Try to resolve key by issuerKID for rotation support
-    const registryKey = await options.keyRegistry.getPublicKey(bundle.issuerKID);
+    const registryKey = await options.keyRegistry.getPublicKey(
+      bundle.issuerKID
+    );
     if (registryKey) {
       publicKeyB64u = registryKey;
     } else {
       throw new Error(`Unknown issuer key: ${bundle.issuerKID}`);
     }
   }
-  
+
   const publicKey = await crypto.subtle.importKey(
-    'spki', fromB64u(publicKeyB64u),
-    { name: 'Ed25519' }, false, ['verify']
+    'spki',
+    fromB64u(publicKeyB64u),
+    { name: 'Ed25519' },
+    false,
+    ['verify']
   );
   const isValid = await crypto.subtle.verify(
-    'Ed25519', publicKey, signature, messageBytes
+    'Ed25519',
+    publicKey,
+    signature,
+    messageBytes
   );
-  
+
   if (!isValid) throw new Error('Invalid recovery bundle signature');
 
   // Check existing rate limit status
   if (options.enableRateLimit && isRateLimited(bundleId)) {
     const record = rateLimitStore.get(bundleId)!;
     const timeSinceLastAttempt = Date.now() - record.lastAttempt;
-    const requiredWait = Math.min(1000 * Math.pow(2, record.attempts - 1), 30000);
-    
-    throw new Error(`Rate limit exceeded. Try again in ${Math.ceil((requiredWait - timeSinceLastAttempt) / 1000)}s`);
+    const requiredWait = Math.min(
+      1000 * Math.pow(2, record.attempts - 1),
+      30000
+    );
+
+    throw new Error(
+      `Rate limit exceeded. Try again in ${Math.ceil((requiredWait - timeSinceLastAttempt) / 1000)}s`
+    );
   }
 
   // Derive recovery KEK using PBKDF2 -> AES-GCM
   const salt = fromB64u(bundle.saltB64u);
   const keyMaterial = await crypto.subtle.importKey(
-    'raw', new TextEncoder().encode(passcode), 'PBKDF2', false, ['deriveKey']
+    'raw',
+    new TextEncoder().encode(passcode),
+    'PBKDF2',
+    false,
+    ['deriveKey']
   );
   const gcmKey = await crypto.subtle.deriveKey(
     { name: 'PBKDF2', salt, iterations: bundle.iter, hash: 'SHA-256' },
     keyMaterial,
     { name: 'AES-GCM', length: 256 },
-    false, ['encrypt', 'decrypt']
+    false,
+    ['encrypt', 'decrypt']
   );
 
   // Decrypt DEK snapshot
@@ -209,9 +262,10 @@ export async function recoverFromBundle({
   try {
     plaintext = await crypto.subtle.decrypt(
       { name: 'AES-GCM', iv, additionalData: aad },
-      gcmKey, ciphertext
+      gcmKey,
+      ciphertext
     );
-    
+
     // Reset rate limit on successful decryption
     if (options.enableRateLimit) {
       resetRateLimit(bundleId);
@@ -235,14 +289,14 @@ export async function recoverFromBundle({
   const dekSnapshot: Array<{ kid: string; wrapped: string }> = JSON.parse(
     new TextDecoder().decode(plaintext)
   );
-  
+
   // Create recovery backup bundle for import
   const recoveryBackup = {
     v: 1 as const,
     createdAt: new Date().toISOString(),
-    deks: dekSnapshot
+    deks: dekSnapshot,
   };
-  
+
   // Get count before import (if keyring is unlocked)
   let beforeCount = 0;
   try {
@@ -253,10 +307,10 @@ export async function recoverFromBundle({
       throw err;
     }
   }
-  
+
   // Import DEKs from recovery bundle
   await keyring.importBackup(recoveryBackup);
-  
+
   // Get count after import (if keyring is unlocked)
   let afterCount = dekSnapshot.length;
   try {
@@ -267,7 +321,7 @@ export async function recoverFromBundle({
       throw err;
     }
   }
-  
+
   return { imported: afterCount - beforeCount };
 }
 
@@ -279,5 +333,5 @@ export const RecoveryUtils = {
   },
   clearRateLimit: (bundleId: string) => rateLimitStore.delete(bundleId),
   clearAllRateLimits: () => rateLimitStore.clear(),
-  getRateLimitInfo: (bundleId: string) => rateLimitStore.get(bundleId)
+  getRateLimitInfo: (bundleId: string) => rateLimitStore.get(bundleId),
 };

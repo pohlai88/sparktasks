@@ -34,10 +34,10 @@ export function composeMultiNamespace(
 
 /**
  * Synchronous wrapper for EncryptedDriver
- * 
+ *
  * Bridges async EncryptedDriver to sync eventlog requirements.
  * Uses busy-wait to convert async operations to sync (not ideal but needed for compatibility).
- * 
+ *
  * Implements the same interface as SyncLocalStorageDriver for createNamespace compatibility.
  */
 export class SyncEncryptedDriver {
@@ -48,18 +48,24 @@ export class SyncEncryptedDriver {
     let result: string | null = null;
     let error: Error | null = null;
     let completed = false;
-    
+
     this.encrypted.getItem(key).then(
-      value => { result = value; completed = true; },
-      err => { error = err; completed = true; }
+      value => {
+        result = value;
+        completed = true;
+      },
+      err => {
+        error = err;
+        completed = true;
+      }
     );
-    
+
     // Busy wait for completion (not ideal, but needed for sync compatibility)
     const start = Date.now();
     while (!completed && Date.now() - start < 5000) {
       // Spin until promise resolves or 5s timeout
     }
-    
+
     if (error) throw error;
     if (!completed) throw new Error('getItem timed out');
     return result;
@@ -68,18 +74,23 @@ export class SyncEncryptedDriver {
   setItem(key: string, value: string): void {
     let completed = false;
     let error: Error | null = null;
-    
+
     this.encrypted.setItem(key, value).then(
-      () => { completed = true; },
-      err => { error = err; completed = true; }
+      () => {
+        completed = true;
+      },
+      err => {
+        error = err;
+        completed = true;
+      }
     );
-    
+
     // Busy wait for completion
     const start = Date.now();
     while (!completed && Date.now() - start < 5000) {
       // Spin until promise resolves or 5s timeout
     }
-    
+
     if (error) throw error;
     if (!completed) throw new Error('setItem timed out');
   }
@@ -87,18 +98,23 @@ export class SyncEncryptedDriver {
   removeItem(key: string): void {
     let completed = false;
     let error: Error | null = null;
-    
+
     this.encrypted.removeItem(key).then(
-      () => { completed = true; },
-      err => { error = err; completed = true; }
+      () => {
+        completed = true;
+      },
+      err => {
+        error = err;
+        completed = true;
+      }
     );
-    
+
     // Busy wait for completion
     const start = Date.now();
     while (!completed && Date.now() - start < 5000) {
       // Spin until promise resolves or 5s timeout
     }
-    
+
     if (error) throw error;
     if (!completed) throw new Error('removeItem timed out');
   }
@@ -107,18 +123,24 @@ export class SyncEncryptedDriver {
     let result: string[] | null = null;
     let error: Error | null = null;
     let completed = false;
-    
+
     this.encrypted.listKeys(prefix).then(
-      keys => { result = keys; completed = true; },
-      err => { error = err; completed = true; }
+      keys => {
+        result = keys;
+        completed = true;
+      },
+      err => {
+        error = err;
+        completed = true;
+      }
     );
-    
+
     // Busy wait for completion
     const start = Date.now();
     while (!completed && Date.now() - start < 5000) {
       // Spin until promise resolves or 5s timeout
     }
-    
+
     if (error) throw error;
     if (!completed) throw new Error('listKeys timed out');
     return result || [];

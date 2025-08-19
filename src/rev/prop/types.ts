@@ -19,7 +19,10 @@ export interface RevRecord {
 }
 
 export interface RevTransport {
-  list(ns: string, since?: string): Promise<{ keys: string[]; nextSince?: string }>;
+  list(
+    ns: string,
+    since?: string
+  ): Promise<{ keys: string[]; nextSince?: string }>;
   get(key: string): Promise<string | null>;
   put(key: string, val: string, updatedAt: string): Promise<void>;
 }

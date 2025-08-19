@@ -33,14 +33,14 @@ export function verifyCodeChecksum(codeWithChecksum: string): string {
   if (lastDashIndex === -1 || lastDashIndex === codeWithChecksum.length - 1) {
     throw new Error('Invalid code format');
   }
-  
+
   const code = codeWithChecksum.slice(0, lastDashIndex);
   const checksum = codeWithChecksum.slice(lastDashIndex + 1);
   const expectedChecksum = calculateChecksum(code);
-  
+
   if (checksum !== expectedChecksum) {
     throw new Error('Invalid code checksum');
   }
-  
+
   return code;
 }

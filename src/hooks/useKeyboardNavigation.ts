@@ -28,14 +28,15 @@ interface UseKeyboardNavigationProps {
 export function useKeyboardNavigation({
   taskIds,
   onMoveMenuOpen,
-}: UseKeyboardNavigationProps): KeyboardNavigationState & KeyboardNavigationActions {
+}: UseKeyboardNavigationProps): KeyboardNavigationState &
+  KeyboardNavigationActions {
   const [focusedTaskId, setFocusedTaskId] = useState<TaskId | null>(null);
   const [isNavigationActive, setIsNavigationActive] = useState(false);
 
   const setFocusedTask = useCallback((taskId: TaskId | null) => {
     setFocusedTaskId(taskId);
     setIsNavigationActive(taskId !== null);
-    
+
     // Persist keyboard navigation state
     if (taskId) {
       localStorage.setItem('spark-tasks-focused-id', taskId);
@@ -46,7 +47,7 @@ export function useKeyboardNavigation({
 
   const navigateDown = useCallback(() => {
     if (taskIds.length === 0) return;
-    
+
     const currentIndex = focusedTaskId ? taskIds.indexOf(focusedTaskId) : -1;
     const nextIndex = currentIndex < taskIds.length - 1 ? currentIndex + 1 : 0;
     setFocusedTask(taskIds[nextIndex]);
@@ -54,7 +55,7 @@ export function useKeyboardNavigation({
 
   const navigateUp = useCallback(() => {
     if (taskIds.length === 0) return;
-    
+
     const currentIndex = focusedTaskId ? taskIds.indexOf(focusedTaskId) : -1;
     const prevIndex = currentIndex > 0 ? currentIndex - 1 : taskIds.length - 1;
     setFocusedTask(taskIds[prevIndex]);
@@ -74,9 +75,11 @@ export function useKeyboardNavigation({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't interfere with input fields or modals
-      if (e.target instanceof HTMLInputElement || 
-          e.target instanceof HTMLTextAreaElement ||
-          document.querySelector('[role="dialog"]')) {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        document.querySelector('[role="dialog"]')
+      ) {
         return;
       }
 

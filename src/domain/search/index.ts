@@ -38,10 +38,10 @@ function parseQuery(query: string): string[] {
     // Add tokens before the quote
     const beforeQuote = query.slice(lastIndex, match.index);
     tokens.push(...tokenize(beforeQuote));
-    
+
     // Add the quoted phrase as single token
     tokens.push(match[1].toLowerCase());
-    
+
     lastIndex = quotedRegex.lastIndex;
   }
 
@@ -76,7 +76,7 @@ class InMemorySearchIndex implements SearchIndex {
 
   updateFromEvent(e: TaskEvent): void {
     const taskId = e.payload.id;
-    
+
     switch (e.type) {
       case 'TASK_CREATED': {
         const newTask: Task = {
@@ -93,7 +93,7 @@ class InMemorySearchIndex implements SearchIndex {
         this.indexTask(newTask);
         break;
       }
-      
+
       case 'TASK_UPDATED': {
         const existing = this.indexedTasks.get(taskId);
         if (existing) {
@@ -101,7 +101,7 @@ class InMemorySearchIndex implements SearchIndex {
             ...existing.task,
             updatedAt: e.timestamp,
           };
-          
+
           // Apply only defined changes
           if (e.payload.changes.title !== undefined) {
             updatedTask.title = e.payload.changes.title;
@@ -115,12 +115,12 @@ class InMemorySearchIndex implements SearchIndex {
           if (e.payload.changes.notes !== undefined) {
             updatedTask.notes = e.payload.changes.notes;
           }
-          
+
           this.indexTask(updatedTask);
         }
         break;
       }
-      
+
       case 'TASK_MOVED': {
         const existing = this.indexedTasks.get(taskId);
         if (existing) {
@@ -133,7 +133,7 @@ class InMemorySearchIndex implements SearchIndex {
         }
         break;
       }
-      
+
       case 'TASK_COMPLETED': {
         const existing = this.indexedTasks.get(taskId);
         if (existing) {
@@ -146,7 +146,7 @@ class InMemorySearchIndex implements SearchIndex {
         }
         break;
       }
-      
+
       case 'TASK_SNOOZED': {
         const existing = this.indexedTasks.get(taskId);
         if (existing) {
@@ -164,54 +164,64 @@ class InMemorySearchIndex implements SearchIndex {
 
   search(query: SearchQuery): SearchResult {
     const { q = '', tags, status, priority, limit = 20, offset = 0 } = query;
-    
+
     // Parse search query tokens - filter out short queries unless using filters
     const queryTokens = q.trim() ? parseQuery(q) : [];
-    const hasTextQuery = queryTokens.length > 0 && queryTokens.some(token => token.length >= 2);
-    const hasFilters = (tags && tags.length > 0) || (status && status.length > 0) || (priority && priority.length > 0);
-    
+    const hasTextQuery =
+      queryTokens.length > 0 && queryTokens.some(token => token.length >= 2);
+    const hasFilters =
+      (tags && tags.length > 0) ||
+      (status && status.length > 0) ||
+      (priority && priority.length > 0);
+
     // If we have a text query but no valid tokens (too short), return empty unless we have filters
     if (q.trim() && !hasTextQuery && !hasFilters) {
       return {
         total: 0,
         items: [],
-        facets: { tags: {}, status: {}, priority: {} }
+        facets: { tags: {}, status: {}, priority: {} },
       };
     }
-    
+
     // Score and filter tasks
     const scoredTasks: Array<{ task: Task; score: number }> = [];
-    
+
     for (const indexed of this.indexedTasks.values()) {
       const { task } = indexed;
-      
+
       // Apply filters
       if (tags && tags.length > 0) {
-        const hasAllTags = tags.every(tag => 
-          task.tags.some(taskTag => taskTag.toLowerCase().includes(tag.toLowerCase()))
+        const hasAllTags = tags.every(tag =>
+          task.tags.some(taskTag =>
+            taskTag.toLowerCase().includes(tag.toLowerCase())
+          )
         );
         if (!hasAllTags) continue;
       }
-      
+
       if (status && status.length > 0 && !status.includes(task.status)) {
         continue;
       }
-      
-      if (priority && priority.length > 0 && !priority.includes(task.priority)) {
+
+      if (
+        priority &&
+        priority.length > 0 &&
+        !priority.includes(task.priority)
+      ) {
         continue;
       }
-      
+
       // Calculate score for text search
       let score = 0;
-      
+
       if (hasTextQuery) {
         // Check if all query tokens match (AND behavior)
         const allTokensMatch = queryTokens.every(queryToken => {
           let tokenMatched = false;
-          
+
           // Check if this is a phrase (contains spaces) vs single token
           const isPhrase = queryToken.includes(' ');
-          
+
           if (isPhrase) {
             // For phrases, check exact match in original text
             const phraseQuery = queryToken.toLowerCase();
@@ -219,7 +229,9 @@ class InMemorySearchIndex implements SearchIndex {
               score += 3;
               tokenMatched = true;
             }
-            if (task.tags.some(tag => tag.toLowerCase().includes(phraseQuery))) {
+            if (
+              task.tags.some(tag => tag.toLowerCase().includes(phraseQuery))
+            ) {
               score += 2;
               tokenMatched = true;
             }
@@ -230,33 +242,37 @@ class InMemorySearchIndex implements SearchIndex {
           } else {
             // For single tokens, use tokenized matching
             // Title boost x3
-            if (indexed.tokens.title.some(token => token.includes(queryToken))) {
+            if (
+              indexed.tokens.title.some(token => token.includes(queryToken))
+            ) {
               score += 3;
               tokenMatched = true;
             }
-            
+
             // Tags boost x2
             if (indexed.tokens.tags.some(token => token.includes(queryToken))) {
               score += 2;
               tokenMatched = true;
             }
-            
+
             // Notes boost x1
-            if (indexed.tokens.notes.some(token => token.includes(queryToken))) {
+            if (
+              indexed.tokens.notes.some(token => token.includes(queryToken))
+            ) {
               score += 1;
               tokenMatched = true;
             }
           }
-          
+
           return tokenMatched;
         });
-        
+
         if (!allTokensMatch) continue;
       }
-      
+
       scoredTasks.push({ task, score });
     }
-    
+
     // Sort by score (desc), then compareTasks, then by id for stability
     scoredTasks.sort((a, b) => {
       if (a.score !== b.score) return b.score - a.score;
@@ -264,34 +280,35 @@ class InMemorySearchIndex implements SearchIndex {
       if (taskComparison !== 0) return taskComparison;
       return a.task.id.localeCompare(b.task.id);
     });
-    
+
     // Calculate facets from filtered results (before pagination)
     const facets = {
       tags: {} as Record<string, number>,
       status: {} as Record<string, number>,
       priority: {} as Record<string, number>,
     };
-    
+
     for (const { task } of scoredTasks) {
       // Status facet
       facets.status[task.status] = (facets.status[task.status] || 0) + 1;
-      
+
       // Priority facet
-      facets.priority[task.priority] = (facets.priority[task.priority] || 0) + 1;
-      
+      facets.priority[task.priority] =
+        (facets.priority[task.priority] || 0) + 1;
+
       // Tags facet
       for (const tag of task.tags) {
         facets.tags[tag] = (facets.tags[tag] || 0) + 1;
       }
     }
-    
+
     // Apply pagination with bounds checking
     const safeOffset = Math.max(0, offset);
     const safeLimit = Math.max(1, Math.min(1000, limit)); // Reasonable upper bound
     const paginatedTasks = scoredTasks
       .slice(safeOffset, safeOffset + safeLimit)
       .map(({ task }) => task);
-    
+
     return {
       total: scoredTasks.length,
       items: paginatedTasks,

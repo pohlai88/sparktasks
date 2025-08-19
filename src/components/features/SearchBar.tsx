@@ -388,4 +388,3 @@ export function SearchBar({ onTaskSelect, className = '' }: SearchBarProps) {
     </div>
   );
 }
-

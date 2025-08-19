@@ -40,45 +40,68 @@ export async function planSync(
   };
 
   // Read persisted sync token if none provided
-  let effectiveSince = sinceToken, persistedToken: string | undefined;
-  
+  let effectiveSince = sinceToken,
+    persistedToken: string | undefined;
+
   try {
     const stateData = await transport.get(`${namespace}:__sync_state__`);
     if (stateData) persistedToken = JSON.parse(stateData.value).since;
-  } catch { /* ignore */ }
-  
+  } catch {
+    /* ignore */
+  }
+
   if (!effectiveSince) effectiveSince = persistedToken;
 
   // Token monotonicity guard: Prevent regression
-  if (effectiveSince && persistedToken && sinceToken && persistedToken > sinceToken) {
-    console.warn(`Token regression detected: ${sinceToken} -> ${persistedToken}`);
+  if (
+    effectiveSince &&
+    persistedToken &&
+    sinceToken &&
+    persistedToken > sinceToken
+  ) {
+    console.warn(
+      `Token regression detected: ${sinceToken} -> ${persistedToken}`
+    );
     effectiveSince = sinceToken;
   }
 
   // Phase 1: Discover remote changes (paginated)
-  const events: TaskEvent[] = [], seen = new Set<string>();
-  let idx = 0, cursor = effectiveSince, lastSince: string | null = null;
-  
+  const events: TaskEvent[] = [],
+    seen = new Set<string>();
+  let idx = 0,
+    cursor = effectiveSince,
+    lastSince: string | null = null;
+
   while (true) {
     const page = await transport.list(namespace, cursor || undefined);
     const keys = page.items?.map(i => i.key) ?? [];
     plan.pullKeys.push(...keys);
-    
+
     for (const key of keys) {
       try {
         const data = await transport.get(key);
         if (!data) continue;
-        
+
         // Clock-skew guard: Warn about suspicious timestamps
-        if (Math.abs(new Date(data.updatedAt).getTime() - Date.now()) > 300000) console.warn(`Clock skew: ${key}`);
-        
+        if (Math.abs(new Date(data.updatedAt).getTime() - Date.now()) > 300000)
+          console.warn(`Clock skew: ${key}`);
+
         const validation = planImport(data.value);
-        if (validation.invalid.length > 0) { console.warn(`Invalid pack ${key}:`, validation.invalid); continue; }
+        if (validation.invalid.length > 0) {
+          console.warn(`Invalid pack ${key}:`, validation.invalid);
+          continue;
+        }
         for (const event of validation.valid) {
           const h = JSON.stringify(event);
-          if (!seen.has(h)) { (event as any)._idx = idx++; seen.add(h); events.push(event); }
+          if (!seen.has(h)) {
+            (event as any)._idx = idx++;
+            seen.add(h);
+            events.push(event);
+          }
         }
-      } catch (error) { console.warn(`Failed to pull ${key}:`, error); }
+      } catch (error) {
+        console.warn(`Failed to pull ${key}:`, error);
+      }
     }
     lastSince = page.nextSince || lastSince;
     if (!page.nextSince) break;
@@ -86,7 +109,11 @@ export async function planSync(
   }
 
   if (events.length === 0) return plan;
-  events.sort((a,b)=>a.timestamp===b.timestamp?((a as any)._idx-(b as any)._idx):a.timestamp.localeCompare(b.timestamp));
+  events.sort((a, b) =>
+    a.timestamp === b.timestamp
+      ? (a as any)._idx - (b as any)._idx
+      : a.timestamp.localeCompare(b.timestamp)
+  );
 
   // Phase 2: Plan merge
   plan.phase = 'merge';
@@ -95,7 +122,10 @@ export async function planSync(
   if (lastSince) plan.nextSince = lastSince;
 
   // Phase 3: Prepare push (if needed)
-  if (plan.hasChanges) { plan.phase = 'push'; plan.pushEvents = plan.mergePlan.applyEvents; }
+  if (plan.hasChanges) {
+    plan.phase = 'push';
+    plan.pushEvents = plan.mergePlan.applyEvents;
+  }
 
   return plan;
 }

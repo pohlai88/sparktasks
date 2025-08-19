@@ -11,7 +11,7 @@ export default defineConfig({
     testTimeout: 5000,
     include: [
       'src/**/*.test.{ts,tsx}',
-      'test/**/*.test.{ts,js}'
+      'test/**/*.test.{ts,tsx,js}'
     ],
     exclude: [
       '**/node_modules/**',

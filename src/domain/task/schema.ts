@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const TaskStatusSchema = z.enum(['TODAY','LATER','DONE','ARCHIVED']);
+export const TaskStatusSchema = z.enum(['TODAY', 'LATER', 'DONE', 'ARCHIVED']);
 export type TaskStatus = z.infer<typeof TaskStatusSchema>;
 
 export const TaskSchema = z.object({

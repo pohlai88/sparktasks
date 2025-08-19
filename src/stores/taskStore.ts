@@ -1,12 +1,18 @@
 import { create } from 'zustand';
 import { CreateTaskInputSchema } from '../domain/task/schema';
-import { appendEvent, loadEvents, reduce, loadSnapshot, deleteSnapshot } from '../domain/task/eventlog';
+import {
+  appendEvent,
+  loadEvents,
+  reduce,
+  loadSnapshot,
+  deleteSnapshot,
+} from '../domain/task/eventlog';
 // Async facade (new)
 import {
   setAsyncEventlogStorage,
   loadEventsAsync,
   loadSnapshotAsync,
-  reduce as reduceAsyncReducer
+  reduce as reduceAsyncReducer,
 } from '../domain/task/eventlog.async';
 import { computeStateHash } from '../domain/task/snapshot';
 import { isToday, isLater, isDone } from '../domain/task/lanes';
@@ -49,7 +55,10 @@ export const getSearchIndex = (state: TaskStore): SearchIndex => {
   return searchIndexInstance;
 };
 
-export const selectSearch = (state: TaskStore, query: SearchQuery): SearchResult => {
+export const selectSearch = (
+  state: TaskStore,
+  query: SearchQuery
+): SearchResult => {
   const index = getSearchIndex(state);
   // Always rebuild the index to ensure it's up-to-date with current tasks
   index.build(Object.values(state.byId));
@@ -65,10 +74,16 @@ export const selectLater = (state: TaskStore): Task[] =>
 export const selectDone = (state: TaskStore): Task[] =>
   Object.values(state.byId)
     .filter(isDone)
-    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+    .sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
 
-export const selectQuery = (state: TaskStore, q: Query, page?: Page): Result<Task> =>
-  runQuery(Object.values(state.byId), q, page);
+export const selectQuery = (
+  state: TaskStore,
+  q: Query,
+  page?: Page
+): Result<Task> => runQuery(Object.values(state.byId), q, page);
 
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -119,7 +134,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     }
 
     appendEvent(event);
-    
+
     // Update search index
     if (searchIndexInstance) {
       searchIndexInstance.updateFromEvent(event);
@@ -131,14 +146,18 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     if (!existingTask) return;
 
     const timestamp = new Date().toISOString();
-    let pendingUndoEntries: UndoEntry[] = [];
-    
+    const pendingUndoEntries: UndoEntry[] = [];
+
     // Handle status changes separately with TASK_MOVED
     if (patch.status && patch.status !== existingTask.status) {
       const moveEvent: TaskEvent = {
         type: 'TASK_MOVED',
         timestamp,
-        payload: { id, fromStatus: existingTask.status, toStatus: patch.status },
+        payload: {
+          id,
+          fromStatus: existingTask.status,
+          toStatus: patch.status,
+        },
       };
 
       const undoEvent = deriveUndo(moveEvent, existingTask);
@@ -153,8 +172,10 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     // Handle other changes with TASK_UPDATED
     const { status, id: _, createdAt, updatedAt, ...changes } = patch;
     const filteredChanges = Object.fromEntries(
-      Object.entries(changes).filter(([key, value]) => 
-        value !== undefined && ['title', 'dueDate', 'tags', 'notes'].includes(key)
+      Object.entries(changes).filter(
+        ([key, value]) =>
+          value !== undefined &&
+          ['title', 'dueDate', 'tags', 'notes'].includes(key)
       )
     );
 
@@ -172,7 +193,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       }
 
       appendEvent(updateEvent);
-      
+
       // Update search index
       if (searchIndexInstance) {
         searchIndexInstance.updateFromEvent(updateEvent);
@@ -180,11 +201,13 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     }
 
     const updatedTask = { ...existingTask, ...patch, updatedAt: timestamp };
-    
+
     // Apply all changes in a single set call
     if (pendingUndoEntries.length > 0) {
       const state = get();
-      const newUndoStack = [...state.undoStack, ...pendingUndoEntries].slice(-50);
+      const newUndoStack = [...state.undoStack, ...pendingUndoEntries].slice(
+        -50
+      );
       set(state => ({
         byId: { ...state.byId, [id]: updatedTask },
         undoStack: newUndoStack,
@@ -214,7 +237,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
     const undoEvent = deriveUndo(event, currentTask);
     appendEvent(event);
-    
+
     // Update search index
     if (searchIndexInstance) {
       searchIndexInstance.updateFromEvent(event);
@@ -255,7 +278,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
     const undoEvent = deriveUndo(event, currentTask);
     appendEvent(event);
-    
+
     // Update search index
     if (searchIndexInstance) {
       searchIndexInstance.updateFromEvent(event);
@@ -296,7 +319,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
     const undoEvent = deriveUndo(event, currentTask);
     appendEvent(event);
-    
+
     // Update search index
     if (searchIndexInstance) {
       searchIndexInstance.updateFromEvent(event);
@@ -366,7 +389,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     }
 
     appendEvent(event);
-    
+
     // Update search index
     if (searchIndexInstance) {
       searchIndexInstance.updateFromEvent(event);
@@ -386,7 +409,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     // Apply the undo event to the current state
     const currentState = get().byId;
     const event = undoEntry.undo;
-    
+
     switch (event.type) {
       case 'TASK_CREATED': {
         const { id } = event.payload;
@@ -402,12 +425,14 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         const { id, changes } = event.payload;
         const existingTask = currentState[id];
         if (existingTask) {
-          const updatedTask = { 
-            ...existingTask, 
+          const updatedTask = {
+            ...existingTask,
             ...Object.fromEntries(
-              Object.entries(changes).filter(([_, value]) => value !== undefined)
+              Object.entries(changes).filter(
+                ([_, value]) => value !== undefined
+              )
             ),
-            updatedAt: event.timestamp 
+            updatedAt: event.timestamp,
           };
           set(() => ({
             byId: { ...currentState, [id]: updatedTask },
@@ -430,7 +455,11 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
               redoStack: newRedoStack,
             }));
           } else {
-            const updatedTask = { ...existingTask, status: toStatus, updatedAt: event.timestamp };
+            const updatedTask = {
+              ...existingTask,
+              status: toStatus,
+              updatedAt: event.timestamp,
+            };
             set(() => ({
               byId: { ...currentState, [id]: updatedTask },
               undoStack: newUndoStack,
@@ -447,13 +476,17 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         if (existingTask) {
           const originalEvent = undoEntry.do;
           let previousStatus: TaskStatus = 'TODAY';
-          
+
           if (originalEvent.type === 'TASK_COMPLETED') {
             // Find the previous status from task history or default to TODAY
             previousStatus = 'TODAY';
           }
-          
-          const updatedTask = { ...existingTask, status: previousStatus, updatedAt: event.timestamp };
+
+          const updatedTask = {
+            ...existingTask,
+            status: previousStatus,
+            updatedAt: event.timestamp,
+          };
           set(() => ({
             byId: { ...currentState, [id]: updatedTask },
             undoStack: newUndoStack,
@@ -467,7 +500,10 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         const existingTask = currentState[id];
         if (existingTask) {
           const { snoozeUntil, ...taskWithoutSnooze } = existingTask;
-          const updatedTask = { ...taskWithoutSnooze, updatedAt: event.timestamp };
+          const updatedTask = {
+            ...taskWithoutSnooze,
+            updatedAt: event.timestamp,
+          };
           set(() => ({
             byId: { ...currentState, [id]: updatedTask },
             undoStack: newUndoStack,
@@ -490,7 +526,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     // Apply the redo event (which is the original 'do' event)
     const currentState = get().byId;
     const event = redoEntry.do;
-    
+
     switch (event.type) {
       case 'TASK_CREATED': {
         const { id, ...taskData } = event.payload;
@@ -511,12 +547,14 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         const { id, changes } = event.payload;
         const existingTask = currentState[id];
         if (existingTask) {
-          const updatedTask = { 
-            ...existingTask, 
+          const updatedTask = {
+            ...existingTask,
             ...Object.fromEntries(
-              Object.entries(changes).filter(([_, value]) => value !== undefined)
+              Object.entries(changes).filter(
+                ([_, value]) => value !== undefined
+              )
             ),
-            updatedAt: event.timestamp 
+            updatedAt: event.timestamp,
           };
           set(() => ({
             byId: { ...currentState, [id]: updatedTask },
@@ -530,7 +568,11 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         const { id, toStatus } = event.payload;
         const existingTask = currentState[id];
         if (existingTask) {
-          const updatedTask = { ...existingTask, status: toStatus, updatedAt: event.timestamp };
+          const updatedTask = {
+            ...existingTask,
+            status: toStatus,
+            updatedAt: event.timestamp,
+          };
           set(() => ({
             byId: { ...currentState, [id]: updatedTask },
             undoStack: newUndoStack,
@@ -543,7 +585,11 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         const { id } = event.payload;
         const existingTask = currentState[id];
         if (existingTask) {
-          const updatedTask = { ...existingTask, status: 'DONE' as const, updatedAt: event.timestamp };
+          const updatedTask = {
+            ...existingTask,
+            status: 'DONE' as const,
+            updatedAt: event.timestamp,
+          };
           set(() => ({
             byId: { ...currentState, [id]: updatedTask },
             undoStack: newUndoStack,
@@ -556,7 +602,11 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         const { id, snoozeUntil } = event.payload;
         const existingTask = currentState[id];
         if (existingTask) {
-          const updatedTask = { ...existingTask, snoozeUntil, updatedAt: event.timestamp };
+          const updatedTask = {
+            ...existingTask,
+            snoozeUntil,
+            updatedAt: event.timestamp,
+          };
           set(() => ({
             byId: { ...currentState, [id]: updatedTask },
             undoStack: newUndoStack,
@@ -570,7 +620,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
   hydrate: () => {
     const snapshot = loadSnapshot();
-    
+
     if (snapshot) {
       // Validate base snapshot first (before tail)
       const baseHash = computeStateHash(snapshot.tasks);
@@ -578,20 +628,20 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         deleteSnapshot();
         const allEvents = loadEvents();
         const fullTasks = reduce(allEvents);
-        
+
         // Enforce invariants
         for (const task of Object.values(fullTasks)) {
           if (new Date(task.createdAt) > new Date(task.updatedAt)) {
             task.updatedAt = task.createdAt;
           }
-          
+
           if (task.status === 'DONE' && !task.updatedAt) {
             task.updatedAt = task.createdAt;
           }
         }
-        
+
         set({ byId: fullTasks });
-        
+
         // Rebuild search index after hydration
         if (searchIndexInstance) {
           searchIndexInstance.build(Object.values(fullTasks));
@@ -610,46 +660,46 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
           ? 0
           : snapshot.meta.baseEventCount;
       const tailEvents = events.slice(tailStart);
-      
+
       // Start with snapshot state
       let finalTasks = { ...snapshot.tasks };
-      
+
       if (tailEvents.length > 0) {
         // Apply tail events starting from snapshot state
         finalTasks = reduce(tailEvents, snapshot.tasks);
       }
-      
+
       // Enforce invariants
       for (const task of Object.values(finalTasks)) {
         if (new Date(task.createdAt) > new Date(task.updatedAt)) {
           task.updatedAt = task.createdAt;
         }
-        
+
         if (task.status === 'DONE' && !task.updatedAt) {
           task.updatedAt = task.createdAt;
         }
       }
-      
+
       set({ byId: finalTasks });
     } else {
       // Fallback to full event log reduction
       const events = loadEvents();
       const tasks = reduce(events);
-      
+
       // Enforce invariants
       for (const task of Object.values(tasks)) {
         if (new Date(task.createdAt) > new Date(task.updatedAt)) {
           task.updatedAt = task.createdAt;
         }
-        
+
         if (task.status === 'DONE' && !task.updatedAt) {
           task.updatedAt = task.createdAt;
         }
       }
-      
+
       set({ byId: tasks });
     }
-    
+
     // Rebuild search index after hydration
     if (searchIndexInstance) {
       searchIndexInstance.build(Object.values(get().byId));
@@ -664,11 +714,12 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       const allEvents = await loadEventsAsync();
       const base = snap.meta.baseEventCount ?? 0;
       const tail = base <= allEvents.length ? allEvents.slice(base) : [];
-      let tasks = reduceAsyncReducer(tail, snap.tasks);
+      const tasks = reduceAsyncReducer(tail, snap.tasks);
 
       // Enforce invariants (same as sync path)
       for (const t of Object.values(tasks)) {
-        if (new Date(t.createdAt) > new Date(t.updatedAt)) t.updatedAt = t.createdAt;
+        if (new Date(t.createdAt) > new Date(t.updatedAt))
+          t.updatedAt = t.createdAt;
         if (t.status === 'DONE' && !t.updatedAt) t.updatedAt = t.createdAt;
       }
       set({ byId: tasks });
@@ -677,7 +728,8 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       const events = await loadEventsAsync();
       const tasks = reduceAsyncReducer(events);
       for (const t of Object.values(tasks)) {
-        if (new Date(t.createdAt) > new Date(t.updatedAt)) t.updatedAt = t.createdAt;
+        if (new Date(t.createdAt) > new Date(t.updatedAt))
+          t.updatedAt = t.createdAt;
         if (t.status === 'DONE' && !t.updatedAt) t.updatedAt = t.createdAt;
       }
       set({ byId: tasks });
@@ -692,6 +744,8 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 }));
 
 // Optional: small helper to wire the async storage once (used by E2EE bootstrap)
-export function configureAsyncEventlogStorage(driver: import('../domain/task/eventlog.async').StorageDriver) {
+export function configureAsyncEventlogStorage(
+  driver: import('../domain/task/eventlog.async').StorageDriver
+) {
   setAsyncEventlogStorage(driver);
 }

@@ -25,7 +25,10 @@ export interface MState {
 }
 
 export interface MTransport {
-  list(ns: string, since?: string): Promise<{ keys: string[]; nextSince?: string }>;
+  list(
+    ns: string,
+    since?: string
+  ): Promise<{ keys: string[]; nextSince?: string }>;
   get(key: string): Promise<string | null>;
   put(key: string, data: string, ts?: string): Promise<void>;
 }

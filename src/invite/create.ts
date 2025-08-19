@@ -10,7 +10,11 @@ import type { StorageDriver } from '../storage/types';
 
 // Configuration dependencies for role authorization
 let membershipApi: {
-  assertPermission: (actor: string, action: 'INVITE_CREATE', context?: { targetRole?: Role }) => Promise<void>;
+  assertPermission: (
+    actor: string,
+    action: 'INVITE_CREATE',
+    context?: { targetRole?: Role }
+  ) => Promise<void>;
   getMembership: () => Promise<{ users: Record<string, Role> }>;
 } | null = null;
 
@@ -25,37 +29,57 @@ export async function createInvite(args: {
   ns: string;
   sign: (bytes: ArrayBuffer) => Promise<string>;
   signerPubB64u: string;
-  role: Role;                     // NEW: target role to grant on accept
-  storage?: StorageDriver;        // NEW: for policy enforcement
+  role: Role; // NEW: target role to grant on accept
+  storage?: StorageDriver; // NEW: for policy enforcement
   now?: () => Date;
 }): Promise<{ envelope: InviteEnvelope; meta: InviteMeta }> {
-  const { keyring, code, ttlMs, ns, sign, signerPubB64u, role, storage, now = () => new Date() } = args;
-  
+  const {
+    keyring,
+    code,
+    ttlMs,
+    ns,
+    sign,
+    signerPubB64u,
+    role,
+    storage,
+    now = () => new Date(),
+  } = args;
+
   // Policy enforcement before authorization
   if (storage && membershipApi) {
     const membership = await membershipApi.getMembership();
     const issuerRole = membership.users[signerPubB64u];
     if (issuerRole) {
       await enforcePolicy(
-        { ns, op: 'invite.create', actorId: signerPubB64u, actorRole: issuerRole, targetRole: role, nowISO: now().toISOString() },
-        storage, { audit: true, commitCap: true }
+        {
+          ns,
+          op: 'invite.create',
+          actorId: signerPubB64u,
+          actorRole: issuerRole,
+          targetRole: role,
+          nowISO: now().toISOString(),
+        },
+        storage,
+        { audit: true, commitCap: true }
       );
     }
   }
-  
+
   // Issue-time authorization: validate issuer can create invites for this role
   if (membershipApi) {
-    await membershipApi.assertPermission(signerPubB64u, 'INVITE_CREATE', { targetRole: role });
+    await membershipApi.assertPermission(signerPubB64u, 'INVITE_CREATE', {
+      targetRole: role,
+    });
   }
 
-  // Export backup from keyring 
+  // Export backup from keyring
   const backup = await keyring.exportBackup();
 
   // Remove metadata to create a 'meta-less' bundle that won't trigger portable backup path
   const inviteBundle = {
     v: backup.v,
     createdAt: backup.createdAt,
-    deks: backup.deks
+    deks: backup.deks,
   };
 
   // Generate session key material
@@ -107,7 +131,7 @@ export async function createInvite(args: {
     iter,
     aad,
     ctB64u: toB64u(combined.buffer),
-    role                            // NEW: bound role in signed manifest
+    role, // NEW: bound role in signed manifest
   };
 
   // Sign canonical JSON
@@ -117,14 +141,16 @@ export async function createInvite(args: {
   const envelope: InviteEnvelope = {
     ...manifest,
     signerPubB64u,
-    sigB64u: signature
+    sigB64u: signature,
   };
 
   const meta: InviteMeta = { ns, inviteId };
 
   // Emit audit event for invite creation
   if (membershipApi) {
-    AuditApi.log('INVITE_CREATED', { role, inviteId, ns }, signerPubB64u).catch(err => console.error('Audit log failed:', err));
+    AuditApi.log('INVITE_CREATED', { role, inviteId, ns }, signerPubB64u).catch(
+      err => console.error('Audit log failed:', err)
+    );
   }
 
   return { envelope, meta };

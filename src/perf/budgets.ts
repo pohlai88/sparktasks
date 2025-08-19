@@ -21,7 +21,7 @@ const BASE_PERF: PerfConfig = {
   query: { p95_ms: 200, n: 1000 },
   search: { p95_ms: 120, n: 1000 },
   searchUpdate: { p95_ms: 5, n: 1000 },
-  buildIndex: { max_ms: 500, n: 1000 }
+  buildIndex: { max_ms: 500, n: 1000 },
 };
 
 /**

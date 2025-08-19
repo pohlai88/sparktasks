@@ -14,7 +14,7 @@ const fnv1a = (s: string) => {
 
 export function exportSparkpack(): string {
   const events = loadEvents();
-  
+
   // Validate all events with schema
   const validatedEvents = events.map(event => {
     try {

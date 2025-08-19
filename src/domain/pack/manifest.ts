@@ -3,7 +3,12 @@
  */
 
 import { SparkpackMeta, Sparkpack } from './types';
-import { exportPublicKeyB64u, sign, verify, importPublicKeyB64u } from '../../crypto/ed25519';
+import {
+  exportPublicKeyB64u,
+  sign,
+  verify,
+  importPublicKeyB64u,
+} from '../../crypto/ed25519';
 
 export interface Manifest {
   v: 1;
@@ -26,11 +31,11 @@ function canonicalize(obj: any): string {
   if (obj === null || typeof obj !== 'object') {
     return JSON.stringify(obj);
   }
-  
+
   if (Array.isArray(obj)) {
     return '[' + obj.map(canonicalize).join(',') + ']';
   }
-  
+
   const keys = Object.keys(obj).sort();
   const pairs = keys.map(key => `"${key}":${canonicalize(obj[key])}`);
   return '{' + pairs.join(',') + '}';
@@ -57,9 +62,9 @@ export async function createManifest(
     );
     pubKey = keyPair.publicKey;
   }
-  
+
   const pubkeyB64u = await exportPublicKeyB64u(pubKey);
-  
+
   // Hash events JSONL
   const eventsJsonl = pack.events.map(e => JSON.stringify(e)).join('\n');
   const eventsBytes = new TextEncoder().encode(eventsJsonl);
@@ -68,7 +73,7 @@ export async function createManifest(
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=/g, '');
-  
+
   // Build unsigned manifest
   const unsigned = {
     v: 1 as const,
@@ -77,15 +82,15 @@ export async function createManifest(
     content: {
       meta: pack.meta,
       eventsHash,
-      bytes: eventsBytes.length
-    }
+      bytes: eventsBytes.length,
+    },
   };
-  
+
   // Sign canonical JSON
   const canonical = canonicalize(unsigned);
   const canonicalBytes = new TextEncoder().encode(canonical);
   const signature = await sign(privateKey, canonicalBytes.buffer);
-  
+
   return { ...unsigned, sig: signature };
 }
 
@@ -99,35 +104,37 @@ export async function verifyManifest(
   try {
     // Import public key
     const publicKey = await importPublicKeyB64u(manifest.author.pubkey);
-    
+
     // Verify content hash
     const eventsJsonl = pack.events.map(e => JSON.stringify(e)).join('\n');
     const eventsBytes = new TextEncoder().encode(eventsJsonl);
     const hashBuffer = await crypto.subtle.digest('SHA-256', eventsBytes);
-    const expectedHash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)))
+    const expectedHash = btoa(
+      String.fromCharCode(...new Uint8Array(hashBuffer))
+    )
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
       .replace(/=/g, '');
-    
+
     if (manifest.content.eventsHash !== expectedHash) {
       return false;
     }
-    
+
     if (manifest.content.bytes !== eventsBytes.length) {
       return false;
     }
-    
+
     // Verify signature
     const unsigned = {
       v: manifest.v,
       createdAt: manifest.createdAt,
       author: manifest.author,
-      content: manifest.content
+      content: manifest.content,
     };
-    
+
     const canonical = canonicalize(unsigned);
     const canonicalBytes = new TextEncoder().encode(canonical);
-    
+
     return await verify(publicKey, canonicalBytes.buffer, manifest.sig);
   } catch {
     return false;

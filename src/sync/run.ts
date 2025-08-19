@@ -61,7 +61,9 @@ export async function runSync(
         await pushLocalChanges(transport, namespace, plan.pushEvents);
         result.pushCount = plan.pushEvents.length;
       } catch (error) {
-        result.errors.push(`Push failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        result.errors.push(
+          `Push failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
         return result;
       }
     }
@@ -69,7 +71,11 @@ export async function runSync(
     // Sync token persistence after successful pull/merge
     if (!opts?.dryRun && result.errors.length === 0 && plan.nextSince) {
       try {
-        await transport.put(`${namespace}:__sync_state__`, JSON.stringify({ since: plan.nextSince }), new Date().toISOString());
+        await transport.put(
+          `${namespace}:__sync_state__`,
+          JSON.stringify({ since: plan.nextSince }),
+          new Date().toISOString()
+        );
       } catch (error) {
         console.warn(`Failed to persist sync token:`, error);
       }
@@ -77,10 +83,17 @@ export async function runSync(
 
     result.completed = true;
     const applied = result.mergeReport?.applied ?? 0;
-    result.noop = !(result.pullCount || result.pushCount || applied || result.errors.length);
+    result.noop = !(
+      result.pullCount ||
+      result.pushCount ||
+      applied ||
+      result.errors.length
+    );
     return result;
   } catch (error) {
-    result.errors.push(`Sync failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    result.errors.push(
+      `Sync failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
     return result;
   }
 }
@@ -97,7 +110,7 @@ async function pushLocalChanges(
 
   const sparkpack = exportSparkpack();
   const timestamp = new Date().toISOString();
-  
+
   // Push chunking: Split large payloads to prevent timeouts
   const CHUNK_SIZE = 100;
   for (let i = 0; i < Math.ceil(events.length / CHUNK_SIZE); i++) {

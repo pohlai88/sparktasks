@@ -17,25 +17,40 @@ export async function unlinkDevice(args: {
   storage?: StorageDriver;
   rotate?: boolean;
 }): Promise<{ rotated: boolean }> {
-  const { ns, signerPubB64u, keyring, actorId, actorRole, storage, rotate = true } = args;
-  
+  const {
+    ns,
+    signerPubB64u,
+    keyring,
+    actorId,
+    actorRole,
+    storage,
+    rotate = true,
+  } = args;
+
   // Policy enforcement before revocation
   if (storage) {
     await enforcePolicy(
-      { ns, op: 'device.unlink', actorId, actorRole, nowISO: new Date().toISOString() },
-      storage, { audit: true }
+      {
+        ns,
+        op: 'device.unlink',
+        actorId,
+        actorRole,
+        nowISO: new Date().toISOString(),
+      },
+      storage,
+      { audit: true }
     );
   }
-  
+
   // Revoke the signer
   await revokeSigner(signerPubB64u);
-  
+
   // Optionally rotate DEK for future hardening
   let rotated = false;
   if (rotate) {
     await keyring.rotate();
     rotated = true;
   }
-  
+
   return { rotated };
 }

@@ -5,7 +5,11 @@
 
 import { StorageDriver } from '../storage/types';
 import { TLCheckpointV1, VerifyResult } from './types';
-import { appendLeaf as appendLeafCore, genProof as genProofCore, verifyProof as verifyProofCore } from './merkle';
+import {
+  appendLeaf as appendLeafCore,
+  genProof as genProofCore,
+  verifyProof as verifyProofCore,
+} from './merkle';
 import { toB64u, fromB64u } from '../crypto/base64url';
 
 // Reuse canonicalize from Task 18
@@ -23,16 +27,17 @@ const getSigner = (kid?: string) => {
   const signers = {
     'active-signer': { status: 'ACTIVE' as const },
     'retired-signer': { status: 'RETIRED' as const },
-    'revoked-signer': { status: 'REVOKED' as const }
+    'revoked-signer': { status: 'REVOKED' as const },
   };
-  
-  const selectedStatus = signers[kid as keyof typeof signers]?.status || 'ACTIVE';
-  
+
+  const selectedStatus =
+    signers[kid as keyof typeof signers]?.status || 'ACTIVE';
+
   return {
     kid: kid || 'active-signer',
     status: selectedStatus,
     privateKey: {} as CryptoKey, // Mock for now
-    publicKey: {} as CryptoKey
+    publicKey: {} as CryptoKey,
   };
 };
 
@@ -43,7 +48,10 @@ interface AuditInterface {
 
 // Policy interface (Task 17 integration)
 interface PolicyHook {
-  check(op: string, context: any): Promise<{ allowed: boolean; reason?: string }>;
+  check(
+    op: string,
+    context: any
+  ): Promise<{ allowed: boolean; reason?: string }>;
 }
 
 // Global hooks (can be set by application)
@@ -61,13 +69,23 @@ export function setPolicyHook(hook: PolicyHook | null): void {
 /**
  * Append leaf with audit/policy integration
  */
-export async function appendLeaf(ns: string, leafBytes: Uint8Array, storage: StorageDriver) {
+export async function appendLeaf(
+  ns: string,
+  leafBytes: Uint8Array,
+  storage: StorageDriver
+) {
   // Policy check
   if (policyHook) {
-    const policyResult = await policyHook.check('tl.append', { ns, leafSize: leafBytes.length });
+    const policyResult = await policyHook.check('tl.append', {
+      ns,
+      leafSize: leafBytes.length,
+    });
     if (!policyResult.allowed) {
       if (auditHook) {
-        await auditHook.log('TL_APPEND_DENIED', { ns, reason: policyResult.reason });
+        await auditHook.log('TL_APPEND_DENIED', {
+          ns,
+          reason: policyResult.reason,
+        });
       }
       throw new Error(`policy_denied: ${policyResult.reason}`);
     }
@@ -81,7 +99,7 @@ export async function appendLeaf(ns: string, leafBytes: Uint8Array, storage: Sto
       ns,
       index: result.index,
       n: result.n,
-      leafHash: result.leafHashB64u
+      leafHash: result.leafHashB64u,
     });
   }
 
@@ -91,7 +109,11 @@ export async function appendLeaf(ns: string, leafBytes: Uint8Array, storage: Sto
 /**
  * Generate inclusion proof with audit
  */
-export async function genProof(ns: string, index: number, storage: StorageDriver) {
+export async function genProof(
+  ns: string,
+  index: number,
+  storage: StorageDriver
+) {
   const proof = await genProofCore(ns, index, storage);
 
   // Audit log
@@ -99,7 +121,7 @@ export async function genProof(ns: string, index: number, storage: StorageDriver
     await auditHook.log('TL_PROOF_GEN', {
       ns,
       index,
-      n: index + 1 // approximate, could be higher
+      n: index + 1, // approximate, could be higher
     });
   }
 
@@ -109,7 +131,10 @@ export async function genProof(ns: string, index: number, storage: StorageDriver
 /**
  * Verify inclusion proof with audit
  */
-export async function verifyProof(proof: any, rootB64u: string): Promise<VerifyResult> {
+export async function verifyProof(
+  proof: any,
+  rootB64u: string
+): Promise<VerifyResult> {
   const result = await verifyProofCore(proof, rootB64u);
 
   // Audit log
@@ -117,13 +142,13 @@ export async function verifyProof(proof: any, rootB64u: string): Promise<VerifyR
     if (result.ok) {
       await auditHook.log('TL_PROOF_VERIFY_OK', {
         ns: proof.ns,
-        index: proof.index
+        index: proof.index,
       });
     } else {
       await auditHook.log('TL_PROOF_VERIFY_FAIL', {
         ns: proof.ns,
         index: proof.index,
-        reason: result.reason
+        reason: result.reason,
       });
     }
   }
@@ -141,10 +166,16 @@ export async function emitCheckpoint(
 ): Promise<TLCheckpointV1> {
   // Policy check
   if (policyHook) {
-    const policyResult = await policyHook.check('tl.checkpoint.emit', { ns, kid: opts?.kid });
+    const policyResult = await policyHook.check('tl.checkpoint.emit', {
+      ns,
+      kid: opts?.kid,
+    });
     if (!policyResult.allowed) {
       if (auditHook) {
-        await auditHook.log('TL_CHECKPOINT_EMIT_DENIED', { ns, reason: policyResult.reason });
+        await auditHook.log('TL_CHECKPOINT_EMIT_DENIED', {
+          ns,
+          reason: policyResult.reason,
+        });
       }
       throw new Error(`policy_denied: ${policyResult.reason}`);
     }
@@ -188,7 +219,7 @@ export async function emitCheckpoint(
     n: state.n,
     rootB64u,
     at: opts?.at || new Date().toISOString(),
-    signerKid: signer.kid
+    signerKid: signer.kid,
   };
 
   // Sign canonical checkpoint
@@ -201,7 +232,7 @@ export async function emitCheckpoint(
 
   const signedCheckpoint: TLCheckpointV1 = {
     ...checkpoint,
-    sigB64u: toB64u(signature)
+    sigB64u: toB64u(signature),
   };
 
   // Store checkpoint
@@ -214,7 +245,7 @@ export async function emitCheckpoint(
       ns,
       n: state.n,
       root: rootB64u,
-      signerKid: signer.kid
+      signerKid: signer.kid,
     });
   }
 
@@ -239,7 +270,7 @@ export async function verifyCheckpoint(
           ns,
           n: chk.n,
           signerKid: chk.signerKid,
-          reason: result.reason
+          reason: result.reason,
         });
       }
       return result;
@@ -253,7 +284,7 @@ export async function verifyCheckpoint(
           ns,
           n: chk.n,
           signerKid: chk.signerKid,
-          reason: result.reason
+          reason: result.reason,
         });
       }
       return result;
@@ -263,7 +294,7 @@ export async function verifyCheckpoint(
       const graceMs = policy?.retiredGraceMs || 0;
       const now = Date.now();
       const chkTime = new Date(chk.at).getTime();
-      
+
       if (now - chkTime > graceMs) {
         const result = { ok: false, reason: `signer_expired:${chk.signerKid}` };
         if (auditHook) {
@@ -271,7 +302,7 @@ export async function verifyCheckpoint(
             ns,
             n: chk.n,
             signerKid: chk.signerKid,
-            reason: result.reason
+            reason: result.reason,
           });
         }
         return result;
@@ -281,10 +312,10 @@ export async function verifyCheckpoint(
     // Verify signature
     const checkpointForSig = { ...chk };
     delete (checkpointForSig as any).sigB64u;
-    
+
     const canonical = canonicalize(checkpointForSig);
     const signature = fromB64u(chk.sigB64u);
-    
+
     const isValid = await crypto.subtle.verify(
       'Ed25519',
       signer.publicKey,
@@ -299,7 +330,7 @@ export async function verifyCheckpoint(
           ns,
           n: chk.n,
           signerKid: chk.signerKid,
-          reason: result.reason
+          reason: result.reason,
         });
       }
       return result;
@@ -310,12 +341,11 @@ export async function verifyCheckpoint(
       await auditHook.log('TL_CHECKPOINT_VERIFY_OK', {
         ns,
         n: chk.n,
-        signerKid: chk.signerKid
+        signerKid: chk.signerKid,
       });
     }
 
     return { ok: true };
-
   } catch (error) {
     const result = { ok: false, reason: 'sig_invalid' };
     if (auditHook) {
@@ -323,7 +353,7 @@ export async function verifyCheckpoint(
         ns,
         n: chk.n,
         signerKid: chk.signerKid,
-        reason: result.reason
+        reason: result.reason,
       });
     }
     return result;

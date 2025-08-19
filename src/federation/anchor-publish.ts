@@ -19,7 +19,7 @@ export async function publishAnchorPack(
   // Get current sequence number
   const state = await getSyncState(ns, 'local', storage);
   const seq = state.lastSeq + 1;
-  
+
   // Collect local anchors from signer registry
   const signers = await listSigners(ns);
   const anchors: Anchor[] = signers.map(signer => ({
@@ -28,18 +28,18 @@ export async function publishAnchorPack(
     pubB64u: signer.pubB64u,
     status: signer.status,
     createdAt: signer.createdAt,
-    ...(signer.expiresAt && { expiresAt: signer.expiresAt })
+    ...(signer.expiresAt && { expiresAt: signer.expiresAt }),
   }));
-  
+
   // Create unsigned pack
   const unsignedPack = {
     v: 1 as const,
     issuerOrg: 'local',
     createdAt: new Date().toISOString(),
     seq,
-    anchors
+    anchors,
   };
-  
+
   // Sign pack
   const signedPack = await signAnchorPack(
     unsignedPack,
@@ -47,10 +47,10 @@ export async function publishAnchorPack(
     sign.publicKeyBytes,
     sign.kid
   );
-  
+
   // Update sequence
   await setSyncState(ns, 'local', { lastSeq: seq }, storage);
-  
+
   return signedPack;
 }
 
@@ -65,10 +65,10 @@ export async function pushAnchorPack(
 ): Promise<{ ok: boolean; error?: string }> {
   try {
     const pack = await publishAnchorPack(ns, storage, sign);
-    
+
     // Would push via transport in real implementation
     // transport.push(pack);
-    
+
     return { ok: true };
   } catch (error) {
     return { ok: false, error: `publish_error: ${error}` };

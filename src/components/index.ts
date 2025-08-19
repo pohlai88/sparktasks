@@ -1,9 +1,9 @@
 /**
  * Components Index - Complete UI Library
- * 
+ *
  * Comprehensive exports for the entire component system:
  * - UI Primitives: Core reusable components
- * - Features: Business logic components  
+ * - Features: Business logic components
  * - Layout: Layout system components
  * - Demo: Demo/Example/Showcase components
  */
@@ -12,7 +12,13 @@
 // Core Interactive Components
 export { Button } from '@/components/ui/Button';
 export { IconButton } from '@/components/ui/IconButton';
-export { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/Card';
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/Card';
 export { Badge, Chip } from '@/components/ui/Badge';
 export { Input, Textarea, Select } from '@/components/ui/Input';
 export { Modal, ConfirmModal } from '@/components/ui/Modal';
@@ -23,7 +29,11 @@ export { Skeleton } from '@/components/ui/Skeleton';
 export { FieldGroup } from '@/components/ui/FieldGroup';
 
 // Specialized Components
-export { PriorityBadge, StatusBadge, DueDateBadge } from '@/components/features/TaskBadges';
+export {
+  PriorityBadge,
+  StatusBadge,
+  DueDateBadge,
+} from '@/components/features/TaskBadges';
 export { TagChip, TagList } from '@/components/ui/TagChip';
 
 // ===== FEATURE COMPONENTS =====
@@ -68,4 +78,3 @@ export {
   getPriorityLabel,
   getStatusLabel,
 } from '@/design/tokens';
-

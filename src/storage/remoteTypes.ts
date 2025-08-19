@@ -2,7 +2,10 @@
  * Remote transport interface for syncing storage
  */
 export interface RemoteTransport {
-  list(prefix: string, since?: string): Promise<{
+  list(
+    prefix: string,
+    since?: string
+  ): Promise<{
     items: Array<{ key: string; value: string; updatedAt: string }>;
     nextSince?: string;
   }>;

@@ -29,12 +29,12 @@ export async function deriveKEK(
       name: 'PBKDF2',
       salt,
       iterations,
-      hash: 'SHA-256'
+      hash: 'SHA-256',
     },
     keyMaterial,
     {
       name: 'AES-KW',
-      length: 256
+      length: 256,
     },
     false,
     ['wrapKey', 'unwrapKey']

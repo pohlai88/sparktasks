@@ -5,13 +5,13 @@
 
 // Anchor in sync pack (enriched from registry TrustAnchor)
 export interface Anchor {
-  orgId: string;       // issuer org
-  kid: string;         // key id
-  pubB64u: string;     // Ed25519 SPKI b64url
+  orgId: string; // issuer org
+  kid: string; // key id
+  pubB64u: string; // Ed25519 SPKI b64url
   status: 'ACTIVE' | 'RETIRED' | 'REVOKED';
-  createdAt: string;   // ISO
-  updatedAt?: string;  // ISO
-  expiresAt?: string;  // ISO
+  createdAt: string; // ISO
+  updatedAt?: string; // ISO
+  expiresAt?: string; // ISO
   note?: string;
 }
 
@@ -19,13 +19,13 @@ export interface Anchor {
 export interface AnchorPack {
   v: 1;
   issuerOrg: string;
-  createdAt: string;   // ISO
-  seq: number;         // monotonic per-issuer
-  anchors: Anchor[];   // full snapshot OR recent changes
+  createdAt: string; // ISO
+  seq: number; // monotonic per-issuer
+  anchors: Anchor[]; // full snapshot OR recent changes
   sig: {
-    kid?: string;      // prefer local signer
-    pubB64u?: string;  // fallback to federated trust anchor
-    sigB64u: string;   // Ed25519 signature over canonical JSON
+    kid?: string; // prefer local signer
+    pubB64u?: string; // fallback to federated trust anchor
+    sigB64u: string; // Ed25519 signature over canonical JSON
   };
 }
 

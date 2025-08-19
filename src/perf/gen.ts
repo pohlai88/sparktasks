@@ -31,9 +31,24 @@ class Xorshift32 {
 const STATUSES = ['TODAY', 'LATER', 'DONE'] as const;
 const PRIORITIES = ['P0', 'P1', 'P2'] as const;
 const TAG_POOL = [
-  'urgent', 'bug', 'feature', 'docs', 'test', 'refactor',
-  'auth', 'api', 'ui', 'db', 'perf', 'security',
-  'mobile', 'web', 'backend', 'frontend', 'ci', 'deploy'
+  'urgent',
+  'bug',
+  'feature',
+  'docs',
+  'test',
+  'refactor',
+  'auth',
+  'api',
+  'ui',
+  'db',
+  'perf',
+  'security',
+  'mobile',
+  'web',
+  'backend',
+  'frontend',
+  'ci',
+  'deploy',
 ];
 
 /**
@@ -46,13 +61,15 @@ export function genTasks(count: number, seed = 1): Task[] {
 
   for (let i = 0; i < count; i++) {
     const id = `perf_task_${i.toString().padStart(6, '0')}`;
-    
+
     // Monotonically increasing timestamps
     const createdAt = new Date(baseTime + i * 60000).toISOString(); // 1 min apart
-    const updatedAt = new Date(baseTime + i * 60000 + rng.nextInt(3600000)).toISOString(); // up to 1hr later
+    const updatedAt = new Date(
+      baseTime + i * 60000 + rng.nextInt(3600000)
+    ).toISOString(); // up to 1hr later
 
     // Status distribution: ~40% TODAY, ~40% LATER, ~20% DONE
-    let status: typeof STATUSES[number];
+    let status: (typeof STATUSES)[number];
     const statusRand = rng.next();
     if (statusRand < 0.4) {
       status = 'TODAY';
@@ -63,7 +80,7 @@ export function genTasks(count: number, seed = 1): Task[] {
     }
 
     // Priority skewed toward P1
-    let priority: typeof PRIORITIES[number];
+    let priority: (typeof PRIORITIES)[number];
     const priorityRand = rng.next();
     if (priorityRand < 0.2) {
       priority = 'P0';
@@ -89,13 +106,15 @@ export function genTasks(count: number, seed = 1): Task[] {
     // Optional dueDate/snoozeUntil
     let dueDate: string | undefined;
     let snoozeUntil: string | undefined;
-    
-    if (rng.next() < 0.3) { // 30% have dueDate
+
+    if (rng.next() < 0.3) {
+      // 30% have dueDate
       const dueDays = rng.nextInt(30) - 10; // -10 to +20 days from base
       dueDate = new Date(baseTime + dueDays * 86400000).toISOString();
     }
 
-    if (rng.next() < 0.1) { // 10% have snoozeUntil
+    if (rng.next() < 0.1) {
+      // 10% have snoozeUntil
       const snoozeDays = rng.nextInt(7); // 0 to 7 days from base
       snoozeUntil = new Date(baseTime + snoozeDays * 86400000).toISOString();
     }
@@ -103,7 +122,10 @@ export function genTasks(count: number, seed = 1): Task[] {
     const task: Task = {
       id,
       title: `Performance Test Task ${i + 1}`,
-      notes: rng.next() < 0.6 ? `Generated task with ID ${id} for performance testing` : undefined,
+      notes:
+        rng.next() < 0.6
+          ? `Generated task with ID ${id} for performance testing`
+          : undefined,
       status,
       priority,
       tags,

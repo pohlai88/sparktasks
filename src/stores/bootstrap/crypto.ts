@@ -15,7 +15,7 @@ export async function bootstrapKeyring(
   iterations: number = 100000
 ): Promise<KeyringProvider> {
   const keyring = new KeyringProvider(storage, namespace);
-  
+
   try {
     // Try to unlock existing keyring
     await keyring.unlock(passphrase);
@@ -23,7 +23,7 @@ export async function bootstrapKeyring(
     // No keyring exists, initialize new one
     await keyring.initNew(passphrase, iterations);
   }
-  
+
   return keyring;
 }
 
@@ -55,10 +55,10 @@ export async function changePassphrase(
   // For now, we'll need to export/import backup to change passphrase
   // This is a simplified implementation
   const backup = await keyring.exportBackup();
-  
+
   // Create new keyring with new passphrase
   await keyring.initNew(newPassphrase, iterations);
-  
+
   // Import the backup (this will re-wrap with new passphrase)
   await keyring.importBackup(backup, newPassphrase);
 }

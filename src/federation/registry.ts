@@ -24,48 +24,58 @@ export async function addTrustAnchor(
 ): Promise<void> {
   const storage = requireStorage();
   const key = `federation:${ns}:anchors`;
-  
+
   const existing = await listTrustAnchors(ns);
   const existingIndex = existing.findIndex(a => a.orgId === anchor.orgId);
-  
+
   const newAnchor: TrustAnchor = {
     ...anchor,
     status: anchor.status || 'ACTIVE',
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
-  
+
   if (existingIndex >= 0) {
     existing[existingIndex] = newAnchor;
   } else {
     existing.push(newAnchor);
   }
-  
+
   await storage.setItem(key, JSON.stringify(existing));
-  await log('FED_TRUST_ADDED', { ns, orgId: anchor.orgId, status: newAnchor.status });
+  await log('FED_TRUST_ADDED', {
+    ns,
+    orgId: anchor.orgId,
+    status: newAnchor.status,
+  });
 }
 
-export async function removeTrustAnchor(ns: string, orgId: string): Promise<void> {
+export async function removeTrustAnchor(
+  ns: string,
+  orgId: string
+): Promise<void> {
   const storage = requireStorage();
   const key = `federation:${ns}:anchors`;
-  
+
   const existing = await listTrustAnchors(ns);
   const filtered = existing.filter(a => a.orgId !== orgId);
-  
+
   if (filtered.length === existing.length) return; // Idempotent
-  
+
   await storage.setItem(key, JSON.stringify(filtered));
   await log('FED_TRUST_REMOVED', { ns, orgId });
 }
 
-export async function revokeTrustAnchor(ns: string, orgId: string): Promise<void> {
+export async function revokeTrustAnchor(
+  ns: string,
+  orgId: string
+): Promise<void> {
   const storage = requireStorage();
   const key = `federation:${ns}:anchors`;
-  
+
   const existing = await listTrustAnchors(ns);
   const anchor = existing.find(a => a.orgId === orgId);
-  
+
   if (!anchor) throw new Error(`Trust anchor not found: ${orgId}`);
-  
+
   anchor.status = 'REVOKED';
   await storage.setItem(key, JSON.stringify(existing));
   await log('FED_TRUST_UPDATED', { ns, orgId, status: 'REVOKED' });
@@ -74,7 +84,7 @@ export async function revokeTrustAnchor(ns: string, orgId: string): Promise<void
 export async function listTrustAnchors(ns: string): Promise<TrustAnchor[]> {
   const storage = requireStorage();
   const key = `federation:${ns}:anchors`;
-  
+
   const stored = await storage.getItem(key);
   return stored ? JSON.parse(stored) : [];
 }

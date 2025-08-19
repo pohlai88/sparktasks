@@ -4,12 +4,18 @@
  */
 
 import type { StorageDriver } from '../storage/types';
-import type { AnchorLocator, PendingAnchor, DiscoveryMetrics } from './discovery-types';
+import type {
+  AnchorLocator,
+  PendingAnchor,
+  DiscoveryMetrics,
+} from './discovery-types';
 
 // Storage keys
 const locatorsKey = (ns: string) => `fed:disc:locators:${ns}`;
-const pendingKey = (ns: string, orgId: string) => `fed:anchors:pending:${ns}:${orgId}`;
-const discStateKey = (ns: string, orgId: string) => `fed:disc:state:${ns}:${orgId}`;
+const pendingKey = (ns: string, orgId: string) =>
+  `fed:anchors:pending:${ns}:${orgId}`;
+const discStateKey = (ns: string, orgId: string) =>
+  `fed:disc:state:${ns}:${orgId}`;
 const metricsKey = (ns: string) => `fed:disc:metrics:${ns}`;
 
 /**
@@ -23,7 +29,7 @@ export async function addAnchorLocator(
   const existing = await listAnchorLocators(ns, storage);
   const filtered = existing.filter(l => l.orgId !== locator.orgId);
   filtered.push(locator);
-  
+
   await storage.setItem(locatorsKey(ns), JSON.stringify(filtered));
 }
 
@@ -52,7 +58,7 @@ export async function removeAnchorLocator(
 ): Promise<void> {
   const existing = await listAnchorLocators(ns, storage);
   const filtered = existing.filter(l => l.orgId !== orgId);
-  
+
   await storage.setItem(locatorsKey(ns), JSON.stringify(filtered));
 }
 
@@ -67,7 +73,7 @@ export async function getPendingAnchors(
   try {
     const data = await storage.getItem(pendingKey(ns, orgId));
     if (!data) return [];
-    
+
     const map = JSON.parse(data) as Record<string, PendingAnchor>;
     return Object.values(map);
   } catch {
@@ -88,7 +94,7 @@ export async function setPendingAnchors(
   for (const anchor of anchors) {
     map[anchor.kid] = anchor;
   }
-  
+
   await storage.setItem(pendingKey(ns, orgId), JSON.stringify(map));
 }
 
@@ -129,15 +135,17 @@ export async function getDiscoveryMetrics(
 ): Promise<DiscoveryMetrics> {
   try {
     const data = await storage.getItem(metricsKey(ns));
-    return data ? JSON.parse(data) : {
-      totalPulls: 0,
-      totalPending: 0,
-      totalPromoted: 0,
-      totalRejected: 0,
-      totalConflicts: 0,
-      totalRewinds: 0,
-      totalExpired: 0
-    };
+    return data
+      ? JSON.parse(data)
+      : {
+          totalPulls: 0,
+          totalPending: 0,
+          totalPromoted: 0,
+          totalRejected: 0,
+          totalConflicts: 0,
+          totalRewinds: 0,
+          totalExpired: 0,
+        };
   } catch {
     return {
       totalPulls: 0,
@@ -146,7 +154,7 @@ export async function getDiscoveryMetrics(
       totalRejected: 0,
       totalConflicts: 0,
       totalRewinds: 0,
-      totalExpired: 0
+      totalExpired: 0,
     };
   }
 }
@@ -175,7 +183,7 @@ export async function cleanExpiredPendingAnchors(
   const pending = await getPendingAnchors(ns, orgId, storage);
   const now = new Date();
   let expired = 0;
-  
+
   const active = pending.filter(anchor => {
     if (anchor.expiresAt && new Date(anchor.expiresAt) < now) {
       expired++;
@@ -183,10 +191,10 @@ export async function cleanExpiredPendingAnchors(
     }
     return true;
   });
-  
+
   if (expired > 0) {
     await setPendingAnchors(ns, orgId, active, storage);
   }
-  
+
   return { expired };
 }

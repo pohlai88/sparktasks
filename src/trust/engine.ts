@@ -4,9 +4,17 @@
  */
 
 import type { StorageDriver } from '../storage/types';
-import type { 
-  TrustRoot, TrustManifest, TrustIssuer, TrustOperation, TrustOpType,
-  TrustValidation, TrustState, TrustConfig, TrustTransport, TrustMigration
+import type {
+  TrustRoot,
+  TrustManifest,
+  TrustIssuer,
+  TrustOperation,
+  TrustOpType,
+  TrustValidation,
+  TrustState,
+  TrustConfig,
+  TrustTransport,
+  TrustMigration,
 } from './types';
 import { toB64u, fromB64u } from '../crypto/base64url';
 import * as AuditApi from '../audit/api';
@@ -23,7 +31,7 @@ export function configureTrust(
   storage = storageDriver;
   namespace = ns;
   transport = transportImpl;
-  
+
   // Initialize audit logging for trust events
   AuditApi.configureAudit(storageDriver, ns);
 }
@@ -44,7 +52,10 @@ function generateId(): string {
 // Hash generation for manifest chaining
 async function generateHash(data: string): Promise<string> {
   const encoder = new TextEncoder();
-  const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(data));
+  const hashBuffer = await crypto.subtle.digest(
+    'SHA-256',
+    encoder.encode(data)
+  );
   return toB64u(hashBuffer);
 }
 
@@ -125,7 +136,9 @@ export async function validateTrustManifest(
 
   for (const issuer of issuers) {
     // Find matching trust root
-    const root = (previousManifest || manifest).roots.find(r => r.id === issuer.rootId);
+    const root = (previousManifest || manifest).roots.find(
+      r => r.id === issuer.rootId
+    );
     if (!root) {
       errors.push(`Unknown trust root: ${issuer.rootId}`);
       continue;
@@ -137,7 +150,11 @@ export async function validateTrustManifest(
     }
 
     // Verify signature
-    const valid = await verifySignature(manifestCanonical, issuer.sigB64u, issuer.pubB64u);
+    const valid = await verifySignature(
+      manifestCanonical,
+      issuer.sigB64u,
+      issuer.pubB64u
+    );
     if (valid) {
       validSignatures.add(issuer.rootId);
     } else {
@@ -150,7 +167,9 @@ export async function validateTrustManifest(
   thresholdMet = validSignatures.size >= requiredThreshold;
 
   if (!thresholdMet) {
-    errors.push(`Insufficient signatures: ${validSignatures.size}/${requiredThreshold}`);
+    errors.push(
+      `Insufficient signatures: ${validSignatures.size}/${requiredThreshold}`
+    );
   }
 
   return {
@@ -159,12 +178,14 @@ export async function validateTrustManifest(
     signaturesValid,
     thresholdMet,
     chainValid,
-    errors
+    errors,
   };
 }
 
 // Initialize trust system with first manifest
-export async function initializeTrust(config: TrustConfig): Promise<TrustState> {
+export async function initializeTrust(
+  config: TrustConfig
+): Promise<TrustState> {
   const existingState = await getTrustState();
   if (existingState) {
     throw new Error('Trust system already initialized');
@@ -175,23 +196,23 @@ export async function initializeTrust(config: TrustConfig): Promise<TrustState> 
     namespace: config.namespace,
     roots: config.initialRoots,
     threshold: config.initialThreshold,
-    createdAt: Date.now()
+    createdAt: Date.now(),
   };
 
   const state: TrustState = {
     currentManifest: manifest,
     pendingOperations: [],
     operationHistory: [],
-    lastUpdated: Date.now()
+    lastUpdated: Date.now(),
   };
 
   await saveTrustState(state);
-  
+
   // Audit log
-  await AuditApi.log('TRUST_INITIALIZED', { 
+  await AuditApi.log('TRUST_INITIALIZED', {
     manifestVersion: manifest.version,
     rootCount: manifest.roots.length,
-    threshold: manifest.threshold
+    threshold: manifest.threshold,
   });
 
   return state;
@@ -215,7 +236,7 @@ export async function createTrustOperation(
     targetManifest,
     issuers: [],
     createdAt: Date.now(),
-    ...(reason && { reason })
+    ...(reason && { reason }),
   };
 
   // Add to pending operations
@@ -228,10 +249,10 @@ export async function createTrustOperation(
     await transport.publishOperation(operation);
   }
 
-  await AuditApi.log('TRUST_OPERATION_CREATED', { 
+  await AuditApi.log('TRUST_OPERATION_CREATED', {
     operationId: operation.id,
     operationType: type,
-    reason: reason || 'No reason provided'
+    reason: reason || 'No reason provided',
   });
 
   return operation;
@@ -264,10 +285,10 @@ export async function signTrustOperation(
     state.lastUpdated = Date.now();
     await saveTrustState(state);
 
-    await AuditApi.log('TRUST_OPERATION_SIGNED', { 
+    await AuditApi.log('TRUST_OPERATION_SIGNED', {
       operationId,
       signerId: issuer.rootId,
-      signatureCount: operation.issuers.length
+      signatureCount: operation.issuers.length,
     });
   }
 
@@ -280,11 +301,15 @@ export async function signTrustOperation(
 }
 
 // Apply trust operation (when threshold signatures collected)
-export async function applyTrustOperation(operationId: string): Promise<boolean> {
+export async function applyTrustOperation(
+  operationId: string
+): Promise<boolean> {
   const state = await getTrustState();
   if (!state) return false;
 
-  const opIndex = state.pendingOperations.findIndex(op => op.id === operationId);
+  const opIndex = state.pendingOperations.findIndex(
+    op => op.id === operationId
+  );
   if (opIndex === -1) return false;
 
   const operation = state.pendingOperations[opIndex];
@@ -297,9 +322,9 @@ export async function applyTrustOperation(operationId: string): Promise<boolean>
   );
 
   if (!validation.valid) {
-    await AuditApi.log('TRUST_OPERATION_REJECTED', { 
+    await AuditApi.log('TRUST_OPERATION_REJECTED', {
       operationId,
-      errors: validation.errors
+      errors: validation.errors,
     });
     return false;
   }
@@ -311,10 +336,10 @@ export async function applyTrustOperation(operationId: string): Promise<boolean>
   state.lastUpdated = Date.now();
   await saveTrustState(state);
 
-  await AuditApi.log('TRUST_OPERATION_APPLIED', { 
+  await AuditApi.log('TRUST_OPERATION_APPLIED', {
     operationId,
     operationType: operation.type,
-    newManifestVersion: operation.targetManifest.version
+    newManifestVersion: operation.targetManifest.version,
   });
 
   return true;
@@ -324,10 +349,10 @@ export async function applyTrustOperation(operationId: string): Promise<boolean>
 export async function getActiveTrustRoots(): Promise<TrustRoot[]> {
   const state = await getTrustState();
   if (!state) return [];
-  
+
   const now = Date.now();
-  return state.currentManifest.roots.filter(root => 
-    !root.expiresAt || root.expiresAt > now
+  return state.currentManifest.roots.filter(
+    root => !root.expiresAt || root.expiresAt > now
   );
 }
 
@@ -347,7 +372,7 @@ export async function migrateLegacyTrust(
     id: `legacy-${index}`,
     pubB64u,
     role: 'PRIMARY' as const,
-    createdAt: Date.now()
+    createdAt: Date.now(),
   }));
 
   // Create initial manifest
@@ -356,22 +381,26 @@ export async function migrateLegacyTrust(
     namespace,
     roots,
     threshold: Math.ceil(roots.length / 2), // Majority threshold
-    createdAt: Date.now()
+    createdAt: Date.now(),
   };
 
   const migration: TrustMigration = {
     fromAdmins: legacyAdmins,
     toManifest: manifest,
-    migrationSignatures
+    migrationSignatures,
   };
 
   // Validate migration signatures
   const manifestCanonical = canon(manifest);
   let validSigs = 0;
-  
+
   for (const sig of migrationSignatures) {
     if (legacyAdmins.includes(sig.pubB64u)) {
-      const valid = await verifySignature(manifestCanonical, sig.sigB64u, sig.pubB64u);
+      const valid = await verifySignature(
+        manifestCanonical,
+        sig.sigB64u,
+        sig.pubB64u
+      );
       if (valid) validSigs++;
     }
   }
@@ -382,16 +411,16 @@ export async function migrateLegacyTrust(
       currentManifest: manifest,
       pendingOperations: [],
       operationHistory: [],
-      lastUpdated: Date.now()
+      lastUpdated: Date.now(),
     };
 
     await saveTrustState(state);
     migration.completedAt = Date.now();
 
-    await AuditApi.log('TRUST_LEGACY_MIGRATED', { 
+    await AuditApi.log('TRUST_LEGACY_MIGRATED', {
       legacyAdminCount: legacyAdmins.length,
       manifestVersion: manifest.version,
-      validSignatures: validSigs
+      validSignatures: validSigs,
     });
   }
 

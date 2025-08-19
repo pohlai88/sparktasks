@@ -9,7 +9,7 @@ const BARE_KEYWORD_REGEX = /(?<![#@!])\b(today|tomorrow)\b/gi;
 
 export function parseQuickAdd(input: string, now = new Date()): QuickAddResult {
   let text = input.trim().replace(/\s+/g, ' ');
-  
+
   // Extract priority
   let priority: 'P0' | 'P1' | 'P2' = 'P1';
   text = text.replace(PRIORITY_REGEX, (_, level) => {
@@ -57,7 +57,7 @@ export function parseQuickAdd(input: string, now = new Date()): QuickAddResult {
 
   // Handle bare keywords (today/tomorrow) as due dates if not already set
   if (!dueDate) {
-    text = text.replace(BARE_KEYWORD_REGEX, (match) => {
+    text = text.replace(BARE_KEYWORD_REGEX, match => {
       dueDate = resolveDateToken(match, now);
       return '';
     });
@@ -78,44 +78,50 @@ export function parseQuickAdd(input: string, now = new Date()): QuickAddResult {
   return result;
 }
 
-function resolveDateToken(token: string, now: Date, allowHours = false): string {
+function resolveDateToken(
+  token: string,
+  now: Date,
+  allowHours = false
+): string {
   const lowerToken = token.toLowerCase();
-  
+
   // Handle 'today'
   if (lowerToken === 'today') {
     return now.toISOString();
   }
-  
+
   // Handle 'tomorrow'
   if (lowerToken === 'tomorrow') {
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
     return tomorrow.toISOString();
   }
-  
+
   // Handle ISO dates (YYYY-MM-DD)
   if (/^\d{4}-\d{2}-\d{2}$/.test(token)) {
     const date = new Date(`${token}T${now.toISOString().substring(11)}`);
     return date.toISOString();
   }
-  
+
   // Handle 'next weekday'
-  const nextWeekdayMatch = lowerToken.match(/^next\s+(mon|tue|wed|thu|fri|sat|sun)$/);
+  const nextWeekdayMatch = lowerToken.match(
+    /^next\s+(mon|tue|wed|thu|fri|sat|sun)$/
+  );
   if (nextWeekdayMatch) {
     const weekdays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     const targetDay = weekdays.indexOf(nextWeekdayMatch[1]);
     const currentDay = now.getDay();
-    
+
     let daysToAdd = targetDay - currentDay;
     if (daysToAdd <= 0) {
       daysToAdd += 7; // Next occurrence
     }
-    
+
     const nextDate = new Date(now);
     nextDate.setDate(nextDate.getDate() + daysToAdd);
     return nextDate.toISOString();
   }
-  
+
   // Handle 'in Nd' (days)
   const daysMatch = lowerToken.match(/^in\s+(\d+)d$/);
   if (daysMatch) {
@@ -124,16 +130,16 @@ function resolveDateToken(token: string, now: Date, allowHours = false): string 
     futureDate.setDate(futureDate.getDate() + days);
     return futureDate.toISOString();
   }
-  
+
   // Handle 'in Nw' (weeks)
   const weeksMatch = lowerToken.match(/^in\s+(\d+)w$/);
   if (weeksMatch) {
     const weeks = parseInt(weeksMatch[1], 10);
     const futureDate = new Date(now);
-    futureDate.setDate(futureDate.getDate() + (weeks * 7));
+    futureDate.setDate(futureDate.getDate() + weeks * 7);
     return futureDate.toISOString();
   }
-  
+
   // Handle 'in Nh' (hours) - only for snooze
   if (allowHours) {
     const hoursMatch = lowerToken.match(/^in\s+(\d+)h$/);
@@ -144,7 +150,7 @@ function resolveDateToken(token: string, now: Date, allowHours = false): string 
       return futureDate.toISOString();
     }
   }
-  
+
   // If no pattern matches, return as-is (will likely cause validation error)
   return token;
 }

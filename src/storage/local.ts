@@ -59,10 +59,13 @@ export class SyncLocalStorageDriver {
 /**
  * Namespacing helper for storage keys
  */
-export function createNamespace(prefix: string, driver: SyncLocalStorageDriver) {
+export function createNamespace(
+  prefix: string,
+  driver: SyncLocalStorageDriver
+) {
   const cleanPrefix = prefix.replace(/:+$/, '');
   const ns = (key: string) => `${cleanPrefix}:${key}`;
-  
+
   return {
     prefix: cleanPrefix,
     driver,

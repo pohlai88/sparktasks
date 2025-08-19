@@ -1,5 +1,10 @@
 import type { StorageDriver } from './types';
-import type { RemoteTransport, SyncState, QueueItem, RemoteAdapterOptions } from './remoteTypes';
+import type {
+  RemoteTransport,
+  SyncState,
+  QueueItem,
+  RemoteAdapterOptions,
+} from './remoteTypes';
 
 /**
  * Remote sync adapter that wraps a local StorageDriver
@@ -12,13 +17,13 @@ export class RemoteAdapter implements StorageDriver {
   private syncState: SyncState = { sinceToken: null, lastSyncAt: null };
   private lastTokenTime = 0;
   private tokenBucket: number;
-  
+
   private readonly options: Required<RemoteAdapterOptions>;
 
   constructor(
-    local: StorageDriver, 
-    remote: RemoteTransport, 
-    namespace: string, 
+    local: StorageDriver,
+    remote: RemoteTransport,
+    namespace: string,
     options?: RemoteAdapterOptions
   ) {
     this.local = local;
@@ -33,10 +38,10 @@ export class RemoteAdapter implements StorageDriver {
       noBackoff: options?.noBackoff ?? false,
     };
     this.tokenBucket = this.options.ratePerSec;
-    
+
     // Lazy fire-and-forget state loading; tests usually call sync() after construct
     void this.loadSyncState();
-    
+
     // Clean up any orphaned temp keys from previous sessions
     void this.cleanupTempKeys();
   }
@@ -46,7 +51,7 @@ export class RemoteAdapter implements StorageDriver {
     try {
       const allKeys = await this.local.listKeys(this.namespace);
       const tempKeys = allKeys.filter(key => key.includes('__tmp__'));
-      
+
       for (const tempKey of tempKeys) {
         try {
           await this.local.removeItem(tempKey);
@@ -61,7 +66,9 @@ export class RemoteAdapter implements StorageDriver {
 
   // normalize namespace key once - prevents prefix drift
   private nk(key: string): string {
-    const ns = this.namespace.endsWith(':') ? this.namespace.slice(0, -1) : this.namespace;
+    const ns = this.namespace.endsWith(':')
+      ? this.namespace.slice(0, -1)
+      : this.namespace;
     return `${ns}:${key}`;
   }
 
@@ -75,12 +82,15 @@ export class RemoteAdapter implements StorageDriver {
     return JSON.stringify({
       version: 1,
       updatedAt,
-      source: 'local' // vs 'remote' for audit trails
+      source: 'local', // vs 'remote' for audit trails
     });
   }
 
   // Parse metadata with fallback for legacy formats
-  private parseMetadata(metaValue: string): { updatedAt: string; version?: number } {
+  private parseMetadata(metaValue: string): {
+    updatedAt: string;
+    version?: number;
+  } {
     try {
       const parsed = JSON.parse(metaValue);
       if (parsed.version === 1) {
@@ -89,7 +99,7 @@ export class RemoteAdapter implements StorageDriver {
     } catch {
       // Legacy format: raw ISO string
     }
-    
+
     // Fallback: treat as raw timestamp string
     return { updatedAt: metaValue, version: 0 };
   }
@@ -102,28 +112,31 @@ export class RemoteAdapter implements StorageDriver {
     const updatedAt = new Date().toISOString();
     const namespacedKey = this.nk(key);
     const metaKeyName = this.metaKey(key);
-    
+
     // Use atomic operations if driver supports them
-    if (this.local.atomic?.capability === 'transaction' && this.local.atomic.setItems) {
+    if (
+      this.local.atomic?.capability === 'transaction' &&
+      this.local.atomic.setItems
+    ) {
       // True atomic write using driver's transaction capability
       await this.local.atomic.setItems([
         { key: namespacedKey, value },
-        { key: metaKeyName, value: this.createMetadata(updatedAt) }
+        { key: metaKeyName, value: this.createMetadata(updatedAt) },
       ]);
     } else {
       // Fallback: atomic write using temp→swap pattern
       const tempKey = `${namespacedKey}__tmp__${Date.now()}`;
       const tempMetaKey = `${metaKeyName}__tmp__${Date.now()}`;
-      
+
       try {
         // Write to temp keys first
         await this.local.setItem(tempKey, value);
         await this.local.setItem(tempMetaKey, this.createMetadata(updatedAt));
-        
+
         // Atomic swap: temp → primary
         await this.local.setItem(namespacedKey, value);
         await this.local.setItem(metaKeyName, this.createMetadata(updatedAt));
-        
+
         // Cleanup temp keys
         await this.local.removeItem(tempKey);
         await this.local.removeItem(tempMetaKey);
@@ -138,20 +151,20 @@ export class RemoteAdapter implements StorageDriver {
         throw error;
       }
     }
-    
+
     // Enqueue for remote sync
     this.enqueue({ op: 'put', key: namespacedKey, value, updatedAt });
   }
 
   async removeItem(key: string): Promise<void> {
     const updatedAt = new Date().toISOString();
-    
+
     // Remove from local immediately
     await this.local.removeItem(this.nk(key));
-    
+
     // Remove metadata as well
     await this.local.removeItem(this.metaKey(key));
-    
+
     // Enqueue for remote sync
     this.enqueue({ op: 'del', key: this.nk(key), updatedAt });
   }
@@ -159,7 +172,7 @@ export class RemoteAdapter implements StorageDriver {
   async listKeys(prefix: string): Promise<string[]> {
     const namespacedPrefix = this.nk(prefix);
     const keys = await this.local.listKeys(namespacedPrefix);
-    
+
     // Filter out metadata keys (__meta__:*) and temp keys (*__tmp__*)
     return keys
       .filter(key => !key.includes('__meta__:') && !key.includes('__tmp__'))
@@ -176,14 +189,13 @@ export class RemoteAdapter implements StorageDriver {
     try {
       // Push pending operations
       pushed = await this.pushQueue();
-      
+
       // Pull remote updates
       pulled = await this.pullUpdates();
-      
+
       // Update sync state
       this.syncState.lastSyncAt = new Date().toISOString();
       await this.saveSyncState();
-      
     } catch (error) {
       // Handle rate limiting with exponential backoff
       if (this.isRateLimited(error)) {
@@ -197,7 +209,7 @@ export class RemoteAdapter implements StorageDriver {
 
   private denormalized(namespacedKey: string): string {
     const prefix = `${this.namespace}:`;
-    return namespacedKey.startsWith(prefix) 
+    return namespacedKey.startsWith(prefix)
       ? namespacedKey.slice(prefix.length)
       : namespacedKey;
   }
@@ -224,10 +236,14 @@ export class RemoteAdapter implements StorageDriver {
       try {
         // Check remote head for LWW resolution
         const remote = await this.remote.get(item.key);
-        
+
         if (item.op === 'put') {
           // Local wins only if strictly newer; on tie, let remote win (we'll refresh on pull)
-          if (!remote || new Date(item.updatedAt).getTime() > new Date(remote.updatedAt).getTime()) {
+          if (
+            !remote ||
+            new Date(item.updatedAt).getTime() >
+              new Date(remote.updatedAt).getTime()
+          ) {
             await this.remote.put(item.key, item.value!, item.updatedAt);
             pushed++;
           } else {
@@ -238,7 +254,11 @@ export class RemoteAdapter implements StorageDriver {
           }
         } else if (item.op === 'del') {
           // Local wins only if strictly newer
-          if (!remote || new Date(item.updatedAt).getTime() > new Date(remote.updatedAt).getTime()) {
+          if (
+            !remote ||
+            new Date(item.updatedAt).getTime() >
+              new Date(remote.updatedAt).getTime()
+          ) {
             await this.remote.del(item.key, item.updatedAt);
             pushed++;
           }
@@ -254,16 +274,21 @@ export class RemoteAdapter implements StorageDriver {
   }
 
   private async pullUpdates(): Promise<number> {
-    const result = await this.remote.list(this.namespace, this.syncState.sinceToken || undefined);
+    const result = await this.remote.list(
+      this.namespace,
+      this.syncState.sinceToken || undefined
+    );
     let pulled = 0;
 
     for (const item of result.items) {
       const local = await this.local.getItem(item.key);
-      const localMeta = await this.local.getItem(this.metaKey(this.denormalized(item.key)));
-      
+      const localMeta = await this.local.getItem(
+        this.metaKey(this.denormalized(item.key))
+      );
+
       // LWW: remote wins if strictly newer OR timestamps tie (to avoid push/pull ping-pong)
       let shouldApplyRemote = false;
-      
+
       if (!local) {
         // No local version, apply remote
         shouldApplyRemote = true;
@@ -271,8 +296,11 @@ export class RemoteAdapter implements StorageDriver {
         // Local exists but no metadata (legacy key)
         // Migration: create metadata with current timestamp and apply remote if different
         const migrationTimestamp = new Date().toISOString();
-        await this.local.setItem(this.metaKey(this.denormalized(item.key)), this.createMetadata(migrationTimestamp));
-        
+        await this.local.setItem(
+          this.metaKey(this.denormalized(item.key)),
+          this.createMetadata(migrationTimestamp)
+        );
+
         // Apply remote if content differs (conservative approach for legacy data)
         shouldApplyRemote = local !== item.value;
       } else {
@@ -282,10 +310,13 @@ export class RemoteAdapter implements StorageDriver {
         const remoteTime = new Date(item.updatedAt).getTime();
         shouldApplyRemote = remoteTime > localTime; // Remote wins only if strictly newer
       }
-      
+
       if (shouldApplyRemote) {
         await this.local.setItem(item.key, item.value);
-        await this.local.setItem(this.metaKey(this.denormalized(item.key)), this.createMetadata(item.updatedAt));
+        await this.local.setItem(
+          this.metaKey(this.denormalized(item.key)),
+          this.createMetadata(item.updatedAt)
+        );
         pulled++;
       }
     }
@@ -300,8 +331,9 @@ export class RemoteAdapter implements StorageDriver {
   }
 
   private consumeToken(): boolean {
-    if (this.options.noRateLimit || this.options.ratePerSec === Infinity) return true;
-    
+    if (this.options.noRateLimit || this.options.ratePerSec === Infinity)
+      return true;
+
     this.refillTokenBucket();
     if (this.tokenBucket >= 1) {
       this.tokenBucket -= 1;
@@ -312,11 +344,11 @@ export class RemoteAdapter implements StorageDriver {
 
   private refillTokenBucket(): void {
     if (this.options.noRateLimit) return;
-    
+
     const now = Date.now();
     const elapsed = now - this.lastTokenTime;
     const tokensToAdd = (elapsed / 1000) * this.options.ratePerSec;
-    
+
     this.tokenBucket = Math.min(
       this.options.ratePerSec,
       this.tokenBucket + tokensToAdd
@@ -325,23 +357,28 @@ export class RemoteAdapter implements StorageDriver {
   }
 
   private isRateLimited(error: unknown): boolean {
-    return error instanceof Error && 
-           (error.message.includes('429') || error.message.includes('rate limit'));
+    return (
+      error instanceof Error &&
+      (error.message.includes('429') || error.message.includes('rate limit'))
+    );
   }
 
   private async exponentialBackoff(): Promise<void> {
     if (this.options.noBackoff) return;
-    
+
     const base = this.options.baseDelayMs;
     const max = this.options.maxDelayMs;
     const jitter = Math.random() * 0.1; // 10% jitter
-    const delay = Math.min(max, base * Math.pow(2, Math.random()) * (1 + jitter));
-    
+    const delay = Math.min(
+      max,
+      base * Math.pow(2, Math.random()) * (1 + jitter)
+    );
+
     await new Promise(resolve => setTimeout(resolve, delay));
   }
 
-  private stateKey(): string { 
-    return this.nk('__sync_state__'); 
+  private stateKey(): string {
+    return this.nk('__sync_state__');
   }
 
   private async loadSyncState(): Promise<void> {

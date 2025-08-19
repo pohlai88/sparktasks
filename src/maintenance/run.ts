@@ -34,12 +34,21 @@ export async function runMaintenance(
         break;
       }
       case 'REKEY': {
-        const result = await executeRekey(action.prefix, action.batchSize, deps);
+        const result = await executeRekey(
+          action.prefix,
+          action.batchSize,
+          deps
+        );
         if (result) report.rekey = result;
         break;
       }
       case 'SWEEP': {
-        const result = await executeSweep(action.prefix, action.fix, action.sample, deps);
+        const result = await executeSweep(
+          action.prefix,
+          action.fix,
+          action.sample,
+          deps
+        );
         if (result) report.sweep = result;
         break;
       }
@@ -56,7 +65,7 @@ function executeCompact(threshold: number): MaintenanceReport['compact'] {
   const result = compactWithSnapshot(threshold);
   return {
     trimmed: result.trimmed,
-    tookSnapshot: result.tookSnapshot
+    tookSnapshot: result.tookSnapshot,
   };
 }
 
@@ -73,7 +82,7 @@ async function executeRekey(
   }
 
   const { storage, encrypted, keyring } = deps;
-  
+
   // Guardrail: Check if keyring is accessible
   try {
     await keyring.getActiveKey();
@@ -81,29 +90,31 @@ async function executeRekey(
     console.warn('REKEY operation skipped: keyring is locked or inaccessible');
     return { processed: 0, rewrapped: 0, failures: 0 };
   }
-  
+
   const { kid: activeKid } = await keyring.getActiveKey();
-  
+
   let processed = 0;
   let rewrapped = 0;
   let failures = 0;
 
   try {
     let keys = await storage.listKeys(prefix);
-    
+
     // Resume from token if provided
     const resumeKey = deps.resumeToken;
     if (resumeKey) {
       const resumeIndex = keys.indexOf(resumeKey);
       if (resumeIndex > 0) {
         keys = keys.slice(resumeIndex);
-        console.log(`Resuming REKEY from key: ${resumeKey} (${keys.length} remaining)`);
+        console.log(
+          `Resuming REKEY from key: ${resumeKey} (${keys.length} remaining)`
+        );
       }
     }
-    
+
     for (let i = 0; i < keys.length; i += batchSize) {
       const batch = keys.slice(i, i + batchSize);
-      
+
       for (const key of batch) {
         try {
           processed++;
@@ -163,7 +174,7 @@ async function executeSweep(
 
   const { storage, encrypted, keyring } = deps;
   const { kid: activeKid } = await keyring.getActiveKey();
-  
+
   let scanned = 0;
   let ok = 0;
   let repaired = 0;
@@ -171,7 +182,7 @@ async function executeSweep(
 
   try {
     let keys = await storage.listKeys(prefix);
-    
+
     // Apply sample limit for performance on large stores
     if (sample && sample > 0 && keys.length > sample) {
       // Take random sample to get representative data
@@ -236,14 +247,23 @@ async function executeSweep(
             ok++;
           }
         } catch (error) {
-          failed.push({ key, reason: `Decryption error: ${error instanceof Error ? error.message : 'Unknown'}` });
+          failed.push({
+            key,
+            reason: `Decryption error: ${error instanceof Error ? error.message : 'Unknown'}`,
+          });
         }
       } catch (error) {
-        failed.push({ key, reason: `Processing error: ${error instanceof Error ? error.message : 'Unknown'}` });
+        failed.push({
+          key,
+          reason: `Processing error: ${error instanceof Error ? error.message : 'Unknown'}`,
+        });
       }
     }
   } catch (error) {
-    failed.push({ key: 'LIST_KEYS', reason: `Failed to list keys: ${error instanceof Error ? error.message : 'Unknown'}` });
+    failed.push({
+      key: 'LIST_KEYS',
+      reason: `Failed to list keys: ${error instanceof Error ? error.message : 'Unknown'}`,
+    });
   }
 
   return { scanned, ok, repaired, failed };

@@ -6,4 +6,14 @@
 export * from './compact-types';
 
 // Export API functions
-export { addWitness, listWitnesses, setWitnessStatus, buildWitnessPayload, ingestWitnessSig, verifyWitnessedCheckpoint, setAuditHook, setPolicyHook, setMetricsHook } from './compact-api';
+export {
+  addWitness,
+  listWitnesses,
+  setWitnessStatus,
+  buildWitnessPayload,
+  ingestWitnessSig,
+  verifyWitnessedCheckpoint,
+  setAuditHook,
+  setPolicyHook,
+  setMetricsHook,
+} from './compact-api';

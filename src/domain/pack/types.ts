@@ -29,7 +29,11 @@ export type MergePolicy = 'skipExisting' | 'overwriteIfNewer' | 'remapIds';
 
 export interface MergePlan {
   policy: MergePolicy;
-  conflicts: { taskId: string; reason: 'id-conflict' | 'timestamp-regression' | 'orphan-event'; details?: string }[];
+  conflicts: {
+    taskId: string;
+    reason: 'id-conflict' | 'timestamp-regression' | 'orphan-event';
+    details?: string;
+  }[];
   idMap: Record<string, string>; // oldId -> newId (when remapping)
   applyEvents: TaskEvent[]; // events after any ID rewrite
 }

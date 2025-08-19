@@ -2,7 +2,13 @@ import { TaskEventSchema } from '../task/events';
 import { appendEvent, snapshotEvents, restoreEvents } from '../task/eventlog';
 import { useTaskStore } from '../../stores/taskStore';
 import { planMerge } from './merge';
-import type { Sparkpack, ImportPlan, ImportReport, MergePlan, MergePolicy } from './types';
+import type {
+  Sparkpack,
+  ImportPlan,
+  ImportReport,
+  MergePlan,
+  MergePolicy,
+} from './types';
 
 // tiny hash, no deps
 const fnv1a = (s: string) => {
@@ -22,23 +28,33 @@ export function planImport(raw: string): ImportPlan {
 
   try {
     const sparkpack: Sparkpack = JSON.parse(raw);
-    
+
     // Validate pack integrity
-    if (!sparkpack.meta || sparkpack.meta.version !== 1 || sparkpack.meta.format !== 'sparkpack/1+json') {
-      plan.invalid.push({ index: -1, error: 'Unsupported pack version/format' });
+    if (
+      !sparkpack.meta ||
+      sparkpack.meta.version !== 1 ||
+      sparkpack.meta.format !== 'sparkpack/1+json'
+    ) {
+      plan.invalid.push({
+        index: -1,
+        error: 'Unsupported pack version/format',
+      });
       return plan;
     }
-    
+
     if (!sparkpack.events || !Array.isArray(sparkpack.events)) {
-      plan.invalid.push({ index: -1, error: 'Invalid sparkpack format: missing or invalid events array' });
+      plan.invalid.push({
+        index: -1,
+        error: 'Invalid sparkpack format: missing or invalid events array',
+      });
       return plan;
     }
-    
+
     if (sparkpack.meta.eventsCount !== sparkpack.events.length) {
       plan.invalid.push({ index: -1, error: 'eventsCount mismatch' });
       return plan;
     }
-    
+
     const rawEvents = sparkpack.events.map(e => JSON.stringify(e)).join('\n');
     if (sparkpack.meta.eventsHash !== fnv1a(rawEvents)) {
       plan.invalid.push({ index: -1, error: 'eventsHash mismatch' });
@@ -53,7 +69,8 @@ export function planImport(raw: string): ImportPlan {
       } catch (error) {
         plan.invalid.push({
           index,
-          error: error instanceof Error ? error.message : 'Unknown validation error',
+          error:
+            error instanceof Error ? error.message : 'Unknown validation error',
         });
       }
     });
@@ -97,24 +114,31 @@ export function applyImport(
   } catch (error) {
     // Restore snapshot on any error
     restoreEvents(snapshot);
-    report.errors.push(`Import failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    report.errors.push(
+      `Import failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
     report.applied = 0;
   }
 
   return report;
 }
 
-export function planMergeImport(raw: string, policy: MergePolicy = 'remapIds'): MergePlan | { error: string } {
+export function planMergeImport(
+  raw: string,
+  policy: MergePolicy = 'remapIds'
+): MergePlan | { error: string } {
   try {
     // First, plan the basic import
     const importPlan = planImport(raw);
     if (importPlan.invalid.length > 0) {
-      return { error: `Invalid events in sparkpack: ${importPlan.invalid.map(i => i.error).join(', ')}` };
+      return {
+        error: `Invalid events in sparkpack: ${importPlan.invalid.map(i => i.error).join(', ')}`,
+      };
     }
 
     // Get current tasks for conflict detection
     const currentTasks = Object.values(useTaskStore.getState().byId);
-    
+
     // Plan the merge
     const mergePlan = planMerge(currentTasks, importPlan.valid, policy);
     return mergePlan;
@@ -153,7 +177,9 @@ export function applyMerge(
   } catch (error) {
     // Restore snapshot on any error
     restoreEvents(snapshot);
-    report.errors.push(`Merge failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    report.errors.push(
+      `Merge failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
     report.applied = 0;
   }
 

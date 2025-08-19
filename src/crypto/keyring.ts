@@ -20,7 +20,7 @@ interface StorageDriver {
 export class KeyringProvider implements KeyProvider {
   private storage: StorageDriver;
   private storageKey: string;
-  
+
   // In-memory state (cleared on lock)
   private state: KeyringState | null = null;
   private kek: CryptoKey | null = null;
@@ -43,34 +43,34 @@ export class KeyringProvider implements KeyProvider {
     const salt = genSalt();
     const saltBuffer = salt.buffer.slice(0) as ArrayBuffer;
     const kek = await deriveKEK(passphrase, saltBuffer, iterations);
-    
+
     // Generate first DEK
     const dek = await crypto.subtle.generateKey(
       { name: 'AES-GCM', length: 256 },
       true, // extractable for wrapping
       ['encrypt', 'decrypt']
     );
-    
+
     const kid = crypto.randomUUID();
-    
+
     // Wrap DEK with KEK
     const wrappedDek = await crypto.subtle.wrapKey('raw', dek, kek, 'AES-KW');
     const wrappedB64u = toB64u(wrappedDek);
-    
+
     // Set up state
     this.state = {
       activeKid: kid,
       locked: false,
       meta: {
         saltB64u: toB64u(saltBuffer),
-        iter: iterations
-      }
+        iter: iterations,
+      },
     };
-    
+
     this.kek = kek;
     this.deks.set(kid, dek);
     this.wrappedDeks.set(kid, wrappedB64u);
-    
+
     await this.persist();
   }
 
@@ -152,18 +152,23 @@ export class KeyringProvider implements KeyProvider {
       true,
       ['encrypt', 'decrypt']
     );
-    
+
     const kid = crypto.randomUUID();
-    
+
     // Wrap with current KEK
-    const wrappedDek = await crypto.subtle.wrapKey('raw', dek, this.kek, 'AES-KW');
+    const wrappedDek = await crypto.subtle.wrapKey(
+      'raw',
+      dek,
+      this.kek,
+      'AES-KW'
+    );
     const wrappedB64u = toB64u(wrappedDek);
-    
+
     // Update state
     this.state.activeKid = kid;
     this.deks.set(kid, dek);
     this.wrappedDeks.set(kid, wrappedB64u);
-    
+
     await this.persist();
   }
 
@@ -180,13 +185,13 @@ export class KeyringProvider implements KeyProvider {
 
     const kid = this.state.activeKid;
     let dek = this.deks.get(kid);
-    
+
     if (!dek) {
       // Unwrap DEK on demand
       dek = await this.unwrapDek(kid);
       this.deks.set(kid, dek);
     }
-    
+
     return { kid, key: dek };
   }
 
@@ -199,7 +204,7 @@ export class KeyringProvider implements KeyProvider {
     }
 
     let dek = this.deks.get(kid);
-    
+
     if (!dek && this.wrappedDeks.has(kid)) {
       try {
         dek = await this.unwrapDek(kid);
@@ -208,7 +213,7 @@ export class KeyringProvider implements KeyProvider {
         return null;
       }
     }
-    
+
     return dek || null;
   }
 
@@ -220,10 +225,12 @@ export class KeyringProvider implements KeyProvider {
       throw new Error('Keyring locked');
     }
 
-    const deks = Array.from(this.wrappedDeks.entries()).map(([kid, wrapped]) => ({
-      kid,
-      wrapped
-    }));
+    const deks = Array.from(this.wrappedDeks.entries()).map(
+      ([kid, wrapped]) => ({
+        kid,
+        wrapped,
+      })
+    );
 
     return {
       v: 1,
@@ -232,7 +239,7 @@ export class KeyringProvider implements KeyProvider {
         saltB64u: this.state.meta.saltB64u,
         iter: this.state.meta.iter,
       },
-      deks
+      deks,
     };
   }
 
@@ -249,7 +256,11 @@ export class KeyringProvider implements KeyProvider {
 
     // Validate meta if present
     if (bundle.meta) {
-      if (!bundle.meta.saltB64u || typeof bundle.meta.iter !== 'number' || bundle.meta.iter < 1) {
+      if (
+        !bundle.meta.saltB64u ||
+        typeof bundle.meta.iter !== 'number' ||
+        bundle.meta.iter < 1
+      ) {
         throw new Error('Invalid KEK metadata in backup');
       }
     }
@@ -258,11 +269,13 @@ export class KeyringProvider implements KeyProvider {
     // require passphrase to derive the source KEK to unwrap then re-wrap with current KEK.
     const needsRewrap =
       !!bundle.meta &&
-      (bundle.meta.saltB64u !== this.state.meta.saltB64u || bundle.meta.iter !== this.state.meta.iter);
+      (bundle.meta.saltB64u !== this.state.meta.saltB64u ||
+        bundle.meta.iter !== this.state.meta.iter);
 
     if (needsRewrap) {
-      if (!passphrase) throw new Error('Passphrase required to import portable backup');
-      
+      if (!passphrase)
+        throw new Error('Passphrase required to import portable backup');
+
       try {
         const srcSalt = fromB64u(bundle.meta!.saltB64u);
         const srcKEK = await deriveKEK(passphrase, srcSalt, bundle.meta!.iter);
@@ -273,14 +286,26 @@ export class KeyringProvider implements KeyProvider {
           if (this.wrappedDeks.has(kid)) continue;
           const wrappedBytes = fromB64u(wrapped);
           const dek = await crypto.subtle.unwrapKey(
-            'raw', wrappedBytes, srcKEK, 'AES-KW',
-            { name: 'AES-GCM', length: 256 }, true, ['encrypt','decrypt']
+            'raw',
+            wrappedBytes,
+            srcKEK,
+            'AES-KW',
+            { name: 'AES-GCM', length: 256 },
+            true,
+            ['encrypt', 'decrypt']
           );
-          const rewrapped = await crypto.subtle.wrapKey('raw', dek, this.kek, 'AES-KW');
+          const rewrapped = await crypto.subtle.wrapKey(
+            'raw',
+            dek,
+            this.kek,
+            'AES-KW'
+          );
           this.wrappedDeks.set(kid, toB64u(rewrapped));
         }
       } catch (error) {
-        throw new Error(`Failed to import portable backup: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        throw new Error(
+          `Failed to import portable backup: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
       }
     } else {
       // Same KEK params — store as-is
@@ -332,7 +357,7 @@ export class KeyringProvider implements KeyProvider {
 
     const data = {
       state: this.state,
-      wrappedDeks
+      wrappedDeks,
     };
 
     await this.storage.setItem(this.storageKey, JSON.stringify(data));

@@ -5,14 +5,20 @@
 
 import type { StorageDriver } from '../storage/types';
 import type { AnchorPack } from './sync-types';
-import type { AnchorLocator, DiscPlan, DiscResult, PendingAnchor, ConflictResolution } from './discovery-types';
-import { 
-  getPendingAnchors, 
-  setPendingAnchors, 
-  getDiscoveryState, 
+import type {
+  AnchorLocator,
+  DiscPlan,
+  DiscResult,
+  PendingAnchor,
+  ConflictResolution,
+} from './discovery-types';
+import {
+  getPendingAnchors,
+  setPendingAnchors,
+  getDiscoveryState,
   setDiscoveryState,
   updateDiscoveryMetrics,
-  cleanExpiredPendingAnchors
+  cleanExpiredPendingAnchors,
 } from './discovery-registry';
 import { listTrustAnchors } from './registry';
 import { checkCrossOrgPolicy } from '../policy/engine';
@@ -36,15 +42,15 @@ export async function planAnchorDiscovery(
   transport: any // RemoteTransport - mock for now
 ): Promise<DiscPlan> {
   const pulls: DiscPlan['pulls'] = [];
-  
+
   for (const locator of locators) {
     pulls.push({
       orgId: locator.orgId,
       ref: locator.ref,
-      ...(locator.since && { nextSince: locator.since })
+      ...(locator.since && { nextSince: locator.since }),
     });
   }
-  
+
   return { pulls };
 }
 
@@ -58,38 +64,52 @@ async function verifyDiscoveredPack(
 ): Promise<{ ok: boolean; reason?: string }> {
   try {
     // Basic structure validation
-    if (!pack.v || pack.v !== 1) return { ok: false, reason: 'invalid_version' };
-    if (!pack.issuerOrg || !pack.sig) return { ok: false, reason: 'missing_fields' };
-    
+    if (!pack.v || pack.v !== 1)
+      return { ok: false, reason: 'invalid_version' };
+    if (!pack.issuerOrg || !pack.sig)
+      return { ok: false, reason: 'missing_fields' };
+
     const { kid, pubB64u, sigB64u } = pack.sig;
     if (!sigB64u) return { ok: false, reason: 'missing_signature' };
-    
+
     // For discovery, we mainly verify via federated trust anchors
     if (pubB64u) {
       const trustAnchors = await listTrustAnchors(ns);
-      const trustedAnchor = trustAnchors.find(a => 
-        a.orgId === pack.issuerOrg && a.pubB64u === pubB64u && a.status === 'ACTIVE'
+      const trustedAnchor = trustAnchors.find(
+        a =>
+          a.orgId === pack.issuerOrg &&
+          a.pubB64u === pubB64u &&
+          a.status === 'ACTIVE'
       );
-      
+
       if (!trustedAnchor) {
         return { ok: false, reason: 'untrusted_issuer' };
       }
-      
+
       // Verify signature
       const { sig, ...unsigned } = pack;
       const canonical = canonicalize(unsigned);
       const messageBytes = new TextEncoder().encode(canonical);
       const publicKeyBytes = fromB64u(pubB64u);
       const signatureBytes = fromB64u(sigB64u);
-      
+
       const publicKey = await crypto.subtle.importKey(
-        'spki', publicKeyBytes, { name: 'Ed25519' }, false, ['verify']
+        'spki',
+        publicKeyBytes,
+        { name: 'Ed25519' },
+        false,
+        ['verify']
       );
-      
-      const valid = await crypto.subtle.verify('Ed25519', publicKey, signatureBytes, messageBytes);
+
+      const valid = await crypto.subtle.verify(
+        'Ed25519',
+        publicKey,
+        signatureBytes,
+        messageBytes
+      );
       return valid ? { ok: true } : { ok: false, reason: 'invalid_signature' };
     }
-    
+
     return { ok: false, reason: 'no_verification_method' };
   } catch (error) {
     return { ok: false, reason: `verification_error: ${error}` };
@@ -108,16 +128,16 @@ async function applyDiscoveredAnchors(
 ): Promise<{ added: number; conflicts: number; rewinds: number }> {
   const existing = await getPendingAnchors(ns, pack.issuerOrg, storage);
   const existingMap = new Map(existing.map(a => [a.kid, a]));
-  
+
   let added = 0;
   let conflicts = 0;
   let rewinds = 0;
   const now = new Date().toISOString();
-  
+
   // Apply anchors from pack to pending
   for (const anchor of pack.anchors) {
     const current = existingMap.get(anchor.kid);
-    
+
     if (!current) {
       // New pending anchor
       const pending: PendingAnchor = {
@@ -129,16 +149,22 @@ async function applyDiscoveredAnchors(
         src: {
           transportId: source.transportId,
           path: source.path,
-          packSeq: pack.seq
-        }
+          packSeq: pack.seq,
+        },
       };
-      
+
       existingMap.set(anchor.kid, pending);
       added++;
     } else {
       // Handle conflict resolution
-      const conflict = await resolveConflict(current, anchor, pack.seq, source, conflictResolution);
-      
+      const conflict = await resolveConflict(
+        current,
+        anchor,
+        pack.seq,
+        source,
+        conflictResolution
+      );
+
       if (conflict.action === 'UPDATE') {
         current.status = anchor.status;
         current.src.packSeq = pack.seq;
@@ -152,7 +178,7 @@ async function applyDiscoveredAnchors(
             currentSeq: current.src.packSeq,
             newSeq: pack.seq,
             transportId: source.transportId,
-            severity: 'HIGH'
+            severity: 'HIGH',
           });
         }
       } else if (conflict.action === 'REJECT') {
@@ -162,15 +188,20 @@ async function applyDiscoveredAnchors(
           orgId: pack.issuerOrg,
           kid: anchor.kid,
           resolution: conflictResolution,
-          reason: conflict.reason
+          reason: conflict.reason,
         });
       }
     }
   }
-  
+
   // Store updated pending anchors
-  await setPendingAnchors(ns, pack.issuerOrg, Array.from(existingMap.values()), storage);
-  
+  await setPendingAnchors(
+    ns,
+    pack.issuerOrg,
+    Array.from(existingMap.values()),
+    storage
+  );
+
   return { added, conflicts, rewinds };
 }
 
@@ -186,32 +217,44 @@ async function resolveConflict(
 ): Promise<{ action: 'UPDATE' | 'REJECT'; rewind?: boolean; reason?: string }> {
   // Check for sequence rewind (potential replay attack)
   const isRewind = newSeq < existing.src.packSeq;
-  
+
   switch (resolution) {
     case 'REJECT':
-      return { action: 'REJECT', reason: 'Policy configured to reject conflicts' };
-      
+      return {
+        action: 'REJECT',
+        reason: 'Policy configured to reject conflicts',
+      };
+
     case 'PREFER_NEWER':
       if (newSeq > existing.src.packSeq) {
         return { action: 'UPDATE' };
       } else if (isRewind) {
         return { action: 'UPDATE', rewind: true };
       }
-      return { action: 'REJECT', reason: 'Existing anchor has newer or equal sequence' };
-      
+      return {
+        action: 'REJECT',
+        reason: 'Existing anchor has newer or equal sequence',
+      };
+
     case 'PREFER_FIRST':
       return { action: 'REJECT', reason: 'Keeping first-seen anchor' };
-      
+
     case 'PREFER_SOURCE':
       const existingPriority = existing.src.priority || 0;
       const newPriority = (source as any).priority || 0;
       if (newPriority > existingPriority) {
         return { action: 'UPDATE', rewind: isRewind };
       }
-      return { action: 'REJECT', reason: 'Existing anchor from higher priority source' };
-      
+      return {
+        action: 'REJECT',
+        reason: 'Existing anchor from higher priority source',
+      };
+
     default:
-      return { action: 'REJECT', reason: 'Unknown conflict resolution strategy' };
+      return {
+        action: 'REJECT',
+        reason: 'Unknown conflict resolution strategy',
+      };
   }
 }
 
@@ -222,9 +265,9 @@ export async function runAnchorDiscovery(
   ns: string,
   plan: DiscPlan,
   storage: StorageDriver,
-  opts?: { 
-    policy?: any; 
-    audit?: boolean; 
+  opts?: {
+    policy?: any;
+    audit?: boolean;
     autoPromote?: boolean;
     conflictResolution?: ConflictResolution;
     ttlMinutes?: number;
@@ -238,25 +281,35 @@ export async function runAnchorDiscovery(
     conflicts: 0,
     rewinds: 0,
     expired: 0,
-    errors: []
+    errors: [],
   };
-  
+
   for (const pull of plan.pulls) {
     try {
       // Clean expired pending anchors first
-      const cleanupResult = await cleanExpiredPendingAnchors(ns, pull.orgId, storage);
+      const cleanupResult = await cleanExpiredPendingAnchors(
+        ns,
+        pull.orgId,
+        storage
+      );
       result.expired += cleanupResult.expired;
-      
+
       // Check policy for discovery pulls
       if (opts?.policy) {
-        const policyCheck = await checkCrossOrgPolicy(ns, pull.orgId, 'federation.discovery.pull');
+        const policyCheck = await checkCrossOrgPolicy(
+          ns,
+          pull.orgId,
+          'federation.discovery.pull'
+        );
         if (!policyCheck.allowed) {
           result.rejected++;
-          result.errors.push(`Policy denied pull from ${pull.orgId}: ${policyCheck.reason}`);
+          result.errors.push(
+            `Policy denied pull from ${pull.orgId}: ${policyCheck.reason}`
+          );
           continue;
         }
       }
-      
+
       // Mock pack retrieval - in real implementation would fetch via transport
       const mockPack: AnchorPack = {
         v: 1,
@@ -264,34 +317,46 @@ export async function runAnchorDiscovery(
         createdAt: new Date().toISOString(),
         seq: 1,
         anchors: [],
-        sig: { pubB64u: 'mock', sigB64u: 'mock' }
+        sig: { pubB64u: 'mock', sigB64u: 'mock' },
       };
-      
+
       // Verify discovered pack
       const verification = await verifyDiscoveredPack(mockPack, ns, storage);
       if (!verification.ok) {
         result.rejected++;
-        result.errors.push(`Verification failed for ${pull.orgId}: ${verification.reason}`);
+        result.errors.push(
+          `Verification failed for ${pull.orgId}: ${verification.reason}`
+        );
         continue;
       }
-      
+
       // Apply to pending storage
-      const applied = await applyDiscoveredAnchors(mockPack, ns, storage, pull.ref, opts?.conflictResolution || 'PREFER_NEWER');
+      const applied = await applyDiscoveredAnchors(
+        mockPack,
+        ns,
+        storage,
+        pull.ref,
+        opts?.conflictResolution || 'PREFER_NEWER'
+      );
       result.pulled++;
       result.pendingAdded += applied.added;
       result.conflicts += applied.conflicts;
       result.rewinds += applied.rewinds;
-      
+
       // Update discovery cursor
       if (pull.nextSince) {
-        await setDiscoveryState(ns, pull.orgId, { since: pull.nextSince }, storage);
+        await setDiscoveryState(
+          ns,
+          pull.orgId,
+          { since: pull.nextSince },
+          storage
+        );
       }
-      
     } catch (error) {
       result.errors.push(`Discovery error for ${pull.orgId}: ${error}`);
     }
   }
-  
+
   // Update metrics
   await updateDiscoveryMetrics(ns, storage, {
     totalPulls: result.pulled,
@@ -300,8 +365,8 @@ export async function runAnchorDiscovery(
     totalConflicts: result.conflicts,
     totalRewinds: result.rewinds,
     totalExpired: result.expired,
-    lastPullAt: new Date().toISOString()
+    lastPullAt: new Date().toISOString(),
   });
-  
+
   return result;
 }

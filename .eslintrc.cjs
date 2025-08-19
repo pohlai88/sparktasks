@@ -54,7 +54,6 @@ module.exports = {
         "message": "Use DESIGN_TOKENS.layout.patterns.spaceBetween instead of repeating the trio."
       }
     ],
-    "ssot/no-hardcoded-tailwind": "warn",
     "no-restricted-imports": [
       "error", 
       { 

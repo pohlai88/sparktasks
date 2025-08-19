@@ -13,12 +13,16 @@ import type { StorageDriver } from '../storage/types';
 // Configuration dependencies for role enforcement
 let membershipApi: {
   addMember: (issuer: string, user: string, role: Role) => Promise<void>;
-  assertPermission: (actor: string, action: 'INVITE_CREATE', context?: { targetRole?: Role }) => Promise<void>;
+  assertPermission: (
+    actor: string,
+    action: 'INVITE_CREATE',
+    context?: { targetRole?: Role }
+  ) => Promise<void>;
 } | null = null;
 
 let roleConfig: InviteRoleConfig = {
   strictLegacy: false,
-  verifyIssuerStillAuthorized: false
+  verifyIssuerStillAuthorized: false,
 };
 
 export function configureMembershipDependency(api: typeof membershipApi): void {
@@ -33,15 +37,30 @@ export async function acceptInvite(args: {
   envelope: InviteEnvelope;
   code: string;
   keyring: KeyringProvider;
-  verify: (bytes: ArrayBuffer, sig: string, pubB64u: string) => Promise<boolean>;
+  verify: (
+    bytes: ArrayBuffer,
+    sig: string,
+    pubB64u: string
+  ) => Promise<boolean>;
   isUsed: (inviteId: string) => Promise<boolean>;
   markUsed: (inviteId: string) => Promise<void>;
-  actorId?: string;              // NEW: for membership application and audit
-  storage?: StorageDriver;       // NEW: for policy enforcement
+  actorId?: string; // NEW: for membership application and audit
+  storage?: StorageDriver; // NEW: for policy enforcement
   now?: () => Date;
   skewMs?: number;
 }): Promise<{ importedCount: number; rewrapped: boolean; appliedRole: Role }> {
-  const { envelope, code, keyring, verify, isUsed, markUsed, actorId, storage, now = () => new Date(), skewMs = 300000 } = args;
+  const {
+    envelope,
+    code,
+    keyring,
+    verify,
+    isUsed,
+    markUsed,
+    actorId,
+    storage,
+    now = () => new Date(),
+    skewMs = 300000,
+  } = args;
 
   // Extract invite ID from AAD
   const inviteId = envelope.aad.split(':')[1];
@@ -52,16 +71,25 @@ export async function acceptInvite(args: {
     const envelopeRole = (envelope as any).role as Role | undefined;
     const targetRole = envelopeRole || 'MEMBER'; // Default for legacy invites
     const currentRole = 'VIEWER'; // Default role for invite recipients
-    
+
     await enforcePolicy(
-      { ns: envelope.aad.split(':')[0], op: 'invite.accept', actorId, actorRole: currentRole, targetRole, nowISO: now().toISOString() },
-      storage, { audit: true, commitCap: true }
+      {
+        ns: envelope.aad.split(':')[0],
+        op: 'invite.accept',
+        actorId,
+        actorRole: currentRole,
+        targetRole,
+        nowISO: now().toISOString(),
+      },
+      storage,
+      { audit: true, commitCap: true }
     );
   }
 
   // Check revocation status first (fail fast)
   if (await isInviteRevoked(inviteId)) throw new Error('Invite revoked');
-  if (await isSignerRevoked(envelope.signerPubB64u)) throw new Error('Signer revoked');
+  if (await isSignerRevoked(envelope.signerPubB64u))
+    throw new Error('Signer revoked');
 
   // Build canonical manifest for verification (with role if present)
   const { signerPubB64u, sigB64u, ...manifest } = envelope;
@@ -86,16 +114,22 @@ export async function acceptInvite(args: {
   // Extract bound role from envelope
   let boundRole: Role;
   const envelopeRole = (envelope as any).role as Role | undefined;
-  
+
   if (envelopeRole) {
     boundRole = envelopeRole;
-    
+
     // Optional: verify issuer still authorized for this role
     if (roleConfig.verifyIssuerStillAuthorized && membershipApi) {
       try {
-        await membershipApi.assertPermission(envelope.signerPubB64u, 'INVITE_CREATE', { targetRole: boundRole });
+        await membershipApi.assertPermission(
+          envelope.signerPubB64u,
+          'INVITE_CREATE',
+          { targetRole: boundRole }
+        );
       } catch {
-        throw new Error(`Issuer no longer authorized to issue ${boundRole} invites`);
+        throw new Error(
+          `Issuer no longer authorized to issue ${boundRole} invites`
+        );
       }
     }
   } else {
@@ -132,7 +166,11 @@ export async function acceptInvite(args: {
   let plaintext: ArrayBuffer;
   try {
     plaintext = await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv, additionalData: new TextEncoder().encode(envelope.aad) },
+      {
+        name: 'AES-GCM',
+        iv,
+        additionalData: new TextEncoder().encode(envelope.aad),
+      },
       sessionKey,
       ciphertext
     );
@@ -150,14 +188,18 @@ export async function acceptInvite(args: {
   // Apply membership role
   if (membershipApi && actorId) {
     await membershipApi.addMember(envelope.signerPubB64u, actorId, boundRole);
-    
+
     // Emit audit event for invite acceptance
-    AuditApi.log('INVITE_ACCEPTED', { role: boundRole, inviteId, userId: actorId }, actorId).catch(err => console.error('Audit log failed:', err));
+    AuditApi.log(
+      'INVITE_ACCEPTED',
+      { role: boundRole, inviteId, userId: actorId },
+      actorId
+    ).catch(err => console.error('Audit log failed:', err));
   }
 
   return {
     importedCount: backup.deks.length,
     rewrapped: true,
-    appliedRole: boundRole
+    appliedRole: boundRole,
   };
 }

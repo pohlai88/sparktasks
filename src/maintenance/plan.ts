@@ -8,7 +8,9 @@ import { getEventCount } from '../domain/task/eventlog';
 /**
  * Plan maintenance operations based on current state and options
  */
-export async function planMaintenance(opts: MaintenanceOptions): Promise<MaintenancePlan> {
+export async function planMaintenance(
+  opts: MaintenanceOptions
+): Promise<MaintenancePlan> {
   const actions: MaintenancePlan['actions'] = [];
 
   // Check if compaction is needed
@@ -17,7 +19,7 @@ export async function planMaintenance(opts: MaintenanceOptions): Promise<Mainten
     if (eventCount >= opts.maxEvents) {
       actions.push({
         type: 'COMPACT',
-        threshold: opts.minDelta || 50
+        threshold: opts.minDelta || 50,
       });
     }
   }
@@ -27,16 +29,21 @@ export async function planMaintenance(opts: MaintenanceOptions): Promise<Mainten
     actions.push({
       type: 'REKEY',
       prefix: opts.rekeyPrefix,
-      batchSize: opts.batchSize || 100
+      batchSize: opts.batchSize || 100,
     });
   }
 
   // Add sweep action if prefix specified
   if (opts.sweepPrefix) {
-    const sweepAction: { type: 'SWEEP'; prefix: string; fix: boolean; sample?: number } = {
+    const sweepAction: {
+      type: 'SWEEP';
+      prefix: string;
+      fix: boolean;
+      sample?: number;
+    } = {
       type: 'SWEEP',
       prefix: opts.sweepPrefix,
-      fix: opts.sweepFix || false
+      fix: opts.sweepFix || false,
     };
     if (opts.sample !== undefined) {
       sweepAction.sample = opts.sample;

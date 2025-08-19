@@ -17,14 +17,15 @@ function canonicalize(obj: any): string {
 
 // Storage keys
 const anchorKey = (ns: string, orgId: string) => `fed:anchors:${ns}:${orgId}`;
-const stateKey = (ns: string, orgId: string) => `fed:anchors:__state__:${ns}:${orgId}`;
+const stateKey = (ns: string, orgId: string) =>
+  `fed:anchors:__state__:${ns}:${orgId}`;
 
 /**
  * Get anchors for a specific org
  */
 export async function getAnchors(
-  ns: string, 
-  orgId: string, 
+  ns: string,
+  orgId: string,
   storage: StorageDriver
 ): Promise<Anchor[]> {
   try {
@@ -86,14 +87,18 @@ export async function signAnchorPack(
 ): Promise<AnchorPack> {
   const canonical = canonicalize(pack);
   const messageBytes = new TextEncoder().encode(canonical);
-  const signature = await crypto.subtle.sign('Ed25519', privateKey, messageBytes);
-  
+  const signature = await crypto.subtle.sign(
+    'Ed25519',
+    privateKey,
+    messageBytes
+  );
+
   return {
     ...pack,
     sig: {
       ...(kid && { kid }),
       pubB64u: toB64u(publicKeyBytes),
-      sigB64u: toB64u(signature)
-    }
+      sigB64u: toB64u(signature),
+    },
   };
 }

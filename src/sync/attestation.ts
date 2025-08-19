@@ -25,10 +25,10 @@ export interface DualAttestedPack {
 
 export interface Attestation {
   alg: 'Ed25519';
-  signer: string;  // base64url SPKI
-  sig: string;     // base64url over canonical(manifest)
-  ts: string;      // ISO timestamp
-  kid?: string;    // Task 19: key identifier
+  signer: string; // base64url SPKI
+  sig: string; // base64url over canonical(manifest)
+  ts: string; // ISO timestamp
+  kid?: string; // Task 19: key identifier
 }
 
 export interface PackManifestV1 {
@@ -43,14 +43,12 @@ export interface PackManifestV1 {
 export interface TrustOptions {
   allowUnsigned?: boolean;
   allowedSigners?: string[];
-  ns?: string;        // Task 19: namespace for registry lookup
+  ns?: string; // Task 19: namespace for registry lookup
   graceSecs?: number; // Task 19: grace period for expired signers
   operation?: string; // Task 20: operation for policy gating (e.g., 'sync.import')
 }
 
-export type VerifyResult = 
-  | { ok: true }
-  | { ok: false; reason: string };
+export type VerifyResult = { ok: true } | { ok: false; reason: string };
 
 // Canonical JSON for stable signatures
 function canonicalize(obj: any): string {
@@ -66,10 +64,10 @@ function packToManifest(pack: Sparkpack): PackManifestV1 {
   return {
     content: {
       eventsHash: pack.meta.eventsHash,
-      eventsCount: pack.meta.eventsCount
+      eventsCount: pack.meta.eventsCount,
     },
     bytes: packStr.length,
-    meta: pack.meta
+    meta: pack.meta,
   };
 }
 
@@ -80,54 +78,68 @@ export async function attestPack(
 ): Promise<AttestedPack | DualAttestedPack> {
   // For backward compatibility - if pack is Sparkpack, convert to manifest
   const manifest = 'meta' in pack ? packToManifest(pack) : pack;
-  
+
   let activeSigner: SignerRecord | null = null;
   let retiredSigner: SignerRecord | null = null;
-  
+
   // If namespace provided, use registry-based signing
   if (opts?.ns) {
     try {
       const signers = await listSigners(opts.ns);
       activeSigner = signers.find(s => s.status === 'ACTIVE') || null;
-      
+
       // Check for dual-sign opportunity
       if (opts.dualSignUntil && new Date() < new Date(opts.dualSignUntil)) {
         // Find most recent RETIRED signer within overlap window
         const retiredCandidates = signers
-          .filter(s => s.status === 'RETIRED' && 
-            (!s.expiresAt || new Date() < new Date(s.expiresAt)))
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        
+          .filter(
+            s =>
+              s.status === 'RETIRED' &&
+              (!s.expiresAt || new Date() < new Date(s.expiresAt))
+          )
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+
         retiredSigner = retiredCandidates[0] || null;
       }
     } catch {
       // Registry not available - fallback to direct signing
     }
   }
-  
+
   // Create primary attestation
-  const primaryAtt = await createAttestation(manifest, signer, activeSigner?.kid);
-  
+  const primaryAtt = await createAttestation(
+    manifest,
+    signer,
+    activeSigner?.kid
+  );
+
   // Check if dual-signing is needed and possible
   if (retiredSigner && opts?.dualSignUntil) {
-    const secondaryAtt = await createAttestation(manifest, signer, retiredSigner.kid);
-    await log('PACK_DUAL_SIGNED', { 
-      ns: opts.ns, 
-      active: activeSigner?.kid, 
-      retired: retiredSigner.kid 
+    const secondaryAtt = await createAttestation(
+      manifest,
+      signer,
+      retiredSigner.kid
+    );
+    await log('PACK_DUAL_SIGNED', {
+      ns: opts.ns,
+      active: activeSigner?.kid,
+      retired: retiredSigner.kid,
     });
-    
+
     return {
       v: 1,
       manifest,
-      att: [primaryAtt, secondaryAtt]
+      att: [primaryAtt, secondaryAtt],
     };
   }
-  
+
   return {
     v: 1,
     manifest,
-    att: primaryAtt
+    att: primaryAtt,
   };
 }
 
@@ -138,22 +150,33 @@ async function createAttestation(
 ): Promise<Attestation> {
   const canonical = canonicalize(manifest);
   const messageBytes = new TextEncoder().encode(canonical);
-  
+
   // Handle both CryptoKey and CryptoKeyPair
   const privateKey = 'privateKey' in signer ? signer.privateKey : signer;
-  const publicKey = 'publicKey' in signer ? signer.publicKey : 
-    await crypto.subtle.importKey('spki', await crypto.subtle.exportKey('spki', signer), 
-      { name: 'Ed25519' }, false, ['verify']);
-  
-  const signature = await crypto.subtle.sign('Ed25519', privateKey, messageBytes);
+  const publicKey =
+    'publicKey' in signer
+      ? signer.publicKey
+      : await crypto.subtle.importKey(
+          'spki',
+          await crypto.subtle.exportKey('spki', signer),
+          { name: 'Ed25519' },
+          false,
+          ['verify']
+        );
+
+  const signature = await crypto.subtle.sign(
+    'Ed25519',
+    privateKey,
+    messageBytes
+  );
   const signerSpki = await crypto.subtle.exportKey('spki', publicKey);
-  
+
   return {
     alg: 'Ed25519',
     signer: toB64u(signerSpki),
     sig: toB64u(signature),
     ts: new Date().toISOString(),
-    ...(kid && { kid })
+    ...(kid && { kid }),
   };
 }
 
@@ -163,24 +186,22 @@ export async function verifyPackAttestation(
 ): Promise<VerifyResult> {
   const { ns, allowUnsigned = false, graceSecs = 0, allowedSigners } = trust;
   const nowISO = new Date().toISOString();
-  
+
   // Legacy unsigned pack handling
   if (!attested.att) {
-    return allowUnsigned
-      ? { ok: true }
-      : { ok: false, reason: 'unsigned' };
+    return allowUnsigned ? { ok: true } : { ok: false, reason: 'unsigned' };
   }
-  
+
   // Handle dual-attested packs
-  const attestations = Array.isArray(attested.att) ? attested.att : [attested.att];
-  
+  const attestations = Array.isArray(attested.att)
+    ? attested.att
+    : [attested.att];
+
   // If no attestations, handle as unsigned
   if (attestations.length === 0) {
-    return allowUnsigned
-      ? { ok: true }
-      : { ok: false, reason: 'unsigned' };
+    return allowUnsigned ? { ok: true } : { ok: false, reason: 'unsigned' };
   }
-  
+
   // Registry-based verification with federation support
   if (ns) {
     try {
@@ -188,7 +209,7 @@ export async function verifyPackAttestation(
       const anchors = await listTrustAnchors(ns);
       const localByKid = new Map(signers.map(r => [r.kid, r]));
       const federatedByPub = new Map(anchors.map(a => [a.pubB64u, a]));
-      
+
       for (const att of attestations) {
         // Check local signer registry first (Task 19) - requires kid
         if (att.kid) {
@@ -196,102 +217,138 @@ export async function verifyPackAttestation(
           if (localRec) {
             // Check local signer status before verifying signature
             if (localRec.status === 'REVOKED') {
-              await log('ATTEST_VERIFY_DENY', { ns, kid: att.kid, reason: 'revoked' });
+              await log('ATTEST_VERIFY_DENY', {
+                ns,
+                kid: att.kid,
+                reason: 'revoked',
+              });
               return { ok: false, reason: 'revoked' };
             }
-            
+
             // Verify signature first
-            if (!(await verifySingleSignature(att, attested.manifest))) continue;
-            
+            if (!(await verifySingleSignature(att, attested.manifest)))
+              continue;
+
             // Check status allows verification
             if (statusAllows(localRec, nowISO, graceSecs)) {
               await log('ATTEST_VERIFY_ALLOW', { ns, kid: att.kid });
               return { ok: true };
             } else if (localRec.status === 'RETIRED') {
-              await log('ATTEST_VERIFY_DENY', { ns, kid: att.kid, reason: 'expired beyond grace' });
-              return { ok: false, reason: `Signer ${att.kid} expired beyond grace period` };
+              await log('ATTEST_VERIFY_DENY', {
+                ns,
+                kid: att.kid,
+                reason: 'expired beyond grace',
+              });
+              return {
+                ok: false,
+                reason: `Signer ${att.kid} expired beyond grace period`,
+              };
             }
             continue;
           }
         }
-        
+
         // Check federated trust anchors (Task 20) - by signer public key (works with or without kid)
         const federatedAnchor = federatedByPub.get(att.signer);
         if (federatedAnchor) {
           // Check anchor status before verifying signature
           if (federatedAnchor.status === 'REVOKED') {
-            await log('ATTEST_VERIFY_CROSS_ORG_DENY', { 
-              ns, kid: att.kid, orgId: federatedAnchor.orgId, reason: 'federated_revoked' 
+            await log('ATTEST_VERIFY_CROSS_ORG_DENY', {
+              ns,
+              kid: att.kid,
+              orgId: federatedAnchor.orgId,
+              reason: 'federated_revoked',
             });
             return { ok: false, reason: 'federated_revoked' };
           }
-          
+
           // Verify signature
           if (await verifySingleSignature(att, attested.manifest)) {
             // Check cross-org policy (Task 20)
-            const policyCheck = await checkCrossOrgPolicy(ns, federatedAnchor.orgId, trust.operation);
+            const policyCheck = await checkCrossOrgPolicy(
+              ns,
+              federatedAnchor.orgId,
+              trust.operation
+            );
             if (!policyCheck.allowed) {
-              await log('ATTEST_VERIFY_CROSS_ORG_DENY', { 
-                ns, kid: att.kid, orgId: federatedAnchor.orgId, reason: policyCheck.reason 
+              await log('ATTEST_VERIFY_CROSS_ORG_DENY', {
+                ns,
+                kid: att.kid,
+                orgId: federatedAnchor.orgId,
+                reason: policyCheck.reason,
               });
-              return { ok: false, reason: policyCheck.reason || 'cross_org_policy_denied' };
+              return {
+                ok: false,
+                reason: policyCheck.reason || 'cross_org_policy_denied',
+              };
             }
-            
-            await log('ATTEST_VERIFY_CROSS_ORG_ALLOW', { 
-              ns, kid: att.kid, orgId: federatedAnchor.orgId 
+
+            await log('ATTEST_VERIFY_CROSS_ORG_ALLOW', {
+              ns,
+              kid: att.kid,
+              orgId: federatedAnchor.orgId,
             });
             return { ok: true };
           }
         }
-        
+
         // Handle legacy/unsigned (no kid and not federated)
         if (!att.kid) {
           if (allowUnsigned) {
-            await log('ATTEST_VERIFY_ALLOW', { ns, reason: 'unsigned_allowed' });
+            await log('ATTEST_VERIFY_ALLOW', {
+              ns,
+              reason: 'unsigned_allowed',
+            });
             return { ok: true };
           }
           // Continue to check other attestations before failing
         }
       }
-      
+
       // Check if any attestation had no kid (legacy in registry mode)
       const hasLegacy = attestations.some(att => !att.kid);
       if (hasLegacy) {
-        await log('ATTEST_VERIFY_DENY', { ns, reason: 'legacy_pack_without_kid' });
+        await log('ATTEST_VERIFY_DENY', {
+          ns,
+          reason: 'legacy_pack_without_kid',
+        });
         return { ok: false, reason: 'Legacy pack without kid' };
       }
-      
+
       await log('ATTEST_VERIFY_DENY', { ns, reason: 'no_valid_attestation' });
       return { ok: false, reason: 'no_valid_attestation' };
-      
     } catch (error) {
       return { ok: false, reason: `Registry error: ${error}` };
     }
   }
-  
+
   // Legacy allowlist verification (Task 18 compatibility)
   for (const att of attestations) {
     if (allowedSigners && !allowedSigners.includes(att.signer)) {
       continue;
     }
-    
+
     if (await verifySingleSignature(att, attested.manifest)) {
       return { ok: true };
     }
   }
-  
+
   // Check if we had unsigned attestations but no allowUnsigned
   const hasUnsigned = attestations.some(att => !att.kid);
   if (hasUnsigned && !allowUnsigned) {
     await log('ATTEST_VERIFY_DENY', { ns, reason: 'unsigned_not_allowed' });
     return { ok: false, reason: 'Legacy pack without kid' };
   }
-  
+
   await log('ATTEST_VERIFY_DENY', { ns, reason: 'no_valid_attestations' });
   return { ok: false, reason: 'No valid attestations found' };
 }
 
-function statusAllows(rec: SignerRecord, nowISO: string, graceSecs: number): boolean {
+function statusAllows(
+  rec: SignerRecord,
+  nowISO: string,
+  graceSecs: number
+): boolean {
   if (rec.status === 'ACTIVE') return true;
   if (rec.status === 'REVOKED') return false;
   if (rec.status === 'RETIRED') {
@@ -303,7 +360,10 @@ function statusAllows(rec: SignerRecord, nowISO: string, graceSecs: number): boo
   return false;
 }
 
-async function verifySingleSignature(att: Attestation, manifest: PackManifestV1): Promise<boolean> {
+async function verifySingleSignature(
+  att: Attestation,
+  manifest: PackManifestV1
+): Promise<boolean> {
   try {
     const signerKey = await crypto.subtle.importKey(
       'spki',
@@ -312,12 +372,17 @@ async function verifySingleSignature(att: Attestation, manifest: PackManifestV1)
       false,
       ['verify']
     );
-    
+
     const canonical = canonicalize(manifest);
     const messageBytes = new TextEncoder().encode(canonical);
     const signatureBytes = fromB64u(att.sig);
-    
-    return await crypto.subtle.verify('Ed25519', signerKey, signatureBytes, messageBytes);
+
+    return await crypto.subtle.verify(
+      'Ed25519',
+      signerKey,
+      signatureBytes,
+      messageBytes
+    );
   } catch {
     return false;
   }
