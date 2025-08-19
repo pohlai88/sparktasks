@@ -52,6 +52,16 @@ debug-*.png
 debug-*.ts
 demo-*.ts
 
+# Backup files (IDE and manual backups)
+*.backup
+*.bak
+*~
+.#*
+\#*#
+
+# ESLint cache
+.eslintcache
+
 # Package manager lockfiles (keep package-lock.json for npm)
 # yarn.lock
 # pnpm-lock.yaml
