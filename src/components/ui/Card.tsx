@@ -1,5 +1,5 @@
 import React from 'react';
-import { DESIGN_TOKENS } from '../../design/tokens';
+import { DESIGN_TOKENS } from '@/design/tokens';
 import { cn } from '../../utils/cn';
 
 interface CardProps {
@@ -20,17 +20,28 @@ export function Card({
   onClick,
   ...props
 }: CardProps) {
-  const baseClasses = `${DESIGN_TOKENS.recipes.card} ${DESIGN_TOKENS.elevation[elevation]}`;
-  
+  // Phase 02: Theme-aware base classes
+  const baseClasses = cn(
+    'rounded-lg border bg-card text-card-foreground shadow-sm',
+    DESIGN_TOKENS.theme.light.surface.base,
+    `dark:${DESIGN_TOKENS.theme.dark.surface.base.replace('bg-', '')}`,
+    DESIGN_TOKENS.theme.light.border.subtle,
+    `dark:${DESIGN_TOKENS.theme.dark.border.subtle.replace('border-', '')}`
+  );
+
   const variantClasses = {
     default: '',
-    interactive: DESIGN_TOKENS.interaction.card.replace('hover:shadow-md', `hover:${DESIGN_TOKENS.elevation.md}`)
+    interactive: cn(
+      DESIGN_TOKENS.state.hover,
+      DESIGN_TOKENS.transitions.hover,
+      'cursor-pointer'
+    ),
   };
 
   const paddingClasses = {
-    default: DESIGN_TOKENS.spacing.card,
-    compact: DESIGN_TOKENS.spacing.cardCompact,
-    none: ''
+    default: DESIGN_TOKENS.layout.padBase,
+    compact: DESIGN_TOKENS.layout.padCompact,
+    none: '',
   };
 
   const combinedClasses = [
@@ -38,17 +49,15 @@ export function Card({
     variantClasses[variant],
     paddingClasses[padding],
     onClick ? 'cursor-pointer' : '',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const Component = onClick ? 'button' : 'div';
 
   return (
-    <Component
-      className={combinedClasses}
-      onClick={onClick}
-      {...props}
-    >
+    <Component className={combinedClasses} onClick={onClick} {...props}>
       {children}
     </Component>
   );
@@ -61,7 +70,14 @@ interface CardHeaderProps {
 
 export function CardHeader({ children, className = '' }: CardHeaderProps) {
   return (
-    <div className={cn('border-b pb-4 mb-4', DESIGN_TOKENS.colors.states.default.border, className)}>
+    <div
+      className={cn(
+        DESIGN_TOKENS.theme.light.border.subtle,
+        DESIGN_TOKENS.layout.padBase,
+        DESIGN_TOKENS.position.borders.bottom,
+        className
+      )}
+    >
       {children}
     </div>
   );
@@ -74,7 +90,7 @@ interface CardTitleProps {
 
 export function CardTitle({ children, className = '' }: CardTitleProps) {
   return (
-    <h3 className={`${DESIGN_TOKENS.typography.heading.h3} ${className}`}>
+    <h3 className={`${DESIGN_TOKENS.typography.display.h3} ${className}`}>
       {children}
     </h3>
   );
@@ -86,11 +102,7 @@ interface CardContentProps {
 }
 
 export function CardContent({ children, className = '' }: CardContentProps) {
-  return (
-    <div className={className}>
-      {children}
-    </div>
-  );
+  return <div className={className}>{children}</div>;
 }
 
 interface CardFooterProps {
@@ -100,8 +112,16 @@ interface CardFooterProps {
 
 export function CardFooter({ children, className = '' }: CardFooterProps) {
   return (
-    <div className={cn('border-t pt-4 mt-4', DESIGN_TOKENS.colors.states.default.border, className)}>
+    <div
+      className={cn(
+        DESIGN_TOKENS.theme.light.border.subtle,
+        DESIGN_TOKENS.layout.padBase,
+        DESIGN_TOKENS.position.borders.top,
+        className
+      )}
+    >
       {children}
     </div>
   );
 }
+

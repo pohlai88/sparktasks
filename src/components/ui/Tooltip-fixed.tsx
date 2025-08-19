@@ -11,10 +11,10 @@ interface TooltipProps {
 }
 
 const placementClasses = {
-  top: `${DESIGN_TOKENS.position.absolute.bottomFull} mb-2`,
-  bottom: `${DESIGN_TOKENS.position.absolute.topFull} mt-2`,
-  left: `${DESIGN_TOKENS.position.absolute.rightFull} mr-2`,
-  right: `${DESIGN_TOKENS.position.absolute.leftFull} ml-2`,
+  top: 'absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2',
+  bottom: 'absolute top-full left-1/2 transform -translate-x-1/2 mt-2',
+  left: 'absolute right-full top-1/2 transform -translate-y-1/2 mr-2',
+  right: 'absolute left-full top-1/2 transform -translate-y-1/2 ml-2',
 };
 
 const arrowClasses = {

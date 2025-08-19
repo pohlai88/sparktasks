@@ -1,59 +1,63 @@
 /**
- * Button - P0 Enterprise Primitive (Enhanced)
+ * IconButton - P0 Enterprise Primitive
  * 
- * Professional button component with enterprise-grade state management,
- * accessibility compliance, and theme awareness.
+ * Professional icon button with 44px touch targets, state management,
+ * and enterprise-grade accessibility compliance.
  * 
  * Contract Requirements:
- * - 44px minimum touch target for all sizes
+ * - 44px minimum touch target (Apple HIG compliance)
  * - Theme awareness (light/dark/forced-colors)
- * - State feedback with motion preferences
- * - Loading states with proper accessibility
- * - Focus management for keyboard navigation
+ * - State feedback (hover/active/disabled/loading)
+ * - Motion preferences (prefers-reduced-motion)
+ * - Focus management (keyboard navigation)
  */
 
 import React from 'react';
 import { DESIGN_TOKENS } from '@/design/tokens';
 import { cn } from '../../utils/cn';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IconButtonProps {
+  /** Icon component to render */
+  icon: React.ComponentType<{ className?: string }>;
   /** Visual variant */
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
+  variant?: 'default' | 'primary' | 'secondary' | 'danger' | 'ghost';
   /** Size variant - all meet 44px minimum target */
   size?: 'sm' | 'md' | 'lg';
   /** Loading state */
   loading?: boolean;
-  /** Left icon */
-  leftIcon?: React.ComponentType<{ className?: string }>;
-  /** Right icon */
-  rightIcon?: React.ComponentType<{ className?: string }>;
-  /** Button content */
-  children: React.ReactNode;
+  /** Disabled state */
+  disabled?: boolean;
+  /** Required accessibility label */
+  'aria-label': string;
   /** Additional CSS classes */
   className?: string;
+  /** Click handler */
+  onClick?: () => void;
+  /** Additional props */
+  [key: string]: any;
 }
 
-export function Button({
-  variant = 'primary',
+export function IconButton({
+  icon: Icon,
+  variant = 'default',
   size = 'md',
   loading = false,
-  leftIcon: LeftIcon,
-  rightIcon: RightIcon,
-  children,
+  disabled = false,
+  'aria-label': ariaLabel,
   className = '',
-  disabled,
+  onClick,
   ...props
-}: ButtonProps) {
+}: IconButtonProps) {
   // Base classes with enterprise requirements
   const baseClasses = [
     // Core button behavior
-    'inline-flex items-center justify-center gap-2',
-    'font-medium transition-all duration-150 ease-out',
+    'inline-flex items-center justify-center',
+    'transition-all duration-150 ease-out',
     'focus-visible:outline-none',
     'disabled:cursor-not-allowed',
     
     // 44px minimum touch target compliance
-    'min-h-[44px]',
+    'min-h-[44px] min-w-[44px]',
     
     // Theme awareness
     DESIGN_TOKENS.focus.onLight,
@@ -65,58 +69,56 @@ export function Button({
   ].join(' ');
 
   // Size variants (all maintain 44px minimum)
-  const sizeVariants = {
-    sm: [
-      'h-11 px-4 text-sm rounded-lg', // 44px minimum
-      'gap-1.5',
-    ].join(' '),
-    md: [
-      'h-12 px-6 text-sm rounded-lg', // 48px comfortable
-      'gap-2',
-    ].join(' '),
-    lg: [
-      'h-14 px-8 text-base rounded-xl', // 56px spacious
-      'gap-2.5',
-    ].join(' '),
+  const sizeClasses = {
+    sm: 'h-11 w-11 rounded-lg', // 44px minimum
+    md: 'h-12 w-12 rounded-lg', // 48px comfortable
+    lg: 'h-14 w-14 rounded-xl', // 56px spacious
   };
 
-  // Variant styles using V2 enterprise tokens
-  const variantStyles = {
+  // Variant styles using V2 token system
+  const variantClasses = {
+    default: [
+      DESIGN_TOKENS.theme.light.surface.subtle,
+      DESIGN_TOKENS.theme.light.ink.secondary,
+      DESIGN_TOKENS.theme.light.border.subtle,
+      'border',
+      DESIGN_TOKENS.interaction.button.hover,
+      DESIGN_TOKENS.interaction.button.active,
+    ].join(' '),
+    
     primary: [
       DESIGN_TOKENS.recipe.button.primary,
-      'shadow-sm hover:shadow-md active:shadow-sm',
-      'border border-blue-600',
+      'shadow-sm hover:shadow-md',
     ].join(' '),
     
     secondary: [
       DESIGN_TOKENS.recipe.button.secondary,
-      'border shadow-sm hover:shadow-md active:shadow-sm',
-      DESIGN_TOKENS.theme.light.border.subtle,
-    ].join(' '),
-    
-    ghost: [
-      DESIGN_TOKENS.recipe.button.ghost,
-      'border border-transparent',
+      'border shadow-sm',
     ].join(' '),
     
     danger: [
       DESIGN_TOKENS.recipe.button.destructive,
-      'shadow-sm hover:shadow-md active:shadow-sm',
-      'border border-red-600',
+      'shadow-sm hover:shadow-md',
+    ].join(' '),
+    
+    ghost: [
+      DESIGN_TOKENS.interaction.button.hover,
+      DESIGN_TOKENS.interaction.button.active,
+      DESIGN_TOKENS.theme.light.ink.secondary,
     ].join(' '),
   };
 
-  // Icon sizing based on button size
+  // Icon size based on button size
   const iconSizes = {
-    sm: DESIGN_TOKENS.sizing.icon.sm,
-    md: DESIGN_TOKENS.sizing.icon.md,
-    lg: DESIGN_TOKENS.sizing.icon.lg,
+    sm: DESIGN_TOKENS.sizing.icon.md, // 20px in 44px button
+    md: DESIGN_TOKENS.sizing.icon.lg, // 24px in 48px button  
+    lg: DESIGN_TOKENS.sizing.icon.xl, // 32px in 56px button
   };
 
   const combinedClasses = cn(
     baseClasses,
-    sizeVariants[size],
-    variantStyles[variant],
+    sizeClasses[size],
+    variantClasses[variant],
     className
   );
 
@@ -124,17 +126,13 @@ export function Button({
     <button
       type="button"
       className={combinedClasses}
+      onClick={onClick}
       disabled={disabled || loading}
+      aria-label={ariaLabel}
       aria-busy={loading}
       {...props}
     >
-      {/* Left Icon */}
-      {LeftIcon && !loading && (
-        <LeftIcon className={iconSizes[size]} />
-      )}
-      
-      {/* Loading Spinner */}
-      {loading && (
+      {loading ? (
         <div className={cn(iconSizes[size], 'animate-spin')}>
           <svg viewBox="0 0 24 24" fill="none" className="h-full w-full">
             <circle
@@ -162,22 +160,16 @@ export function Button({
             </circle>
           </svg>
         </div>
-      )}
-      
-      {/* Button Text */}
-      <span className={loading ? 'opacity-70' : ''}>{children}</span>
-      
-      {/* Right Icon */}
-      {RightIcon && !loading && (
-        <RightIcon className={iconSizes[size]} />
+      ) : (
+        <Icon className={iconSizes[size]} />
       )}
     </button>
   );
 }
 
 // Enterprise component contract validation
-Button.displayName = 'Button';
+IconButton.displayName = 'IconButton';
 
 // Type exports for enterprise usage
-export type { ButtonProps };
+export type { IconButtonProps };
 

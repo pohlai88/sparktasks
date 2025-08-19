@@ -5,13 +5,17 @@
 // * DoD (ALL): type-check/test/build pass; eslint+prettier clean (touched files); perf budgets respected; UI tasks must validate focus/ARIA/keyboard.
 
 import { useEffect, useState } from 'react';
+import { DESIGN_TOKENS } from '@/design/tokens';
 
 interface LiveAnnouncerProps {
   message: string;
   priority?: 'polite' | 'assertive';
 }
 
-export function LiveAnnouncer({ message, priority = 'polite' }: LiveAnnouncerProps) {
+export function LiveAnnouncer({
+  message,
+  priority = 'polite',
+}: LiveAnnouncerProps) {
   const [currentMessage, setCurrentMessage] = useState('');
 
   useEffect(() => {
@@ -22,7 +26,7 @@ export function LiveAnnouncer({ message, priority = 'polite' }: LiveAnnouncerPro
       const timer = setTimeout(() => {
         setCurrentMessage(message);
       }, 10);
-      
+
       return () => clearTimeout(timer);
     }
   }, [message]);
@@ -30,9 +34,9 @@ export function LiveAnnouncer({ message, priority = 'polite' }: LiveAnnouncerPro
   return (
     <div
       aria-live={priority}
-      aria-atomic="true"
-      className="sr-only"
-      data-testid="live-announcer"
+      aria-atomic='true'
+      className={DESIGN_TOKENS.accessibility.srOnly}
+      data-testid='live-announcer'
     >
       {currentMessage}
     </div>
@@ -54,3 +58,4 @@ export function useLiveAnnouncer() {
     announce,
   };
 }
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DESIGN_TOKENS } from '../../design/tokens';
+import { DESIGN_TOKENS } from '@/design/tokens';
 import { cn } from '../../utils/cn';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -23,51 +23,91 @@ export function Input({
   ...props
 }: InputProps) {
   const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-  
-  const baseClasses = `${DESIGN_TOKENS.recipes.input} ${DESIGN_TOKENS.interaction.input}`;
-  const widthClasses = fullWidth ? 'w-full' : '';
-  const errorClasses = error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : '';
-  
-  const inputClasses = [
-    baseClasses,
-    widthClasses,
-    errorClasses,
-    leftIcon ? 'pl-10' : '',
-    rightIcon ? 'pr-10' : '',
-    className
-  ].filter(Boolean).join(' ');
+
+  const baseClasses = cn(
+    DESIGN_TOKENS.recipe.input.base,
+    DESIGN_TOKENS.field.height,
+    DESIGN_TOKENS.transitions.fast,
+    DESIGN_TOKENS.interaction.focus.ring,
+    fullWidth && DESIGN_TOKENS.sizing.full
+  );
+
+  const stateClasses = cn(
+    error && [
+      DESIGN_TOKENS.theme.light.border.error,
+      DESIGN_TOKENS.interaction.focus.borderRed,
+      DESIGN_TOKENS.interaction.focus.ringRed
+    ]
+  );
+
+  const iconClasses = cn(
+    leftIcon && DESIGN_TOKENS.field.iconLeft,
+    rightIcon && DESIGN_TOKENS.field.iconRight
+  );
 
   return (
-    <div className={fullWidth ? 'w-full' : ''}>
+    <div className={fullWidth ? DESIGN_TOKENS.sizing.full : ''}>
       {label && (
-        <label htmlFor={inputId} className={DESIGN_TOKENS.typography.label}>
+        <label 
+          htmlFor={inputId} 
+          className={cn(
+            DESIGN_TOKENS.theme.light.ink.secondary,
+            'block text-sm font-medium mb-2'
+          )}
+        >
           {label}
         </label>
       )}
+      
       <div className="relative">
         {leftIcon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <span className={cn(DESIGN_TOKENS.colors.ui.text.muted, 'sm:text-sm')}>{leftIcon}</span>
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <span className={cn(
+              DESIGN_TOKENS.theme.light.ink.tertiary,
+              DESIGN_TOKENS.sizing.icon.sm
+            )}>
+              {leftIcon}
+            </span>
           </div>
         )}
-        <input
-          id={inputId}
-          className={inputClasses}
-          {...props}
+        
+        <input 
+          id={inputId} 
+          className={cn(
+            baseClasses,
+            stateClasses,
+            iconClasses,
+            className
+          )} 
+          {...props} 
         />
+        
         {rightIcon && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            <span className={cn(DESIGN_TOKENS.colors.ui.text.muted, 'sm:text-sm')}>{rightIcon}</span>
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <span className={cn(
+              DESIGN_TOKENS.theme.light.ink.tertiary,
+              DESIGN_TOKENS.sizing.icon.sm
+            )}>
+              {rightIcon}
+            </span>
           </div>
         )}
       </div>
+      
       {error && (
-        <p className={`mt-1 ${DESIGN_TOKENS.typography.error}`}>
+        <p className={cn(
+          DESIGN_TOKENS.semantic.text.error,
+          'mt-2 text-sm'
+        )}>
           {error}
         </p>
       )}
+      
       {helperText && !error && (
-        <p className={`mt-1 ${DESIGN_TOKENS.typography.body.caption}`}>
+        <p className={cn(
+          DESIGN_TOKENS.theme.light.ink.tertiary,
+          'mt-2 text-sm'
+        )}>
           {helperText}
         </p>
       )}
@@ -75,7 +115,8 @@ export function Input({
   );
 }
 
-interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -93,45 +134,71 @@ export function Textarea({
   id,
   ...props
 }: TextareaProps) {
-  const textareaId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
-  
-  const baseClasses = `${DESIGN_TOKENS.recipes.textarea} ${DESIGN_TOKENS.interaction.input}`;
-  const widthClasses = fullWidth ? 'w-full' : '';
-  const errorClasses = error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : '';
+  const textareaId =
+    id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
+
+  const baseClasses = cn(
+    DESIGN_TOKENS.recipe.input.base,
+    'min-h-[80px]',
+    DESIGN_TOKENS.transitions.fast,
+    DESIGN_TOKENS.interaction.focus.ring,
+    fullWidth && DESIGN_TOKENS.sizing.full
+  );
+
+  const stateClasses = cn(
+    error && [
+      DESIGN_TOKENS.theme.light.border.error,
+      DESIGN_TOKENS.interaction.focus.borderRed,
+      DESIGN_TOKENS.interaction.focus.ringRed
+    ]
+  );
+
   const resizeClasses = {
     none: 'resize-none',
     vertical: 'resize-y',
-    horizontal: 'resize-x', 
-    both: 'resize'
+    horizontal: 'resize-x',
+    both: 'resize',
   };
-  
-  const textareaClasses = [
-    baseClasses,
-    widthClasses,
-    errorClasses,
-    resizeClasses[resize],
-    className
-  ].filter(Boolean).join(' ');
 
   return (
-    <div className={fullWidth ? 'w-full' : ''}>
+    <div className={fullWidth ? DESIGN_TOKENS.sizing.full : ''}>
       {label && (
-        <label htmlFor={textareaId} className={DESIGN_TOKENS.typography.label}>
+        <label 
+          htmlFor={textareaId} 
+          className={cn(
+            DESIGN_TOKENS.theme.light.ink.secondary,
+            'block text-sm font-medium mb-2'
+          )}
+        >
           {label}
         </label>
       )}
-      <textarea
-        id={textareaId}
-        className={textareaClasses}
-        {...props}
+      
+      <textarea 
+        id={textareaId} 
+        className={cn(
+          baseClasses,
+          stateClasses,
+          resizeClasses[resize],
+          className
+        )} 
+        {...props} 
       />
+      
       {error && (
-        <p className={`mt-1 ${DESIGN_TOKENS.typography.error}`}>
+        <p className={cn(
+          DESIGN_TOKENS.semantic.text.error,
+          'mt-2 text-sm'
+        )}>
           {error}
         </p>
       )}
+      
       {helperText && !error && (
-        <p className={`mt-1 ${DESIGN_TOKENS.typography.body.caption}`}>
+        <p className={cn(
+          DESIGN_TOKENS.theme.light.ink.tertiary,
+          'mt-2 text-sm'
+        )}>
           {helperText}
         </p>
       )}
@@ -160,36 +227,54 @@ export function Select({
   ...props
 }: SelectProps) {
   const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
-  
-  const baseClasses = `${DESIGN_TOKENS.recipes.select} ${DESIGN_TOKENS.interaction.input}`;
-  const widthClasses = fullWidth ? 'w-full' : '';
-  const errorClasses = error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : '';
-  
-  const selectClasses = [
-    baseClasses,
-    widthClasses,
-    errorClasses,
-    className
-  ].filter(Boolean).join(' ');
+
+  const baseClasses = cn(
+    DESIGN_TOKENS.recipe.input.base,
+    DESIGN_TOKENS.field.height,
+    DESIGN_TOKENS.transitions.fast,
+    DESIGN_TOKENS.interaction.focus.ring,
+    'appearance-none bg-no-repeat bg-right bg-[length:16px] pr-10',
+    'bg-[url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'m6 8 4 4 4-4\'/%3e%3c/svg%3e")]',
+    fullWidth && DESIGN_TOKENS.sizing.full
+  );
+
+  const stateClasses = cn(
+    error && [
+      DESIGN_TOKENS.theme.light.border.error,
+      DESIGN_TOKENS.interaction.focus.borderRed,
+      DESIGN_TOKENS.interaction.focus.ringRed
+    ]
+  );
 
   return (
-    <div className={fullWidth ? 'w-full' : ''}>
+    <div className={fullWidth ? DESIGN_TOKENS.sizing.full : ''}>
       {label && (
-        <label htmlFor={selectId} className={DESIGN_TOKENS.typography.label}>
+        <label 
+          htmlFor={selectId} 
+          className={cn(
+            DESIGN_TOKENS.theme.light.ink.secondary,
+            'block text-sm font-medium mb-2'
+          )}
+        >
           {label}
         </label>
       )}
-      <select
-        id={selectId}
-        className={selectClasses}
+      
+      <select 
+        id={selectId} 
+        className={cn(
+          baseClasses,
+          stateClasses,
+          className
+        )} 
         {...props}
       >
         {placeholder && (
-          <option value="" disabled>
+          <option value='' disabled>
             {placeholder}
           </option>
         )}
-        {options.map((option) => (
+        {options.map(option => (
           <option
             key={option.value}
             value={option.value}
@@ -199,16 +284,25 @@ export function Select({
           </option>
         ))}
       </select>
+      
       {error && (
-        <p className={`mt-1 ${DESIGN_TOKENS.typography.error}`}>
+        <p className={cn(
+          DESIGN_TOKENS.semantic.text.error,
+          'mt-2 text-sm'
+        )}>
           {error}
         </p>
       )}
+      
       {helperText && !error && (
-        <p className={`mt-1 ${DESIGN_TOKENS.typography.body.caption}`}>
+        <p className={cn(
+          DESIGN_TOKENS.theme.light.ink.tertiary,
+          'mt-2 text-sm'
+        )}>
           {helperText}
         </p>
       )}
     </div>
   );
 }
+

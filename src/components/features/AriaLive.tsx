@@ -1,4 +1,5 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
+import { DESIGN_TOKENS } from '@/design/tokens';
 
 interface AriaLiveProps {
   message: string;
@@ -6,13 +7,17 @@ interface AriaLiveProps {
   clearDelay?: number;
 }
 
-export function AriaLive({ message, level = 'polite', clearDelay = 3000 }: AriaLiveProps) {
+export function AriaLive({
+  message,
+  level = 'polite',
+  clearDelay = 3000,
+}: AriaLiveProps) {
   const [displayMessage, setDisplayMessage] = useState('');
 
   useEffect(() => {
     if (message) {
       setDisplayMessage(message);
-      
+
       const timer = setTimeout(() => {
         setDisplayMessage('');
       }, clearDelay);
@@ -24,9 +29,9 @@ export function AriaLive({ message, level = 'polite', clearDelay = 3000 }: AriaL
   return (
     <div
       aria-live={level}
-      aria-atomic="true"
-      className="sr-only"
-      role="status"
+      aria-atomic='true'
+      className={DESIGN_TOKENS.accessibility.srOnly}
+      role='status'
     >
       {displayMessage}
     </div>
@@ -40,12 +45,17 @@ interface AriaLiveContextValue {
 const AriaLiveContext = createContext<AriaLiveContextValue | null>(null);
 
 export function AriaLiveProvider({ children }: { children: React.ReactNode }) {
-  const [announcements, setAnnouncements] = useState<{ id: string; message: string; level: 'polite' | 'assertive' }[]>([]);
+  const [announcements, setAnnouncements] = useState<
+    { id: string; message: string; level: 'polite' | 'assertive' }[]
+  >([]);
 
-  const announce = (message: string, level: 'polite' | 'assertive' = 'polite') => {
+  const announce = (
+    message: string,
+    level: 'polite' | 'assertive' = 'polite'
+  ) => {
     const id = Date.now().toString();
     setAnnouncements(prev => [...prev, { id, message, level }]);
-    
+
     // Remove announcement after it's been read
     setTimeout(() => {
       setAnnouncements(prev => prev.filter(a => a.id !== id));
@@ -69,3 +79,4 @@ export function useAriaLive() {
   }
   return context;
 }
+

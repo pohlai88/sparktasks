@@ -1,6 +1,6 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { DESIGN_TOKENS } from '../../design/tokens';
+import { DESIGN_TOKENS } from '@/design/tokens';
 import { cn } from '../../utils/cn';
 import { Button } from './Button';
 
@@ -15,63 +15,81 @@ interface ModalProps {
 
 const sizeClasses = {
   sm: 'max-w-md',
-  md: 'max-w-lg', 
+  md: 'max-w-lg',
   lg: 'max-w-2xl',
-  xl: 'max-w-4xl'
+  xl: 'max-w-4xl',
 };
 
-export function Modal({ 
-  isOpen, 
-  onClose, 
-  title, 
-  children, 
+export function Modal({
+  isOpen,
+  onClose,
+  title,
+  children,
   size = 'md',
-  className = '' 
+  className = '',
 }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className={cn(DESIGN_TOKENS.layout.patterns.overlay, DESIGN_TOKENS.layout.zIndex.modal)}>
-      <div 
-        className="flex items-center justify-center min-h-screen p-4"
+    <div
+      className={cn(
+        DESIGN_TOKENS.recipe.modal.overlay,
+        'fixed inset-0 z-50 flex items-center justify-center p-4'
+      )}
+    >
+      <div
+        className="absolute inset-0 bg-black/40"
         onClick={onClose}
+      />
+      
+      <div
+        className={cn(
+          DESIGN_TOKENS.recipe.modal.content,
+          sizeClasses[size],
+          'relative w-full',
+          DESIGN_TOKENS.theme.light.surface.raised,
+          DESIGN_TOKENS.theme.light.border.subtle,
+          DESIGN_TOKENS.transitions.smooth,
+          className
+        )}
+        onClick={e => e.stopPropagation()}
+        role='dialog'
+        aria-modal='true'
+        aria-labelledby={title ? 'modal-title' : undefined}
       >
-        <div 
-          className={cn(
-            DESIGN_TOKENS.layout.patterns.modal,
-            sizeClasses[size],
-            'w-full',
-            className
-          )}
-          onClick={(e) => e.stopPropagation()}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={title ? 'modal-title' : undefined}
-        >
-          {/* Header */}
-          {title && (
-            <div className="flex items-center justify-between p-6 border-b">
-              <h2 
-                id="modal-title"
-                className={cn('text-lg font-semibold', DESIGN_TOKENS.colors.ui.text.primary)}
-              >
-                {title}
-              </h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                aria-label="Close modal"
-              >
-                <X className={DESIGN_TOKENS.icons.button} />
-              </Button>
-            </div>
-          )}
-          
-          {/* Content */}
-          <div className="p-6">
-            {children}
+        {/* Header */}
+        {title && (
+          <div className={cn(
+            'flex items-center justify-between p-6 border-b',
+            DESIGN_TOKENS.theme.light.border.subtle
+          )}>
+            <h2
+              id='modal-title'
+              className={cn(
+                DESIGN_TOKENS.theme.light.ink.primary,
+                'text-lg font-semibold'
+              )}
+            >
+              {title}
+            </h2>
+            <button
+              onClick={onClose}
+              className={cn(
+                'p-2 rounded-md transition-colors',
+                DESIGN_TOKENS.interaction.button.hover,
+                DESIGN_TOKENS.theme.light.ink.tertiary,
+                'hover:text-slate-900'
+              )}
+              aria-label='Close modal'
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
+        )}
+
+        {/* Content */}
+        <div className="p-6">
+          {children}
         </div>
       </div>
     </div>
@@ -98,7 +116,7 @@ export function ConfirmModal({
   message,
   confirmLabel = 'Confirm',
   cancelLabel = 'Cancel',
-  variant = 'info'
+  variant = 'info',
 }: ConfirmModalProps) {
   const handleConfirm = () => {
     onConfirm();
@@ -106,18 +124,21 @@ export function ConfirmModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
+    <Modal isOpen={isOpen} onClose={onClose} title={title} size='sm'>
       <div className="space-y-4">
-        <p className={DESIGN_TOKENS.colors.ui.text.secondary}>
+        <p className={cn(
+          DESIGN_TOKENS.theme.light.ink.secondary,
+          'text-sm'
+        )}>
           {message}
         </p>
-        
-        <div className="flex gap-3 justify-end">
-          <Button variant="secondary" onClick={onClose}>
+
+        <div className="flex justify-end gap-3 pt-4">
+          <Button variant='secondary' onClick={onClose}>
             {cancelLabel}
           </Button>
-          <Button 
-            variant={variant === 'danger' ? 'danger' : 'primary'} 
+          <Button
+            variant={variant === 'danger' ? 'danger' : 'primary'}
             onClick={handleConfirm}
           >
             {confirmLabel}
@@ -127,3 +148,4 @@ export function ConfirmModal({
     </Modal>
   );
 }
+

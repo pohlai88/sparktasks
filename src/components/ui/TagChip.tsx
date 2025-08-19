@@ -7,27 +7,54 @@ interface TagChipProps {
   className?: string;
 }
 
-export function TagChip({ tag, removable = false, onRemove, className = '' }: TagChipProps) {
+export function TagChip({
+  tag,
+  removable = false,
+  onRemove,
+  className = '',
+}: TagChipProps) {
   // Determine tag variant based on content patterns
-  const getTagVariant = (tag: string): 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' => {
+  const getTagVariant = (
+    tag: string
+  ): 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' => {
     const lowerTag = tag.toLowerCase();
-    
-    if (lowerTag.includes('urgent') || lowerTag.includes('critical') || lowerTag.includes('emergency')) {
+
+    if (
+      lowerTag.includes('urgent') ||
+      lowerTag.includes('critical') ||
+      lowerTag.includes('emergency')
+    ) {
       return 'danger';
     }
-    if (lowerTag.includes('important') || lowerTag.includes('priority') || lowerTag.includes('high')) {
+    if (
+      lowerTag.includes('important') ||
+      lowerTag.includes('priority') ||
+      lowerTag.includes('high')
+    ) {
       return 'warning';
     }
-    if (lowerTag.includes('done') || lowerTag.includes('completed') || lowerTag.includes('finished')) {
+    if (
+      lowerTag.includes('done') ||
+      lowerTag.includes('completed') ||
+      lowerTag.includes('finished')
+    ) {
       return 'success';
     }
-    if (lowerTag.includes('review') || lowerTag.includes('meeting') || lowerTag.includes('call')) {
+    if (
+      lowerTag.includes('review') ||
+      lowerTag.includes('meeting') ||
+      lowerTag.includes('call')
+    ) {
       return 'info';
     }
-    if (lowerTag.includes('feature') || lowerTag.includes('enhancement') || lowerTag.includes('new')) {
+    if (
+      lowerTag.includes('feature') ||
+      lowerTag.includes('enhancement') ||
+      lowerTag.includes('new')
+    ) {
       return 'primary';
     }
-    
+
     return 'default';
   };
 
@@ -39,7 +66,7 @@ export function TagChip({ tag, removable = false, onRemove, className = '' }: Ta
       removable={shouldShowRemove}
       onRemove={shouldShowRemove ? onRemove! : undefined}
       className={className}
-      size="sm"
+      size='sm'
     >
       #{tag}
     </Chip>
@@ -54,19 +81,21 @@ interface TagListProps {
   className?: string;
 }
 
-export function TagList({ 
-  tags, 
-  removable = false, 
-  onRemoveTag, 
+export function TagList({
+  tags,
+  removable = false,
+  onRemoveTag,
   maxVisible = 3,
-  className = ''
+  className = '',
 }: TagListProps) {
   const visibleTags = tags.slice(0, maxVisible);
   const hiddenCount = Math.max(0, tags.length - maxVisible);
 
   return (
-    <div className={`flex flex-wrap items-center gap-1 ${className}`}>
-      {visibleTags.map((tag) => (
+    <div
+      className={`flex flex-wrap items-center ${DESIGN_TOKENS.spacing.inlineTight} ${className}`}
+    >
+      {visibleTags.map(tag => (
         <TagChip
           key={tag}
           tag={tag}
@@ -75,10 +104,11 @@ export function TagList({
         />
       ))}
       {hiddenCount > 0 && (
-        <Chip variant="default" size="sm">
+        <Chip variant='default' size='sm'>
           +{hiddenCount} more
         </Chip>
       )}
     </div>
   );
 }
+
