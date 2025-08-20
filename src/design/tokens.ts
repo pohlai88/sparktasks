@@ -1200,14 +1200,53 @@ export const DESIGN_TOKENS = {
     // ===== AVATAR SYSTEM (User avatar components) =====
     avatar: {
       base: 'relative flex shrink-0 overflow-hidden rounded-full',
-      fallback:
-        'flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-slate-600 font-medium',
+      fallback: 'flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-slate-600 font-medium',
+      ringOnline: 'ring-2 ring-green-500',
+      ringBusy: 'ring-2 ring-red-500',
+      ringOffline: 'ring-2 ring-slate-400',
+      border: 'border-2 border-white dark:border-slate-900',
+      shadow: 'shadow-md',
+      online: 'bg-green-100 text-green-700',
+      busy: 'bg-red-100 text-red-700',
+      offline: 'bg-slate-100 text-slate-500',
     },
 
     // ===== PROGRESS SYSTEM (Progress indicators) =====
     progress: {
-      base: 'relative h-2 w-full overflow-hidden rounded-full bg-slate-100',
-      indicator: 'h-full w-full flex-1 bg-blue-600 transition-all',
+      // Base progress container
+      base: 'relative w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800',
+      
+      // Progress indicator/fill
+      indicator: 'h-full transition-all duration-300 ease-out rounded-full',
+      
+      // Size variants
+      sm: 'h-1',
+      md: 'h-2', 
+      lg: 'h-3',
+      xl: 'h-4',
+      
+      // Color variants
+      primary: 'bg-blue-600 dark:bg-blue-500',
+      success: 'bg-green-600 dark:bg-green-500',
+      warning: 'bg-amber-600 dark:bg-amber-500',
+      error: 'bg-red-600 dark:bg-red-500',
+      info: 'bg-blue-600 dark:bg-blue-500',
+      
+      // States
+      indeterminate: 'animate-pulse',
+      pulse: 'animate-pulse duration-1000',
+      
+      // Progress text/label
+      label: 'text-sm font-medium text-slate-700 dark:text-slate-300 mb-2',
+      percentage: 'text-xs text-slate-500 dark:text-slate-400 mt-1 text-right',
+      description: 'text-xs text-slate-500 dark:text-slate-400 mt-1',
+      
+      // Container backgrounds for different variants
+      backgroundPrimary: 'bg-blue-100 dark:bg-blue-950/30',
+      backgroundSuccess: 'bg-green-100 dark:bg-green-950/30',
+      backgroundWarning: 'bg-amber-100 dark:bg-amber-950/30',
+      backgroundError: 'bg-red-100 dark:bg-red-950/30',
+      backgroundInfo: 'bg-blue-100 dark:bg-blue-950/30',
     },
 
     // ===== SKELETON SYSTEM (Loading state components) =====
@@ -1229,6 +1268,64 @@ export const DESIGN_TOKENS = {
     quickAddHelp: 'text-xs text-slate-500 mt-2',
     quickAddExample:
       'px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs mr-2',
+
+    // ===== HOVERCARD SYSTEM (Hover-triggered popover components) =====
+    hoverCard: {
+      // Core panel
+      panel: 'absolute rounded-lg overflow-auto',
+      content: 'p-4 max-h-full',
+      
+      // Position variants (for non-portal mode)
+      position: {
+        top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
+        'top-start': 'bottom-full left-0 mb-2',
+        'top-end': 'bottom-full right-0 mb-2',
+        bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
+        'bottom-start': 'top-full left-0 mt-2',
+        'bottom-end': 'top-full right-0 mt-2',
+        left: 'right-full top-1/2 -translate-y-1/2 mr-2',
+        'left-start': 'right-full top-0 mr-2',
+        'left-end': 'right-full bottom-0 mr-2',
+        right: 'left-full top-1/2 -translate-y-1/2 ml-2',
+        'right-start': 'left-full top-0 ml-2',
+        'right-end': 'left-full bottom-0 ml-2',
+      },
+      
+      // Size variants
+      size: {
+        sm: 'w-60 max-h-48',      // 240px width, 192px max height
+        md: 'w-80 max-h-64',      // 320px width, 256px max height
+        lg: 'w-[480px] max-h-80', // 480px width, 320px max height
+        xl: 'w-[640px] max-h-96', // 640px width, 384px max height
+      },
+      
+      // Visual variants (theme-safe)
+      variant: {
+        default: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-card',
+        elevation: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-floating',
+        minimal: 'bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 shadow-tooltip',
+        rich: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-modal',
+        interactive: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-lg transition-shadow',
+      },
+      
+      // Arrow system
+      arrow: {
+        base: 'absolute after:content-[""] after:block after:w-2.5 after:h-2.5 after:rotate-45 after:bg-inherit after:border-inherit',
+        // Position-specific arrow placement
+        top: 'top-full left-1/2 after:-translate-x-1/2 after:-mt-1.5',
+        'top-start': 'top-full left-4 after:-mt-1.5',
+        'top-end': 'top-full right-4 after:-mt-1.5',
+        bottom: 'bottom-full left-1/2 after:-translate-x-1/2 after:-mb-1.5',
+        'bottom-start': 'bottom-full left-4 after:-mb-1.5',
+        'bottom-end': 'bottom-full right-4 after:-mb-1.5',
+        left: 'left-full top-1/2 after:-translate-y-1/2 after:-ml-1.5',
+        'left-start': 'left-full top-4 after:-ml-1.5',
+        'left-end': 'left-full bottom-4 after:-ml-1.5',
+        right: 'right-full top-1/2 after:-translate-y-1/2 after:-mr-1.5',
+        'right-start': 'right-full top-4 after:-mr-1.5',
+        'right-end': 'right-full bottom-4 after:-mr-1.5',
+      },
+    },
   },
 
   // 📦 SPACING SYSTEM (Rhythm & proportion) - V3 ENTERPRISE ENHANCEMENT

@@ -267,6 +267,7 @@ const DescriptionListComponent = forwardRef<HTMLDListElement, DescriptionListPro
         ref={ref}
         className={combineTokens(listClasses, className)}
         aria-label={ariaLabel}
+  role="list"
         {...props}
       >
         <DescriptionListSkeleton />
@@ -286,6 +287,7 @@ const DescriptionListComponent = forwardRef<HTMLDListElement, DescriptionListPro
         ref={ref}
         className={combineTokens(listClasses, className)}
         aria-label={ariaLabel}
+  role="list"
         {...props}
       >
         {children}
@@ -446,7 +448,17 @@ const DescriptionDetailsComponent = forwardRef<HTMLElement, DescriptionDetailsPr
     <dd
       ref={handleRef}
       className={combineTokens(detailsClasses, className)}
-      onClick={onClick}
+      onClick={(e) => {
+        onClick?.(e);
+        // Allow clicking the details area itself to copy (tests expect this)
+        if (copyable) {
+          // Avoid duplicate copy when clicking the explicit copy button
+          const target = e.target as HTMLElement;
+          if (!target.closest('button')) {
+            doCopy();
+          }
+        }
+      }}
       {...props}
     >
       {status && (

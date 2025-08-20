@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawer/Sheet Component Demo</title>
+    <script type="module" crossorigin src="/src/main.tsx"></script>
+    <link rel="stylesheet" crossorigin href="/src/index.css">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module">
+        import { createRoot } from 'react-dom/client';
+        import React, { useState } from 'react';
+        import Drawer, { Sheet, Sidebar, SlideOver, BottomSheet } from './src/components/ui/Drawer.tsx';
+
+        function DrawerDemo() {
+            const [leftOpen, setLeftOpen] = useState(false);
+            const [rightOpen, setRightOpen] = useState(false);
+            const [topOpen, setTopOpen] = useState(false);
+            const [bottomOpen, setBottomOpen] = useState(false);
+            
+            const [sheetOpen, setSheetOpen] = useState(false);
+            const [sidebarOpen, setSidebarOpen] = useState(false);
+            const [slideOverOpen, setSlideOverOpen] = useState(false);
+            const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
+
+            return (
+                <div className="p-8 space-y-8 bg-gray-50 min-h-screen">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-8">Drawer/Sheet Component Demo</h1>
+                    
+                    <div className="space-y-6">
+                        {/* Position Demos */}
+                        <div>
+                            <h2 className="text-xl font-semibold mb-4">Drawer Positions</h2>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <button 
+                                    onClick={() => setLeftOpen(true)}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                >
+                                    Left Drawer
+                                </button>
+                                
+                                <button 
+                                    onClick={() => setRightOpen(true)}
+                                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                                >
+                                    Right Drawer
+                                </button>
+                                
+                                <button 
+                                    onClick={() => setTopOpen(true)}
+                                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                                >
+                                    Top Drawer
+                                </button>
+                                
+                                <button 
+                                    onClick={() => setBottomOpen(true)}
+                                    className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+                                >
+                                    Bottom Drawer
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Compound Component Demos */}
+                        <div>
+                            <h2 className="text-xl font-semibold mb-4">Compound Components</h2>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <button 
+                                    onClick={() => setSheetOpen(true)}
+                                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                                >
+                                    Sheet
+                                </button>
+                                
+                                <button 
+                                    onClick={() => setSidebarOpen(true)}
+                                    className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700"
+                                >
+                                    Sidebar
+                                </button>
+                                
+                                <button 
+                                    onClick={() => setSlideOverOpen(true)}
+                                    className="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700"
+                                >
+                                    SlideOver
+                                </button>
+                                
+                                <button 
+                                    onClick={() => setBottomSheetOpen(true)}
+                                    className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+                                >
+                                    Bottom Sheet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Position Drawers */}
+                    <Drawer
+                        open={leftOpen}
+                        onClose={() => setLeftOpen(false)}
+                        position="left"
+                        title="Left Drawer"
+                        description="This drawer slides in from the left side"
+                        size="md"
+                        variant="default"
+                    >
+                        <div className="space-y-4">
+                            <p>This is a left-positioned drawer.</p>
+                            <p>Perfect for navigation menus and filters.</p>
+                            <div className="bg-blue-50 p-4 rounded-lg">
+                                <h4 className="font-semibold">Navigation Menu</h4>
+                                <ul className="mt-2 space-y-1">
+                                    <li>Dashboard</li>
+                                    <li>Projects</li>
+                                    <li>Settings</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </Drawer>
+
+                    <Drawer
+                        open={rightOpen}
+                        onClose={() => setRightOpen(false)}
+                        position="right"
+                        title="Right Drawer"
+                        description="This drawer slides in from the right side"
+                        size="lg"
+                        variant="primary"
+                        actions={[
+                            { label: 'Cancel', onClick: () => setRightOpen(false) },
+                            { label: 'Save', onClick: () => setRightOpen(false), variant: 'primary' }
+                        ]}
+                    >
+                        <div className="space-y-4">
+                            <p>This is a right-positioned drawer with actions.</p>
+                            <p>Great for detailed views and forms.</p>
+                            <div className="bg-green-50 p-4 rounded-lg">
+                                <h4 className="font-semibold">User Profile</h4>
+                                <div className="mt-2 space-y-2">
+                                    <input type="text" placeholder="Name" className="w-full p-2 border rounded" />
+                                    <input type="email" placeholder="Email" className="w-full p-2 border rounded" />
+                                    <textarea placeholder="Bio" className="w-full p-2 border rounded" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </Drawer>
+
+                    <Drawer
+                        open={topOpen}
+                        onClose={() => setTopOpen(false)}
+                        position="top"
+                        title="Top Drawer"
+                        description="This drawer slides down from the top"
+                        size="md"
+                        variant="warning"
+                    >
+                        <div className="space-y-4">
+                            <p>This is a top-positioned drawer.</p>
+                            <p>Useful for notifications and search results.</p>
+                            <div className="bg-yellow-50 p-4 rounded-lg">
+                                <h4 className="font-semibold">Notifications</h4>
+                                <div className="mt-2 space-y-2">
+                                    <div className="p-2 bg-white rounded border">New message received</div>
+                                    <div className="p-2 bg-white rounded border">Task completed</div>
+                                    <div className="p-2 bg-white rounded border">System update available</div>
+                                </div>
+                            </div>
+                        </div>
+                    </Drawer>
+
+                    <Drawer
+                        open={bottomOpen}
+                        onClose={() => setBottomOpen(false)}
+                        position="bottom"
+                        title="Bottom Drawer"
+                        description="This drawer slides up from the bottom"
+                        size="sm"
+                        variant="success"
+                    >
+                        <div className="space-y-4">
+                            <p>This is a bottom-positioned drawer.</p>
+                            <p>Perfect for mobile actions and quick inputs.</p>
+                            <div className="bg-green-50 p-4 rounded-lg">
+                                <h4 className="font-semibold">Quick Actions</h4>
+                                <div className="mt-2 grid grid-cols-2 gap-2">
+                                    <button className="p-2 bg-white rounded border hover:bg-gray-50">Share</button>
+                                    <button className="p-2 bg-white rounded border hover:bg-gray-50">Copy</button>
+                                    <button className="p-2 bg-white rounded border hover:bg-gray-50">Edit</button>
+                                    <button className="p-2 bg-white rounded border hover:bg-gray-50">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </Drawer>
+
+                    {/* Compound Components */}
+                    <Sheet
+                        open={sheetOpen}
+                        onClose={() => setSheetOpen(false)}
+                        title="Settings Sheet"
+                        description="Configure your application settings"
+                        actions={[
+                            { label: 'Reset', onClick: () => {}, variant: 'secondary' },
+                            { label: 'Apply', onClick: () => setSheetOpen(false), variant: 'primary' }
+                        ]}
+                    >
+                        <div className="space-y-6">
+                            <div>
+                                <h4 className="font-semibold mb-2">Appearance</h4>
+                                <div className="space-y-2">
+                                    <label className="flex items-center">
+                                        <input type="radio" name="theme" className="mr-2" />
+                                        Light theme
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input type="radio" name="theme" className="mr-2" />
+                                        Dark theme
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input type="radio" name="theme" className="mr-2" defaultChecked />
+                                        Auto theme
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 className="font-semibold mb-2">Notifications</h4>
+                                <div className="space-y-2">
+                                    <label className="flex items-center">
+                                        <input type="checkbox" className="mr-2" defaultChecked />
+                                        Email notifications
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input type="checkbox" className="mr-2" />
+                                        Push notifications
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </Sheet>
+
+                    <Sidebar
+                        open={sidebarOpen}
+                        onClose={() => setSidebarOpen(false)}
+                        title="Navigation"
+                    >
+                        <div className="space-y-2">
+                            <a href="#" className="block p-2 hover:bg-gray-100 rounded">Dashboard</a>
+                            <a href="#" className="block p-2 hover:bg-gray-100 rounded">Projects</a>
+                            <a href="#" className="block p-2 hover:bg-gray-100 rounded">Team</a>
+                            <a href="#" className="block p-2 hover:bg-gray-100 rounded">Analytics</a>
+                            <a href="#" className="block p-2 hover:bg-gray-100 rounded">Settings</a>
+                        </div>
+                    </Sidebar>
+
+                    <SlideOver
+                        open={slideOverOpen}
+                        onClose={() => setSlideOverOpen(false)}
+                        title="Task Details"
+                        description="View and edit task information"
+                    >
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Task Title</label>
+                                <input type="text" value="Complete project documentation" className="w-full p-2 border rounded" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Description</label>
+                                <textarea className="w-full p-2 border rounded" rows="4" 
+                                    defaultValue="Write comprehensive documentation for the new feature including API references and usage examples."></textarea>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Priority</label>
+                                <select className="w-full p-2 border rounded">
+                                    <option>Low</option>
+                                    <option>Medium</option>
+                                    <option selected>High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </SlideOver>
+
+                    <BottomSheet
+                        open={bottomSheetOpen}
+                        onClose={() => setBottomSheetOpen(false)}
+                        title="Filter Options"
+                        actions={[
+                            { label: 'Clear', onClick: () => {} },
+                            { label: 'Apply', onClick: () => setBottomSheetOpen(false), variant: 'primary' }
+                        ]}
+                    >
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-semibold mb-2">Status</h4>
+                                <div className="flex flex-wrap gap-2">
+                                    <button className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Active</button>
+                                    <button className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Pending</button>
+                                    <button className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Completed</button>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 className="font-semibold mb-2">Date Range</h4>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input type="date" className="p-2 border rounded text-sm" />
+                                    <input type="date" className="p-2 border rounded text-sm" />
+                                </div>
+                            </div>
+                        </div>
+                    </BottomSheet>
+                </div>
+            );
+        }
+
+        const container = document.getElementById('root');
+        const root = createRoot(container);
+        root.render(React.createElement(DrawerDemo));
+    </script>
+</body>
+</html>
