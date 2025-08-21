@@ -6,13 +6,14 @@
  */
 
 import React, { useState } from 'react';
+
 import Document from '@/components/ui/Document';
-import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 import type {
   DocumentFormat,
   DocumentStatus,
   DocumentSize,
 } from '@/components/ui/Document';
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 const App: React.FC = () => {
   const [selectedSize, setSelectedSize] = useState<DocumentSize>('default');
@@ -29,7 +30,7 @@ const App: React.FC = () => {
       title: 'Q4 Financial Report 2024',
       format: 'pdf' as DocumentFormat,
       status: 'final' as DocumentStatus,
-      fileSize: 2048576, // 2MB
+      fileSize: 2_048_576, // 2MB
       metadata: {
         author: 'Finance Team',
         createdAt: new Date('2024-01-15T10:00:00Z'),
@@ -46,7 +47,7 @@ const App: React.FC = () => {
       title: 'Digital Transformation Strategy',
       format: 'docx' as DocumentFormat,
       status: 'review' as DocumentStatus,
-      fileSize: 1536000, // 1.5MB
+      fileSize: 1_536_000, // 1.5MB
       metadata: {
         author: 'Sarah Mitchell',
         createdAt: new Date('2024-02-01T09:15:00Z'),
@@ -62,7 +63,7 @@ const App: React.FC = () => {
       title: 'Sales Data Analysis',
       format: 'xlsx' as DocumentFormat,
       status: 'approved' as DocumentStatus,
-      fileSize: 512000, // 512KB
+      fileSize: 512_000, // 512KB
       metadata: {
         author: 'Analytics Team',
         createdAt: new Date('2024-01-10T14:00:00Z'),
@@ -78,7 +79,7 @@ const App: React.FC = () => {
       title: 'Product Roadmap Presentation',
       format: 'pptx' as DocumentFormat,
       status: 'draft' as DocumentStatus,
-      fileSize: 4096000, // 4MB
+      fileSize: 4_096_000, // 4MB
       metadata: {
         author: 'Product Team',
         createdAt: new Date('2024-02-10T11:30:00Z'),
@@ -94,7 +95,7 @@ const App: React.FC = () => {
       title: 'Customer Feedback Export',
       format: 'csv' as DocumentFormat,
       status: 'archived' as DocumentStatus,
-      fileSize: 256000, // 256KB
+      fileSize: 256_000, // 256KB
       metadata: {
         author: 'Customer Success',
         createdAt: new Date('2023-12-15T08:00:00Z'),
@@ -109,7 +110,7 @@ const App: React.FC = () => {
       title: 'Brand Guidelines',
       format: 'image' as DocumentFormat,
       status: 'final' as DocumentStatus,
-      fileSize: 8192000, // 8MB
+      fileSize: 8_192_000, // 8MB
       thumbnailUrl:
         'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=300&h=200&fit=crop',
       metadata: {
@@ -211,10 +212,14 @@ const App: React.FC = () => {
           <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
             {/* Size Control */}
             <div>
-              <label className='mb-3 block text-sm font-medium'>
+              <label
+                htmlFor='size-variant'
+                className='mb-3 block text-sm font-medium'
+              >
                 Size Variant:
               </label>
               <select
+                id='size-variant'
                 value={selectedSize}
                 onChange={e => setSelectedSize(e.target.value as DocumentSize)}
                 className='w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500'
@@ -227,10 +232,14 @@ const App: React.FC = () => {
 
             {/* Format Filter */}
             <div>
-              <label className='mb-3 block text-sm font-medium'>
+              <label
+                htmlFor='format-filter'
+                className='mb-3 block text-sm font-medium'
+              >
                 Format Filter:
               </label>
               <select
+                id='format-filter'
                 value={selectedFormat}
                 onChange={e =>
                   setSelectedFormat(e.target.value as DocumentFormat | 'all')
@@ -249,10 +258,14 @@ const App: React.FC = () => {
 
             {/* Status Filter */}
             <div>
-              <label className='mb-3 block text-sm font-medium'>
+              <label
+                htmlFor='status-filter'
+                className='mb-3 block text-sm font-medium'
+              >
                 Status Filter:
               </label>
               <select
+                id='status-filter'
                 value={selectedStatus}
                 onChange={e =>
                   setSelectedStatus(e.target.value as DocumentStatus | 'all')

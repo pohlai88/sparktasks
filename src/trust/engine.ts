@@ -3,7 +3,10 @@
  * Secure trust root and signer rotation with threshold signatures
  */
 
+import * as AuditApi from '../audit/api';
+import { toB64u, fromB64u } from '../crypto/base64url';
 import type { StorageDriver } from '../storage/types';
+
 import type {
   TrustRoot,
   TrustManifest,
@@ -16,8 +19,6 @@ import type {
   TrustTransport,
   TrustMigration,
 } from './types';
-import { toB64u, fromB64u } from '../crypto/base64url';
-import * as AuditApi from '../audit/api';
 
 let storage: StorageDriver;
 let namespace: string;

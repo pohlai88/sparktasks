@@ -1,11 +1,12 @@
 import React, {
   forwardRef,
-  HTMLAttributes,
+  type HTMLAttributes,
   createElement,
   useMemo,
 } from 'react';
-import { cn } from '@/utils/cn';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
+import { cn } from '@/utils/cn';
 
 // ============================================================================
 // CARD COMPONENT - ENTERPRISE GRADE V3.2
@@ -207,7 +208,7 @@ const CardComponent = forwardRef<HTMLDivElement, CardProps>(
     const computedRole = useMemo(() => {
       if (role) return role;
       if (interactive) return 'button';
-      return undefined;
+      return;
     }, [role, interactive]);
 
     // ===== KEYBOARD INTERACTION =====

@@ -17,7 +17,6 @@
  * @author SparkTasks UI Team
  */
 
-import React, { forwardRef, useState } from 'react';
 import {
   FileText,
   Download,
@@ -35,6 +34,8 @@ import {
   ExternalLink,
   Presentation,
 } from 'lucide-react';
+import React, { forwardRef, useState } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // Document format types
@@ -148,7 +149,7 @@ const getFormatIcon = (format: DocumentFormat): React.ReactNode => {
   const iconProps = { className: 'size-5 shrink-0' };
 
   switch (format) {
-    case 'pdf':
+    case 'pdf': {
       return (
         <FileText
           {...iconProps}
@@ -159,8 +160,9 @@ const getFormatIcon = (format: DocumentFormat): React.ReactNode => {
           )}
         />
       );
+    }
     case 'doc':
-    case 'docx':
+    case 'docx': {
       return (
         <FileText
           {...iconProps}
@@ -171,9 +173,10 @@ const getFormatIcon = (format: DocumentFormat): React.ReactNode => {
           )}
         />
       );
+    }
     case 'xls':
     case 'xlsx':
-    case 'csv':
+    case 'csv': {
       return (
         <FileSpreadsheet
           {...iconProps}
@@ -184,8 +187,9 @@ const getFormatIcon = (format: DocumentFormat): React.ReactNode => {
           )}
         />
       );
+    }
     case 'ppt':
-    case 'pptx':
+    case 'pptx': {
       return (
         <Presentation
           {...iconProps}
@@ -196,7 +200,8 @@ const getFormatIcon = (format: DocumentFormat): React.ReactNode => {
           )}
         />
       );
-    case 'image':
+    }
+    case 'image': {
       return (
         <FileImage
           {...iconProps}
@@ -207,7 +212,8 @@ const getFormatIcon = (format: DocumentFormat): React.ReactNode => {
           )}
         />
       );
-    case 'archive':
+    }
+    case 'archive': {
       return (
         <Archive
           {...iconProps}
@@ -218,7 +224,33 @@ const getFormatIcon = (format: DocumentFormat): React.ReactNode => {
           )}
         />
       );
-    default:
+    }
+    case 'txt': {
+      return (
+        <FileText
+          {...iconProps}
+          className={combineTokens(
+            DESIGN_TOKENS.layout.spacing.fine.size5,
+            DESIGN_TOKENS.layout.flex.shrinkNone,
+            'text-gray-500'
+          )}
+        />
+      );
+    }
+    case 'rtf': {
+      return (
+        <FileText
+          {...iconProps}
+          className={combineTokens(
+            DESIGN_TOKENS.layout.spacing.fine.size5,
+            DESIGN_TOKENS.layout.flex.shrinkNone,
+            'text-amber-600'
+          )}
+        />
+      );
+    }
+    case 'unknown':
+    default: {
       return (
         <FileText
           {...iconProps}
@@ -229,6 +261,7 @@ const getFormatIcon = (format: DocumentFormat): React.ReactNode => {
           )}
         />
       );
+    }
   }
 };
 
@@ -244,7 +277,7 @@ const getStatusIndicator = (status: DocumentStatus): React.ReactNode => {
   };
 
   switch (status) {
-    case 'draft':
+    case 'draft': {
       return (
         <Clock
           {...iconProps}
@@ -255,7 +288,8 @@ const getStatusIndicator = (status: DocumentStatus): React.ReactNode => {
           )}
         />
       );
-    case 'review':
+    }
+    case 'review': {
       return (
         <AlertCircle
           {...iconProps}
@@ -266,7 +300,8 @@ const getStatusIndicator = (status: DocumentStatus): React.ReactNode => {
           )}
         />
       );
-    case 'approved':
+    }
+    case 'approved': {
       return (
         <CheckCircle2
           {...iconProps}
@@ -277,7 +312,8 @@ const getStatusIndicator = (status: DocumentStatus): React.ReactNode => {
           )}
         />
       );
-    case 'final':
+    }
+    case 'final': {
       return (
         <CheckCircle2
           {...iconProps}
@@ -288,7 +324,8 @@ const getStatusIndicator = (status: DocumentStatus): React.ReactNode => {
           )}
         />
       );
-    case 'archived':
+    }
+    case 'archived': {
       return (
         <Archive
           {...iconProps}
@@ -299,8 +336,10 @@ const getStatusIndicator = (status: DocumentStatus): React.ReactNode => {
           )}
         />
       );
-    default:
+    }
+    default: {
       return null;
+    }
   }
 };
 

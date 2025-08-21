@@ -1,10 +1,10 @@
-import type { StorageDriver } from './types';
 import type {
   RemoteTransport,
   SyncState,
   QueueItem,
   RemoteAdapterOptions,
 } from './remoteTypes';
+import type { StorageDriver } from './types';
 
 /**
  * Remote sync adapter that wraps a local StorageDriver
@@ -32,7 +32,7 @@ export class RemoteAdapter implements StorageDriver {
     this.options = {
       maxBatch: options?.maxBatch ?? 10,
       baseDelayMs: options?.baseDelayMs ?? 100,
-      maxDelayMs: options?.maxDelayMs ?? 30000,
+      maxDelayMs: options?.maxDelayMs ?? 30_000,
       ratePerSec: options?.ratePerSec ?? 5,
       noRateLimit: options?.noRateLimit ?? false,
       noBackoff: options?.noBackoff ?? false,
@@ -252,16 +252,14 @@ export class RemoteAdapter implements StorageDriver {
               await this.local.setItem(item.key, remote.value);
             }
           }
-        } else if (item.op === 'del') {
-          // Local wins only if strictly newer
-          if (
-            !remote ||
+        } else if (
+          item.op === 'del' && // Local wins only if strictly newer
+          (!remote ||
             new Date(item.updatedAt).getTime() >
-              new Date(remote.updatedAt).getTime()
-          ) {
-            await this.remote.del(item.key, item.updatedAt);
-            pushed++;
-          }
+              new Date(remote.updatedAt).getTime())
+        ) {
+          await this.remote.del(item.key, item.updatedAt);
+          pushed++;
         }
       } catch (error) {
         // Put failed item back in queue
@@ -292,7 +290,13 @@ export class RemoteAdapter implements StorageDriver {
       if (!local) {
         // No local version, apply remote
         shouldApplyRemote = true;
-      } else if (!localMeta) {
+      } else if (localMeta) {
+        // Compare timestamps using getTime() for deterministic comparison
+        const meta = this.parseMetadata(localMeta);
+        const localTime = new Date(meta.updatedAt).getTime();
+        const remoteTime = new Date(item.updatedAt).getTime();
+        shouldApplyRemote = remoteTime > localTime; // Remote wins only if strictly newer
+      } else {
         // Local exists but no metadata (legacy key)
         // Migration: create metadata with current timestamp and apply remote if different
         const migrationTimestamp = new Date().toISOString();
@@ -303,12 +307,6 @@ export class RemoteAdapter implements StorageDriver {
 
         // Apply remote if content differs (conservative approach for legacy data)
         shouldApplyRemote = local !== item.value;
-      } else {
-        // Compare timestamps using getTime() for deterministic comparison
-        const meta = this.parseMetadata(localMeta);
-        const localTime = new Date(meta.updatedAt).getTime();
-        const remoteTime = new Date(item.updatedAt).getTime();
-        shouldApplyRemote = remoteTime > localTime; // Remote wins only if strictly newer
       }
 
       if (shouldApplyRemote) {

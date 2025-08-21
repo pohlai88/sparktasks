@@ -172,7 +172,7 @@ export const VideoDemo: React.FC = () => {
                 type='checkbox'
                 checked={controls}
                 onChange={e => setControls(e.target.checked)}
-                className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                className='size-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
               />
               <span className='text-sm text-gray-700 dark:text-gray-300'>
                 Show Controls
@@ -184,7 +184,7 @@ export const VideoDemo: React.FC = () => {
                 type='checkbox'
                 checked={autoPlay}
                 onChange={e => setAutoPlay(e.target.checked)}
-                className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                className='size-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
               />
               <span className='text-sm text-gray-700 dark:text-gray-300'>
                 Auto Play
@@ -196,7 +196,7 @@ export const VideoDemo: React.FC = () => {
                 type='checkbox'
                 checked={loop}
                 onChange={e => setLoop(e.target.checked)}
-                className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                className='size-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
               />
               <span className='text-sm text-gray-700 dark:text-gray-300'>
                 Loop
@@ -208,7 +208,7 @@ export const VideoDemo: React.FC = () => {
                 type='checkbox'
                 checked={muted}
                 onChange={e => setMuted(e.target.checked)}
-                className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                className='size-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
               />
               <span className='text-sm text-gray-700 dark:text-gray-300'>
                 Muted
@@ -220,7 +220,7 @@ export const VideoDemo: React.FC = () => {
                 type='checkbox'
                 checked={loading}
                 onChange={e => setLoading(e.target.checked)}
-                className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                className='size-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
               />
               <span className='text-sm text-gray-700 dark:text-gray-300'>
                 Loading State
@@ -232,7 +232,7 @@ export const VideoDemo: React.FC = () => {
                 type='checkbox'
                 checked={showError}
                 onChange={e => setShowError(e.target.checked)}
-                className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                className='size-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
               />
               <span className='text-sm text-gray-700 dark:text-gray-300'>
                 Show Error
@@ -244,7 +244,7 @@ export const VideoDemo: React.FC = () => {
                 type='checkbox'
                 checked={disabled}
                 onChange={e => setDisabled(e.target.checked)}
-                className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                className='size-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
               />
               <span className='text-sm text-gray-700 dark:text-gray-300'>
                 Disabled

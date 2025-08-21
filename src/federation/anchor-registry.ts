@@ -3,9 +3,10 @@
  * Storage and state management for synced trust anchors
  */
 
-import type { StorageDriver } from '../storage/types';
-import type { Anchor, AnchorPack, SyncState } from './sync-types';
 import { toB64u } from '../crypto/base64url';
+import type { StorageDriver } from '../storage/types';
+
+import type { Anchor, AnchorPack, SyncState } from './sync-types';
 
 // Reuse canonicalize from existing code
 function canonicalize(obj: any): string {

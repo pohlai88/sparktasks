@@ -18,9 +18,14 @@
  * @author Enterprise Design System
  */
 
-import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
-import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
-import { ComponentSize, ComponentVariant } from '@/design/tokens';
+import React, { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+
+import {
+  DESIGN_TOKENS,
+  combineTokens,
+  type ComponentSize,
+  type ComponentVariant,
+} from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -97,30 +102,42 @@ interface WellFooterProps extends HTMLAttributes<HTMLDivElement> {
 
 const getWellVariantClasses = (variant: WellVariant): string => {
   switch (variant) {
-    case 'default':
+    case 'default': {
       return DESIGN_TOKENS.recipe.well.base;
-    case 'primary':
+    }
+    case 'primary': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.info}`;
-    case 'secondary':
+    }
+    case 'secondary': {
       return DESIGN_TOKENS.recipe.well.base;
-    case 'success':
+    }
+    case 'success': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.success}`;
-    case 'warning':
+    }
+    case 'warning': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.warning}`;
-    case 'error':
+    }
+    case 'error': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.error}`;
-    case 'info':
+    }
+    case 'info': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.info}`;
-    case 'interactive':
+    }
+    case 'interactive': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.interactive}`;
-    case 'elevated':
+    }
+    case 'elevated': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.elevated}`;
-    case 'flat':
+    }
+    case 'flat': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.flat}`;
-    case 'outlined':
+    }
+    case 'outlined': {
       return `${DESIGN_TOKENS.recipe.well.base} ${DESIGN_TOKENS.recipe.well.outlined}`;
-    default:
+    }
+    default: {
       return DESIGN_TOKENS.recipe.well.base;
+    }
   }
 };
 

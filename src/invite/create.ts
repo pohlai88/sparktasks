@@ -1,12 +1,13 @@
 /**
  * Create invite for headless device onboarding with role binding
  */
-import type { KeyringProvider } from '../crypto/keyring';
-import type { InviteEnvelope, InviteMeta, Role } from './types';
-import { toB64u } from '../crypto/base64url';
 import * as AuditApi from '../audit/api';
+import { toB64u } from '../crypto/base64url';
+import type { KeyringProvider } from '../crypto/keyring';
 import { enforcePolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
+
+import type { InviteEnvelope, InviteMeta, Role } from './types';
 
 // Configuration dependencies for role authorization
 let membershipApi: {
@@ -84,7 +85,7 @@ export async function createInvite(args: {
 
   // Generate session key material
   const salt = crypto.getRandomValues(new Uint8Array(16));
-  const iter = 100000;
+  const iter = 100_000;
   const inviteId = crypto.randomUUID();
   const aad = `${ns}:${inviteId}`;
 
@@ -149,7 +150,7 @@ export async function createInvite(args: {
   // Emit audit event for invite creation
   if (membershipApi) {
     AuditApi.log('INVITE_CREATED', { role, inviteId, ns }, signerPubB64u).catch(
-      err => console.error('Audit log failed:', err)
+      error => console.error('Audit log failed:', error)
     );
   }
 

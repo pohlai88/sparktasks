@@ -1,14 +1,15 @@
 /**
  * Accept invite for headless device onboarding with role enforcement
  */
-import type { KeyringProvider } from '../crypto/keyring';
-import type { InviteEnvelope, Role, InviteRoleConfig } from './types';
-import type { BackupBundle } from '../crypto/keyringTypes';
-import { fromB64u } from '../crypto/base64url';
-import { isInviteRevoked, isSignerRevoked } from '../revoke/guard';
 import * as AuditApi from '../audit/api';
+import { fromB64u } from '../crypto/base64url';
+import type { KeyringProvider } from '../crypto/keyring';
+import type { BackupBundle } from '../crypto/keyringTypes';
 import { enforcePolicy } from '../policy/engine';
+import { isInviteRevoked, isSignerRevoked } from '../revoke/guard';
 import type { StorageDriver } from '../storage/types';
+
+import type { InviteEnvelope, Role, InviteRoleConfig } from './types';
 
 // Configuration dependencies for role enforcement
 let membershipApi: {
@@ -59,7 +60,7 @@ export async function acceptInvite(args: {
     actorId,
     storage,
     now = () => new Date(),
-    skewMs = 300000,
+    skewMs = 300_000,
   } = args;
 
   // Extract invite ID from AAD
@@ -194,7 +195,7 @@ export async function acceptInvite(args: {
       'INVITE_ACCEPTED',
       { role: boundRole, inviteId, userId: actorId },
       actorId
-    ).catch(err => console.error('Audit log failed:', err));
+    ).catch(error => console.error('Audit log failed:', error));
   }
 
   return {

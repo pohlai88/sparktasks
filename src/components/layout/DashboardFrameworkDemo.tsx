@@ -230,7 +230,7 @@ export const DashboardFrameworkDemo: React.FC = () => {
     return (
       <div className='flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900'>
         <div className='text-center'>
-          <div className='mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-blue-600'></div>
+          <div className='mx-auto mb-4 size-12 animate-spin rounded-full border-b-2 border-blue-600'></div>
           <p className='text-slate-600 dark:text-slate-400'>
             Loading dashboard...
           </p>

@@ -25,15 +25,6 @@
  */
 
 import {
-  forwardRef,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useRef,
-} from 'react';
-import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
-import {
   Play,
   Square,
   Copy,
@@ -50,6 +41,16 @@ import {
   Lightbulb,
   Zap,
 } from 'lucide-react';
+import {
+  forwardRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
+
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // Supported languages for the code playground
 export type CodeLanguage =
@@ -181,7 +182,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ children, onClick }) => {
   return (
-    <button 
+    <button
       onClick={onClick}
       style={{
         padding: '8px 16px',
@@ -227,7 +228,7 @@ export default function App() {
             height: 100vh;
             font-family: Arial, sans-serif;
         }
-        
+
         .box {
             width: 100px;
             height: 100px;
@@ -235,7 +236,7 @@ export default function App() {
             border-radius: 8px;
             animation: bounce 2s infinite;
         }
-        
+
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
@@ -442,7 +443,7 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
             case 'javascript':
             case 'typescript':
             case 'jsx':
-            case 'tsx':
+            case 'tsx': {
               // For JS/TS, we'll inject into iframe for safe execution
               if (previewRef.current) {
                 const previewDocument = previewRef.current.contentDocument;
@@ -457,9 +458,9 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <style>
-                      body { 
-                        margin: 0; 
-                        padding: 16px; 
+                      body {
+                        margin: 0;
+                        padding: 16px;
                         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                         background: white;
                         color: #1a1a1a;
@@ -474,19 +475,19 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
                       const logs = [];
                       const originalLog = console.log;
                       const originalError = console.error;
-                      
+
                       console.log = (...args) => {
                         logs.push({ type: 'log', args });
                         originalLog(...args);
                         window.parent.postMessage({ type: 'console', data: { type: 'log', args } }, '*');
                       };
-                      
+
                       console.error = (...args) => {
                         logs.push({ type: 'error', args });
                         originalError(...args);
                         window.parent.postMessage({ type: 'console', data: { type: 'error', args } }, '*');
                       };
-                      
+
                       try {
                         ${codeToRun}
                       } catch (error) {
@@ -510,8 +511,9 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
                 }
               }
               break;
+            }
 
-            case 'html':
+            case 'html': {
               // For HTML, inject directly into preview
               if (previewRef.current?.contentDocument) {
                 previewRef.current.contentDocument.open();
@@ -520,8 +522,9 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
                 result.output = 'HTML rendered successfully';
               }
               break;
+            }
 
-            case 'css':
+            case 'css': {
               // For CSS, create a styled preview
               if (previewRef.current?.contentDocument) {
                 const htmlContent = `
@@ -549,9 +552,49 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
                 result.output = 'CSS applied successfully';
               }
               break;
+            }
 
-            default:
+            case 'json': {
+              // For JSON, show formatted preview
+              try {
+                const parsed = JSON.parse(codeToRun);
+                result.output = JSON.stringify(parsed, null, 2);
+              } catch (error) {
+                result.error = `Invalid JSON: ${error instanceof Error ? error.message : String(error)}`;
+              }
+              break;
+            }
+
+            case 'markdown': {
+              // For Markdown, show rendered preview
+              if (previewRef.current?.contentDocument) {
+                const htmlContent = `
+              <!DOCTYPE html>
+              <html>
+              <head>
+                <meta charset="UTF-8">
+                <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 20px; }
+                  pre { background: #f5f5f5; padding: 10px; border-radius: 4px; }
+                  code { background: #f5f5f5; padding: 2px 4px; border-radius: 2px; }
+                </style>
+              </head>
+              <body>
+                <pre>${codeToRun.replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</pre>
+              </body>
+              </html>
+            `;
+                previewRef.current.contentDocument.open();
+                previewRef.current.contentDocument.write(htmlContent);
+                previewRef.current.contentDocument.close();
+                result.output = 'Markdown preview rendered';
+              }
+              break;
+            }
+
+            default: {
               result.output = 'Preview not available for this language';
+            }
           }
 
           result.logs = logs;
@@ -661,11 +704,11 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
         ta.style.cssText =
           'position:fixed;top:-1000px;left:-1000px;width:1px;height:1px;opacity:0;';
         ta.setAttribute('aria-hidden', 'true');
-        document.body.appendChild(ta);
+        document.body.append(ta);
         ta.select();
-        ta.setSelectionRange(0, 99999); // For mobile devices
+        ta.setSelectionRange(0, 99_999); // For mobile devices
         const success = document.execCommand('copy');
-        document.body.removeChild(ta);
+        ta.remove();
         if (success) {
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
@@ -684,7 +727,7 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
       } else {
         // Default sharing via URL encoding
         const encodedCode = encodeURIComponent(code);
-        const shareUrl = `${window.location.origin}${window.location.pathname}?code=${encodedCode}&lang=${currentLanguage}`;
+        const shareUrl = `${globalThis.location.origin}${globalThis.location.pathname}?code=${encodedCode}&lang=${currentLanguage}`;
         try {
           await navigator.clipboard.writeText(shareUrl);
           setCopied(true);
@@ -696,10 +739,10 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
           ta.setAttribute('readonly', '');
           ta.style.cssText =
             'position:fixed;top:-1000px;left:-1000px;width:1px;height:1px;opacity:0;';
-          document.body.appendChild(ta);
+          document.body.append(ta);
           ta.select();
           document.execCommand('copy');
-          document.body.removeChild(ta);
+          ta.remove();
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
         }
@@ -803,18 +846,24 @@ export const CodePlayground = forwardRef<HTMLDivElement, CodePlaygroundProps>(
     // Layout-specific classes
     const layoutClasses = useMemo(() => {
       switch (layout) {
-        case 'vertical':
+        case 'vertical': {
           return 'flex flex-col';
-        case 'horizontal':
+        }
+        case 'horizontal': {
           return 'flex flex-row';
-        case 'editor-only':
+        }
+        case 'editor-only': {
           return 'flex flex-col';
-        case 'preview-only':
+        }
+        case 'preview-only': {
           return 'flex flex-col';
-        case 'tabs':
+        }
+        case 'tabs': {
           return 'flex flex-col';
-        default:
+        }
+        default: {
           return 'flex flex-row';
+        }
       }
     }, [layout]);
 

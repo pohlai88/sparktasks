@@ -5,6 +5,7 @@
 // * DoD (ALL): type-check/test/build pass; eslint+prettier clean (touched files); perf budgets respected; UI tasks must validate focus/ARIA/keyboard.
 
 import { useEffect, useCallback, useState } from 'react';
+
 import type { TaskId } from '../types/task';
 
 interface KeyboardNavigationState {
@@ -85,29 +86,34 @@ export function useKeyboardNavigation({
 
       switch (e.key) {
         case 'j':
-        case 'ArrowDown':
+        case 'ArrowDown': {
           e.preventDefault();
           navigateDown();
           break;
+        }
         case 'k':
-        case 'ArrowUp':
+        case 'ArrowUp': {
           e.preventDefault();
           navigateUp();
           break;
-        case 'm':
+        }
+        case 'm': {
           e.preventDefault();
           openMoveMenu();
           break;
-        case 'Escape':
+        }
+        case 'Escape': {
           e.preventDefault();
           exitNavigation();
           break;
-        case 'Tab':
+        }
+        case 'Tab': {
           // Allow Tab to exit keyboard navigation
           if (!e.shiftKey) {
             exitNavigation();
           }
           break;
+        }
       }
     };
 

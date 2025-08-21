@@ -2,13 +2,15 @@
  * Maintenance runner - executes maintenance plans
  */
 
-import { MaintenancePlan, MaintenanceReport } from './types';
-import { StorageDriver } from '../storage/types';
-import { EncryptedDriver } from '../storage/encrypted';
-import { KeyringProvider } from '../crypto/keyring';
-import { compactWithSnapshot } from '../domain/task/eventlog';
-import { Envelope } from '../crypto/types';
 import { toB64u } from '../crypto/base64url';
+import { type KeyringProvider } from '../crypto/keyring';
+import { type Envelope } from '../crypto/types';
+import { compactWithSnapshot } from '../domain/task/eventlog';
+import { logger } from '../lib/logger';
+import { type EncryptedDriver } from '../storage/encrypted';
+import { type StorageDriver } from '../storage/types';
+
+import { type MaintenancePlan, type MaintenanceReport } from './types';
 
 export interface MaintenanceDeps {
   storage: StorageDriver;
@@ -106,7 +108,7 @@ async function executeRekey(
       const resumeIndex = keys.indexOf(resumeKey);
       if (resumeIndex > 0) {
         keys = keys.slice(resumeIndex);
-        console.log(
+        logger.debug(
           `Resuming REKEY from key: ${resumeKey} (${keys.length} remaining)`
         );
       }

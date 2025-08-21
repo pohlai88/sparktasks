@@ -14,6 +14,7 @@
  * - Enterprise motion system integration
  */
 
+import { ChevronDown } from 'lucide-react';
 import React, {
   forwardRef,
   useCallback,
@@ -21,8 +22,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
-import { ChevronDown } from 'lucide-react';
 
 // Type definitions
 export type DropdownPlacement =
@@ -104,7 +105,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
   ) => {
     // State management
     const [internalOpen, setInternalOpen] = useState(false);
-    const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
+    const isOpen = controlledOpen === undefined ? internalOpen : controlledOpen;
     const [focusedIndex, setFocusedIndex] = useState(-1);
 
     // Refs for DOM manipulation
@@ -155,7 +156,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           if (item.target === '_blank') {
             window.open(item.href, '_blank', 'noopener,noreferrer');
           } else {
-            window.location.href = item.href;
+            globalThis.location.href = item.href;
           }
         }
 
@@ -173,25 +174,27 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         if (disabled) return;
 
         switch (event.key) {
-          case 'ArrowDown':
+          case 'ArrowDown': {
             event.preventDefault();
-            if (!isOpen) {
+            if (isOpen) {
+              setFocusedIndex(prev => (prev < items.length - 1 ? prev + 1 : 0));
+            } else {
               openDropdown();
               setFocusedIndex(0);
-            } else {
-              setFocusedIndex(prev => (prev < items.length - 1 ? prev + 1 : 0));
             }
             break;
+          }
 
-          case 'ArrowUp':
+          case 'ArrowUp': {
             event.preventDefault();
             if (isOpen) {
               setFocusedIndex(prev => (prev > 0 ? prev - 1 : items.length - 1));
             }
             break;
+          }
 
           case 'Enter':
-          case ' ':
+          case ' ': {
             event.preventDefault();
             if (!isOpen) {
               openDropdown();
@@ -199,19 +202,22 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
               handleItemClick(items[focusedIndex]);
             }
             break;
+          }
 
-          case 'Escape':
+          case 'Escape': {
             event.preventDefault();
             if (isOpen) {
               closeDropdown();
             }
             break;
+          }
 
-          case 'Tab':
+          case 'Tab': {
             if (isOpen) {
               closeDropdown();
             }
             break;
+          }
         }
       },
       [
@@ -384,22 +390,37 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
                   disabled={item.disabled}
                   onClick={() => handleItemClick(item)}
                   onKeyDown={e => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleItemClick(item);
-                    } else if (e.key === 'Escape') {
-                      e.preventDefault();
-                      closeDropdown();
-                    } else if (e.key === 'ArrowDown') {
-                      e.preventDefault();
-                      setFocusedIndex(prev =>
-                        prev < items.length - 1 ? prev + 1 : 0
-                      );
-                    } else if (e.key === 'ArrowUp') {
-                      e.preventDefault();
-                      setFocusedIndex(prev =>
-                        prev > 0 ? prev - 1 : items.length - 1
-                      );
+                    switch (e.key) {
+                      case 'Enter':
+                      case ' ': {
+                        e.preventDefault();
+                        handleItemClick(item);
+
+                        break;
+                      }
+                      case 'Escape': {
+                        e.preventDefault();
+                        closeDropdown();
+
+                        break;
+                      }
+                      case 'ArrowDown': {
+                        e.preventDefault();
+                        setFocusedIndex(prev =>
+                          prev < items.length - 1 ? prev + 1 : 0
+                        );
+
+                        break;
+                      }
+                      case 'ArrowUp': {
+                        e.preventDefault();
+                        setFocusedIndex(prev =>
+                          prev > 0 ? prev - 1 : items.length - 1
+                        );
+
+                        break;
+                      }
+                      // No default
                     }
                   }}
                   onMouseEnter={() => setFocusedIndex(index)}

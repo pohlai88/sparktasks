@@ -23,6 +23,7 @@
  */
 
 import React from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 import { cn } from '@/utils/cn';
 
@@ -469,7 +470,7 @@ interface BannerActionsProps {
 }
 
 const BannerActions: React.FC<BannerActionsProps> = ({ actions, size }) => {
-  if (!actions.length) return null;
+  if (actions.length === 0) return null;
 
   const sizeClasses = getSizeClasses(size);
 
@@ -614,7 +615,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
 
     // Check persistence on mount
     React.useEffect(() => {
-      if (persistenceKey && typeof window !== 'undefined') {
+      if (persistenceKey && typeof globalThis !== 'undefined') {
         const dismissed = localStorage.getItem(
           `banner-dismissed-${persistenceKey}`
         );
@@ -630,7 +631,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
       setIsDismissed(true);
 
       // Persist dismissal if key provided
-      if (persistenceKey && typeof window !== 'undefined') {
+      if (persistenceKey && typeof globalThis !== 'undefined') {
         localStorage.setItem(`banner-dismissed-${persistenceKey}`, 'true');
       }
 
@@ -675,7 +676,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
         )}
         role='banner'
         aria-labelledby={displayTitle ? 'banner-title' : undefined}
-        aria-label={ariaLabel || (!displayTitle ? 'Banner' : undefined)}
+        aria-label={ariaLabel || (displayTitle ? undefined : 'Banner')}
         data-testid={testId}
         {...props}
       >

@@ -1,7 +1,11 @@
 /**
  * Phase B - Task 25: Compact Witness Helpers (≤60 LOC)
  */
-import { Witness, WitnessSig, WitnessPolicy } from './compact-types';
+import {
+  type Witness,
+  type WitnessSig,
+  type WitnessPolicy,
+} from './compact-types';
 
 export function canonicalize(obj: any): string {
   if (typeof obj !== 'object' || obj === null) return JSON.stringify(obj);

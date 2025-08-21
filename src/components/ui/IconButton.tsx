@@ -10,6 +10,7 @@
  */
 
 import React, { forwardRef } from 'react';
+
 import { DESIGN_TOKENS } from '@/design/tokens';
 import type { IconSize } from '@/design/tokens';
 
@@ -49,14 +50,21 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     // Icon sizing based on button size
     const getIconSize = (): IconSize => {
       switch (size) {
-        case 'sm':
+        case 'sm': {
           return 'sm';
-        case 'lg':
-          return 'lg';
-        case 'xl':
-          return 'xl';
-        default:
+        }
+        case 'md': {
           return 'md';
+        }
+        case 'lg': {
+          return 'lg';
+        }
+        case 'xl': {
+          return 'xl';
+        }
+        default: {
+          return 'md';
+        }
       }
     };
 

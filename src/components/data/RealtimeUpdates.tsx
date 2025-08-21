@@ -21,6 +21,7 @@ import React, {
   useRef,
   useMemo,
 } from 'react';
+
 import { DESIGN_TOKENS } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
@@ -196,10 +197,10 @@ const useWebSocket = (
       const wsUrl = createWebSocketUrl(config.endpoint, config.authToken);
       const ws = new WebSocket(wsUrl);
 
-      ws.onopen = () => {
+      ws.addEventListener('open', () => {
         onStatusChange('connected');
         setReconnectAttempts(0);
-      };
+      });
 
       ws.onmessage = event => {
         try {
@@ -211,7 +212,7 @@ const useWebSocket = (
         }
       };
 
-      ws.onclose = () => {
+      ws.addEventListener('close', () => {
         onStatusChange('disconnected');
         const maxAttempts = config.maxReconnectAttempts ?? 5;
         if (reconnectAttempts < maxAttempts) {
@@ -221,7 +222,7 @@ const useWebSocket = (
             connect();
           }, config.reconnectDelay ?? 3000);
         }
-      };
+      });
 
       ws.onerror = () => {
         onStatusChange('error');
@@ -269,7 +270,7 @@ const usePolling = (
         );
         const response = await fetch(url, {
           ...(config.headers && { headers: config.headers }),
-          signal: AbortSignal.timeout(config.timeout ?? 10000),
+          signal: AbortSignal.timeout(config.timeout ?? 10_000),
         });
 
         if (!response.ok) {
@@ -316,7 +317,7 @@ const DefaultLoadingComponent: React.FC<{ state: RealtimeUpdateState }> = ({
   <div className={DESIGN_TOKENS.recipe.card.base}>
     <div className='flex items-center space-x-3'>
       <div
-        className={`h-4 w-4 animate-pulse rounded-full ${
+        className={`size-4 animate-pulse rounded-full ${
           state.status === 'connecting'
             ? 'bg-amber-400'
             : state.status === 'reconnecting'
@@ -424,8 +425,8 @@ export const RealtimeUpdates = <T,>({
           setError(undefined);
           onUpdate?.(processedData);
         }, finalOptions.debounceMs);
-      } catch (err) {
-        const error = err as Error;
+      } catch (error_) {
+        const error = error_ as Error;
         setError(error);
         onError?.(error);
       }

@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Avatar, AvatarProps } from './Avatar';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
+
+import { Avatar, type AvatarProps } from './Avatar';
 
 export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   avatars: Array<AvatarProps & { key?: React.Key }>;

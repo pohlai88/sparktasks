@@ -18,7 +18,7 @@ import { HoverCard } from '@/components/ui/HoverCard';
 const UserProfileContent = () => (
   <div className='space-y-3'>
     <div className='flex items-center space-x-3'>
-      <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 font-semibold text-white'>
+      <div className='flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 font-semibold text-white'>
         JD
       </div>
       <div>
@@ -110,7 +110,7 @@ export default function HoverCardDemo() {
                   variant='elevation'
                 >
                   <div className='flex cursor-pointer items-center space-x-2 rounded p-2 hover:bg-gray-100'>
-                    <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-sm font-medium text-white'>
+                    <div className='flex size-8 items-center justify-center rounded-full bg-blue-500 text-sm font-medium text-white'>
                       JD
                     </div>
                     <span className='text-gray-700'>John Doe</span>
@@ -129,7 +129,7 @@ export default function HoverCardDemo() {
                   variant='rich'
                   position='bottom'
                 >
-                  <div className='h-16 w-16 cursor-pointer rounded-lg bg-gradient-to-r from-purple-400 to-pink-500 transition-transform hover:scale-105'></div>
+                  <div className='size-16 cursor-pointer rounded-lg bg-gradient-to-r from-purple-400 to-pink-500 transition-transform hover:scale-105'></div>
                 </HoverCard>
               </div>
             </div>

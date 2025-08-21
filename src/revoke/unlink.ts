@@ -3,10 +3,11 @@
  */
 
 import type { KeyringProvider } from '../crypto/keyring';
-import { revokeSigner } from './registry';
+import type { Role } from '../membership/types';
 import { enforcePolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
-import type { Role } from '../membership/types';
+
+import { revokeSigner } from './registry';
 
 export async function unlinkDevice(args: {
   ns: string;

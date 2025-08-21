@@ -1,6 +1,6 @@
 /**
  * Button Component - Enterprise-Grade Action Primitive
- * 
+ *
  * Showcases DESIGN_TOKENS V3.2 enterprise capabilities:
  * - Ad                       >
               <circle
@@ -31,6 +31,7 @@
  */
 
 import React, { forwardRef } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 import type { IconSize } from '@/design/tokens';
 
@@ -83,14 +84,21 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     // Icon sizing based on button size
     const getIconSize = (): IconSize => {
       switch (size) {
-        case 'sm':
+        case 'sm': {
           return 'sm';
-        case 'lg':
-          return 'lg';
-        case 'xl':
-          return 'xl';
-        default:
+        }
+        case 'md': {
           return 'md';
+        }
+        case 'lg': {
+          return 'lg';
+        }
+        case 'xl': {
+          return 'xl';
+        }
+        default: {
+          return 'md';
+        }
       }
     };
 

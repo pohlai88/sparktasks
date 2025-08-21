@@ -1,4 +1,5 @@
-import React, { forwardRef, HTMLAttributes, useMemo } from 'react';
+import React, { forwardRef, type HTMLAttributes, useMemo } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ============================================================================
@@ -411,9 +412,9 @@ const PanelComponent = forwardRef<HTMLDivElement, PanelProps>(
     return (
       <div
         ref={ref}
-        className={` ${variant !== 'default' ? panelVariants[variant] : ''} ${variant === 'default' ? surfaceVariants[surface] : ''} ${variant === 'default' ? borderVariants[border] : ''} ${sizeVariants[size]} ${paddingVariants[padding]} ${roundedVariants[rounded]} ${shadowVariants[shadow]} ${overflowVariants[overflow]} ${interactive ? 'cursor-pointer transition-shadow duration-200 hover:shadow-md' : ''} ${interactive ? 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' : ''} ${className || ''} `
+        className={` ${variant === 'default' ? '' : panelVariants[variant]} ${variant === 'default' ? surfaceVariants[surface] : ''} ${variant === 'default' ? borderVariants[border] : ''} ${sizeVariants[size]} ${paddingVariants[padding]} ${roundedVariants[rounded]} ${shadowVariants[shadow]} ${overflowVariants[overflow]} ${interactive ? 'cursor-pointer transition-shadow duration-200 hover:shadow-md' : ''} ${interactive ? 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' : ''} ${className || ''} `
           .trim()
-          .replace(/\s+/g, ' ')}
+          .replaceAll(/\s+/g, ' ')}
         role={computedRole}
         tabIndex={computedTabIndex}
         onClick={handleClick}
@@ -486,7 +487,7 @@ const PanelContent = forwardRef<HTMLDivElement, PanelContentProps>(
         ref={ref}
         className={` ${spacingVariants[spacing]} ${scrollable ? 'overflow-auto' : ''} text-slate-700 dark:text-slate-300 ${className || ''} `
           .trim()
-          .replace(/\s+/g, ' ')}
+          .replaceAll(/\s+/g, ' ')}
         {...props}
       >
         {children}
@@ -523,7 +524,7 @@ const PanelFooter = forwardRef<HTMLDivElement, PanelFooterProps>(
         ref={ref}
         className={`flex items-center gap-3 p-6 ${alignVariants[align]} ${bordered ? 'border-t border-slate-200 dark:border-slate-700' : ''} ${sticky ? 'sticky bottom-0 bg-white dark:bg-slate-900' : ''} ${className || ''} `
           .trim()
-          .replace(/\s+/g, ' ')}
+          .replaceAll(/\s+/g, ' ')}
         {...props}
       >
         {children}

@@ -3,9 +3,10 @@
  * Tamper-evident, encrypted, append-only audit trail
  */
 
-import type { StorageDriver } from '../storage/types';
-import type { AuditEntry, AuditType, Query, Page } from './types';
 import { toB64u } from '../crypto/base64url';
+import type { StorageDriver } from '../storage/types';
+
+import type { AuditEntry, AuditType, Query, Page } from './types';
 
 let storage: StorageDriver;
 let namespace: string;
@@ -132,7 +133,8 @@ export async function list(q?: Query): Promise<Page> {
   if (q?.cursor) startKey = q.cursor;
 
   // Get keys in range
-  const filteredKeys = (await storage.listKeys(prefix))
+  const allKeys = await storage.listKeys(prefix);
+  const filteredKeys = allKeys
     .filter(key => key >= startKey && key < endKey)
     .sort()
     .slice(0, limit + 1);
@@ -163,9 +165,8 @@ export async function exportAll(): Promise<{
   }
 
   const prefix = `audit:${namespace}:e:`;
-  const entryKeys = (await storage.listKeys(prefix))
-    .filter(key => key.startsWith(prefix))
-    .sort();
+  const allEntryKeys = await storage.listKeys(prefix);
+  const entryKeys = allEntryKeys.filter(key => key.startsWith(prefix)).sort();
 
   // Fetch all entries
   const allEntries: AuditEntry[] = [];
@@ -196,7 +197,7 @@ function sortByChainOrder(entries: AuditEntry[]): AuditEntry[] {
     childMap.set(entry.prev, entry);
   }
 
-  const first = childMap.get(undefined);
+  const first = childMap.get();
   if (!first) {
     return [...entries].sort(
       (a, b) => a.ts.localeCompare(b.ts) || a.id.localeCompare(b.id)

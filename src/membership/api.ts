@@ -3,7 +3,11 @@
  * Headless role-based membership with E2EE compatibility
  */
 
+import * as AuditApi from '../audit/api';
+import { toB64u, fromB64u } from '../crypto/base64url';
+import { enforcePolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
+
 import type {
   Role,
   MOp,
@@ -13,9 +17,6 @@ import type {
   MPlan,
   MResult,
 } from './types';
-import { toB64u, fromB64u } from '../crypto/base64url';
-import * as AuditApi from '../audit/api';
-import { enforcePolicy } from '../policy/engine';
 
 let storage: StorageDriver;
 let namespace: string;
@@ -161,7 +162,7 @@ function applyRecord(state: MState, record: MRecord): MState {
   const prevRole = newState.users[record.user];
 
   switch (record.op) {
-    case 'ADD':
+    case 'ADD': {
       if (record.role) {
         newState.users[record.user] = record.role;
         if (record.role === 'OWNER') {
@@ -181,11 +182,13 @@ function applyRecord(state: MState, record: MRecord): MState {
         }
       }
       break;
-    case 'REMOVE':
+    }
+    case 'REMOVE': {
       delete newState.users[record.user];
       newState.owners = newState.owners.filter(o => o !== record.user);
       break;
-    case 'ROLE':
+    }
+    case 'ROLE': {
       if (record.role && newState.users[record.user]) {
         // Audit role changes (especially downgrades)
         if (prevRole && ROLE_LEVELS[prevRole] > ROLE_LEVELS[record.role]) {
@@ -206,7 +209,7 @@ function applyRecord(state: MState, record: MRecord): MState {
             'ROLE_DOWNGRADE',
             auditEvent,
             record.issuer.pubB64u
-          ).catch(err => console.error('Audit log failed:', err));
+          ).catch(error => console.error('Audit log failed:', error));
         }
         newState.users[record.user] = record.role;
         if (record.role === 'OWNER') {
@@ -232,7 +235,7 @@ function applyRecord(state: MState, record: MRecord): MState {
               'OWNER_TRANSITION',
               concurrentEvent,
               record.issuer.pubB64u
-            ).catch(err => console.error('Audit log failed:', err));
+            ).catch(error => console.error('Audit log failed:', error));
           }
           newState.lastOwnerTransition = transitionKey;
         } else {
@@ -240,6 +243,7 @@ function applyRecord(state: MState, record: MRecord): MState {
         }
       }
       break;
+    }
   }
   newState.ts = record.ts;
   return newState;
@@ -294,7 +298,7 @@ export async function addMember(
       'MEMBER_ADDED',
       { user, role, initialOwner: true },
       issuer
-    ).catch(err => console.error('Audit log failed:', err));
+    ).catch(error => console.error('Audit log failed:', error));
     return;
   }
 
@@ -324,8 +328,8 @@ export async function addMember(
     JSON.stringify(record)
   );
   // Emit audit event for member addition
-  AuditApi.log('MEMBER_ADDED', { user, role }, issuer).catch(err =>
-    console.error('Audit log failed:', err)
+  AuditApi.log('MEMBER_ADDED', { user, role }, issuer).catch(error =>
+    console.error('Audit log failed:', error)
   );
 }
 
@@ -368,7 +372,7 @@ export async function removeMember(
     'MEMBER_REMOVED',
     { user, removedRole: state.users[user] },
     issuer
-  ).catch(err => console.error('Audit log failed:', err));
+  ).catch(error => console.error('Audit log failed:', error));
 }
 
 export async function changeRole(

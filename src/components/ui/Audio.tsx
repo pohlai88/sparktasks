@@ -38,6 +38,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
+
 import { DESIGN_TOKENS } from '@/design/tokens';
 
 // ===== TYPES & INTERFACES =====
@@ -492,7 +493,7 @@ export const Audio = forwardRef<HTMLAudioElement, AudioProps>(
         if (!audioRef.current) return;
 
         switch (event.key) {
-          case ' ':
+          case ' ': {
             event.preventDefault();
             if (isPlaying) {
               audioRef.current.pause();
@@ -500,38 +501,44 @@ export const Audio = forwardRef<HTMLAudioElement, AudioProps>(
               audioRef.current.play();
             }
             break;
-          case 'ArrowLeft':
+          }
+          case 'ArrowLeft': {
             event.preventDefault();
             audioRef.current.currentTime = Math.max(
               0,
               audioRef.current.currentTime - 10
             );
             break;
-          case 'ArrowRight':
+          }
+          case 'ArrowRight': {
             event.preventDefault();
             audioRef.current.currentTime = Math.min(
               duration,
               audioRef.current.currentTime + 10
             );
             break;
-          case 'ArrowUp':
+          }
+          case 'ArrowUp': {
             event.preventDefault();
             audioRef.current.volume = Math.min(
               1,
               audioRef.current.volume + 0.1
             );
             break;
-          case 'ArrowDown':
+          }
+          case 'ArrowDown': {
             event.preventDefault();
             audioRef.current.volume = Math.max(
               0,
               audioRef.current.volume - 0.1
             );
             break;
-          case 'm':
+          }
+          case 'm': {
             event.preventDefault();
             audioRef.current.muted = !audioRef.current.muted;
             break;
+          }
         }
       };
 

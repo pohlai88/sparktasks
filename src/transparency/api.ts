@@ -3,14 +3,15 @@
  * Checkpoint signing/verification with audit and policy hooks
  */
 
-import { StorageDriver } from '../storage/types';
-import { TLCheckpointV1, VerifyResult } from './types';
+import { toB64u, fromB64u } from '../crypto/base64url';
+import { type StorageDriver } from '../storage/types';
+
 import {
   appendLeaf as appendLeafCore,
   genProof as genProofCore,
   verifyProof as verifyProofCore,
 } from './merkle';
-import { toB64u, fromB64u } from '../crypto/base64url';
+import { type TLCheckpointV1, type VerifyResult } from './types';
 
 // Reuse canonicalize from Task 18
 function canonicalize(obj: any): string {
@@ -139,18 +140,16 @@ export async function verifyProof(
 
   // Audit log
   if (auditHook) {
-    if (result.ok) {
-      await auditHook.log('TL_PROOF_VERIFY_OK', {
-        ns: proof.ns,
-        index: proof.index,
-      });
-    } else {
-      await auditHook.log('TL_PROOF_VERIFY_FAIL', {
-        ns: proof.ns,
-        index: proof.index,
-        reason: result.reason,
-      });
-    }
+    await (result.ok
+      ? auditHook.log('TL_PROOF_VERIFY_OK', {
+          ns: proof.ns,
+          index: proof.index,
+        })
+      : auditHook.log('TL_PROOF_VERIFY_FAIL', {
+          ns: proof.ns,
+          index: proof.index,
+          reason: result.reason,
+        }));
   }
 
   return result;

@@ -3,8 +3,8 @@
  * Per-namespace trusted signer management with audit trail
  */
 
-import type { StorageDriver } from '../storage/types';
 import * as AuditApi from '../audit/api';
+import type { StorageDriver } from '../storage/types';
 
 let storage: StorageDriver | null = null;
 

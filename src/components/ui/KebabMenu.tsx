@@ -17,6 +17,7 @@
  * - Loading and disabled states
  */
 
+import { MoreHorizontal, ExternalLink } from 'lucide-react';
 import React, {
   useState,
   useRef,
@@ -24,8 +25,8 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
-import { MoreHorizontal, ExternalLink } from 'lucide-react';
 
 // Type definitions
 export type KebabMenuPlacement =
@@ -98,7 +99,7 @@ export function KebabMenu({
 }: KebabMenuProps) {
   // State management
   const [internalOpen, setInternalOpen] = useState(false);
-  const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const isOpen = controlledOpen === undefined ? internalOpen : controlledOpen;
 
   const setIsOpen = useCallback(
     (open: boolean) => {
@@ -117,7 +118,7 @@ export function KebabMenu({
 
   // Generate unique IDs
   const generatedMenuId = useRef(
-    `kebab-menu-${Math.random().toString(36).substr(2, 9)}`
+    `kebab-menu-${Math.random().toString(36).slice(2, 11)}`
   );
   const actualMenuId = menuId || generatedMenuId.current;
 
@@ -130,11 +131,11 @@ export function KebabMenu({
   // Focus management for keyboard navigation
   useEffect(() => {
     if (isOpen && focusedIndex >= 0 && menuRef.current) {
-      const validItems = Array.from(
-        menuRef.current.querySelectorAll(
+      const validItems = [
+        ...menuRef.current.querySelectorAll(
           '[role="menuitem"]:not([aria-disabled="true"])'
-        )
-      );
+        ),
+      ];
       const itemToFocus = validItems[focusedIndex] as HTMLElement;
       if (itemToFocus) {
         itemToFocus.focus();
@@ -165,31 +166,34 @@ export function KebabMenu({
       if (!isOpen) return;
 
       switch (event.key) {
-        case 'Escape':
+        case 'Escape': {
           event.preventDefault();
           setIsOpen(false);
           setFocusedIndex(-1);
           triggerRef.current?.focus();
           break;
+        }
 
-        case 'ArrowDown':
+        case 'ArrowDown': {
           event.preventDefault();
           setFocusedIndex(prev => {
             const nextIndex = prev < validItems.length - 1 ? prev + 1 : 0;
             return nextIndex;
           });
           break;
+        }
 
-        case 'ArrowUp':
+        case 'ArrowUp': {
           event.preventDefault();
           setFocusedIndex(prev => {
             const nextIndex = prev > 0 ? prev - 1 : validItems.length - 1;
             return nextIndex;
           });
           break;
+        }
 
         case 'Enter':
-        case ' ':
+        case ' ': {
           event.preventDefault();
           if (focusedIndex >= 0 && focusedIndex < validItems.length) {
             const item = validItems[focusedIndex];
@@ -201,7 +205,7 @@ export function KebabMenu({
                 if (actualItem.target === '_blank') {
                   window.open(actualItem.href, '_blank', 'noopener,noreferrer');
                 } else {
-                  window.location.href = actualItem.href;
+                  globalThis.location.href = actualItem.href;
                 }
               }
               setIsOpen(false);
@@ -209,12 +213,14 @@ export function KebabMenu({
             }
           }
           break;
+        }
 
-        case 'Tab':
+        case 'Tab': {
           // Allow tabbing out of the menu
           setIsOpen(false);
           setFocusedIndex(-1);
           break;
+        }
       }
     };
 
@@ -258,7 +264,7 @@ export function KebabMenu({
         if (item.target === '_blank') {
           window.open(item.href, '_blank', 'noopener,noreferrer');
         } else {
-          window.location.href = item.href;
+          globalThis.location.href = item.href;
         }
       }
 

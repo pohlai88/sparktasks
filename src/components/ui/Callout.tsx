@@ -18,8 +18,8 @@
  */
 
 import React, { useState, forwardRef } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
-import { combineTokens } from '@/design/tokens';
+
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -54,7 +54,7 @@ const getSemanticIcon = (variant: CalloutVariant): React.ReactNode => {
   );
 
   switch (variant) {
-    case 'info':
+    case 'info': {
       return (
         <svg
           className={iconClasses}
@@ -71,7 +71,8 @@ const getSemanticIcon = (variant: CalloutVariant): React.ReactNode => {
           />
         </svg>
       );
-    case 'success':
+    }
+    case 'success': {
       return (
         <svg
           className={iconClasses}
@@ -88,7 +89,8 @@ const getSemanticIcon = (variant: CalloutVariant): React.ReactNode => {
           />
         </svg>
       );
-    case 'warning':
+    }
+    case 'warning': {
       return (
         <svg
           className={iconClasses}
@@ -105,7 +107,8 @@ const getSemanticIcon = (variant: CalloutVariant): React.ReactNode => {
           />
         </svg>
       );
-    case 'error':
+    }
+    case 'error': {
       return (
         <svg
           className={iconClasses}
@@ -122,7 +125,8 @@ const getSemanticIcon = (variant: CalloutVariant): React.ReactNode => {
           />
         </svg>
       );
-    case 'note':
+    }
+    case 'note': {
       return (
         <svg
           className={iconClasses}
@@ -139,8 +143,10 @@ const getSemanticIcon = (variant: CalloutVariant): React.ReactNode => {
           />
         </svg>
       );
-    default:
+    }
+    default: {
       return null;
+    }
   }
 };
 
@@ -237,16 +243,20 @@ const getDismissButtonClasses = (): string => {
 
 const getAriaRole = (variant: CalloutVariant): string => {
   switch (variant) {
-    case 'error':
+    case 'error': {
       return 'alert';
-    case 'warning':
+    }
+    case 'warning': {
       return 'alert';
-    case 'success':
+    }
+    case 'success': {
       return 'status';
+    }
     case 'info':
     case 'note':
-    default:
+    default: {
       return 'note';
+    }
   }
 };
 
@@ -254,16 +264,20 @@ const getAriaLive = (
   variant: CalloutVariant
 ): 'polite' | 'assertive' | undefined => {
   switch (variant) {
-    case 'error':
+    case 'error': {
       return 'assertive';
-    case 'warning':
+    }
+    case 'warning': {
       return 'assertive';
-    case 'success':
+    }
+    case 'success': {
       return 'polite';
+    }
     case 'info':
     case 'note':
-    default:
+    default: {
       return 'polite';
+    }
   }
 };
 

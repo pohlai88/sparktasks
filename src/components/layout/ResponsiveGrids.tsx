@@ -46,6 +46,7 @@
  */
 
 import React, { forwardRef, useMemo, useEffect, useRef, useState } from 'react';
+
 import { DESIGN_TOKENS } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
@@ -239,7 +240,7 @@ function generateColumnClasses(
   }
 
   // Responsive classes
-  Object.entries(columns).forEach(([breakpoint, cols]) => {
+  for (const [breakpoint, cols] of Object.entries(columns)) {
     if (
       breakpoint !== 'sm' &&
       cols &&
@@ -248,7 +249,7 @@ function generateColumnClasses(
       const prefix = BREAKPOINT_PREFIXES[breakpoint as BreakpointKey];
       classes.push(`${prefix}${COLUMN_CLASSES[cols as GridColumns]}`);
     }
-  });
+  }
 
   return classes.join(' ');
 }
@@ -269,7 +270,7 @@ function generateGapClasses(gap: GridGap | ResponsiveGaps): string {
   }
 
   // Responsive classes
-  Object.entries(gap).forEach(([breakpoint, gapSize]) => {
+  for (const [breakpoint, gapSize] of Object.entries(gap)) {
     if (breakpoint !== 'sm' && gapSize && typeof gapSize === 'string') {
       const prefix = BREAKPOINT_PREFIXES[breakpoint as BreakpointKey];
       const gapClass = GAP_CLASSES[gapSize as GridGap];
@@ -277,7 +278,7 @@ function generateGapClasses(gap: GridGap | ResponsiveGaps): string {
       const gapValue = gapClass.replace('gap-', '');
       classes.push(`${prefix}gap-${gapValue}`);
     }
-  });
+  }
 
   return classes.join(' ');
 }
@@ -301,7 +302,7 @@ function generateAutoGridTemplate(
 function generateGridAreas(areas: GridAreas): Record<string, string> {
   const styles: Record<string, string> = {};
 
-  Object.entries(areas).forEach(([breakpoint, areaRows]) => {
+  for (const [breakpoint, areaRows] of Object.entries(areas)) {
     if (areaRows && areaRows.length > 0) {
       const gridTemplateAreas = areaRows
         .map((row: string) => `"${row}"`)
@@ -315,7 +316,7 @@ function generateGridAreas(areas: GridAreas): Record<string, string> {
         styles[`--grid-areas-${breakpoint}`] = gridTemplateAreas;
       }
     }
-  });
+  }
 
   return styles;
 }
@@ -334,7 +335,7 @@ function useGridPerformance(
     const container = containerRef.current;
 
     const updateMetrics = () => {
-      const computedStyle = window.getComputedStyle(container);
+      const computedStyle = globalThis.getComputedStyle(container);
 
       // Safely access grid properties (they might be undefined in test environments)
       const gridTemplateColumns = computedStyle?.gridTemplateColumns || '';
@@ -430,11 +431,11 @@ export const ResponsiveGrids = forwardRef<HTMLDivElement, ResponsiveGridsProps>(
       }
 
       // Gap management
-      classes.push(generateGapClasses(gap));
-
-      // Alignment and justification
-      classes.push(ALIGN_ITEMS_CLASSES[alignItems]);
-      classes.push(JUSTIFY_ITEMS_CLASSES[justifyItems]);
+      classes.push(
+        generateGapClasses(gap),
+        ALIGN_ITEMS_CLASSES[alignItems],
+        JUSTIFY_ITEMS_CLASSES[justifyItems]
+      );
 
       // Auto flow
       if (dense) {
@@ -567,24 +568,24 @@ export const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
       if (typeof colSpan === 'number') {
         classes.push(`col-span-${colSpan}`);
       } else if (typeof colSpan === 'object' && colSpan !== null) {
-        Object.entries(colSpan).forEach(([breakpoint, span]) => {
+        for (const [breakpoint, span] of Object.entries(colSpan)) {
           if (span && typeof span === 'number') {
             const prefix = BREAKPOINT_PREFIXES[breakpoint as BreakpointKey];
             classes.push(`${prefix}col-span-${span}`);
           }
-        });
+        }
       }
 
       // Row span
       if (typeof rowSpan === 'number') {
         classes.push(`row-span-${rowSpan}`);
       } else if (typeof rowSpan === 'object' && rowSpan !== null) {
-        Object.entries(rowSpan).forEach(([breakpoint, span]) => {
+        for (const [breakpoint, span] of Object.entries(rowSpan)) {
           if (span && typeof span === 'number') {
             const prefix = BREAKPOINT_PREFIXES[breakpoint as BreakpointKey];
             classes.push(`${prefix}row-span-${span}`);
           }
-        });
+        }
       }
 
       // Self alignment

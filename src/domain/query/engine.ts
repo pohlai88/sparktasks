@@ -1,15 +1,19 @@
-import { Task } from '../task/schema';
+import { type Task } from '../task/schema';
 import { compareTasks } from '../task/sort';
-import { Query, Page, Result } from './types';
+
+import { type Query, type Page, type Result } from './types';
 
 export function runQuery(
   tasks: Task[],
   q: Query,
-  page: Page = { offset: 0, limit: 50 },
+  page?: Page,
   opts: { now?: Date } = {}
 ): Result<Task> {
+  if (!page) {
+    page = { offset: 0, limit: 50 };
+  }
   const now = opts.now ?? new Date();
-  let filtered = tasks.slice();
+  let filtered = [...tasks];
 
   // By default, hide ARCHIVED unless explicitly requested in q.status
   if (!q.status || q.status.length === 0) {
@@ -114,8 +118,8 @@ export function runQuery(
   const total = filtered.length;
 
   // Apply pagination
-  const safeOffset = Math.max(0, (page?.offset ?? 0) | 0);
-  const safeLimit = Math.max(0, Math.min(1000, (page?.limit ?? 50) | 0));
+  const safeOffset = Math.max(0, Math.trunc(page?.offset ?? 0));
+  const safeLimit = Math.max(0, Math.min(1000, Math.trunc(page?.limit ?? 50)));
   const items = filtered.slice(safeOffset, safeOffset + safeLimit);
 
   return {

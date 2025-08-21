@@ -1,6 +1,7 @@
-import type { RemoteTransport } from '../storage/remoteTypes';
 import type { MergePolicy } from '../domain/pack/types';
+import type { RemoteTransport } from '../storage/remoteTypes';
 import { useTaskStore } from '../stores/taskStore';
+
 import { planSync } from './plan';
 import { runSync, type SyncResult } from './run';
 

@@ -18,7 +18,6 @@
  * @author SparkTasks Team
  */
 
-import React, { forwardRef, useState } from 'react';
 import {
   FileText,
   Download,
@@ -38,6 +37,8 @@ import {
   Clock,
   Paperclip,
 } from 'lucide-react';
+import React, { forwardRef, useState } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // Attachment types
@@ -143,76 +144,94 @@ const getTypeIcon = (type: AttachmentType): React.ReactNode => {
   };
 
   switch (type) {
-    case 'file':
+    case 'file': {
       return (
         <FileText
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.file}
         />
       );
-    case 'link':
+    }
+    case 'link': {
       return (
         <Link2
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.link}
         />
       );
-    case 'image':
+    }
+    case 'image': {
       return (
         <FileImage
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.image}
         />
       );
-    case 'document':
+    }
+    case 'document': {
       return (
         <FileText
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.document}
         />
       );
-    case 'video':
+    }
+    case 'video': {
       return (
         <FileVideo
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.video}
         />
       );
-    case 'audio':
+    }
+    case 'audio': {
       return (
         <FileAudio
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.audio}
         />
       );
-    case 'archive':
+    }
+    case 'archive': {
       return (
         <Archive
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.archive}
         />
       );
-    case 'spreadsheet':
+    }
+    case 'spreadsheet': {
       return (
         <FileSpreadsheet
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.spreadsheet}
         />
       );
-    case 'presentation':
+    }
+    case 'presentation': {
       return (
         <Presentation
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.presentation}
         />
       );
-    default:
+    }
+    case 'unknown': {
+      return (
+        <FileText
+          {...iconProps}
+          className={DESIGN_TOKENS.recipe.attachment.typeIcon.default}
+        />
+      );
+    }
+    default: {
       return (
         <Paperclip
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.typeIcon.default}
         />
       );
+    }
   }
 };
 
@@ -225,36 +244,41 @@ const getStatusIndicator = (status: AttachmentStatus): React.ReactNode => {
   };
 
   switch (status) {
-    case 'uploading':
+    case 'uploading': {
       return (
         <Upload
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.statusIcon.uploading}
         />
       );
-    case 'complete':
+    }
+    case 'complete': {
       return (
         <CheckCircle2
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.statusIcon.complete}
         />
       );
-    case 'error':
+    }
+    case 'error': {
       return (
         <AlertCircle
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.statusIcon.error}
         />
       );
-    case 'pending':
+    }
+    case 'pending': {
       return (
         <Clock
           {...iconProps}
           className={DESIGN_TOKENS.recipe.attachment.statusIcon.pending}
         />
       );
-    default:
+    }
+    default: {
       return null;
+    }
   }
 };
 

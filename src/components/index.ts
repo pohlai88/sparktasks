@@ -172,7 +172,6 @@ export { CodePlaygroundDemo } from '@/components/demo/CodePlaygroundDemo';
 export { default as ContextMenuDemo } from '@/components/demo/ContextMenuDemo';
 export { default as DocumentDemo } from '@/components/demo/DocumentDemo';
 export { DrawerDemo } from '@/components/demo/DrawerDemo';
-export { ComponentShowcase } from '@/components/demo/examples';
 export { HoverCardDemo } from '@/components/demo/HoverCardDemo';
 export { default as ImageDemo } from '@/components/demo/ImageDemo';
 export { default as KBDDemo } from '@/components/demo/KBDDemo';

@@ -16,7 +16,7 @@ class Xorshift32 {
     this.state ^= this.state << 13;
     this.state ^= this.state >>> 17;
     this.state ^= this.state << 5;
-    return (this.state >>> 0) / 0x100000000; // Convert to [0, 1)
+    return (this.state >>> 0) / 0x1_00_00_00_00; // Convert to [0, 1)
   }
 
   nextInt(max: number): number {
@@ -63,9 +63,9 @@ export function genTasks(count: number, seed = 1): Task[] {
     const id = `perf_task_${i.toString().padStart(6, '0')}`;
 
     // Monotonically increasing timestamps
-    const createdAt = new Date(baseTime + i * 60000).toISOString(); // 1 min apart
+    const createdAt = new Date(baseTime + i * 60_000).toISOString(); // 1 min apart
     const updatedAt = new Date(
-      baseTime + i * 60000 + rng.nextInt(3600000)
+      baseTime + i * 60_000 + rng.nextInt(3_600_000)
     ).toISOString(); // up to 1hr later
 
     // Status distribution: ~40% TODAY, ~40% LATER, ~20% DONE
@@ -110,13 +110,13 @@ export function genTasks(count: number, seed = 1): Task[] {
     if (rng.next() < 0.3) {
       // 30% have dueDate
       const dueDays = rng.nextInt(30) - 10; // -10 to +20 days from base
-      dueDate = new Date(baseTime + dueDays * 86400000).toISOString();
+      dueDate = new Date(baseTime + dueDays * 86_400_000).toISOString();
     }
 
     if (rng.next() < 0.1) {
       // 10% have snoozeUntil
       const snoozeDays = rng.nextInt(7); // 0 to 7 days from base
-      snoozeUntil = new Date(baseTime + snoozeDays * 86400000).toISOString();
+      snoozeUntil = new Date(baseTime + snoozeDays * 86_400_000).toISOString();
     }
 
     const task: Task = {

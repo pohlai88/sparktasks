@@ -28,10 +28,11 @@ import React, {
   useRef,
   useCallback,
   forwardRef,
-  ReactNode,
-  AriaAttributes,
+  type ReactNode,
+  type AriaAttributes,
 } from 'react';
 import { createPortal } from 'react-dom';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
@@ -195,9 +196,7 @@ function useFocusTrap(
     );
 
     const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[
-      focusableElements.length - 1
-    ] as HTMLElement;
+    const lastElement = focusableElements.at(-1) as HTMLElement;
 
     const handleTabKey = (e: KeyboardEvent) => {
       if (e.key !== 'Tab') return;
@@ -252,7 +251,7 @@ function useBodyScrollLock(enabled: boolean) {
   useEffect(() => {
     if (!enabled) return;
 
-    const originalStyle = window.getComputedStyle(document.body).overflow;
+    const originalStyle = globalThis.getComputedStyle(document.body).overflow;
     document.body.style.overflow = 'hidden';
 
     return () => {
@@ -537,7 +536,7 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
       if (!container) {
         container = document.createElement('div');
         container.id = portalId;
-        document.body.appendChild(container);
+        document.body.append(container);
       }
       return container;
     }, [portalId]);
@@ -610,8 +609,8 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
               // With `exactOptionalPropertyTypes: true`, optional props don't accept explicit `undefined`.
               // Build the header props object by OMITTING keys that are undefined.
               const headerProps = {
-                ...(title !== undefined ? { title } : {}),
-                ...(description !== undefined ? { description } : {}),
+                ...(title === undefined ? {} : { title }),
+                ...(description === undefined ? {} : { description }),
                 ...(dismissible && handleClose ? { onClose: handleClose } : {}),
                 variant,
                 dismissible,

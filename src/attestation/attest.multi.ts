@@ -3,8 +3,8 @@
  * Threshold-based multi-signature verification and emission
  */
 
-import type { Sparkpack } from '../domain/pack/types';
 import { toB64u, fromB64u } from '../crypto/base64url';
+import type { Sparkpack } from '../domain/pack/types';
 
 // Mock dependencies for now - will integrate properly
 const getSigner = async (_ns: string, kid: string) => ({
@@ -157,19 +157,18 @@ export async function verifyPackMulti(
           reasons: [`revoked_kid:${attest.att.kid}`],
         };
 
-      if (signer.status === 'RETIRED') {
-        if (
-          !policy.retiredGraceMs ||
+      if (
+        signer.status === 'RETIRED' &&
+        (!policy.retiredGraceMs ||
           !signer.retiredAt ||
           Date.now() - new Date(signer.retiredAt).getTime() >
-            policy.retiredGraceMs
-        ) {
-          return {
-            ok: false,
-            count: 0,
-            reasons: [`retired_out_of_grace:${attest.att.kid}`],
-          };
-        }
+            policy.retiredGraceMs)
+      ) {
+        return {
+          ok: false,
+          count: 0,
+          reasons: [`retired_out_of_grace:${attest.att.kid}`],
+        };
       }
 
       pubKey = await crypto.subtle.importKey(
@@ -237,16 +236,15 @@ export async function verifyPackMulti(
         continue;
       }
 
-      if (signer.status === 'RETIRED') {
-        if (
-          !policy.retiredGraceMs ||
+      if (
+        signer.status === 'RETIRED' &&
+        (!policy.retiredGraceMs ||
           !signer.retiredAt ||
           Date.now() - new Date(signer.retiredAt).getTime() >
-            policy.retiredGraceMs
-        ) {
-          reasons.push(`retired_out_of_grace:${sig.kid}`);
-          continue;
-        }
+            policy.retiredGraceMs)
+      ) {
+        reasons.push(`retired_out_of_grace:${sig.kid}`);
+        continue;
       }
 
       try {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { combineTokens, DESIGN_TOKENS } from '@/design/tokens';
 
 export interface KBDProps extends React.HTMLAttributes<HTMLElement> {
@@ -209,7 +210,7 @@ export const KBD = React.forwardRef<HTMLElement, KBDProps>(function KBD(
   // For combos, provide a clean SR label like "Control plus K" if none was given
   const srLabel =
     !computedAriaLabel && typeof children === 'string' && children.includes('+')
-      ? children.replace(/\+/g, ' plus ')
+      ? children.replaceAll('+', ' plus ')
       : undefined;
 
   return (

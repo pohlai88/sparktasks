@@ -2,13 +2,14 @@
  * Sparkpack manifest with Ed25519 signing
  */
 
-import { SparkpackMeta, Sparkpack } from './types';
 import {
   exportPublicKeyB64u,
   sign,
   verify,
   importPublicKeyB64u,
 } from '../../crypto/ed25519';
+
+import { type SparkpackMeta, type Sparkpack } from './types';
 
 export interface Manifest {
   v: 1;
@@ -70,9 +71,9 @@ export async function createManifest(
   const eventsBytes = new TextEncoder().encode(eventsJsonl);
   const hashBuffer = await crypto.subtle.digest('SHA-256', eventsBytes);
   const eventsHash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replaceAll('=', '');
 
   // Build unsigned manifest
   const unsigned = {
@@ -112,9 +113,9 @@ export async function verifyManifest(
     const expectedHash = btoa(
       String.fromCharCode(...new Uint8Array(hashBuffer))
     )
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=/g, '');
+      .replaceAll('+', '-')
+      .replaceAll('/', '_')
+      .replaceAll('=', '');
 
     if (manifest.content.eventsHash !== expectedHash) {
       return false;

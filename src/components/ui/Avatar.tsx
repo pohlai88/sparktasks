@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

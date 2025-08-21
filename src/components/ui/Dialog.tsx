@@ -29,8 +29,9 @@
 
 import React, { useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { cn } from '../../utils/cn';
+
 import { DESIGN_TOKENS, combineTokens } from '../../design/tokens';
+import { cn } from '../../utils/cn';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -203,9 +204,7 @@ const useFocusTrap = (
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
     const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[
-      focusableElements.length - 1
-    ] as HTMLElement;
+    const lastElement = focusableElements.at(-1) as HTMLElement;
 
     const handleTabKey = (e: KeyboardEvent) => {
       if (e.key !== 'Tab') return;
@@ -257,7 +256,7 @@ const useFocusRestore = (isOpen: boolean, restoreFocus: boolean) => {
 const useBodyScrollLock = (isOpen: boolean) => {
   useEffect(() => {
     if (isOpen) {
-      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalStyle = globalThis.getComputedStyle(document.body).overflow;
       document.body.style.overflow = 'hidden';
 
       return () => {
@@ -364,7 +363,7 @@ const DialogHeader: React.FC<{
 const DialogActions: React.FC<{
   actions: DialogAction[];
 }> = ({ actions }) => {
-  if (!actions.length) return null;
+  if (actions.length === 0) return null;
 
   return (
     <div

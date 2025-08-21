@@ -1,5 +1,5 @@
-import { Envelope } from './types.js';
 import { toB64u, fromB64u } from './base64url.js';
+import { type Envelope } from './types.js';
 
 /**
  * Encrypt a plaintext record using AES-GCM

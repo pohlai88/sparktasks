@@ -2,15 +2,16 @@
  * Recovery bundle API for headless admin recovery
  */
 
+import { toB64u, fromB64u } from '../crypto/base64url';
+import type { Role } from '../membership/types';
+import { enforcePolicy } from '../policy/engine';
+import type { StorageDriver } from '../storage/types';
+
 import type {
   RecoveryBundleV1,
   CreateRecoveryArgs,
   RecoverArgs,
 } from './types';
-import { toB64u, fromB64u } from '../crypto/base64url';
-import { enforcePolicy } from '../policy/engine';
-import type { StorageDriver } from '../storage/types';
-import type { Role } from '../membership/types';
 
 // Rate limiting store (in-memory)
 const rateLimitStore = new Map<
@@ -34,11 +35,11 @@ function recoveryAAD(ns: string): ArrayBuffer {
 
 // Simple FNV-1a 32-bit hash for bundle ID generation
 function simpleHash(str: string): string {
-  let hash = 0x811c9dc5; // FNV offset basis (32-bit)
+  let hash = 0x81_1c_9d_c5; // FNV offset basis (32-bit)
 
   for (let i = 0; i < str.length; i++) {
     hash ^= str.charCodeAt(i);
-    hash = Math.imul(hash, 0x01000193); // FNV prime (32-bit)
+    hash = Math.imul(hash, 0x01_00_01_93); // FNV prime (32-bit)
   }
 
   return (hash >>> 0).toString(16); // Convert to unsigned 32-bit hex
@@ -58,7 +59,10 @@ function isRateLimited(bundleId: string): boolean {
   if (!record) return false;
 
   const timeSinceLastAttempt = now - record.lastAttempt;
-  const requiredWait = Math.min(1000 * Math.pow(2, record.attempts - 1), 30000);
+  const requiredWait = Math.min(
+    1000 * Math.pow(2, record.attempts - 1),
+    30_000
+  );
 
   return timeSinceLastAttempt < requiredWait;
 }
@@ -77,7 +81,7 @@ export async function createRecoveryBundle({
   issuer,
   passcode,
   expiresAt,
-  iter = 100000,
+  iter = 100_000,
   meta,
   actorId,
   actorRole,
@@ -228,7 +232,7 @@ export async function recoverFromBundle({
     const timeSinceLastAttempt = Date.now() - record.lastAttempt;
     const requiredWait = Math.min(
       1000 * Math.pow(2, record.attempts - 1),
-      30000
+      30_000
     );
 
     throw new Error(
@@ -302,9 +306,9 @@ export async function recoverFromBundle({
   try {
     const beforeExport = await keyring.exportBackup();
     beforeCount = beforeExport.deks.length;
-  } catch (err) {
-    if (!(err instanceof Error && err.message === 'Keyring locked')) {
-      throw err;
+  } catch (error) {
+    if (!(error instanceof Error && error.message === 'Keyring locked')) {
+      throw error;
     }
   }
 
@@ -316,9 +320,9 @@ export async function recoverFromBundle({
   try {
     const afterExport = await keyring.exportBackup();
     afterCount = afterExport.deks.length;
-  } catch (err) {
-    if (!(err instanceof Error && err.message === 'Keyring locked')) {
-      throw err;
+  } catch (error) {
+    if (!(error instanceof Error && error.message === 'Keyring locked')) {
+      throw error;
     }
   }
 

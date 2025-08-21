@@ -21,6 +21,7 @@ import React, {
   useMemo,
   forwardRef,
 } from 'react';
+
 import { DESIGN_TOKENS } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
@@ -297,7 +298,7 @@ const Navigation: React.FC<NavigationProps> = ({
             title={collapsed ? item.label : undefined}
           >
             {item.icon && (
-              <span className={`${collapsed ? 'mr-0' : 'mr-3'} flex-shrink-0`}>
+              <span className={`${collapsed ? 'mr-0' : 'mr-3'} shrink-0`}>
                 {item.icon}
               </span>
             )}
@@ -478,7 +479,7 @@ export const WorkspaceShell = forwardRef<HTMLDivElement, WorkspaceShellProps>(
               data-testid='mobile-sidebar-toggle'
             >
               <svg
-                className='h-5 w-5'
+                className='size-5'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
@@ -509,7 +510,7 @@ export const WorkspaceShell = forwardRef<HTMLDivElement, WorkspaceShellProps>(
               data-testid='desktop-sidebar-toggle'
             >
               <svg
-                className='h-5 w-5'
+                className='size-5'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
@@ -569,7 +570,7 @@ export const WorkspaceShell = forwardRef<HTMLDivElement, WorkspaceShellProps>(
         {loading && (
           <div className='absolute inset-0 z-10 flex items-center justify-center bg-white bg-opacity-75'>
             <div
-              className={`h-8 w-8 animate-spin rounded-full border-b-2 ${DESIGN_TOKENS.semantic.border.accent}`}
+              className={`size-8 animate-spin rounded-full border-b-2 ${DESIGN_TOKENS.semantic.border.accent}`}
             />
           </div>
         )}
@@ -608,7 +609,7 @@ export const WorkspaceShell = forwardRef<HTMLDivElement, WorkspaceShellProps>(
       return (
         <div className='flex min-h-screen items-center justify-center'>
           <div
-            className={`h-8 w-8 animate-spin rounded-full border-b-2 ${DESIGN_TOKENS.semantic.border.accent}`}
+            className={`size-8 animate-spin rounded-full border-b-2 ${DESIGN_TOKENS.semantic.border.accent}`}
           />
         </div>
       );

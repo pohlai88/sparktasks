@@ -3,13 +3,13 @@
  * Ed25519 attestation & verification with signer lifecycle management
  */
 
-import type { Sparkpack, SparkpackMeta } from '../domain/pack/types';
-import { toB64u, fromB64u } from '../crypto/base64url';
-import { listSigners, type SignerRecord } from './signer-registry';
-import { listTrustAnchors } from '../federation/registry';
-import type { TrustAnchor } from '../federation/types';
-import { checkCrossOrgPolicy } from '../policy/engine';
 import { log } from '../audit/api';
+import { toB64u, fromB64u } from '../crypto/base64url';
+import type { Sparkpack, SparkpackMeta } from '../domain/pack/types';
+import { listTrustAnchors } from '../federation/registry';
+import { checkCrossOrgPolicy } from '../policy/engine';
+
+import { listSigners, type SignerRecord } from './signer-registry';
 
 export interface AttestedPack {
   v: 1;
@@ -293,16 +293,14 @@ export async function verifyPackAttestation(
         }
 
         // Handle legacy/unsigned (no kid and not federated)
-        if (!att.kid) {
-          if (allowUnsigned) {
-            await log('ATTEST_VERIFY_ALLOW', {
-              ns,
-              reason: 'unsigned_allowed',
-            });
-            return { ok: true };
-          }
-          // Continue to check other attestations before failing
+        if (!att.kid && allowUnsigned) {
+          await log('ATTEST_VERIFY_ALLOW', {
+            ns,
+            reason: 'unsigned_allowed',
+          });
+          return { ok: true };
         }
+        // Continue to check other attestations before failing
       }
 
       // Check if any attestation had no kid (legacy in registry mode)

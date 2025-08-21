@@ -1,6 +1,7 @@
-import { TaskEventSchema } from '../task/events';
-import { appendEvent, snapshotEvents, restoreEvents } from '../task/eventlog';
 import { useTaskStore } from '../../stores/taskStore';
+import { appendEvent, snapshotEvents, restoreEvents } from '../task/eventlog';
+import { TaskEventSchema } from '../task/events';
+
 import { planMerge } from './merge';
 import type {
   Sparkpack,
@@ -12,10 +13,10 @@ import type {
 
 // tiny hash, no deps
 const fnv1a = (s: string) => {
-  let h = 0x811c9dc5 >>> 0;
+  let h = 0x81_1c_9d_c5 >>> 0;
   for (let i = 0; i < s.length; i++) {
     h ^= s.charCodeAt(i);
-    h = Math.imul(h, 0x01000193) >>> 0;
+    h = Math.imul(h, 0x01_00_01_93) >>> 0;
   }
   return ('00000000' + h.toString(16)).slice(-8);
 };
@@ -62,7 +63,7 @@ export function planImport(raw: string): ImportPlan {
     }
 
     // Validate individual events
-    sparkpack.events.forEach((event, index) => {
+    for (const [index, event] of sparkpack.events.entries()) {
       try {
         const validatedEvent = TaskEventSchema.parse(event);
         plan.valid.push(validatedEvent);
@@ -73,7 +74,7 @@ export function planImport(raw: string): ImportPlan {
             error instanceof Error ? error.message : 'Unknown validation error',
         });
       }
-    });
+    }
   } catch (error) {
     plan.invalid.push({
       index: -1,

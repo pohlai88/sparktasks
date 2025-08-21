@@ -3,7 +3,12 @@
  * Threshold-based multi-signature verification and emission
  */
 
-import type { StorageDriver } from '../storage/types';
+import * as AuditApi from '../audit/api';
+import { toB64u, fromB64u } from '../crypto/base64url';
+import type { Sparkpack } from '../domain/sparkpack/types';
+import { checkPolicy } from '../policy/engine';
+import { getSigner } from '../signer/registry';
+
 import type {
   PackAttestV1,
   PackAttestV2,
@@ -11,11 +16,6 @@ import type {
   MultiSigResult,
   PackAttest,
 } from './multi-sig-types';
-import type { Sparkpack } from '../domain/sparkpack/types';
-import { getSigner, listSigners } from '../signer/registry';
-import { checkPolicy } from '../policy/engine';
-import * as AuditApi from '../audit/api';
-import { toB64u, fromB64u } from '../crypto/base64url';
 
 // Canonical JSON serialization (reused from Task 18)
 function canonicalize(obj: any): string {
@@ -310,9 +310,9 @@ async function verifyV1Compat(
   if (attest.att.kid) {
     const signer = await getSigner(ns, attest.att.kid);
     if (!signer || signer.status === 'REVOKED') {
-      const reason = !signer
-        ? `signer_not_found:${attest.att.kid}`
-        : `revoked_kid:${attest.att.kid}`;
+      const reason = signer
+        ? `revoked_kid:${attest.att.kid}`
+        : `signer_not_found:${attest.att.kid}`;
       return { ok: false, count: 0, reasons: [reason] };
     }
 

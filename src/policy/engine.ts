@@ -4,8 +4,11 @@
  * Extended with federation policy gating for cross-org trust
  */
 
-import type { StorageDriver } from '../storage/types';
+import * as AuditApi from '../audit/api';
+import * as MembershipApi from '../membership/api';
 import type { Role } from '../membership/types';
+import type { StorageDriver } from '../storage/types';
+
 import type {
   PolicySetV1,
   PolicyContext,
@@ -13,8 +16,6 @@ import type {
   PolicyResult,
   EnforcePolicyOptions,
 } from './types';
-import * as MembershipApi from '../membership/api';
-import * as AuditApi from '../audit/api';
 
 // Role hierarchy for comparison
 const ROLE_LEVELS: Record<Role, number> = {
@@ -26,7 +27,7 @@ const ROLE_LEVELS: Record<Role, number> = {
 
 // In-memory cache for policies (60s TTL)
 const policyCache = new Map<string, { ts: number; policies: PolicySetV1 }>();
-const CACHE_TTL = 60000;
+const CACHE_TTL = 60_000;
 
 // Storage key generators
 const policyKey = (ns: string) => `policy:${ns}:set`;
@@ -150,7 +151,7 @@ export async function checkPolicy(
 
     // Check daily cap
     if (rule.perActorDailyCap !== undefined) {
-      const currentCount = parseInt(
+      const currentCount = Number.parseInt(
         (await storage.getItem(capKey(ctx.ns, ctx.op, ctx.actorId, dayKey))) ||
           '0',
         10
@@ -212,7 +213,7 @@ export async function enforcePolicy(
           (!rule.ops || rule.ops.includes(ctx.op))
         ) {
           const dayKey = getDayKey(ctx.nowISO);
-          const currentCount = parseInt(
+          const currentCount = Number.parseInt(
             (await storage.getItem(
               capKey(ctx.ns, ctx.op, ctx.actorId, dayKey)
             )) || '0',

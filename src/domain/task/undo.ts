@@ -1,5 +1,5 @@
-import type { Task } from './schema';
 import type { TaskEvent } from './events';
+import type { Task } from './schema';
 
 export interface UndoEntry {
   do: TaskEvent;
@@ -13,7 +13,7 @@ export function deriveUndo(
   const timestamp = new Date().toISOString();
 
   switch (e.type) {
-    case 'TASK_CREATED':
+    case 'TASK_CREATED': {
       // Created → Create a special "remove" event
       // We'll use TASK_MOVED to ARCHIVED to represent deletion in undo
       return {
@@ -25,8 +25,9 @@ export function deriveUndo(
           toStatus: 'ARCHIVED',
         },
       };
+    }
 
-    case 'TASK_UPDATED':
+    case 'TASK_UPDATED': {
       if (!before) return null;
       // Updated → Updated with inverse patch
       const inversePatch: any = {};
@@ -44,8 +45,9 @@ export function deriveUndo(
           changes: inversePatch,
         },
       };
+    }
 
-    case 'TASK_MOVED':
+    case 'TASK_MOVED': {
       // Moved → Moved back (swap from/to)
       return {
         type: 'TASK_MOVED',
@@ -56,8 +58,9 @@ export function deriveUndo(
           toStatus: e.payload.fromStatus,
         },
       };
+    }
 
-    case 'TASK_COMPLETED':
+    case 'TASK_COMPLETED': {
       if (!before) return null;
       // Completed → Moved back to previous status
       return {
@@ -69,8 +72,9 @@ export function deriveUndo(
           toStatus: before.status,
         },
       };
+    }
 
-    case 'TASK_SNOOZED':
+    case 'TASK_SNOOZED': {
       if (!before) return null;
       // Snoozed → Snoozed back to previous snoozeUntil
       return {
@@ -81,8 +85,10 @@ export function deriveUndo(
           snoozeUntil: before.snoozeUntil || '',
         },
       };
+    }
 
-    default:
+    default: {
       return null;
+    }
   }
 }

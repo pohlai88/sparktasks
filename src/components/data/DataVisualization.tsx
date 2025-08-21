@@ -20,7 +20,9 @@ import React, {
   useMemo,
   forwardRef,
 } from 'react';
+
 import { DESIGN_TOKENS } from '@/design/tokens';
+import { logger } from '@/lib/logger';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -41,7 +43,7 @@ export interface DataPoint {
   y: number;
   label?: string;
   color?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface DataSeries {
@@ -78,7 +80,7 @@ export interface TooltipData {
   y: number;
   series: string;
   color: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ExportOptions {
@@ -122,7 +124,7 @@ export interface DataVisualizationProps
   // State callbacks
   onError?: (error: Error) => void;
   onLoadingChange?: (loading: boolean) => void;
-  onExport?: (format: string, data: any) => void;
+  onExport?: (format: string, data: unknown) => void;
 
   // Customization
   customTooltip?: (data: TooltipData) => React.ReactNode;
@@ -341,7 +343,7 @@ const SimpleChart: React.FC<{
   const svgRef = useRef<SVGSVGElement>(null);
 
   const renderLineChart = useCallback(() => {
-    if (!series.length || !series[0].data.length) return null;
+    if (series.length === 0 || series[0].data.length === 0) return null;
 
     const padding = 40;
     const chartWidth = dimensions.width - padding * 2;
@@ -413,7 +415,7 @@ const SimpleChart: React.FC<{
   }, [series, dimensions, onPointClick, onTooltip]);
 
   const renderBarChart = useCallback(() => {
-    if (!series.length || !series[0].data.length) return null;
+    if (series.length === 0 || series[0].data.length === 0) return null;
 
     const padding = 40;
     const chartWidth = dimensions.width - padding * 2;
@@ -452,12 +454,23 @@ const SimpleChart: React.FC<{
   const renderChart = () => {
     switch (type) {
       case 'line':
-      case 'area':
+      case 'area': {
         return renderLineChart();
-      case 'bar':
+      }
+      case 'bar': {
         return renderBarChart();
-      default:
+      }
+      case 'pie':
+      case 'scatter':
+      case 'gauge':
+      case 'sparkline':
+      case 'heatmap': {
+        // For now, render as line chart - these can be implemented later
         return renderLineChart();
+      }
+      default: {
+        return renderLineChart();
+      }
     }
   };
 
@@ -582,7 +595,7 @@ export const DataVisualization = forwardRef<
 
     const handleSeriesToggle = useCallback((seriesId: string) => {
       // This would toggle series visibility in a real implementation
-      console.log('Toggle series:', seriesId);
+      logger.debug('Toggle series:', seriesId);
     }, []);
 
     const handleRetry = useCallback(() => {
@@ -595,7 +608,7 @@ export const DataVisualization = forwardRef<
           onExport(format, chartData);
         } else {
           // Default export behavior
-          console.log('Export chart as:', format);
+          logger.debug('Export chart as:', format);
         }
       },
       [chartData, onExport]
@@ -647,7 +660,6 @@ export const DataVisualization = forwardRef<
         data-testid={testId}
         role='region'
         aria-label={ariaLabel || `${type} chart`}
-        aria-description={ariaDescription}
         {...props}
       >
         <ChartContainer

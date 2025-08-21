@@ -1,4 +1,5 @@
 import React, { forwardRef, useMemo, useCallback } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
@@ -41,16 +42,21 @@ const StatusIcon: React.FC<{ status: ChipStatus; size: ChipSize }> = React.memo(
   ({ status, size }) => {
     const iconSize = useMemo(() => {
       switch (size) {
-        case 'xs':
+        case 'xs': {
           return 'size-2.5';
-        case 'sm':
+        }
+        case 'sm': {
           return 'size-3';
-        case 'md':
+        }
+        case 'md': {
           return 'size-3.5';
-        case 'lg':
+        }
+        case 'lg': {
           return 'size-4';
-        default:
+        }
+        default: {
           return 'size-3';
+        }
       }
     }, [size]);
 
@@ -63,7 +69,7 @@ const StatusIcon: React.FC<{ status: ChipStatus; size: ChipSize }> = React.memo(
     };
 
     switch (status) {
-      case 'success':
+      case 'success': {
         return (
           <svg {...iconProps}>
             <path
@@ -73,7 +79,8 @@ const StatusIcon: React.FC<{ status: ChipStatus; size: ChipSize }> = React.memo(
             />
           </svg>
         );
-      case 'warning':
+      }
+      case 'warning': {
         return (
           <svg {...iconProps}>
             <path
@@ -83,7 +90,8 @@ const StatusIcon: React.FC<{ status: ChipStatus; size: ChipSize }> = React.memo(
             />
           </svg>
         );
-      case 'danger':
+      }
+      case 'danger': {
         return (
           <svg {...iconProps}>
             <path
@@ -93,7 +101,8 @@ const StatusIcon: React.FC<{ status: ChipStatus; size: ChipSize }> = React.memo(
             />
           </svg>
         );
-      case 'info':
+      }
+      case 'info': {
         return (
           <svg {...iconProps}>
             <path
@@ -103,8 +112,10 @@ const StatusIcon: React.FC<{ status: ChipStatus; size: ChipSize }> = React.memo(
             />
           </svg>
         );
-      default:
+      }
+      default: {
         return null;
+      }
     }
   }
 );

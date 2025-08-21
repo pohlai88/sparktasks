@@ -4,10 +4,13 @@
 export function toB64u(bytes: ArrayBuffer): string {
   const uint8Array = new Uint8Array(bytes);
   let binary = '';
-  for (let i = 0; i < uint8Array.length; i++) {
-    binary += String.fromCharCode(uint8Array[i]);
+  for (const element of uint8Array) {
+    binary += String.fromCharCode(element);
   }
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  return btoa(binary)
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replaceAll('=', '');
 }
 
 /**
@@ -18,7 +21,7 @@ export function fromB64u(s: string): ArrayBuffer {
   const padLen = (4 - (s.length % 4)) % 4;
   const padded = s + '='.repeat(padLen);
   // Convert back to standard base64
-  const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+  const base64 = padded.replaceAll('-', '+').replaceAll('_', '/');
   const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {

@@ -1,8 +1,9 @@
-import type { SyncPlan } from './plan';
-import type { RemoteTransport } from '../storage/remoteTypes';
-import type { ImportReport } from '../domain/pack/types';
-import { applyMerge } from '../domain/pack/import';
 import { exportSparkpack } from '../domain/pack/export';
+import { applyMerge } from '../domain/pack/import';
+import type { ImportReport } from '../domain/pack/types';
+import type { RemoteTransport } from '../storage/remoteTypes';
+
+import type { SyncPlan } from './plan';
 
 export interface SyncResult {
   pullCount: number;
@@ -87,7 +88,7 @@ export async function runSync(
       result.pullCount ||
       result.pushCount ||
       applied ||
-      result.errors.length
+      result.errors.length > 0
     );
     return result;
   } catch (error) {
@@ -101,10 +102,12 @@ export async function runSync(
 /**
  * Push local changes to remote as Sparkpack.
  */
-async function pushLocalChanges(
+import type { TaskEvent } from '../domain/task/events';
+
+async function syncMiniCompact(
   transport: RemoteTransport,
   namespace: string,
-  events: import('../domain/task/events').TaskEvent[]
+  events: TaskEvent[]
 ): Promise<void> {
   if (events.length === 0) return;
 

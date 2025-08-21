@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== PROGRESS BAR TYPES & INTERFACES =====
@@ -149,11 +150,11 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
         announcement_el.className = 'sr-only';
         announcement_el.textContent = announcement;
 
-        document.body.appendChild(announcement_el);
+        document.body.append(announcement_el);
 
         // Clean up after announcement
         setTimeout(() => {
-          document.body.removeChild(announcement_el);
+          announcement_el.remove();
         }, 1000);
 
         previousValueRef.current = value;
@@ -361,7 +362,7 @@ export const useProgressBar = ({
       intervalRef.current = setInterval(() => {
         setValue(prev => {
           const next = prev + step;
-          return next >= max ? max : next;
+          return Math.min(next, max);
         });
       }, autoIncrement);
     }

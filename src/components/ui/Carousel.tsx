@@ -11,6 +11,7 @@ import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';- Enterprise-Grad
  * DESIGN_TOKENS COMPLIANCE: 100% - Zero hardcoded Tailwind classes
  */
 
+import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import React, {
   useState,
   useEffect,
@@ -19,7 +20,7 @@ import React, {
   useMemo,
   Children,
 } from 'react';
-import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+
 import { DESIGN_TOKENS } from '@/design/tokens';
 
 // ============================================================================
@@ -394,26 +395,31 @@ export const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
         if (!enableKeyboard) return;
 
         switch (e.key) {
-          case 'ArrowLeft':
+          case 'ArrowLeft': {
             e.preventDefault();
             prevSlide();
             break;
-          case 'ArrowRight':
+          }
+          case 'ArrowRight': {
             e.preventDefault();
             nextSlide();
             break;
-          case 'Home':
+          }
+          case 'Home': {
             e.preventDefault();
             goToSlide(0);
             break;
-          case 'End':
+          }
+          case 'End': {
             e.preventDefault();
             goToSlide(totalSlides - 1);
             break;
-          case ' ':
+          }
+          case ' ': {
             e.preventDefault();
             toggleAutoPlay();
             break;
+          }
         }
       },
       [

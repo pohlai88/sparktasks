@@ -2,8 +2,9 @@
  * Maintenance planner - analyzes current state and creates maintenance plan
  */
 
-import { MaintenancePlan, MaintenanceOptions } from './types';
 import { getEventCount } from '../domain/task/eventlog';
+
+import { type MaintenancePlan, type MaintenanceOptions } from './types';
 
 /**
  * Plan maintenance operations based on current state and options

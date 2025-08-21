@@ -15,8 +15,8 @@
  */
 
 import React, { createContext, useContext, forwardRef } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
-import { combineTokens } from '@/design/tokens';
+
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -500,9 +500,9 @@ const DescriptionItemComponent = forwardRef<
 
     // Determine if interactive: explicit prop takes priority over context
     const isInteractive =
-      interactive !== undefined
-        ? interactive || !!onSelect || !!onClick
-        : context.interactive || !!onSelect || !!onClick;
+      interactive === undefined
+        ? context.interactive || !!onSelect || !!onClick
+        : interactive || !!onSelect || !!onClick;
 
     const itemClasses = getDescriptionItemClasses(
       variant,
@@ -626,7 +626,7 @@ const DescriptionDetailsComponent = forwardRef<
         // Fallback for older browsers or non-secure contexts
         const textArea = document.createElement('textarea');
         textArea.value = text;
-        document.body.appendChild(textArea);
+        document.body.append(textArea);
         textArea.select();
         try {
           document.execCommand('copy');
@@ -634,7 +634,7 @@ const DescriptionDetailsComponent = forwardRef<
         } catch {
           /* no-op */
         }
-        document.body.removeChild(textArea);
+        textArea.remove();
       }
     };
 

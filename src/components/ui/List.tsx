@@ -14,8 +14,8 @@
  */
 
 import React, { createContext, useContext, forwardRef } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
-import { combineTokens } from '@/design/tokens';
+
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -388,9 +388,9 @@ const ListItemComponent = forwardRef<HTMLDivElement, ListItemProps>(
 
     // Determine if interactive: explicit prop takes priority over context
     const isInteractive =
-      interactive !== undefined
-        ? interactive || !!onSelect
-        : context.interactive || !!onSelect;
+      interactive === undefined
+        ? context.interactive || !!onSelect
+        : interactive || !!onSelect;
 
     const hasHover = context.hoverable && !disabled;
 

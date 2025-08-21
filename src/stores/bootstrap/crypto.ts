@@ -3,7 +3,7 @@
  */
 
 import { KeyringProvider } from '../../crypto/keyring';
-import { StorageDriver } from '../../storage/types';
+import { type StorageDriver } from '../../storage/types';
 
 /**
  * Bootstrap keyring - init if absent or unlock if present
@@ -12,7 +12,7 @@ export async function bootstrapKeyring(
   storage: StorageDriver,
   namespace: string,
   passphrase: string,
-  iterations: number = 100000
+  iterations: number = 100_000
 ): Promise<KeyringProvider> {
   const keyring = new KeyringProvider(storage, namespace);
 
@@ -50,7 +50,7 @@ export async function unlockKeyring(
 export async function changePassphrase(
   keyring: KeyringProvider,
   newPassphrase: string,
-  iterations: number = 100000
+  iterations: number = 100_000
 ): Promise<void> {
   // For now, we'll need to export/import backup to change passphrase
   // This is a simplified implementation

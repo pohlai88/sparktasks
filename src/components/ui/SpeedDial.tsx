@@ -17,9 +17,10 @@
  * - Custom trigger and menu item support
  */
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
 import { Plus, X } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+
+import { DESIGN_TOKENS } from '@/design/tokens';
 
 // Type definitions
 export type SpeedDialPlacement =
@@ -106,7 +107,7 @@ export function SpeedDial({
 }: SpeedDialProps) {
   // State management
   const [internalOpen, setInternalOpen] = useState(false);
-  const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const isOpen = controlledOpen === undefined ? internalOpen : controlledOpen;
 
   const setIsOpen = useCallback(
     (open: boolean) => {
@@ -125,7 +126,7 @@ export function SpeedDial({
 
   // Generate unique IDs
   const generatedMenuId = useRef(
-    `speed-dial-${Math.random().toString(36).substr(2, 9)}`
+    `speed-dial-${Math.random().toString(36).slice(2, 11)}`
   );
   const actualMenuId = menuId || generatedMenuId.current;
 
@@ -154,12 +155,13 @@ export function SpeedDial({
       if (!isOpen) return;
 
       switch (event.key) {
-        case 'Escape':
+        case 'Escape': {
           event.preventDefault();
           setIsOpen(false);
           setFocusedIndex(-1);
           triggerRef.current?.focus();
           break;
+        }
 
         case 'ArrowUp':
         case 'ArrowDown':
@@ -178,12 +180,9 @@ export function SpeedDial({
             placement.includes('bottom') || placement === 'right';
 
           let shouldMove = false;
-          if (isVertical) {
-            shouldMove = event.key === 'ArrowUp' || event.key === 'ArrowDown';
-          } else {
-            shouldMove =
-              event.key === 'ArrowLeft' || event.key === 'ArrowRight';
-          }
+          shouldMove = isVertical
+            ? event.key === 'ArrowUp' || event.key === 'ArrowDown'
+            : event.key === 'ArrowLeft' || event.key === 'ArrowRight';
 
           if (shouldMove) {
             const increment =
@@ -287,7 +286,7 @@ export function SpeedDial({
       if (action.target === '_blank') {
         window.open(action.href, '_blank', 'noopener,noreferrer');
       } else {
-        window.location.href = action.href;
+        globalThis.location.href = action.href;
       }
     }
 
@@ -344,7 +343,7 @@ export function SpeedDial({
       // Disabled state
       action.disabled ? DESIGN_TOKENS.state.disabled : 'cursor-pointer',
       // Hover effects
-      !action.disabled ? DESIGN_TOKENS.motion.semantic.hoverLift : '',
+      action.disabled ? '' : DESIGN_TOKENS.motion.semantic.hoverLift,
       // Custom classes
       action.className || '',
     ]

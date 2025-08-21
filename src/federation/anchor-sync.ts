@@ -3,12 +3,13 @@
  * Plan and execute synchronization of trust anchors between federated orgs
  */
 
+import { fromB64u } from '../crypto/base64url';
+import { checkCrossOrgPolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
-import type { AnchorPack, SyncPlan, SyncResult } from './sync-types';
+
 import { getAnchors, setAnchors, setSyncState } from './anchor-registry';
 import { listTrustAnchors } from './registry';
-import { checkCrossOrgPolicy } from '../policy/engine';
-import { fromB64u } from '../crypto/base64url';
+import type { AnchorPack, SyncPlan, SyncResult } from './sync-types';
 
 // Reuse canonicalize
 function canonicalize(obj: any): string {
@@ -144,12 +145,7 @@ async function applyAnchorPack(
   }
 
   // Store updated anchors
-  await setAnchors(
-    ns,
-    pack.issuerOrg,
-    Array.from(existingMap.values()),
-    storage
-  );
+  await setAnchors(ns, pack.issuerOrg, [...existingMap.values()], storage);
 
   return { added, updated, revoked };
 }

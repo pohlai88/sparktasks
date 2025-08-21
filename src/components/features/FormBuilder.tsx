@@ -16,6 +16,7 @@
  */
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
+
 import { DESIGN_TOKENS } from '@/design/tokens';
 
 // ===== TYPES AND INTERFACES =====
@@ -138,56 +139,64 @@ export interface FormBuilderProps {
 function validateField(value: any, rules: FormValidationRule[]): string | null {
   for (const rule of rules) {
     switch (rule.type) {
-      case 'required':
+      case 'required': {
         if (!value || (typeof value === 'string' && value.trim() === '')) {
           return rule.message;
         }
         break;
+      }
 
-      case 'email':
+      case 'email': {
         if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
           return rule.message;
         }
         break;
+      }
 
-      case 'phone':
+      case 'phone': {
         if (
           value &&
-          !/^[\+]?[1-9][\d]{0,15}$/.test(value.replace(/[\s\-\(\)]/g, ''))
+          !/^[\+]?[1-9][\d]{0,15}$/.test(value.replaceAll(/[\s\-\(\)]/g, ''))
         ) {
           return rule.message;
         }
         break;
+      }
 
-      case 'url':
+      case 'url': {
         if (value && !/^https?:\/\/.+\..+/.test(value)) {
           return rule.message;
         }
         break;
+      }
 
-      case 'number':
+      case 'number': {
         if (value && isNaN(Number(value))) {
           return rule.message;
         }
         break;
+      }
 
-      case 'minLength':
+      case 'minLength': {
         if (value && value.length < (rule.value as number)) {
           return rule.message;
         }
         break;
+      }
 
-      case 'maxLength':
+      case 'maxLength': {
         if (value && value.length > (rule.value as number)) {
           return rule.message;
         }
         break;
+      }
 
-      case 'pattern':
+      case 'pattern': {
         if (value && !new RegExp(rule.value as string).test(value)) {
           return rule.message;
         }
         break;
+      }
     }
   }
   return null;
@@ -204,18 +213,24 @@ function shouldShowField(field: FormFieldSchema, formData: FormData): boolean {
   const fieldValue = formData[targetField];
 
   switch (operator) {
-    case 'equals':
+    case 'equals': {
       return fieldValue === targetValue;
-    case 'not-equals':
+    }
+    case 'not-equals': {
       return fieldValue !== targetValue;
-    case 'contains':
+    }
+    case 'contains': {
       return String(fieldValue).includes(String(targetValue));
-    case 'greater-than':
+    }
+    case 'greater-than': {
       return Number(fieldValue) > Number(targetValue);
-    case 'less-than':
+    }
+    case 'less-than': {
       return Number(fieldValue) < Number(targetValue);
-    default:
+    }
+    default: {
       return true;
+    }
   }
 }
 
@@ -252,7 +267,7 @@ function renderField({
   };
 
   switch (field.type) {
-    case 'textarea':
+    case 'textarea': {
       return (
         <textarea
           {...commonProps}
@@ -263,8 +278,9 @@ function renderField({
           rows={4}
         />
       );
+    }
 
-    case 'select':
+    case 'select': {
       return (
         <select
           {...commonProps}
@@ -284,8 +300,9 @@ function renderField({
           ))}
         </select>
       );
+    }
 
-    case 'multiSelect':
+    case 'multiSelect': {
       return (
         <select
           {...commonProps}
@@ -311,14 +328,15 @@ function renderField({
           ))}
         </select>
       );
+    }
 
-    case 'checkbox':
+    case 'checkbox': {
       return (
         <div className={DESIGN_TOKENS.layout.patterns.flexGap}>
           <input
             {...commonProps}
             type='checkbox'
-            className='h-4 w-4 rounded border border-secondary-300 bg-white checked:border-primary-600 checked:bg-primary-600 focus:ring-2 focus:ring-primary-600 focus:ring-offset-2'
+            className='size-4 rounded border border-secondary-300 bg-white checked:border-primary-600 checked:bg-primary-600 focus:ring-2 focus:ring-primary-600 focus:ring-offset-2'
             checked={!!value}
             onChange={e => onChange(e.target.checked)}
           />
@@ -330,8 +348,9 @@ function renderField({
           </label>
         </div>
       );
+    }
 
-    case 'radio':
+    case 'radio': {
       return (
         <div
           className={`${DESIGN_TOKENS.layout.patterns.flexCol} ${DESIGN_TOKENS.spacing.sm}`}
@@ -345,7 +364,7 @@ function renderField({
                 id={`${field.id}-${option.value}`}
                 type='radio'
                 name={field.id}
-                className='h-4 w-4 border border-secondary-300 text-primary-600 focus:ring-2 focus:ring-primary-600 focus:ring-offset-2'
+                className='size-4 border border-secondary-300 text-primary-600 focus:ring-2 focus:ring-primary-600 focus:ring-offset-2'
                 value={option.value}
                 checked={value === option.value}
                 disabled={disabled || field.disabled || option.disabled}
@@ -361,8 +380,9 @@ function renderField({
           ))}
         </div>
       );
+    }
 
-    case 'file':
+    case 'file': {
       return (
         <input
           {...commonProps}
@@ -371,8 +391,9 @@ function renderField({
           onChange={e => onChange(e.target.files?.[0] || null)}
         />
       );
+    }
 
-    case 'range':
+    case 'range': {
       return (
         <div className={DESIGN_TOKENS.layout.patterns.flexCol}>
           <input
@@ -389,8 +410,9 @@ function renderField({
           </span>
         </div>
       );
+    }
 
-    default:
+    default: {
       return (
         <input
           {...commonProps}
@@ -401,6 +423,7 @@ function renderField({
           onChange={e => onChange(e.target.value)}
         />
       );
+    }
   }
 }
 
@@ -425,11 +448,11 @@ export function FormBuilder({
   const [formData, setFormData] = useState<FormData>(() => {
     const data: FormData = { ...initialData };
     // Set default values for fields that don't have initial data
-    schema.fields.forEach(field => {
+    for (const field of schema.fields) {
       if (data[field.id] === undefined && field.defaultValue !== undefined) {
         data[field.id] = field.defaultValue;
       }
-    });
+    }
     return data;
   });
 
@@ -442,14 +465,14 @@ export function FormBuilder({
     (data: FormData = formData): FormErrors => {
       const newErrors: FormErrors = {};
 
-      schema.fields.forEach(field => {
+      for (const field of schema.fields) {
         if (shouldShowField(field, data) && field.validation) {
           const error = validateField(data[field.id], field.validation);
           if (error) {
             newErrors[field.id] = error;
           }
         }
-      });
+      }
 
       return newErrors;
     },
@@ -544,19 +567,23 @@ export function FormBuilder({
 
   const getLayoutClasses = () => {
     switch (schema.layout) {
-      case 'grid':
+      case 'grid': {
         return `
           grid gap-${schema.gap || 'md'}
           grid-cols-1 sm:grid-cols-${Math.min(schema.columns || 2, 2)} 
           lg:grid-cols-${schema.columns || 2}
         `;
-      case 'flex':
+      }
+      case 'flex': {
         return `flex flex-wrap gap-${schema.gap || 'md'}`;
-      case 'horizontal':
+      }
+      case 'horizontal': {
         return `flex flex-row gap-${schema.gap || 'md'} flex-wrap`;
+      }
       case 'vertical':
-      default:
+      default: {
         return `flex flex-col gap-${schema.gap || 'md'}`;
+      }
     }
   };
 

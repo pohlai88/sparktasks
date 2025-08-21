@@ -1,16 +1,17 @@
 /**
  * Phase B - Task 24: Compact Merkle Accumulator (≤120 LOC)
  */
-import { StorageDriver } from '../storage/types';
+import { toB64u, fromB64u } from '../crypto/base64url';
+import { type StorageDriver } from '../storage/types';
+
 import {
-  TLStateV1,
-  TLProofV1,
-  AppendResult,
-  VerifyResult,
+  type TLStateV1,
+  type TLProofV1,
+  type AppendResult,
+  type VerifyResult,
   LEAF_PREFIX,
   NODE_PREFIX,
 } from './compact-types';
-import { toB64u, fromB64u } from '../crypto/base64url';
 
 async function hash(prefix: number, data: Uint8Array): Promise<string> {
   const prefixed = new Uint8Array(1 + data.length);
@@ -74,14 +75,14 @@ export async function appendLeaf(
   let carry = leafHashB64u,
     level = 0;
   while (carry) {
-    if (!state.frontier[level]) {
-      state.frontier[level] = carry;
-      carry = '';
-    } else {
+    if (state.frontier[level]) {
       const left = state.frontier[level];
       state.frontier[level] = '';
       carry = await nodeHash(left, carry);
       level++;
+    } else {
+      state.frontier[level] = carry;
+      carry = '';
     }
   }
 

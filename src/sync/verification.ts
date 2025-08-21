@@ -3,14 +3,15 @@
  * Verified pack import with legacy support and policy controls
  */
 
-import type { SyncPlan } from './plan';
-import type { AttestedPack } from './attestation';
 import type { Sparkpack } from '../domain/pack/types';
-import { verifyPackAttestation } from './attestation';
-import { listTrustedSigners, auditPackVerification } from './trust';
+import type { Role } from '../membership/types';
 import { enforcePolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
-import type { Role } from '../membership/types';
+
+import type { AttestedPack } from './attestation';
+import { verifyPackAttestation } from './attestation';
+import type { SyncPlan } from './plan';
+import { listTrustedSigners, auditPackVerification } from './trust';
 
 export interface VerifiedSyncOptions {
   allowUnsigned?: boolean;
@@ -117,15 +118,7 @@ export async function verifyPacksInPlan(
           }
         }
 
-        if (opts.allowUnsigned !== false) {
-          stats.unsigned++;
-          await auditPackVerification(
-            namespace,
-            pack.meta.eventsHash,
-            'success',
-            'Unsigned pack allowed'
-          );
-        } else {
+        if (opts.allowUnsigned === false) {
           stats.rejected++;
           await auditPackVerification(
             namespace,
@@ -137,6 +130,14 @@ export async function verifyPacksInPlan(
             `Unsigned pack ${key} rejected: unsigned packs not allowed`
           );
           continue;
+        } else {
+          stats.unsigned++;
+          await auditPackVerification(
+            namespace,
+            pack.meta.eventsHash,
+            'success',
+            'Unsigned pack allowed'
+          );
         }
       }
 

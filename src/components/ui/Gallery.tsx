@@ -30,9 +30,11 @@ import React, {
   useMemo,
   useRef,
   useEffect,
-  HTMLAttributes,
+  type HTMLAttributes,
 } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
+
 import Dialog from './Dialog';
 
 // ===== TYPES & INTERFACES =====
@@ -251,20 +253,33 @@ export const Gallery = forwardRef<HTMLDivElement, GalleryProps>(
       ];
 
       // Layout-specific classes
-      if (layout === 'grid') {
-        if (columns === 'auto') {
-          baseClasses.push(tokens.size[size].grid);
-        } else {
-          baseClasses.push(tokens.columns[columns]);
+      switch (layout) {
+        case 'grid': {
+          if (columns === 'auto') {
+            baseClasses.push(tokens.size[size].grid);
+          } else {
+            baseClasses.push(tokens.columns[columns]);
+          }
+          baseClasses.push(tokens.size[size].container);
+
+          break;
         }
-        baseClasses.push(tokens.size[size].container);
-      } else if (layout === 'masonry') {
-        baseClasses.push(tokens.size[size].columns);
-        baseClasses.push('gap-4');
-      } else if (layout === 'list') {
-        baseClasses.push(tokens.container.list);
-      } else if (layout === 'carousel') {
-        baseClasses.push(tokens.container.carousel);
+        case 'masonry': {
+          baseClasses.push(tokens.size[size].columns, 'gap-4');
+
+          break;
+        }
+        case 'list': {
+          baseClasses.push(tokens.container.list);
+
+          break;
+        }
+        case 'carousel': {
+          baseClasses.push(tokens.container.carousel);
+
+          break;
+        }
+        // No default
       }
 
       return baseClasses.join(' ');

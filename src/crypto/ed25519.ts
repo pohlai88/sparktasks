@@ -27,9 +27,9 @@ export async function exportPublicKeyB64u(
 ): Promise<string> {
   const spki = await crypto.subtle.exportKey('spki', publicKey);
   return btoa(String.fromCharCode(...new Uint8Array(spki)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replaceAll('=', '');
 }
 
 /**
@@ -41,9 +41,9 @@ export async function sign(
 ): Promise<string> {
   const signature = await crypto.subtle.sign('Ed25519', privateKey, data);
   return btoa(String.fromCharCode(...new Uint8Array(signature)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replaceAll('=', '');
 }
 
 /**
@@ -56,7 +56,7 @@ export async function verify(
 ): Promise<boolean> {
   try {
     // Convert base64url to bytes
-    const sigBase64 = sigB64u.replace(/-/g, '+').replace(/_/g, '/');
+    const sigBase64 = sigB64u.replaceAll('-', '+').replaceAll('_', '/');
     const padding = '='.repeat((4 - (sigBase64.length % 4)) % 4);
     const sigBytes = Uint8Array.from(atob(sigBase64 + padding), c =>
       c.charCodeAt(0)
@@ -72,7 +72,7 @@ export async function verify(
  * Import public key from base64url SPKI
  */
 export async function importPublicKeyB64u(keyB64u: string): Promise<CryptoKey> {
-  const keyBase64 = keyB64u.replace(/-/g, '+').replace(/_/g, '/');
+  const keyBase64 = keyB64u.replaceAll('-', '+').replaceAll('_', '/');
   const padding = '='.repeat((4 - (keyBase64.length % 4)) % 4);
   const keyBytes = Uint8Array.from(atob(keyBase64 + padding), c =>
     c.charCodeAt(0)

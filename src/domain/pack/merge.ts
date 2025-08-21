@@ -1,5 +1,6 @@
-import type { Task } from '../task/schema';
 import type { TaskEvent } from '../task/events';
+import type { Task } from '../task/schema';
+
 import type { MergePolicy, MergePlan } from './types';
 
 // Generate unique ID for remapping
@@ -9,34 +10,40 @@ const generateRemapId = (): string => `imp_${Date.now()}_${++remapCounter}`;
 // Helper to remap ID in event payload
 function remapEventId(event: TaskEvent, newId: string): TaskEvent {
   switch (event.type) {
-    case 'TASK_CREATED':
+    case 'TASK_CREATED': {
       return {
         ...event,
         payload: { ...event.payload, id: newId },
       };
-    case 'TASK_UPDATED':
+    }
+    case 'TASK_UPDATED': {
       return {
         ...event,
         payload: { ...event.payload, id: newId },
       };
-    case 'TASK_COMPLETED':
+    }
+    case 'TASK_COMPLETED': {
       return {
         ...event,
         payload: { ...event.payload, id: newId },
       };
-    case 'TASK_SNOOZED':
+    }
+    case 'TASK_SNOOZED': {
       return {
         ...event,
         payload: { ...event.payload, id: newId },
       };
-    case 'TASK_MOVED':
+    }
+    case 'TASK_MOVED': {
       return {
         ...event,
         payload: { ...event.payload, id: newId },
       };
-    default:
+    }
+    default: {
       // This should never happen due to discriminated union
       return event;
+    }
   }
 }
 
@@ -100,25 +107,36 @@ export function planMerge(
         // ID conflict detected
         plan.conflicts.push({ taskId, reason: 'id-conflict' });
 
-        if (policy === 'skipExisting') {
-          shouldInclude = false;
-        } else if (policy === 'overwriteIfNewer') {
-          // For now, allow - timestamp comparison would need existing event data
-          // In real implementation, we'd check if pack timestamp > existing.updatedAt
-          shouldInclude = true;
-        } else if (policy === 'remapIds') {
-          // Generate new ID and add to map
-          const newId = generateRemapId();
-          plan.idMap[taskId] = newId;
+        switch (policy) {
+          case 'skipExisting': {
+            shouldInclude = false;
 
-          // Rewrite this event's payload
-          const processedEvent = remapEventId(eventToProcess, newId);
-          processedEvents.push(processedEvent);
+            break;
+          }
+          case 'overwriteIfNewer': {
+            // For now, allow - timestamp comparison would need existing event data
+            // In real implementation, we'd check if pack timestamp > existing.updatedAt
+            shouldInclude = true;
 
-          // Track creation and timestamp for the new ID
-          taskCreations.add(newId);
-          lastTimestamps.set(newId, processedEvent.timestamp);
-          shouldInclude = false; // Already added
+            break;
+          }
+          case 'remapIds': {
+            // Generate new ID and add to map
+            const newId = generateRemapId();
+            plan.idMap[taskId] = newId;
+
+            // Rewrite this event's payload
+            const processedEvent = remapEventId(eventToProcess, newId);
+            processedEvents.push(processedEvent);
+
+            // Track creation and timestamp for the new ID
+            taskCreations.add(newId);
+            lastTimestamps.set(newId, processedEvent.timestamp);
+            shouldInclude = false; // Already added
+
+            break;
+          }
+          // No default
         }
       } else {
         // No conflict, track creation normally

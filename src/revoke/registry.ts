@@ -2,9 +2,9 @@
  * Revocation registry for tracking revoked invites and signers
  */
 
+import type { Role } from '../membership/types';
 import { enforcePolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
-import type { Role } from '../membership/types';
 
 interface RevocationStorage {
   getItem(key: string): Promise<string | null>;

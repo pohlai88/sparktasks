@@ -1,5 +1,6 @@
-import type { Task } from './schema';
 import type { TaskId } from '../../types/task';
+
+import type { Task } from './schema';
 
 export interface SnapshotMeta {
   version: 1;
@@ -18,11 +19,11 @@ export interface Snapshot {
  * Simple FNV-1a 32-bit hash implementation for state hashing
  */
 function fnv1a32(str: string): string {
-  let hash = 0x811c9dc5; // FNV offset basis (32-bit)
+  let hash = 0x81_1c_9d_c5; // FNV offset basis (32-bit)
 
   for (let i = 0; i < str.length; i++) {
     hash ^= str.charCodeAt(i);
-    hash = Math.imul(hash, 0x01000193); // FNV prime (32-bit)
+    hash = Math.imul(hash, 0x01_00_01_93); // FNV prime (32-bit)
   }
 
   return (hash >>> 0).toString(16); // Convert to unsigned 32-bit hex

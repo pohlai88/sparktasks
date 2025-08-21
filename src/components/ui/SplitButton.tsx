@@ -11,10 +11,11 @@
  * - Performance-optimized rendering with proper event handling
  */
 
-import React, { useState, useRef, useEffect } from 'react';
-import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
-import { Button } from '@/components/ui/Button';
 import { ChevronDown } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+
+import { Button } from '@/components/ui/Button';
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 interface SplitButtonItem {
   id: string;
@@ -114,25 +115,27 @@ export const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
       if (disabled) return;
 
       switch (event.key) {
-        case 'ArrowDown':
+        case 'ArrowDown': {
           event.preventDefault();
-          if (!isOpen) {
+          if (isOpen) {
+            setFocusedIndex(prev => (prev < items.length - 1 ? prev + 1 : 0));
+          } else {
             setIsOpen(true);
             setFocusedIndex(0);
-          } else {
-            setFocusedIndex(prev => (prev < items.length - 1 ? prev + 1 : 0));
           }
           break;
+        }
 
-        case 'ArrowUp':
+        case 'ArrowUp': {
           event.preventDefault();
           if (isOpen) {
             setFocusedIndex(prev => (prev > 0 ? prev - 1 : items.length - 1));
           }
           break;
+        }
 
         case 'Enter':
-        case ' ':
+        case ' ': {
           event.preventDefault();
           if (isOpen && focusedIndex >= 0) {
             handleItemClick(items[focusedIndex]);
@@ -140,12 +143,14 @@ export const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
             handleDropdownToggle();
           }
           break;
+        }
 
-        case 'Escape':
+        case 'Escape': {
           event.preventDefault();
           closeDropdown();
           triggerRef.current?.focus();
           break;
+        }
       }
     };
 
@@ -315,23 +320,38 @@ export const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
                 disabled={item.disabled}
                 onClick={() => handleItemClick(item)}
                 onKeyDown={e => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleItemClick(item);
-                  } else if (e.key === 'Escape') {
-                    e.preventDefault();
-                    closeDropdown();
-                    triggerRef.current?.focus();
-                  } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    setFocusedIndex(prev =>
-                      prev < items.length - 1 ? prev + 1 : 0
-                    );
-                  } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    setFocusedIndex(prev =>
-                      prev > 0 ? prev - 1 : items.length - 1
-                    );
+                  switch (e.key) {
+                    case 'Enter':
+                    case ' ': {
+                      e.preventDefault();
+                      handleItemClick(item);
+
+                      break;
+                    }
+                    case 'Escape': {
+                      e.preventDefault();
+                      closeDropdown();
+                      triggerRef.current?.focus();
+
+                      break;
+                    }
+                    case 'ArrowDown': {
+                      e.preventDefault();
+                      setFocusedIndex(prev =>
+                        prev < items.length - 1 ? prev + 1 : 0
+                      );
+
+                      break;
+                    }
+                    case 'ArrowUp': {
+                      e.preventDefault();
+                      setFocusedIndex(prev =>
+                        prev > 0 ? prev - 1 : items.length - 1
+                      );
+
+                      break;
+                    }
+                    // No default
                   }
                 }}
                 onMouseEnter={() => setFocusedIndex(index)}

@@ -36,11 +36,12 @@ import React, {
   useLayoutEffect,
 } from 'react';
 import { createPortal } from 'react-dom';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== ISOMORPHIC LAYOUT EFFECT =====
 const useIsoLayoutEffect =
-  typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+  typeof globalThis === 'undefined' ? useEffect : useLayoutEffect;
 
 // ===== TYPE DEFINITIONS =====
 
@@ -320,7 +321,7 @@ const useHoverCardInteraction = (
 
     // Set show timeout or show immediately
     if (showDelay > 0) {
-      showTimeoutRef.current = window.setTimeout(() => {
+      showTimeoutRef.current = globalThis.setTimeout(() => {
         setOpen(true);
       }, showDelay);
     } else {
@@ -339,7 +340,7 @@ const useHoverCardInteraction = (
 
     // Set hide timeout or hide immediately
     if (hideDelay > 0) {
-      hideTimeoutRef.current = window.setTimeout(() => {
+      hideTimeoutRef.current = globalThis.setTimeout(() => {
         setOpen(false);
       }, hideDelay);
     } else {
@@ -836,7 +837,7 @@ export const HoverCardHeader = React.forwardRef<
       ref={ref}
       className={` ${DESIGN_TOKENS.layout.patterns.cardHeader} ${className || ''} `
         .trim()
-        .replace(/\s+/g, ' ')}
+        .replaceAll(/\s+/g, ' ')}
       {...props}
     />
   );
@@ -852,7 +853,7 @@ export const HoverCardContent = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={`space-y-3 ${className || ''} `.trim().replace(/\s+/g, ' ')}
+      className={`space-y-3 ${className || ''} `.trim().replaceAll(/\s+/g, ' ')}
       {...props}
     />
   );
@@ -870,7 +871,7 @@ export const HoverCardFooter = React.forwardRef<
       ref={ref}
       className={`mt-3 border-t border-gray-200 px-3 py-2 pt-3 dark:border-gray-700 ${className || ''} `
         .trim()
-        .replace(/\s+/g, ' ')}
+        .replaceAll(/\s+/g, ' ')}
       {...props}
     />
   );

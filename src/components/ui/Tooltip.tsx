@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
@@ -90,7 +91,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
       if (!open) {
         if (delayShow > 0) {
-          showTimeoutRef.current = window.setTimeout(() => {
+          showTimeoutRef.current = globalThis.setTimeout(() => {
             setOpen(true);
           }, delayShow);
         } else {
@@ -107,7 +108,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
       if (open) {
         if (delayHide > 0) {
-          hideTimeoutRef.current = window.setTimeout(() => {
+          hideTimeoutRef.current = globalThis.setTimeout(() => {
             setOpen(false);
           }, delayHide);
         } else {

@@ -36,8 +36,9 @@ import React, {
   useState,
   useCallback,
   useMemo,
-  ReactNode,
+  type ReactNode,
 } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPES & INTERFACES =====

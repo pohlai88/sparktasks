@@ -5,6 +5,7 @@
 
 import { log } from '../audit/api';
 import type { StorageDriver } from '../storage/types';
+
 import type { TrustAnchor, AnchorStatus } from './types';
 
 let registryStorage: StorageDriver | null = null;
@@ -34,10 +35,10 @@ export async function addTrustAnchor(
     createdAt: new Date().toISOString(),
   };
 
-  if (existingIndex >= 0) {
-    existing[existingIndex] = newAnchor;
-  } else {
+  if (existingIndex === -1) {
     existing.push(newAnchor);
+  } else {
+    existing[existingIndex] = newAnchor;
   }
 
   await storage.setItem(key, JSON.stringify(existing));

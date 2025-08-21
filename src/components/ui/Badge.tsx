@@ -1,4 +1,5 @@
 import React, { forwardRef, useMemo, useCallback } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
@@ -68,7 +69,7 @@ const StatusIcon: React.FC<{ status: BadgeStatus }> = React.memo(
     };
 
     switch (status) {
-      case 'success':
+      case 'success': {
         return (
           <svg {...iconProps}>
             <path
@@ -78,7 +79,8 @@ const StatusIcon: React.FC<{ status: BadgeStatus }> = React.memo(
             />
           </svg>
         );
-      case 'warning':
+      }
+      case 'warning': {
         return (
           <svg {...iconProps}>
             <path
@@ -88,7 +90,8 @@ const StatusIcon: React.FC<{ status: BadgeStatus }> = React.memo(
             />
           </svg>
         );
-      case 'danger':
+      }
+      case 'danger': {
         return (
           <svg {...iconProps}>
             <path
@@ -98,7 +101,8 @@ const StatusIcon: React.FC<{ status: BadgeStatus }> = React.memo(
             />
           </svg>
         );
-      case 'info':
+      }
+      case 'info': {
         return (
           <svg {...iconProps}>
             <path
@@ -108,8 +112,10 @@ const StatusIcon: React.FC<{ status: BadgeStatus }> = React.memo(
             />
           </svg>
         );
-      default:
+      }
+      default: {
         return null;
+      }
     }
   }
 );

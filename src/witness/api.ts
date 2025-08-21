@@ -3,23 +3,23 @@
  * Registry management, signature ingestion, and threshold verification
  */
 
-import { StorageDriver } from '../storage/types';
-import {
-  Witness,
-  WitnessSig,
-  WitnessedCheckpointV1,
-  WitnessPolicy,
-  WitnessVerifyResult,
-} from './types';
+import { type StorageDriver } from '../storage/types';
+
 import {
   canonicalize,
-  buildWitnessPayload,
   filterWitnessesByStatus,
   findWitness,
   isWitnessValid,
   countValidSigs,
   checkPolicy,
 } from './helpers';
+import {
+  type Witness,
+  type WitnessSig,
+  type WitnessedCheckpointV1,
+  type WitnessPolicy,
+  type WitnessVerifyResult,
+} from './types';
 
 // Global hooks for audit and policy
 let auditHook: any = null;
@@ -137,7 +137,6 @@ export async function setWitnessStatus(
 }
 
 // Build payload for witnesses to sign
-export { buildWitnessPayload };
 
 // Ingest witness signature
 export async function ingestWitnessSig(
@@ -318,3 +317,5 @@ export async function verifyWitnessedCheckpoint(
     return { ok: false, reason: policyCheck.reason || 'policy_failure', count };
   }
 }
+
+export { buildWitnessPayload } from './helpers';

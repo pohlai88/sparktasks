@@ -20,15 +20,6 @@
  * @since 2025-08-21
  */
 
-import React, {
-  useState,
-  forwardRef,
-  createContext,
-  useContext,
-  useCallback,
-  useMemo,
-} from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
 import {
   ChevronRight,
   ChevronDown,
@@ -38,6 +29,16 @@ import {
   Check,
   Circle,
 } from 'lucide-react';
+import React, {
+  useState,
+  forwardRef,
+  createContext,
+  useContext,
+  useCallback,
+  useMemo,
+} from 'react';
+
+import { DESIGN_TOKENS } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -231,7 +232,7 @@ export const BreadcrumbNavigation = forwardRef<
 >(function BreadcrumbNavigation(
   {
     items,
-    separator = <ChevronRight className='h-4 w-4' />,
+    separator = <ChevronRight className='size-4' />,
     maxItems = 5,
     showHome = true,
     className = '',
@@ -294,7 +295,7 @@ export const BreadcrumbNavigation = forwardRef<
                 }
                 aria-label='Navigate to home'
               >
-                <Home className='h-4 w-4' />
+                <Home className='size-4' />
               </button>
             </li>
             <li className='text-slate-400 dark:text-slate-500'>{separator}</li>
@@ -324,7 +325,7 @@ export const BreadcrumbNavigation = forwardRef<
                     aria-current={item.current ? 'page' : undefined}
                     disabled={item.current}
                   >
-                    {item.icon && <item.icon className='h-4 w-4' />}
+                    {item.icon && <item.icon className='size-4' />}
                     {item.label}
                   </button>
                 ) : (
@@ -335,7 +336,7 @@ export const BreadcrumbNavigation = forwardRef<
                         : 'text-slate-500 dark:text-slate-400'
                     } `}
                   >
-                    {item.icon && <item.icon className='h-4 w-4' />}
+                    {item.icon && <item.icon className='size-4' />}
                     {item.label}
                   </span>
                 )}
@@ -449,29 +450,35 @@ export const TabNavigation = forwardRef<HTMLDivElement, TabNavigationProps>(
         let nextIndex = index;
 
         switch (event.key) {
-          case isHorizontal ? 'ArrowLeft' : 'ArrowUp':
+          case isHorizontal ? 'ArrowLeft' : 'ArrowUp': {
             event.preventDefault();
             nextIndex = index > 0 ? index - 1 : items.length - 1;
             break;
-          case isHorizontal ? 'ArrowRight' : 'ArrowDown':
+          }
+          case isHorizontal ? 'ArrowRight' : 'ArrowDown': {
             event.preventDefault();
             nextIndex = index < items.length - 1 ? index + 1 : 0;
             break;
-          case 'Home':
+          }
+          case 'Home': {
             event.preventDefault();
             nextIndex = 0;
             break;
-          case 'End':
+          }
+          case 'End': {
             event.preventDefault();
             nextIndex = items.length - 1;
             break;
+          }
           case 'Enter':
-          case ' ':
+          case ' ': {
             event.preventDefault();
             handleTabClick(tabId);
             return;
-          default:
+          }
+          default: {
             return;
+          }
         }
 
         // Focus next tab
@@ -512,7 +519,7 @@ export const TabNavigation = forwardRef<HTMLDivElement, TabNavigationProps>(
                   !tab.disabled && handleKeyDown(e, tab.id, index)
                 }
               >
-                {tab.icon && <tab.icon className='h-4 w-4' />}
+                {tab.icon && <tab.icon className='size-4' />}
                 {tab.label}
                 {tab.badge && (
                   <span
@@ -563,14 +570,19 @@ export const StepNavigation = forwardRef<HTMLElement, StepNavigationProps>(
   ) {
     const getStepIcon = useCallback((step: StepItem, index: number) => {
       switch (step.status) {
-        case 'completed':
-          return <Check className='h-4 w-4' />;
-        case 'error':
-          return <X className='h-4 w-4' />;
-        case 'current':
-          return <Circle className='h-4 w-4' fill='currentColor' />;
-        default:
+        case 'completed': {
+          return <Check className='size-4' />;
+        }
+        case 'error': {
+          return <X className='size-4' />;
+        }
+        case 'current': {
+          return <Circle className='size-4' fill='currentColor' />;
+        }
+        case 'pending':
+        default: {
           return <span className='text-sm font-medium'>{index + 1}</span>;
+        }
       }
     }, []);
 
@@ -579,14 +591,19 @@ export const StepNavigation = forwardRef<HTMLElement, StepNavigationProps>(
         'flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200';
 
       switch (step.status) {
-        case 'completed':
+        case 'completed': {
           return `${baseStyles} bg-success-600 text-white`;
-        case 'current':
+        }
+        case 'current': {
           return `${baseStyles} bg-primary-600 text-white ring-4 ring-primary-100 dark:ring-primary-900`;
-        case 'error':
+        }
+        case 'error': {
           return `${baseStyles} bg-error-600 text-white`;
-        default:
+        }
+        case 'pending':
+        default: {
           return `${baseStyles} bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300`;
+        }
       }
     }, []);
 
@@ -629,7 +646,8 @@ export const StepNavigation = forwardRef<HTMLElement, StepNavigationProps>(
       const currentStepIndex = steps.findIndex(
         step => step.status === 'current'
       );
-      const totalProgress = completedSteps + (currentStepIndex >= 0 ? 0.5 : 0);
+      const totalProgress =
+        completedSteps + (currentStepIndex === -1 ? 0 : 0.5);
 
       return Math.round((totalProgress / steps.length) * 100);
     }, [steps]);
@@ -824,7 +842,7 @@ function NavigationItemComponent({
         >
           {item.icon && (
             <item.icon
-              className={`h-4 w-4 flex-shrink-0 ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400 dark:text-slate-500'} `}
+              className={`size-4 shrink-0 ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400 dark:text-slate-500'} `}
             />
           )}
 
@@ -851,9 +869,9 @@ function NavigationItemComponent({
             aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${item.label}`}
           >
             {isExpanded ? (
-              <ChevronUp className='h-4 w-4' />
+              <ChevronUp className='size-4' />
             ) : (
-              <ChevronDown className='h-4 w-4' />
+              <ChevronDown className='size-4' />
             )}
           </button>
         )}
@@ -995,7 +1013,7 @@ export const NavigationSystems = forwardRef<
               disabled={item.disabled}
               aria-current={item.active ? 'page' : undefined}
             >
-              {showIcons && item.icon && <item.icon className='h-4 w-4' />}
+              {showIcons && item.icon && <item.icon className='size-4' />}
               {item.label}
               {item.badge && (
                 <span className='inline-flex items-center justify-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300'>

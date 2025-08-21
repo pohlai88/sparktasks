@@ -36,6 +36,7 @@ import React, {
   useMemo,
 } from 'react';
 import { createPortal } from 'react-dom';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPES & INTERFACES =====
@@ -239,7 +240,7 @@ const usePopoverInteraction = (
   const show = useCallback(() => {
     clearTimeouts();
     if (showDelay > 0) {
-      showTimeoutRef.current = window.setTimeout(
+      showTimeoutRef.current = globalThis.setTimeout(
         () => setOpen(true),
         showDelay
       );
@@ -251,7 +252,7 @@ const usePopoverInteraction = (
   const hide = useCallback(() => {
     clearTimeouts();
     if (hideDelay > 0) {
-      hideTimeoutRef.current = window.setTimeout(
+      hideTimeoutRef.current = globalThis.setTimeout(
         () => setOpen(false),
         hideDelay
       );
@@ -337,54 +338,66 @@ const usePopoverPositioning = (
 
     // Calculate base position
     switch (position) {
-      case 'top':
+      case 'top': {
         x = triggerRect.left + triggerRect.width / 2 - contentRect.width / 2;
         y = triggerRect.top - contentRect.height - offset;
         break;
-      case 'top-start':
+      }
+      case 'top-start': {
         x = triggerRect.left;
         y = triggerRect.top - contentRect.height - offset;
         break;
-      case 'top-end':
+      }
+      case 'top-end': {
         x = triggerRect.right - contentRect.width;
         y = triggerRect.top - contentRect.height - offset;
         break;
-      case 'bottom':
+      }
+      case 'bottom': {
         x = triggerRect.left + triggerRect.width / 2 - contentRect.width / 2;
         y = triggerRect.bottom + offset;
         break;
-      case 'bottom-start':
+      }
+      case 'bottom-start': {
         x = triggerRect.left;
         y = triggerRect.bottom + offset;
         break;
-      case 'bottom-end':
+      }
+      case 'bottom-end': {
         x = triggerRect.right - contentRect.width;
         y = triggerRect.bottom + offset;
         break;
-      case 'left':
+      }
+      case 'left': {
         x = triggerRect.left - contentRect.width - offset;
         y = triggerRect.top + triggerRect.height / 2 - contentRect.height / 2;
         break;
-      case 'left-start':
+      }
+      case 'left-start': {
         x = triggerRect.left - contentRect.width - offset;
         y = triggerRect.top;
         break;
-      case 'left-end':
+      }
+      case 'left-end': {
         x = triggerRect.left - contentRect.width - offset;
         y = triggerRect.bottom - contentRect.height;
         break;
-      case 'right':
+      }
+      case 'right': {
         x = triggerRect.right + offset;
         y = triggerRect.top + triggerRect.height / 2 - contentRect.height / 2;
         break;
-      case 'right-start':
+      }
+      case 'right-start': {
         x = triggerRect.right + offset;
         y = triggerRect.top;
         break;
-      case 'right-end':
+      }
+      case 'right-end': {
         x = triggerRect.right + offset;
         y = triggerRect.bottom - contentRect.height;
         break;
+      }
     }
 
     // Collision detection and position adjustment
@@ -454,7 +467,7 @@ const usePopoverPositioning = (
  * Generate unique IDs for accessibility
  */
 const generateId = (prefix: string) =>
-  `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+  `${prefix}-${Math.random().toString(36).slice(2, 11)}`;
 
 /**
  * Get size classes from design tokens

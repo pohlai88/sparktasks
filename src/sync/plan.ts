@@ -1,9 +1,9 @@
-import type { Task } from '../domain/task/schema';
-import type { TaskEvent } from '../domain/task/events';
-import type { RemoteTransport } from '../storage/remoteTypes';
-import type { MergePlan, MergePolicy } from '../domain/pack/types';
-import { planMerge } from '../domain/pack/merge';
 import { planImport } from '../domain/pack/import';
+import { planMerge } from '../domain/pack/merge';
+import type { MergePlan, MergePolicy } from '../domain/pack/types';
+import type { TaskEvent } from '../domain/task/events';
+import type { Task } from '../domain/task/schema';
+import type { RemoteTransport } from '../storage/remoteTypes';
 
 export interface SyncPlan {
   phase: 'pull' | 'merge' | 'push';
@@ -83,7 +83,7 @@ export async function planSync(
         if (!data) continue;
 
         // Clock-skew guard: Warn about suspicious timestamps
-        if (Math.abs(new Date(data.updatedAt).getTime() - Date.now()) > 300000)
+        if (Math.abs(new Date(data.updatedAt).getTime() - Date.now()) > 300_000)
           console.warn(`Clock skew: ${key}`);
 
         const validation = planImport(data.value);

@@ -1,14 +1,15 @@
-import { TaskEvent, TaskEventSchema } from './events';
-import { Task } from './schema';
-import { Snapshot, computeStateHash } from './snapshot';
+import { type KeyringProvider } from '../../crypto/keyring';
+import { SyncEncryptedDriver, composeEncrypted } from '../../storage/compose';
 import {
   SyncLocalStorageDriver,
   createNamespace,
   LocalStorageDriver,
 } from '../../storage/local';
-import { SyncEncryptedDriver, composeEncrypted } from '../../storage/compose';
-import { KeyringProvider } from '../../crypto/keyring';
 import type { TaskId } from '../../types/task';
+
+import { type TaskEvent, TaskEventSchema } from './events';
+import { type Task } from './schema';
+import { type Snapshot, computeStateHash } from './snapshot';
 
 const STORAGE_KEY = 'spark.events.v1';
 const STORAGE_TMP = 'spark.events.v1.tmp';
@@ -98,7 +99,7 @@ export function reduce(
 
   for (const event of events) {
     switch (event.type) {
-      case 'TASK_CREATED':
+      case 'TASK_CREATED': {
         tasks[event.payload.id] = {
           ...event.payload,
           tags: event.payload.tags || [],
@@ -106,7 +107,8 @@ export function reduce(
           updatedAt: event.timestamp,
         };
         break;
-      case 'TASK_UPDATED':
+      }
+      case 'TASK_UPDATED': {
         if (tasks[event.payload.id]) {
           const existingTask = tasks[event.payload.id];
           tasks[event.payload.id] = {
@@ -119,8 +121,9 @@ export function reduce(
           };
         }
         break;
+      }
       case 'TASK_COMPLETED':
-      case 'TASK_MOVED':
+      case 'TASK_MOVED': {
         if (tasks[event.payload.id]) {
           tasks[event.payload.id] = {
             ...tasks[event.payload.id],
@@ -130,7 +133,8 @@ export function reduce(
           };
         }
         break;
-      case 'TASK_SNOOZED':
+      }
+      case 'TASK_SNOOZED': {
         if (tasks[event.payload.id]) {
           tasks[event.payload.id] = {
             ...tasks[event.payload.id],
@@ -139,6 +143,7 @@ export function reduce(
           };
         }
         break;
+      }
     }
   }
 

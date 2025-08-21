@@ -360,7 +360,7 @@ export const CardDemo: React.FC = () => {
             <Card>
               <CardHeader>
                 <div className='flex items-center gap-4'>
-                  <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600'>
+                  <div className='flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600'>
                     <span className='text-lg font-bold text-white'>JD</span>
                   </div>
                   <div>

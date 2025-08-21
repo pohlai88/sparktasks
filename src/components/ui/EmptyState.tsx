@@ -27,8 +27,9 @@
  */
 
 import React from 'react';
-import { cn } from '../../utils/cn';
+
 import { DESIGN_TOKENS, combineTokens } from '../../design/tokens';
+import { cn } from '../../utils/cn';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -377,7 +378,7 @@ const EmptyStateIconComponent: React.FC<{
 const EmptyStateSuggestions: React.FC<{
   suggestions: EmptyStateSuggestion[];
 }> = ({ suggestions }) => {
-  if (!suggestions.length) return null;
+  if (suggestions.length === 0) return null;
 
   return (
     <div
@@ -413,7 +414,7 @@ const EmptyStateActions: React.FC<{
   actions: EmptyStateAction[];
   size: EmptyStateSize;
 }> = ({ actions, size }) => {
-  if (!actions.length) return null;
+  if (actions.length === 0) return null;
 
   const containerClasses =
     size === 'small' ? 'mt-3 space-y-2' : 'mt-6 space-y-3';

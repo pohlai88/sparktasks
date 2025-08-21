@@ -59,8 +59,9 @@ import React, {
   useMemo,
   Children,
   cloneElement,
-  HTMLAttributes,
+  type HTMLAttributes,
 } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
@@ -292,13 +293,13 @@ const splitPanelTokens = {
 function normalizeSize(size: PanelSize, containerSize: number): number {
   if (typeof size === 'string') {
     if (size.endsWith('%')) {
-      return (containerSize * parseFloat(size)) / 100;
+      return (containerSize * Number.parseFloat(size)) / 100;
     }
     if (size.endsWith('px')) {
-      return parseFloat(size);
+      return Number.parseFloat(size);
     }
     // Assume percentage if no unit
-    return (containerSize * parseFloat(size)) / 100;
+    return (containerSize * Number.parseFloat(size)) / 100;
   }
 
   // If number is between 0-100, treat as percentage
@@ -529,7 +530,7 @@ export const SplitPanels = forwardRef<HTMLDivElement, SplitPanelsProps>(
     // Initialize panel sizes
     const [panelSizes, setPanelSizes] = useState<number[]>(() => {
       // Try to load from localStorage if persistence is enabled
-      if (persistSizes && typeof window !== 'undefined') {
+      if (persistSizes && typeof globalThis !== 'undefined') {
         try {
           const saved = localStorage.getItem(storageKey);
           if (saved) {
@@ -546,12 +547,12 @@ export const SplitPanels = forwardRef<HTMLDivElement, SplitPanelsProps>(
       // Use provided initial sizes or distribute equally
       if (initialSizes.length === panelCount) {
         return initialSizes.map(size =>
-          typeof size === 'number' ? size : parseFloat(size.toString())
+          typeof size === 'number' ? size : Number.parseFloat(size.toString())
         );
       }
 
       // Equal distribution
-      return Array(panelCount).fill(100 / panelCount);
+      return new Array(panelCount).fill(100 / panelCount);
     });
 
     // Performance monitoring hook
@@ -567,10 +568,10 @@ export const SplitPanels = forwardRef<HTMLDivElement, SplitPanelsProps>(
 
       const metrics: LayoutMetrics = {
         containerSize,
-        panelSizes: panelSizes.slice(),
+        panelSizes: [...panelSizes],
         resizeTime: performance.now() - startTime.current,
         panelCount,
-        collapsedPanels: collapsed.slice(),
+        collapsedPanels: [...collapsed],
       };
 
       onLayoutChange(metrics);
@@ -622,7 +623,7 @@ export const SplitPanels = forwardRef<HTMLDivElement, SplitPanelsProps>(
           onSizeChange?.(percentageSizes, leftPanelIndex);
 
           // Persist sizes if enabled
-          if (persistSizes && typeof window !== 'undefined') {
+          if (persistSizes && typeof globalThis !== 'undefined') {
             try {
               localStorage.setItem(storageKey, JSON.stringify(percentageSizes));
             } catch (error) {
@@ -800,7 +801,7 @@ export const SplitPanels = forwardRef<HTMLDivElement, SplitPanelsProps>(
     const renderPanelsWithHandles = () => {
       const elements: React.ReactNode[] = [];
 
-      childArray.forEach((child, index) => {
+      for (const [index, child] of childArray.entries()) {
         // Calculate panel size
         const sizeStyle =
           direction === 'horizontal'
@@ -832,7 +833,7 @@ export const SplitPanels = forwardRef<HTMLDivElement, SplitPanelsProps>(
               maxSize: maxSizes[index],
               style: {
                 ...sizeStyle,
-                ...(child.props.style || {}),
+                ...child.props.style,
               },
             })
           : child;
@@ -859,7 +860,7 @@ export const SplitPanels = forwardRef<HTMLDivElement, SplitPanelsProps>(
             />
           );
         }
-      });
+      }
 
       return elements;
     };
@@ -883,7 +884,7 @@ export const SplitPanels = forwardRef<HTMLDivElement, SplitPanelsProps>(
         data-resizable={resizable}
         {...props}
       >
-        <div ref={containerRef} className='flex h-full w-full'>
+        <div ref={containerRef} className='flex size-full'>
           {renderPanelsWithHandles()}
         </div>
       </div>

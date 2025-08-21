@@ -2,9 +2,10 @@
  * Storage composition helpers for encrypted drivers
  */
 
-import { StorageDriver } from './types';
+import { type KeyringProvider } from '../crypto/keyring';
+
 import { EncryptedDriver } from './encrypted';
-import { KeyringProvider } from '../crypto/keyring';
+import { type StorageDriver } from './types';
 
 /**
  * Compose EncryptedDriver around another storage driver
@@ -54,8 +55,8 @@ export class SyncEncryptedDriver {
         result = value;
         completed = true;
       },
-      err => {
-        error = err;
+      error_ => {
+        error = error_;
         completed = true;
       }
     );
@@ -79,8 +80,8 @@ export class SyncEncryptedDriver {
       () => {
         completed = true;
       },
-      err => {
-        error = err;
+      error_ => {
+        error = error_;
         completed = true;
       }
     );
@@ -103,8 +104,8 @@ export class SyncEncryptedDriver {
       () => {
         completed = true;
       },
-      err => {
-        error = err;
+      error_ => {
+        error = error_;
         completed = true;
       }
     );
@@ -129,8 +130,8 @@ export class SyncEncryptedDriver {
         result = keys;
         completed = true;
       },
-      err => {
-        error = err;
+      error_ => {
+        error = error_;
         completed = true;
       }
     );

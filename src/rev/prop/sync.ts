@@ -3,7 +3,10 @@
  * Headless sync of revocations across devices via E2EE transport
  */
 
+import { toB64u, fromB64u } from '../../crypto/base64url';
+import { logger } from '../../lib/logger';
 import type { StorageDriver } from '../../storage/types';
+
 import type {
   RevRecord,
   RevType,
@@ -11,7 +14,6 @@ import type {
   RevPlan,
   RevResult,
 } from './types';
-import { toB64u, fromB64u } from '../../crypto/base64url';
 
 let storage: StorageDriver;
 let namespace: string;
@@ -88,15 +90,18 @@ async function applyRevocation(record: RevRecord): Promise<boolean> {
   try {
     // Integration points with existing revocation registry
     switch (record.type) {
-      case 'INVITE_REVOKED':
-        console.log(`Revoked invite: ${record.subject}`);
+      case 'INVITE_REVOKED': {
+        logger.debug(`Revoked invite: ${record.subject}`);
         break;
-      case 'SIGNER_REVOKED':
-        console.log(`Revoked signer: ${record.subject}`);
+      }
+      case 'SIGNER_REVOKED': {
+        logger.debug(`Revoked signer: ${record.subject}`);
         break;
-      case 'RECOVERY_REVOKED':
-        console.log(`Revoked recovery bundle: ${record.subject}`);
+      }
+      case 'RECOVERY_REVOKED': {
+        logger.debug(`Revoked recovery bundle: ${record.subject}`);
         break;
+      }
     }
     return true;
   } catch {

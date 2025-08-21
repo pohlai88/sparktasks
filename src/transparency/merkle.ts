@@ -3,16 +3,17 @@
  * Incremental frontier maintenance with O(log n) proofs
  */
 
-import { StorageDriver } from '../storage/types';
+import { toB64u, fromB64u } from '../crypto/base64url';
+import { type StorageDriver } from '../storage/types';
+
 import {
-  TLStateV1,
-  TLProofV1,
-  AppendResult,
-  VerifyResult,
+  type TLStateV1,
+  type TLProofV1,
+  type AppendResult,
+  type VerifyResult,
   LEAF_PREFIX,
   NODE_PREFIX,
 } from './types';
-import { toB64u, fromB64u } from '../crypto/base64url';
 
 /**
  * Compute SHA-256 hash with domain separation
@@ -94,11 +95,7 @@ async function computeRootFromFrontier(frontier: string[]): Promise<string> {
   let acc = '';
   for (let i = frontier.length - 1; i >= 0; i--) {
     if (frontier[i]) {
-      if (acc) {
-        acc = await computeNodeHash(frontier[i], acc);
-      } else {
-        acc = frontier[i];
-      }
+      acc = acc ? await computeNodeHash(frontier[i], acc) : frontier[i];
     }
   }
   return acc;
@@ -124,17 +121,17 @@ export async function appendLeaf(
   let level = 0;
 
   while (carry) {
-    if (!state.frontier[level]) {
-      // Empty slot, place carry here
-      state.frontier[level] = carry;
-      carry = '';
-    } else {
+    if (state.frontier[level]) {
       // Collision, merge and carry up
       const left = state.frontier[level];
       const right = carry;
       state.frontier[level] = '';
       carry = await computeNodeHash(left, right);
       level++;
+    } else {
+      // Empty slot, place carry here
+      state.frontier[level] = carry;
+      carry = '';
     }
   }
 
@@ -195,11 +192,9 @@ export async function verifyProof(
   try {
     // For minimal proof with empty siblings, just check if leaf hash equals root (single leaf case)
     if (proof.siblings.length === 0) {
-      if (proof.leafHashB64u === rootB64u) {
-        return { ok: true };
-      } else {
-        return { ok: false, reason: 'hash_mismatch' };
-      }
+      return proof.leafHashB64u === rootB64u
+        ? { ok: true }
+        : { ok: false, reason: 'hash_mismatch' };
     }
 
     let currentHash = proof.leafHashB64u;
@@ -219,11 +214,9 @@ export async function verifyProof(
       currentIndex = Math.floor(currentIndex / 2);
     }
 
-    if (currentHash === rootB64u) {
-      return { ok: true };
-    } else {
-      return { ok: false, reason: 'hash_mismatch' };
-    }
+    return currentHash === rootB64u
+      ? { ok: true }
+      : { ok: false, reason: 'hash_mismatch' };
   } catch (error) {
     return { ok: false, reason: 'hash_mismatch' };
   }

@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { DESIGN_TOKENS, ComponentSize, combineTokens } from '@/design/tokens';
+
+import {
+  DESIGN_TOKENS,
+  type ComponentSize,
+  combineTokens,
+} from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -514,12 +519,16 @@ const SkeletonList = React.forwardRef<HTMLDivElement, SkeletonListProps>(
   ) => {
     const renderItem = (index: number) => {
       switch (itemType) {
-        case 'profile':
+        case 'profile': {
           return <SkeletonProfile key={index} avatarSize={itemSize} isChild />;
-        case 'card':
+        }
+        case 'card': {
           return <SkeletonCard key={index} size={itemSize} isChild />;
-        default:
+        }
+        case 'text':
+        default: {
           return <SkeletonText key={index} size={itemSize} isChild />;
+        }
       }
     };
 

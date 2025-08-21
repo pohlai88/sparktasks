@@ -2,10 +2,11 @@
 // Non-breaking: this file is additive; existing sync API remains unchanged.
 
 import type { TaskId } from '../../types/task';
-import type { Task } from './schema';
+
+import { reduce as reduceSync } from './eventlog'; // pure reducer we can reuse
 import type { TaskEvent } from './events';
 import { TaskEventSchema } from './events';
-import { reduce as reduceSync } from './eventlog'; // pure reducer we can reuse
+import type { Task } from './schema';
 import type { Snapshot } from './snapshot';
 
 // Keep keys identical to sync implementation
@@ -55,7 +56,7 @@ export async function appendEventAsync(event: TaskEvent): Promise<void> {
   const d = mustDriver();
   const cur = await d.getItem(STORAGE_KEY);
   const line = JSON.stringify(TaskEventSchema.parse(event));
-  const next = cur && cur.length ? `${cur}\n${line}` : line;
+  const next = cur && cur.length > 0 ? `${cur}\n${line}` : line;
   await d.setItem(STORAGE_KEY, next);
 }
 

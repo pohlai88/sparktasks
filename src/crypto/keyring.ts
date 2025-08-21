@@ -2,10 +2,10 @@
  * Headless keyring with passphrase-derived KEK for DEK management
  */
 
-import { KeyProvider } from './types';
-import { KeyringState, BackupBundle } from './keyringTypes';
-import { deriveKEK, genSalt } from './pbkdf2';
 import { toB64u, fromB64u } from './base64url';
+import { type KeyringState, type BackupBundle } from './keyringTypes';
+import { deriveKEK, genSalt } from './pbkdf2';
+import { type KeyProvider } from './types';
 
 interface StorageDriver {
   getItem(key: string): Promise<string | null>;
@@ -41,7 +41,7 @@ export class KeyringProvider implements KeyProvider {
     }
 
     const salt = genSalt();
-    const saltBuffer = salt.buffer.slice(0) as ArrayBuffer;
+    const saltBuffer = [...salt.buffer] as ArrayBuffer;
     const kek = await deriveKEK(passphrase, saltBuffer, iterations);
 
     // Generate first DEK
@@ -225,12 +225,10 @@ export class KeyringProvider implements KeyProvider {
       throw new Error('Keyring locked');
     }
 
-    const deks = Array.from(this.wrappedDeks.entries()).map(
-      ([kid, wrapped]) => ({
-        kid,
-        wrapped,
-      })
-    );
+    const deks = [...this.wrappedDeks.entries()].map(([kid, wrapped]) => ({
+      kid,
+      wrapped,
+    }));
 
     return {
       v: 1,
@@ -255,14 +253,13 @@ export class KeyringProvider implements KeyProvider {
     }
 
     // Validate meta if present
-    if (bundle.meta) {
-      if (
-        !bundle.meta.saltB64u ||
+    if (
+      bundle.meta &&
+      (!bundle.meta.saltB64u ||
         typeof bundle.meta.iter !== 'number' ||
-        bundle.meta.iter < 1
-      ) {
-        throw new Error('Invalid KEK metadata in backup');
-      }
+        bundle.meta.iter < 1)
+    ) {
+      throw new Error('Invalid KEK metadata in backup');
     }
 
     // If bundle meta present and doesn't match current KEK params,

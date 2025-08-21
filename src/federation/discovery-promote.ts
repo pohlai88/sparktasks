@@ -3,17 +3,18 @@
  * Promote pending anchors to trusted status with policy control
  */
 
+import { checkCrossOrgPolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
-import type { PendingAnchor } from './discovery-types';
-import type { TrustAnchor } from './types';
+
 import {
   getPendingAnchors,
   setPendingAnchors,
   updateDiscoveryMetrics,
   cleanExpiredPendingAnchors,
 } from './discovery-registry';
+import type { PendingAnchor } from './discovery-types';
 import { addTrustAnchor, listTrustAnchors } from './registry';
-import { checkCrossOrgPolicy } from '../policy/engine';
+import type { TrustAnchor } from './types';
 
 /**
  * Auto-promote pending anchors based on policy (M3)

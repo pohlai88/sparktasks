@@ -26,8 +26,12 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
-import { ComponentSize, ComponentVariant } from '@/design/tokens';
+
+import {
+  DESIGN_TOKENS,
+  type ComponentSize,
+  type ComponentVariant,
+} from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -252,14 +256,14 @@ export const LogViewer = forwardRef<HTMLDivElement, LogViewerProps>(
 
     const availableLevels = useMemo(() => {
       const levels = new Set<LogLevel>();
-      logs.forEach(log => levels.add(log.level));
-      return Array.from(levels);
+      for (const log of logs) levels.add(log.level);
+      return [...levels];
     }, [logs]);
 
     const availableSources = useMemo(() => {
       const sources = new Set<string>();
-      logs.forEach(log => log.source && sources.add(log.source));
-      return Array.from(sources);
+      for (const log of logs) log.source && sources.add(log.source);
+      return [...sources];
     }, [logs]);
 
     // ===== EVENT HANDLERS =====
@@ -586,7 +590,7 @@ export const LogViewer = forwardRef<HTMLDivElement, LogViewerProps>(
                 {state.searchQuery && (
                   <button
                     onClick={() => handleSearch('')}
-                    className='absolute right-2 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600'
+                    className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600'
                     data-testid='clear-search'
                   >
                     ✕
@@ -741,7 +745,7 @@ export const LogViewer = forwardRef<HTMLDivElement, LogViewerProps>(
             <div className='flex items-center gap-4'>
               {realTime && (
                 <div className='flex items-center gap-1'>
-                  <div className='h-2 w-2 animate-pulse rounded-full bg-green-500'></div>
+                  <div className='size-2 animate-pulse rounded-full bg-green-500'></div>
                   <span>Live</span>
                 </div>
               )}

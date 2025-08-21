@@ -2,13 +2,14 @@
  * BYOC implementation with high-level helpers
  */
 
-import { BYOC, BlobRef, PutResult } from './byocTypes';
 import {
-  Manifest,
+  type Manifest,
   createManifest,
   verifyManifest,
 } from '../domain/pack/manifest';
-import { Sparkpack } from '../domain/pack/types';
+import { type Sparkpack } from '../domain/pack/types';
+
+import { type BYOC, type BlobRef, type PutResult } from './byocTypes';
 
 /**
  * Simple in-memory BYOC for testing
@@ -31,7 +32,7 @@ export class MemoryBYOC implements BYOC {
   }
 
   async putBlob(path: string, data: ArrayBuffer): Promise<PutResult> {
-    this.storage.set(path, data.slice()); // copy
+    this.storage.set(path, [...data]); // copy
     const etag = Date.now().toString(36) + Math.random().toString(36);
     this.etags.set(path, etag);
     return {
@@ -42,7 +43,7 @@ export class MemoryBYOC implements BYOC {
 
   async getBlob(path: string): Promise<ArrayBuffer | null> {
     const data = this.storage.get(path);
-    return data ? data.slice() : null; // copy
+    return data ? [...data] : null; // copy
   }
 
   async head(path: string): Promise<{ etag?: string; size?: number } | null> {
@@ -72,9 +73,9 @@ export async function uploadPack(
   // Compute hash for consistent ID
   const hashBuffer = await crypto.subtle.digest('SHA-256', eventsData);
   const computedHash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replaceAll('=', '');
 
   // Upload events with computed hash as ID
   const eventsResult = await byoc.putBlob(

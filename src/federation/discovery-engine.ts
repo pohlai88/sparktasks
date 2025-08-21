@@ -3,8 +3,18 @@
  * Plan and execute discovery of trust anchors from remote sources
  */
 
+import * as AuditApi from '../audit/api';
+import { fromB64u } from '../crypto/base64url';
+import { checkCrossOrgPolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
-import type { AnchorPack } from './sync-types';
+
+import {
+  getPendingAnchors,
+  setPendingAnchors,
+  setDiscoveryState,
+  updateDiscoveryMetrics,
+  cleanExpiredPendingAnchors,
+} from './discovery-registry';
 import type {
   AnchorLocator,
   DiscPlan,
@@ -12,18 +22,8 @@ import type {
   PendingAnchor,
   ConflictResolution,
 } from './discovery-types';
-import {
-  getPendingAnchors,
-  setPendingAnchors,
-  getDiscoveryState,
-  setDiscoveryState,
-  updateDiscoveryMetrics,
-  cleanExpiredPendingAnchors,
-} from './discovery-registry';
 import { listTrustAnchors } from './registry';
-import { checkCrossOrgPolicy } from '../policy/engine';
-import { fromB64u } from '../crypto/base64url';
-import * as AuditApi from '../audit/api';
+import type { AnchorPack } from './sync-types';
 
 // Reuse canonicalize from Task 21
 function canonicalize(obj: any): string {
@@ -138,24 +138,7 @@ async function applyDiscoveredAnchors(
   for (const anchor of pack.anchors) {
     const current = existingMap.get(anchor.kid);
 
-    if (!current) {
-      // New pending anchor
-      const pending: PendingAnchor = {
-        orgId: anchor.orgId,
-        kid: anchor.kid,
-        pubB64u: anchor.pubB64u,
-        status: anchor.status,
-        seenAt: now,
-        src: {
-          transportId: source.transportId,
-          path: source.path,
-          packSeq: pack.seq,
-        },
-      };
-
-      existingMap.set(anchor.kid, pending);
-      added++;
-    } else {
+    if (current) {
       // Handle conflict resolution
       const conflict = await resolveConflict(
         current,
@@ -191,6 +174,23 @@ async function applyDiscoveredAnchors(
           reason: conflict.reason,
         });
       }
+    } else {
+      // New pending anchor
+      const pending: PendingAnchor = {
+        orgId: anchor.orgId,
+        kid: anchor.kid,
+        pubB64u: anchor.pubB64u,
+        status: anchor.status,
+        seenAt: now,
+        src: {
+          transportId: source.transportId,
+          path: source.path,
+          packSeq: pack.seq,
+        },
+      };
+
+      existingMap.set(anchor.kid, pending);
+      added++;
     }
   }
 
@@ -198,7 +198,7 @@ async function applyDiscoveredAnchors(
   await setPendingAnchors(
     ns,
     pack.issuerOrg,
-    Array.from(existingMap.values()),
+    [...existingMap.values()],
     storage
   );
 
@@ -219,13 +219,14 @@ async function resolveConflict(
   const isRewind = newSeq < existing.src.packSeq;
 
   switch (resolution) {
-    case 'REJECT':
+    case 'REJECT': {
       return {
         action: 'REJECT',
         reason: 'Policy configured to reject conflicts',
       };
+    }
 
-    case 'PREFER_NEWER':
+    case 'PREFER_NEWER': {
       if (newSeq > existing.src.packSeq) {
         return { action: 'UPDATE' };
       } else if (isRewind) {
@@ -235,11 +236,13 @@ async function resolveConflict(
         action: 'REJECT',
         reason: 'Existing anchor has newer or equal sequence',
       };
+    }
 
-    case 'PREFER_FIRST':
+    case 'PREFER_FIRST': {
       return { action: 'REJECT', reason: 'Keeping first-seen anchor' };
+    }
 
-    case 'PREFER_SOURCE':
+    case 'PREFER_SOURCE': {
       const existingPriority = existing.src.priority || 0;
       const newPriority = (source as any).priority || 0;
       if (newPriority > existingPriority) {
@@ -249,12 +252,14 @@ async function resolveConflict(
         action: 'REJECT',
         reason: 'Existing anchor from higher priority source',
       };
+    }
 
-    default:
+    default: {
       return {
         action: 'REJECT',
         reason: 'Unknown conflict resolution strategy',
       };
+    }
   }
 }
 

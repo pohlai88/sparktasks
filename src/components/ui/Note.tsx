@@ -21,6 +21,7 @@
  */
 
 import React, { useState, forwardRef } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
@@ -60,7 +61,7 @@ const getSemanticIcon = (iconType: NoteIcon): React.ReactNode => {
   const iconClasses = combineTokens('size-5', 'shrink-0');
 
   switch (iconType) {
-    case 'info':
+    case 'info': {
       return (
         <svg
           className={iconClasses}
@@ -77,7 +78,8 @@ const getSemanticIcon = (iconType: NoteIcon): React.ReactNode => {
           />
         </svg>
       );
-    case 'lightbulb':
+    }
+    case 'lightbulb': {
       return (
         <svg
           className={iconClasses}
@@ -94,7 +96,8 @@ const getSemanticIcon = (iconType: NoteIcon): React.ReactNode => {
           />
         </svg>
       );
-    case 'bookmark':
+    }
+    case 'bookmark': {
       return (
         <svg
           className={iconClasses}
@@ -111,7 +114,8 @@ const getSemanticIcon = (iconType: NoteIcon): React.ReactNode => {
           />
         </svg>
       );
-    case 'note':
+    }
+    case 'note': {
       return (
         <svg
           className={iconClasses}
@@ -128,8 +132,11 @@ const getSemanticIcon = (iconType: NoteIcon): React.ReactNode => {
           />
         </svg>
       );
-    default:
+    }
+    case 'custom':
+    default: {
       return null;
+    }
   }
 };
 

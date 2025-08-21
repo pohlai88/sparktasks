@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
+import { assertNever } from '@/lib/exhaustive';
 
 export interface CodeBlockProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
@@ -131,27 +133,34 @@ export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
       const base = DESIGN_TOKENS.recipe.text.codeBlock;
 
       switch (variant) {
-        case 'minimal':
+        case 'minimal': {
           return combineTokens(
             base,
             'bg-secondary-50 dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-700',
             'text-secondary-800 dark:text-secondary-200'
           );
-        case 'terminal':
+        }
+        case 'terminal': {
           return combineTokens(
             base,
             'bg-black dark:bg-black text-green-400',
             'font-mono tracking-tight',
             'border border-secondary-700'
           );
-        case 'diff':
+        }
+        case 'diff': {
           return combineTokens(
             base,
             'bg-secondary-50 dark:bg-secondary-900',
             'border-l-4 border-l-blue-500 dark:border-l-blue-400'
           );
-        default:
+        }
+        case 'default': {
           return base;
+        }
+        default: {
+          return assertNever(variant);
+        }
       }
     }, [variant]);
 
@@ -167,10 +176,10 @@ export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
         // Fallback for older browsers
         const textArea = document.createElement('textarea');
         textArea.value = codeContent;
-        document.body.appendChild(textArea);
+        document.body.append(textArea);
         textArea.select();
         document.execCommand('copy');
-        document.body.removeChild(textArea);
+        textArea.remove();
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }

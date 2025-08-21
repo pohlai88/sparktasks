@@ -5,10 +5,11 @@ import React, {
   useRef,
   useEffect,
   useCallback,
-  ReactNode,
-  MouseEvent,
-  KeyboardEvent,
+  type ReactNode,
+  type MouseEvent,
+  type KeyboardEvent,
 } from 'react';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPES =====
@@ -120,7 +121,7 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
   const handleKeyDown = (event: KeyboardEvent) => {
     switch (event.key) {
       case 'Enter':
-      case ' ':
+      case ' ': {
         event.preventDefault();
         if (!item.disabled) {
           if (hasSubmenu) {
@@ -132,19 +133,22 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
           }
         }
         break;
-      case 'ArrowRight':
+      }
+      case 'ArrowRight': {
         if (hasSubmenu) {
           event.preventDefault();
           setShowSubmenu(true);
         }
         break;
-      case 'ArrowLeft':
+      }
+      case 'ArrowLeft': {
         if (hasSubmenu && showSubmenu) {
           event.preventDefault();
           setShowSubmenu(false);
           itemRef.current?.focus();
         }
         break;
+      }
       // Note: Escape is handled at the menu level, not here
     }
   };
@@ -161,7 +165,7 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
 
   const handleMouseLeave = () => {
     if (hasSubmenu) {
-      closeTimerRef.current = window.setTimeout(() => {
+      closeTimerRef.current = globalThis.setTimeout(() => {
         setShowSubmenu(false);
       }, 150); // Pointer intent grace period
     }
@@ -292,7 +296,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       item.label?.toLowerCase().startsWith(newBuffer)
     );
 
-    if (matchIdx >= 0) {
+    if (matchIdx !== -1) {
       setActiveIdx(matchIdx);
     }
   };
@@ -330,27 +334,32 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   // Keyboard navigation at menu level
   const handleMenuKeyDown = (event: KeyboardEvent) => {
     switch (event.key) {
-      case 'ArrowDown':
+      case 'ArrowDown': {
         event.preventDefault();
         move(1);
         break;
-      case 'ArrowUp':
+      }
+      case 'ArrowUp': {
         event.preventDefault();
         move(-1);
         break;
-      case 'Home':
+      }
+      case 'Home': {
         event.preventDefault();
         setActiveIdx(0);
         break;
-      case 'End':
+      }
+      case 'End': {
         event.preventDefault();
         setActiveIdx(enabledItems.length - 1);
         break;
-      case 'Escape':
+      }
+      case 'Escape': {
         event.preventDefault();
         onClose();
         break;
-      default:
+      }
+      default: {
         // Typeahead
         if (
           event.key.length === 1 &&
@@ -362,6 +371,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
           handleTypeahead(event.key);
         }
         break;
+      }
     }
   };
 
@@ -448,10 +458,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
     >
       {items.map((item, index) => {
         // Calculate if this item is active (for non-dividers)
-        const enabledIndex = enabledItems.findIndex(
-          enabledItem => enabledItem === item
-        );
-        const isActive = enabledIndex >= 0 && enabledIndex === activeIdx;
+        const enabledIndex = enabledItems.indexOf(item);
+        const isActive = enabledIndex !== -1 && enabledIndex === activeIdx;
 
         return (
           <ContextMenuItem

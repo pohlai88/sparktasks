@@ -4,9 +4,10 @@
  */
 
 import type { StorageDriver } from '../storage/types';
-import type { AnchorPack, Anchor } from './sync-types';
+import { listSigners } from '../sync/signer-registry';
+
 import { getSyncState, setSyncState, signAnchorPack } from './anchor-registry';
-import { listSigners, type SignerRecord } from '../sync/signer-registry';
+import type { AnchorPack, Anchor } from './sync-types';
 
 /**
  * Publish local anchors as signed AnchorPack (M3)

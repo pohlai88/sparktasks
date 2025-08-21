@@ -1,13 +1,14 @@
 /**
  * Phase B - Task 24: Compact API (≤60 LOC)
  */
-import { StorageDriver } from '../storage/types';
-import { TLCheckpointV1, VerifyResult } from './compact-types';
+import { type StorageDriver } from '../storage/types';
+
 import {
   appendLeaf as appendCore,
   genProof as genCore,
   verifyProof as verifyCore,
 } from './compact-merkle';
+import { type TLCheckpointV1, type VerifyResult } from './compact-types';
 
 const getSigner = (kid?: string) => ({
   kid: kid || 'test',

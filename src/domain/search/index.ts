@@ -1,7 +1,8 @@
-import type { Task } from '../task/schema';
 import type { TaskEvent } from '../task/events';
-import type { SearchQuery, SearchResult } from './types';
+import type { Task } from '../task/schema';
 import { compareTasks } from '../task/sort';
+
+import type { SearchQuery, SearchResult } from './types';
 
 export interface SearchIndex {
   build(tasks: Task[]): void;
@@ -37,10 +38,7 @@ function parseQuery(query: string): string[] {
   while ((match = quotedRegex.exec(query)) !== null) {
     // Add tokens before the quote
     const beforeQuote = query.slice(lastIndex, match.index);
-    tokens.push(...tokenize(beforeQuote));
-
-    // Add the quoted phrase as single token
-    tokens.push(match[1].toLowerCase());
+    tokens.push(...tokenize(beforeQuote), match[1].toLowerCase());
 
     lastIndex = quotedRegex.lastIndex;
   }
@@ -167,8 +165,7 @@ class InMemorySearchIndex implements SearchIndex {
 
     // Parse search query tokens - filter out short queries unless using filters
     const queryTokens = q.trim() ? parseQuery(q) : [];
-    const hasTextQuery =
-      queryTokens.length > 0 && queryTokens.some(token => token.length >= 2);
+    const hasTextQuery = queryTokens.some(token => token.length >= 2);
     const hasFilters =
       (tags && tags.length > 0) ||
       (status && status.length > 0) ||

@@ -4,6 +4,7 @@
  */
 
 import type { StorageDriver } from '../storage/types';
+
 import type {
   AnchorLocator,
   PendingAnchor,

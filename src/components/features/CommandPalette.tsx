@@ -35,8 +35,9 @@ import React, {
   forwardRef,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { cn } from '@/utils/cn';
+
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
+import { cn } from '@/utils/cn';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -286,31 +287,35 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
     const handleKeyDown = useCallback(
       (event: React.KeyboardEvent) => {
         switch (event.key) {
-          case 'ArrowDown':
+          case 'ArrowDown': {
             event.preventDefault();
             setSelectedIndex(prev =>
               prev < filteredCommands.length - 1 ? prev + 1 : 0
             );
             break;
+          }
 
-          case 'ArrowUp':
+          case 'ArrowUp': {
             event.preventDefault();
             setSelectedIndex(prev =>
               prev > 0 ? prev - 1 : filteredCommands.length - 1
             );
             break;
+          }
 
-          case 'Enter':
+          case 'Enter': {
             event.preventDefault();
             if (filteredCommands[selectedIndex]) {
               handleExecuteCommand(filteredCommands[selectedIndex]);
             }
             break;
+          }
 
-          case 'Escape':
+          case 'Escape': {
             event.preventDefault();
             handleClose();
             break;
+          }
         }
       },
       [filteredCommands, selectedIndex, handleExecuteCommand, handleClose]
@@ -482,7 +487,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
               className={combineTokens(DESIGN_TOKENS.recipe.listItemIcon.base)}
             >
               <svg
-                className='h-5 w-5'
+                className='size-5'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
@@ -551,7 +556,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
               >
                 <div className={combineTokens(DESIGN_TOKENS.loading.spinner)}>
                   <svg
-                    className='h-6 w-6 animate-spin'
+                    className='size-6 animate-spin'
                     fill='none'
                     viewBox='0 0 24 24'
                     aria-hidden='true'
@@ -673,7 +678,7 @@ export function createCommand(
   command: Omit<CommandItem, 'id'> & { id?: string }
 ): CommandItem {
   return {
-    id: command.id || command.label.toLowerCase().replace(/\s+/g, '-'),
+    id: command.id || command.label.toLowerCase().replaceAll(/\s+/g, '-'),
     ...command,
   };
 }
@@ -685,7 +690,7 @@ export function createCommandGroup(
   group: Omit<CommandGroup, 'id'> & { id?: string }
 ): CommandGroup {
   return {
-    id: group.id || group.label.toLowerCase().replace(/\s+/g, '-'),
+    id: group.id || group.label.toLowerCase().replaceAll(/\s+/g, '-'),
     priority: 0,
     ...group,
   };

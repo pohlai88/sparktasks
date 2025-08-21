@@ -16,8 +16,8 @@
  */
 
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
-import { combineTokens } from '@/design/tokens';
+
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
@@ -116,8 +116,8 @@ const extractHeadingsFromContent = (
 
   const headings: TOCHeading[] = [];
 
-  headingElements.forEach((element, index) => {
-    const level = parseInt(element.tagName.substring(1));
+  for (const [index, element] of headingElements.entries()) {
+    const level = Number.parseInt(element.tagName.slice(1));
     const text = element.textContent?.trim() || '';
     let id = element.id;
 
@@ -133,7 +133,7 @@ const extractHeadingsFromContent = (
       level,
       element,
     });
-  });
+  }
 
   return headings;
 };
@@ -158,13 +158,13 @@ const buildNestedStructure = (headings: TOCHeading[]): TOCHeading[] => {
   const nested: TOCHeading[] = [];
   const stack: TOCHeading[] = [];
 
-  clonedHeadings.forEach(heading => {
+  for (const heading of clonedHeadings) {
     // Pop stack until we find a parent with lower level
-    while (stack.length > 0 && stack[stack.length - 1].level >= heading.level) {
+    while (stack.length > 0 && stack.at(-1).level >= heading.level) {
       stack.pop();
     }
 
-    const parent = stack[stack.length - 1];
+    const parent = stack.at(-1);
 
     if (parent) {
       if (!parent.children) parent.children = [];
@@ -174,7 +174,7 @@ const buildNestedStructure = (headings: TOCHeading[]): TOCHeading[] => {
     }
 
     stack.push(heading);
-  });
+  }
 
   return nested;
 };
@@ -463,11 +463,11 @@ const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
         );
 
         // Store heading elements for intersection observer
-        flatHeadings.forEach(heading => {
+        for (const heading of flatHeadings) {
           if (heading.element) {
             headingElementsRef.current.set(heading.id, heading.element);
           }
-        });
+        }
       }
 
       // Build structure based on nested prop
@@ -478,7 +478,7 @@ const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
     useEffect(() => {
       if (!highlightCurrent || headings.length === 0) return;
 
-      const elements = Array.from(headingElementsRef.current.values());
+      const elements = [...headingElementsRef.current.values()];
       if (elements.length === 0) return;
 
       observerRef.current = new IntersectionObserver(
@@ -492,9 +492,9 @@ const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
             );
 
             const activeElement = sortedEntries[0].target as HTMLElement;
-            const activeHeading = Array.from(
-              headingElementsRef.current.entries()
-            ).find(
+            const activeHeading = [
+              ...headingElementsRef.current.entries(),
+            ].find(
               ([headingId]) =>
                 headingElementsRef.current.get(headingId) === activeElement
             )?.[0];
@@ -514,9 +514,9 @@ const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
         }
       );
 
-      elements.forEach(element => {
+      for (const element of elements) {
         observerRef.current?.observe(element);
-      });
+      }
 
       return () => {
         observerRef.current?.disconnect();
@@ -570,7 +570,7 @@ const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
 
         // Update URL hash
         if (heading.id) {
-          window.history.pushState(null, '', `#${heading.id}`);
+          globalThis.history.pushState(null, '', `#${heading.id}`);
         }
       } else {
         // Fallback for when element is not found (e.g., in tests)
@@ -586,7 +586,7 @@ const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
 
         // Update URL hash
         if (heading.id) {
-          window.history.pushState(null, '', `#${heading.id}`);
+          globalThis.history.pushState(null, '', `#${heading.id}`);
         }
       }
     };

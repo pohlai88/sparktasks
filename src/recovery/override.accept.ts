@@ -3,11 +3,12 @@
  * Beneficiary acceptance of admin-issued recovery overrides
  */
 
-import type { AcceptRecoveryOverrideArgs } from './override.types';
-import { fromB64u } from '../crypto/base64url';
 import * as AuditApi from '../audit/api';
+import { fromB64u } from '../crypto/base64url';
 import { enforcePolicy } from '../policy/engine';
 import type { StorageDriver } from '../storage/types';
+
+import type { AcceptRecoveryOverrideArgs } from './override.types';
 
 // In-memory registry for used overrides (single-use enforcement)
 const usedOverrides = new Set<string>();
@@ -118,7 +119,7 @@ export async function acceptRecoveryOverride(
     ['deriveKey']
   );
   const sessionKey = await crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+    { name: 'PBKDF2', salt, iterations: 100_000, hash: 'SHA-256' },
     keyMaterial,
     { name: 'AES-GCM', length: 256 },
     false,
@@ -157,9 +158,9 @@ export async function acceptRecoveryOverride(
   try {
     const beforeExport = await keyring.exportBackup();
     beforeCount = beforeExport.deks.length;
-  } catch (err) {
-    if (!(err instanceof Error && err.message === 'Keyring locked')) {
-      throw err;
+  } catch (error) {
+    if (!(error instanceof Error && error.message === 'Keyring locked')) {
+      throw error;
     }
   }
 
@@ -171,9 +172,9 @@ export async function acceptRecoveryOverride(
   try {
     const afterExport = await keyring.exportBackup();
     afterCount = afterExport.deks.length;
-  } catch (err) {
-    if (!(err instanceof Error && err.message === 'Keyring locked')) {
-      throw err;
+  } catch (error) {
+    if (!(error instanceof Error && error.message === 'Keyring locked')) {
+      throw error;
     }
   }
 
@@ -202,9 +203,7 @@ export async function acceptRecoveryOverride(
       namespace: ns,
       acceptedAt: new Date().toISOString(),
       timeToAccept: content.exp
-        ? new Date().getTime() -
-          new Date(content.exp).getTime() +
-          7 * 24 * 60 * 60 * 1000
+        ? Date.now() - new Date(content.exp).getTime() + 7 * 24 * 60 * 60 * 1000
         : undefined, // Rough usage timing
     },
     beneficiaryId

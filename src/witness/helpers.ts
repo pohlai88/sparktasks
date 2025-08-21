@@ -3,7 +3,7 @@
  * Canonical bytes, filtering, and verification utilities
  */
 
-import { Witness, WitnessSig, WitnessPolicy } from './types';
+import { type Witness, type WitnessSig, type WitnessPolicy } from './types';
 
 // Canonical JSON serialization (reuse from Task 18)
 export function canonicalize(obj: any): string {

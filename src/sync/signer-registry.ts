@@ -130,7 +130,7 @@ export async function listSigners(ns: string): Promise<SignerRecord[]> {
   return signers.sort((a: SignerRecord, b: SignerRecord) => {
     const timeCompare =
       new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-    return timeCompare !== 0 ? timeCompare : a.kid.localeCompare(b.kid);
+    return timeCompare === 0 ? a.kid.localeCompare(b.kid) : timeCompare;
   });
 }
 

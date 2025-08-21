@@ -1,5 +1,11 @@
 import { create } from 'zustand';
-import { CreateTaskInputSchema } from '../domain/task/schema';
+
+import { runQuery } from '../domain/query/engine';
+import type { Query, Page, Result } from '../domain/query/types';
+import { parseQuickAdd } from '../domain/quickadd/parse';
+import { toCreateTaskInput } from '../domain/quickadd/toCreateTask';
+import { createSearchIndex, type SearchIndex } from '../domain/search/index';
+import type { SearchQuery, SearchResult } from '../domain/search/types';
 import {
   appendEvent,
   loadEvents,
@@ -7,26 +13,21 @@ import {
   loadSnapshot,
   deleteSnapshot,
 } from '../domain/task/eventlog';
-// Async facade (new)
 import {
   setAsyncEventlogStorage,
   loadEventsAsync,
   loadSnapshotAsync,
   reduce as reduceAsyncReducer,
 } from '../domain/task/eventlog.async';
-import { computeStateHash } from '../domain/task/snapshot';
-import { isToday, isLater, isDone } from '../domain/task/lanes';
-import { compareTasks } from '../domain/task/sort';
-import { parseQuickAdd } from '../domain/quickadd/parse';
-import { toCreateTaskInput } from '../domain/quickadd/toCreateTask';
-import { runQuery } from '../domain/query/engine';
-import { deriveUndo, type UndoEntry } from '../domain/task/undo';
-import { createSearchIndex, type SearchIndex } from '../domain/search/index';
-import type { TaskId, TaskStatus } from '../types/task';
-import type { Task } from '../domain/task/schema';
 import type { TaskEvent } from '../domain/task/events';
-import type { Query, Page, Result } from '../domain/query/types';
-import type { SearchQuery, SearchResult } from '../domain/search/types';
+import { isToday, isLater, isDone } from '../domain/task/lanes';
+import { CreateTaskInputSchema } from '../domain/task/schema';
+// Async facade (new)
+import type { Task } from '../domain/task/schema';
+import { computeStateHash } from '../domain/task/snapshot';
+import { compareTasks } from '../domain/task/sort';
+import { deriveUndo, type UndoEntry } from '../domain/task/undo';
+import type { TaskId, TaskStatus } from '../types/task';
 
 interface TaskStore {
   byId: Record<TaskId, Task>;
@@ -86,7 +87,7 @@ export const selectQuery = (
 ): Result<Task> => runQuery(Object.values(state.byId), q, page);
 
 function generateId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
@@ -109,7 +110,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       },
     };
 
-    const undoEvent = deriveUndo(event, undefined);
+    const undoEvent = deriveUndo(event);
     const newTask: Task = {
       ...validatedInput,
       id,
@@ -364,7 +365,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       },
     };
 
-    const undoEvent = deriveUndo(event, undefined);
+    const undoEvent = deriveUndo(event);
     const newTask: Task = {
       ...validatedInput,
       id,
@@ -402,7 +403,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     const state = get();
     if (state.undoStack.length === 0) return;
 
-    const undoEntry = state.undoStack[state.undoStack.length - 1];
+    const undoEntry = state.undoStack.at(-1);
     const newUndoStack = state.undoStack.slice(0, -1);
     const newRedoStack = [...state.redoStack, undoEntry].slice(-50);
 
@@ -519,7 +520,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     const state = get();
     if (state.redoStack.length === 0) return;
 
-    const redoEntry = state.redoStack[state.redoStack.length - 1];
+    const redoEntry = state.redoStack.at(-1);
     const newRedoStack = state.redoStack.slice(0, -1);
     const newUndoStack = [...state.undoStack, redoEntry].slice(-50);
 
@@ -743,9 +744,9 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   },
 }));
 
+import type { StorageDriver } from '../domain/task/eventlog.async';
+
 // Optional: small helper to wire the async storage once (used by E2EE bootstrap)
-export function configureAsyncEventlogStorage(
-  driver: import('../domain/task/eventlog.async').StorageDriver
-) {
+export function configureAsyncEventlogStorage(driver: StorageDriver) {
   setAsyncEventlogStorage(driver);
 }

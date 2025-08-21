@@ -3,16 +3,17 @@
  * Admin-only recovery bundle creation for beneficiary users
  */
 
+import * as AuditApi from '../audit/api';
+import { toB64u } from '../crypto/base64url';
+import * as MembershipApi from '../membership/api';
+import { enforcePolicy } from '../policy/engine';
+import type { StorageDriver } from '../storage/types';
+
 import type {
   CreateRecoveryOverrideArgs,
   RecoveryOverrideEnvelope,
   RecoveryOverrideContentV1,
 } from './override.types';
-import { toB64u } from '../crypto/base64url';
-import * as MembershipApi from '../membership/api';
-import * as AuditApi from '../audit/api';
-import { enforcePolicy } from '../policy/engine';
-import type { StorageDriver } from '../storage/types';
 
 // Canonical JSON for signature consistency
 function canonicalize(obj: any): string {
@@ -130,7 +131,7 @@ export async function createRecoveryOverride(
     ['deriveKey']
   );
   const sessionKey = await crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt: salt.buffer, iterations: 100000, hash: 'SHA-256' },
+    { name: 'PBKDF2', salt: salt.buffer, iterations: 100_000, hash: 'SHA-256' },
     keyMaterial,
     { name: 'AES-GCM', length: 256 },
     false,

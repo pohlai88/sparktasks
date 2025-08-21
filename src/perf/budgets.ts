@@ -28,7 +28,7 @@ const BASE_PERF: PerfConfig = {
  * Get performance budgets with environment variable overrides
  */
 function getPerfConfig(): PerfConfig {
-  let multiplier = 1.0;
+  let multiplier = 1;
 
   // Environment overrides
   if (process.env.PERF_RELAX === '1') {
@@ -37,17 +37,17 @@ function getPerfConfig(): PerfConfig {
     multiplier = 0.8;
   }
 
-  const config = JSON.parse(JSON.stringify(BASE_PERF)) as PerfConfig;
+  const config = structuredClone(BASE_PERF) as PerfConfig;
 
   // Apply multiplier to all time thresholds
-  Object.values(config).forEach(budget => {
+  for (const budget of Object.values(config)) {
     if (budget.p95_ms) {
       budget.p95_ms = Math.ceil(budget.p95_ms * multiplier);
     }
     if (budget.max_ms) {
       budget.max_ms = Math.ceil(budget.max_ms * multiplier);
     }
-  });
+  }
 
   return config;
 }

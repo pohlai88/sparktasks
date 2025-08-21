@@ -18,9 +18,10 @@
  * - Collision detection with other UI elements
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
 import { Plus } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+
+import { DESIGN_TOKENS } from '@/design/tokens';
 
 // Type definitions
 export type FABSize = 'sm' | 'md' | 'lg' | 'xl';

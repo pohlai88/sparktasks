@@ -1,7 +1,8 @@
-import { StorageDriver } from './types.js';
-import { KeyProvider, Envelope } from '../crypto/types.js';
-import { encryptRecord, decryptRecord } from '../crypto/envelope.js';
 import { toB64u } from '../crypto/base64url.js';
+import { encryptRecord, decryptRecord } from '../crypto/envelope.js';
+import { type KeyProvider, type Envelope } from '../crypto/types.js';
+
+import { type StorageDriver } from './types.js';
 
 export class EncryptedDriver implements StorageDriver {
   constructor(

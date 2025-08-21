@@ -1,23 +1,23 @@
 /**
  * Phase B - Task 25: Compact Witness API (≤120 LOC)
  */
-import { StorageDriver } from '../storage/types';
-import {
-  Witness,
-  WitnessSig,
-  WitnessedCheckpointV1,
-  WitnessPolicy,
-  WitnessVerifyResult,
-} from './compact-types';
+import { type StorageDriver } from '../storage/types';
+
 import {
   canonicalize,
-  buildWitnessPayload,
   filterWitnesses,
   findWitness,
   isWitnessValid,
   countValidSigs,
   checkPolicy,
 } from './compact-helpers';
+import {
+  type Witness,
+  type WitnessSig,
+  type WitnessedCheckpointV1,
+  type WitnessPolicy,
+  type WitnessVerifyResult,
+} from './compact-types';
 
 let auditHook: any = null,
   policyHook: any = null,
@@ -108,8 +108,6 @@ export async function setWitnessStatus(
   await saveRegistry(ns, witnesses, storage);
   auditHook?.log('WITNESS_STATUS', { ns, org, id, status });
 }
-
-export { buildWitnessPayload };
 
 export async function ingestWitnessSig(
   ns: string,
@@ -264,3 +262,5 @@ export async function verifyWitnessedCheckpoint(
     return { ok: false, reason: policyCheck.reason || 'policy_failure', count };
   }
 }
+
+export { buildWitnessPayload } from './compact-helpers';

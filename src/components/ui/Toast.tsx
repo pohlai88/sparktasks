@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
-import { combineTokens } from '@/design/tokens';
+
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TOAST TYPES & INTERFACES =====
 
@@ -433,7 +433,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
 
   const addToast = React.useCallback(
     (toast: Omit<ToastProps, 'id'>): string => {
-      const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
       const newToast: ToastProps = {
         ...toast,
         id,
@@ -494,10 +494,10 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
       'bottom-center': [],
     };
 
-    toasts.forEach(toast => {
+    for (const toast of toasts) {
       const position = toast.position || defaultPosition;
       groups[position].push(toast);
-    });
+    }
 
     return groups;
   }, [toasts, defaultPosition]);
@@ -581,7 +581,7 @@ class ToastManager {
   }
 
   private notify() {
-    this.listeners.forEach(listener => listener([...this.toasts]));
+    for (const listener of this.listeners) listener([...this.toasts]);
   }
 
   addToast(toast: Omit<ToastProps, 'id'>): string {
@@ -591,7 +591,7 @@ class ToastManager {
     }
 
     // Fallback to internal state
-    const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
     const newToast: ToastProps = {
       ...toast,
       id,

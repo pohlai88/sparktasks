@@ -215,17 +215,18 @@ function buildRequestURL(
   let url = baseUrl.replace(/\/$/, '') + endpoint.path;
 
   // Replace path parameters
-  Object.entries(params).forEach(([key, value]) => {
+  for (const [key, value] of Object.entries(params)) {
     url = url.replace(`{${key}}`, encodeURIComponent(value));
-  });
+  }
 
   // Add query parameters for GET requests
   const queryParams = new URLSearchParams();
-  endpoint.parameters?.forEach(param => {
-    if (param.name in params && !endpoint.path.includes(`{${param.name}}`)) {
-      queryParams.append(param.name, params[param.name]);
+  if (endpoint.parameters)
+    for (const param of endpoint.parameters) {
+      if (param.name in params && !endpoint.path.includes(`{${param.name}}`)) {
+        queryParams.append(param.name, params[param.name]);
+      }
     }
-  });
 
   const queryString = queryParams.toString();
   return queryString ? `${url}?${queryString}` : url;
@@ -244,7 +245,7 @@ function formatResponseBody(body: string, contentType: string): string {
       contentType.includes('text/xml')
     ) {
       // Basic XML formatting - in real implementation, use a proper XML formatter
-      return body.replace(/></g, '>\n<');
+      return body.replaceAll('><', '>\n<');
     }
     return body;
   } catch {
@@ -262,22 +263,24 @@ function generateCodeSnippet(
   const { url, method, headers, body } = request;
 
   switch (language) {
-    case 'curl':
+    case 'curl': {
       const headerFlags = Object.entries(headers)
         .map(([key, value]) => `-H "${key}: ${value}"`)
         .join(' ');
       const bodyFlag = body ? `-d '${body}'` : '';
       return `curl -X ${method} ${headerFlags} ${bodyFlag} "${url}"`;
+    }
 
-    case 'javascript':
+    case 'javascript': {
       const jsHeaders = JSON.stringify(headers, null, 2);
       const jsBody = body ? `,\n  body: ${JSON.stringify(body)}` : '';
       return `fetch("${url}", {
   method: "${method}",
   headers: ${jsHeaders}${jsBody}
 });`;
+    }
 
-    case 'python':
+    case 'python': {
       const pyHeaders = Object.entries(headers)
         .map(([key, value]) => `    "${key}": "${value}"`)
         .join(',\n');
@@ -292,8 +295,9 @@ response = requests.${method.toLowerCase()}(
 ${pyHeaders}
     }${pyBody}
 )`;
+    }
 
-    case 'typescript':
+    case 'typescript': {
       const tsHeaders = JSON.stringify(headers, null, 2);
       const tsBody = body ? `,\n  body: ${JSON.stringify(body)}` : '';
       return `interface APIResponse {
@@ -306,9 +310,11 @@ const response = await fetch("${url}", {
 }) as Response;
 
 const data: APIResponse = await response.json();`;
+    }
 
-    default:
+    default: {
       return `// Code generation for ${language} not implemented`;
+    }
   }
 }
 
@@ -384,9 +390,8 @@ export const APIExplorer = forwardRef<HTMLDivElement, APIExplorerProps>(
         }
 
         // Favorites filter
-        if (state.showOnlyFavorites) {
-          if (!state.favorites.has(endpoint.id)) return false;
-        }
+        if (state.showOnlyFavorites && !state.favorites.has(endpoint.id))
+          return false;
 
         return true;
       });
@@ -400,10 +405,10 @@ export const APIExplorer = forwardRef<HTMLDivElement, APIExplorerProps>(
 
     const allTags = useMemo(() => {
       const tagSet = new Set<string>();
-      endpoints.forEach(endpoint => {
-        endpoint.tags?.forEach(tag => tagSet.add(tag));
-      });
-      return Array.from(tagSet).sort();
+      for (const endpoint of endpoints) {
+        if (endpoint.tags) for (const tag of endpoint.tags) tagSet.add(tag);
+      }
+      return [...tagSet].sort();
     }, [endpoints]);
 
     // ===== EVENT HANDLERS =====
@@ -484,7 +489,7 @@ export const APIExplorer = forwardRef<HTMLDivElement, APIExplorerProps>(
         let exportData: string;
 
         switch (format) {
-          case 'openapi':
+          case 'openapi': {
             exportData = JSON.stringify(
               {
                 openapi: '3.0.0',
@@ -500,8 +505,9 @@ export const APIExplorer = forwardRef<HTMLDivElement, APIExplorerProps>(
               2
             );
             break;
+          }
 
-          case 'postman':
+          case 'postman': {
             exportData = JSON.stringify(
               {
                 info: {
@@ -526,9 +532,11 @@ export const APIExplorer = forwardRef<HTMLDivElement, APIExplorerProps>(
               2
             );
             break;
+          }
 
-          default:
+          default: {
             exportData = generateCodeSnippet(state.requestData, format);
+          }
         }
 
         onExport?.(format, exportData);
@@ -561,7 +569,7 @@ export const APIExplorer = forwardRef<HTMLDivElement, APIExplorerProps>(
             onChange={e =>
               setState(prev => ({ ...prev, searchQuery: e.target.value }))
             }
-            className='w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
+            className='w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
             data-testid='endpoint-search'
           />
 
@@ -655,7 +663,7 @@ export const APIExplorer = forwardRef<HTMLDivElement, APIExplorerProps>(
                     e.stopPropagation();
                     toggleFavorite(endpoint.id);
                   }}
-                  className={`rounded p-1 px-2 py-1 text-xs text-slate-600 transition-colors hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 ${
+                  className={`rounded p-1 px-2 text-xs text-slate-600 transition-colors hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 ${
                     state.favorites.has(endpoint.id)
                       ? 'text-yellow-500'
                       : 'text-gray-400'
@@ -898,7 +906,7 @@ const TryItTab: React.FC<TryItTabProps> = ({
                     },
                   })
                 }
-                className='w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
+                className='w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
                 data-testid={`param-${param.name}`}
               />
               {param.description && (
@@ -923,7 +931,7 @@ const TryItTab: React.FC<TryItTabProps> = ({
             value={requestData.body || ''}
             onChange={e => onRequestChange({ body: e.target.value })}
             placeholder='{"key": "value"}'
-            className='h-32 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
+            className='h-32 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
             data-testid='request-body'
           />
         </div>

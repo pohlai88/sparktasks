@@ -1,6 +1,8 @@
-import { z } from 'zod';
-import { CreateTaskInputSchema } from '../task/schema';
-import { QuickAddResult } from './schema';
+import { type z } from 'zod';
+
+import { type CreateTaskInputSchema } from '../task/schema';
+
+import { type QuickAddResult } from './schema';
 
 export function toCreateTaskInput(
   q: QuickAddResult

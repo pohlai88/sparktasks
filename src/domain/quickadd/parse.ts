@@ -1,4 +1,4 @@
-import { QuickAddResult, QuickAddResultSchema } from './schema';
+import { type QuickAddResult, QuickAddResultSchema } from './schema';
 
 const PRIORITY_REGEX = /!p([012])/gi;
 const STATUS_REGEX = /@status:(today|later|done)/gi;
@@ -8,35 +8,35 @@ const SNOOZE_REGEX = /@snooze:([^@#!\s]+(?:\s+[^@#!\s]+)*)/gi;
 const BARE_KEYWORD_REGEX = /(?<![#@!])\b(today|tomorrow)\b/gi;
 
 export function parseQuickAdd(input: string, now = new Date()): QuickAddResult {
-  let text = input.trim().replace(/\s+/g, ' ');
+  let text = input.trim().replaceAll(/\s+/g, ' ');
 
   // Extract priority
   let priority: 'P0' | 'P1' | 'P2' = 'P1';
-  text = text.replace(PRIORITY_REGEX, (_, level) => {
+  text = text.replaceAll(PRIORITY_REGEX, (_, level) => {
     priority = `P${level}` as 'P0' | 'P1' | 'P2';
     return '';
   });
 
   // Extract status
   let status: 'TODAY' | 'LATER' | 'DONE' = 'TODAY';
-  text = text.replace(STATUS_REGEX, (_, statusValue) => {
+  text = text.replaceAll(STATUS_REGEX, (_, statusValue) => {
     status = statusValue.toUpperCase() as 'TODAY' | 'LATER' | 'DONE';
     return '';
   });
 
   // Extract tags
   const tags: string[] = [];
-  text = text.replace(TAG_REGEX, (_, tag) => {
+  text = text.replaceAll(TAG_REGEX, (_, tag) => {
     tags.push(tag);
     return '';
   });
 
   // Extract due date
   let dueDate: string | undefined;
-  text = text.replace(DUE_REGEX, (_, dateToken) => {
+  text = text.replaceAll(DUE_REGEX, (_, dateToken) => {
     try {
       dueDate = resolveDateToken(dateToken, now);
-    } catch (e) {
+    } catch (error) {
       // If date resolution fails, keep as-is in text
       return _;
     }
@@ -45,10 +45,10 @@ export function parseQuickAdd(input: string, now = new Date()): QuickAddResult {
 
   // Extract snooze
   let snoozeUntil: string | undefined;
-  text = text.replace(SNOOZE_REGEX, (_, dateToken) => {
+  text = text.replaceAll(SNOOZE_REGEX, (_, dateToken) => {
     try {
       snoozeUntil = resolveDateToken(dateToken, now, true);
-    } catch (e) {
+    } catch (error) {
       // If date resolution fails, keep as-is in text
       return _;
     }
@@ -57,14 +57,14 @@ export function parseQuickAdd(input: string, now = new Date()): QuickAddResult {
 
   // Handle bare keywords (today/tomorrow) as due dates if not already set
   if (!dueDate) {
-    text = text.replace(BARE_KEYWORD_REGEX, match => {
+    text = text.replaceAll(BARE_KEYWORD_REGEX, match => {
       dueDate = resolveDateToken(match, now);
       return '';
     });
   }
 
   // Clean up remaining whitespace
-  const title = text.replace(/\s+/g, ' ').trim();
+  const title = text.replaceAll(/\s+/g, ' ').trim();
 
   const result = QuickAddResultSchema.parse({
     title,
@@ -99,7 +99,7 @@ function resolveDateToken(
 
   // Handle ISO dates (YYYY-MM-DD)
   if (/^\d{4}-\d{2}-\d{2}$/.test(token)) {
-    const date = new Date(`${token}T${now.toISOString().substring(11)}`);
+    const date = new Date(`${token}T${now.toISOString().slice(11)}`);
     return date.toISOString();
   }
 
@@ -125,7 +125,7 @@ function resolveDateToken(
   // Handle 'in Nd' (days)
   const daysMatch = lowerToken.match(/^in\s+(\d+)d$/);
   if (daysMatch) {
-    const days = parseInt(daysMatch[1], 10);
+    const days = Number.parseInt(daysMatch[1], 10);
     const futureDate = new Date(now);
     futureDate.setDate(futureDate.getDate() + days);
     return futureDate.toISOString();
@@ -134,7 +134,7 @@ function resolveDateToken(
   // Handle 'in Nw' (weeks)
   const weeksMatch = lowerToken.match(/^in\s+(\d+)w$/);
   if (weeksMatch) {
-    const weeks = parseInt(weeksMatch[1], 10);
+    const weeks = Number.parseInt(weeksMatch[1], 10);
     const futureDate = new Date(now);
     futureDate.setDate(futureDate.getDate() + weeks * 7);
     return futureDate.toISOString();
@@ -144,7 +144,7 @@ function resolveDateToken(
   if (allowHours) {
     const hoursMatch = lowerToken.match(/^in\s+(\d+)h$/);
     if (hoursMatch) {
-      const hours = parseInt(hoursMatch[1], 10);
+      const hours = Number.parseInt(hoursMatch[1], 10);
       const futureDate = new Date(now);
       futureDate.setHours(futureDate.getHours() + hours);
       return futureDate.toISOString();
