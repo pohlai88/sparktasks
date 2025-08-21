@@ -41,6 +41,7 @@
     "typecheck": "tsc --noEmit",
     "validate": "node tools/run-validators.cjs",
     "validate:workspace": "node tools/check-workspace-structure.cjs",
+    "ssot:check": "npx tsx scripts/scorecard.ts",
     "ssot:scorecard": "npx tsx scripts/scorecard.ts",
     "ssot:help": "echo 'SSOT Commands:\\n  ssot:scorecard - Generate comprehensive component compliance report\\n  tokens:scaffold - Add missing DESIGN_TOKENS\\n\\nThe scorecard method provides complete SSOT analysis and compliance tracking.'",
     "tokens:scaffold": "npx tsx scripts/scaffold-tokens.ts",
