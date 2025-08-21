@@ -1,11 +1,13 @@
 # B-Series UX Enhancement Roadmap
-*Advanced features requiring parser/engine/dependency changes*
+
+_Advanced features requiring parser/engine/dependency changes_
 
 ---
 
 ## 🚦 Handoff from A-Series
 
 The A-Series UI hotfixes address immediate UX gaps within existing constraints. B-Series work involves features that require:
+
 - Parser/engine modifications
 - New dependencies
 - Store schema changes
@@ -20,22 +22,23 @@ The A-Series UI hotfixes address immediate UX gaps within existing constraints. 
 **Current Limitation**: Parser rejects `tomorrow 5pm`, `in 2 hours`, `next Friday at 2:30pm`
 
 **Required Changes**:
+
 ```typescript
 // src/domain/quickadd/parse.ts - MAJOR CHANGES NEEDED
 function resolveDateToken(token: string): Date | null {
   // Current: Only handles "today", "tomorrow", ISO dates
   // Needed: Time parsing, relative expressions, complex formats
-  
+
   // Add time parsing
   if (token.includes('pm') || token.includes('am')) {
     return parseTimeExpression(token);
   }
-  
+
   // Add relative time
   if (token.includes('in ')) {
     return parseRelativeTime(token);
   }
-  
+
   // Add named days with times
   if (token.includes(' at ')) {
     return parseNamedDayWithTime(token);
@@ -44,11 +47,13 @@ function resolveDateToken(token: string): Date | null {
 ```
 
 **Dependencies Needed**:
+
 - Date parsing library (date-fns, dayjs, or chrono-node)
 - Natural language processing utilities
 - Timezone handling
 
 **Impact**:
+
 - Parser logic complexity increases significantly
 - New edge cases and error handling required
 - Potential breaking changes to existing parsing
@@ -62,6 +67,7 @@ function resolveDateToken(token: string): Date | null {
 **Current State**: Keyboard/menu-based task movement only
 
 **Required Changes**:
+
 ```bash
 # New dependency
 npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
@@ -73,12 +79,13 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 
 // Major TaskCard refactor for drag handles
-// New DroppableColumn components  
+// New DroppableColumn components
 // Accessibility integration (keyboard announcements)
 // Touch device gesture handling
 ```
 
 **Complexity**:
+
 - Accessibility compliance (screen reader announcements)
 - Touch device support
 - Keyboard fallbacks (must not break existing)
@@ -94,12 +101,14 @@ import { SortableContext } from '@dnd-kit/sortable';
 **Current State**: Plain text notes only
 
 **Options**:
+
 1. **TipTap** (Vue-based, React adapter)
 2. **Slate.js** (React-native)
 3. **Lexical** (Facebook's new editor)
 4. **EditorJS** (Block-based)
 
 **Required Changes**:
+
 ```typescript
 // Store schema change
 interface Task {
@@ -113,6 +122,7 @@ import { Editor } from '@tiptap/react';
 ```
 
 **Implications**:
+
 - Store migration for existing tasks
 - Export/import format changes
 - Mobile editing complexity
@@ -128,6 +138,7 @@ import { Editor } from '@tiptap/react';
 **Current State**: No file support
 
 **Required Changes**:
+
 ```typescript
 // Store schema
 interface Task {
@@ -147,6 +158,7 @@ interface Task {
 ```
 
 **Dependencies**:
+
 - File storage service (AWS S3, local, etc.)
 - Upload progress tracking
 - File preview components
@@ -161,6 +173,7 @@ interface Task {
 **Current State**: Basic text search in A4
 
 **Required Engine Changes**:
+
 ```typescript
 // New search interface
 interface SearchEngine {
@@ -180,6 +193,7 @@ interface SearchFilters {
 ```
 
 **Features Needed**:
+
 - Fuzzy text search (Fuse.js or similar)
 - Boolean query operators (AND, OR, NOT)
 - Saved search presets
@@ -187,6 +201,7 @@ interface SearchFilters {
 - Advanced filter UI
 
 **Dependencies**:
+
 - Search library (Fuse.js, Lunr.js, or MiniSearch)
 - Query parser for complex expressions
 - UI components for filter builders
@@ -200,6 +215,7 @@ interface SearchFilters {
 **Current State**: Flat task list
 
 **Required Changes**:
+
 ```typescript
 // Major store restructure
 interface Task {
@@ -218,6 +234,7 @@ interface TaskStore {
 ```
 
 **Complexity**:
+
 - Recursive rendering
 - Drag & drop between levels
 - Collapse/expand state
@@ -233,6 +250,7 @@ interface TaskStore {
 **Current State**: Single task operations only
 
 **Required Changes**:
+
 ```typescript
 // Multi-select state management
 interface AppState {
@@ -252,6 +270,7 @@ interface BulkOperations {
 ```
 
 **UI Changes**:
+
 - Checkbox selection mode
 - Bulk action toolbar
 - Progress indicators for bulk operations
@@ -267,6 +286,7 @@ interface BulkOperations {
 **Current State**: QuickAdd with limited syntax
 
 **Required Changes**:
+
 ```typescript
 // Command parser (separate from date parser)
 interface SlashCommand {
@@ -286,6 +306,7 @@ const commands: SlashCommand[] = [
 ```
 
 **Features**:
+
 - Command autocomplete
 - Parameter suggestions
 - Command history
@@ -299,16 +320,19 @@ const commands: SlashCommand[] = [
 ## 📋 B-Series Implementation Sequence
 
 ### Phase B1: Foundation (2-3 weeks)
+
 1. **Natural Language Parser** - Core UX gap
 2. **Advanced Search Engine** - Scalability requirement
 3. **Store Schema Migrations** - Enable future features
 
-### Phase B2: Interactions (2-3 weeks)  
+### Phase B2: Interactions (2-3 weeks)
+
 4. **Drag & Drop System** - Modern UX expectation
 5. **Bulk Operations** - Power user efficiency
 6. **Slash Commands** - Advanced workflows
 
 ### Phase B3: Content (3-4 weeks)
+
 7. **Rich Text Editing** - Content richness
 8. **File Attachments** - Complete task context
 9. **Subtask Hierarchy** - Complex project support
@@ -320,18 +344,21 @@ const commands: SlashCommand[] = [
 ### When to Approve B-Series Work
 
 **Criteria for Parser Enhancement (B1)**:
+
 - [ ] A-Series UI hotfixes proven successful
 - [ ] User feedback confirms natural language parsing is blocking adoption
 - [ ] Willing to accept parser complexity increase
 - [ ] Timeline allows for thorough testing of edge cases
 
 **Criteria for Dependency Addition**:
+
 - [ ] Feature provides significant competitive advantage
 - [ ] Bundle size impact acceptable (measure before/after)
 - [ ] Team comfortable maintaining additional dependency
 - [ ] Accessibility requirements can be met
 
 **Criteria for Store Changes**:
+
 - [ ] Migration path planned for existing data
 - [ ] Breaking changes minimized or versioned
 - [ ] Performance impact measured and acceptable
@@ -342,16 +369,19 @@ const commands: SlashCommand[] = [
 ## ⚖️ Risk Assessment
 
 ### High Risk Items
+
 - **Parser Changes**: Could break existing QuickAdd functionality
 - **Store Schema**: Data migration complexity, backward compatibility
 - **Rich Text**: Large bundle size, mobile performance impact
 
-### Medium Risk Items  
+### Medium Risk Items
+
 - **Drag & Drop**: Accessibility compliance, touch device support
 - **File Attachments**: Storage backend, security considerations
 - **Bulk Operations**: Performance with large datasets
 
 ### Low Risk Items
+
 - **Slash Commands**: Additive feature, easy to disable
 - **Advanced Search**: Can be implemented as enhancement layer
 - **UI Polish**: Iterative improvements
@@ -361,18 +391,21 @@ const commands: SlashCommand[] = [
 ## 🎯 Success Metrics (B-Series)
 
 ### User Adoption
+
 - Natural language parsing success rate > 90%
 - Advanced search usage > 30% of active users
 - Drag & drop vs keyboard usage ratio
 - Power feature adoption (bulk ops, slash commands)
 
 ### Technical Health
+
 - Bundle size increase < 100KB compressed
 - Performance regression < 10% on key interactions
 - Accessibility compliance maintained (WCAG 2.1 AA)
 - Test coverage > 85% for new features
 
 ### Business Value
+
 - User retention improvement
 - Time-to-value for complex workflows
 - Competitive feature parity achieved
@@ -383,6 +416,7 @@ const commands: SlashCommand[] = [
 ## 🔄 Integration with A-Series
 
 B-Series work must:
+
 1. **Preserve A-Series gains** - No regression in UI quality improvements
 2. **Maintain fallbacks** - Advanced features degrade gracefully
 3. **Respect accessibility** - New features fully keyboard/screen reader accessible
@@ -390,4 +424,4 @@ B-Series work must:
 
 ---
 
-*This document serves as the handoff point from A-Series constraints to B-Series expansion. Each item requires explicit approval and planning before implementation.*
+_This document serves as the handoff point from A-Series constraints to B-Series expansion. Each item requires explicit approval and planning before implementation._

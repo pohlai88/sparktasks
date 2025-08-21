@@ -52,9 +52,11 @@ describe('Task Hydration', () => {
 
     const updatedStore = useTaskStore.getState();
     const task = updatedStore.byId['task-1'];
-    
+
     expect(task).toBeDefined();
-    expect(new Date(task!.createdAt).getTime()).toBeLessThanOrEqual(new Date(task!.updatedAt).getTime());
+    expect(new Date(task!.createdAt).getTime()).toBeLessThanOrEqual(
+      new Date(task!.updatedAt).getTime()
+    );
     expect(task!.updatedAt).toBe(task!.createdAt); // Should be corrected
   });
 
@@ -88,7 +90,7 @@ describe('Task Hydration', () => {
 
     const updatedStore = useTaskStore.getState();
     const task = updatedStore.byId['task-1'];
-    
+
     expect(task).toBeDefined();
     expect(task!.status).toBe('DONE');
     expect(task!.updatedAt).toBe('2025-08-15T11:00:00.000Z');
@@ -120,15 +122,15 @@ describe('Task Hydration', () => {
     localStorageMock.getItem.mockReturnValue(eventsData);
 
     const store = useTaskStore.getState();
-    
+
     // First hydration
     store.hydrate();
     const firstState = useTaskStore.getState();
-    
+
     // Second hydration
     store.hydrate();
     const secondState = useTaskStore.getState();
-    
+
     expect(firstState.byId).toEqual(secondState.byId);
   });
 
@@ -189,16 +191,16 @@ describe('Task Hydration', () => {
     store.hydrate();
 
     const updatedStore = useTaskStore.getState();
-    
+
     expect(Object.keys(updatedStore.byId)).toHaveLength(2);
-    
+
     const task1 = updatedStore.byId['task-1'];
     const task2 = updatedStore.byId['task-2'];
-    
+
     expect(task1!.title).toBe('Updated Task 1');
     expect(task1!.status).toBe('DONE');
     expect(task1!.updatedAt).toBe('2025-08-15T12:00:00.000Z');
-    
+
     expect(task2!.title).toBe('Task 2');
     expect(task2!.status).toBe('TODAY');
     expect(task2!.priority).toBe('P0');

@@ -10,7 +10,10 @@ function run(cmd) {
   }
 }
 
-run('node tools/validate-ssot.js');
+// SSOT validation is now handled by the comprehensive scorecard
+console.log(
+  'ℹ️  SSOT compliance: Use `npm run ssot:scorecard` for comprehensive analysis'
+);
 run('node tools/check-tech-stack.js');
 run('node tools/check-deps-doc.js');
 run('node tools/check-workspace-structure.js');

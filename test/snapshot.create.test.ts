@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { appendEvent, compactWithSnapshot, loadSnapshot, getEventCount } from '../src/domain/task/eventlog';
+import {
+  appendEvent,
+  compactWithSnapshot,
+  loadSnapshot,
+  getEventCount,
+} from '../src/domain/task/eventlog';
 import type { TaskEvent } from '../src/domain/task/events';
 
 describe('Snapshot: Create', () => {
@@ -41,17 +46,17 @@ describe('Snapshot: Create', () => {
 
     // Add events to log
     events.forEach(event => appendEvent(event));
-    
+
     // Verify initial state
     expect(getEventCount()).toBe(2);
     expect(loadSnapshot()).toBeNull();
 
     // Compact with threshold=1 (should trigger snapshot)
     const result = compactWithSnapshot(1);
-    
+
     expect(result.tookSnapshot).toBe(true);
     expect(result.trimmed).toBe(2);
-    
+
     // Verify snapshot was created
     const snapshot = loadSnapshot();
     expect(snapshot).not.toBeNull();
@@ -59,14 +64,14 @@ describe('Snapshot: Create', () => {
     expect(snapshot!.meta.baseEventCount).toBe(2);
     expect(snapshot!.meta.stateHash).toBeTruthy();
     expect(snapshot!.meta.createdAt).toBeTruthy();
-    
+
     // Verify snapshot contains tasks
     expect(Object.keys(snapshot!.tasks)).toHaveLength(2);
     expect(snapshot!.tasks['task-1']).toBeDefined();
     expect(snapshot!.tasks['task-1'].title).toBe('First task');
     expect(snapshot!.tasks['task-2']).toBeDefined();
     expect(snapshot!.tasks['task-2'].title).toBe('Second task');
-    
+
     // Verify event log was trimmed
     expect(getEventCount()).toBe(0);
   });
@@ -86,10 +91,10 @@ describe('Snapshot: Create', () => {
     };
 
     appendEvent(event);
-    
+
     // Compact with threshold=5 (should not trigger)
     const result = compactWithSnapshot(5);
-    
+
     expect(result.tookSnapshot).toBe(false);
     expect(result.trimmed).toBe(0);
     expect(loadSnapshot()).toBeNull();

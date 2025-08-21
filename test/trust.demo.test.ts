@@ -18,19 +18,26 @@ describe('Trust System Demo', () => {
 
     try {
       await runTrustDemo();
-      
+
       // Verify key demo milestones were reached
-      expect(logs.some(log => log.includes('Starting Trust System Demo'))).toBe(true);
-      expect(logs.some(log => log.includes('Bootstrap operation created'))).toBe(true);
+      expect(logs.some(log => log.includes('Starting Trust System Demo'))).toBe(
+        true
+      );
+      expect(
+        logs.some(log => log.includes('Bootstrap operation created'))
+      ).toBe(true);
       expect(logs.some(log => log.includes('TRUSTED'))).toBe(true);
       expect(logs.some(log => log.includes('NOT TRUSTED'))).toBe(true);
-      expect(logs.some(log => log.includes('Trust System Demo Complete'))).toBe(true);
-      
+      expect(logs.some(log => log.includes('Trust System Demo Complete'))).toBe(
+        true
+      );
+
       // Should have captured significant activity
       expect(logs.length).toBeGreaterThan(30);
-      
-      console.log(`\n🎯 Demo completed successfully with ${logs.length} log entries`);
-      
+
+      console.log(
+        `\n🎯 Demo completed successfully with ${logs.length} log entries`
+      );
     } finally {
       // Restore console
       console.log = originalLog;

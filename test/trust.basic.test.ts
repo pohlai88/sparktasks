@@ -18,7 +18,7 @@ const mockStorage: StorageDriver = {
   getItem: vi.fn(),
   setItem: vi.fn(),
   removeItem: vi.fn(),
-  listKeys: vi.fn()
+  listKeys: vi.fn(),
 };
 
 describe('Trust Root Basic Tests', () => {
@@ -33,7 +33,7 @@ describe('Trust Root Basic Tests', () => {
       id: 'test-root-1',
       pubB64u: 'MCowBQYDK2VwAyEAfGb7j3SjhKPxEqF7aGG6M2GZz1r4jb6JxYa8hW2o3P0',
       role: 'PRIMARY',
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
 
     expect(root.id).toBe('test-root-1');
@@ -48,14 +48,14 @@ describe('Trust Root Basic Tests', () => {
         id: 'root1',
         pubB64u: 'key1',
         role: 'PRIMARY',
-        createdAt: Date.now()
+        createdAt: Date.now(),
       },
       {
         id: 'root2',
         pubB64u: 'key2',
         role: 'SECONDARY',
-        createdAt: Date.now()
-      }
+        createdAt: Date.now(),
+      },
     ];
 
     const manifest: TrustManifest = {
@@ -63,7 +63,7 @@ describe('Trust Root Basic Tests', () => {
       namespace: 'test-workspace',
       roots,
       threshold: 2,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
 
     expect(manifest.version).toBe(1);
@@ -76,14 +76,17 @@ describe('Trust Root Basic Tests', () => {
   it('should handle storage operations without errors', async () => {
     // This tests that our types and basic infrastructure work
     const testData = { test: 'data' };
-    
+
     mockStorage.setItem = vi.fn().mockResolvedValue(undefined);
     mockStorage.getItem = vi.fn().mockResolvedValue(JSON.stringify(testData));
 
     await mockStorage.setItem('test-key', JSON.stringify(testData));
     const result = await mockStorage.getItem('test-key');
-    
-    expect(mockStorage.setItem).toHaveBeenCalledWith('test-key', JSON.stringify(testData));
+
+    expect(mockStorage.setItem).toHaveBeenCalledWith(
+      'test-key',
+      JSON.stringify(testData)
+    );
     expect(mockStorage.getItem).toHaveBeenCalledWith('test-key');
     expect(result).toBe(JSON.stringify(testData));
   });
@@ -96,10 +99,10 @@ describe('Trust Root Basic Tests', () => {
           id: 'root1',
           pubB64u: 'key1',
           role: 'PRIMARY',
-          createdAt: Date.now()
-        }
+          createdAt: Date.now(),
+        },
       ],
-      initialThreshold: 1
+      initialThreshold: 1,
     };
 
     expect(config.namespace).toBe('test-workspace');

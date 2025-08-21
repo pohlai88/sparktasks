@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { appendEvent, compactWithSnapshot, getEventCount, loadEvents } from '../src/domain/task/eventlog';
+import {
+  appendEvent,
+  compactWithSnapshot,
+  getEventCount,
+  loadEvents,
+} from '../src/domain/task/eventlog';
 import { useTaskStore } from '../src/stores/taskStore';
 import type { TaskEvent } from '../src/domain/task/events';
 
@@ -15,7 +20,7 @@ describe('Snapshot: Trim', () => {
   it('should trim large event log and maintain functionality', () => {
     // Create a large number of events
     const events: TaskEvent[] = [];
-    
+
     for (let i = 0; i < 100; i++) {
       events.push({
         type: 'TASK_CREATED',
@@ -32,16 +37,16 @@ describe('Snapshot: Trim', () => {
 
     // Add all events
     events.forEach(event => appendEvent(event));
-    
+
     const initialEventCount = getEventCount();
     expect(initialEventCount).toBe(100);
 
     // Compact with low threshold
     const result = compactWithSnapshot(50);
-    
+
     expect(result.tookSnapshot).toBe(true);
     expect(result.trimmed).toBe(100);
-    
+
     // Verify events were trimmed
     expect(getEventCount()).toBe(0);
 
@@ -64,9 +69,9 @@ describe('Snapshot: Trim', () => {
     // Verify hydration still works correctly
     const store = useTaskStore.getState();
     store.hydrate();
-    
+
     const state = useTaskStore.getState().byId;
-    
+
     // Should have all original tasks from snapshot
     expect(Object.keys(state).length).toBe(101); // 100 + 1 new
     expect(state['task-0']).toBeDefined();
@@ -82,8 +87,8 @@ describe('Snapshot: Trim', () => {
     });
 
     const updatedState = useTaskStore.getState().byId;
-    const newTasks = Object.values(updatedState).filter(task => 
-      task.title === 'Another new task'
+    const newTasks = Object.values(updatedState).filter(
+      task => task.title === 'Another new task'
     );
     expect(newTasks).toHaveLength(1);
   });
@@ -134,10 +139,10 @@ describe('Snapshot: Trim', () => {
     // Verify state integrity
     const store = useTaskStore.getState();
     store.hydrate();
-    
+
     const state = useTaskStore.getState().byId;
     expect(Object.keys(state).length).toBe(15);
-    
+
     // Check both early and late tasks exist
     expect(state['task-0']).toBeDefined();
     expect(state['task-14']).toBeDefined();
@@ -176,7 +181,7 @@ describe('Snapshot: Trim', () => {
     // After compaction, hydration should be significantly faster
     // (This is more of a performance test, exact timings may vary)
     expect(time2).toBeLessThan(time1 * 2); // Allow some variance
-    
+
     // Verify state is still correct
     const state = useTaskStore.getState().byId;
     expect(Object.keys(state).length).toBe(1000);

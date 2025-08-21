@@ -11,10 +11,12 @@ import { Save, Edit, Trash } from 'lucide-react';
 describe('UI Components Integration', () => {
   it('ButtonGroup works seamlessly with Button components', () => {
     render(
-      <ButtonGroup variant="secondary" size="lg" aria-label="Document actions">
+      <ButtonGroup variant='secondary' size='lg' aria-label='Document actions'>
         <Button icon={<Save size={18} />}>Save</Button>
         <Button icon={<Edit size={18} />}>Edit</Button>
-        <Button icon={<Trash size={18} />} variant="destructive">Delete</Button>
+        <Button icon={<Trash size={18} />} variant='destructive'>
+          Delete
+        </Button>
       </ButtonGroup>
     );
 
@@ -40,20 +42,33 @@ describe('UI Components Integration', () => {
     render(
       <div>
         {/* Toolbar Actions */}
-        <ButtonGroup size="sm" attached={true} aria-label="Toolbar">
-          <Button icon={<Save size={14} />} aria-label="Save" />
-          <Button icon={<Edit size={14} />} aria-label="Edit" />
-          <Button icon={<Trash size={14} />} variant="destructive" aria-label="Delete" />
+        <ButtonGroup size='sm' attached={true} aria-label='Toolbar'>
+          <Button icon={<Save size={14} />} aria-label='Save' />
+          <Button icon={<Edit size={14} />} aria-label='Edit' />
+          <Button
+            icon={<Trash size={14} />}
+            variant='destructive'
+            aria-label='Delete'
+          />
         </ButtonGroup>
 
         {/* Form Actions */}
-        <ButtonGroup fullWidth attached={false} spacing="md" aria-label="Form actions">
-          <Button variant="outline">Cancel</Button>
-          <Button variant="primary">Submit</Button>
+        <ButtonGroup
+          fullWidth
+          attached={false}
+          spacing='md'
+          aria-label='Form actions'
+        >
+          <Button variant='outline'>Cancel</Button>
+          <Button variant='primary'>Submit</Button>
         </ButtonGroup>
 
         {/* Vertical Navigation */}
-        <ButtonGroup orientation="vertical" variant="ghost" aria-label="Navigation">
+        <ButtonGroup
+          orientation='vertical'
+          variant='ghost'
+          aria-label='Navigation'
+        >
           <Button>Dashboard</Button>
           <Button>Analytics</Button>
           <Button>Settings</Button>
@@ -63,8 +78,12 @@ describe('UI Components Integration', () => {
 
     // Verify all groups are rendered
     expect(screen.getByRole('group', { name: /toolbar/i })).toBeInTheDocument();
-    expect(screen.getByRole('group', { name: /form actions/i })).toBeInTheDocument();
-    expect(screen.getByRole('group', { name: /navigation/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('group', { name: /form actions/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('group', { name: /navigation/i })
+    ).toBeInTheDocument();
 
     // Verify different configurations
     const toolbarGroup = screen.getByRole('group', { name: /toolbar/i });

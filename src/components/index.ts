@@ -56,6 +56,111 @@ export { Tooltip } from '@/components/ui/Tooltip';
 export { Video } from '@/components/ui/Video';
 export { default as Well } from '@/components/ui/Well';
 
+// ===== FEATURE COMPONENTS =====
+// ===== FEATURES =====
+export { CommandPalette } from './features/CommandPalette';
+export { FormBuilder } from './features/FormBuilder';
+export type {
+  CommandPaletteProps,
+  CommandItem,
+  CommandGroup,
+  CommandAction,
+} from './features/CommandPalette';
+export type {
+  FormBuilderProps,
+  FormSchema,
+  FormFieldSchema,
+  FormFieldType,
+  FormData,
+  FormErrors,
+  FormValidationRule,
+  FormFieldOption,
+} from './features/FormBuilder';
+
+// ===== LAYOUT COMPONENTS =====
+export {
+  ResponsiveGrids,
+  GridItem,
+  GridPresets,
+} from './layout/ResponsiveGrids';
+export type {
+  ResponsiveGridsProps,
+  GridItemProps,
+  ResponsiveColumns,
+  ResponsiveGaps,
+  GridAreas,
+  GridGap,
+  GridColumns,
+  BreakpointKey,
+  GridAlignItems,
+  GridJustifyItems,
+  GridAutoFlow,
+} from './layout/ResponsiveGrids';
+
+export { SplitPanels, SplitPanel } from './layout/SplitPanels';
+export type {
+  SplitPanelsProps,
+  SplitPanelProps,
+  SplitDirection,
+  PanelSize,
+  ResizeMode,
+  HandlePosition,
+  LayoutMetrics,
+  ResizeHandleProps,
+} from './layout/SplitPanels';
+
+// NavigationSystems - Complex navigation patterns
+export {
+  NavigationSystems,
+  BreadcrumbNavigation,
+  TabNavigation,
+  StepNavigation,
+  HierarchicalNavigation,
+  NavigationProvider,
+} from './layout/NavigationSystems';
+export type {
+  NavigationSystemsProps,
+  BreadcrumbNavigationProps,
+  TabNavigationProps,
+  StepNavigationProps,
+  HierarchicalNavigationProps,
+  NavigationItem,
+  BreadcrumbItem,
+  TabItem,
+  StepItem,
+  NavigationVariant,
+  NavigationSize,
+} from './layout/NavigationSystems';
+
+// Demo Components
+export { SplitPanelsDemo } from './demo/SplitPanelsDemo';
+
+// ===== DATA COMPONENTS =====
+export { DataTable } from '@/components/data/DataTable';
+export type {
+  DataTableProps,
+  DataTableColumn,
+} from '@/components/data/DataTable';
+export { LogViewer } from '@/components/data/LogViewer';
+export type {
+  LogViewerProps,
+  LogEntry,
+  LogLevel,
+  LogFormat,
+  LogViewMode,
+  LogFilter,
+} from '@/components/data/LogViewer';
+export { RealtimeUpdates } from '@/components/data/RealtimeUpdates';
+export type {
+  RealtimeUpdatesProps,
+  ConnectionConfig,
+  UpdateOptions,
+  RealtimeUpdateState,
+  ConnectionStatus,
+  UpdateMode,
+  DataFormat,
+} from '@/components/data/RealtimeUpdates';
+
 // ===== DEMO COMPONENTS =====
 export { AlertDemo } from '@/components/demo/AlertDemo';
 export { default as AttachmentDemo } from '@/components/demo/AttachmentDemo';
@@ -71,26 +176,14 @@ export { ComponentShowcase } from '@/components/demo/examples';
 export { HoverCardDemo } from '@/components/demo/HoverCardDemo';
 export { default as ImageDemo } from '@/components/demo/ImageDemo';
 export { default as KBDDemo } from '@/components/demo/KBDDemo';
+export { LogViewerDemo } from '@/components/demo/LogViewerDemo';
 export { default as NoteDemo } from '@/components/demo/NoteDemo';
 export { ProgressBarDemo } from '@/components/demo/ProgressBarDemo';
 export { ProseDemo } from '@/components/demo/ProseDemo';
+export { default as RealtimeUpdatesDemo } from '@/components/demo/RealtimeUpdatesDemo';
 export { ToastDemo } from '@/components/demo/ToastDemo';
 export { TooltipDemo } from '@/components/demo/TooltipDemo';
 export { VideoDemo } from '@/components/demo/VideoDemo';
-
-// ===== LAYOUT COMPONENTS =====
-export {
-  AppShell,
-  TopNav,
-  Sidebar,
-  MainContent,
-  RightPanel,
-  PageHeader,
-  SplitPane,
-  Container,
-  Grid,
-  Stack,
-} from '@/components/layout/Layout';
 
 // ===== DESIGN TOKENS RE-EXPORT =====
 export {
@@ -102,3 +195,5 @@ export {
   getPriorityLabel,
   getStatusLabel,
 } from '@/design/tokens';
+
+export { TestButton } from './ui/TestButton';

@@ -6,21 +6,21 @@ if (!globalThis.crypto) {
   Object.defineProperty(globalThis, 'crypto', {
     value: webcrypto,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis.crypto, 'subtle', {
     value: webcrypto.subtle,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.getRandomValues) {
   Object.defineProperty(globalThis.crypto, 'getRandomValues', {
     value: webcrypto.getRandomValues.bind(webcrypto),
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 
@@ -62,22 +62,26 @@ describe('Maintenance Smoke Tests', () => {
     storage = new MockStorageDriver();
     keyring = new KeyringProvider(storage, 'test-keyring');
     encrypted = new EncryptedDriver(storage, 'app', keyring);
-    
+
     // Initialize keyring with low iterations for speed
     await keyring.initNew('test-pass', 500);
   });
 
   it('should plan and execute COMPACT operation', async () => {
     // Mock compactWithSnapshot to simulate trimming 100 events
-    const originalCompact = (await import('../src/domain/task/eventlog')).compactWithSnapshot;
+    const originalCompact = (await import('../src/domain/task/eventlog'))
+      .compactWithSnapshot;
     let compactCalled = false;
-    
+
     // Mock the eventlog's getEventCount to return high value
-    const originalGetEventCount = (await import('../src/domain/task/eventlog')).getEventCount;
+    const originalGetEventCount = (await import('../src/domain/task/eventlog'))
+      .getEventCount;
     (await import('../src/domain/task/eventlog')).getEventCount = () => 150;
-    
+
     // Mock compactWithSnapshot
-    (await import('../src/domain/task/eventlog')).compactWithSnapshot = (_threshold: number) => {
+    (await import('../src/domain/task/eventlog')).compactWithSnapshot = (
+      _threshold: number
+    ) => {
       compactCalled = true;
       return { trimmed: 100, tookSnapshot: true };
     };
@@ -95,8 +99,10 @@ describe('Maintenance Smoke Tests', () => {
       expect(report.compact?.tookSnapshot).toBe(true);
     } finally {
       // Restore original functions
-      (await import('../src/domain/task/eventlog')).compactWithSnapshot = originalCompact;
-      (await import('../src/domain/task/eventlog')).getEventCount = originalGetEventCount;
+      (await import('../src/domain/task/eventlog')).compactWithSnapshot =
+        originalCompact;
+      (await import('../src/domain/task/eventlog')).getEventCount =
+        originalGetEventCount;
     }
   });
 
@@ -115,12 +121,12 @@ describe('Maintenance Smoke Tests', () => {
       ts: now,
       aad: toB64u(new TextEncoder().encode('app:key1').buffer),
       iv: 'mock-iv',
-      data: 'mock-encrypted-data'
+      data: 'mock-encrypted-data',
     } as any;
-    
+
     await storage.setItem('app:key1', JSON.stringify(oldEnvelope));
     await storage.setItem('app:key2', 'plaintext-data'); // Should be skipped
-    
+
     // Store data with current key
     await encrypted.setItem('app:key3', 'current-data');
 
@@ -145,11 +151,11 @@ describe('Maintenance Smoke Tests', () => {
 
   it('should plan and execute SWEEP operation', async () => {
     const { kid: activeKid } = await keyring.getActiveKey();
-    
+
     // Create test data
     // 1. Valid envelope
     await encrypted.setItem('app:valid', 'valid-data');
-    
+
     // 2. Envelope with wrong AAD
     const wrongAadEnvelope = {
       v: 1,
@@ -158,14 +164,14 @@ describe('Maintenance Smoke Tests', () => {
       ts: new Date().toISOString(),
       aad: toB64u(new TextEncoder().encode('wrong:namespace').buffer),
       iv: 'mock-iv',
-      data: 'mock-data'
+      data: 'mock-data',
     } as any;
     await storage.setItem('app:wrong-aad', JSON.stringify(wrongAadEnvelope));
-    
+
     // 3. Old kid envelope (will be repaired)
     await keyring.rotate();
     const newActiveKey = await keyring.getActiveKey();
-    
+
     const oldKidEnvelope = {
       v: 1,
       alg: 'AES-GCM',
@@ -173,10 +179,10 @@ describe('Maintenance Smoke Tests', () => {
       ts: new Date().toISOString(),
       aad: toB64u(new TextEncoder().encode('app:old-kid').buffer),
       iv: 'mock-iv',
-      data: 'mock-data'
+      data: 'mock-data',
     } as any;
     await storage.setItem('app:old-kid', JSON.stringify(oldKidEnvelope));
-    
+
     // 4. Malformed JSON
     await storage.setItem('app:malformed', '{ invalid json');
 
@@ -186,15 +192,15 @@ describe('Maintenance Smoke Tests', () => {
     expect(plan.actions[0]?.type).toBe('SWEEP');
 
     const report = await runMaintenance(plan, { storage, encrypted, keyring });
-    
+
     expect(report.sweep?.scanned).toBeGreaterThan(0);
     expect(report.sweep?.failed.length).toBeGreaterThan(0);
-    
+
     // Should have failed items (wrong AAD, malformed)
     const failedKeys = report.sweep?.failed.map(f => f.key) || [];
     expect(failedKeys).toContain('app:wrong-aad');
     expect(failedKeys).toContain('app:malformed');
-    
+
     // Should have repaired the old-kid item if fix=true
     if (report.sweep?.repaired && report.sweep.repaired > 0) {
       const repairedValue = await storage.getItem('app:old-kid');

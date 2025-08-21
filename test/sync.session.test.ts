@@ -7,8 +7,11 @@ import type { RemoteTransport } from '../src/storage/remoteTypes';
 class MockTransport implements RemoteTransport {
   private data = new Map<string, { value: string; updatedAt: string }>();
   private pageSize = 100; // Default page size
-  
-  async list(prefix: string, since?: string): Promise<{
+
+  async list(
+    prefix: string,
+    since?: string
+  ): Promise<{
     items: Array<{ key: string; value: string; updatedAt: string }>;
     nextSince?: string;
   }> {
@@ -16,41 +19,41 @@ class MockTransport implements RemoteTransport {
       .filter(([key]) => key.startsWith(prefix))
       .map(([key, data]) => ({ key, ...data }))
       .sort((a, b) => a.updatedAt.localeCompare(b.updatedAt));
-    
+
     // Simple pagination simulation
     let startIdx = 0;
     if (since) {
       startIdx = allItems.findIndex(item => item.updatedAt > since);
       if (startIdx === -1) startIdx = allItems.length;
     }
-    
+
     const pageItems = allItems.slice(startIdx, startIdx + this.pageSize);
     const hasMore = startIdx + this.pageSize < allItems.length;
-    
+
     const result: {
       items: Array<{ key: string; value: string; updatedAt: string }>;
       nextSince?: string;
     } = { items: pageItems };
-    
+
     if (hasMore && pageItems.length > 0) {
       result.nextSince = pageItems[pageItems.length - 1]!.updatedAt;
     }
-    
+
     return result;
   }
-  
+
   async get(key: string): Promise<{ value: string; updatedAt: string } | null> {
     return this.data.get(key) || null;
   }
-  
+
   async put(key: string, value: string, updatedAt: string): Promise<void> {
     this.data.set(key, { value, updatedAt });
   }
-  
+
   async del(key: string, _updatedAt: string): Promise<void> {
     this.data.delete(key);
   }
-  
+
   // Test helper to set page size
   setPageSize(size: number) {
     this.pageSize = size;
@@ -65,7 +68,7 @@ describe('Sync Integration', () => {
   it('should handle empty remote sync', async () => {
     const transport = new MockTransport();
     const result = await syncOnce(transport, 'test-namespace');
-    
+
     expect(result.completed).toBe(true);
     expect(result.pullCount).toBe(0);
     expect(result.mergeReport).toBeNull();
@@ -76,7 +79,7 @@ describe('Sync Integration', () => {
 
   it('should handle dry run mode', async () => {
     const transport = new MockTransport();
-    
+
     // Add a remote pack with a task
     const eventData = {
       id: 'evt-1',
@@ -89,10 +92,10 @@ describe('Sync Integration', () => {
         priority: 'P1',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        tags: []
-      }
+        tags: [],
+      },
     };
-    
+
     // Calculate proper hash
     const rawEvents = JSON.stringify(eventData);
     const h = 0x811c9dc5 >>> 0;
@@ -102,22 +105,28 @@ describe('Sync Integration', () => {
       hash = Math.imul(hash, 0x01000193) >>> 0;
     }
     const eventsHash = ('00000000' + hash.toString(16)).slice(-8);
-    
+
     const mockPack = {
       meta: {
         version: 1,
         format: 'sparkpack/1+json',
         createdAt: new Date().toISOString(),
         eventsCount: 1,
-        eventsHash
+        eventsHash,
       },
-      events: [eventData]
+      events: [eventData],
     };
-    
-    await transport.put('test-namespace/pack-1', JSON.stringify(mockPack), new Date().toISOString());
-    
-    const result = await syncOnce(transport, 'test-namespace', { dryRun: true });
-    
+
+    await transport.put(
+      'test-namespace/pack-1',
+      JSON.stringify(mockPack),
+      new Date().toISOString()
+    );
+
+    const result = await syncOnce(transport, 'test-namespace', {
+      dryRun: true,
+    });
+
     expect(result.completed).toBe(true);
     expect(result.pullCount).toBe(1);
     expect(result.mergeReport).toBeTruthy();
@@ -127,18 +136,18 @@ describe('Sync Integration', () => {
 
   it('should sync with id remapping policy', async () => {
     const transport = new MockTransport();
-    
+
     // Create a local task first
     useTaskStore.getState().addTask({
       title: 'Local Task',
       status: 'TODAY',
-      priority: 'P1'
+      priority: 'P1',
     });
-    
+
     // Create a conflicting remote task with same ID
     const localTasks = Object.values(useTaskStore.getState().byId);
     const existingId = localTasks[0]?.id;
-    
+
     if (existingId) {
       const eventData = {
         id: 'evt-conflict',
@@ -151,10 +160,10 @@ describe('Sync Integration', () => {
           priority: 'P2',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          tags: []
-        }
+          tags: [],
+        },
       };
-      
+
       // Calculate proper hash
       const rawEvents = JSON.stringify(eventData);
       let hash = 0x811c9dc5 >>> 0;
@@ -163,22 +172,28 @@ describe('Sync Integration', () => {
         hash = Math.imul(hash, 0x01000193) >>> 0;
       }
       const eventsHash = ('00000000' + hash.toString(16)).slice(-8);
-      
+
       const conflictPack = {
         meta: {
           version: 1,
           format: 'sparkpack/1+json',
           createdAt: new Date().toISOString(),
           eventsCount: 1,
-          eventsHash
+          eventsHash,
         },
-        events: [eventData]
+        events: [eventData],
       };
-      
-      await transport.put('test-namespace/conflict-pack', JSON.stringify(conflictPack), new Date().toISOString());
-      
-      const result = await syncOnce(transport, 'test-namespace', { policy: 'remapIds' });
-      
+
+      await transport.put(
+        'test-namespace/conflict-pack',
+        JSON.stringify(conflictPack),
+        new Date().toISOString()
+      );
+
+      const result = await syncOnce(transport, 'test-namespace', {
+        policy: 'remapIds',
+      });
+
       expect(result.completed).toBe(true);
       expect(result.mergeReport?.applied).toBeGreaterThan(0);
       expect(result.errors).toHaveLength(0);
@@ -189,7 +204,7 @@ describe('Sync Integration', () => {
   it('should handle pagination with multiple pages', async () => {
     const transport = new MockTransport();
     transport.setPageSize(2); // Small pages for testing
-    
+
     // Create 5 packs to test pagination (will require 3 pages with pageSize=2)
     for (let i = 1; i <= 5; i++) {
       const eventData = {
@@ -203,10 +218,10 @@ describe('Sync Integration', () => {
           priority: 'P1',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          tags: []
-        }
+          tags: [],
+        },
       };
-      
+
       const rawEvents = JSON.stringify(eventData);
       let hash = 0x811c9dc5 >>> 0;
       for (let j = 0; j < rawEvents.length; j++) {
@@ -214,23 +229,27 @@ describe('Sync Integration', () => {
         hash = Math.imul(hash, 0x01000193) >>> 0;
       }
       const validHash = ('00000000' + hash.toString(16)).slice(-8);
-      
+
       const pack = {
         meta: {
           version: 1,
           format: 'sparkpack/1+json',
           createdAt: new Date().toISOString(),
           eventsCount: 1,
-          eventsHash: validHash
+          eventsHash: validHash,
         },
-        events: [eventData]
+        events: [eventData],
       };
-      
-      await transport.put(`test-namespace/pack-${i}`, JSON.stringify(pack), new Date(Date.now() + i * 1000).toISOString());
+
+      await transport.put(
+        `test-namespace/pack-${i}`,
+        JSON.stringify(pack),
+        new Date(Date.now() + i * 1000).toISOString()
+      );
     }
-    
+
     const result = await syncOnce(transport, 'test-namespace');
-    
+
     expect(result.completed).toBe(true);
     expect(result.pullCount).toBe(5); // All 5 packs pulled across pages
     expect(result.mergeReport?.applied).toBe(5); // All 5 events applied
@@ -241,7 +260,7 @@ describe('Sync Integration', () => {
   it('should deduplicate events across pages', async () => {
     const transport = new MockTransport();
     transport.setPageSize(1); // Force pagination
-    
+
     // Create duplicate event in two different packs
     const eventData = {
       id: 'evt-dup',
@@ -254,10 +273,10 @@ describe('Sync Integration', () => {
         priority: 'P1',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        tags: []
-      }
+        tags: [],
+      },
     };
-    
+
     const rawEvents = JSON.stringify(eventData);
     let hash = 0x811c9dc5 >>> 0;
     for (let i = 0; i < rawEvents.length; i++) {
@@ -265,24 +284,32 @@ describe('Sync Integration', () => {
       hash = Math.imul(hash, 0x01000193) >>> 0;
     }
     const validHash = ('00000000' + hash.toString(16)).slice(-8);
-    
+
     const pack = {
       meta: {
         version: 1,
         format: 'sparkpack/1+json',
         createdAt: new Date().toISOString(),
         eventsCount: 1,
-        eventsHash: validHash
+        eventsHash: validHash,
       },
-      events: [eventData]
+      events: [eventData],
     };
-    
+
     // Put same pack twice with different keys and timestamps
-    await transport.put('test-namespace/pack-1', JSON.stringify(pack), new Date(Date.now() + 1000).toISOString());
-    await transport.put('test-namespace/pack-2', JSON.stringify(pack), new Date(Date.now() + 2000).toISOString());
-    
+    await transport.put(
+      'test-namespace/pack-1',
+      JSON.stringify(pack),
+      new Date(Date.now() + 1000).toISOString()
+    );
+    await transport.put(
+      'test-namespace/pack-2',
+      JSON.stringify(pack),
+      new Date(Date.now() + 2000).toISOString()
+    );
+
     const result = await syncOnce(transport, 'test-namespace');
-    
+
     expect(result.completed).toBe(true);
     expect(result.pullCount).toBe(2); // Both packs pulled
     expect(result.mergeReport?.applied).toBe(1); // Only one event applied (deduped)

@@ -5,7 +5,11 @@
  */
 
 import { useState, useCallback } from 'react';
-import { CodePlayground, type CodePlaygroundProps, type ExecutionResult } from './CodePlayground';
+import {
+  CodePlayground,
+  type CodePlaygroundProps,
+  type ExecutionResult,
+} from './CodePlayground';
 
 // Demo templates for different languages and use cases
 const DEMO_TEMPLATES = [
@@ -29,7 +33,7 @@ console.log(\`Welcome to \${greeting}!\`);
 // Math example
 const numbers = [1, 2, 3, 4, 5];
 const sum = numbers.reduce((a, b) => a + b, 0);
-console.log(\`Sum: \${sum}\`);`
+console.log(\`Sum: \${sum}\`);`,
   },
   {
     id: 'ts-advanced',
@@ -69,7 +73,7 @@ manager.addUser({
   role: 'admin'
 });
 
-console.log('Admin users:', manager.getUsersByRole('admin'));`
+console.log('Admin users:', manager.getUsersByRole('admin'));`,
   },
   {
     id: 'react-component',
@@ -135,7 +139,7 @@ function TodoApp() {
 }
 
 // Render the component
-ReactDOM.render(<TodoApp />, document.getElementById('root'));`
+ReactDOM.render(<TodoApp />, document.getElementById('root'));`,
   },
   {
     id: 'html-interactive',
@@ -231,7 +235,7 @@ ReactDOM.render(<TodoApp />, document.getElementById('root'));`
     }
   </script>
 </body>
-</html>`
+</html>`,
   },
   {
     id: 'css-animations',
@@ -385,7 +389,7 @@ body {
   100% {
     transform: translateY(-20px) rotate(360deg);
   }
-}`
+}`,
   },
   {
     id: 'json-data',
@@ -457,8 +461,8 @@ body {
     "tags": ["editor", "playground", "interactive", "education"],
     "license": "MIT"
   }
-}`
-  }
+}`,
+  },
 ];
 
 interface DemoConfig {
@@ -482,9 +486,10 @@ export function CodePlaygroundDemo() {
   const [selectedTemplate, setSelectedTemplate] = useState(DEMO_TEMPLATES[0]);
   const [code, setCode] = useState(selectedTemplate.code);
   const [language, setLanguage] = useState(selectedTemplate.language);
-  const [executionResult, setExecutionResult] = useState<ExecutionResult | null>(null);
+  const [executionResult, setExecutionResult] =
+    useState<ExecutionResult | null>(null);
   const [shareData, setShareData] = useState<object | null>(null);
-  
+
   const [config, setConfig] = useState<DemoConfig>({
     layout: 'horizontal',
     theme: 'auto',
@@ -495,7 +500,7 @@ export function CodePlaygroundDemo() {
     autoRun: false,
     autoRunDelay: 1000,
     enableSharing: true,
-    enableFullscreen: true
+    enableFullscreen: true,
   });
 
   // Handle template selection
@@ -526,43 +531,46 @@ export function CodePlaygroundDemo() {
   }, []);
 
   // Handle configuration changes
-  const updateConfig = useCallback((key: keyof DemoConfig, value: string | number | boolean) => {
-    setConfig(prev => ({ ...prev, [key]: value }));
-  }, []);
+  const updateConfig = useCallback(
+    (key: keyof DemoConfig, value: string | number | boolean) => {
+      setConfig(prev => ({ ...prev, [key]: value }));
+    },
+    []
+  );
 
   return (
-    <div 
-      className="flex min-h-screen flex-col bg-slate-50 p-6"
+    <div
+      className='flex min-h-screen flex-col bg-slate-50 p-6'
       style={{
-        fontFamily: 'system-ui, -apple-system, sans-serif'
+        fontFamily: 'system-ui, -apple-system, sans-serif',
       }}
     >
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="mb-2 text-3xl font-bold text-slate-900">
+      <div className='mb-6'>
+        <h1 className='mb-2 text-3xl font-bold text-slate-900'>
           CodePlayground Demo
         </h1>
-        <p className="text-lg text-slate-600">
+        <p className='text-lg text-slate-600'>
           Interactive code editor with live preview and execution
         </p>
       </div>
 
       {/* Configuration Panel */}
-      <div className="mb-6 rounded-lg border border-slate-200 bg-white p-4">
-        <h2 className="mb-4 text-xl font-semibold text-slate-900">
+      <div className='mb-6 rounded-lg border border-slate-200 bg-white p-4'>
+        <h2 className='mb-4 text-xl font-semibold text-slate-900'>
           Configuration
         </h2>
-        
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
           {/* Template Selection */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+            <label className='mb-2 block text-sm font-medium text-slate-700'>
               Template
             </label>
             <select
               value={selectedTemplate.id}
-              onChange={(e) => handleTemplateChange(e.target.value)}
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2"
+              onChange={e => handleTemplateChange(e.target.value)}
+              className='w-full rounded-md border border-slate-300 bg-white px-3 py-2'
             >
               {DEMO_TEMPLATES.map(template => (
                 <option key={template.id} value={template.id}>
@@ -574,44 +582,46 @@ export function CodePlaygroundDemo() {
 
           {/* Layout */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+            <label className='mb-2 block text-sm font-medium text-slate-700'>
               Layout
             </label>
             <select
               value={config.layout}
-              onChange={(e) => updateConfig('layout', e.target.value)}
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2"
+              onChange={e => updateConfig('layout', e.target.value)}
+              className='w-full rounded-md border border-slate-300 bg-white px-3 py-2'
             >
-              <option value="horizontal">Horizontal</option>
-              <option value="vertical">Vertical</option>
-              <option value="tabs">Tabs</option>
-              <option value="editor-only">Editor Only</option>
-              <option value="preview-only">Preview Only</option>
+              <option value='horizontal'>Horizontal</option>
+              <option value='vertical'>Vertical</option>
+              <option value='tabs'>Tabs</option>
+              <option value='editor-only'>Editor Only</option>
+              <option value='preview-only'>Preview Only</option>
             </select>
           </div>
 
           {/* Auto Run Delay */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+            <label className='mb-2 block text-sm font-medium text-slate-700'>
               Auto Run Delay (ms)
             </label>
             <input
-              type="number"
+              type='number'
               value={config.autoRunDelay}
-              onChange={(e) => updateConfig('autoRunDelay', parseInt(e.target.value))}
-              min="100"
-              max="5000"
-              step="100"
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2"
+              onChange={e =>
+                updateConfig('autoRunDelay', parseInt(e.target.value))
+              }
+              min='100'
+              max='5000'
+              step='100'
+              className='w-full rounded-md border border-slate-300 bg-white px-3 py-2'
             />
           </div>
 
           {/* Feature Toggles */}
-          <div className="space-y-2">
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+          <div className='space-y-2'>
+            <label className='mb-2 block text-sm font-medium text-slate-700'>
               Features
             </label>
-            
+
             {Object.entries({
               showToolbar: 'Show Toolbar',
               showLineNumbers: 'Line Numbers',
@@ -619,18 +629,18 @@ export function CodePlaygroundDemo() {
               showConsole: 'Show Console',
               autoRun: 'Auto Run',
               enableSharing: 'Enable Sharing',
-              enableFullscreen: 'Enable Fullscreen'
+              enableFullscreen: 'Enable Fullscreen',
             }).map(([key, label]) => (
-              <label key={key} className="flex items-center">
+              <label key={key} className='flex items-center'>
                 <input
-                  type="checkbox"
+                  type='checkbox'
                   checked={config[key as keyof DemoConfig] as boolean}
-                  onChange={(e) => updateConfig(key as keyof DemoConfig, e.target.checked)}
-                  className="mr-2"
+                  onChange={e =>
+                    updateConfig(key as keyof DemoConfig, e.target.checked)
+                  }
+                  className='mr-2'
                 />
-                <span className="text-sm text-slate-600">
-                  {label}
-                </span>
+                <span className='text-sm text-slate-600'>{label}</span>
               </label>
             ))}
           </div>
@@ -638,7 +648,7 @@ export function CodePlaygroundDemo() {
       </div>
 
       {/* Main CodePlayground */}
-      <div className="flex-1">
+      <div className='flex-1'>
         <CodePlayground
           initialCode={code}
           language={language}
@@ -655,46 +665,47 @@ export function CodePlaygroundDemo() {
           onCodeChange={handleCodeChange}
           onExecute={handleExecute}
           onShare={handleShare}
-          className="h-96"
+          className='h-96'
         />
       </div>
 
       {/* Execution Result Display */}
       {executionResult && (
-        <div className="mt-6 rounded-lg border border-slate-200 bg-white p-4">
-          <h3 className="mb-2 text-lg font-semibold text-slate-900">
+        <div className='mt-6 rounded-lg border border-slate-200 bg-white p-4'>
+          <h3 className='mb-2 text-lg font-semibold text-slate-900'>
             Last Execution Result
           </h3>
-          
-          <div className="space-y-2">
+
+          <div className='space-y-2'>
             <div>
-              <strong>Timestamp:</strong> {new Date(executionResult.timestamp).toLocaleTimeString()}
+              <strong>Timestamp:</strong>{' '}
+              {new Date(executionResult.timestamp).toLocaleTimeString()}
             </div>
-            
+
             {executionResult.output && (
               <div>
-                <strong>Output:</strong> 
-                <pre className="mt-1 rounded bg-slate-100 p-2 font-mono">
+                <strong>Output:</strong>
+                <pre className='mt-1 rounded bg-slate-100 p-2 font-mono'>
                   {executionResult.output}
                 </pre>
               </div>
             )}
-            
+
             {executionResult.error && (
               <div>
-                <strong className="text-red-600">Error:</strong> 
-                <pre className="mt-1 rounded bg-red-50 p-2 font-mono text-red-700">
+                <strong className='text-red-600'>Error:</strong>
+                <pre className='mt-1 rounded bg-red-50 p-2 font-mono text-red-700'>
                   {executionResult.error}
                 </pre>
               </div>
             )}
-            
+
             {executionResult.logs && executionResult.logs.length > 0 && (
               <div>
                 <strong>Console Logs:</strong>
-                <ul className="mt-1 rounded bg-slate-100 p-2">
+                <ul className='mt-1 rounded bg-slate-100 p-2'>
                   {executionResult.logs.map((log, index) => (
-                    <li key={index} className="font-mono text-sm">
+                    <li key={index} className='font-mono text-sm'>
                       {log}
                     </li>
                   ))}
@@ -707,11 +718,11 @@ export function CodePlaygroundDemo() {
 
       {/* Share Data Display */}
       {shareData && (
-        <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <h3 className="mb-2 text-lg font-semibold text-slate-900">
+        <div className='mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4'>
+          <h3 className='mb-2 text-lg font-semibold text-slate-900'>
             Share Data
           </h3>
-          <pre className="overflow-auto rounded bg-white p-2 font-mono text-sm">
+          <pre className='overflow-auto rounded bg-white p-2 font-mono text-sm'>
             {JSON.stringify(shareData, null, 2)}
           </pre>
         </div>

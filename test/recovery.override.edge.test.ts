@@ -17,7 +17,7 @@ import * as AuditApiModule from '../src/audit/api';
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis, 'crypto', {
     value: require('node:crypto').webcrypto,
-    writable: false
+    writable: false,
   });
 }
 
@@ -48,26 +48,33 @@ class MockStorage implements StorageDriver {
 }
 
 // Mock membership API with dynamic state
-function createDynamicMembershipApi(initialState: MState): { api: MembershipApi; updateState: (newState: MState) => void } {
+function createDynamicMembershipApi(initialState: MState): {
+  api: MembershipApi;
+  updateState: (newState: MState) => void;
+} {
   let currentState = { ...initialState };
-  
+
   return {
     api: {
-      getMembership: vi.fn(() => Promise.resolve(currentState))
+      getMembership: vi.fn(() => Promise.resolve(currentState)),
     },
     updateState: (newState: MState) => {
       currentState = { ...newState };
-    }
+    },
   };
 }
 
 // Mock Ed25519 signing function
-async function createMockSigner(): Promise<(bytes: Uint8Array) => Promise<string>> {
+async function createMockSigner(): Promise<
+  (bytes: Uint8Array) => Promise<string>
+> {
   return async (bytes: Uint8Array): Promise<string> => {
     const normalizedBytes = new Uint8Array(bytes);
     const hash = await crypto.subtle.digest('SHA-256', normalizedBytes);
     const hashArray = new Uint8Array(hash);
-    return btoa(String.fromCharCode(...hashArray)).replace(/[+/]/g, '').slice(0, 64);
+    return btoa(String.fromCharCode(...hashArray))
+      .replace(/[+/]/g, '')
+      .slice(0, 64);
   };
 }
 
@@ -82,27 +89,31 @@ describe('Recovery Override Edge Cases (@edge)', () => {
     keyring = new KeyringProvider(storage, 'test');
     await keyring.initNew('test-passphrase');
     await keyring.rotate(); // Create some DEKs
-    
+
     sign = await createMockSigner();
-    
+
     // Clear the single-use registry from previous tests
-    const { acceptRecoveryOverride: acceptModule } = await import('../src/recovery/override.accept');
+    const { acceptRecoveryOverride: acceptModule } = await import(
+      '../src/recovery/override.accept'
+    );
     if ((acceptModule as any).usedOverrides) {
       (acceptModule as any).usedOverrides.clear();
     }
-    
+
     // Create membership API with proper setup
     membershipApi = {
-      getMembership: vi.fn(() => Promise.resolve({
-        users: {
-          'admin-user': 'ADMIN' as const,
-          'beneficiary-user': 'MEMBER' as const,
-          'owner-user': 'OWNER' as const,
-          'viewer-user': 'VIEWER' as const
-        },
-        owners: ['owner-user'],
-        ts: new Date().toISOString()
-      }))
+      getMembership: vi.fn(() =>
+        Promise.resolve({
+          users: {
+            'admin-user': 'ADMIN' as const,
+            'beneficiary-user': 'MEMBER' as const,
+            'owner-user': 'OWNER' as const,
+            'viewer-user': 'VIEWER' as const,
+          },
+          owners: ['owner-user'],
+          ts: new Date().toISOString(),
+        })
+      ),
     };
 
     // Mock membership and audit modules - ensure the global API returns proper state
@@ -111,18 +122,20 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         'admin-user': 'ADMIN',
         'beneficiary-user': 'MEMBER',
         'owner-user': 'OWNER',
-        'viewer-user': 'VIEWER'
+        'viewer-user': 'VIEWER',
       },
       owners: ['owner-user'],
-      ts: new Date().toISOString()
+      ts: new Date().toISOString(),
     });
-    vi.spyOn(MembershipApiModule, 'assertPermission').mockResolvedValue(undefined);
+    vi.spyOn(MembershipApiModule, 'assertPermission').mockResolvedValue(
+      undefined
+    );
     vi.spyOn(AuditApiModule, 'log').mockResolvedValue({
       v: 1,
       id: 'mock-audit-id',
       ts: new Date().toISOString(),
       type: 'RECOVERY_OVERRIDE_CREATED',
-      hash: 'mock-hash'
+      hash: 'mock-hash',
     } as any);
   });
 
@@ -132,13 +145,15 @@ describe('Recovery Override Edge Cases (@edge)', () => {
       const initialState: MState = {
         users: {
           'owner-user': 'OWNER',
-          'beneficiary-user': 'ADMIN'
+          'beneficiary-user': 'ADMIN',
         },
-        owners: ['owner-user']
+        owners: ['owner-user'],
       };
 
       const { updateState } = createDynamicMembershipApi(initialState);
-      vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(initialState);
+      vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(
+        initialState
+      );
 
       // Create override for ADMIN beneficiary
       const { envelope } = await createRecoveryOverride({
@@ -146,16 +161,16 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'RACE123',
-        sign
+        sign,
       });
 
       // Simulate role downgrade after creation but before acceptance
       const downgradedState: MState = {
         users: {
           'owner-user': 'OWNER',
-          'beneficiary-user': 'VIEWER' // Downgraded from ADMIN to VIEWER
+          'beneficiary-user': 'VIEWER', // Downgraded from ADMIN to VIEWER
         },
-        owners: ['owner-user']
+        owners: ['owner-user'],
       };
       updateState(downgradedState);
 
@@ -166,7 +181,7 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         code: 'RACE123',
         keyring,
         beneficiaryId: 'beneficiary-user',
-        membership: membershipApi // Use global membershipApi
+        membership: membershipApi, // Use global membershipApi
       });
 
       expect(result.imported).toBeGreaterThanOrEqual(0);
@@ -177,13 +192,15 @@ describe('Recovery Override Edge Cases (@edge)', () => {
       const initialState: MState = {
         users: {
           'owner-user': 'OWNER',
-          'beneficiary-user': 'MEMBER'
+          'beneficiary-user': 'MEMBER',
         },
-        owners: ['owner-user']
+        owners: ['owner-user'],
       };
 
       const { updateState } = createDynamicMembershipApi(initialState);
-      vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(initialState);
+      vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(
+        initialState
+      );
 
       // Create override
       const { envelope } = await createRecoveryOverride({
@@ -191,33 +208,38 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'REMOVED123',
-        sign
+        sign,
       });
 
       // Simulate beneficiary removal
       const removedState: MState = {
         users: {
-          'owner-user': 'OWNER'
+          'owner-user': 'OWNER',
           // beneficiary-user removed
         },
-        owners: ['owner-user']
+        owners: ['owner-user'],
       };
       updateState(removedState);
-      
+
       // Update the mock to return the removed state for acceptance
-      vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(removedState);
+      vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(
+        removedState
+      );
 
       // Acceptance should fail due to beneficiary no longer existing
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'REMOVED123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership: { // Create a membership API that returns the removed state
-          getMembership: vi.fn(() => Promise.resolve(removedState))
-        }
-      })).rejects.toThrow('Beneficiary beneficiary-user not found in workspace');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'REMOVED123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership: {
+            // Create a membership API that returns the removed state
+            getMembership: vi.fn(() => Promise.resolve(removedState)),
+          },
+        })
+      ).rejects.toThrow('Beneficiary beneficiary-user not found in workspace');
     });
   });
 
@@ -225,12 +247,12 @@ describe('Recovery Override Edge Cases (@edge)', () => {
     test('should prioritize revocation over expiry when both conditions met', async () => {
       // Create override with very short expiry
       const nearExpiry = new Date(Date.now() + 100).toISOString(); // 100ms
-      
+
       const membership: MembershipApi = {
         getMembership: async () => ({
           users: { 'owner-user': 'OWNER', 'beneficiary-user': 'MEMBER' },
-          owners: ['owner-user']
-        })
+          owners: ['owner-user'],
+        }),
       };
 
       const { envelope } = await createRecoveryOverride({
@@ -239,7 +261,7 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         beneficiaryId: 'beneficiary-user',
         code: 'REVEXP123',
         expiresAt: nearExpiry,
-        sign
+        sign,
       });
 
       // Wait for expiry
@@ -247,14 +269,16 @@ describe('Recovery Override Edge Cases (@edge)', () => {
 
       // Now the override is both expired AND would be revoked
       // Acceptance should fail with expiry message (first check)
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'REVEXP123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Recovery override expired');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'REVEXP123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Recovery override expired');
     });
   });
 
@@ -263,8 +287,8 @@ describe('Recovery Override Edge Cases (@edge)', () => {
       const membership: MembershipApi = {
         getMembership: async () => ({
           users: { 'admin-user': 'ADMIN', 'beneficiary-user': 'MEMBER' },
-          owners: ['admin-user']
-        })
+          owners: ['admin-user'],
+        }),
       };
 
       // Create override for namespace-A
@@ -273,26 +297,28 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         actorId: 'admin-user',
         beneficiaryId: 'beneficiary-user',
         code: 'COLLISION123',
-        sign
+        sign,
       });
 
       // Try to accept in namespace-B (should fail)
-      await expect(acceptRecoveryOverride({
-        ns: 'namespace-B', // Different namespace
-        envelope,
-        code: 'COLLISION123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Namespace mismatch');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'namespace-B', // Different namespace
+          envelope,
+          code: 'COLLISION123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Namespace mismatch');
     });
 
     test('should prevent AAD manipulation attacks', async () => {
       const membership: MembershipApi = {
         getMembership: async () => ({
           users: { 'admin-user': 'ADMIN', 'beneficiary-user': 'MEMBER' },
-          owners: ['admin-user']
-        })
+          owners: ['admin-user'],
+        }),
       };
 
       // Create override with specific namespace
@@ -301,7 +327,7 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         actorId: 'admin-user',
         beneficiaryId: 'beneficiary-user',
         code: 'AAD123',
-        sign
+        sign,
       });
 
       // Tamper with namespace in envelope content (simulating attack)
@@ -309,19 +335,21 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         ...envelope,
         content: {
           ...envelope.content,
-          ns: 'malicious-workspace' // Changed namespace
-        }
+          ns: 'malicious-workspace', // Changed namespace
+        },
       };
 
       // Should fail due to signature mismatch (content was signed with original namespace)
-      await expect(acceptRecoveryOverride({
-        ns: 'malicious-workspace',
-        envelope: tamperedEnvelope,
-        code: 'AAD123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Invalid recovery code or corrupted override');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'malicious-workspace',
+          envelope: tamperedEnvelope,
+          code: 'AAD123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Invalid recovery code or corrupted override');
     });
   });
 
@@ -330,20 +358,20 @@ describe('Recovery Override Edge Cases (@edge)', () => {
       const membership: MembershipApi = {
         getMembership: async () => ({
           users: { 'admin-user': 'ADMIN', 'beneficiary-user': 'MEMBER' },
-          owners: ['admin-user']
-        })
+          owners: ['admin-user'],
+        }),
       };
 
       // Create override that expires in exactly 1 second
       const exactExpiry = new Date(Date.now() + 1000).toISOString();
-      
+
       const { envelope } = await createRecoveryOverride({
         ns: 'test',
         actorId: 'admin-user',
         beneficiaryId: 'beneficiary-user',
         code: 'BOUNDARY123',
         expiresAt: exactExpiry,
-        sign
+        sign,
       });
 
       // Accept just before expiry (should work)
@@ -353,7 +381,7 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         code: 'BOUNDARY123',
         keyring,
         beneficiaryId: 'beneficiary-user',
-        membership
+        membership,
       });
 
       expect(result.imported).toBeGreaterThanOrEqual(0);
@@ -363,31 +391,33 @@ describe('Recovery Override Edge Cases (@edge)', () => {
       const membership: MembershipApi = {
         getMembership: async () => ({
           users: { 'admin-user': 'ADMIN', 'beneficiary-user': 'MEMBER' },
-          owners: ['admin-user']
-        })
+          owners: ['admin-user'],
+        }),
       };
 
       // Create override that already expired
       const pastExpiry = new Date(Date.now() - 1000).toISOString(); // 1 second ago
-      
+
       const { envelope } = await createRecoveryOverride({
         ns: 'test',
         actorId: 'admin-user',
         beneficiaryId: 'beneficiary-user',
         code: 'EXPIRED123',
         expiresAt: pastExpiry,
-        sign
+        sign,
       });
 
       // Should fail immediately
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'EXPIRED123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Recovery override expired');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'EXPIRED123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Recovery override expired');
     });
   });
 
@@ -396,14 +426,14 @@ describe('Recovery Override Edge Cases (@edge)', () => {
       const membership: MembershipApi = {
         getMembership: async () => ({
           users: { 'owner-user': 'OWNER', 'beneficiary-user': 'MEMBER' },
-          owners: ['owner-user']
-        })
+          owners: ['owner-user'],
+        }),
       };
 
       // Create additional DEKs to test filtering
       await keyring.rotate(); // Add another DEK
       await keyring.rotate(); // Add yet another DEK
-      
+
       const fullBackup = await keyring.exportBackup();
       expect(fullBackup.deks.length).toBeGreaterThan(1); // Ensure multiple DEKs
 
@@ -414,7 +444,7 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         beneficiaryId: 'beneficiary-user',
         code: 'ACTIVE123',
         scope: 'ACTIVE',
-        sign
+        sign,
       });
 
       // Fresh keyring for beneficiary
@@ -428,7 +458,7 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         code: 'ACTIVE123',
         keyring: freshKeyring,
         beneficiaryId: 'beneficiary-user',
-        membership
+        membership,
       });
 
       expect(result.scope).toBe('ACTIVE');
@@ -442,8 +472,8 @@ describe('Recovery Override Edge Cases (@edge)', () => {
       const membership: MembershipApi = {
         getMembership: async () => ({
           users: { 'admin-user': 'ADMIN', 'beneficiary-user': 'MEMBER' },
-          owners: ['admin-user']
-        })
+          owners: ['admin-user'],
+        }),
       };
 
       const { envelope } = await createRecoveryOverride({
@@ -451,7 +481,7 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         actorId: 'admin-user',
         beneficiaryId: 'beneficiary-user',
         code: 'CONCURRENT123',
-        sign
+        sign,
       });
 
       // First acceptance should succeed
@@ -461,28 +491,30 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         code: 'CONCURRENT123',
         keyring,
         beneficiaryId: 'beneficiary-user',
-        membership
+        membership,
       });
 
       expect(result1.imported).toBeGreaterThanOrEqual(0);
 
       // Second acceptance should fail (single-use constraint)
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'CONCURRENT123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Recovery override already used');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'CONCURRENT123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Recovery override already used');
     });
 
     test('should handle rapid-fire acceptance attempts', async () => {
       const membership: MembershipApi = {
         getMembership: async () => ({
           users: { 'admin-user': 'ADMIN', 'beneficiary-user': 'MEMBER' },
-          owners: ['admin-user']
-        })
+          owners: ['admin-user'],
+        }),
       };
 
       const { envelope } = await createRecoveryOverride({
@@ -490,26 +522,30 @@ describe('Recovery Override Edge Cases (@edge)', () => {
         actorId: 'admin-user',
         beneficiaryId: 'beneficiary-user',
         code: 'RAPID123',
-        sign
+        sign,
       });
 
       // Launch multiple concurrent acceptance attempts
-      const attempts = Array(5).fill(null).map(() => 
-        acceptRecoveryOverride({
-          ns: 'test',
-          envelope,
-          code: 'RAPID123',
-          keyring,
-          beneficiaryId: 'beneficiary-user',
-          membership: membershipApi
-        }).catch(err => err)
-      );
+      const attempts = Array(5)
+        .fill(null)
+        .map(() =>
+          acceptRecoveryOverride({
+            ns: 'test',
+            envelope,
+            code: 'RAPID123',
+            keyring,
+            beneficiaryId: 'beneficiary-user',
+            membership: membershipApi,
+          }).catch(err => err)
+        );
 
       const results = await Promise.all(attempts);
-      
+
       // Due to race conditions in concurrent acceptance, multiple may succeed
       // This demonstrates a real limitation that would require atomic operations to fix
-      const successes = results.filter(r => r && typeof r.imported === 'number');
+      const successes = results.filter(
+        r => r && typeof r.imported === 'number'
+      );
       const failures = results.filter(r => r instanceof Error);
 
       expect(successes.length + failures.length).toBe(5); // All attempts completed

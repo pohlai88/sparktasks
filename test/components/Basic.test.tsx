@@ -8,7 +8,7 @@ describe('Basic Test Infrastructure', () => {
   });
 
   it('should render a basic div', () => {
-    const { container } = render(<div data-testid="basic">Hello</div>);
+    const { container } = render(<div data-testid='basic'>Hello</div>);
     expect(container.firstChild).toHaveAttribute('data-testid', 'basic');
   });
 });

@@ -6,7 +6,7 @@ describe('EmptyState Import Test', () => {
     console.log('EmptyState type:', typeof EmptyState);
     console.log('EmptyState value:', EmptyState);
     console.log('EmptyState keys:', Object.keys(EmptyState || {}));
-    
+
     expect(EmptyState).toBeDefined();
     expect(typeof EmptyState).toBe('function');
   });

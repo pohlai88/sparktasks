@@ -17,14 +17,17 @@ describe('Performance: Query', () => {
       text: '',
       tags: ['urgent'],
       status: ['TODAY', 'LATER'],
-      priority: ['P0', 'P1']
+      priority: ['P0', 'P1'],
     };
-    const filterResult = timeIt(() => runQuery(tasks, filterQuery, page, opts), 50);
+    const filterResult = timeIt(
+      () => runQuery(tasks, filterQuery, page, opts),
+      50
+    );
     expect(filterResult.p95).toBeLessThanOrEqual(PERF.query.p95_ms!);
 
     // Test 2: Text search with two tokens
     const textQuery: Query = {
-      text: 'performance test'
+      text: 'performance test',
     };
     const textResult = timeIt(() => runQuery(tasks, textQuery, page, opts), 50);
     expect(textResult.p95).toBeLessThanOrEqual(PERF.query.p95_ms!);
@@ -32,7 +35,7 @@ describe('Performance: Query', () => {
     // Test 3: Date range filter
     const dateQuery: Query = {
       dueFrom: '2024-12-01T00:00:00Z',
-      dueTo: '2025-02-01T00:00:00Z'
+      dueTo: '2025-02-01T00:00:00Z',
     };
     const dateResult = timeIt(() => runQuery(tasks, dateQuery, page, opts), 50);
     expect(dateResult.p95).toBeLessThanOrEqual(PERF.query.p95_ms!);

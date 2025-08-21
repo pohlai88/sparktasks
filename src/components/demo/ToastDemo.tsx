@@ -145,7 +145,7 @@ export const ToastDemo: React.FC = () => {
   // Imperative API examples (can be called from anywhere)
   const showImperativeToasts = () => {
     toast.success('Imperative success toast!');
-    
+
     setTimeout(() => {
       toast.error('Imperative error toast!', {
         action: {
@@ -170,53 +170,54 @@ export const ToastDemo: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8 p-8">
-      <div className="text-center">
-        <h1 className="mb-2 text-3xl font-bold text-slate-900 dark:text-slate-100">
+    <div className='mx-auto max-w-4xl space-y-8 p-8'>
+      <div className='text-center'>
+        <h1 className='mb-2 text-3xl font-bold text-slate-900 dark:text-slate-100'>
           Toast/Notification Component Demo
         </h1>
-        <p className="mb-6 text-slate-600 dark:text-slate-400">
-          Enterprise-grade temporary feedback messages with variants, actions, and accessibility
+        <p className='mb-6 text-slate-600 dark:text-slate-400'>
+          Enterprise-grade temporary feedback messages with variants, actions,
+          and accessibility
         </p>
       </div>
 
       {/* Basic Variants */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+      <section className='space-y-4'>
+        <h2 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
           Toast Variants
         </h2>
-        <div className="flex flex-wrap gap-4">
+        <div className='flex flex-wrap gap-4'>
           <button
             onClick={showBasicToasts}
-            className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+            className='rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
           >
             Show All Variants
           </button>
-          
+
           <button
             onClick={() => toast.success('Success message!')}
-            className="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+            className='rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700'
           >
             Success
           </button>
-          
+
           <button
             onClick={() => toast.error('Error message!')}
-            className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+            className='rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700'
           >
             Error
           </button>
-          
+
           <button
             onClick={() => toast.warning('Warning message!')}
-            className="rounded-md bg-amber-600 px-4 py-2 text-white hover:bg-amber-700"
+            className='rounded-md bg-amber-600 px-4 py-2 text-white hover:bg-amber-700'
           >
             Warning
           </button>
-          
+
           <button
             onClick={() => toast.info('Info message!')}
-            className="rounded-md bg-slate-600 px-4 py-2 text-white hover:bg-slate-700"
+            className='rounded-md bg-slate-600 px-4 py-2 text-white hover:bg-slate-700'
           >
             Info
           </button>
@@ -224,18 +225,18 @@ export const ToastDemo: React.FC = () => {
       </section>
 
       {/* Action Toasts */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+      <section className='space-y-4'>
+        <h2 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
           Toasts with Actions
         </h2>
-        <div className="flex flex-wrap gap-4">
+        <div className='flex flex-wrap gap-4'>
           <button
             onClick={showActionToasts}
-            className="rounded-md bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
+            className='rounded-md bg-purple-600 px-4 py-2 text-white hover:bg-purple-700'
           >
             Show Action Toasts
           </button>
-          
+
           <button
             onClick={() => {
               toast.warning('Confirm this action?', {
@@ -246,7 +247,7 @@ export const ToastDemo: React.FC = () => {
                 duration: null,
               });
             }}
-            className="rounded-md bg-orange-600 px-4 py-2 text-white hover:bg-orange-700"
+            className='rounded-md bg-orange-600 px-4 py-2 text-white hover:bg-orange-700'
           >
             Confirmation Toast
           </button>
@@ -254,28 +255,30 @@ export const ToastDemo: React.FC = () => {
       </section>
 
       {/* Positioned Toasts */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+      <section className='space-y-4'>
+        <h2 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
           Toast Positions
         </h2>
-        <div className="flex flex-wrap gap-4">
+        <div className='flex flex-wrap gap-4'>
           <button
             onClick={showPositionedToasts}
-            className="rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+            className='rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700'
           >
             Show All Positions
           </button>
-          
+
           <button
             onClick={() => toast.info('Top Right', { position: 'top-right' })}
-            className="rounded-md bg-cyan-600 px-4 py-2 text-white hover:bg-cyan-700"
+            className='rounded-md bg-cyan-600 px-4 py-2 text-white hover:bg-cyan-700'
           >
             Top Right
           </button>
-          
+
           <button
-            onClick={() => toast.info('Bottom Center', { position: 'bottom-center' })}
-            className="rounded-md bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
+            onClick={() =>
+              toast.info('Bottom Center', { position: 'bottom-center' })
+            }
+            className='rounded-md bg-teal-600 px-4 py-2 text-white hover:bg-teal-700'
           >
             Bottom Center
           </button>
@@ -283,25 +286,25 @@ export const ToastDemo: React.FC = () => {
       </section>
 
       {/* Enterprise Features */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+      <section className='space-y-4'>
+        <h2 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
           Enterprise Features
         </h2>
-        <div className="flex flex-wrap gap-4">
+        <div className='flex flex-wrap gap-4'>
           <button
             onClick={showEnterpriseFeatures}
-            className="rounded-md bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700"
+            className='rounded-md bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700'
           >
             Show Enterprise Features
           </button>
-          
+
           <button
             onClick={showPersistentToast}
-            className="rounded-md bg-rose-600 px-4 py-2 text-white hover:bg-rose-700"
+            className='rounded-md bg-rose-600 px-4 py-2 text-white hover:bg-rose-700'
           >
             Persistent Toast
           </button>
-          
+
           <button
             onClick={() => {
               toast.info('High priority notification', {
@@ -310,7 +313,7 @@ export const ToastDemo: React.FC = () => {
                 duration: 6000,
               });
             }}
-            className="rounded-md bg-violet-600 px-4 py-2 text-white hover:bg-violet-700"
+            className='rounded-md bg-violet-600 px-4 py-2 text-white hover:bg-violet-700'
           >
             High Priority
           </button>
@@ -318,17 +321,18 @@ export const ToastDemo: React.FC = () => {
       </section>
 
       {/* Imperative API */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+      <section className='space-y-4'>
+        <h2 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
           Imperative API
         </h2>
-        <p className="text-slate-600 dark:text-slate-400">
-          These toasts can be triggered from anywhere in your application, even outside React components.
+        <p className='text-slate-600 dark:text-slate-400'>
+          These toasts can be triggered from anywhere in your application, even
+          outside React components.
         </p>
-        <div className="flex flex-wrap gap-4">
+        <div className='flex flex-wrap gap-4'>
           <button
             onClick={showImperativeToasts}
-            className="rounded-md bg-pink-600 px-4 py-2 text-white hover:bg-pink-700"
+            className='rounded-md bg-pink-600 px-4 py-2 text-white hover:bg-pink-700'
           >
             Show Imperative Toasts
           </button>
@@ -336,21 +340,21 @@ export const ToastDemo: React.FC = () => {
       </section>
 
       {/* Control Actions */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+      <section className='space-y-4'>
+        <h2 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
           Toast Management
         </h2>
-        <div className="flex flex-wrap gap-4">
+        <div className='flex flex-wrap gap-4'>
           <button
             onClick={dismissAll}
-            className="rounded-md bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
+            className='rounded-md bg-gray-600 px-4 py-2 text-white hover:bg-gray-700'
           >
             Dismiss All Toasts
           </button>
-          
+
           <button
             onClick={() => toast.dismissAll()}
-            className="rounded-md bg-slate-600 px-4 py-2 text-white hover:bg-slate-700"
+            className='rounded-md bg-slate-600 px-4 py-2 text-white hover:bg-slate-700'
           >
             Clear All (Imperative)
           </button>
@@ -358,12 +362,12 @@ export const ToastDemo: React.FC = () => {
       </section>
 
       {/* Features Summary */}
-      <section className="rounded-lg bg-slate-50 p-6 dark:bg-slate-800">
-        <h3 className="mb-3 font-semibold">🎯 Toast Component Features</h3>
-        <div className="grid gap-4 text-sm md:grid-cols-2">
+      <section className='rounded-lg bg-slate-50 p-6 dark:bg-slate-800'>
+        <h3 className='mb-3 font-semibold'>🎯 Toast Component Features</h3>
+        <div className='grid gap-4 text-sm md:grid-cols-2'>
           <div>
             <strong>Core Features:</strong>
-            <ul className="list-inside list-disc space-y-1 text-slate-600 dark:text-slate-400">
+            <ul className='list-inside list-disc space-y-1 text-slate-600 dark:text-slate-400'>
               <li>4 semantic variants (success, error, warning, info)</li>
               <li>6 positioning options (corners + centers)</li>
               <li>Auto-dismiss with pause on hover</li>
@@ -374,7 +378,7 @@ export const ToastDemo: React.FC = () => {
           </div>
           <div>
             <strong>Enterprise Features:</strong>
-            <ul className="list-inside list-disc space-y-1 text-slate-600 dark:text-slate-400">
+            <ul className='list-inside list-disc space-y-1 text-slate-600 dark:text-slate-400'>
               <li>Priority levels (low, normal, high)</li>
               <li>Metadata support for logging</li>
               <li>Timestamp tracking</li>
@@ -388,11 +392,11 @@ export const ToastDemo: React.FC = () => {
       </section>
 
       {/* Accessibility Information */}
-      <section className="rounded-lg bg-blue-50 p-6 dark:bg-blue-950/30">
-        <h3 className="mb-3 font-semibold text-blue-900 dark:text-blue-100">
+      <section className='rounded-lg bg-blue-50 p-6 dark:bg-blue-950/30'>
+        <h3 className='mb-3 font-semibold text-blue-900 dark:text-blue-100'>
           ♿ Accessibility Features
         </h3>
-        <ul className="list-inside list-disc space-y-1 text-blue-800 dark:text-blue-200">
+        <ul className='list-inside list-disc space-y-1 text-blue-800 dark:text-blue-200'>
           <li>ARIA live regions announce new toasts to screen readers</li>
           <li>High priority toasts use assertive live regions</li>
           <li>Keyboard accessible dismiss and action buttons</li>
@@ -408,7 +412,7 @@ export const ToastDemo: React.FC = () => {
 // Demo wrapper with ToastProvider
 export const ToastDemoWrapper: React.FC = () => {
   return (
-    <ToastProvider defaultPosition="top-right" maxToasts={5}>
+    <ToastProvider defaultPosition='top-right' maxToasts={5}>
       <ToastDemo />
     </ToastProvider>
   );

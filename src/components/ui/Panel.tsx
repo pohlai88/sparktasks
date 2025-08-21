@@ -1,4 +1,5 @@
 import React, { forwardRef, HTMLAttributes, useMemo } from 'react';
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ============================================================================
 // PANEL COMPONENT - ENTERPRISE GRADE V3.2
@@ -20,7 +21,15 @@ export interface PanelProps extends HTMLAttributes<HTMLDivElement> {
   /** Padding configuration for internal spacing */
   padding?: 'none' | 'compact' | 'default' | 'spacious';
   /** Border configuration */
-  border?: 'none' | 'subtle' | 'strong' | 'all' | 'top' | 'bottom' | 'left' | 'right';
+  border?:
+    | 'none'
+    | 'subtle'
+    | 'strong'
+    | 'all'
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right';
   /** Background surface treatment */
   surface?: 'default' | 'subtle' | 'raised' | 'muted' | 'accent';
   /** Corner radius treatment */
@@ -67,77 +76,158 @@ export interface PanelFooterProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 // ===== COMPOUND COMPONENT TYPE =====
-interface PanelComponent extends React.ForwardRefExoticComponent<PanelProps & React.RefAttributes<HTMLDivElement>> {
-  Header: React.ForwardRefExoticComponent<PanelHeaderProps & React.RefAttributes<HTMLDivElement>>;
-  Content: React.ForwardRefExoticComponent<PanelContentProps & React.RefAttributes<HTMLDivElement>>;
-  Footer: React.ForwardRefExoticComponent<PanelFooterProps & React.RefAttributes<HTMLDivElement>>;
+interface PanelComponent
+  extends React.ForwardRefExoticComponent<
+    PanelProps & React.RefAttributes<HTMLDivElement>
+  > {
+  Header: React.ForwardRefExoticComponent<
+    PanelHeaderProps & React.RefAttributes<HTMLDivElement>
+  >;
+  Content: React.ForwardRefExoticComponent<
+    PanelContentProps & React.RefAttributes<HTMLDivElement>
+  >;
+  Footer: React.ForwardRefExoticComponent<
+    PanelFooterProps & React.RefAttributes<HTMLDivElement>
+  >;
 }
 
 // ===== PANEL VARIANT SYSTEM =====
 const panelVariants = {
-  default: 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700',
-  raised: 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm',
-  inset: 'bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-inner',
-  outlined: 'bg-transparent border-2 border-slate-300 dark:border-slate-600',
-  flat: 'bg-slate-50 dark:bg-slate-800',
-  bordered: 'bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700',
+  default: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.base,
+    DESIGN_TOKENS.theme.dark.surface.base,
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle
+  ),
+  raised: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.base,
+    DESIGN_TOKENS.theme.dark.surface.base,
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle,
+    DESIGN_TOKENS.theme.light.elevation.card
+  ),
+  inset: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.subtle,
+    DESIGN_TOKENS.theme.dark.surface.subtle,
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle,
+    'shadow-inner'
+  ),
+  outlined: combineTokens(
+    'bg-transparent',
+    'border-2',
+    DESIGN_TOKENS.theme.light.border.strong,
+    DESIGN_TOKENS.theme.dark.border.strong
+  ),
+  flat: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.subtle,
+    DESIGN_TOKENS.theme.dark.surface.subtle
+  ),
+  bordered: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.base,
+    DESIGN_TOKENS.theme.dark.surface.base,
+    'border-2',
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle
+  ),
 };
 
 // ===== SIZE SYSTEM =====
 const sizeVariants = {
-  sm: 'max-w-sm',
-  md: 'max-w-md',
-  lg: 'max-w-lg',
-  xl: 'max-w-xl',
-  full: 'w-full',
+  sm: combineTokens(DESIGN_TOKENS.layout.widths.modal.sm),
+  md: combineTokens(DESIGN_TOKENS.layout.widths.modal.md),
+  lg: combineTokens(DESIGN_TOKENS.layout.widths.modal.lg),
+  xl: combineTokens(DESIGN_TOKENS.layout.widths.modal.xl),
+  full: combineTokens(DESIGN_TOKENS.layout.widths.modal.full),
 };
 
 // ===== PADDING SYSTEM =====
 const paddingVariants = {
   none: '',
-  compact: 'p-3',
-  default: 'p-6',
-  spacious: 'p-8',
+  compact: combineTokens(DESIGN_TOKENS.layout.spacing['3']),
+  default: combineTokens(DESIGN_TOKENS.layout.spacing['6']),
+  spacious: combineTokens(DESIGN_TOKENS.layout.spacing['8']),
 };
 
 // ===== BORDER SYSTEM =====
 const borderVariants = {
   none: 'border-0',
-  subtle: 'border border-slate-100 dark:border-slate-800',
-  strong: 'border-2 border-slate-300 dark:border-slate-600',
-  all: 'border border-slate-200 dark:border-slate-700',
-  top: 'border-t border-slate-200 dark:border-slate-700',
-  bottom: 'border-b border-slate-200 dark:border-slate-700',
-  left: 'border-l border-slate-200 dark:border-slate-700',
-  right: 'border-r border-slate-200 dark:border-slate-700',
+  subtle: combineTokens(
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle
+  ),
+  strong: combineTokens(
+    'border-2',
+    DESIGN_TOKENS.theme.light.border.strong,
+    DESIGN_TOKENS.theme.dark.border.strong
+  ),
+  all: combineTokens(
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle
+  ),
+  top: combineTokens(
+    'border-t',
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle
+  ),
+  bottom: combineTokens(
+    'border-b',
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle
+  ),
+  left: combineTokens(
+    'border-l',
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle
+  ),
+  right: combineTokens(
+    'border-r',
+    DESIGN_TOKENS.theme.light.border.subtle,
+    DESIGN_TOKENS.theme.dark.border.subtle
+  ),
 };
 
 // ===== SURFACE SYSTEM =====
 const surfaceVariants = {
-  default: 'bg-white dark:bg-slate-900',
-  subtle: 'bg-slate-50 dark:bg-slate-800',
-  raised: 'bg-white dark:bg-slate-900',
-  muted: 'bg-slate-100 dark:bg-slate-800',
-  accent: 'bg-blue-50 dark:bg-blue-950',
+  default: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.base,
+    DESIGN_TOKENS.theme.dark.surface.base
+  ),
+  subtle: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.subtle,
+    DESIGN_TOKENS.theme.dark.surface.subtle
+  ),
+  raised: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.raised,
+    DESIGN_TOKENS.theme.dark.surface.raised
+  ),
+  muted: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.muted,
+    DESIGN_TOKENS.theme.dark.surface.muted
+  ),
+  accent: combineTokens(
+    DESIGN_TOKENS.theme.light.surface.accent,
+    DESIGN_TOKENS.theme.dark.surface.accent
+  ),
 };
 
 // ===== ROUNDED SYSTEM =====
 const roundedVariants = {
   none: 'rounded-none',
-  sm: 'rounded-sm',
-  md: 'rounded-md',
-  lg: 'rounded-lg',
-  xl: 'rounded-xl',
-  full: 'rounded-full',
+  sm: combineTokens(DESIGN_TOKENS.theme.light.radius.sm),
+  md: combineTokens(DESIGN_TOKENS.theme.light.radius.md),
+  lg: combineTokens(DESIGN_TOKENS.theme.light.radius.lg),
+  xl: combineTokens(DESIGN_TOKENS.theme.light.radius.xl),
+  full: combineTokens(DESIGN_TOKENS.theme.light.radius.full),
 };
 
 // ===== SHADOW SYSTEM =====
 const shadowVariants = {
   none: 'shadow-none',
-  sm: 'shadow-sm',
-  md: 'shadow-md',
-  lg: 'shadow-lg',
-  xl: 'shadow-xl',
+  sm: combineTokens(DESIGN_TOKENS.theme.light.elevation.card),
+  md: combineTokens(DESIGN_TOKENS.theme.light.elevation.modal),
+  lg: combineTokens(DESIGN_TOKENS.theme.light.elevation.floating),
+  xl: combineTokens(DESIGN_TOKENS.theme.light.elevation.dropdown),
 };
 
 // ===== OVERFLOW SYSTEM =====
@@ -149,24 +239,72 @@ const overflowVariants = {
 };
 
 // ===== LOADING SKELETON SYSTEM =====
-const LoadingSkeleton: React.FC<{ variant?: PanelProps['variant']; 'data-testid'?: string | undefined }> = ({ 
-  variant = 'default', 
-  'data-testid': testId 
-}) => (
-  <div 
+const LoadingSkeleton: React.FC<{
+  variant?: PanelProps['variant'];
+  'data-testid'?: string | undefined;
+}> = ({ variant = 'default', 'data-testid': testId }) => (
+  <div
     className={`${panelVariants[variant]} ${paddingVariants.default} ${roundedVariants.lg} animate-pulse`}
     data-testid={testId}
   >
-    <div className="space-y-4">
-      <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-3/4" />
-      <div className="space-y-2">
-        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" />
-        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-5/6" />
-        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-4/6" />
+    <div className={combineTokens('space-y-4')}>
+      <div
+        className={combineTokens(
+          'h-6',
+          'bg-slate-200',
+          'dark:bg-slate-700',
+          'rounded',
+          'w-3/4'
+        )}
+      />
+      <div className={combineTokens('space-y-2')}>
+        <div
+          className={combineTokens(
+            'h-4',
+            'bg-slate-200',
+            'dark:bg-slate-700',
+            'rounded',
+            'w-full'
+          )}
+        />
+        <div
+          className={combineTokens(
+            'h-4',
+            'bg-slate-200',
+            'dark:bg-slate-700',
+            'rounded',
+            'w-5/6'
+          )}
+        />
+        <div
+          className={combineTokens(
+            'h-4',
+            'bg-slate-200',
+            'dark:bg-slate-700',
+            'rounded',
+            'w-4/6'
+          )}
+        />
       </div>
-      <div className="flex gap-2 pt-2">
-        <div className="h-8 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
-        <div className="h-8 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
+      <div className={combineTokens('flex', 'gap-2', 'pt-2')}>
+        <div
+          className={combineTokens(
+            'h-8',
+            'w-20',
+            'bg-slate-200',
+            'dark:bg-slate-700',
+            'rounded'
+          )}
+        />
+        <div
+          className={combineTokens(
+            'h-8',
+            'w-20',
+            'bg-slate-200',
+            'dark:bg-slate-700',
+            'rounded'
+          )}
+        />
       </div>
     </div>
   </div>
@@ -216,10 +354,10 @@ const PanelComponent = forwardRef<HTMLDivElement, PanelProps>(
       // Space and Enter should trigger click for interactive panels
       if (interactive && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault();
-        // Trigger click handler directly
-        handleClick(event as any);
+        // Trigger click programmatically
+        event.currentTarget.click();
       }
-      
+
       onKeyDown?.(event);
     };
 
@@ -240,15 +378,29 @@ const PanelComponent = forwardRef<HTMLDivElement, PanelProps>(
       return (
         <div
           ref={ref}
-          className={`transition-all duration-200 ${panelVariants[variant]} ${roundedVariants[rounded]} p-4 cursor-pointer`}
-          onClick={() => {/* Expand logic would go here */}}
-          role="button"
+          className={`transition-all duration-200 ${panelVariants[variant]} ${roundedVariants[rounded]} cursor-pointer p-4`}
+          onClick={() => {
+            /* Expand logic would go here */
+          }}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.currentTarget.click();
+            }
+          }}
+          role='button'
           tabIndex={0}
-          aria-expanded="false"
+          aria-expanded='false'
           data-testid={testId}
           {...props}
         >
-          <div className="text-sm text-slate-600 dark:text-slate-400">
+          <div
+            className={combineTokens(
+              'text-sm',
+              'text-slate-600',
+              'dark:text-slate-400'
+            )}
+          >
             Click to expand panel...
           </div>
         </div>
@@ -259,19 +411,9 @@ const PanelComponent = forwardRef<HTMLDivElement, PanelProps>(
     return (
       <div
         ref={ref}
-        className={`
-          ${variant !== 'default' ? panelVariants[variant] : ''}
-          ${variant === 'default' ? surfaceVariants[surface] : ''}
-          ${variant === 'default' ? borderVariants[border] : ''}
-          ${sizeVariants[size]}
-          ${paddingVariants[padding]}
-          ${roundedVariants[rounded]}
-          ${shadowVariants[shadow]}
-          ${overflowVariants[overflow]}
-          ${interactive ? 'cursor-pointer hover:shadow-md transition-shadow duration-200' : ''}
-          ${interactive ? 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' : ''}
-          ${className || ''}
-        `.trim().replace(/\s+/g, ' ')}
+        className={` ${variant !== 'default' ? panelVariants[variant] : ''} ${variant === 'default' ? surfaceVariants[surface] : ''} ${variant === 'default' ? borderVariants[border] : ''} ${sizeVariants[size]} ${paddingVariants[padding]} ${roundedVariants[rounded]} ${shadowVariants[shadow]} ${overflowVariants[overflow]} ${interactive ? 'cursor-pointer transition-shadow duration-200 hover:shadow-md' : ''} ${interactive ? 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' : ''} ${className || ''} `
+          .trim()
+          .replace(/\s+/g, ' ')}
         role={computedRole}
         tabIndex={computedTabIndex}
         onClick={handleClick}
@@ -290,12 +432,19 @@ PanelComponent.displayName = 'Panel';
 
 // ===== PANEL HEADER COMPONENT =====
 const PanelHeader = forwardRef<HTMLDivElement, PanelHeaderProps>(
-  ({ className, variant = 'default', align = 'left', children, ...props }, ref) => {
+  (
+    { className, variant = 'default', align = 'left', children, ...props },
+    ref
+  ) => {
     const headerVariants = {
-      default: 'flex items-center p-6 border-b border-slate-200 dark:border-slate-700',
-      sticky: 'sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-6 py-4 z-10',
-      bordered: 'flex items-center p-6 border-b-2 border-slate-200 dark:border-slate-700',
-      flush: 'flex items-center pb-4 border-b border-slate-200 dark:border-slate-700',
+      default:
+        'flex items-center p-6 border-b border-slate-200 dark:border-slate-700',
+      sticky:
+        'sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-6 py-4 z-10',
+      bordered:
+        'flex items-center p-6 border-b-2 border-slate-200 dark:border-slate-700',
+      flush:
+        'flex items-center pb-4 border-b border-slate-200 dark:border-slate-700',
     };
 
     const alignVariants = {
@@ -321,7 +470,10 @@ PanelHeader.displayName = 'PanelHeader';
 
 // ===== PANEL CONTENT COMPONENT =====
 const PanelContent = forwardRef<HTMLDivElement, PanelContentProps>(
-  ({ className, spacing = 'default', scrollable = false, children, ...props }, ref) => {
+  (
+    { className, spacing = 'default', scrollable = false, children, ...props },
+    ref
+  ) => {
     const spacingVariants = {
       none: '',
       tight: 'p-4',
@@ -332,12 +484,9 @@ const PanelContent = forwardRef<HTMLDivElement, PanelContentProps>(
     return (
       <div
         ref={ref}
-        className={`
-          ${spacingVariants[spacing]}
-          ${scrollable ? 'overflow-auto' : ''}
-          text-slate-700 dark:text-slate-300
-          ${className || ''}
-        `.trim().replace(/\s+/g, ' ')}
+        className={` ${spacingVariants[spacing]} ${scrollable ? 'overflow-auto' : ''} text-slate-700 dark:text-slate-300 ${className || ''} `
+          .trim()
+          .replace(/\s+/g, ' ')}
         {...props}
       >
         {children}
@@ -351,14 +500,14 @@ PanelContent.displayName = 'PanelContent';
 // ===== PANEL FOOTER COMPONENT =====
 const PanelFooter = forwardRef<HTMLDivElement, PanelFooterProps>(
   (
-    { 
-      className, 
-      align = 'right', 
+    {
+      className,
+      align = 'right',
       bordered = true,
       sticky = false,
-      children, 
-      ...props 
-    }, 
+      children,
+      ...props
+    },
     ref
   ) => {
     const alignVariants = {
@@ -372,13 +521,9 @@ const PanelFooter = forwardRef<HTMLDivElement, PanelFooterProps>(
     return (
       <div
         ref={ref}
-        className={`
-          flex items-center p-6 gap-3
-          ${alignVariants[align]}
-          ${bordered ? 'border-t border-slate-200 dark:border-slate-700' : ''}
-          ${sticky ? 'sticky bottom-0 bg-white dark:bg-slate-900' : ''}
-          ${className || ''}
-        `.trim().replace(/\s+/g, ' ')}
+        className={`flex items-center gap-3 p-6 ${alignVariants[align]} ${bordered ? 'border-t border-slate-200 dark:border-slate-700' : ''} ${sticky ? 'sticky bottom-0 bg-white dark:bg-slate-900' : ''} ${className || ''} `
+          .trim()
+          .replace(/\s+/g, ' ')}
         {...props}
       >
         {children}

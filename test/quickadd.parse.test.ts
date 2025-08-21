@@ -18,7 +18,9 @@ describe('Quick Add Parser', () => {
     });
 
     it('should reject empty title after token removal', () => {
-      expect(() => parseQuickAdd('!p0 #work @status:today', testDate)).toThrow('Title cannot be empty');
+      expect(() => parseQuickAdd('!p0 #work @status:today', testDate)).toThrow(
+        'Title cannot be empty'
+      );
     });
 
     it('should handle whitespace normalization', () => {
@@ -46,14 +48,22 @@ describe('Quick Add Parser', () => {
 
   describe('Status parsing', () => {
     it('should parse status tokens', () => {
-      expect(parseQuickAdd('Task @status:today', testDate).status).toBe('TODAY');
-      expect(parseQuickAdd('Task @status:later', testDate).status).toBe('LATER');
+      expect(parseQuickAdd('Task @status:today', testDate).status).toBe(
+        'TODAY'
+      );
+      expect(parseQuickAdd('Task @status:later', testDate).status).toBe(
+        'LATER'
+      );
       expect(parseQuickAdd('Task @status:done', testDate).status).toBe('DONE');
     });
 
     it('should handle case-insensitive status', () => {
-      expect(parseQuickAdd('Task @status:TODAY', testDate).status).toBe('TODAY');
-      expect(parseQuickAdd('Task @status:Later', testDate).status).toBe('LATER');
+      expect(parseQuickAdd('Task @status:TODAY', testDate).status).toBe(
+        'TODAY'
+      );
+      expect(parseQuickAdd('Task @status:Later', testDate).status).toBe(
+        'LATER'
+      );
     });
   });
 
@@ -63,11 +73,16 @@ describe('Quick Add Parser', () => {
     });
 
     it('should parse multiple tags', () => {
-      expect(parseQuickAdd('Task #work #urgent #bug-fix', testDate).tags).toEqual(['work', 'urgent', 'bug-fix']);
+      expect(
+        parseQuickAdd('Task #work #urgent #bug-fix', testDate).tags
+      ).toEqual(['work', 'urgent', 'bug-fix']);
     });
 
     it('should handle tags with numbers and special chars', () => {
-      expect(parseQuickAdd('Task #project_2025 #v1-0', testDate).tags).toEqual(['project_2025', 'v1-0']);
+      expect(parseQuickAdd('Task #project_2025 #v1-0', testDate).tags).toEqual([
+        'project_2025',
+        'v1-0',
+      ]);
     });
   });
 
@@ -123,7 +138,10 @@ describe('Quick Add Parser', () => {
 
   describe('Complex combinations', () => {
     it('should handle all tokens together', () => {
-      const result = parseQuickAdd('Fix bug !p0 #critical #bug @status:today @due:tomorrow @snooze:in 2h', testDate);
+      const result = parseQuickAdd(
+        'Fix bug !p0 #critical #bug @status:today @due:tomorrow @snooze:in 2h',
+        testDate
+      );
       expect(result).toEqual({
         title: 'Fix bug',
         priority: 'P0',

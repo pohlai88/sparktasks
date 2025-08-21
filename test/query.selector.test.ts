@@ -9,7 +9,7 @@ describe('Query Selector', () => {
 
   it('should delegate to runQuery correctly', () => {
     const store = useTaskStore.getState();
-    
+
     // Add some test tasks
     store.addTask({
       title: 'Test task 1',
@@ -17,7 +17,7 @@ describe('Query Selector', () => {
       priority: 'P1',
       tags: ['test'],
     });
-    
+
     store.addTask({
       title: 'Test task 2',
       status: 'LATER',
@@ -35,7 +35,7 @@ describe('Query Selector', () => {
 
   it('should apply pagination correctly', () => {
     const store = useTaskStore.getState();
-    
+
     // Add multiple tasks
     for (let i = 1; i <= 5; i++) {
       store.addTask({
@@ -55,7 +55,7 @@ describe('Query Selector', () => {
 
   it('should not mutate store state', () => {
     const store = useTaskStore.getState();
-    
+
     store.addTask({
       title: 'Immutable test',
       status: 'TODAY',
@@ -90,14 +90,14 @@ describe('Query Selector', () => {
 
   it('should work with complex queries', () => {
     const store = useTaskStore.getState();
-    
+
     store.addTask({
       title: 'Bug fix urgent',
       status: 'TODAY',
       priority: 'P0',
       tags: ['bug', 'urgent'],
     });
-    
+
     store.addTask({
       title: 'Documentation update',
       status: 'LATER',

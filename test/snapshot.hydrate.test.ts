@@ -1,5 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { appendEvent, loadSnapshot, saveSnapshot, snapshotState, reduce, loadEvents } from '../src/domain/task/eventlog';
+import {
+  appendEvent,
+  loadSnapshot,
+  saveSnapshot,
+  snapshotState,
+  reduce,
+  loadEvents,
+} from '../src/domain/task/eventlog';
 import { useTaskStore } from '../src/stores/taskStore';
 import type { TaskEvent } from '../src/domain/task/events';
 import type { Snapshot } from '../src/domain/task/snapshot';
@@ -73,14 +80,14 @@ describe('Snapshot: Hydrate', () => {
 
     // Verify final state includes both snapshot and tail changes
     const finalState = useTaskStore.getState().byId;
-    
+
     expect(finalState['task-1'].title).toBe('Updated first task');
     expect(finalState['task-2'].status).toBe('DONE');
-    
+
     // Compare with full reduce to ensure equivalence
     const allEvents = loadEvents();
     const fullReduceState = reduce(allEvents);
-    
+
     expect(finalState['task-1'].title).toBe(fullReduceState['task-1'].title);
     expect(finalState['task-2'].status).toBe(fullReduceState['task-2'].status);
   });

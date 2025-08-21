@@ -11,7 +11,7 @@ describe('Performance: Search', () => {
     // Generate deterministic test data
     const tasks = genTasks(PERF.search.n, 42);
     const searchIndex = createSearchIndex();
-    
+
     // Build index once
     const buildStart = performance.now();
     searchIndex.build(tasks);
@@ -27,7 +27,7 @@ describe('Performance: Search', () => {
     const filterQuery: SearchQuery = {
       status: ['TODAY', 'LATER'],
       priority: ['P1'],
-      tags: ['urgent']
+      tags: ['urgent'],
     };
     const filterResult = timeIt(() => searchIndex.search(filterQuery), 100);
     expect(filterResult.p95).toBeLessThanOrEqual(PERF.search.p95_ms!);
@@ -44,9 +44,9 @@ describe('Performance: Search', () => {
           id: task.id,
           changes: {
             title: `Updated Task ${i}`,
-            tags: ['updated']
-          }
-        }
+            tags: ['updated'],
+          },
+        },
       });
     }
 

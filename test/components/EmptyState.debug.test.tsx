@@ -7,7 +7,7 @@ describe('EmptyState Import Debug', () => {
       console.log('Module:', module);
       console.log('Default export:', module.default);
       console.log('Default type:', typeof module.default);
-      
+
       expect(module).toBeDefined();
       expect(module.default).toBeDefined();
     } catch (error) {

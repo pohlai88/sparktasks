@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { appendEvent, saveSnapshot, snapshotState, reduce } from '../src/domain/task/eventlog';
+import {
+  appendEvent,
+  saveSnapshot,
+  snapshotState,
+  reduce,
+} from '../src/domain/task/eventlog';
 import { useTaskStore } from '../src/stores/taskStore';
 import type { TaskEvent } from '../src/domain/task/events';
 import type { Snapshot } from '../src/domain/task/snapshot';
@@ -32,7 +37,7 @@ describe('Snapshot: Corrupt', () => {
     events.forEach(event => appendEvent(event));
     const tasks = reduce(events);
     const snapshot = snapshotState(tasks);
-    
+
     // Corrupt the hash
     const corruptedSnapshot: Snapshot = {
       ...snapshot,
@@ -41,7 +46,7 @@ describe('Snapshot: Corrupt', () => {
         stateHash: 'invalid-hash',
       },
     };
-    
+
     saveSnapshot(corruptedSnapshot);
 
     // Clear events to force snapshot-only path
@@ -53,7 +58,7 @@ describe('Snapshot: Corrupt', () => {
 
     // Verify snapshot was discarded
     expect(localStorage.getItem('spark.snapshot.v1')).toBeNull();
-    
+
     // Since we cleared events, state should be empty after fallback
     const state = useTaskStore.getState().byId;
     expect(Object.keys(state).length).toBe(0);
@@ -78,7 +83,7 @@ describe('Snapshot: Corrupt', () => {
     baseEvents.forEach(event => appendEvent(event));
     const baseTasks = reduce(baseEvents);
     const snapshot = snapshotState(baseTasks);
-    
+
     // Corrupt the hash
     const corruptedSnapshot: Snapshot = {
       ...snapshot,
@@ -88,7 +93,7 @@ describe('Snapshot: Corrupt', () => {
         baseEventCount: 1,
       },
     };
-    
+
     saveSnapshot(corruptedSnapshot);
 
     // Add tail events
@@ -176,9 +181,11 @@ describe('Snapshot: Corrupt', () => {
     store.hydrate();
 
     // Verify snapshot is still present with same hash
-    const preservedSnapshot = JSON.parse(localStorage.getItem('spark.snapshot.v1') || '{}');
+    const preservedSnapshot = JSON.parse(
+      localStorage.getItem('spark.snapshot.v1') || '{}'
+    );
     expect(preservedSnapshot.meta.stateHash).toBe(originalHash);
-    
+
     // Verify state is correct
     const state = useTaskStore.getState().byId;
     expect(state['task-1']).toBeDefined();
@@ -196,16 +203,16 @@ describe('Snapshot: Corrupt', () => {
       },
       tasks: {},
     };
-    
+
     saveSnapshot(snapshot);
-    
+
     // Verify both keys exist
     expect(localStorage.getItem('spark.snapshot.v1')).not.toBeNull();
-    
+
     // Hydrate should detect corruption and clean up
     const store = useTaskStore.getState();
     store.hydrate();
-    
+
     // Verify complete cleanup (both main and temp keys removed)
     expect(localStorage.getItem('spark.snapshot.v1')).toBeNull();
     expect(localStorage.getItem('spark.snapshot.v1.tmp')).toBeNull();

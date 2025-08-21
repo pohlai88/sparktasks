@@ -54,9 +54,12 @@ describe('pack merge planning', () => {
 
       expect(plan.policy).toBe('skipExisting');
       expect(plan.conflicts).toHaveLength(1);
-      expect(plan.conflicts[0]).toEqual({ taskId: 'existing-1', reason: 'id-conflict' });
+      expect(plan.conflicts[0]).toEqual({
+        taskId: 'existing-1',
+        reason: 'id-conflict',
+      });
       expect(plan.idMap).toEqual({});
-      
+
       // Should include new task and update events, but skip conflicting create
       expect(plan.applyEvents).toHaveLength(2);
       expect(plan.applyEvents[0]).toEqual(newTaskEvent);
@@ -71,9 +74,12 @@ describe('pack merge planning', () => {
 
       expect(plan.policy).toBe('overwriteIfNewer');
       expect(plan.conflicts).toHaveLength(1);
-      expect(plan.conflicts[0]).toEqual({ taskId: 'existing-1', reason: 'id-conflict' });
+      expect(plan.conflicts[0]).toEqual({
+        taskId: 'existing-1',
+        reason: 'id-conflict',
+      });
       expect(plan.idMap).toEqual({});
-      
+
       // Should include all events
       expect(plan.applyEvents).toHaveLength(3);
       expect(plan.applyEvents).toEqual(events);
@@ -87,25 +93,28 @@ describe('pack merge planning', () => {
 
       expect(plan.policy).toBe('remapIds');
       expect(plan.conflicts).toHaveLength(1);
-      expect(plan.conflicts[0]).toEqual({ taskId: 'existing-1', reason: 'id-conflict' });
-      
+      expect(plan.conflicts[0]).toEqual({
+        taskId: 'existing-1',
+        reason: 'id-conflict',
+      });
+
       // Should have created a mapping for the conflicting ID
       expect(Object.keys(plan.idMap)).toContain('existing-1');
       const newId = plan.idMap['existing-1'];
       expect(newId).toMatch(/^imp_\d+_\d+$/);
-      
+
       // Should include all events with IDs remapped
       expect(plan.applyEvents).toHaveLength(3);
-      
+
       // First event (no conflict) should be unchanged
       expect(plan.applyEvents[0]).toEqual(newTaskEvent);
-      
+
       // Second event should have remapped ID
       expect(plan.applyEvents[1]).toEqual({
         ...conflictingTaskEvent,
         payload: { ...conflictingTaskEvent.payload, id: newId },
       });
-      
+
       // Third event should have remapped ID
       expect(plan.applyEvents[2]).toEqual({
         ...updateEvent,
@@ -161,9 +170,9 @@ describe('pack merge planning', () => {
       expect(plan.conflicts).toHaveLength(1);
       const newId = plan.idMap['existing-1'];
       expect(newId).toBeDefined();
-      
+
       expect(plan.applyEvents).toHaveLength(4);
-      
+
       // Check that all events for 'existing-1' got remapped to newId
       expect(plan.applyEvents[0]?.payload.id).toBe(newId);
       expect(plan.applyEvents[1]?.payload.id).toBe(newId);

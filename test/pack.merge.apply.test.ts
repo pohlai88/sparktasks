@@ -35,7 +35,7 @@ describe('pack merge apply', () => {
   beforeEach(() => {
     // Reset localStorage
     localStorage.clear();
-    
+
     // Reset the task store
     useTaskStore.getState().hydrate();
   });
@@ -57,7 +57,7 @@ describe('pack merge apply', () => {
         tags: ['work'],
       },
     };
-    
+
     appendEvent(existingTaskEvent);
     useTaskStore.getState().hydrate();
 
@@ -89,7 +89,7 @@ describe('pack merge apply', () => {
     // Plan the merge with remapIds policy
     const mergePlan = planMergeImport(sparkpackJson, 'remapIds');
     expect('error' in mergePlan).toBe(false);
-    
+
     if ('error' in mergePlan) return; // Type guard
 
     expect(mergePlan.conflicts).toHaveLength(1);
@@ -137,7 +137,7 @@ describe('pack merge apply', () => {
         tags: ['work'],
       },
     };
-    
+
     appendEvent(existingTaskEvent);
     useTaskStore.getState().hydrate();
 
@@ -161,7 +161,7 @@ describe('pack merge apply', () => {
     // Plan the merge
     const mergePlan = planMergeImport(sparkpackJson, 'remapIds');
     expect('error' in mergePlan).toBe(false);
-    
+
     if ('error' in mergePlan) return;
 
     // Get initial task count
@@ -192,7 +192,7 @@ describe('pack merge apply', () => {
         tags: ['work'],
       },
     };
-    
+
     appendEvent(existingTaskEvent);
     useTaskStore.getState().hydrate();
 
@@ -246,7 +246,7 @@ describe('pack merge apply', () => {
         tags: ['work'],
       },
     };
-    
+
     appendEvent(existingTaskEvent);
     useTaskStore.getState().hydrate();
 
@@ -281,7 +281,7 @@ describe('pack merge apply', () => {
     // Plan the merge with skipExisting policy
     const mergePlan = planMergeImport(sparkpackJson, 'skipExisting');
     expect('error' in mergePlan).toBe(false);
-    
+
     if ('error' in mergePlan) return;
 
     expect(mergePlan.conflicts).toHaveLength(1);

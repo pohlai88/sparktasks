@@ -8,28 +8,38 @@ if (!globalThis.crypto) {
   Object.defineProperty(globalThis, 'crypto', {
     value: require('node:crypto').webcrypto,
     writable: false,
-    configurable: true
+    configurable: true,
   });
 }
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis.crypto, 'subtle', {
     value: require('node:crypto').webcrypto.subtle,
     writable: false,
-    configurable: true
+    configurable: true,
   });
 }
 if (!globalThis.crypto.getRandomValues) {
   Object.defineProperty(globalThis.crypto, 'getRandomValues', {
-    value: require('node:crypto').webcrypto.getRandomValues.bind(require('node:crypto').webcrypto),
+    value: require('node:crypto').webcrypto.getRandomValues.bind(
+      require('node:crypto').webcrypto
+    ),
     writable: false,
-    configurable: true
+    configurable: true,
   });
 }
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { KeyringProvider } from '../src/crypto/keyring';
-import { createRecoveryBundle, recoverFromBundle, RecoveryUtils } from '../src/recovery/api';
-import type { RecoveryIssuer, RecoveryKeyRegistry, RevocationRegistry } from '../src/recovery/types';
+import {
+  createRecoveryBundle,
+  recoverFromBundle,
+  RecoveryUtils,
+} from '../src/recovery/api';
+import type {
+  RecoveryIssuer,
+  RecoveryKeyRegistry,
+  RevocationRegistry,
+} from '../src/recovery/types';
 
 // Mock storage
 class MockStorage {
@@ -47,18 +57,30 @@ class MockStorage {
 
 // Helper to create Ed25519 issuer
 async function createIssuer(kid: string): Promise<RecoveryIssuer> {
-  const keyPair = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, ['sign', 'verify']);
-  const publicKeySpki = await crypto.subtle.exportKey('spki', keyPair.publicKey);
+  const keyPair = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, [
+    'sign',
+    'verify',
+  ]);
+  const publicKeySpki = await crypto.subtle.exportKey(
+    'spki',
+    keyPair.publicKey
+  );
   const pubB64u = btoa(String.fromCharCode(...new Uint8Array(publicKeySpki)))
-    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-  
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+
   return {
     kid,
     async sign(bytes: Uint8Array): Promise<Uint8Array> {
-      const signature = await crypto.subtle.sign('Ed25519', keyPair.privateKey, new Uint8Array(bytes));
+      const signature = await crypto.subtle.sign(
+        'Ed25519',
+        keyPair.privateKey,
+        new Uint8Array(bytes)
+      );
       return new Uint8Array(signature);
     },
-    pubB64u
+    pubB64u,
   };
 }
 
@@ -86,7 +108,7 @@ describe('Enhanced Recovery Features', () => {
         if (kid === 'issuer-v1') return issuer1.pubB64u;
         if (kid === 'issuer-v2') return issuer2.pubB64u;
         return null;
-      }
+      },
     };
 
     // Setup revocation registry
@@ -97,7 +119,7 @@ describe('Enhanced Recovery Features', () => {
       },
       async revoke(bundleId: string): Promise<void> {
         revokedBundles.add(bundleId);
-      }
+      },
     };
 
     // Clear rate limits between tests
@@ -111,7 +133,7 @@ describe('Enhanced Recovery Features', () => {
         keyring,
         issuer: issuer1,
         passcode: 'ROTATE123',
-        iter: 1000
+        iter: 1000,
       });
 
       expect(bundle.issuerKID).toBe('issuer-v1');
@@ -125,7 +147,7 @@ describe('Enhanced Recovery Features', () => {
         keyring,
         issuer: issuer1,
         passcode: 'ROTATE123',
-        iter: 1000
+        iter: 1000,
       });
 
       // Recover with key registry (simulating issuer rotation)
@@ -137,7 +159,7 @@ describe('Enhanced Recovery Features', () => {
         keyring: recoveryKeyring,
         bundle,
         passcode: 'ROTATE123',
-        options: { keyRegistry }
+        options: { keyRegistry },
       });
 
       expect(result.imported).toBeGreaterThan(0);
@@ -145,25 +167,27 @@ describe('Enhanced Recovery Features', () => {
 
     it('should reject unknown issuer key', async () => {
       const unknownIssuer = await createIssuer('unknown-issuer');
-      
+
       const bundle = await createRecoveryBundle({
         ns: 'test',
         keyring,
         issuer: unknownIssuer,
         passcode: 'UNKNOWN123',
-        iter: 1000
+        iter: 1000,
       });
 
       const recoveryKeyring = new KeyringProvider(new MockStorage(), 'test');
       await recoveryKeyring.initNew('new-passphrase');
 
-      await expect(recoverFromBundle({
-        ns: 'test',
-        keyring: recoveryKeyring,
-        bundle,
-        passcode: 'UNKNOWN123',
-        options: { keyRegistry }
-      })).rejects.toThrow('Unknown issuer key: unknown-issuer');
+      await expect(
+        recoverFromBundle({
+          ns: 'test',
+          keyring: recoveryKeyring,
+          bundle,
+          passcode: 'UNKNOWN123',
+          options: { keyRegistry },
+        })
+      ).rejects.toThrow('Unknown issuer key: unknown-issuer');
     });
   });
 
@@ -174,7 +198,7 @@ describe('Enhanced Recovery Features', () => {
         keyring,
         issuer: issuer1,
         passcode: 'REVOKE123',
-        iter: 1000
+        iter: 1000,
       });
 
       // Revoke the bundle
@@ -184,13 +208,15 @@ describe('Enhanced Recovery Features', () => {
       const recoveryKeyring = new KeyringProvider(new MockStorage(), 'test');
       await recoveryKeyring.initNew('new-passphrase');
 
-      await expect(recoverFromBundle({
-        ns: 'test',
-        keyring: recoveryKeyring,
-        bundle,
-        passcode: 'REVOKE123',
-        options: { revocationRegistry }
-      })).rejects.toThrow('Recovery bundle has been revoked');
+      await expect(
+        recoverFromBundle({
+          ns: 'test',
+          keyring: recoveryKeyring,
+          bundle,
+          passcode: 'REVOKE123',
+          options: { revocationRegistry },
+        })
+      ).rejects.toThrow('Recovery bundle has been revoked');
     });
 
     it('should allow non-revoked bundle', async () => {
@@ -199,7 +225,7 @@ describe('Enhanced Recovery Features', () => {
         keyring,
         issuer: issuer1,
         passcode: 'GOOD123',
-        iter: 1000
+        iter: 1000,
       });
 
       const recoveryKeyring = new KeyringProvider(new MockStorage(), 'test');
@@ -210,7 +236,7 @@ describe('Enhanced Recovery Features', () => {
         keyring: recoveryKeyring,
         bundle,
         passcode: 'GOOD123',
-        options: { revocationRegistry }
+        options: { revocationRegistry },
       });
 
       expect(result.imported).toBeGreaterThan(0);
@@ -225,29 +251,33 @@ describe('Enhanced Recovery Features', () => {
         issuer: issuer1,
         passcode: 'CORRECT123',
         iter: 1000,
-        meta: { testId: 'rate-limit-test-1' }
+        meta: { testId: 'rate-limit-test-1' },
       });
 
       const recoveryKeyring = new KeyringProvider(new MockStorage(), 'test');
       await recoveryKeyring.initNew('new-passphrase');
 
       // First failed attempt should work
-      await expect(recoverFromBundle({
-        ns: 'test',
-        keyring: recoveryKeyring,
-        bundle,
-        passcode: 'WRONG123',
-        options: { enableRateLimit: true }
-      })).rejects.toThrow('Invalid recovery passcode');
+      await expect(
+        recoverFromBundle({
+          ns: 'test',
+          keyring: recoveryKeyring,
+          bundle,
+          passcode: 'WRONG123',
+          options: { enableRateLimit: true },
+        })
+      ).rejects.toThrow('Invalid recovery passcode');
 
       // Second attempt should be rate limited
-      await expect(recoverFromBundle({
-        ns: 'test',
-        keyring: recoveryKeyring,
-        bundle,
-        passcode: 'WRONG123',
-        options: { enableRateLimit: true }
-      })).rejects.toThrow('Rate limit exceeded');
+      await expect(
+        recoverFromBundle({
+          ns: 'test',
+          keyring: recoveryKeyring,
+          bundle,
+          passcode: 'WRONG123',
+          options: { enableRateLimit: true },
+        })
+      ).rejects.toThrow('Rate limit exceeded');
     });
 
     it('should reset rate limit on successful recovery', async () => {
@@ -257,20 +287,22 @@ describe('Enhanced Recovery Features', () => {
         issuer: issuer1,
         passcode: 'SUCCESS123',
         iter: 2000,
-        meta: { testId: 'rate-limit-test-2' }
+        meta: { testId: 'rate-limit-test-2' },
       });
 
       const recoveryKeyring = new KeyringProvider(new MockStorage(), 'test');
       await recoveryKeyring.initNew('new-passphrase');
 
       // Failed attempt
-      await expect(recoverFromBundle({
-        ns: 'test',
-        keyring: recoveryKeyring,
-        bundle,
-        passcode: 'WRONG123',
-        options: { enableRateLimit: true }
-      })).rejects.toThrow('Invalid recovery passcode');
+      await expect(
+        recoverFromBundle({
+          ns: 'test',
+          keyring: recoveryKeyring,
+          bundle,
+          passcode: 'WRONG123',
+          options: { enableRateLimit: true },
+        })
+      ).rejects.toThrow('Invalid recovery passcode');
 
       // Wait for rate limit to expire (1 second)
       await new Promise(resolve => setTimeout(resolve, 1100));
@@ -281,19 +313,21 @@ describe('Enhanced Recovery Features', () => {
         keyring: recoveryKeyring,
         bundle,
         passcode: 'SUCCESS123',
-        options: { enableRateLimit: true }
+        options: { enableRateLimit: true },
       });
 
       expect(result.imported).toBeGreaterThan(0);
 
       // Next failed attempt should not be rate limited (reset)
-      await expect(recoverFromBundle({
-        ns: 'test',
-        keyring: recoveryKeyring,
-        bundle,
-        passcode: 'WRONG123',
-        options: { enableRateLimit: true }
-      })).rejects.toThrow('Invalid recovery passcode');
+      await expect(
+        recoverFromBundle({
+          ns: 'test',
+          keyring: recoveryKeyring,
+          bundle,
+          passcode: 'WRONG123',
+          options: { enableRateLimit: true },
+        })
+      ).rejects.toThrow('Invalid recovery passcode');
     });
   });
 
@@ -304,7 +338,7 @@ describe('Enhanced Recovery Features', () => {
         keyring,
         issuer: issuer2,
         passcode: 'COMBINED123',
-        iter: 1000
+        iter: 1000,
       });
 
       const recoveryKeyring = new KeyringProvider(new MockStorage(), 'test');
@@ -318,8 +352,8 @@ describe('Enhanced Recovery Features', () => {
         options: {
           keyRegistry,
           revocationRegistry,
-          enableRateLimit: true
-        }
+          enableRateLimit: true,
+        },
       });
 
       expect(result.imported).toBeGreaterThan(0);

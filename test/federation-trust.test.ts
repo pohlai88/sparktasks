@@ -4,13 +4,22 @@
  */
 
 import { describe, beforeEach, test, expect } from 'vitest';
-import { 
-  addTrustAnchor, removeTrustAnchor, revokeTrustAnchor, 
-  listTrustAnchors, configureFederationRegistry 
+import {
+  addTrustAnchor,
+  removeTrustAnchor,
+  revokeTrustAnchor,
+  listTrustAnchors,
+  configureFederationRegistry,
 } from '../src/federation/registry';
-import { configureFederationPolicy, checkCrossOrgPolicy } from '../src/policy/engine';
+import {
+  configureFederationPolicy,
+  checkCrossOrgPolicy,
+} from '../src/policy/engine';
 import { attestPack, verifyPackAttestation } from '../src/sync/attestation';
-import { addSigner, configureSignerRegistry } from '../src/sync/signer-registry';
+import {
+  addSigner,
+  configureSignerRegistry,
+} from '../src/sync/signer-registry';
 import { configureAudit } from '../src/audit/api';
 import type { Sparkpack } from '../src/domain/pack/types';
 import type { StorageDriver } from '../src/storage/types';
@@ -49,7 +58,7 @@ describe('Federation Trust', () => {
       format: 'sparkpack/1+json',
       createdAt: new Date().toISOString(),
       eventsCount: 1,
-      eventsHash: 'abc123'
+      eventsHash: 'abc123',
     },
     events: [
       {
@@ -60,10 +69,10 @@ describe('Federation Trust', () => {
           id: 'test-task',
           priority: 'P1' as const,
           title: 'Test Task',
-          tags: ['test']
-        }
-      }
-    ]
+          tags: ['test'],
+        },
+      },
+    ],
   };
 
   beforeEach(async () => {
@@ -74,29 +83,34 @@ describe('Federation Trust', () => {
     configureAudit(storage, ns);
 
     // Generate test key pairs
-    localKeyPair = await crypto.subtle.generateKey(
-      { name: 'Ed25519' },
-      true,
-      ['sign', 'verify']
-    );
+    localKeyPair = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, [
+      'sign',
+      'verify',
+    ]);
 
-    remoteKeyPair = await crypto.subtle.generateKey(
-      { name: 'Ed25519' },
-      true,
-      ['sign', 'verify']
-    );
+    remoteKeyPair = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, [
+      'sign',
+      'verify',
+    ]);
   });
 
   test('CRUD - add/list/remove anchors', async () => {
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add anchor
     await addTrustAnchor(ns, {
       orgId: 'remote-org',
       pubB64u: remotePubB64u,
-      note: 'Trusted remote org'
+      note: 'Trusted remote org',
     });
 
     // List anchors
@@ -114,14 +128,21 @@ describe('Federation Trust', () => {
   });
 
   test('verify - accepts pack signed by remote ACTIVE anchor', async () => {
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add remote trust anchor
     await addTrustAnchor(ns, {
       orgId: 'trusted-org',
-      pubB64u: remotePubB64u
+      pubB64u: remotePubB64u,
     });
 
     // Attest pack with remote key
@@ -133,14 +154,21 @@ describe('Federation Trust', () => {
   });
 
   test('verify - denies when remote REVOKED with reason federated_revoked', async () => {
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add and attest first
     await addTrustAnchor(ns, {
       orgId: 'untrusted-org',
-      pubB64u: remotePubB64u
+      pubB64u: remotePubB64u,
     });
 
     const attested = await attestPack(mockPack, remoteKeyPair, { ns });
@@ -158,24 +186,38 @@ describe('Federation Trust', () => {
 
   test('dual-sign - allow if either local/remote valid', async () => {
     // Set up local signer
-    const localPubKey = await crypto.subtle.exportKey('spki', localKeyPair.publicKey);
-    const localPubB64u = btoa(String.fromCharCode(...new Uint8Array(localPubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const localPubKey = await crypto.subtle.exportKey(
+      'spki',
+      localKeyPair.publicKey
+    );
+    const localPubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(localPubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     await addSigner(ns, {
       kid: 'local-signer',
       pubB64u: localPubB64u,
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     });
 
     // Set up remote anchor
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     await addTrustAnchor(ns, {
       orgId: 'partner-org',
-      pubB64u: remotePubB64u
+      pubB64u: remotePubB64u,
     });
 
     // Test local signer attestation
@@ -190,27 +232,34 @@ describe('Federation Trust', () => {
   });
 
   test('policy - deny cross-org verify when org not in allowlist', async () => {
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add remote anchor
     await addTrustAnchor(ns, {
       orgId: 'blocked-org',
-      pubB64u: remotePubB64u
+      pubB64u: remotePubB64u,
     });
 
     // Configure policy to block this org
     configureFederationPolicy(ns, {
-      allowedOrgs: ['allowed-org-1', 'allowed-org-2'] // blocked-org not included
+      allowedOrgs: ['allowed-org-1', 'allowed-org-2'], // blocked-org not included
     });
 
     // Attest and verify
     const attested = await attestPack(mockPack, remoteKeyPair, { ns });
 
-    const result = await verifyPackAttestation(attested, { 
-      ns, 
-      operation: 'sync.import' 
+    const result = await verifyPackAttestation(attested, {
+      ns,
+      operation: 'sync.import',
     });
 
     expect(result.ok).toBe(false);
@@ -220,40 +269,54 @@ describe('Federation Trust', () => {
   });
 
   test('policy - allow when in allowlist', async () => {
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add remote anchor
     await addTrustAnchor(ns, {
       orgId: 'allowed-org',
-      pubB64u: remotePubB64u
+      pubB64u: remotePubB64u,
     });
 
     // Configure policy to allow this org
     configureFederationPolicy(ns, {
-      allowedOrgs: ['allowed-org']
+      allowedOrgs: ['allowed-org'],
     });
 
     // Attest and verify
     const attested = await attestPack(mockPack, remoteKeyPair, { ns });
-    const result = await verifyPackAttestation(attested, { 
-      ns, 
-      operation: 'sync.import' 
+    const result = await verifyPackAttestation(attested, {
+      ns,
+      operation: 'sync.import',
     });
 
     expect(result.ok).toBe(true);
   });
 
   test('audit events - CRUD & cross-org decisions', async () => {
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Perform CRUD operations
     await addTrustAnchor(ns, {
       orgId: 'audit-org',
-      pubB64u: remotePubB64u
+      pubB64u: remotePubB64u,
     });
 
     await revokeTrustAnchor(ns, 'audit-org');
@@ -280,13 +343,20 @@ describe('Federation Trust', () => {
 
   test('compatibility - no anchors configured = unchanged behavior', async () => {
     // Set up local signer only (no federation)
-    const localPubKey = await crypto.subtle.exportKey('spki', localKeyPair.publicKey);
-    const localPubB64u = btoa(String.fromCharCode(...new Uint8Array(localPubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const localPubKey = await crypto.subtle.exportKey(
+      'spki',
+      localKeyPair.publicKey
+    );
+    const localPubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(localPubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     await addSigner(ns, {
       kid: 'local-only',
-      pubB64u: localPubB64u
+      pubB64u: localPubB64u,
     });
 
     // Verify local attestation works as before
@@ -301,15 +371,22 @@ describe('Federation Trust', () => {
   });
 
   test('E2EE - anchors persisted via StorageDriver', async () => {
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add anchor
     await addTrustAnchor(ns, {
       orgId: 'e2ee-test',
       pubB64u: remotePubB64u,
-      note: 'E2EE test anchor'
+      note: 'E2EE test anchor',
     });
 
     // Check storage contains anchor data

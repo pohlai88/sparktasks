@@ -10,12 +10,12 @@ import '@testing-library/jest-dom';
 describe('Simple Toast Test', () => {
   it('renders a basic toast', () => {
     const mockDismiss = () => {};
-    
+
     render(
       <Toast
-        id="test-basic"
-        variant="success"
-        message="Test message"
+        id='test-basic'
+        variant='success'
+        message='Test message'
         onDismiss={mockDismiss}
       />
     );

@@ -38,7 +38,7 @@ const renderVideo = (props: Partial<VideoProps> = {}) => {
     alt: 'Test video',
     ...props,
   };
-  
+
   return render(<Video {...defaultProps} />);
 };
 
@@ -130,7 +130,6 @@ afterEach(() => {
 // ===== TESTS =====
 
 describe('Video Component', () => {
-
   // ===== BASIC FUNCTIONALITY TESTS =====
 
   describe('Basic Functionality', () => {
@@ -142,7 +141,7 @@ describe('Video Component', () => {
     it('renders video element with correct src', () => {
       const src = 'https://example.com/test-video.mp4';
       renderVideo({ src });
-      
+
       const videoElement = getVideoElement();
       expect(videoElement).toBeInTheDocument();
       const sourceElement = videoElement.querySelector('source');
@@ -152,7 +151,7 @@ describe('Video Component', () => {
     it('renders with string src', () => {
       const src = 'https://example.com/video.mp4';
       renderVideo({ src });
-      
+
       const videoElement = getVideoElement();
       expect(videoElement).toBeInTheDocument();
     });
@@ -163,20 +162,26 @@ describe('Video Component', () => {
         { src: 'https://example.com/video.webm', type: 'video/webm' },
       ];
       renderVideo({ src: sources });
-      
+
       const videoElement = getVideoElement();
       expect(videoElement).toBeInTheDocument();
-      
+
       const sourceElements = videoElement.querySelectorAll('source');
       expect(sourceElements).toHaveLength(2);
-      expect(sourceElements[0]).toHaveAttribute('src', 'https://example.com/video.mp4');
-      expect(sourceElements[1]).toHaveAttribute('src', 'https://example.com/video.webm');
+      expect(sourceElements[0]).toHaveAttribute(
+        'src',
+        'https://example.com/video.mp4'
+      );
+      expect(sourceElements[1]).toHaveAttribute(
+        'src',
+        'https://example.com/video.webm'
+      );
     });
 
     it('displays poster image when provided', () => {
       const poster = 'https://example.com/poster.jpg';
       renderVideo({ poster });
-      
+
       const videoElement = getVideoElement();
       expect(videoElement).toHaveAttribute('poster', poster);
     });
@@ -184,7 +189,7 @@ describe('Video Component', () => {
     it('displays caption when provided', () => {
       const caption = 'This is a test video caption';
       renderVideo({ caption });
-      
+
       expect(screen.getByText(caption)).toBeInTheDocument();
     });
   });
@@ -288,7 +293,9 @@ describe('Video Component', () => {
       const { container } = renderVideo({ variant: 'cinematic' });
       const videoContainer = container.firstChild as HTMLElement;
       expect(videoContainer).toHaveClass(DESIGN_TOKENS.theme.light.radius.lg);
-      expect(videoContainer).toHaveClass(DESIGN_TOKENS.theme.light.elevation.card);
+      expect(videoContainer).toHaveClass(
+        DESIGN_TOKENS.theme.light.elevation.card
+      );
     });
   });
 
@@ -340,7 +347,7 @@ describe('Video Component', () => {
     it('updates playback rate', async () => {
       renderVideo({ playbackRate: 2 });
       const videoElement = getVideoElement() as HTMLVideoElement;
-      
+
       await waitFor(() => {
         expect(videoElement.playbackRate).toBe(2);
       });
@@ -369,7 +376,7 @@ describe('Video Component', () => {
     it('shows loading state on video load start', () => {
       renderVideo();
       const videoElement = getVideoElement();
-      
+
       fireEvent.loadStart(videoElement);
       expect(screen.getByText('Loading video...')).toBeInTheDocument();
     });
@@ -377,7 +384,7 @@ describe('Video Component', () => {
     it('hides loading state on video loaded metadata', () => {
       renderVideo();
       const videoElement = getVideoElement();
-      
+
       fireEvent.loadStart(videoElement);
       fireEvent.loadedMetadata(videoElement);
       expect(screen.queryByText('Loading video...')).not.toBeInTheDocument();
@@ -390,7 +397,7 @@ describe('Video Component', () => {
     it('shows error state when error prop is provided', () => {
       const errorMessage = 'Custom error message';
       renderVideo({ error: errorMessage });
-      
+
       expect(screen.getByText('Failed to load video')).toBeInTheDocument();
       expect(screen.getByText(errorMessage)).toBeInTheDocument();
     });
@@ -398,33 +405,33 @@ describe('Video Component', () => {
     it('shows custom fallback when error occurs', () => {
       const customFallback = <div>Custom error fallback</div>;
       renderVideo({ error: 'Test error', fallback: customFallback });
-      
+
       expect(screen.getByText('Custom error fallback')).toBeInTheDocument();
     });
 
     it('shows error state on video error event', () => {
       renderVideo();
       const videoElement = getVideoElement() as HTMLVideoElement;
-      
+
       // Mock error
       Object.defineProperty(videoElement, 'error', {
         get: () => ({ message: 'Network error' }),
       });
       fireEvent.error(videoElement);
-      
+
       expect(screen.getByText('Failed to load video')).toBeInTheDocument();
     });
 
     it('calls onError callback when error occurs', () => {
       const onErrorSpy = vi.fn();
       renderVideo({ onError: onErrorSpy });
-      
+
       const videoElement = getVideoElement() as HTMLVideoElement;
       Object.defineProperty(videoElement, 'error', {
         get: () => ({ message: 'Network error' }),
       });
       fireEvent.error(videoElement);
-      
+
       expect(onErrorSpy).toHaveBeenCalledWith('Network error');
     });
   });
@@ -451,74 +458,74 @@ describe('Video Component', () => {
     it('calls onPlay when video starts playing', () => {
       const onPlaySpy = vi.fn();
       renderVideo({ onPlay: onPlaySpy });
-      
+
       const videoElement = getVideoElement();
       fireEvent.play(videoElement);
-      
+
       expect(onPlaySpy).toHaveBeenCalled();
     });
 
     it('calls onPause when video is paused', () => {
       const onPauseSpy = vi.fn();
       renderVideo({ onPause: onPauseSpy });
-      
+
       const videoElement = getVideoElement();
       fireEvent.pause(videoElement);
-      
+
       expect(onPauseSpy).toHaveBeenCalled();
     });
 
     it('calls onEnded when video ends', () => {
       const onEndedSpy = vi.fn();
       renderVideo({ onEnded: onEndedSpy });
-      
+
       const videoElement = getVideoElement();
       fireEvent.ended(videoElement);
-      
+
       expect(onEndedSpy).toHaveBeenCalled();
     });
 
     it('calls onLoadedMetadata when metadata loads', () => {
       const onLoadedMetadataSpy = vi.fn();
       renderVideo({ onLoadedMetadata: onLoadedMetadataSpy });
-      
+
       const videoElement = getVideoElement();
       fireEvent.loadedMetadata(videoElement);
-      
+
       expect(onLoadedMetadataSpy).toHaveBeenCalled();
     });
 
     it('calls onCanPlay when video can start playing', () => {
       const onCanPlaySpy = vi.fn();
       renderVideo({ onCanPlay: onCanPlaySpy });
-      
+
       const videoElement = getVideoElement();
       fireEvent.canPlay(videoElement);
-      
+
       expect(onCanPlaySpy).toHaveBeenCalled();
     });
 
     it('calls onTimeUpdate with current time and duration', () => {
       const onTimeUpdateSpy = vi.fn();
       renderVideo({ onTimeUpdate: onTimeUpdateSpy });
-      
+
       const videoElement = getVideoElement() as HTMLVideoElement;
       Object.defineProperty(videoElement, 'currentTime', { value: 50 });
       Object.defineProperty(videoElement, 'duration', { value: 100 });
       fireEvent.timeUpdate(videoElement);
-      
+
       expect(onTimeUpdateSpy).toHaveBeenCalledWith(50, 100);
     });
 
     it('calls onVolumeChange with volume and muted state', () => {
       const onVolumeChangeSpy = vi.fn();
       renderVideo({ onVolumeChange: onVolumeChangeSpy });
-      
+
       const videoElement = getVideoElement() as HTMLVideoElement;
       Object.defineProperty(videoElement, 'volume', { value: 0.5 });
       Object.defineProperty(videoElement, 'muted', { value: false });
       fireEvent.volumeChange(videoElement);
-      
+
       expect(onVolumeChangeSpy).toHaveBeenCalledWith(0.5, false);
     });
   });
@@ -529,7 +536,7 @@ describe('Video Component', () => {
     it('has correct aria-label', () => {
       const alt = 'Instructional video';
       renderVideo({ alt });
-      
+
       const container = screen.getByRole('region');
       expect(container).toHaveAttribute('aria-label', alt);
     });
@@ -538,7 +545,7 @@ describe('Video Component', () => {
       renderVideo();
       const videoElement = getVideoElement();
       const trackElement = videoElement.querySelector('track[kind="captions"]');
-      
+
       expect(trackElement).toBeInTheDocument();
       expect(trackElement).toHaveAttribute('srcLang', 'en');
       expect(trackElement).toHaveAttribute('label', 'English');
@@ -546,7 +553,9 @@ describe('Video Component', () => {
 
     it('provides fallback text for unsupported browsers', () => {
       renderVideo();
-      expect(screen.getByText('Your browser does not support the video element.')).toBeInTheDocument();
+      expect(
+        screen.getByText('Your browser does not support the video element.')
+      ).toBeInTheDocument();
     });
 
     it('has proper role for container', () => {
@@ -564,10 +573,11 @@ describe('Video Component', () => {
 
       const videoElement = getVideoElement();
       expect(videoElement).toHaveClass(customClass);
-    });    it('applies custom containerClassName to container', () => {
+    });
+    it('applies custom containerClassName to container', () => {
       const customClass = 'custom-container-class';
       const { container } = renderVideo({ containerClassName: customClass });
-      
+
       const videoContainer = container.firstChild as HTMLElement;
       expect(videoContainer).toHaveClass(customClass);
     });
@@ -575,14 +585,14 @@ describe('Video Component', () => {
     it('applies custom width and height styles', () => {
       const { container } = renderVideo({ width: 500, height: 300 });
       const videoContainer = container.firstChild as HTMLElement;
-      
+
       expect(videoContainer).toHaveStyle({ width: '500px', height: '300px' });
     });
 
     it('applies custom width and height as strings', () => {
       const { container } = renderVideo({ width: '50%', height: '100vh' });
       const videoContainer = container.firstChild as HTMLElement;
-      
+
       expect(videoContainer).toHaveStyle({ width: '50%', height: '100vh' });
     });
   });
@@ -593,7 +603,7 @@ describe('Video Component', () => {
     it('uses DESIGN_TOKENS for styling classes', () => {
       const { container } = renderVideo();
       const videoContainer = container.firstChild as HTMLElement;
-      
+
       expect(videoContainer).toHaveClass('relative');
       expect(videoContainer).toHaveClass('overflow-hidden');
     });
@@ -601,20 +611,20 @@ describe('Video Component', () => {
     it('uses DESIGN_TOKENS for aspect ratios', () => {
       const { container } = renderVideo({ aspectRatio: 'video' });
       const videoContainer = container.firstChild as HTMLElement;
-      
+
       expect(videoContainer).toHaveClass(DESIGN_TOKENS.utils.aspectVideo);
     });
 
     it('uses DESIGN_TOKENS for motion classes', () => {
       renderVideo();
       const videoElement = getVideoElement();
-      
+
       expect(videoElement).toHaveClass(DESIGN_TOKENS.motion.colors);
     });
 
     it('uses DESIGN_TOKENS for loading component styling', () => {
       renderVideo({ loading: true });
-      
+
       const loadingText = screen.getByText('Loading video...');
       expect(loadingText).toHaveClass(DESIGN_TOKENS.typography.body.small);
       expect(loadingText).toHaveClass(DESIGN_TOKENS.semantic.text.muted);
@@ -622,7 +632,7 @@ describe('Video Component', () => {
 
     it('uses DESIGN_TOKENS for error component styling', () => {
       renderVideo({ error: 'Test error' });
-      
+
       const errorText = screen.getByText('Failed to load video');
       expect(errorText).toHaveClass(DESIGN_TOKENS.typography.body.small);
       expect(errorText).toHaveClass(DESIGN_TOKENS.semantic.text.muted);
@@ -635,19 +645,19 @@ describe('Video Component', () => {
     it('maintains aspect ratio on different screen sizes', () => {
       const { container } = renderVideo({ aspectRatio: 'video', size: 'lg' });
       const videoContainer = container.firstChild as HTMLElement;
-      
+
       expect(videoContainer).toHaveClass(DESIGN_TOKENS.utils.aspectVideo);
       expect(videoContainer).toHaveClass('w-[32rem]');
     });
 
     it('handles auto aspect ratio with custom dimensions', () => {
-      const { container } = renderVideo({ 
-        aspectRatio: 'auto', 
-        width: 800, 
-        height: 600 
+      const { container } = renderVideo({
+        aspectRatio: 'auto',
+        width: 800,
+        height: 600,
       });
       const videoContainer = container.firstChild as HTMLElement;
-      
+
       expect(videoContainer).toHaveStyle({ width: '800px', height: '600px' });
       expect(videoContainer).not.toHaveClass(DESIGN_TOKENS.utils.aspectVideo);
     });
@@ -670,15 +680,25 @@ describe('Video Component', () => {
     it('resets error state when src changes', async () => {
       const { rerender } = renderVideo({ error: 'Initial error' });
       expect(screen.getByText('Failed to load video')).toBeInTheDocument();
-      
-      rerender(<Video src="https://example.com/new-video.mp4" alt="New video" />);
-      expect(screen.queryByText('Failed to load video')).not.toBeInTheDocument();
+
+      rerender(
+        <Video src='https://example.com/new-video.mp4' alt='New video' />
+      );
+      expect(
+        screen.queryByText('Failed to load video')
+      ).not.toBeInTheDocument();
     });
 
     it('handles ref forwarding correctly', () => {
       const ref = { current: null };
-      render(<Video src="https://example.com/test-video.mp4" alt="Test video" ref={ref} />);
-      
+      render(
+        <Video
+          src='https://example.com/test-video.mp4'
+          alt='Test video'
+          ref={ref}
+        />
+      );
+
       expect(ref.current).toBeInstanceOf(HTMLVideoElement);
     });
   });

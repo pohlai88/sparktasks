@@ -3,28 +3,32 @@ import { describe, it, expect } from 'vitest';
 import App from './App';
 
 describe('App Component', () => {
-  it('renders SparkTasks header', () => {
+  it('renders Document Component Demo header', () => {
     render(<App />);
 
-    expect(screen.getByText('SparkTasks')).toBeInTheDocument();
+    expect(screen.getByText('🚀 Document Component Demo')).toBeInTheDocument();
     expect(
-      screen.getByText(/Storage-neutral, local-first task platform/)
+      screen.getByText(/Enterprise-grade document display component/)
     ).toBeInTheDocument();
   });
 
-  it('displays the three main columns', () => {
+  it('displays demo controls section', () => {
     render(<App />);
 
-    expect(screen.getByText('Today')).toBeInTheDocument();
-    expect(screen.getByText('Later')).toBeInTheDocument();
-    expect(screen.getByText('Done')).toBeInTheDocument();
+    expect(screen.getByText('Demo Controls')).toBeInTheDocument();
+    expect(screen.getByText('Size Variant:')).toBeInTheDocument();
+    expect(screen.getByText('Format Filter:')).toBeInTheDocument();
+    expect(screen.getByText('Status Filter:')).toBeInTheDocument();
   });
 
-  it('shows add task button', () => {
+  it('shows document gallery', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('button', { name: /add your first task/i })
+      screen.getByText(/Document Gallery \(\d+ documents\)/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('🏆 Enterprise Features Showcase')
     ).toBeInTheDocument();
   });
 });

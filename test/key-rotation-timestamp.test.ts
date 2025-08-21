@@ -6,21 +6,21 @@ if (!globalThis.crypto) {
   Object.defineProperty(globalThis, 'crypto', {
     value: webcrypto,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis.crypto, 'subtle', {
     value: webcrypto.subtle,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.getRandomValues) {
   Object.defineProperty(globalThis.crypto, 'getRandomValues', {
     value: webcrypto.getRandomValues.bind(webcrypto),
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 
@@ -90,7 +90,7 @@ describe('Key Rotation with Timestamp Preservation', () => {
     mockStorage = new MockStorageDriver();
     keys = new MockKeyProvider();
     await keys.generateKey('key1');
-    await keys.generateKey('key2'); 
+    await keys.generateKey('key2');
     driver = new EncryptedDriver(mockStorage, 'test-ns', keys);
   });
 
@@ -99,14 +99,14 @@ describe('Key Rotation with Timestamp Preservation', () => {
     await driver.setItem('testkey', 'testvalue');
     const originalEnvelope = JSON.parse(mockStorage.data.get('testkey')!);
     const originalTimestamp = originalEnvelope.ts;
-    
+
     // 2. Rotate to key2
     keys.setActiveKid('key2');
-    
+
     // 3. Read triggers lazy rotation
     const value = await driver.getItem('testkey');
     expect(value).toBe('testvalue');
-    
+
     // 4. Check that timestamp was preserved
     const rotatedEnvelope = JSON.parse(mockStorage.data.get('testkey')!);
     expect(rotatedEnvelope.kid).toBe('key2'); // Key rotated
@@ -116,24 +116,26 @@ describe('Key Rotation with Timestamp Preservation', () => {
   it('should rotate key but maintain LWW ordering', async () => {
     // This test verifies that key rotation doesn't affect Last-Write-Wins logic
     // by ensuring timestamps are preserved during rotation
-    
+
     const now = new Date();
     const later = new Date(now.getTime() + 5000); // 5 seconds later
-    
+
     // Store value at time T
     await driver.setItem('testkey', 'value1');
     const envelope1 = JSON.parse(mockStorage.data.get('testkey')!);
-    
+
     // Simulate time passing and key rotation
     keys.setActiveKid('key2');
-    
+
     // Read at time T+5 (triggers rotation)
     await driver.getItem('testkey');
     const rotatedEnvelope = JSON.parse(mockStorage.data.get('testkey')!);
-    
+
     // Verify: rotated envelope has same timestamp as original
     // This ensures LWW comparisons remain valid
     expect(rotatedEnvelope.ts).toBe(envelope1.ts);
-    expect(new Date(rotatedEnvelope.ts).getTime()).toBeLessThan(later.getTime());
+    expect(new Date(rotatedEnvelope.ts).getTime()).toBeLessThan(
+      later.getTime()
+    );
   });
 });

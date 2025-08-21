@@ -1,0 +1,23 @@
+/**
+ * @fileoverview Test-Specific TypeScript Configuration
+ * Enhanced settings for Vitest and Testing Library
+ */
+
+{
+  "extends": "./tsconfig-base.json",
+  "compilerOptions": {
+    "types": [
+      "vitest/globals",
+      "vitest/importMeta",
+      "@testing-library/jest-dom",
+      "node"
+    ],
+    "allowJs": true,
+    "noEmit": true
+  },
+  "include": [
+    "../test/**/*",
+    "../src/**/*.test.{ts,tsx}",
+    "../src/**/*.spec.{ts,tsx}"
+  ]
+}

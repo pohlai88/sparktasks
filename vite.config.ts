@@ -19,6 +19,13 @@ export default defineConfig({
     emptyOutDir: true, // Clean dist/ to avoid stale files
     assetsDir: 'assets' // Corral static assets under one subfolder
   },
+  esbuild: {
+    target: 'es2020',
+    loader: 'tsx',
+    include: [
+      /src\/.*\.[tj]sx?$/
+    ]
+  },
   server: {
     port: 3000,
     host: true, // Allow LAN access for mobile testing

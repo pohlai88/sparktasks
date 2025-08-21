@@ -7,11 +7,13 @@ Our accessibility snapshot system provides **structural validation** of ARIA com
 ## 🎯 Why Accessibility Snapshots?
 
 ### Traditional E2E Problems We Solved:
+
 - ❌ **Flaky visual assertions** sensitive to minor styling changes
-- ❌ **High maintenance** requiring constant selector updates  
+- ❌ **High maintenance** requiring constant selector updates
 - ❌ **Slow feedback loops** with complex setup/teardown
 
 ### Accessibility Snapshot Benefits:
+
 - ✅ **Structural validation** independent of visual rendering
 - ✅ **SSOT integration** using existing LayeredSelector patterns
 - ✅ **Instant regression detection** for ARIA changes
@@ -20,20 +22,25 @@ Our accessibility snapshot system provides **structural validation** of ARIA com
 ## 🛠 How It Works
 
 ### 1. **Snapshot Generation**
+
 ```typescript
 // Captures the accessibility tree structure
 const snapshot = await page.accessibility.snapshot();
 
 // Validates critical ARIA elements are present
-await expect(page.getByRole('textbox', { name: 'Quick add task' })).toBeVisible();
+await expect(
+  page.getByRole('textbox', { name: 'Quick add task' })
+).toBeVisible();
 ```
 
 ### 2. **Regression Detection**
+
 - **Baseline comparison:** New snapshots compared against stored baselines
 - **Structural validation:** ARIA roles, labels, and hierarchy validated
 - **Critical element verification:** Essential UI components confirmed present
 
 ### 3. **SSOT Integration**
+
 ```typescript
 // Uses existing patterns - no architectural drift
 const helpers = new TestHelpers(page, selector);
@@ -44,6 +51,7 @@ await helpers.createTaskViaQuickAdd('Test Task');
 ## 📝 Writing Accessibility Snapshot Tests
 
 ### Basic Pattern
+
 ```typescript
 {
   name: 'YourFeature-State',
@@ -52,7 +60,7 @@ await helpers.createTaskViaQuickAdd('Test Task');
   setup: async (page, helpers, selector) => {
     // Setup your specific state using existing SSOT helpers
     await helpers.createTaskViaQuickAdd('Test Data');
-    
+
     // Trigger the UI state you want to validate
     await page.getByRole('button', { name: 'Open Dialog' }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
@@ -61,21 +69,23 @@ await helpers.createTaskViaQuickAdd('Test Task');
 ```
 
 ### Critical Elements Syntax
+
 ```typescript
 // Role-based selectors (recommended)
-'textbox:Search tasks'     // → page.getByRole('textbox', { name: 'Search tasks' })
-'button:Submit'            // → page.getByRole('button', { name: 'Submit' })
-'dialog'                   // → page.getByRole('dialog')
-'article'                  // → page.getByRole('article')
-'listbox'                  // → page.getByRole('listbox')
+'textbox:Search tasks'; // → page.getByRole('textbox', { name: 'Search tasks' })
+'button:Submit'; // → page.getByRole('button', { name: 'Submit' })
+'dialog'; // → page.getByRole('dialog')
+'article'; // → page.getByRole('article')
+'listbox'; // → page.getByRole('listbox')
 
 // Option elements
-'option:Later'             // → page.getByRole('option', { name: 'Later' })
+'option:Later'; // → page.getByRole('option', { name: 'Later' })
 ```
 
 ## 🚀 Team Workflows
 
 ### 1. **Creating New Snapshots**
+
 ```bash
 # Create baseline for new feature
 UPDATE_SNAPSHOTS=true npx playwright test test/e2e/a5-accessibility-snapshots.spec.ts -g "YourFeature"
@@ -86,9 +96,11 @@ git commit -m "feat: accessibility snapshots for YourFeature"
 ```
 
 ### 2. **Handling Regression Failures**
+
 When a test fails with "Accessibility regression detected":
 
 #### Step 1: Investigate
+
 ```bash
 # Check what changed
 ls test/accessibility-snapshots/*.failed.json
@@ -98,10 +110,12 @@ diff test/accessibility-snapshots/Feature-State.json test/accessibility-snapshot
 ```
 
 #### Step 2: Determine Intent
+
 - **Intentional Change?** → Update baseline
 - **Unintended Regression?** → Fix the code
 
 #### Step 3: Update or Fix
+
 ```bash
 # If intentional, update baseline
 UPDATE_SNAPSHOTS=true npx playwright test test/e2e/a5-accessibility-snapshots.spec.ts
@@ -111,6 +125,7 @@ npx playwright test test/e2e/a5-accessibility-snapshots.spec.ts
 ```
 
 ### 3. **Adding Coverage for Existing Features**
+
 ```typescript
 // Add to ACCESSIBILITY_FLOWS array in a5-accessibility-snapshots.spec.ts
 {
@@ -127,11 +142,13 @@ npx playwright test test/e2e/a5-accessibility-snapshots.spec.ts
 ## 🔧 CI/CD Integration
 
 ### Automated Validation
+
 - ✅ **Every PR:** Accessibility snapshots validated against baselines
 - ✅ **Never updates in CI:** Prevents accidental baseline overwrites
 - ✅ **Clear failure reporting:** Detailed artifacts and PR comments
 
 ### Local Development
+
 ```bash
 # Quick validation during development
 npm run test:accessibility
@@ -143,6 +160,7 @@ npm run test:accessibility:update
 ## 📊 Monitoring & Metrics
 
 ### Coverage Tracking
+
 ```typescript
 // Automatic coverage reporting
 {
@@ -159,19 +177,22 @@ npm run test:accessibility:update
 ```
 
 ### Success Metrics
+
 - **Zero false positives:** Structural validation eliminates flaky failures
-- **100% regression detection:** ARIA changes caught immediately  
+- **100% regression detection:** ARIA changes caught immediately
 - **Team velocity:** No time spent debugging visual assertion failures
 
 ## 🎯 Best Practices
 
 ### DO:
+
 - ✅ **Use role-based selectors** for maximum stability
 - ✅ **Focus on critical elements** that affect screen readers
 - ✅ **Integrate with existing helpers** (TestHelpers, LayeredSelector)
 - ✅ **Write descriptive flow names** for easy debugging
 
 ### DON'T:
+
 - ❌ **Test visual appearance** - use visual regression tests for that
 - ❌ **Create duplicate setup logic** - reuse existing SSOT patterns
 - ❌ **Update baselines in CI** - always validate against stored baselines
@@ -182,6 +203,7 @@ npm run test:accessibility:update
 ### Common Issues
 
 #### "Critical ARIA element missing"
+
 ```bash
 # Verify element exists in current DOM
 npx playwright test --debug test/e2e/a5-accessibility-snapshots.spec.ts -g "YourFlow"
@@ -191,6 +213,7 @@ npx playwright test --debug test/e2e/a5-accessibility-snapshots.spec.ts -g "Your
 ```
 
 #### "Accessibility regression detected"
+
 ```bash
 # Compare snapshots to see what changed
 diff test/accessibility-snapshots/Flow.json test/accessibility-snapshots/Flow.failed.json
@@ -200,6 +223,7 @@ diff test/accessibility-snapshots/Flow.json test/accessibility-snapshots/Flow.fa
 ```
 
 #### "Setup timeout"
+
 ```bash
 # Add debugging to setup function
 setup: async (page, helpers, selector) => {
@@ -212,7 +236,7 @@ setup: async (page, helpers, selector) => {
 ## 📚 Resources
 
 - **Full Documentation:** `docs/E2E_TESTING_STANDARDS.md`
-- **SSOT Patterns:** `test/shared/` helpers and selectors  
+- **SSOT Patterns:** `test/shared/` helpers and selectors
 - **Example Flows:** `test/e2e/a5-accessibility-snapshots.spec.ts`
 - **CI Configuration:** `.github/workflows/accessibility-ci.yml`
 

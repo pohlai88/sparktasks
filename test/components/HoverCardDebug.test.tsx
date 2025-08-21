@@ -14,7 +14,7 @@ describe('HoverCard Debug', () => {
 
   it('should render the component', () => {
     render(
-      <SimpleHoverCard content="Test content">
+      <SimpleHoverCard content='Test content'>
         <button>Hover me</button>
       </SimpleHoverCard>
     );
@@ -24,21 +24,21 @@ describe('HoverCard Debug', () => {
 
   it('should show content on hover', async () => {
     render(
-      <SimpleHoverCard content="Test content">
+      <SimpleHoverCard content='Test content'>
         <button>Hover me</button>
       </SimpleHoverCard>
     );
 
     const button = screen.getByRole('button');
     fireEvent.mouseEnter(button);
-    
+
     expect(screen.getByRole('tooltip')).toBeInTheDocument();
     expect(screen.getByText('Test content')).toBeInTheDocument();
   });
 
   it('should hide content on mouse leave', async () => {
     render(
-      <SimpleHoverCard content="Test content">
+      <SimpleHoverCard content='Test content'>
         <button>Hover me</button>
       </SimpleHoverCard>
     );
@@ -46,7 +46,7 @@ describe('HoverCard Debug', () => {
     const button = screen.getByRole('button');
     fireEvent.mouseEnter(button);
     expect(screen.getByText('Test content')).toBeInTheDocument();
-    
+
     fireEvent.mouseLeave(button);
     expect(screen.queryByText('Test content')).not.toBeInTheDocument();
   });

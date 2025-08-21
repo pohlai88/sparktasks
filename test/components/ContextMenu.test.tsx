@@ -2,12 +2,12 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Copy, Trash2, Edit, Settings } from 'lucide-react';
-import { 
-  ContextMenu, 
-  ContextMenuProvider, 
-  ContextMenuTrigger, 
+import {
+  ContextMenu,
+  ContextMenuProvider,
+  ContextMenuTrigger,
   useContextMenu,
-  type MenuItem 
+  type MenuItem,
 } from '../../src/components/ui/ContextMenu';
 
 // Test setup
@@ -24,13 +24,13 @@ const mockMenuItems: MenuItem[] = [
   {
     id: 'copy',
     label: 'Copy',
-    icon: <Copy data-testid="copy-icon" />,
+    icon: <Copy data-testid='copy-icon' />,
     onClick: vi.fn(),
   },
   {
     id: 'edit',
     label: 'Edit',
-    icon: <Edit data-testid="edit-icon" />,
+    icon: <Edit data-testid='edit-icon' />,
     onClick: vi.fn(),
   },
   {
@@ -41,7 +41,7 @@ const mockMenuItems: MenuItem[] = [
   {
     id: 'delete',
     label: 'Delete',
-    icon: <Trash2 data-testid="delete-icon" />,
+    icon: <Trash2 data-testid='delete-icon' />,
     danger: true,
     onClick: vi.fn(),
   },
@@ -51,7 +51,7 @@ const mockSubmenuItems: MenuItem[] = [
   {
     id: 'parent',
     label: 'More Options',
-    icon: <Settings data-testid="settings-icon" />,
+    icon: <Settings data-testid='settings-icon' />,
     submenu: [
       {
         id: 'sub1',
@@ -70,22 +70,19 @@ const mockSubmenuItems: MenuItem[] = [
 // Test helper component that uses the hook
 const TestHookComponent = () => {
   const { showMenu, hideMenu, isVisible } = useContextMenu();
-  
+
   return (
     <div>
-      <button 
-        data-testid="show-menu-btn"
-        onClick={(e) => showMenu(e as any, mockMenuItems)}
+      <button
+        data-testid='show-menu-btn'
+        onClick={e => showMenu(e as any, mockMenuItems)}
       >
         Show Menu
       </button>
-      <button 
-        data-testid="hide-menu-btn"
-        onClick={hideMenu}
-      >
+      <button data-testid='hide-menu-btn' onClick={hideMenu}>
         Hide Menu
       </button>
-      <div data-testid="visibility-status">
+      <div data-testid='visibility-status'>
         {isVisible ? 'visible' : 'hidden'}
       </div>
     </div>
@@ -106,7 +103,10 @@ describe('ContextMenu Component', () => {
       );
 
       expect(screen.getByRole('menu')).toBeInTheDocument();
-      expect(screen.getByRole('menu')).toHaveAttribute('aria-label', 'Context menu');
+      expect(screen.getByRole('menu')).toHaveAttribute(
+        'aria-label',
+        'Context menu'
+      );
     });
 
     it('does not render menu when not visible', () => {
@@ -424,7 +424,9 @@ describe('ContextMenu Component', () => {
         />
       );
 
-      const disabledItem = screen.getByRole('menuitem', { name: /disabled item/i });
+      const disabledItem = screen.getByRole('menuitem', {
+        name: /disabled item/i,
+      });
       expect(disabledItem).toHaveAttribute('aria-disabled', 'true');
       expect(disabledItem).toHaveAttribute('tabIndex', '-1');
       expect(disabledItem).toHaveClass('opacity-50');
@@ -438,7 +440,7 @@ describe('ContextMenu Component', () => {
 
       render(
         <div>
-          <div data-testid="outside-element">Outside</div>
+          <div data-testid='outside-element'>Outside</div>
           <ContextMenu
             x={100}
             y={100}
@@ -461,7 +463,7 @@ describe('ContextMenu Component', () => {
 
       render(
         <div>
-          <div data-testid="outside-element">Outside</div>
+          <div data-testid='outside-element'>Outside</div>
           <ContextMenu
             x={100}
             y={100}
@@ -564,7 +566,9 @@ describe('ContextMenuProvider', () => {
 
       expect(screen.getByTestId('show-menu-btn')).toBeInTheDocument();
       expect(screen.getByTestId('hide-menu-btn')).toBeInTheDocument();
-      expect(screen.getByTestId('visibility-status')).toHaveTextContent('hidden');
+      expect(screen.getByTestId('visibility-status')).toHaveTextContent(
+        'hidden'
+      );
     });
 
     it('shows menu when showMenu is called', async () => {
@@ -578,7 +582,9 @@ describe('ContextMenuProvider', () => {
 
       await user.click(screen.getByTestId('show-menu-btn'));
 
-      expect(screen.getByTestId('visibility-status')).toHaveTextContent('visible');
+      expect(screen.getByTestId('visibility-status')).toHaveTextContent(
+        'visible'
+      );
       expect(screen.getByRole('menu')).toBeInTheDocument();
     });
 
@@ -592,17 +598,23 @@ describe('ContextMenuProvider', () => {
       );
 
       await user.click(screen.getByTestId('show-menu-btn'));
-      expect(screen.getByTestId('visibility-status')).toHaveTextContent('visible');
+      expect(screen.getByTestId('visibility-status')).toHaveTextContent(
+        'visible'
+      );
 
       await user.click(screen.getByTestId('hide-menu-btn'));
-      expect(screen.getByTestId('visibility-status')).toHaveTextContent('hidden');
+      expect(screen.getByTestId('visibility-status')).toHaveTextContent(
+        'hidden'
+      );
     });
   });
 
   describe('Hook Error Handling', () => {
     it('throws error when useContextMenu is used outside provider', () => {
       // Suppress console.error for this test
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
 
       expect(() => {
         render(<TestHookComponent />);
@@ -621,7 +633,7 @@ describe('ContextMenuTrigger', () => {
       render(
         <ContextMenuProvider>
           <ContextMenuTrigger items={mockMenuItems}>
-            <div data-testid="trigger-area">Right-click me</div>
+            <div data-testid='trigger-area'>Right-click me</div>
           </ContextMenuTrigger>
         </ContextMenuProvider>
       );
@@ -640,7 +652,7 @@ describe('ContextMenuTrigger', () => {
       render(
         <ContextMenuProvider>
           <ContextMenuTrigger items={mockMenuItems} disabled={true}>
-            <div data-testid="trigger-area">Right-click me</div>
+            <div data-testid='trigger-area'>Right-click me</div>
           </ContextMenuTrigger>
         </ContextMenuProvider>
       );
@@ -657,7 +669,7 @@ describe('ContextMenuTrigger', () => {
       render(
         <ContextMenuProvider>
           <ContextMenuTrigger items={mockMenuItems}>
-            <div data-testid="trigger-area">Right-click me</div>
+            <div data-testid='trigger-area'>Right-click me</div>
           </ContextMenuTrigger>
         </ContextMenuProvider>
       );

@@ -2,10 +2,10 @@
  * @fileoverview Prose Component - Markdown/Rich Text Styling System
  * @author SparkTasks
  * @version 1.0.0
- * 
+ *
  * Enterprise-grade prose component for rendering markdown and rich text content
  * with consistent typography, spacing, and semantic styling.
- * 
+ *
  * Features:
  * - Typography scale integration with DESIGN_TOKENS
  * - Semantic HTML structure for accessibility
@@ -15,7 +15,7 @@
  * - Link and media handling
  * - Custom content variants (article, documentation, legal)
  * - Reading experience optimization
- * 
+ *
  * @example
  * ```tsx
  * <Prose variant="article">
@@ -33,21 +33,21 @@ import { DESIGN_TOKENS } from '@/design/tokens';
 /**
  * Prose content variants for different use cases
  */
-export type ProseVariant = 
-  | 'default'      // Standard content styling
-  | 'article'      // Blog posts, articles - optimized reading
+export type ProseVariant =
+  | 'default' // Standard content styling
+  | 'article' // Blog posts, articles - optimized reading
   | 'documentation' // Technical docs - enhanced code blocks
-  | 'legal'        // Legal documents - formal typography
-  | 'compact'      // Reduced spacing for dense content
-  | 'large'        // Larger text for accessibility
+  | 'legal' // Legal documents - formal typography
+  | 'compact' // Reduced spacing for dense content
+  | 'large'; // Larger text for accessibility
 
 /**
  * Reading optimization modes
  */
-export type ProseReadingMode = 
-  | 'default'      // Standard line height and spacing
-  | 'comfortable'  // Increased spacing for better readability
-  | 'dense'        // Reduced spacing for information density
+export type ProseReadingMode =
+  | 'default' // Standard line height and spacing
+  | 'comfortable' // Increased spacing for better readability
+  | 'dense'; // Reduced spacing for information density
 
 /**
  * Content size scales
@@ -60,28 +60,28 @@ export type ProseSize = 'sm' | 'md' | 'lg' | 'xl';
 export interface ProseProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Content variant affecting typography and spacing */
   variant?: ProseVariant;
-  
+
   /** Reading optimization mode */
   readingMode?: ProseReadingMode;
-  
+
   /** Overall content size scale */
   size?: ProseSize;
-  
+
   /** Enable syntax highlighting for code blocks */
   enableSyntaxHighlighting?: boolean;
-  
+
   /** Maximum content width for optimal reading */
   maxWidth?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  
+
   /** Children content to render with prose styles */
   children: React.ReactNode;
-  
+
   /** Additional CSS classes */
   className?: string;
-  
+
   /** Enable table of contents generation */
   enableToc?: boolean;
-  
+
   /** Custom link handler */
   onLinkClick?: (href: string, event: React.MouseEvent) => void;
 }
@@ -131,9 +131,9 @@ const getProseVariantClasses = (variant: ProseVariant): string => {
       ${DESIGN_TOKENS.typography.body.xl}
       leading-loose
       tracking-wide
-    `
+    `,
   };
-  
+
   return variants[variant].trim();
 };
 
@@ -144,9 +144,9 @@ const getProseReadingModeClasses = (mode: ProseReadingMode): string => {
   const modes = {
     default: 'space-y-4',
     comfortable: 'space-y-6',
-    dense: 'space-y-2'
+    dense: 'space-y-2',
   };
-  
+
   return modes[mode];
 };
 
@@ -158,9 +158,9 @@ const getProseSizeClasses = (size: ProseSize): string => {
     sm: DESIGN_TOKENS.typography.body.sm,
     md: DESIGN_TOKENS.typography.body.md,
     lg: DESIGN_TOKENS.typography.body.lg,
-    xl: DESIGN_TOKENS.typography.body.xl
+    xl: DESIGN_TOKENS.typography.body.xl,
   };
-  
+
   return sizes[size];
 };
 
@@ -174,9 +174,9 @@ const getProseMaxWidthClasses = (maxWidth: ProseProps['maxWidth']): string => {
     md: 'max-w-2xl',
     lg: 'max-w-4xl',
     xl: 'max-w-6xl',
-    full: 'max-w-full'
+    full: 'max-w-full',
   };
-  
+
   return widths[maxWidth || 'md'];
 };
 
@@ -330,94 +330,106 @@ const getProseTypographyStyles = (): string => {
 
 /**
  * Prose component for markdown and rich text content
- * 
+ *
  * Provides consistent typography, spacing, and semantic styling for long-form content.
  * Supports multiple variants, reading modes, and accessibility features.
  */
-export const Prose = React.forwardRef<HTMLDivElement, ProseProps>(({
-  variant = 'default',
-  readingMode = 'default',
-  size = 'md',
-  maxWidth = 'md',
-  children,
-  className = '',
-  onLinkClick,
-  onClick,
-  ...props
-}, ref) => {
-  // Build component classes
-  const componentClasses = React.useMemo(() => {
-    return [
-      // Base prose styling
-      'prose prose-slate',
-      getProseBaseClasses(),
-      
-      // Variant styling
-      getProseVariantClasses(variant),
-      
-      // Reading mode
-      getProseReadingModeClasses(readingMode),
-      
-      // Size scaling
-      getProseSizeClasses(size),
-      
-      // Max width constraint
-      getProseMaxWidthClasses(maxWidth),
-      
-      // Typography styles
-      getProseTypographyStyles(),
-      
-      // Dark mode support
-      'dark:prose-invert',
-      
-      // Ensure proper margins
-      'mx-auto',
-      
-      // Custom classes
-      className
-    ].filter(Boolean).join(' ');
-  }, [variant, readingMode, size, maxWidth, className]);
+export const Prose = React.forwardRef<HTMLDivElement, ProseProps>(
+  (
+    {
+      variant = 'default',
+      readingMode = 'default',
+      size = 'md',
+      maxWidth = 'md',
+      children,
+      className = '',
+      onLinkClick,
+      onClick,
+      ...props
+    },
+    ref
+  ) => {
+    // Build component classes
+    const componentClasses = React.useMemo(() => {
+      return [
+        // Base prose styling
+        'prose prose-slate',
+        getProseBaseClasses(),
 
-  // Handle link clicks if custom handler provided
-  const handleClick = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    if (onLinkClick) {
-      const target = event.target as HTMLElement;
-      if (target.tagName === 'A') {
-        const href = (target as HTMLAnchorElement).href;
-        if (href) {
-          event.preventDefault();
-          onLinkClick(href, event);
-        }
-      }
-    }
-    
-    // Call original onClick if provided
-    onClick?.(event);
-  }, [onLinkClick, onClick]);
+        // Variant styling
+        getProseVariantClasses(variant),
 
-  return (
-    <div
-      ref={ref}
-      className={componentClasses}
-      data-testid="prose"
-      data-variant={variant}
-      data-reading-mode={readingMode}
-      data-size={size}
-      role="article"
-      {...(onLinkClick ? { 
-        onClick: handleClick,
-        onKeyDown: (e: React.KeyboardEvent) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            handleClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+        // Reading mode
+        getProseReadingModeClasses(readingMode),
+
+        // Size scaling
+        getProseSizeClasses(size),
+
+        // Max width constraint
+        getProseMaxWidthClasses(maxWidth),
+
+        // Typography styles
+        getProseTypographyStyles(),
+
+        // Dark mode support
+        'dark:prose-invert',
+
+        // Ensure proper margins
+        'mx-auto',
+
+        // Custom classes
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ');
+    }, [variant, readingMode, size, maxWidth, className]);
+
+    // Handle link clicks if custom handler provided
+    const handleClick = React.useCallback(
+      (event: React.MouseEvent<HTMLDivElement>) => {
+        if (onLinkClick) {
+          const target = event.target as HTMLElement;
+          if (target.tagName === 'A') {
+            const href = (target as HTMLAnchorElement).href;
+            if (href) {
+              event.preventDefault();
+              onLinkClick(href, event);
+            }
           }
         }
-      } : { onClick })}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+
+        // Call original onClick if provided
+        onClick?.(event);
+      },
+      [onLinkClick, onClick]
+    );
+
+    return (
+      <div
+        ref={ref}
+        className={componentClasses}
+        data-testid='prose'
+        data-variant={variant}
+        data-reading-mode={readingMode}
+        data-size={size}
+        role='article'
+        {...(onLinkClick
+          ? {
+              onClick: handleClick,
+              onKeyDown: (e: React.KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+                }
+              },
+            }
+          : { onClick })}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 
 Prose.displayName = 'Prose';
 

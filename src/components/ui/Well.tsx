@@ -1,9 +1,9 @@
 /**
  * Well Component - Enterprise Inset Content Area
- * 
+ *
  * 🎯 ENTERPRISE FEATURES:
  * - 9 semantic variants (default, success, warning, error, info, interactive, elevated, flat, outlined)
- * - 5 responsive sizes (xs, sm, md, lg, xl) 
+ * - 5 responsive sizes (xs, sm, md, lg, xl)
  * - 4 padding options (none, tight, normal, loose)
  * - Compound component architecture (Well.Header, Well.Content, Well.Footer)
  * - Interactive capabilities (click handling, keyboard navigation)
@@ -13,61 +13,67 @@
  * - Responsive design with mobile-first approach
  * - TypeScript-first with complete type safety
  * - Zero hardcoded Tailwind classes (DESIGN_TOKENS only)
- * 
+ *
  * @version 3.2.0
  * @author Enterprise Design System
  */
 
 import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 import { ComponentSize, ComponentVariant } from '@/design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
 export type WellSize = ComponentSize;
-export type WellVariant = ComponentVariant | 'info' | 'interactive' | 'elevated' | 'flat' | 'outlined';
+export type WellVariant =
+  | ComponentVariant
+  | 'info'
+  | 'interactive'
+  | 'elevated'
+  | 'flat'
+  | 'outlined';
 export type WellPadding = 'none' | 'tight' | 'normal' | 'loose';
 
 interface WellProps extends HTMLAttributes<HTMLDivElement> {
   /** Visual variant of the well */
   variant?: WellVariant;
-  
+
   /** Size of the well */
   size?: WellSize;
-  
+
   /** Padding configuration */
   padding?: WellPadding;
-  
+
   /** Whether the well is interactive */
   interactive?: boolean;
-  
+
   /** Loading state */
   loading?: boolean;
-  
+
   /** Disabled state */
   disabled?: boolean;
-  
+
   /** Custom className for additional styling */
   className?: string;
-  
+
   /** Well content */
   children?: ReactNode;
-  
+
   /** Click handler for interactive wells */
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
-  
+
   /** Keyboard handler for interactive wells */
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
-  
+
   /** ARIA label for accessibility */
   'aria-label'?: string;
-  
+
   /** ARIA labelledby for accessibility */
   'aria-labelledby'?: string;
-  
+
   /** ARIA describedby for accessibility */
   'aria-describedby'?: string;
-  
+
   /** Custom test ID for testing */
   'data-testid'?: string;
 }
@@ -124,9 +130,9 @@ const getWellSizeClasses = (size: WellSize): string => {
     sm: 'text-sm min-h-[2.5rem]',
     md: 'text-base min-h-[3rem]',
     lg: 'text-lg min-h-[3.5rem]',
-    xl: 'text-xl min-h-[4rem]'
+    xl: 'text-xl min-h-[4rem]',
   };
-  
+
   return sizes[size] || sizes.md;
 };
 
@@ -135,208 +141,238 @@ const getWellPaddingClasses = (padding: WellPadding): string => {
     none: 'p-0',
     tight: 'p-2',
     normal: 'p-4',
-    loose: 'p-6'
+    loose: 'p-6',
   };
-  
+
   return paddings[padding] || paddings.normal;
 };
 
-const combineWellClasses = (...classes: (string | undefined | false)[]): string => {
+const combineWellClasses = (
+  ...classes: (string | undefined | false)[]
+): string => {
   return classes.filter(Boolean).join(' ');
 };
 
 // ===== MAIN COMPONENT =====
 
-const WellComponent = forwardRef<HTMLDivElement, WellProps>(({
-  variant = 'default',
-  size = 'md',
-  padding = 'normal',
-  interactive = false,
-  loading = false,
-  disabled = false,
-  className,
-  children,
-  onClick,
-  onKeyDown,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledBy,
-  'aria-describedby': ariaDescribedBy,
-  'data-testid': testId,
-  ...props
-}, ref) => {
-  // ===== EVENT HANDLERS =====
-  
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (disabled || loading) return;
-    onClick?.(event);
-  };
-  
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (disabled || loading) return;
-    
-    // Handle Enter and Space for interactive wells
-    if (interactive && (event.key === 'Enter' || event.key === ' ')) {
-      event.preventDefault();
-      // Trigger click event for keyboard users
-      onClick?.(event as any);
+const WellComponent = forwardRef<HTMLDivElement, WellProps>(
+  (
+    {
+      variant = 'default',
+      size = 'md',
+      padding = 'normal',
+      interactive = false,
+      loading = false,
+      disabled = false,
+      className,
+      children,
+      onClick,
+      onKeyDown,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
+      'aria-describedby': ariaDescribedBy,
+      'data-testid': testId,
+      ...props
+    },
+    ref
+  ) => {
+    // ===== EVENT HANDLERS =====
+
+    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+      if (disabled || loading) return;
+      onClick?.(event);
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (disabled || loading) return;
+
+      // Handle Enter and Space for interactive wells
+      if (interactive && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        // Trigger click programmatically for keyboard users
+        event.currentTarget.click();
+      }
+
+      onKeyDown?.(event);
+    };
+
+    // ===== CLASS COMPUTATION =====
+
+    const baseClasses = getWellVariantClasses(variant);
+    const sizeClasses = getWellSizeClasses(size);
+    const paddingClasses = getWellPaddingClasses(padding);
+
+    const stateClasses = combineWellClasses(
+      loading && 'opacity-60 cursor-wait',
+      disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+      interactive &&
+        !disabled &&
+        !loading &&
+        'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
+    );
+
+    const computedClassName = combineWellClasses(
+      baseClasses,
+      sizeClasses,
+      paddingClasses,
+      stateClasses,
+      className
+    );
+
+    // ===== ACCESSIBILITY ATTRIBUTES =====
+
+    const accessibilityProps = {
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
+      'aria-describedby': ariaDescribedBy,
+      'aria-disabled': disabled,
+      'aria-busy': loading,
+      ...(interactive &&
+        !disabled &&
+        !loading && {
+          role: 'button',
+          tabIndex: 0,
+        }),
+      'data-testid': testId || 'well',
+      'data-variant': variant,
+      'data-size': size,
+      'data-padding': padding,
+      'data-interactive': interactive,
+      'data-loading': loading,
+      'data-disabled': disabled,
+    };
+
+    // ===== RENDER =====
+
+    if (loading) {
+      return (
+        <div
+          ref={ref}
+          className={computedClassName}
+          {...accessibilityProps}
+          {...props}
+        >
+          <div className={combineTokens('animate-pulse', 'space-y-2')}>
+            <div
+              className={combineTokens(
+                'h-4',
+                'bg-slate-200',
+                'dark:bg-slate-700',
+                'rounded',
+                'w-3/4'
+              )}
+            ></div>
+            <div
+              className={combineTokens(
+                'h-4',
+                'bg-slate-200',
+                'dark:bg-slate-700',
+                'rounded',
+                'w-1/2'
+              )}
+            ></div>
+            <div
+              className={combineTokens(
+                'h-4',
+                'bg-slate-200',
+                'dark:bg-slate-700',
+                'rounded',
+                'w-2/3'
+              )}
+            ></div>
+          </div>
+        </div>
+      );
     }
-    
-    onKeyDown?.(event);
-  };
-  
-  // ===== CLASS COMPUTATION =====
-  
-  const baseClasses = getWellVariantClasses(variant);
-  const sizeClasses = getWellSizeClasses(size);
-  const paddingClasses = getWellPaddingClasses(padding);
-  
-  const stateClasses = combineWellClasses(
-    loading && 'opacity-60 cursor-wait',
-    disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
-    interactive && !disabled && !loading && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
-  );
-  
-  const computedClassName = combineWellClasses(
-    baseClasses,
-    sizeClasses,
-    paddingClasses,
-    stateClasses,
-    className
-  );
-  
-  // ===== ACCESSIBILITY ATTRIBUTES =====
-  
-  const accessibilityProps = {
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
-    'aria-describedby': ariaDescribedBy,
-    'aria-disabled': disabled,
-    'aria-busy': loading,
-    ...(interactive && !disabled && !loading && {
-      role: 'button',
-      tabIndex: 0
-    }),
-    'data-testid': testId || 'well',
-    'data-variant': variant,
-    'data-size': size,
-    'data-padding': padding,
-    'data-interactive': interactive,
-    'data-loading': loading,
-    'data-disabled': disabled
-  };
-  
-  // ===== RENDER =====
-  
-  if (loading) {
+
     return (
       <div
         ref={ref}
         className={computedClassName}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
         {...accessibilityProps}
         {...props}
       >
-        <div className="animate-pulse space-y-2">
-          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
-          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
-          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3"></div>
-        </div>
+        {children}
       </div>
     );
   }
-  
-  return (
-    <div
-      ref={ref}
-      className={computedClassName}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      {...accessibilityProps}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+);
 
 WellComponent.displayName = 'Well';
 
 // ===== COMPOUND COMPONENTS =====
 
-const WellHeader = forwardRef<HTMLDivElement, WellHeaderProps>(({
-  children,
-  className,
-  ...props
-}, ref) => {
-  const headerClasses = combineWellClasses(
-    'border-b border-slate-200 dark:border-slate-700 pb-3 mb-4 last:border-b-0 last:pb-0 last:mb-0',
-    className
-  );
-  
-  return (
-    <div
-      ref={ref}
-      className={headerClasses}
-      data-testid="well-header"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+const WellHeader = forwardRef<HTMLDivElement, WellHeaderProps>(
+  ({ children, className, ...props }, ref) => {
+    const headerClasses = combineWellClasses(
+      'border-b border-slate-200 dark:border-slate-700 pb-3 mb-4 last:border-b-0 last:pb-0 last:mb-0',
+      className
+    );
+
+    return (
+      <div
+        ref={ref}
+        className={headerClasses}
+        data-testid='well-header'
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 
 WellHeader.displayName = 'Well.Header';
 
-const WellContent = forwardRef<HTMLDivElement, WellContentProps>(({
-  children,
-  className,
-  ...props
-}, ref) => {
-  const contentClasses = combineWellClasses(
-    'flex-1',
-    className
-  );
-  
-  return (
-    <div
-      ref={ref}
-      className={contentClasses}
-      data-testid="well-content"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+const WellContent = forwardRef<HTMLDivElement, WellContentProps>(
+  ({ children, className, ...props }, ref) => {
+    const contentClasses = combineWellClasses('flex-1', className);
+
+    return (
+      <div
+        ref={ref}
+        className={contentClasses}
+        data-testid='well-content'
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 
 WellContent.displayName = 'Well.Content';
 
-const WellFooter = forwardRef<HTMLDivElement, WellFooterProps>(({
-  children,
-  className,
-  ...props
-}, ref) => {
-  const footerClasses = combineWellClasses(
-    'border-t border-slate-200 dark:border-slate-700 pt-3 mt-4 first:border-t-0 first:pt-0 first:mt-0',
-    className
-  );
-  
-  return (
-    <div
-      ref={ref}
-      className={footerClasses}
-      data-testid="well-footer"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+const WellFooter = forwardRef<HTMLDivElement, WellFooterProps>(
+  ({ children, className, ...props }, ref) => {
+    const footerClasses = combineWellClasses(
+      'border-t border-slate-200 dark:border-slate-700 pt-3 mt-4 first:border-t-0 first:pt-0 first:mt-0',
+      className
+    );
+
+    return (
+      <div
+        ref={ref}
+        className={footerClasses}
+        data-testid='well-footer'
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 
 WellFooter.displayName = 'Well.Footer';
 
 // ===== COMPOUND COMPONENT COMPOSITION =====
 
-interface WellCompoundComponent extends React.ForwardRefExoticComponent<WellProps & React.RefAttributes<HTMLDivElement>> {
+interface WellCompoundComponent
+  extends React.ForwardRefExoticComponent<
+    WellProps & React.RefAttributes<HTMLDivElement>
+  > {
   Header: typeof WellHeader;
   Content: typeof WellContent;
   Footer: typeof WellFooter;

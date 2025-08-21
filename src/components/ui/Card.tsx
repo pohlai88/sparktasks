@@ -1,12 +1,17 @@
-import React, { forwardRef, HTMLAttributes, createElement, useMemo } from 'react';
+import React, {
+  forwardRef,
+  HTMLAttributes,
+  createElement,
+  useMemo,
+} from 'react';
 import { cn } from '@/utils/cn';
-import { DESIGN_TOKENS } from '@/design/tokens';
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ============================================================================
 // CARD COMPONENT - ENTERPRISE GRADE V3.2
 // ============================================================================
 // 🎯 PURPOSE: Fortune 500+ Content Container System
-// 📊 TARGET: 95%+ Rating, Enterprise Accessibility Standards  
+// 📊 TARGET: 95%+ Rating, Enterprise Accessibility Standards
 // 🏗️ ARCHITECTURE: Compound Component Pattern with Full Flexibility
 // 🎨 TOKENS: Zero Hardcoded Classes, Full DESIGN_TOKENS Integration
 // ♿ A11Y: WCAG 2.1 AAA Compliance, Semantic HTML5
@@ -16,7 +21,16 @@ import { DESIGN_TOKENS } from '@/design/tokens';
 // ===== TYPE DEFINITIONS =====
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   /** Visual variant determining card appearance */
-  variant?: 'default' | 'interactive' | 'elevated' | 'flat' | 'outlined' | 'success' | 'warning' | 'error' | 'info';
+  variant?:
+    | 'default'
+    | 'interactive'
+    | 'elevated'
+    | 'flat'
+    | 'outlined'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'info';
   /** Padding configuration for internal spacing */
   padding?: 'default' | 'compact' | 'spacious' | 'none';
   /** Elevation system for depth perception */
@@ -62,22 +76,48 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 // ===== COMPOUND COMPONENT TYPE =====
-interface CardComponent extends React.ForwardRefExoticComponent<CardProps & React.RefAttributes<HTMLDivElement>> {
-  Header: React.ForwardRefExoticComponent<CardHeaderProps & React.RefAttributes<HTMLDivElement>>;
-  Title: React.ForwardRefExoticComponent<CardTitleProps & React.RefAttributes<HTMLHeadingElement>>;
-  Content: React.ForwardRefExoticComponent<CardContentProps & React.RefAttributes<HTMLDivElement>>;
-  Footer: React.ForwardRefExoticComponent<CardFooterProps & React.RefAttributes<HTMLDivElement>>;
+interface CardComponent
+  extends React.ForwardRefExoticComponent<
+    CardProps & React.RefAttributes<HTMLDivElement>
+  > {
+  Header: React.ForwardRefExoticComponent<
+    CardHeaderProps & React.RefAttributes<HTMLDivElement>
+  >;
+  Title: React.ForwardRefExoticComponent<
+    CardTitleProps & React.RefAttributes<HTMLHeadingElement>
+  >;
+  Content: React.ForwardRefExoticComponent<
+    CardContentProps & React.RefAttributes<HTMLDivElement>
+  >;
+  Footer: React.ForwardRefExoticComponent<
+    CardFooterProps & React.RefAttributes<HTMLDivElement>
+  >;
 }
 
 // ===== CARD VARIANT SYSTEM =====
 const cardVariants = {
   default: DESIGN_TOKENS.recipe.card.base,
-  interactive: cn(DESIGN_TOKENS.recipe.card.base, DESIGN_TOKENS.recipe.card.interactive),
-  elevated: cn(DESIGN_TOKENS.recipe.card.base, DESIGN_TOKENS.recipe.card.elevated),
+  interactive: cn(
+    DESIGN_TOKENS.recipe.card.base,
+    DESIGN_TOKENS.recipe.card.interactive
+  ),
+  elevated: cn(
+    DESIGN_TOKENS.recipe.card.base,
+    DESIGN_TOKENS.recipe.card.elevated
+  ),
   flat: cn(DESIGN_TOKENS.recipe.card.base, DESIGN_TOKENS.recipe.card.flat),
-  outlined: cn(DESIGN_TOKENS.recipe.card.base, DESIGN_TOKENS.recipe.card.outlined),
-  success: cn(DESIGN_TOKENS.recipe.card.base, DESIGN_TOKENS.recipe.card.success),
-  warning: cn(DESIGN_TOKENS.recipe.card.base, DESIGN_TOKENS.recipe.card.warning),
+  outlined: cn(
+    DESIGN_TOKENS.recipe.card.base,
+    DESIGN_TOKENS.recipe.card.outlined
+  ),
+  success: cn(
+    DESIGN_TOKENS.recipe.card.base,
+    DESIGN_TOKENS.recipe.card.success
+  ),
+  warning: cn(
+    DESIGN_TOKENS.recipe.card.base,
+    DESIGN_TOKENS.recipe.card.warning
+  ),
   error: cn(DESIGN_TOKENS.recipe.card.base, DESIGN_TOKENS.recipe.card.error),
   info: cn(DESIGN_TOKENS.recipe.card.base, DESIGN_TOKENS.recipe.card.info),
 };
@@ -99,16 +139,30 @@ const elevationVariants: Record<CardProps['elevation'] & string, string> = {
 };
 
 // ===== LOADING SKELETON SYSTEM =====
-const LoadingSkeleton: React.FC<{ variant?: CardProps['variant'] }> = ({ variant = 'default' }) => (
-  <div className={cn(cardVariants[variant], paddingVariants.default, 'animate-pulse')}>
-    <div className="space-y-4">
-      <div className={cn(DESIGN_TOKENS.recipe.skeleton.text, 'w-3/4 h-6')} />
-      <div className="space-y-2">
+const LoadingSkeleton: React.FC<{ variant?: CardProps['variant'] }> = ({
+  variant = 'default',
+}) => (
+  <div
+    className={cn(
+      cardVariants[variant],
+      paddingVariants.default,
+      'animate-pulse'
+    )}
+  >
+    <div className={DESIGN_TOKENS.layout.spacing.fine.spaceY4}>
+      <div className={cn(DESIGN_TOKENS.recipe.skeleton.text, 'h-6 w-3/4')} />
+      <div className={DESIGN_TOKENS.layout.spacing.fine.spaceY2}>
         <div className={cn(DESIGN_TOKENS.recipe.skeleton.text, 'w-full')} />
         <div className={cn(DESIGN_TOKENS.recipe.skeleton.text, 'w-5/6')} />
         <div className={cn(DESIGN_TOKENS.recipe.skeleton.text, 'w-4/6')} />
       </div>
-      <div className="flex gap-2 pt-2">
+      <div
+        className={combineTokens(
+          DESIGN_TOKENS.layout.flex.row,
+          DESIGN_TOKENS.layout.spacing.gap.sm,
+          DESIGN_TOKENS.layout.spacing.fine.pt2
+        )}
+      >
         <div className={cn(DESIGN_TOKENS.recipe.skeleton.button)} />
         <div className={cn(DESIGN_TOKENS.recipe.skeleton.button)} />
       </div>
@@ -139,9 +193,10 @@ const CardComponent = forwardRef<HTMLDivElement, CardProps>(
     ref
   ) => {
     // ===== COMPUTED VALUES =====
-    const computedVariant = interactive && !variant.includes('interactive') 
-      ? ('interactive' as const)
-      : variant;
+    const computedVariant =
+      interactive && !variant.includes('interactive')
+        ? ('interactive' as const)
+        : variant;
 
     const computedTabIndex = useMemo(() => {
       if (disabled) return -1;
@@ -158,13 +213,14 @@ const CardComponent = forwardRef<HTMLDivElement, CardProps>(
     // ===== KEYBOARD INTERACTION =====
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (disabled) return;
-      
+
       // Space and Enter should trigger click for interactive cards
       if (interactive && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault();
-        onClick?.(event as any);
+        // Trigger click programmatically
+        event.currentTarget.click();
       }
-      
+
       onKeyDown?.(event);
     };
 
@@ -192,9 +248,10 @@ const CardComponent = forwardRef<HTMLDivElement, CardProps>(
           elevation && elevationVariants[elevation],
           // Interactive states
           interactive && 'cursor-pointer',
-          interactive && 'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
+          interactive &&
+            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
           // Disabled state
-          disabled && 'opacity-50 cursor-not-allowed',
+          disabled && 'cursor-not-allowed opacity-50',
           // Custom classes
           className
         )}
@@ -219,7 +276,8 @@ const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, variant = 'default', children, ...props }, ref) => {
     const headerVariants = {
       default: 'flex flex-col space-y-1.5 p-6',
-      bordered: 'flex flex-col space-y-1.5 p-6 border-b border-slate-200 dark:border-slate-700',
+      bordered:
+        'flex flex-col space-y-1.5 p-6 border-b border-slate-200 dark:border-slate-700',
       compact: 'flex flex-col space-y-1 p-4',
     };
 
@@ -240,14 +298,7 @@ CardHeader.displayName = 'CardHeader';
 // ===== CARD TITLE COMPONENT =====
 const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(
   (
-    { 
-      className, 
-      level = 3, 
-      size = 'lg', 
-      truncate = false,
-      children, 
-      ...props 
-    }, 
+    { className, level = 3, size = 'lg', truncate = false, children, ...props },
     ref
   ) => {
     const sizeVariants = {
@@ -306,13 +357,7 @@ CardContent.displayName = 'CardContent';
 // ===== CARD FOOTER COMPONENT =====
 const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   (
-    { 
-      className, 
-      align = 'left', 
-      bordered = false,
-      children, 
-      ...props 
-    }, 
+    { className, align = 'left', bordered = false, children, ...props },
     ref
   ) => {
     const alignVariants = {
@@ -329,7 +374,7 @@ const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
         className={cn(
           'flex items-center p-6 pt-0',
           alignVariants[align],
-          bordered && 'border-t border-slate-200 dark:border-slate-700 pt-6',
+          bordered && 'border-t border-slate-200 pt-6 dark:border-slate-700',
           className
         )}
         {...props}

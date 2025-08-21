@@ -51,15 +51,18 @@ describe('pack merge hardening', () => {
       expect(plan.conflicts[0]).toEqual({
         taskId: 'new-task-1',
         reason: 'timestamp-regression',
-        details: 'Event timestamp 2024-01-02T09:00:00.000Z <= last timestamp 2024-01-02T11:00:00.000Z'
+        details:
+          'Event timestamp 2024-01-02T09:00:00.000Z <= last timestamp 2024-01-02T11:00:00.000Z',
       });
 
       // Should auto-adjust the timestamp
       expect(plan.applyEvents).toHaveLength(3);
-      expect(plan.applyEvents[2]?.timestamp).not.toBe('2024-01-02T09:00:00.000Z');
-      expect(new Date(plan.applyEvents[2]?.timestamp || '').getTime()).toBeGreaterThan(
-        new Date('2024-01-02T11:00:00.000Z').getTime()
+      expect(plan.applyEvents[2]?.timestamp).not.toBe(
+        '2024-01-02T09:00:00.000Z'
       );
+      expect(
+        new Date(plan.applyEvents[2]?.timestamp || '').getTime()
+      ).toBeGreaterThan(new Date('2024-01-02T11:00:00.000Z').getTime());
     });
 
     it('should detect regression against existing task timestamps', () => {
@@ -80,7 +83,8 @@ describe('pack merge hardening', () => {
       expect(plan.conflicts[0]).toEqual({
         taskId: 'existing-1',
         reason: 'timestamp-regression',
-        details: 'Event timestamp 2024-01-01T11:00:00.000Z <= last timestamp 2024-01-01T12:00:00.000Z'
+        details:
+          'Event timestamp 2024-01-01T11:00:00.000Z <= last timestamp 2024-01-01T12:00:00.000Z',
       });
     });
 
@@ -171,12 +175,14 @@ describe('pack merge hardening', () => {
       expect(plan.conflicts[0]).toEqual({
         taskId: 'orphan-task-1',
         reason: 'orphan-event',
-        details: "Event references task 'orphan-task-1' with no prior TASK_CREATED"
+        details:
+          "Event references task 'orphan-task-1' with no prior TASK_CREATED",
       });
       expect(plan.conflicts[1]).toEqual({
         taskId: 'orphan-task-2',
         reason: 'orphan-event',
-        details: "Event references task 'orphan-task-2' with no prior TASK_CREATED"
+        details:
+          "Event references task 'orphan-task-2' with no prior TASK_CREATED",
       });
     });
 
@@ -194,7 +200,9 @@ describe('pack merge hardening', () => {
 
       const plan = planMerge([existingTask], events, 'remapIds');
 
-      expect(plan.conflicts.filter(c => c.reason === 'orphan-event')).toHaveLength(0);
+      expect(
+        plan.conflicts.filter(c => c.reason === 'orphan-event')
+      ).toHaveLength(0);
       expect(plan.applyEvents).toHaveLength(1);
     });
 
@@ -223,7 +231,9 @@ describe('pack merge hardening', () => {
 
       const plan = planMerge([], events, 'remapIds');
 
-      expect(plan.conflicts.filter(c => c.reason === 'orphan-event')).toHaveLength(0);
+      expect(
+        plan.conflicts.filter(c => c.reason === 'orphan-event')
+      ).toHaveLength(0);
       expect(plan.applyEvents).toHaveLength(2);
     });
 
@@ -253,9 +263,13 @@ describe('pack merge hardening', () => {
       const plan = planMerge([existingTask], events, 'remapIds');
 
       // Should have ID conflict but NO orphan event
-      const idConflicts = plan.conflicts.filter(c => c.reason === 'id-conflict');
-      const orphanEvents = plan.conflicts.filter(c => c.reason === 'orphan-event');
-      
+      const idConflicts = plan.conflicts.filter(
+        c => c.reason === 'id-conflict'
+      );
+      const orphanEvents = plan.conflicts.filter(
+        c => c.reason === 'orphan-event'
+      );
+
       expect(idConflicts).toHaveLength(1);
       expect(orphanEvents).toHaveLength(0);
       expect(plan.applyEvents).toHaveLength(2);
@@ -328,13 +342,17 @@ describe('pack merge hardening', () => {
       const plan = planMerge([], events, 'remapIds');
 
       expect(plan.conflicts).toHaveLength(2);
-      
-      const orphanConflict = plan.conflicts.find(c => c.reason === 'orphan-event');
-      const timestampConflict = plan.conflicts.find(c => c.reason === 'timestamp-regression');
-      
+
+      const orphanConflict = plan.conflicts.find(
+        c => c.reason === 'orphan-event'
+      );
+      const timestampConflict = plan.conflicts.find(
+        c => c.reason === 'timestamp-regression'
+      );
+
       expect(orphanConflict).toBeDefined();
       expect(orphanConflict?.taskId).toBe('orphan-task-1');
-      
+
       expect(timestampConflict).toBeDefined();
       expect(timestampConflict?.taskId).toBe('new-task-1');
     });
@@ -373,15 +391,21 @@ describe('pack merge hardening', () => {
 
       const plan = planMerge([existingTask], events, 'remapIds');
 
-      expect(plan.conflicts.filter(c => c.reason === 'id-conflict')).toHaveLength(1);
-      expect(plan.conflicts.filter(c => c.reason === 'orphan-event')).toHaveLength(0);
-      
+      expect(
+        plan.conflicts.filter(c => c.reason === 'id-conflict')
+      ).toHaveLength(1);
+      expect(
+        plan.conflicts.filter(c => c.reason === 'orphan-event')
+      ).toHaveLength(0);
+
       const newId = plan.idMap['existing-1'];
       expect(newId).toBeDefined();
-      
+
       // All events should reference the new ID
       expect(plan.applyEvents).toHaveLength(3);
-      expect(plan.applyEvents.every(event => event.payload.id === newId)).toBe(true);
+      expect(plan.applyEvents.every(event => event.payload.id === newId)).toBe(
+        true
+      );
     });
   });
 });

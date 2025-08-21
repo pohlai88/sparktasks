@@ -7,9 +7,9 @@ import DebugHoverCard from '@/components/ui/DebugHoverCard';
 describe('DebugHoverCard', () => {
   it('shows content on hover', async () => {
     const user = userEvent.setup();
-    
+
     render(
-      <DebugHoverCard content="Debug content">
+      <DebugHoverCard content='Debug content'>
         <button>Hover me</button>
       </DebugHoverCard>
     );

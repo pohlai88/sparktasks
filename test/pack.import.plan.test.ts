@@ -11,7 +11,7 @@ const createValidMeta = (events: any[]) => {
     h = Math.imul(h, 0x01000193) >>> 0;
   }
   const eventsHash = ('00000000' + h.toString(16)).slice(-8);
-  
+
   return {
     version: 1 as const,
     format: 'sparkpack/1+json' as const,
@@ -104,7 +104,7 @@ describe('Pack Import Planning', () => {
       },
       { type: 'ANOTHER_INVALID', timestamp: 'also bad', payload: {} }, // index 3
     ];
-    
+
     const sparkpack = {
       meta: createValidMeta(events),
       events,

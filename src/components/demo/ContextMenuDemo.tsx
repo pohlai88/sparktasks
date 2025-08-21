@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
-import { ContextMenuProvider, ContextMenuTrigger, MenuItem } from '@/components/ui/ContextMenu';
-import { Copy, Edit3, Trash2, Settings, Share, Download, Star, Heart } from 'lucide-react';
+import {
+  ContextMenuProvider,
+  ContextMenuTrigger,
+  MenuItem,
+} from '@/components/ui/ContextMenu';
+import {
+  Copy,
+  Edit3,
+  Trash2,
+  Settings,
+  Share,
+  Download,
+  Star,
+  Heart,
+} from 'lucide-react';
 import { DESIGN_TOKENS } from '@/design/tokens';
 
 const ContextMenuDemo: React.FC = () => {
@@ -153,47 +166,60 @@ const ContextMenuDemo: React.FC = () => {
 
   return (
     <ContextMenuProvider>
-      <div className={`p-8 min-h-screen ${DESIGN_TOKENS.theme.light.surface.base}`}>
-        <div className="max-w-4xl mx-auto space-y-8">
-          <header className="text-center space-y-4">
-            <h1 className={`text-3xl font-bold ${DESIGN_TOKENS.semantic.text.accent}`}>
+      <div
+        className={`min-h-screen p-8 ${DESIGN_TOKENS.theme.light.surface.base}`}
+      >
+        <div className='mx-auto max-w-4xl space-y-8'>
+          <header className='space-y-4 text-center'>
+            <h1
+              className={`text-3xl font-bold ${DESIGN_TOKENS.semantic.text.accent}`}
+            >
               ContextMenu Demo
             </h1>
             <p className={`text-lg ${DESIGN_TOKENS.semantic.text.muted}`}>
-              Right-click on the cards below to test different context menu configurations
+              Right-click on the cards below to test different context menu
+              configurations
             </p>
             <p className={`text-sm ${DESIGN_TOKENS.semantic.text.muted}`}>
-              Features: Roving tabindex, typeahead search, submenu collision detection, keyboard navigation
+              Features: Roving tabindex, typeahead search, submenu collision
+              detection, keyboard navigation
             </p>
           </header>
 
           {lastAction && (
-            <div className={`p-4 rounded-lg ${DESIGN_TOKENS.semantic.background.info} border-l-4 border-blue-500`}>
+            <div
+              className={`rounded-lg p-4 ${DESIGN_TOKENS.semantic.background.info} border-l-4 border-blue-500`}
+            >
               <p className={`font-medium ${DESIGN_TOKENS.semantic.text.info}`}>
                 Last Action: {lastAction}
               </p>
             </div>
           )}
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className='grid gap-6 md:grid-cols-3'>
             {/* Basic Menu */}
             <ContextMenuTrigger items={basicMenuItems}>
-              <div className={`
-                p-6 rounded-lg border-2 border-dashed border-gray-300 
-                hover:border-gray-400 cursor-pointer transition-colors
-                ${DESIGN_TOKENS.theme.light.surface.subtle}
-              `}>
-                <h3 className={`text-xl font-semibold mb-2 ${DESIGN_TOKENS.semantic.text.accent}`}>
+              <div
+                className={`cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-6 transition-colors hover:border-gray-400 ${DESIGN_TOKENS.theme.light.surface.subtle} `}
+              >
+                <h3
+                  className={`mb-2 text-xl font-semibold ${DESIGN_TOKENS.semantic.text.accent}`}
+                >
                   Basic Menu
                 </h3>
                 <p className={DESIGN_TOKENS.semantic.text.muted}>
-                  Right-click for basic context menu with copy, edit, and delete options.
+                  Right-click for basic context menu with copy, edit, and delete
+                  options.
                 </p>
-                <div className="mt-4 space-y-2">
-                  <div className={`text-sm ${DESIGN_TOKENS.semantic.text.muted}`}>
+                <div className='mt-4 space-y-2'>
+                  <div
+                    className={`text-sm ${DESIGN_TOKENS.semantic.text.muted}`}
+                  >
                     ✨ Features tested:
                   </div>
-                  <ul className={`text-xs space-y-1 ${DESIGN_TOKENS.semantic.text.muted}`}>
+                  <ul
+                    className={`space-y-1 text-xs ${DESIGN_TOKENS.semantic.text.muted}`}
+                  >
                     <li>• Button semantics</li>
                     <li>• Danger styling</li>
                     <li>• Dividers</li>
@@ -205,22 +231,27 @@ const ContextMenuDemo: React.FC = () => {
 
             {/* Advanced Menu with Submenus */}
             <ContextMenuTrigger items={advancedMenuItems}>
-              <div className={`
-                p-6 rounded-lg border-2 border-dashed border-gray-300 
-                hover:border-gray-400 cursor-pointer transition-colors
-                ${DESIGN_TOKENS.theme.light.surface.subtle}
-              `}>
-                <h3 className={`text-xl font-semibold mb-2 ${DESIGN_TOKENS.semantic.text.accent}`}>
+              <div
+                className={`cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-6 transition-colors hover:border-gray-400 ${DESIGN_TOKENS.theme.light.surface.subtle} `}
+              >
+                <h3
+                  className={`mb-2 text-xl font-semibold ${DESIGN_TOKENS.semantic.text.accent}`}
+                >
                   Advanced Menu
                 </h3>
                 <p className={DESIGN_TOKENS.semantic.text.muted}>
-                  Right-click for advanced menu with nested submenus and collision detection.
+                  Right-click for advanced menu with nested submenus and
+                  collision detection.
                 </p>
-                <div className="mt-4 space-y-2">
-                  <div className={`text-sm ${DESIGN_TOKENS.semantic.text.muted}`}>
+                <div className='mt-4 space-y-2'>
+                  <div
+                    className={`text-sm ${DESIGN_TOKENS.semantic.text.muted}`}
+                  >
                     ✨ Features tested:
                   </div>
-                  <ul className={`text-xs space-y-1 ${DESIGN_TOKENS.semantic.text.muted}`}>
+                  <ul
+                    className={`space-y-1 text-xs ${DESIGN_TOKENS.semantic.text.muted}`}
+                  >
                     <li>• Nested submenus</li>
                     <li>• Collision detection</li>
                     <li>• Pointer intent grace</li>
@@ -232,22 +263,27 @@ const ContextMenuDemo: React.FC = () => {
 
             {/* Disabled Items Menu */}
             <ContextMenuTrigger items={disabledMenuItems}>
-              <div className={`
-                p-6 rounded-lg border-2 border-dashed border-gray-300 
-                hover:border-gray-400 cursor-pointer transition-colors
-                ${DESIGN_TOKENS.theme.light.surface.subtle}
-              `}>
-                <h3 className={`text-xl font-semibold mb-2 ${DESIGN_TOKENS.semantic.text.accent}`}>
+              <div
+                className={`cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-6 transition-colors hover:border-gray-400 ${DESIGN_TOKENS.theme.light.surface.subtle} `}
+              >
+                <h3
+                  className={`mb-2 text-xl font-semibold ${DESIGN_TOKENS.semantic.text.accent}`}
+                >
                   Disabled Items
                 </h3>
                 <p className={DESIGN_TOKENS.semantic.text.muted}>
-                  Right-click to test menu with disabled items (middle item is disabled).
+                  Right-click to test menu with disabled items (middle item is
+                  disabled).
                 </p>
-                <div className="mt-4 space-y-2">
-                  <div className={`text-sm ${DESIGN_TOKENS.semantic.text.muted}`}>
+                <div className='mt-4 space-y-2'>
+                  <div
+                    className={`text-sm ${DESIGN_TOKENS.semantic.text.muted}`}
+                  >
                     ✨ Features tested:
                   </div>
-                  <ul className={`text-xs space-y-1 ${DESIGN_TOKENS.semantic.text.muted}`}>
+                  <ul
+                    className={`space-y-1 text-xs ${DESIGN_TOKENS.semantic.text.muted}`}
+                  >
                     <li>• Disabled states</li>
                     <li>• Skip disabled in navigation</li>
                     <li>• Proper ARIA attributes</li>
@@ -258,26 +294,59 @@ const ContextMenuDemo: React.FC = () => {
             </ContextMenuTrigger>
           </div>
 
-          <div className={`p-6 rounded-lg ${DESIGN_TOKENS.theme.light.surface.subtle} border`}>
-            <h3 className={`text-lg font-semibold mb-4 ${DESIGN_TOKENS.semantic.text.accent}`}>
+          <div
+            className={`rounded-lg p-6 ${DESIGN_TOKENS.theme.light.surface.subtle} border`}
+          >
+            <h3
+              className={`mb-4 text-lg font-semibold ${DESIGN_TOKENS.semantic.text.accent}`}
+            >
               Keyboard Shortcuts
             </h3>
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className='grid gap-4 md:grid-cols-2'>
               <div>
-                <h4 className={`font-medium mb-2 ${DESIGN_TOKENS.semantic.text.accent}`}>Menu Navigation</h4>
-                <ul className={`space-y-1 text-sm ${DESIGN_TOKENS.semantic.text.muted}`}>
-                  <li><kbd className="kbd">↑</kbd> / <kbd className="kbd">↓</kbd> Navigate items</li>
-                  <li><kbd className="kbd">Home</kbd> / <kbd className="kbd">End</kbd> First/Last item</li>
-                  <li><kbd className="kbd">Enter</kbd> / <kbd className="kbd">Space</kbd> Activate item</li>
-                  <li><kbd className="kbd">Esc</kbd> Close menu</li>
+                <h4
+                  className={`mb-2 font-medium ${DESIGN_TOKENS.semantic.text.accent}`}
+                >
+                  Menu Navigation
+                </h4>
+                <ul
+                  className={`space-y-1 text-sm ${DESIGN_TOKENS.semantic.text.muted}`}
+                >
+                  <li>
+                    <kbd className='kbd'>↑</kbd> / <kbd className='kbd'>↓</kbd>{' '}
+                    Navigate items
+                  </li>
+                  <li>
+                    <kbd className='kbd'>Home</kbd> /{' '}
+                    <kbd className='kbd'>End</kbd> First/Last item
+                  </li>
+                  <li>
+                    <kbd className='kbd'>Enter</kbd> /{' '}
+                    <kbd className='kbd'>Space</kbd> Activate item
+                  </li>
+                  <li>
+                    <kbd className='kbd'>Esc</kbd> Close menu
+                  </li>
                 </ul>
               </div>
               <div>
-                <h4 className={`font-medium mb-2 ${DESIGN_TOKENS.semantic.text.accent}`}>Submenu Navigation</h4>
-                <ul className={`space-y-1 text-sm ${DESIGN_TOKENS.semantic.text.muted}`}>
-                  <li><kbd className="kbd">→</kbd> Open submenu</li>
-                  <li><kbd className="kbd">←</kbd> Close submenu</li>
-                  <li><kbd className="kbd">a-z</kbd> Typeahead search</li>
+                <h4
+                  className={`mb-2 font-medium ${DESIGN_TOKENS.semantic.text.accent}`}
+                >
+                  Submenu Navigation
+                </h4>
+                <ul
+                  className={`space-y-1 text-sm ${DESIGN_TOKENS.semantic.text.muted}`}
+                >
+                  <li>
+                    <kbd className='kbd'>→</kbd> Open submenu
+                  </li>
+                  <li>
+                    <kbd className='kbd'>←</kbd> Close submenu
+                  </li>
+                  <li>
+                    <kbd className='kbd'>a-z</kbd> Typeahead search
+                  </li>
                   <li>Mouse hover for submenu preview</li>
                 </ul>
               </div>

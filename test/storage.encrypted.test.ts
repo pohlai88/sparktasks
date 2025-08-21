@@ -6,21 +6,21 @@ if (!globalThis.crypto) {
   Object.defineProperty(globalThis, 'crypto', {
     value: webcrypto,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis.crypto, 'subtle', {
     value: webcrypto.subtle,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.getRandomValues) {
   Object.defineProperty(globalThis.crypto, 'getRandomValues', {
     value: webcrypto.getRandomValues.bind(webcrypto),
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 
@@ -137,12 +137,12 @@ describe('EncryptedDriver', () => {
       const value = 'sensitive data';
 
       await encryptedDriver.setItem(key, value);
-      
+
       // Tamper with the ciphertext
       const rawValue = await mockStorage.getItem(key);
       const envelope = JSON.parse(rawValue!);
       envelope.ct = envelope.ct.substring(0, envelope.ct.length - 1) + 'X';
-      
+
       await mockStorage.setItem(key, JSON.stringify(envelope));
 
       await expect(encryptedDriver.getItem(key)).rejects.toThrow();
@@ -153,12 +153,12 @@ describe('EncryptedDriver', () => {
       const value = 'sensitive data';
 
       await encryptedDriver.setItem(key, value);
-      
+
       // Tamper with the IV
       const rawValue = await mockStorage.getItem(key);
       const envelope = JSON.parse(rawValue!);
       envelope.iv = envelope.iv.substring(0, envelope.iv.length - 1) + 'X';
-      
+
       await mockStorage.setItem(key, JSON.stringify(envelope));
 
       await expect(encryptedDriver.getItem(key)).rejects.toThrow();
@@ -171,15 +171,17 @@ describe('EncryptedDriver', () => {
       const value = 'test data';
 
       await encryptedDriver.setItem(key, value);
-      
+
       // Modify envelope to use non-existent key
       const rawValue = await mockStorage.getItem(key);
       const envelope = JSON.parse(rawValue!);
       envelope.kid = 'nonexistent';
-      
+
       await mockStorage.setItem(key, JSON.stringify(envelope));
 
-      await expect(encryptedDriver.getItem(key)).rejects.toThrow('Key not found: nonexistent');
+      await expect(encryptedDriver.getItem(key)).rejects.toThrow(
+        'Key not found: nonexistent'
+      );
     });
 
     it('should handle key rotation on read', async () => {
@@ -188,15 +190,15 @@ describe('EncryptedDriver', () => {
 
       // Store with key1
       await encryptedDriver.setItem(key, value);
-      
+
       // Generate key2 and make it active
       await keyProvider.generateKey('key2');
       keyProvider.setActiveKid('key2');
-      
+
       // Read should trigger re-encryption with key2
       const retrieved = await encryptedDriver.getItem(key);
       expect(retrieved).toBe(value);
-      
+
       // Verify it was re-encrypted with key2
       const rawValue = await mockStorage.getItem(key);
       const envelope = JSON.parse(rawValue!);
@@ -211,7 +213,7 @@ describe('EncryptedDriver', () => {
 
       // Store plaintext directly
       await mockStorage.setItem(key, value);
-      
+
       const retrieved = await encryptedDriver.getItem(key);
       expect(retrieved).toBe(value);
     });
@@ -221,7 +223,7 @@ describe('EncryptedDriver', () => {
       const value = 'not valid json {';
 
       await mockStorage.setItem(key, value);
-      
+
       const retrieved = await encryptedDriver.getItem(key);
       expect(retrieved).toBe(value);
     });
@@ -232,18 +234,18 @@ describe('EncryptedDriver', () => {
 
       // Store plaintext
       await mockStorage.setItem(key, value);
-      
+
       // Read should return plaintext
       const retrieved1 = await encryptedDriver.getItem(key);
       expect(retrieved1).toBe(value);
-      
+
       // Should still be plaintext in storage
       const rawValue1 = await mockStorage.getItem(key);
       expect(rawValue1).toBe(value);
-      
+
       // Write new value
       await encryptedDriver.setItem(key, 'new encrypted value');
-      
+
       // Should now be encrypted
       const rawValue2 = await mockStorage.getItem(key);
       expect(() => JSON.parse(rawValue2!)).not.toThrow();

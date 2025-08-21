@@ -5,25 +5,24 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { 
-  ErrorResponseSchema, 
+import {
+  ErrorResponseSchema,
   HealthResponseSchema,
   VersionResponseSchema,
   createErrorResponse,
   isValidErrorResponse,
   ErrorCodes,
-  HttpStatus
+  HttpStatus,
 } from '@shared/api-contracts';
 
 describe('API Contract Validation', () => {
-  
   describe('Error Response Contract', () => {
     it('should validate correct error response format', () => {
       const validError = {
         error: {
           code: 'TASK_NOT_FOUND',
-          message: 'The requested task could not be found'
-        }
+          message: 'The requested task could not be found',
+        },
       };
 
       expect(ErrorResponseSchema.safeParse(validError).success).toBe(true);
@@ -37,12 +36,14 @@ describe('API Contract Validation', () => {
           message: 'Invalid request data',
           details: {
             field: 'title',
-            issue: 'Required field missing'
-          }
-        }
+            issue: 'Required field missing',
+          },
+        },
       };
 
-      expect(ErrorResponseSchema.safeParse(errorWithDetails).success).toBe(true);
+      expect(ErrorResponseSchema.safeParse(errorWithDetails).success).toBe(
+        true
+      );
     });
 
     it('should reject invalid error response formats', () => {
@@ -50,7 +51,7 @@ describe('API Contract Validation', () => {
         { message: 'Missing error wrapper' },
         { error: { message: 'Missing code field' } },
         { error: { code: 'TEST', message: 123 } }, // message should be string
-        { error: { code: 123, message: 'code should be string' } } // code should be string
+        { error: { code: 123, message: 'code should be string' } }, // code should be string
       ];
 
       invalidFormats.forEach(invalid => {
@@ -77,7 +78,7 @@ describe('API Contract Validation', () => {
         status: 'healthy' as const,
         timestamp: '2025-08-15T10:00:00.000Z',
         version: '1.0.0',
-        uptime: 3600
+        uptime: 3600,
       };
 
       expect(HealthResponseSchema.safeParse(healthResponse).success).toBe(true);
@@ -86,14 +87,14 @@ describe('API Contract Validation', () => {
     it('should validate health response with dependencies', () => {
       const healthWithDeps = {
         status: 'degraded' as const,
-        timestamp: '2025-08-15T10:00:00.000Z', 
+        timestamp: '2025-08-15T10:00:00.000Z',
         version: '1.0.0',
         uptime: 3600,
         dependencies: {
           database: 'ok' as const,
           cache: 'fail' as const,
-          storage: 'degraded' as const
-        }
+          storage: 'degraded' as const,
+        },
       };
 
       expect(HealthResponseSchema.safeParse(healthWithDeps).success).toBe(true);
@@ -104,7 +105,7 @@ describe('API Contract Validation', () => {
         status: 'unknown', // invalid status
         timestamp: '2025-08-15T10:00:00.000Z',
         version: '1.0.0',
-        uptime: 3600
+        uptime: 3600,
       };
 
       expect(HealthResponseSchema.safeParse(invalidHealth).success).toBe(false);
@@ -116,10 +117,12 @@ describe('API Contract Validation', () => {
       const versionResponse = {
         version: '1.0.0',
         build: 'abc123def456',
-        timestamp: '2025-08-15T10:00:00.000Z'
+        timestamp: '2025-08-15T10:00:00.000Z',
       };
 
-      expect(VersionResponseSchema.safeParse(versionResponse).success).toBe(true);
+      expect(VersionResponseSchema.safeParse(versionResponse).success).toBe(
+        true
+      );
     });
   });
 
@@ -146,9 +149,11 @@ describe('API Contract Validation', () => {
     it('should be compatible with existing health response from @shared/health', () => {
       // This ensures our API contract aligns with existing implementation
       const existingHealthResponse = testHelpers.createMockHealthResponse();
-      
+
       // Should be valid according to our API contract
-      expect(HealthResponseSchema.safeParse(existingHealthResponse).success).toBe(true);
+      expect(
+        HealthResponseSchema.safeParse(existingHealthResponse).success
+      ).toBe(true);
     });
   });
 });

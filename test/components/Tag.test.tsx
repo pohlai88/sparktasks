@@ -12,15 +12,31 @@ describe('Tag - Optimized Enterprise Component', () => {
     it('renders with DESIGN_TOKENS styling', () => {
       render(<Tag>Test Tag</Tag>);
       expect(screen.getByText('Test Tag')).toBeInTheDocument();
-      expect(screen.getByTestId('tag')).toHaveAttribute('data-variant', 'default');
+      expect(screen.getByTestId('tag')).toHaveAttribute(
+        'data-variant',
+        'default'
+      );
     });
 
     it('supports all variants', () => {
-      const variants: TagVariant[] = ['default', 'success', 'warning', 'danger', 'info', 'outline', 'solid', 'ghost', 'accent'];
+      const variants: TagVariant[] = [
+        'default',
+        'success',
+        'warning',
+        'danger',
+        'info',
+        'outline',
+        'solid',
+        'ghost',
+        'accent',
+      ];
       variants.forEach(variant => {
         const { unmount } = render(<Tag variant={variant}>Tag {variant}</Tag>);
         expect(screen.getByText(`Tag ${variant}`)).toBeInTheDocument();
-        expect(screen.getByTestId('tag')).toHaveAttribute('data-variant', variant);
+        expect(screen.getByTestId('tag')).toHaveAttribute(
+          'data-variant',
+          variant
+        );
         unmount();
       });
     });
@@ -38,11 +54,14 @@ describe('Tag - Optimized Enterprise Component', () => {
   });
 
   describe('Size Variants', () => {
-    it.each<TagSize>(['xs', 'sm', 'md', 'lg'])('applies %s size correctly', (size) => {
-      render(<Tag size={size}>Size {size}</Tag>);
-      const tag = screen.getByTestId('tag');
-      expect(tag).toHaveAttribute('data-size', size);
-    });
+    it.each<TagSize>(['xs', 'sm', 'md', 'lg'])(
+      'applies %s size correctly',
+      size => {
+        render(<Tag size={size}>Size {size}</Tag>);
+        const tag = screen.getByTestId('tag');
+        expect(tag).toHaveAttribute('data-size', size);
+      }
+    );
 
     it('defaults to md size when not specified', () => {
       render(<Tag>Default size</Tag>);
@@ -50,7 +69,11 @@ describe('Tag - Optimized Enterprise Component', () => {
     });
 
     it('has correct data attributes and a11y label', () => {
-      render(<Tag variant="success" size="lg" ariaLabel="My tag">Tag Content</Tag>);
+      render(
+        <Tag variant='success' size='lg' ariaLabel='My tag'>
+          Tag Content
+        </Tag>
+      );
       const tag = screen.getByLabelText('My tag');
       expect(tag).toHaveAttribute('data-variant', 'success');
       expect(tag).toHaveAttribute('data-size', 'lg');
@@ -58,35 +81,56 @@ describe('Tag - Optimized Enterprise Component', () => {
   });
 
   describe('Status Indicators', () => {
-    it.each<TagStatus>(['success', 'warning', 'danger', 'info'])('displays %s status icon', (status) => {
-      render(<Tag status={status}>Status {status}</Tag>);
-      const tag = screen.getByTestId('tag');
-      expect(tag).toHaveAttribute('data-status', status);
-      expect(tag).toHaveAttribute('role', 'status');
-      expect(tag).toHaveAttribute('aria-live', 'polite');
-    });
+    it.each<TagStatus>(['success', 'warning', 'danger', 'info'])(
+      'displays %s status icon',
+      status => {
+        render(<Tag status={status}>Status {status}</Tag>);
+        const tag = screen.getByTestId('tag');
+        expect(tag).toHaveAttribute('data-status', status);
+        expect(tag).toHaveAttribute('role', 'status');
+        expect(tag).toHaveAttribute('aria-live', 'polite');
+      }
+    );
 
     it('provides status screen reader text when no aria-label', () => {
-      render(<Tag status="success">Success tag</Tag>);
-      expect(screen.getByText('Success', { selector: '.sr-only' })).toBeInTheDocument();
+      render(<Tag status='success'>Success tag</Tag>);
+      expect(
+        screen.getByText('Success', { selector: '.sr-only' })
+      ).toBeInTheDocument();
     });
 
     it('skips status screen reader text when aria-label provided', () => {
-      render(<Tag status="success" ariaLabel="Custom label">Success tag</Tag>);
-      expect(screen.queryByText('Success', { selector: '.sr-only' })).not.toBeInTheDocument();
+      render(
+        <Tag status='success' ariaLabel='Custom label'>
+          Success tag
+        </Tag>
+      );
+      expect(
+        screen.queryByText('Success', { selector: '.sr-only' })
+      ).not.toBeInTheDocument();
     });
 
     it('adapts status icon size to tag size', () => {
-      render(<Tag status="success" size="lg">Large success</Tag>);
+      render(
+        <Tag status='success' size='lg'>
+          Large success
+        </Tag>
+      );
       const tag = screen.getByTestId('tag');
       expect(tag.querySelector('svg')).toHaveClass('size-4');
     });
 
     it('prioritizes status icon over regular icon', () => {
-      const icon = <span data-testid="regular-icon">🔥</span>;
-      render(<Tag icon={icon} status="success">Priority test</Tag>);
+      const icon = <span data-testid='regular-icon'>🔥</span>;
+      render(
+        <Tag icon={icon} status='success'>
+          Priority test
+        </Tag>
+      );
       expect(screen.queryByTestId('regular-icon')).not.toBeInTheDocument();
-      expect(screen.getByTestId('tag').querySelector('svg')).toBeInTheDocument();
+      expect(
+        screen.getByTestId('tag').querySelector('svg')
+      ).toBeInTheDocument();
     });
   });
 
@@ -104,7 +148,7 @@ describe('Tag - Optimized Enterprise Component', () => {
       const onSelect = vi.fn();
       const user = userEvent.setup();
       render(<Tag onSelect={onSelect}>Selectable</Tag>);
-      
+
       await user.click(screen.getByTestId('tag'));
       expect(onSelect).toHaveBeenCalledTimes(1);
     });
@@ -112,19 +156,27 @@ describe('Tag - Optimized Enterprise Component', () => {
     it('handles selection via keyboard', async () => {
       const onSelect = vi.fn();
       const user = userEvent.setup();
-      render(<Tag onSelect={onSelect} interactive>Selectable</Tag>);
-      
+      render(
+        <Tag onSelect={onSelect} interactive>
+          Selectable
+        </Tag>
+      );
+
       const tag = screen.getByTestId('tag');
       tag.focus();
       await user.keyboard('{Enter}');
       expect(onSelect).toHaveBeenCalledTimes(1);
-      
+
       await user.keyboard(' ');
       expect(onSelect).toHaveBeenCalledTimes(2);
     });
 
     it('shows selected state correctly', () => {
-      render(<Tag selected onSelect={vi.fn()}>Selected</Tag>);
+      render(
+        <Tag selected onSelect={vi.fn()}>
+          Selected
+        </Tag>
+      );
       const tag = screen.getByTestId('tag');
       expect(tag).toHaveAttribute('aria-pressed', 'true');
       expect(tag).toHaveAttribute('data-selected', 'true');
@@ -132,7 +184,11 @@ describe('Tag - Optimized Enterprise Component', () => {
 
     it('handles interactive prop correctly', () => {
       const onClick = vi.fn();
-      render(<Tag interactive onClick={onClick}>Interactive</Tag>);
+      render(
+        <Tag interactive onClick={onClick}>
+          Interactive
+        </Tag>
+      );
       const tag = screen.getByTestId('tag');
       expect(tag).toHaveAttribute('data-interactive', 'true');
       expect(tag).toHaveAttribute('tabindex', '0');
@@ -142,16 +198,27 @@ describe('Tag - Optimized Enterprise Component', () => {
   describe('Remove Functionality', () => {
     it('displays remove button when removable', () => {
       const onRemove = vi.fn();
-      render(<Tag removable onRemove={onRemove}>Removable</Tag>);
+      render(
+        <Tag removable onRemove={onRemove}>
+          Removable
+        </Tag>
+      );
       expect(screen.getByTestId('tag-remove-button')).toBeInTheDocument();
-      expect(screen.getByTestId('tag')).toHaveAttribute('data-removable', 'true');
+      expect(screen.getByTestId('tag')).toHaveAttribute(
+        'data-removable',
+        'true'
+      );
     });
 
     it('calls onRemove when remove button is clicked', async () => {
       const onRemove = vi.fn();
       const user = userEvent.setup();
-      render(<Tag removable onRemove={onRemove} ariaLabel="My tag">Removable</Tag>);
-      
+      render(
+        <Tag removable onRemove={onRemove} ariaLabel='My tag'>
+          Removable
+        </Tag>
+      );
+
       const button = screen.getByRole('button', { name: /remove my tag/i });
       await user.click(button);
       expect(onRemove).toHaveBeenCalledTimes(1);
@@ -161,13 +228,20 @@ describe('Tag - Optimized Enterprise Component', () => {
       const parentClick = vi.fn();
       const onRemove = vi.fn();
       const user = userEvent.setup();
-      
+
       render(
-        <div role="button" tabIndex={0} onClick={parentClick} onKeyDown={() => {}}>
-          <Tag removable onRemove={onRemove} ariaLabel="Tag">Removable</Tag>
+        <div
+          role='button'
+          tabIndex={0}
+          onClick={parentClick}
+          onKeyDown={() => {}}
+        >
+          <Tag removable onRemove={onRemove} ariaLabel='Tag'>
+            Removable
+          </Tag>
         </div>
       );
-      
+
       const button = screen.getByRole('button', { name: /remove tag/i });
       await user.click(button);
       expect(onRemove).toHaveBeenCalledTimes(1);
@@ -177,13 +251,17 @@ describe('Tag - Optimized Enterprise Component', () => {
     it('handles remove via keyboard on remove button', async () => {
       const onRemove = vi.fn();
       const user = userEvent.setup();
-      render(<Tag removable onRemove={onRemove}>Removable</Tag>);
-      
+      render(
+        <Tag removable onRemove={onRemove}>
+          Removable
+        </Tag>
+      );
+
       const button = screen.getByTestId('tag-remove-button');
       button.focus();
       await user.keyboard('{Enter}');
       expect(onRemove).toHaveBeenCalledTimes(1);
-      
+
       await user.keyboard(' ');
       expect(onRemove).toHaveBeenCalledTimes(2);
     });
@@ -191,19 +269,27 @@ describe('Tag - Optimized Enterprise Component', () => {
     it('handles remove via Delete/Backspace on tag', async () => {
       const onRemove = vi.fn();
       const user = userEvent.setup();
-      render(<Tag removable onRemove={onRemove} interactive>Removable</Tag>);
-      
+      render(
+        <Tag removable onRemove={onRemove} interactive>
+          Removable
+        </Tag>
+      );
+
       const tag = screen.getByTestId('tag');
       tag.focus();
       await user.keyboard('{Delete}');
       expect(onRemove).toHaveBeenCalledTimes(1);
-      
+
       await user.keyboard('{Backspace}');
       expect(onRemove).toHaveBeenCalledTimes(2);
     });
 
     it('sizes remove button according to tag size', () => {
-      render(<Tag removable onRemove={vi.fn()} size="xs">Small removable</Tag>);
+      render(
+        <Tag removable onRemove={vi.fn()} size='xs'>
+          Small removable
+        </Tag>
+      );
       const button = screen.getByTestId('tag-remove-button');
       expect(button).toHaveClass('size-3');
       expect(button.querySelector('svg')).toHaveClass('size-2');
@@ -215,17 +301,21 @@ describe('Tag - Optimized Enterprise Component', () => {
       const onSelect = vi.fn();
       const onRemove = vi.fn();
       const user = userEvent.setup();
-      
-      render(<Tag disabled onSelect={onSelect} removable onRemove={onRemove}>Disabled</Tag>);
+
+      render(
+        <Tag disabled onSelect={onSelect} removable onRemove={onRemove}>
+          Disabled
+        </Tag>
+      );
       const tag = screen.getByTestId('tag');
-      
+
       expect(tag).toHaveAttribute('aria-disabled', 'true');
       expect(tag).toHaveAttribute('data-disabled', 'true');
       expect(tag).not.toHaveAttribute('tabindex');
-      
+
       await user.click(tag);
       expect(onSelect).not.toHaveBeenCalled();
-      
+
       const removeButton = screen.getByTestId('tag-remove-button');
       expect(removeButton).toBeDisabled();
     });
@@ -245,7 +335,11 @@ describe('Tag - Optimized Enterprise Component', () => {
     });
 
     it('skeleton adapts to size', () => {
-      render(<Tag loading size="lg">Loading</Tag>);
+      render(
+        <Tag loading size='lg'>
+          Loading
+        </Tag>
+      );
       const skeleton = screen.getByTestId('tag-skeleton');
       expect(skeleton).toHaveAttribute('data-size', 'lg');
     });
@@ -253,7 +347,7 @@ describe('Tag - Optimized Enterprise Component', () => {
 
   describe('Icons and Visual Elements', () => {
     it('displays icon when provided', () => {
-      const icon = <span data-testid="test-icon">🔥</span>;
+      const icon = <span data-testid='test-icon'>🔥</span>;
       render(<Tag icon={icon}>With icon</Tag>);
       expect(screen.getByTestId('test-icon')).toBeInTheDocument();
     });
@@ -275,7 +369,11 @@ describe('Tag - Optimized Enterprise Component', () => {
     });
 
     it('shows max counter with plus when exceeding limit', () => {
-      render(<Tag counter={150} maxCounter={99}>High counter</Tag>);
+      render(
+        <Tag counter={150} maxCounter={99}>
+          High counter
+        </Tag>
+      );
       const counter = screen.getByTestId('tag-counter');
       expect(counter).toHaveTextContent('99+');
     });
@@ -283,13 +381,17 @@ describe('Tag - Optimized Enterprise Component', () => {
     it('does not display counter for zero or negative values', () => {
       render(<Tag counter={0}>Zero counter</Tag>);
       expect(screen.queryByTestId('tag-counter')).not.toBeInTheDocument();
-      
+
       render(<Tag counter={-5}>Negative counter</Tag>);
       expect(screen.queryByTestId('tag-counter')).not.toBeInTheDocument();
     });
 
     it('uses custom maxCounter value', () => {
-      render(<Tag counter={25} maxCounter={20}>Custom max</Tag>);
+      render(
+        <Tag counter={25} maxCounter={20}>
+          Custom max
+        </Tag>
+      );
       const counter = screen.getByTestId('tag-counter');
       expect(counter).toHaveTextContent('20+');
     });
@@ -297,7 +399,9 @@ describe('Tag - Optimized Enterprise Component', () => {
 
   describe('Text Truncation', () => {
     it('applies truncation when enabled', () => {
-      render(<Tag truncate>Very long tag content that should be truncated</Tag>);
+      render(
+        <Tag truncate>Very long tag content that should be truncated</Tag>
+      );
       const tag = screen.getByTestId('tag');
       expect(tag).toHaveClass('max-w-xs', 'truncate');
     });
@@ -310,7 +414,11 @@ describe('Tag - Optimized Enterprise Component', () => {
     });
 
     it('does not provide title for non-string children when truncated', () => {
-      render(<Tag truncate><span>JSX content</span></Tag>);
+      render(
+        <Tag truncate>
+          <span>JSX content</span>
+        </Tag>
+      );
       const tag = screen.getByTestId('tag');
       expect(tag).not.toHaveAttribute('title');
     });
@@ -318,7 +426,11 @@ describe('Tag - Optimized Enterprise Component', () => {
 
   describe('Accessibility', () => {
     it('provides comprehensive aria attributes for interactive tags', () => {
-      render(<Tag onSelect={vi.fn()} selected ariaLabel="Toggle tag">Interactive</Tag>);
+      render(
+        <Tag onSelect={vi.fn()} selected ariaLabel='Toggle tag'>
+          Interactive
+        </Tag>
+      );
       const tag = screen.getByTestId('tag');
       expect(tag).toHaveAttribute('role', 'button');
       expect(tag).toHaveAttribute('aria-pressed', 'true');
@@ -329,7 +441,7 @@ describe('Tag - Optimized Enterprise Component', () => {
     it('maintains focus management for keyboard users', async () => {
       const user = userEvent.setup();
       render(<Tag onSelect={vi.fn()}>Focusable</Tag>);
-      
+
       const tag = screen.getByTestId('tag');
       await user.tab();
       expect(tag).toHaveFocus();
@@ -342,7 +454,7 @@ describe('Tag - Optimized Enterprise Component', () => {
     });
 
     it('provides proper semantic roles for status tags', () => {
-      render(<Tag status="warning">Warning status</Tag>);
+      render(<Tag status='warning'>Warning status</Tag>);
       const tag = screen.getByTestId('tag');
       expect(tag).toHaveAttribute('role', 'status');
       expect(tag).toHaveAttribute('aria-live', 'polite');
@@ -354,32 +466,42 @@ describe('Tag - Optimized Enterprise Component', () => {
       const onSelect = vi.fn();
       const { rerender } = render(<Tag onSelect={onSelect}>Test</Tag>);
       const initialTag = screen.getByTestId('tag');
-      
+
       rerender(<Tag onSelect={onSelect}>Test</Tag>);
       const rerenderedTag = screen.getByTestId('tag');
-      
+
       expect(initialTag).toBe(rerenderedTag);
     });
 
     it('updates efficiently when props change', () => {
-      const { rerender } = render(<Tag variant="default">Test</Tag>);
-      expect(screen.getByTestId('tag')).toHaveAttribute('data-variant', 'default');
-      
-      rerender(<Tag variant="success">Test</Tag>);
-      expect(screen.getByTestId('tag')).toHaveAttribute('data-variant', 'success');
+      const { rerender } = render(<Tag variant='default'>Test</Tag>);
+      expect(screen.getByTestId('tag')).toHaveAttribute(
+        'data-variant',
+        'default'
+      );
+
+      rerender(<Tag variant='success'>Test</Tag>);
+      expect(screen.getByTestId('tag')).toHaveAttribute(
+        'data-variant',
+        'success'
+      );
     });
   });
 
   describe('Prop Forwarding', () => {
     it('forwards container props correctly', () => {
-      render(<Tag id="test-tag" data-custom="value">Test</Tag>);
+      render(
+        <Tag id='test-tag' data-custom='value'>
+          Test
+        </Tag>
+      );
       const tag = screen.getByTestId('tag');
       expect(tag).toHaveAttribute('id', 'test-tag');
       expect(tag).toHaveAttribute('data-custom', 'value');
     });
 
     it('applies custom className to container', () => {
-      render(<Tag className="custom-class">Test</Tag>);
+      render(<Tag className='custom-class'>Test</Tag>);
       const tag = screen.getByTestId('tag');
       expect(tag).toHaveClass('custom-class');
     });
@@ -387,8 +509,12 @@ describe('Tag - Optimized Enterprise Component', () => {
     it('forwards onClick when interactive', async () => {
       const onClick = vi.fn();
       const user = userEvent.setup();
-      render(<Tag onClick={onClick} interactive>Clickable</Tag>);
-      
+      render(
+        <Tag onClick={onClick} interactive>
+          Clickable
+        </Tag>
+      );
+
       await user.click(screen.getByTestId('tag'));
       expect(onClick).toHaveBeenCalledTimes(1);
     });
@@ -406,14 +532,18 @@ describe('Tag - Optimized Enterprise Component', () => {
       const onSelect = vi.fn();
       const onRemove = vi.fn();
       const user = userEvent.setup();
-      
-      render(<Tag onSelect={onSelect} removable onRemove={onRemove}>Multi-function</Tag>);
-      
+
+      render(
+        <Tag onSelect={onSelect} removable onRemove={onRemove}>
+          Multi-function
+        </Tag>
+      );
+
       // Click tag (should select)
       await user.click(screen.getByTestId('tag'));
       expect(onSelect).toHaveBeenCalledTimes(1);
       expect(onRemove).not.toHaveBeenCalled();
-      
+
       // Click remove button (should remove)
       await user.click(screen.getByTestId('tag-remove-button'));
       expect(onRemove).toHaveBeenCalledTimes(1);
@@ -421,7 +551,8 @@ describe('Tag - Optimized Enterprise Component', () => {
     });
 
     it('handles very long content gracefully', () => {
-      const longContent = 'This is a very long tag content that might cause layout issues if not handled properly with truncation and responsive design';
+      const longContent =
+        'This is a very long tag content that might cause layout issues if not handled properly with truncation and responsive design';
       render(<Tag>{longContent}</Tag>);
       expect(screen.getByText(longContent)).toBeInTheDocument();
     });
@@ -436,24 +567,24 @@ describe('Tag - Optimized Enterprise Component', () => {
 
     it('handles complex combinations of features', () => {
       render(
-        <Tag 
-          variant="success" 
-          size="lg" 
-          status="info" 
-          counter={42} 
-          removable 
-          onRemove={vi.fn()} 
-          interactive 
-          onSelect={vi.fn()} 
+        <Tag
+          variant='success'
+          size='lg'
+          status='info'
+          counter={42}
+          removable
+          onRemove={vi.fn()}
+          interactive
+          onSelect={vi.fn()}
           selected
           pulse
           truncate
-          ariaLabel="Complex tag"
+          ariaLabel='Complex tag'
         >
           Complex feature tag
         </Tag>
       );
-      
+
       const tag = screen.getByTestId('tag');
       expect(tag).toBeInTheDocument();
       expect(screen.getByTestId('tag-counter')).toHaveTextContent('42');

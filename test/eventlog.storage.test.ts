@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { appendEvent, loadEvents, configureStorage, snapshotEvents, restoreEvents } from '../src/domain/task/eventlog';
+import {
+  appendEvent,
+  loadEvents,
+  configureStorage,
+  snapshotEvents,
+  restoreEvents,
+} from '../src/domain/task/eventlog';
 import { SyncLocalStorageDriver } from '../src/storage/local';
 import type { TaskEvent } from '../src/domain/task/events';
 
@@ -20,7 +26,9 @@ class MockStorageDriver extends SyncLocalStorageDriver {
   }
 
   listKeys(prefix: string): string[] {
-    return Array.from(this.storage.keys()).filter(key => key.startsWith(prefix));
+    return Array.from(this.storage.keys()).filter(key =>
+      key.startsWith(prefix)
+    );
   }
 
   clear(): void {
@@ -74,7 +82,7 @@ describe('Eventlog: Storage', () => {
     expect(loadedEvents).toHaveLength(2);
     expect(loadedEvents[0]?.type).toBe('TASK_CREATED');
     expect(loadedEvents[1]?.type).toBe('TASK_UPDATED');
-    
+
     // Verify task creation payload
     const createEvent = loadedEvents[0];
     if (createEvent?.type === 'TASK_CREATED') {
@@ -140,7 +148,7 @@ describe('Eventlog: Storage', () => {
     restoreEvents(snapshot);
     const restoredEvents = loadEvents();
     expect(restoredEvents).toHaveLength(1);
-    
+
     // Verify restored event
     const restoredEvent = restoredEvents[0];
     if (restoredEvent?.type === 'TASK_CREATED') {
@@ -151,7 +159,7 @@ describe('Eventlog: Storage', () => {
   it('should work without global localStorage dependency', () => {
     // This test verifies that the eventlog works purely through the injected driver
     // without touching global localStorage
-    
+
     const initialLocalStorageLength = localStorage.length;
 
     const event: TaskEvent = {
@@ -170,7 +178,7 @@ describe('Eventlog: Storage', () => {
     const events = loadEvents();
 
     expect(events).toHaveLength(1);
-    
+
     // Verify event with proper type guard
     const mockEvent = events[0];
     if (mockEvent?.type === 'TASK_CREATED') {
@@ -179,8 +187,10 @@ describe('Eventlog: Storage', () => {
 
     // Verify localStorage wasn't touched
     expect(localStorage.length).toBe(initialLocalStorageLength);
-    
+
     // Verify data is in mock storage
-    expect(mockDriver.getItem('test:spark.events.v1')).toContain('Mock storage task');
+    expect(mockDriver.getItem('test:spark.events.v1')).toContain(
+      'Mock storage task'
+    );
   });
 });

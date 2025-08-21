@@ -1,6 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { planImport, applyImport } from '../src/domain/pack/import';
-import { snapshotEvents, restoreEvents, appendEvent } from '../src/domain/task/eventlog';
+import {
+  snapshotEvents,
+  restoreEvents,
+  appendEvent,
+} from '../src/domain/task/eventlog';
 import { useTaskStore } from '../src/stores/taskStore';
 import type { TaskEvent } from '../src/domain/task/events';
 
@@ -14,7 +18,7 @@ const createValidMeta = (events: any[]) => {
     h = Math.imul(h, 0x01000193) >>> 0;
   }
   const eventsHash = ('00000000' + h.toString(16)).slice(-8);
-  
+
   return {
     version: 1 as const,
     format: 'sparkpack/1+json' as const,
@@ -205,7 +209,10 @@ describe('Pack Import Apply', () => {
     localStorage.setItem = vi.fn((key, value) => {
       if (key === 'spark.events.v1') {
         // Check if this is an append operation (value contains newline) vs restore (single block)
-        const isAppendOperation = typeof value === 'string' && value.includes('\n') && value.split('\n').length > 1;
+        const isAppendOperation =
+          typeof value === 'string' &&
+          value.includes('\n') &&
+          value.split('\n').length > 1;
         if (isAppendOperation) {
           appendCallCount++;
           if (appendCallCount > 1) {

@@ -37,43 +37,43 @@ jobs:
   maintenance:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: |
           npm ci --frozen-lockfile --prefer-offline
-          
+
       - name: Build project
         run: npm run build
-        
+
       - name: Run maintenance operations
         id: maintenance
         run: |
           set -e
-          
+
           # Use workflow inputs or defaults
           COMPACT_THRESHOLD="${{ inputs.compact_threshold || '2000' }}"
           REKEY_PREFIX="${{ inputs.rekey_prefix || 'app:' }}"
           SWEEP_PREFIX="${{ inputs.sweep_prefix || 'app:' }}"
           SAMPLE_SIZE="${{ inputs.sample_size || '10000' }}"
           FIX_FLAG="${{ inputs.fix_issues == true && '--fix' || '' }}"
-          
+
           echo "Running maintenance with:"
           echo "  Compact threshold: $COMPACT_THRESHOLD"
           echo "  Rekey prefix: $REKEY_PREFIX"
           echo "  Sweep prefix: $SWEEP_PREFIX"
           echo "  Sample size: $SAMPLE_SIZE"
           echo "  Fix issues: ${{ inputs.fix_issues }}"
-          
+
           # Run maintenance and capture output
           node scripts/maintenance.js \
             --compact="$COMPACT_THRESHOLD" \
@@ -86,9 +86,9 @@ jobs:
           # Show summary in logs
           echo "Maintenance completed. Report summary:"
           cat maintenance.json | jq -r '.status, .duration_ms, (.plan.types // []) | join(", ")'
-          
+
         continue-on-error: true
-        
+
       - name: Check maintenance status
         run: |
           if [ -f maintenance.json ]; then
@@ -111,7 +111,7 @@ jobs:
             echo "❌ No maintenance report generated."
             exit 1
           fi
-          
+
       - name: Upload maintenance report
         uses: actions/upload-artifact@v4
         if: always()
@@ -119,36 +119,36 @@ jobs:
           name: maintenance-report-${{ github.run_number }}
           path: maintenance.json
           retention-days: 90
-          
+
       - name: Comment on failures
         if: failure()
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            
+
             let reportSummary = 'Maintenance operation failed.';
             try {
               if (fs.existsSync('maintenance.json')) {
                 const report = JSON.parse(fs.readFileSync('maintenance.json', 'utf8'));
                 reportSummary = `
             ## 🔧 Maintenance Report - Failed
-            
+
             **Status:** ${report.status}
             **Timestamp:** ${report.timestamp}
             **Duration:** ${report.duration_ms}ms
-            
+
             ${report.message ? `**Message:** ${report.message}` : ''}
-            
+
             **Actions Planned:** ${report.plan?.types?.join(', ') || 'None'}
-            
+
             Please check the artifact for full details.
                 `.trim();
               }
             } catch (e) {
               reportSummary += ` Error reading report: ${e.message}`;
             }
-            
+
             // Create an issue for failed maintenance
             await github.rest.issues.create({
               owner: context.repo.owner,

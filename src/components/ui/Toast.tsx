@@ -5,7 +5,13 @@ import { combineTokens } from '@/design/tokens';
 // ===== TOAST TYPES & INTERFACES =====
 
 export type ToastVariant = 'success' | 'error' | 'warning' | 'info';
-export type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+export type ToastPosition =
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-left'
+  | 'top-center'
+  | 'bottom-center';
 
 export interface ToastProps {
   id: string;
@@ -37,31 +43,83 @@ export interface ToastContextValue {
 
 const ToastIcons = {
   success: (
-    <svg className="size-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L7.53 10.53a.75.75 0 00-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+    <svg
+      className={DESIGN_TOKENS.layout.spacing.fine.size5}
+      fill='currentColor'
+      viewBox='0 0 20 20'
+      aria-hidden='true'
+      focusable='false'
+    >
+      <path
+        fillRule='evenodd'
+        d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L7.53 10.53a.75.75 0 00-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z'
+        clipRule='evenodd'
+      />
     </svg>
   ),
   error: (
-    <svg className="size-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+    <svg
+      className={DESIGN_TOKENS.layout.spacing.fine.size5}
+      fill='currentColor'
+      viewBox='0 0 20 20'
+      aria-hidden='true'
+      focusable='false'
+    >
+      <path
+        fillRule='evenodd'
+        d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z'
+        clipRule='evenodd'
+      />
     </svg>
   ),
   warning: (
-    <svg className="size-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-      <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+    <svg
+      className={DESIGN_TOKENS.layout.spacing.fine.size5}
+      fill='currentColor'
+      viewBox='0 0 20 20'
+      aria-hidden='true'
+      focusable='false'
+    >
+      <path
+        fillRule='evenodd'
+        d='M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z'
+        clipRule='evenodd'
+      />
     </svg>
   ),
   info: (
-    <svg className="size-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+    <svg
+      className={DESIGN_TOKENS.layout.spacing.fine.size5}
+      fill='currentColor'
+      viewBox='0 0 20 20'
+      aria-hidden='true'
+      focusable='false'
+    >
+      <path
+        fillRule='evenodd'
+        d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z'
+        clipRule='evenodd'
+      />
     </svg>
   ),
 };
 
 // Close icon
 const CloseIcon = (
-  <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  <svg
+    className={DESIGN_TOKENS.layout.spacing.fine.size4}
+    fill='none'
+    stroke='currentColor'
+    viewBox='0 0 24 24'
+    aria-hidden='true'
+    focusable='false'
+  >
+    <path
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      strokeWidth={2}
+      d='M6 18L18 6M6 6l12 12'
+    />
   </svg>
 );
 
@@ -76,7 +134,8 @@ const toastVariantStyles = {
       'text-green-900 dark:text-green-100'
     ),
     icon: 'text-green-600 dark:text-green-400',
-    action: 'text-green-700 dark:text-green-300 hover:text-green-800 dark:hover:text-green-200',
+    action:
+      'text-green-700 dark:text-green-300 hover:text-green-800 dark:hover:text-green-200',
   },
   error: {
     container: combineTokens(
@@ -86,7 +145,8 @@ const toastVariantStyles = {
       'text-red-900 dark:text-red-100'
     ),
     icon: 'text-red-600 dark:text-red-400',
-    action: 'text-red-700 dark:text-red-300 hover:text-red-800 dark:hover:text-red-200',
+    action:
+      'text-red-700 dark:text-red-300 hover:text-red-800 dark:hover:text-red-200',
   },
   warning: {
     container: combineTokens(
@@ -96,7 +156,8 @@ const toastVariantStyles = {
       'text-amber-900 dark:text-amber-100'
     ),
     icon: 'text-amber-600 dark:text-amber-400',
-    action: 'text-amber-700 dark:text-amber-300 hover:text-amber-800 dark:hover:text-amber-200',
+    action:
+      'text-amber-700 dark:text-amber-300 hover:text-amber-800 dark:hover:text-amber-200',
   },
   info: {
     container: combineTokens(
@@ -106,7 +167,8 @@ const toastVariantStyles = {
       'text-blue-900 dark:text-blue-100'
     ),
     icon: 'text-blue-600 dark:text-blue-400',
-    action: 'text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200',
+    action:
+      'text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200',
   },
 } as const;
 
@@ -115,27 +177,34 @@ const toastVariantStyles = {
 const toastPositions = {
   'top-right': 'fixed top-4 right-4 flex flex-col gap-2 z-[60] max-w-sm',
   'top-left': 'fixed top-4 left-4 flex flex-col gap-2 z-[60] max-w-sm',
-  'bottom-right': 'fixed bottom-4 right-4 flex flex-col-reverse gap-2 z-[60] max-w-sm',
-  'bottom-left': 'fixed bottom-4 left-4 flex flex-col-reverse gap-2 z-[60] max-w-sm',
-  'top-center': 'fixed top-4 left-1/2 -translate-x-1/2 flex flex-col gap-2 z-[60] max-w-sm',
-  'bottom-center': 'fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-col-reverse gap-2 z-[60] max-w-sm',
+  'bottom-right':
+    'fixed bottom-4 right-4 flex flex-col-reverse gap-2 z-[60] max-w-sm',
+  'bottom-left':
+    'fixed bottom-4 left-4 flex flex-col-reverse gap-2 z-[60] max-w-sm',
+  'top-center':
+    'fixed top-4 left-1/2 -translate-x-1/2 flex flex-col gap-2 z-[60] max-w-sm',
+  'bottom-center':
+    'fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-col-reverse gap-2 z-[60] max-w-sm',
 } as const;
 
 // ===== INDIVIDUAL TOAST COMPONENT =====
 
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
-  ({ 
-    id, 
-    variant, 
-    title, 
-    message, 
-    duration = 5000, 
-    action, 
-    onDismiss,
-    priority = 'normal',
-    timestamp,
-    ...props 
-  }, ref) => {
+  (
+    {
+      id,
+      variant,
+      title,
+      message,
+      duration = 5000,
+      action,
+      onDismiss,
+      priority = 'normal',
+      timestamp,
+      ...props
+    },
+    ref
+  ) => {
     const [isExiting, setIsExiting] = React.useState(false);
     const [timeRemaining, setTimeRemaining] = React.useState(duration);
     const [isPaused, setIsPaused] = React.useState(false);
@@ -163,7 +232,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
 
       if (!isPaused) {
         startTimer();
-        
+
         // Update countdown every 100ms for progress indication
         intervalRef.current = setInterval(() => {
           setTimeRemaining(prev => {
@@ -198,9 +267,8 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       handleDismiss(); // Dismiss after action
     };
 
-    const progressPercentage = duration && timeRemaining 
-      ? ((timeRemaining / duration) * 100) 
-      : 0;
+    const progressPercentage =
+      duration && timeRemaining ? (timeRemaining / duration) * 100 : 0;
 
     return (
       <div
@@ -208,23 +276,29 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         className={combineTokens(
           DESIGN_TOKENS.recipe.toast.base,
           variantStyles.container,
-          isExiting 
-            ? DESIGN_TOKENS.motion.semantic.toastExit 
+          isExiting
+            ? DESIGN_TOKENS.motion.semantic.toastExit
             : DESIGN_TOKENS.motion.semantic.toastEnter,
           'motion-reduce:transition-none'
         )}
-        role="alert"
+        role='alert'
         aria-live={priority === 'high' ? 'assertive' : 'polite'}
-        aria-atomic="true"
+        aria-atomic='true'
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         {...props}
       >
         {/* Progress indicator for timed toasts */}
         {duration !== null && (
-          <div className="absolute bottom-0 left-0 h-1 rounded-b-md bg-current opacity-20 transition-all duration-100">
-            <div 
-              className="h-full rounded-b-md bg-current transition-all duration-100 ease-linear"
+          <div
+            className={combineTokens(
+              'absolute bottom-0 left-0 h-1 rounded-b-md bg-current opacity-20 transition-all duration-100'
+            )}
+          >
+            <div
+              className={combineTokens(
+                'h-full rounded-b-md bg-current transition-all duration-100 ease-linear'
+              )}
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
@@ -236,23 +310,31 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         </div>
 
         {/* Toast content */}
-        <div className="min-w-0 flex-1">
+        <div
+          className={combineTokens(
+            DESIGN_TOKENS.layout.flex.minW0,
+            DESIGN_TOKENS.layout.flex.flex1
+          )}
+        >
           {title && (
-            <div className="mb-1 text-sm font-semibold" id={`toast-title-${id}`}>
+            <div
+              className={combineTokens('mb-1 text-sm font-semibold')}
+              id={`toast-title-${id}`}
+            >
               {title}
             </div>
           )}
-          <div 
-            className="break-words text-sm" 
+          <div
+            className={combineTokens('break-words text-sm')}
             id={`toast-message-${id}`}
             aria-describedby={title ? `toast-title-${id}` : undefined}
           >
             {message}
           </div>
-          
+
           {/* Timestamp for enterprise logging */}
           {timestamp && (
-            <div className="mt-1 text-xs opacity-70">
+            <div className={combineTokens('mt-1 text-xs opacity-70')}>
               {timestamp.toLocaleTimeString()}
             </div>
           )}
@@ -260,13 +342,13 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
 
         {/* Action button */}
         {action && (
-          <div className="ml-3 shrink-0">
+          <div className={combineTokens('ml-3 shrink-0')}>
             <button
-              type="button"
+              type='button'
               className={combineTokens(
                 'text-sm font-medium underline decoration-2 underline-offset-2',
-                'hover:no-underline focus:outline-none focus:ring-2 focus:ring-offset-2',
-                'motion-reduce:transition-none transition-colors duration-150',
+                'focus:outline-none focus:ring-2 focus:ring-offset-2 hover:no-underline',
+                'transition-colors duration-150 motion-reduce:transition-none',
                 variantStyles.action
               )}
               onClick={handleAction}
@@ -277,17 +359,17 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         )}
 
         {/* Dismiss button */}
-        <div className="ml-3 shrink-0">
+        <div className={combineTokens('ml-3 shrink-0')}>
           <button
-            type="button"
+            type='button'
             className={combineTokens(
               'inline-flex rounded-md p-1.5 hover:bg-black/5 dark:hover:bg-white/5',
               'focus:outline-none focus:ring-2 focus:ring-offset-2',
-              'motion-reduce:transition-none transition-colors duration-150',
+              'transition-colors duration-150 motion-reduce:transition-none',
               variantStyles.icon
             )}
             onClick={handleDismiss}
-            aria-label="Dismiss notification"
+            aria-label='Dismiss notification'
           >
             {CloseIcon}
           </button>
@@ -316,19 +398,15 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
 }) => {
   // Limit number of visible toasts
   const visibleToasts = toasts.slice(0, maxToasts);
-  
+
   if (visibleToasts.length === 0) {
     return null;
   }
 
   return (
-    <div className={toastPositions[position]} aria-label="Notifications">
-      {visibleToasts.map((toast) => (
-        <Toast
-          key={toast.id}
-          {...toast}
-          onDismiss={onDismiss}
-        />
+    <div className={toastPositions[position]} aria-label='Notifications'>
+      {visibleToasts.map(toast => (
+        <Toast key={toast.id} {...toast} onDismiss={onDismiss} />
       ))}
     </div>
   );
@@ -336,7 +414,9 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
 
 // ===== TOAST CONTEXT & PROVIDER =====
 
-const ToastContext = React.createContext<ToastContextValue | undefined>(undefined);
+const ToastContext = React.createContext<ToastContextValue | undefined>(
+  undefined
+);
 
 export interface ToastProviderProps {
   children: React.ReactNode;
@@ -351,22 +431,25 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
 }) => {
   const [toasts, setToasts] = React.useState<ToastProps[]>([]);
 
-  const addToast = React.useCallback((toast: Omit<ToastProps, 'id'>): string => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const newToast: ToastProps = {
-      ...toast,
-      id,
-      position: toast.position || defaultPosition,
-      timestamp: toast.timestamp || new Date(),
-    };
+  const addToast = React.useCallback(
+    (toast: Omit<ToastProps, 'id'>): string => {
+      const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const newToast: ToastProps = {
+        ...toast,
+        id,
+        position: toast.position || defaultPosition,
+        timestamp: toast.timestamp || new Date(),
+      };
 
-    setToasts(prev => {
-      const next = [...prev, newToast];
-      // Keep the first-created toasts visible; drop newest beyond the cap
-      return next.length > maxToasts ? next.slice(0, maxToasts) : next;
-    });
-    return id;
-  }, [defaultPosition, maxToasts]);
+      setToasts(prev => {
+        const next = [...prev, newToast];
+        // Keep the first-created toasts visible; drop newest beyond the cap
+        return next.length > maxToasts ? next.slice(0, maxToasts) : next;
+      });
+      return id;
+    },
+    [defaultPosition, maxToasts]
+  );
 
   const dismissToast = React.useCallback((id: string) => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
@@ -378,11 +461,13 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
 
   const clearExpired = React.useCallback(() => {
     const now = Date.now();
-    setToasts(prev => prev.filter(toast => {
-      if (toast.duration === null) return true; // Persist toasts
-      const age = now - (toast.timestamp?.getTime() || 0);
-      return age < (toast.duration || 5000);
-    }));
+    setToasts(prev =>
+      prev.filter(toast => {
+        if (toast.duration === null) return true; // Persist toasts
+        const age = now - (toast.timestamp?.getTime() || 0);
+        return age < (toast.duration || 5000);
+      })
+    );
   }, []);
 
   // Wire up the global imperative API
@@ -392,7 +477,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
       dismissToast,
       dismissAll,
     });
-    
+
     return () => {
       toastManager._setHandler(null);
     };
@@ -428,9 +513,9 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
   return (
     <ToastContext.Provider value={contextValue}>
       {children}
-      
+
       {/* Render toast containers for each position */}
-      {Object.entries(toastsByPosition).map(([position, positionToasts]) => 
+      {Object.entries(toastsByPosition).map(([position, positionToasts]) =>
         positionToasts.length > 0 ? (
           <ToastContainer
             key={position}
@@ -504,7 +589,7 @@ class ToastManager {
     if (this.handler) {
       return this.handler.addToast(toast);
     }
-    
+
     // Fallback to internal state
     const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const newToast: ToastProps = {
@@ -512,7 +597,7 @@ class ToastManager {
       id,
       timestamp: toast.timestamp || new Date(),
     };
-    
+
     this.toasts = [newToast, ...this.toasts];
     this.notify();
     return id;
@@ -522,7 +607,7 @@ class ToastManager {
     if (this.handler) {
       return this.handler.dismissToast(id);
     }
-    
+
     this.toasts = this.toasts.filter(toast => toast.id !== id);
     this.notify();
   }
@@ -531,7 +616,7 @@ class ToastManager {
     if (this.handler) {
       return this.handler.dismissAll();
     }
-    
+
     this.toasts = [];
     this.notify();
   }
@@ -546,16 +631,28 @@ export const _resetToastManager = () => toastManager._reset();
 // ===== IMPERATIVE TOAST API =====
 
 export const toast = {
-  success: (message: string, options?: Partial<Omit<ToastProps, 'id' | 'variant' | 'message'>>) => {
+  success: (
+    message: string,
+    options?: Partial<Omit<ToastProps, 'id' | 'variant' | 'message'>>
+  ) => {
     return toastManager.addToast({ ...options, variant: 'success', message });
   },
-  error: (message: string, options?: Partial<Omit<ToastProps, 'id' | 'variant' | 'message'>>) => {
+  error: (
+    message: string,
+    options?: Partial<Omit<ToastProps, 'id' | 'variant' | 'message'>>
+  ) => {
     return toastManager.addToast({ ...options, variant: 'error', message });
   },
-  warning: (message: string, options?: Partial<Omit<ToastProps, 'id' | 'variant' | 'message'>>) => {
+  warning: (
+    message: string,
+    options?: Partial<Omit<ToastProps, 'id' | 'variant' | 'message'>>
+  ) => {
     return toastManager.addToast({ ...options, variant: 'warning', message });
   },
-  info: (message: string, options?: Partial<Omit<ToastProps, 'id' | 'variant' | 'message'>>) => {
+  info: (
+    message: string,
+    options?: Partial<Omit<ToastProps, 'id' | 'variant' | 'message'>>
+  ) => {
     return toastManager.addToast({ ...options, variant: 'info', message });
   },
   dismiss: (id: string) => {

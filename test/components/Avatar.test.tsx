@@ -37,7 +37,7 @@ describe('Avatar - Optimized Enterprise Component', () => {
     });
 
     it('allows custom loading and decoding attributes', () => {
-      render(<Avatar src={src} loading="eager" decoding="sync" />);
+      render(<Avatar src={src} loading='eager' decoding='sync' />);
       const img = screen.getByRole('img', { hidden: true });
       expect(img).toHaveAttribute('loading', 'eager');
       expect(img).toHaveAttribute('decoding', 'sync');
@@ -46,7 +46,7 @@ describe('Avatar - Optimized Enterprise Component', () => {
 
   describe('Size Variants', () => {
     const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
-    
+
     sizes.forEach(size => {
       it(`renders ${size} size correctly`, () => {
         render(<Avatar src={src} size={size} />);
@@ -65,8 +65,10 @@ describe('Avatar - Optimized Enterprise Component', () => {
         render(<Avatar src={src} status={status} />);
         const container = screen.getByTestId('avatar-container');
         expect(container).toHaveAttribute('data-status', status);
-        
-        const statusAnnouncement = screen.getByText(`Avatar status: ${expectedLabels[index]}`);
+
+        const statusAnnouncement = screen.getByText(
+          `Avatar status: ${expectedLabels[index]}`
+        );
         expect(statusAnnouncement).toHaveClass('sr-only');
         expect(statusAnnouncement).toHaveAttribute('aria-live', 'polite');
         expect(statusAnnouncement).toHaveAttribute('aria-atomic', 'true');
@@ -83,9 +85,9 @@ describe('Avatar - Optimized Enterprise Component', () => {
 
   describe('Error Handling & Fallback', () => {
     it('renders fallback when image fails to load', () => {
-      render(<Avatar src="broken.png" fallback={fallback} alt={alt} />);
+      render(<Avatar src='broken.png' fallback={fallback} alt={alt} />);
       const img = screen.getByRole('img', { hidden: true });
-      
+
       act(() => {
         fireEvent.error(img);
       });
@@ -97,9 +99,9 @@ describe('Avatar - Optimized Enterprise Component', () => {
     });
 
     it('uses fallback as aria-label when alt is not provided', () => {
-      render(<Avatar src="broken.png" fallback={fallback} />);
+      render(<Avatar src='broken.png' fallback={fallback} />);
       const img = screen.getByRole('img', { hidden: true });
-      
+
       act(() => {
         fireEvent.error(img);
       });
@@ -110,9 +112,9 @@ describe('Avatar - Optimized Enterprise Component', () => {
 
     it('calls custom onError handler when provided', () => {
       const onError = vi.fn();
-      render(<Avatar src="broken.png" onError={onError} fallback={fallback} />);
+      render(<Avatar src='broken.png' onError={onError} fallback={fallback} />);
       const img = screen.getByRole('img', { hidden: true });
-      
+
       act(() => {
         fireEvent.error(img);
       });
@@ -121,9 +123,9 @@ describe('Avatar - Optimized Enterprise Component', () => {
     });
 
     it('does not render fallback if no fallback text provided', () => {
-      render(<Avatar src="broken.png" alt={alt} />);
+      render(<Avatar src='broken.png' alt={alt} />);
       const img = screen.getByRole('img', { hidden: true });
-      
+
       act(() => {
         fireEvent.error(img);
       });
@@ -135,21 +137,21 @@ describe('Avatar - Optimized Enterprise Component', () => {
 
   describe('Accessibility', () => {
     it('maintains WCAG 2.1 AA compliance with proper roles', () => {
-      render(<Avatar src={src} alt={alt} status="online" />);
-      
+      render(<Avatar src={src} alt={alt} status='online' />);
+
       // Image should be properly labeled
       const img = screen.getByRole('img', { hidden: true });
       expect(img).toHaveAttribute('alt', alt);
-      
+
       // Status should be announced to screen readers
       const statusAnnouncement = screen.getByText('Avatar status: Online');
       expect(statusAnnouncement).toHaveAttribute('aria-live', 'polite');
     });
 
     it('provides proper fallback accessibility', () => {
-      render(<Avatar src="broken.png" fallback={fallback} alt={alt} />);
+      render(<Avatar src='broken.png' fallback={fallback} alt={alt} />);
       const img = screen.getByRole('img', { hidden: true });
-      
+
       act(() => {
         fireEvent.error(img);
       });
@@ -164,16 +166,19 @@ describe('Avatar - Optimized Enterprise Component', () => {
     it('forwards container ref correctly', () => {
       const spanRef = React.createRef<HTMLSpanElement>();
       render(<Avatar src={src} ref={spanRef} />);
-      
+
       expect(spanRef.current).not.toBeNull();
       expect(spanRef.current).toBeInstanceOf(HTMLSpanElement);
-      expect(spanRef.current).toHaveAttribute('data-testid', 'avatar-container');
+      expect(spanRef.current).toHaveAttribute(
+        'data-testid',
+        'avatar-container'
+      );
     });
 
     it('forwards image ref correctly', () => {
       const imgRef = React.createRef<HTMLImageElement>();
       render(<Avatar src={src} imgRef={imgRef} />);
-      
+
       expect(imgRef.current).not.toBeNull();
       expect(imgRef.current).toBeInstanceOf(HTMLImageElement);
       expect(imgRef.current).toHaveAttribute('src', src);
@@ -181,9 +186,9 @@ describe('Avatar - Optimized Enterprise Component', () => {
 
     it('forwards container ref to fallback element', () => {
       const spanRef = React.createRef<HTMLSpanElement>();
-      render(<Avatar src="broken.png" fallback={fallback} ref={spanRef} />);
+      render(<Avatar src='broken.png' fallback={fallback} ref={spanRef} />);
       const img = screen.getByRole('img', { hidden: true });
-      
+
       act(() => {
         fireEvent.error(img);
       });
@@ -200,10 +205,10 @@ describe('Avatar - Optimized Enterprise Component', () => {
         title: 'Custom title',
         crossOrigin: 'anonymous' as const,
       };
-      
+
       render(<Avatar src={src} {...customProps} />);
       const img = screen.getByRole('img', { hidden: true });
-      
+
       expect(img).toHaveAttribute('data-custom', 'test-value');
       expect(img).toHaveAttribute('title', 'Custom title');
       expect(img).toHaveAttribute('crossorigin', 'anonymous');
@@ -213,34 +218,38 @@ describe('Avatar - Optimized Enterprise Component', () => {
       const customClass = 'custom-avatar-class';
       render(<Avatar src={src} className={customClass} />);
       const container = screen.getByTestId('avatar-container');
-      
+
       expect(container).toHaveClass(customClass);
     });
   });
 
   describe('Performance Optimizations', () => {
     it('maintains stable references across re-renders with same props', () => {
-      const { rerender } = render(<Avatar src={src} size="lg" status="online" />);
+      const { rerender } = render(
+        <Avatar src={src} size='lg' status='online' />
+      );
       const container1 = screen.getByTestId('avatar-container');
       const img1 = screen.getByRole('img', { hidden: true });
-      
+
       // Re-render with same props
-      rerender(<Avatar src={src} size="lg" status="online" />);
+      rerender(<Avatar src={src} size='lg' status='online' />);
       const container2 = screen.getByTestId('avatar-container');
       const img2 = screen.getByRole('img', { hidden: true });
-      
+
       // Elements should be the same (React reconciliation)
       expect(container1).toBe(container2);
       expect(img1).toBe(img2);
     });
 
     it('updates efficiently when status changes', () => {
-      const { rerender } = render(<Avatar src={src} status="online" />);
+      const { rerender } = render(<Avatar src={src} status='online' />);
       expect(screen.getByText('Avatar status: Online')).toBeInTheDocument();
-      
-      rerender(<Avatar src={src} status="busy" />);
+
+      rerender(<Avatar src={src} status='busy' />);
       expect(screen.getByText('Avatar status: Busy')).toBeInTheDocument();
-      expect(screen.queryByText('Avatar status: Online')).not.toBeInTheDocument();
+      expect(
+        screen.queryByText('Avatar status: Online')
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -248,15 +257,15 @@ describe('Avatar - Optimized Enterprise Component', () => {
     it('handles undefined status gracefully', () => {
       render(<Avatar src={src} status={undefined} />);
       const container = screen.getByTestId('avatar-container');
-      
+
       expect(container).not.toHaveAttribute('data-status');
       expect(screen.queryByText(/Online|Busy|Offline/)).not.toBeInTheDocument();
     });
 
     it('handles empty fallback string', () => {
-      render(<Avatar src="broken.png" fallback="" alt={alt} />);
+      render(<Avatar src='broken.png' fallback='' alt={alt} />);
       const img = screen.getByRole('img', { hidden: true });
-      
+
       act(() => {
         fireEvent.error(img);
       });
@@ -268,18 +277,24 @@ describe('Avatar - Optimized Enterprise Component', () => {
 
     it('handles complex status changes with fallback', () => {
       const { rerender } = render(
-        <Avatar src="broken.png" fallback={fallback} status="online" />
+        <Avatar src='broken.png' fallback={fallback} status='online' />
       );
       const img = screen.getByRole('img', { hidden: true });
-      
+
       act(() => {
         fireEvent.error(img);
       });
 
-      expect(screen.getByTestId('avatar-fallback')).toHaveAttribute('data-status', 'online');
-      
-      rerender(<Avatar src="broken.png" fallback={fallback} status="busy" />);
-      expect(screen.getByTestId('avatar-fallback')).toHaveAttribute('data-status', 'busy');
+      expect(screen.getByTestId('avatar-fallback')).toHaveAttribute(
+        'data-status',
+        'online'
+      );
+
+      rerender(<Avatar src='broken.png' fallback={fallback} status='busy' />);
+      expect(screen.getByTestId('avatar-fallback')).toHaveAttribute(
+        'data-status',
+        'busy'
+      );
     });
   });
 });

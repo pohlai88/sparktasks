@@ -5,23 +5,26 @@
 
 import { describe, test, expect, beforeEach } from 'vitest';
 import type { StorageDriver } from '../src/storage/types';
-import { 
-  publishAnchorPack, 
-  pushAnchorPack 
+import {
+  publishAnchorPack,
+  pushAnchorPack,
 } from '../src/federation/anchor-publish';
-import { 
-  planAnchorSync, 
-  runAnchorSync 
-} from '../src/federation/anchor-sync';
-import { 
-  getAnchors, 
-  setAnchors, 
-  getSyncState, 
+import { planAnchorSync, runAnchorSync } from '../src/federation/anchor-sync';
+import {
+  getAnchors,
+  setAnchors,
+  getSyncState,
   setSyncState,
-  signAnchorPack
+  signAnchorPack,
 } from '../src/federation/anchor-registry';
-import { addTrustAnchor, configureFederationRegistry } from '../src/federation/registry';
-import { addSigner, configureSignerRegistry } from '../src/sync/signer-registry';
+import {
+  addTrustAnchor,
+  configureFederationRegistry,
+} from '../src/federation/registry';
+import {
+  addSigner,
+  configureSignerRegistry,
+} from '../src/sync/signer-registry';
 import { configureAudit } from '../src/audit/api';
 import type { Anchor } from '../src/federation/sync-types';
 
@@ -54,24 +57,22 @@ describe('Federated Anchor Sync', () => {
 
   beforeEach(async () => {
     storage = new MockStorage();
-    
+
     // Configure registries
     configureFederationRegistry(storage);
     configureSignerRegistry(storage);
     configureAudit(storage, ns);
-    
+
     // Generate test keys
-    localKeyPair = await crypto.subtle.generateKey(
-      { name: 'Ed25519' },
-      true,
-      ['sign', 'verify']
-    );
-    
-    remoteKeyPair = await crypto.subtle.generateKey(
-      { name: 'Ed25519' },
-      true,
-      ['sign', 'verify']
-    );
+    localKeyPair = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, [
+      'sign',
+      'verify',
+    ]);
+
+    remoteKeyPair = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, [
+      'sign',
+      'verify',
+    ]);
   });
 
   test('registry - store/retrieve anchors and sync state', async () => {
@@ -81,8 +82,8 @@ describe('Federated Anchor Sync', () => {
         kid: 'test-key-1',
         pubB64u: 'mock-pub-key',
         status: 'ACTIVE',
-        createdAt: '2025-08-16T10:00:00.000Z'
-      }
+        createdAt: '2025-08-16T10:00:00.000Z',
+      },
     ];
 
     // Store anchors
@@ -91,7 +92,12 @@ describe('Federated Anchor Sync', () => {
     expect(retrieved).toEqual(anchors);
 
     // Store sync state
-    await setSyncState(ns, 'test-org', { since: 'token-123', lastSeq: 5 }, storage);
+    await setSyncState(
+      ns,
+      'test-org',
+      { since: 'token-123', lastSeq: 5 },
+      storage
+    );
     const state = await getSyncState(ns, 'test-org', storage);
     expect(state.since).toBe('token-123');
     expect(state.lastSeq).toBe(5);
@@ -99,20 +105,27 @@ describe('Federated Anchor Sync', () => {
 
   test('publish - creates signed AnchorPack from local signers', async () => {
     // Add local signer
-    const localPubKey = await crypto.subtle.exportKey('spki', localKeyPair.publicKey);
-    const localPubB64u = btoa(String.fromCharCode(...new Uint8Array(localPubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const localPubKey = await crypto.subtle.exportKey(
+      'spki',
+      localKeyPair.publicKey
+    );
+    const localPubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(localPubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     await addSigner(ns, {
       kid: 'local-test',
-      pubB64u: localPubB64u
+      pubB64u: localPubB64u,
     });
 
     // Publish pack
     const pack = await publishAnchorPack(ns, storage, {
       privateKey: localKeyPair.privateKey,
       publicKeyBytes: localPubKey,
-      kid: 'local-test'
+      kid: 'local-test',
     });
 
     expect(pack.v).toBe(1);
@@ -126,7 +139,7 @@ describe('Federated Anchor Sync', () => {
 
   test('planning - creates sync plan for multiple peers', async () => {
     const plan = await planAnchorSync(ns, null, ['org-a', 'org-b']);
-    
+
     expect(plan.pulls).toHaveLength(2);
     expect(plan.pulls[0].orgId).toBe('org-a');
     expect(plan.pulls[1].orgId).toBe('org-b');
@@ -135,14 +148,21 @@ describe('Federated Anchor Sync', () => {
 
   test('verification - accepts pack signed by trusted anchor', async () => {
     // Add trust anchor for remote org
-    const remotePubKey = await crypto.subtle.exportKey('spki', remoteKeyPair.publicKey);
-    const remotePubB64u = btoa(String.fromCharCode(...new Uint8Array(remotePubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const remotePubKey = await crypto.subtle.exportKey(
+      'spki',
+      remoteKeyPair.publicKey
+    );
+    const remotePubB64u = btoa(
+      String.fromCharCode(...new Uint8Array(remotePubKey))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     await addTrustAnchor(ns, {
       orgId: 'remote-org',
       pubB64u: remotePubB64u,
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     });
 
     // Create and sign pack
@@ -151,7 +171,7 @@ describe('Federated Anchor Sync', () => {
       issuerOrg: 'remote-org',
       createdAt: new Date().toISOString(),
       seq: 1,
-      anchors: []
+      anchors: [],
     };
 
     const signedPack = await signAnchorPack(
@@ -161,9 +181,11 @@ describe('Federated Anchor Sync', () => {
     );
 
     // Run sync with the pack
-    const plan = { pulls: [{ orgId: 'remote-org', refId: 'test', nextSince: '123' }] };
+    const plan = {
+      pulls: [{ orgId: 'remote-org', refId: 'test', nextSince: '123' }],
+    };
     const result = await runAnchorSync(plan, storage);
-    
+
     // Note: This will fail verification in current implementation due to mock
     // but tests the structure
     expect(result.results).toHaveLength(1);
@@ -173,11 +195,11 @@ describe('Federated Anchor Sync', () => {
   test('seq monotonic - rejects older sequence numbers', async () => {
     // Set existing state with seq=5
     await setSyncState(ns, 'test-org', { lastSeq: 5 }, storage);
-    
+
     // Try to apply pack with seq=3 (older)
     const plan = { pulls: [{ orgId: 'test-org', refId: 'old-pack' }] };
     const result = await runAnchorSync(plan, storage);
-    
+
     // Should reject due to monotonic violation (implementation detail)
     expect(result.results[0].ok).toBe(false);
   });
@@ -190,8 +212,8 @@ describe('Federated Anchor Sync', () => {
         kid: 'test-key',
         pubB64u: 'test-pub',
         status: 'ACTIVE',
-        createdAt: '2025-08-16T10:00:00.000Z'
-      }
+        createdAt: '2025-08-16T10:00:00.000Z',
+      },
     ];
     await setAnchors(ns, 'test-org', anchors, storage);
 
@@ -200,8 +222,8 @@ describe('Federated Anchor Sync', () => {
       {
         ...anchors[0],
         status: 'REVOKED',
-        updatedAt: '2025-08-16T11:00:00.000Z'
-      }
+        updatedAt: '2025-08-16T11:00:00.000Z',
+      },
     ];
     await setAnchors(ns, 'test-org', revokedAnchors, storage);
 
@@ -213,8 +235,8 @@ describe('Federated Anchor Sync', () => {
     const plan = {
       pulls: [
         { orgId: 'org-1', refId: 'pack-1', nextSince: 'token-1' },
-        { orgId: 'org-2', refId: 'pack-2', nextSince: 'token-2' }
-      ]
+        { orgId: 'org-2', refId: 'pack-2', nextSince: 'token-2' },
+      ],
     };
 
     const result = await runAnchorSync(plan, storage);
@@ -228,8 +250,8 @@ describe('Federated Anchor Sync', () => {
         kid: 'test-key',
         pubB64u: 'test-pub',
         status: 'ACTIVE',
-        createdAt: '2025-08-16T10:00:00.000Z'
-      }
+        createdAt: '2025-08-16T10:00:00.000Z',
+      },
     ];
 
     // Apply once
@@ -249,7 +271,7 @@ describe('Federated Anchor Sync', () => {
       issuerOrg: 'bad-org',
       createdAt: new Date().toISOString(),
       seq: 1,
-      anchors: []
+      anchors: [],
       // No sig field
     };
 
@@ -258,18 +280,23 @@ describe('Federated Anchor Sync', () => {
   });
 
   test('push helper - publishes and pushes pack', async () => {
-    const localPubKey = await crypto.subtle.exportKey('spki', localKeyPair.publicKey);
-    
+    const localPubKey = await crypto.subtle.exportKey(
+      'spki',
+      localKeyPair.publicKey
+    );
+
     await addSigner(ns, {
       kid: 'push-test',
       pubB64u: btoa(String.fromCharCode(...new Uint8Array(localPubKey)))
-        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, ''),
     });
 
     const result = await pushAnchorPack(ns, null, storage, {
       privateKey: localKeyPair.privateKey,
       publicKeyBytes: localPubKey,
-      kid: 'push-test'
+      kid: 'push-test',
     });
 
     expect(result.ok).toBe(true);
@@ -282,13 +309,13 @@ describe('Federated Anchor Sync', () => {
         kid: 'encrypted-key',
         pubB64u: 'encrypted-pub',
         status: 'ACTIVE',
-        createdAt: new Date().toISOString()
-      }
+        createdAt: new Date().toISOString(),
+      },
     ];
 
     await setAnchors(ns, 'e2ee-test', anchors, storage);
     const retrieved = await getAnchors(ns, 'e2ee-test', storage);
-    
+
     expect(retrieved).toEqual(anchors);
     // Storage driver handles encryption transparently
   });
@@ -296,7 +323,7 @@ describe('Federated Anchor Sync', () => {
   test('determinism - canonicalization is stable', () => {
     const obj1 = { b: 2, a: 1, c: [3, 4] };
     const obj2 = { a: 1, c: [3, 4], b: 2 };
-    
+
     // Would test canonicalize function directly
     expect(JSON.stringify(obj1) !== JSON.stringify(obj2)).toBe(true);
     // But canonical forms should match

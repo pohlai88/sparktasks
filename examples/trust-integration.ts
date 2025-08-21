@@ -19,7 +19,7 @@ export async function initializeWorkspaceTrust(
     id: `admin-${index}`,
     pubB64u,
     role: 'PRIMARY' as const,
-    createdAt: Date.now()
+    createdAt: Date.now(),
   }));
 
   // Configure trust system
@@ -29,11 +29,13 @@ export async function initializeWorkspaceTrust(
   const config: TrustConfig = {
     namespace,
     initialRoots,
-    initialThreshold: Math.ceil(adminKeys.length / 2)
+    initialThreshold: Math.ceil(adminKeys.length / 2),
   };
 
   await TrustEngine.initializeTrust(config);
-  console.log(`✅ Trust system initialized with ${adminKeys.length} roots, threshold: ${config.initialThreshold}`);
+  console.log(
+    `✅ Trust system initialized with ${adminKeys.length} roots, threshold: ${config.initialThreshold}`
+  );
 }
 
 // Example: Migrate existing membership system to use trust roots
@@ -50,15 +52,20 @@ export async function migrateMembershipToTrustRoots(
     rootId: `legacy-${index}`,
     pubB64u,
     sigB64u: 'placeholder-signature', // Real signatures would be computed
-    signedAt: Date.now()
+    signedAt: Date.now(),
   }));
 
   // Perform migration
-  const migration = await TrustEngine.migrateLegacyTrust(legacyAdmins, migrationSignatures);
-  
+  const migration = await TrustEngine.migrateLegacyTrust(
+    legacyAdmins,
+    migrationSignatures
+  );
+
   if (migration.completedAt) {
-    console.log(`✅ Successfully migrated ${legacyAdmins.length} legacy admins to trust roots`);
-    
+    console.log(
+      `✅ Successfully migrated ${legacyAdmins.length} legacy admins to trust roots`
+    );
+
     // Update membership API to use trust verification
     await updateMembershipTrustIntegration(storage, namespace);
   } else {
@@ -74,11 +81,13 @@ async function updateMembershipTrustIntegration(
   // Get current trust roots
   const activeTrustRoots = await TrustEngine.getActiveTrustRoots();
   const trustedKeys = activeTrustRoots.map(root => root.pubB64u);
-  
+
   // Configure membership with trust-based validation
   MembershipApi.configureMembership(storage, namespace, trustedKeys);
-  
-  console.log(`🔗 Membership API updated to use ${trustedKeys.length} trusted root keys`);
+
+  console.log(
+    `🔗 Membership API updated to use ${trustedKeys.length} trusted root keys`
+  );
 }
 
 // Example: Trust root rotation workflow
@@ -95,7 +104,12 @@ export async function rotateTrustRoot(
   // Create new manifest with rotated root
   const updatedRoots = state.currentManifest.roots.map(root =>
     root.id === oldRootId
-      ? { ...root, id: `${oldRootId}-rotated`, pubB64u: newRootKey, createdAt: Date.now() }
+      ? {
+          ...root,
+          id: `${oldRootId}-rotated`,
+          pubB64u: newRootKey,
+          createdAt: Date.now(),
+        }
       : root
   );
 
@@ -104,7 +118,7 @@ export async function rotateTrustRoot(
     roots: updatedRoots,
     version: state.currentManifest.version + 1,
     createdAt: Date.now(),
-    precedingHash: 'computed-hash' // Would be computed from previous manifest
+    precedingHash: 'computed-hash', // Would be computed from previous manifest
   };
 
   // Create rotation operation
@@ -116,7 +130,9 @@ export async function rotateTrustRoot(
 
   console.log(`🔄 Trust root rotation initiated: ${operation.id}`);
   console.log(`📝 Reason: ${reason}`);
-  console.log(`⏳ Waiting for ${state.currentManifest.threshold} signatures...`);
+  console.log(
+    `⏳ Waiting for ${state.currentManifest.threshold} signatures...`
+  );
 }
 
 // Example: Add new trust root (expansion)
@@ -135,7 +151,7 @@ export async function addTrustRoot(
     id: `root-${Date.now()}`,
     pubB64u: newRootKey,
     role,
-    createdAt: Date.now()
+    createdAt: Date.now(),
   };
 
   // Create updated manifest
@@ -144,7 +160,7 @@ export async function addTrustRoot(
     roots: [...state.currentManifest.roots, newRoot],
     version: state.currentManifest.version + 1,
     createdAt: Date.now(),
-    precedingHash: 'computed-hash' // Would be computed from previous manifest
+    precedingHash: 'computed-hash', // Would be computed from previous manifest
   };
 
   // Create addition operation
@@ -175,7 +191,7 @@ export async function emergencyTrustRecovery(
     pubB64u,
     role: 'EMERGENCY' as const,
     createdAt: Date.now(),
-    expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hour expiry
+    expiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hour expiry
   }));
 
   // Create emergency manifest with lower threshold
@@ -185,7 +201,7 @@ export async function emergencyTrustRecovery(
     threshold: 1, // Emergency single-signature approval
     version: state.currentManifest.version + 1,
     createdAt: Date.now(),
-    precedingHash: 'computed-hash'
+    precedingHash: 'computed-hash',
   };
 
   // Create emergency operation
@@ -207,12 +223,16 @@ export async function verifyActionWithTrust(
   action: string
 ): Promise<boolean> {
   const isTrusted = await TrustEngine.isTrustedKey(actorKey);
-  
+
   if (isTrusted) {
-    console.log(`✅ Action '${action}' authorized for trusted key: ${actorKey.slice(0, 16)}...`);
+    console.log(
+      `✅ Action '${action}' authorized for trusted key: ${actorKey.slice(0, 16)}...`
+    );
     return true;
   } else {
-    console.log(`❌ Action '${action}' denied for untrusted key: ${actorKey.slice(0, 16)}...`);
+    console.log(
+      `❌ Action '${action}' denied for untrusted key: ${actorKey.slice(0, 16)}...`
+    );
     return false;
   }
 }
@@ -225,13 +245,13 @@ export async function getTrustStatus(): Promise<{
   pendingOperations: number;
 }> {
   const state = await TrustEngine.getTrustState();
-  
+
   if (!state) {
     return {
       initialized: false,
       activeRoots: 0,
       threshold: 0,
-      pendingOperations: 0
+      pendingOperations: 0,
     };
   }
 
@@ -241,6 +261,6 @@ export async function getTrustStatus(): Promise<{
     initialized: true,
     activeRoots: activeRoots.length,
     threshold: state.currentManifest.threshold,
-    pendingOperations: state.pendingOperations.length
+    pendingOperations: state.pendingOperations.length,
   };
 }

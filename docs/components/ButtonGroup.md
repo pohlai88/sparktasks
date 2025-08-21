@@ -38,43 +38,47 @@ import { ButtonGroup, Button } from '@/components/ui';
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | Button components to group |
-| `size` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Size inherited by child buttons |
-| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'destructive' \| 'outline' \| 'link'` | - | Variant inherited by child buttons |
-| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout direction |
-| `attached` | `boolean` | `true` | Connect buttons with shared borders |
-| `spacing` | `'none' \| 'sm' \| 'md'` | `'none'` | Spacing between buttons (when `attached={false}`) |
-| `fullWidth` | `boolean` | `false` | Expand to full container width |
-| `aria-label` | `string` | - | Accessible label for the group |
-| `className` | `string` | `''` | Additional CSS classes |
+| Prop          | Type                                                                          | Default        | Description                                       |
+| ------------- | ----------------------------------------------------------------------------- | -------------- | ------------------------------------------------- |
+| `children`    | `React.ReactNode`                                                             | -              | Button components to group                        |
+| `size`        | `'sm' \| 'md' \| 'lg' \| 'xl'`                                                | `'md'`         | Size inherited by child buttons                   |
+| `variant`     | `'primary' \| 'secondary' \| 'ghost' \| 'destructive' \| 'outline' \| 'link'` | -              | Variant inherited by child buttons                |
+| `orientation` | `'horizontal' \| 'vertical'`                                                  | `'horizontal'` | Layout direction                                  |
+| `attached`    | `boolean`                                                                     | `true`         | Connect buttons with shared borders               |
+| `spacing`     | `'none' \| 'sm' \| 'md'`                                                      | `'none'`       | Spacing between buttons (when `attached={false}`) |
+| `fullWidth`   | `boolean`                                                                     | `false`        | Expand to full container width                    |
+| `aria-label`  | `string`                                                                      | -              | Accessible label for the group                    |
+| `className`   | `string`                                                                      | `''`           | Additional CSS classes                            |
 
 ## Usage Patterns
 
 ### Toolbar Actions
 
 ```tsx
-<ButtonGroup size="sm" attached={true} aria-label="Toolbar actions">
-  <Button icon={<Save size={14} />} aria-label="Save" />
-  <Button icon={<Edit size={14} />} aria-label="Edit" />
-  <Button icon={<Trash size={14} />} variant="destructive" aria-label="Delete" />
+<ButtonGroup size='sm' attached={true} aria-label='Toolbar actions'>
+  <Button icon={<Save size={14} />} aria-label='Save' />
+  <Button icon={<Edit size={14} />} aria-label='Edit' />
+  <Button
+    icon={<Trash size={14} />}
+    variant='destructive'
+    aria-label='Delete'
+  />
 </ButtonGroup>
 ```
 
 ### Form Actions
 
 ```tsx
-<ButtonGroup fullWidth attached={false} spacing="md" aria-label="Form actions">
-  <Button variant="outline">Cancel</Button>
-  <Button variant="primary">Submit</Button>
+<ButtonGroup fullWidth attached={false} spacing='md' aria-label='Form actions'>
+  <Button variant='outline'>Cancel</Button>
+  <Button variant='primary'>Submit</Button>
 </ButtonGroup>
 ```
 
 ### Vertical Navigation
 
 ```tsx
-<ButtonGroup orientation="vertical" variant="ghost" aria-label="Navigation">
+<ButtonGroup orientation='vertical' variant='ghost' aria-label='Navigation'>
   <Button>Dashboard</Button>
   <Button>Analytics</Button>
   <Button>Settings</Button>
@@ -84,10 +88,10 @@ import { ButtonGroup, Button } from '@/components/ui';
 ### Property Override
 
 ```tsx
-<ButtonGroup variant="secondary" size="md">
+<ButtonGroup variant='secondary' size='md'>
   <Button>Normal</Button>
-  <Button size="lg">Large Override</Button>
-  <Button variant="destructive">Delete Override</Button>
+  <Button size='lg'>Large Override</Button>
+  <Button variant='destructive'>Delete Override</Button>
 </ButtonGroup>
 ```
 
@@ -112,16 +116,21 @@ import { ButtonGroup, Button } from '@/components/ui';
 ### Enterprise Dashboard Toolbar
 
 ```tsx
-<div className="dashboard-header">
-  <ButtonGroup size="sm" aria-label="Document actions">
+<div className='dashboard-header'>
+  <ButtonGroup size='sm' aria-label='Document actions'>
     <Button icon={<Save size={14} />}>Save</Button>
     <Button icon={<Share size={14} />}>Share</Button>
     <Button icon={<Download size={14} />}>Export</Button>
   </ButtonGroup>
-  
-  <ButtonGroup size="sm" attached={false} spacing="sm" aria-label="View options">
-    <Button variant="ghost" icon={<Grid size={14} />} aria-label="Grid view" />
-    <Button variant="ghost" icon={<List size={14} />} aria-label="List view" />
+
+  <ButtonGroup
+    size='sm'
+    attached={false}
+    spacing='sm'
+    aria-label='View options'
+  >
+    <Button variant='ghost' icon={<Grid size={14} />} aria-label='Grid view' />
+    <Button variant='ghost' icon={<List size={14} />} aria-label='List view' />
   </ButtonGroup>
 </div>
 ```
@@ -131,11 +140,22 @@ import { ButtonGroup, Button } from '@/components/ui';
 ```tsx
 <form>
   {/* Form fields */}
-  
-  <ButtonGroup fullWidth spacing="md" attached={false} aria-label="Form actions">
-    <Button variant="outline" onClick={onReset}>Reset</Button>
-    <Button variant="secondary" onClick={onSaveDraft}>Save Draft</Button>
-    <Button variant="primary" type="submit">Submit</Button>
+
+  <ButtonGroup
+    fullWidth
+    spacing='md'
+    attached={false}
+    aria-label='Form actions'
+  >
+    <Button variant='outline' onClick={onReset}>
+      Reset
+    </Button>
+    <Button variant='secondary' onClick={onSaveDraft}>
+      Save Draft
+    </Button>
+    <Button variant='primary' type='submit'>
+      Submit
+    </Button>
   </ButtonGroup>
 </form>
 ```
@@ -151,6 +171,7 @@ import { ButtonGroup, Button } from '@/components/ui';
 ## Testing
 
 The component includes comprehensive test coverage:
+
 - ✅ 27 unit tests (100% passing)
 - ✅ 2 integration tests (100% passing)
 - ✅ Accessibility compliance validation

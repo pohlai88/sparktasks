@@ -1,6 +1,6 @@
 /**
  * @fileoverview HoverCard Component Test Suite
- * 
+ *
  * Comprehensive test coverage for the HoverCard component including:
  * - Basic functionality and interaction patterns
  * - Positioning and collision detection
@@ -9,14 +9,20 @@
  * - Animation and timing controls
  * - Portal rendering
  * - Edge cases and error handling
- * 
+ *
  * @version 1.0.0
  * @author Spark Tasks Team
  * @since 2024
  */
 
 import React from 'react';
-import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+  act,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { HoverCard } from '@/components/ui/HoverCard';
@@ -26,9 +32,14 @@ import { HoverCard } from '@/components/ui/HoverCard';
 /**
  * Test component that triggers hover card
  */
-const TestTrigger = React.forwardRef<HTMLButtonElement, { children?: React.ReactNode }>(
-  ({ children = 'Hover me', ...props }, ref) => <button ref={ref} {...props}>{children}</button>
-);
+const TestTrigger = React.forwardRef<
+  HTMLButtonElement,
+  { children?: React.ReactNode }
+>(({ children = 'Hover me', ...props }, ref) => (
+  <button ref={ref} {...props}>
+    {children}
+  </button>
+));
 TestTrigger.displayName = 'TestTrigger';
 
 /**
@@ -39,7 +50,7 @@ const triggerHover = (element: HTMLElement) => {
 };
 
 /**
- * Helper to trigger unhover events that work reliably in tests  
+ * Helper to trigger unhover events that work reliably in tests
  */
 const triggerUnhover = (element: HTMLElement) => {
   fireEvent.mouseOut(element);
@@ -48,9 +59,12 @@ const triggerUnhover = (element: HTMLElement) => {
 /**
  * Test content for hover card
  */
-const TestContent = ({ children = 'Test content', ...props }: { children?: React.ReactNode }) => (
-  <div {...props}>{children}</div>
-);
+const TestContent = ({
+  children = 'Test content',
+  ...props
+}: {
+  children?: React.ReactNode;
+}) => <div {...props}>{children}</div>;
 
 /**
  * Rich test content with multiple elements
@@ -69,19 +83,24 @@ const RichTestContent = () => (
 /**
  * Utility to create controlled hover card
  */
-const ControlledHoverCard = ({ 
-  open, 
+const ControlledHoverCard = ({
+  open,
   onOpenChange,
   content,
-  ...props 
-}: { 
-  open: boolean; 
+  ...props
+}: {
+  open: boolean;
   onOpenChange: (open: boolean) => void;
   content: React.ReactNode;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }) => (
-  <HoverCard open={open} onOpenChange={onOpenChange} content={content} {...props}>
+  <HoverCard
+    open={open}
+    onOpenChange={onOpenChange}
+    content={content}
+    {...props}
+  >
     <TestTrigger />
   </HoverCard>
 );
@@ -133,7 +152,7 @@ describe('HoverCard', () => {
       // Use fireEvent directly as recommended by Feedback 1
       const button = screen.getByRole('button');
       fireEvent.mouseOver(button);
-      
+
       // Use async query to wait for React updates
       expect(await screen.findByText('Test content')).toBeInTheDocument();
     });
@@ -146,8 +165,8 @@ describe('HoverCard', () => {
       );
 
       const trigger = screen.getByRole('button');
-      
-      // Show content first  
+
+      // Show content first
       triggerHover(trigger);
       expect(await screen.findByText('Test content')).toBeInTheDocument();
 
@@ -158,7 +177,8 @@ describe('HoverCard', () => {
       );
     });
 
-    it('respects disabled state', async () => {      render(
+    it('respects disabled state', async () => {
+      render(
         <HoverCard content={<TestContent />} disabled>
           <TestTrigger />
         </HoverCard>
@@ -166,7 +186,7 @@ describe('HoverCard', () => {
 
       triggerHover(screen.getByRole('button'));
       vi.advanceTimersByTime(1000);
-      
+
       expect(screen.queryByText('Test content')).not.toBeInTheDocument();
     });
   });
@@ -193,27 +213,33 @@ describe('HoverCard', () => {
     ];
 
     positions.forEach(({ position, description }) => {
-      it(`applies correct positioning for ${description}`, async () => {        render(
-          <HoverCard content={<TestContent />} position={position!} showDelay={0}>
+      it(`applies correct positioning for ${description}`, async () => {
+        render(
+          <HoverCard
+            content={<TestContent />}
+            position={position!}
+            showDelay={0}
+          >
             <TestTrigger />
           </HoverCard>
         );
 
         triggerHover(screen.getByRole('button'));
-        
+
         const content = screen.getByRole('tooltip');
         expect(content).toHaveAttribute('data-position', position);
       });
     });
 
-    it('applies custom offset', async () => {      render(
+    it('applies custom offset', async () => {
+      render(
         <HoverCard content={<TestContent />} offset={16} showDelay={0}>
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       const content = screen.getByRole('tooltip');
       expect(content).toBeInTheDocument();
     });
@@ -233,14 +259,15 @@ describe('HoverCard', () => {
     ];
 
     sizes.forEach(({ size, description }) => {
-      it(`applies correct size for ${description}`, async () => {        render(
+      it(`applies correct size for ${description}`, async () => {
+        render(
           <HoverCard content={<TestContent />} size={size!} showDelay={0}>
             <TestTrigger />
           </HoverCard>
         );
 
         triggerHover(screen.getByRole('button'));
-        
+
         const content = screen.getByRole('tooltip');
         expect(content).toHaveAttribute('data-size', size);
       });
@@ -262,16 +289,20 @@ describe('HoverCard', () => {
     ];
 
     variants.forEach(({ variant, description }) => {
-      it(`applies correct styling for ${description}`, async () => {        render(
+      it(`applies correct styling for ${description}`, async () => {
+        render(
           <HoverCard content={<TestContent />} variant={variant!} showDelay={0}>
             <TestTrigger />
           </HoverCard>
         );
 
         triggerHover(screen.getByRole('button'));
-        
+
         // Rich and interactive variants use role="dialog", others use role="tooltip"
-        const expectedRole = (variant === 'rich' || variant === 'interactive') ? 'dialog' : 'tooltip';
+        const expectedRole =
+          variant === 'rich' || variant === 'interactive'
+            ? 'dialog'
+            : 'tooltip';
         const content = screen.getByRole(expectedRole);
         expect(content).toHaveAttribute('data-variant', variant);
       });
@@ -281,25 +312,31 @@ describe('HoverCard', () => {
   // ===== TRIGGER TESTS =====
 
   describe('Trigger Modes', () => {
-    it('triggers on hover only', () => {      render(
-        <HoverCard content={<TestContent />} trigger="hover" showDelay={0} hideDelay={0}>
+    it('triggers on hover only', () => {
+      render(
+        <HoverCard
+          content={<TestContent />}
+          trigger='hover'
+          showDelay={0}
+          hideDelay={0}
+        >
           <TestTrigger />
         </HoverCard>
       );
 
       const trigger = screen.getByRole('button');
-      
+
       // Hover should show
       act(() => {
         triggerHover(trigger);
       });
       expect(screen.getByText('Test content')).toBeInTheDocument();
-      
+
       // Unhover to clean state
       act(() => {
         triggerUnhover(trigger);
       });
-      
+
       // Focus should not affect (since trigger is hover-only)
       act(() => {
         trigger.focus();
@@ -310,13 +347,13 @@ describe('HoverCard', () => {
 
     it('triggers on focus only', async () => {
       render(
-        <HoverCard content={<TestContent />} trigger="focus" showDelay={0}>
+        <HoverCard content={<TestContent />} trigger='focus' showDelay={0}>
           <TestTrigger />
         </HoverCard>
       );
 
       const trigger = screen.getByRole('button');
-      
+
       // Focus should show
       act(() => {
         trigger.focus();
@@ -324,7 +361,7 @@ describe('HoverCard', () => {
       await waitFor(() => {
         expect(screen.getByText('Test content')).toBeInTheDocument();
       });
-      
+
       // Blur should hide
       act(() => {
         trigger.blur();
@@ -334,23 +371,24 @@ describe('HoverCard', () => {
       });
     });
 
-    it('triggers on both hover and focus', async () => {      render(
-        <HoverCard content={<TestContent />} trigger="both" showDelay={0}>
+    it('triggers on both hover and focus', async () => {
+      render(
+        <HoverCard content={<TestContent />} trigger='both' showDelay={0}>
           <TestTrigger />
         </HoverCard>
       );
 
       const trigger = screen.getByRole('button');
-      
+
       // Hover should show
       triggerHover(trigger);
       expect(screen.getByText('Test content')).toBeInTheDocument();
-      
+
       triggerUnhover(trigger);
       await waitFor(() => {
         expect(screen.queryByText('Test content')).not.toBeInTheDocument();
       });
-      
+
       // Focus should also show (using focusIn to emit the event React listens for)
       fireEvent.focusIn(trigger);
       expect(screen.getByText('Test content')).toBeInTheDocument();
@@ -360,17 +398,18 @@ describe('HoverCard', () => {
   // ===== TIMING TESTS =====
 
   describe('Timing Controls', () => {
-    it('respects show delay', async () => {      render(
+    it('respects show delay', async () => {
+      render(
         <HoverCard content={<TestContent />} showDelay={500}>
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       // Should not show immediately
       expect(screen.queryByText('Test content')).not.toBeInTheDocument();
-      
+
       // Should show after delay
       act(() => {
         vi.advanceTimersByTime(500);
@@ -380,7 +419,8 @@ describe('HoverCard', () => {
       });
     });
 
-    it('respects hide delay', async () => {      render(
+    it('respects hide delay', async () => {
+      render(
         <HoverCard content={<TestContent />} showDelay={0} hideDelay={300}>
           <TestTrigger />
         </HoverCard>
@@ -391,12 +431,12 @@ describe('HoverCard', () => {
       await waitFor(() => {
         expect(screen.getByText('Test content')).toBeInTheDocument();
       });
-      
+
       triggerUnhover(trigger);
-      
+
       // Should not hide immediately
       expect(screen.getByText('Test content')).toBeInTheDocument();
-      
+
       // Should hide after delay
       act(() => {
         vi.advanceTimersByTime(300);
@@ -406,7 +446,8 @@ describe('HoverCard', () => {
       });
     });
 
-    it('cancels show timer on quick unhover', async () => {      render(
+    it('cancels show timer on quick unhover', async () => {
+      render(
         <HoverCard content={<TestContent />} showDelay={500}>
           <TestTrigger />
         </HoverCard>
@@ -414,11 +455,11 @@ describe('HoverCard', () => {
 
       const trigger = screen.getByRole('button');
       triggerHover(trigger);
-      
+
       // Unhover before delay
       vi.advanceTimersByTime(200);
       triggerUnhover(trigger);
-      
+
       // Advance past original delay
       vi.advanceTimersByTime(400);
       expect(screen.queryByText('Test content')).not.toBeInTheDocument();
@@ -439,14 +480,19 @@ describe('HoverCard', () => {
     ];
 
     animations.forEach(({ animation, description }) => {
-      it(`applies ${description}`, async () => {        render(
-          <HoverCard content={<TestContent />} animation={animation!} showDelay={0}>
+      it(`applies ${description}`, async () => {
+        render(
+          <HoverCard
+            content={<TestContent />}
+            animation={animation!}
+            showDelay={0}
+          >
             <TestTrigger />
           </HoverCard>
         );
 
         triggerHover(screen.getByRole('button'));
-        
+
         const content = screen.getByRole('tooltip');
         expect(content).toBeInTheDocument();
         // Note: Animation classes would be tested in integration/visual tests
@@ -461,21 +507,34 @@ describe('HoverCard', () => {
       const onOpenChange = vi.fn();
 
       const { rerender } = render(
-        <ControlledHoverCard open={false} onOpenChange={onOpenChange} content={<TestContent />} />
+        <ControlledHoverCard
+          open={false}
+          onOpenChange={onOpenChange}
+          content={<TestContent />}
+        />
       );
 
       expect(screen.queryByText('Test content')).not.toBeInTheDocument();
 
       rerender(
-        <ControlledHoverCard open={true} onOpenChange={onOpenChange} content={<TestContent />} />
+        <ControlledHoverCard
+          open={true}
+          onOpenChange={onOpenChange}
+          content={<TestContent />}
+        />
       );
 
       expect(screen.getByText('Test content')).toBeInTheDocument();
     });
 
     it('calls onOpenChange callback', () => {
-      const onOpenChange = vi.fn();      render(
-        <HoverCard content={<TestContent />} onOpenChange={onOpenChange} showDelay={0}>
+      const onOpenChange = vi.fn();
+      render(
+        <HoverCard
+          content={<TestContent />}
+          onOpenChange={onOpenChange}
+          showDelay={0}
+        >
           <TestTrigger />
         </HoverCard>
       );
@@ -483,7 +542,7 @@ describe('HoverCard', () => {
       act(() => {
         triggerHover(screen.getByRole('button'));
       });
-      
+
       // Check if callback was called immediately
       expect(onOpenChange).toHaveBeenCalledWith(true);
     });
@@ -492,7 +551,8 @@ describe('HoverCard', () => {
   // ===== ACCESSIBILITY TESTS =====
 
   describe('Accessibility', () => {
-    it('has correct ARIA attributes', async () => {      render(
+    it('has correct ARIA attributes', async () => {
+      render(
         <HoverCard content={<TestContent />} showDelay={0}>
           <TestTrigger />
         </HoverCard>
@@ -500,17 +560,18 @@ describe('HoverCard', () => {
 
       const trigger = screen.getByRole('button');
       triggerHover(trigger);
-      
+
       const content = screen.getByRole('tooltip');
       expect(content).toHaveAttribute('role', 'tooltip');
       expect(trigger).toHaveAttribute('aria-describedby', content.id);
     });
 
-    it('supports custom aria-label', async () => {      render(
-        <HoverCard 
-          content={<TestContent />} 
-          variant="rich"
-          aria-label="Custom tooltip label"
+    it('supports custom aria-label', async () => {
+      render(
+        <HoverCard
+          content={<TestContent />}
+          variant='rich'
+          aria-label='Custom tooltip label'
           showDelay={0}
         >
           <TestTrigger />
@@ -518,14 +579,14 @@ describe('HoverCard', () => {
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       const content = screen.getByRole('dialog'); // Rich variant uses dialog role
       expect(content).toHaveAttribute('aria-label', 'Custom tooltip label');
     });
 
     it('handles escape key', async () => {
       const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-      
+
       render(
         <HoverCard content={<TestContent />} showDelay={0}>
           <TestTrigger />
@@ -534,14 +595,18 @@ describe('HoverCard', () => {
 
       triggerHover(screen.getByRole('button'));
       expect(screen.getByText('Test content')).toBeInTheDocument();
-      
+
       await user.keyboard('{Escape}');
-      await waitFor(() => {
-        expect(screen.queryByText('Test content')).not.toBeInTheDocument();
-      }, { timeout: 1000 });
+      await waitFor(
+        () => {
+          expect(screen.queryByText('Test content')).not.toBeInTheDocument();
+        },
+        { timeout: 1000 }
+      );
     });
 
-    it('maintains hover when moving to content', async () => {      render(
+    it('maintains hover when moving to content', async () => {
+      render(
         <HoverCard content={<RichTestContent />} showDelay={0} hideDelay={100}>
           <TestTrigger />
         </HoverCard>
@@ -550,11 +615,11 @@ describe('HoverCard', () => {
       const trigger = screen.getByRole('button');
       triggerHover(trigger);
       expect(screen.getByText('User Profile')).toBeInTheDocument();
-      
+
       // Move to content
       const content = screen.getByRole('tooltip');
       triggerHover(content);
-      
+
       // Content should remain visible
       expect(screen.getByText('User Profile')).toBeInTheDocument();
     });
@@ -563,30 +628,36 @@ describe('HoverCard', () => {
   // ===== ARROW TESTS =====
 
   describe('Arrow Pointer', () => {
-    it('shows arrow by default', async () => {      render(
-        <HoverCard content={<TestContent />} showDelay={0} data-testid="hover-card">
-          <TestTrigger />
-        </HoverCard>
-      );
-
-      triggerHover(screen.getByRole('button'));
-      
-      expect(screen.getByTestId('hover-card-arrow')).toBeInTheDocument();
-    });
-
-    it('hides arrow when showArrow is false', async () => {      render(
-        <HoverCard 
-          content={<TestContent />} 
-          showArrow={false} 
+    it('shows arrow by default', async () => {
+      render(
+        <HoverCard
+          content={<TestContent />}
           showDelay={0}
-          data-testid="hover-card"
+          data-testid='hover-card'
         >
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
+      expect(screen.getByTestId('hover-card-arrow')).toBeInTheDocument();
+    });
+
+    it('hides arrow when showArrow is false', async () => {
+      render(
+        <HoverCard
+          content={<TestContent />}
+          showArrow={false}
+          showDelay={0}
+          data-testid='hover-card'
+        >
+          <TestTrigger />
+        </HoverCard>
+      );
+
+      triggerHover(screen.getByRole('button'));
+
       expect(screen.queryByTestId('hover-card-arrow')).not.toBeInTheDocument();
     });
   });
@@ -594,47 +665,54 @@ describe('HoverCard', () => {
   // ===== CONTENT TESTS =====
 
   describe('Content Handling', () => {
-    it('renders simple text content', async () => {      render(
-        <HoverCard content="Simple text content" showDelay={0}>
+    it('renders simple text content', async () => {
+      render(
+        <HoverCard content='Simple text content' showDelay={0}>
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       expect(screen.getByText('Simple text content')).toBeInTheDocument();
     });
 
-    it('renders complex JSX content', async () => {      render(
+    it('renders complex JSX content', async () => {
+      render(
         <HoverCard content={<RichTestContent />} showDelay={0}>
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       expect(screen.getByText('User Profile')).toBeInTheDocument();
       expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
       expect(screen.getByText('Status: Online')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'View Profile' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'View Profile' })
+      ).toBeInTheDocument();
     });
 
-    it('handles content overflow', async () => {      const longContent = (
+    it('handles content overflow', async () => {
+      const longContent = (
         <div>
           {Array.from({ length: 50 }, (_, i) => (
-            <p key={i}>This is line {i + 1} of very long content that should scroll.</p>
+            <p key={i}>
+              This is line {i + 1} of very long content that should scroll.
+            </p>
           ))}
         </div>
       );
 
       render(
-        <HoverCard content={longContent} size="sm" showDelay={0}>
+        <HoverCard content={longContent} size='sm' showDelay={0}>
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       const content = screen.getByRole('tooltip');
       expect(content).toHaveClass('overflow-auto');
     });
@@ -643,7 +721,8 @@ describe('HoverCard', () => {
   // ===== COMPOUND COMPONENTS TESTS =====
 
   describe('Compound Components', () => {
-    it('renders with Header, Content, and Footer', async () => {      const CompoundContent = () => (
+    it('renders with Header, Content, and Footer', async () => {
+      const CompoundContent = () => (
         <div>
           <HoverCard.Header>
             <h3>Profile Header</h3>
@@ -664,17 +743,22 @@ describe('HoverCard', () => {
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       expect(screen.getByText('Profile Header')).toBeInTheDocument();
       expect(screen.getByText('Profile content here')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Action Button' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Action Button' })
+      ).toBeInTheDocument();
     });
 
-    it('applies custom className to compound components', async () => {      const CompoundContent = () => (
+    it('applies custom className to compound components', async () => {
+      const CompoundContent = () => (
         <div>
-          <HoverCard.Header className="custom-header">Header</HoverCard.Header>
-          <HoverCard.Content className="custom-content">Content</HoverCard.Content>
-          <HoverCard.Footer className="custom-footer">Footer</HoverCard.Footer>
+          <HoverCard.Header className='custom-header'>Header</HoverCard.Header>
+          <HoverCard.Content className='custom-content'>
+            Content
+          </HoverCard.Content>
+          <HoverCard.Footer className='custom-footer'>Footer</HoverCard.Footer>
         </div>
       );
 
@@ -685,7 +769,7 @@ describe('HoverCard', () => {
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       expect(screen.getByText('Header')).toHaveClass('custom-header');
       expect(screen.getByText('Content')).toHaveClass('custom-content');
       expect(screen.getByText('Footer')).toHaveClass('custom-footer');
@@ -695,32 +779,39 @@ describe('HoverCard', () => {
   // ===== PORTAL TESTS =====
 
   describe('Portal Rendering', () => {
-    it('renders in document body by default', async () => {      render(
+    it('renders in document body by default', async () => {
+      render(
         <HoverCard content={<TestContent />} portal={true} showDelay={0}>
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       const content = screen.getByRole('tooltip');
       expect(document.body).toContainElement(content);
     });
 
-    it('renders in custom container', async () => {      const customContainer = document.createElement('div');
+    it('renders in custom container', async () => {
+      const customContainer = document.createElement('div');
       document.body.appendChild(customContainer);
 
       render(
-        <HoverCard content={<TestContent />} container={customContainer} portal={true} showDelay={0}>
+        <HoverCard
+          content={<TestContent />}
+          container={customContainer}
+          portal={true}
+          showDelay={0}
+        >
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       const content = screen.getByRole('tooltip');
       expect(customContainer).toContainElement(content);
-      
+
       // Cleanup
       document.body.removeChild(customContainer);
     });
@@ -729,14 +820,15 @@ describe('HoverCard', () => {
   // ===== EDGE CASES =====
 
   describe('Edge Cases', () => {
-    it('handles rapid hover/unhover', async () => {      render(
+    it('handles rapid hover/unhover', async () => {
+      render(
         <HoverCard content={<TestContent />} showDelay={100} hideDelay={100}>
           <TestTrigger />
         </HoverCard>
       );
 
       const trigger = screen.getByRole('button');
-      
+
       // Rapid hover/unhover
       triggerHover(trigger);
       act(() => {
@@ -750,20 +842,21 @@ describe('HoverCard', () => {
       act(() => {
         vi.advanceTimersByTime(200);
       });
-      
+
       await waitFor(() => {
         expect(screen.getByText('Test content')).toBeInTheDocument();
       });
     });
 
-    it('handles null container gracefully', async () => {      render(
+    it('handles null container gracefully', async () => {
+      render(
         <HoverCard content={<TestContent />} container={null} showDelay={0}>
           <TestTrigger />
         </HoverCard>
       );
 
       triggerHover(screen.getByRole('button'));
-      
+
       // Should still render in body
       expect(screen.getByRole('tooltip')).toBeInTheDocument();
     });

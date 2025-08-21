@@ -2,12 +2,12 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Copy, Trash2, Edit } from 'lucide-react';
-import { 
-  ContextMenu, 
-  ContextMenuProvider, 
-  ContextMenuTrigger, 
+import {
+  ContextMenu,
+  ContextMenuProvider,
+  ContextMenuTrigger,
   useContextMenu,
-  type MenuItem 
+  type MenuItem,
 } from '../../src/components/ui/ContextMenu';
 
 // Test setup
@@ -24,19 +24,19 @@ const basicMenuItems: MenuItem[] = [
   {
     id: 'copy',
     label: 'Copy',
-    icon: <Copy data-testid="copy-icon" />,
+    icon: <Copy data-testid='copy-icon' />,
     onClick: vi.fn(),
   },
   {
     id: 'edit',
     label: 'Edit',
-    icon: <Edit data-testid="edit-icon" />,
+    icon: <Edit data-testid='edit-icon' />,
     onClick: vi.fn(),
   },
   {
     id: 'delete',
     label: 'Delete',
-    icon: <Trash2 data-testid="delete-icon" />,
+    icon: <Trash2 data-testid='delete-icon' />,
     danger: true,
     onClick: vi.fn(),
   },
@@ -56,7 +56,10 @@ describe('ContextMenu Component - Basic Functionality', () => {
       );
 
       expect(screen.getByRole('menu')).toBeInTheDocument();
-      expect(screen.getByRole('menu')).toHaveAttribute('aria-label', 'Context menu');
+      expect(screen.getByRole('menu')).toHaveAttribute(
+        'aria-label',
+        'Context menu'
+      );
     });
 
     it('does not render menu when not visible', () => {
@@ -156,7 +159,7 @@ describe('ContextMenu Component - Basic Functionality', () => {
 
       // Wait for the event listeners to be attached (they have a 10ms timeout)
       await new Promise(resolve => setTimeout(resolve, 20));
-      
+
       await user.keyboard('{Escape}');
 
       expect(onClose).toHaveBeenCalledTimes(1);
@@ -223,22 +226,19 @@ describe('ContextMenuProvider', () => {
   // Test helper component that uses the hook
   const TestHookComponent = () => {
     const { showMenu, hideMenu, isVisible } = useContextMenu();
-    
+
     return (
       <div>
-        <button 
-          data-testid="show-menu-btn"
-          onClick={(e) => showMenu(e as any, basicMenuItems)}
+        <button
+          data-testid='show-menu-btn'
+          onClick={e => showMenu(e as any, basicMenuItems)}
         >
           Show Menu
         </button>
-        <button 
-          data-testid="hide-menu-btn"
-          onClick={hideMenu}
-        >
+        <button data-testid='hide-menu-btn' onClick={hideMenu}>
           Hide Menu
         </button>
-        <div data-testid="visibility-status">
+        <div data-testid='visibility-status'>
           {isVisible ? 'visible' : 'hidden'}
         </div>
       </div>
@@ -255,7 +255,9 @@ describe('ContextMenuProvider', () => {
 
       expect(screen.getByTestId('show-menu-btn')).toBeInTheDocument();
       expect(screen.getByTestId('hide-menu-btn')).toBeInTheDocument();
-      expect(screen.getByTestId('visibility-status')).toHaveTextContent('hidden');
+      expect(screen.getByTestId('visibility-status')).toHaveTextContent(
+        'hidden'
+      );
     });
 
     it('shows menu when showMenu is called', async () => {
@@ -269,7 +271,9 @@ describe('ContextMenuProvider', () => {
 
       await user.click(screen.getByTestId('show-menu-btn'));
 
-      expect(screen.getByTestId('visibility-status')).toHaveTextContent('visible');
+      expect(screen.getByTestId('visibility-status')).toHaveTextContent(
+        'visible'
+      );
       expect(screen.getByRole('menu')).toBeInTheDocument();
     });
 
@@ -283,17 +287,23 @@ describe('ContextMenuProvider', () => {
       );
 
       await user.click(screen.getByTestId('show-menu-btn'));
-      expect(screen.getByTestId('visibility-status')).toHaveTextContent('visible');
+      expect(screen.getByTestId('visibility-status')).toHaveTextContent(
+        'visible'
+      );
 
       await user.click(screen.getByTestId('hide-menu-btn'));
-      expect(screen.getByTestId('visibility-status')).toHaveTextContent('hidden');
+      expect(screen.getByTestId('visibility-status')).toHaveTextContent(
+        'hidden'
+      );
     });
   });
 
   describe('Hook Error Handling', () => {
     it('throws error when useContextMenu is used outside provider', () => {
       // Suppress console.error for this test
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
 
       expect(() => {
         render(<TestHookComponent />);
@@ -310,13 +320,13 @@ describe('ContextMenuTrigger', () => {
       render(
         <ContextMenuProvider>
           <ContextMenuTrigger items={basicMenuItems}>
-            <div data-testid="trigger-area">Right-click me</div>
+            <div data-testid='trigger-area'>Right-click me</div>
           </ContextMenuTrigger>
         </ContextMenuProvider>
       );
 
       const triggerArea = screen.getByTestId('trigger-area');
-      
+
       fireEvent.contextMenu(triggerArea, {
         clientX: 100,
         clientY: 100,
@@ -329,13 +339,13 @@ describe('ContextMenuTrigger', () => {
       render(
         <ContextMenuProvider>
           <ContextMenuTrigger items={basicMenuItems} disabled={true}>
-            <div data-testid="trigger-area">Right-click me</div>
+            <div data-testid='trigger-area'>Right-click me</div>
           </ContextMenuTrigger>
         </ContextMenuProvider>
       );
 
       const triggerArea = screen.getByTestId('trigger-area');
-      
+
       fireEvent.contextMenu(triggerArea, {
         clientX: 100,
         clientY: 100,

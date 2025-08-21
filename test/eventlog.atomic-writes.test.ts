@@ -23,7 +23,9 @@ class AtomicWriteTestDriver extends SyncLocalStorageDriver {
   }
 
   listKeys(prefix: string): string[] {
-    return Array.from(this.storage.keys()).filter(key => key.startsWith(prefix));
+    return Array.from(this.storage.keys()).filter(key =>
+      key.startsWith(prefix)
+    );
   }
 
   clear(): void {
@@ -69,15 +71,17 @@ describe('EventLog: Atomic Writes', () => {
     appendEvent(event);
 
     const finalStats = driver.getStats();
-    
+
     // Should make 2 setItem calls (temp + main) and 1 removeItem call (cleanup)
     expect(finalStats.setItemCalls).toBe(2);
     expect(finalStats.removeItemCalls).toBe(1);
-    
+
     // Should only have the main key, not the temp key
     expect(finalStats.storageKeys).toContain('atomic-test:spark.events.v1');
-    expect(finalStats.storageKeys).not.toContain('atomic-test:spark.events.v1.tmp');
-    
+    expect(finalStats.storageKeys).not.toContain(
+      'atomic-test:spark.events.v1.tmp'
+    );
+
     // Data should be correctly stored
     const storedData = driver.getItem('atomic-test:spark.events.v1');
     expect(storedData).toContain('Atomic test task');
@@ -112,15 +116,15 @@ describe('EventLog: Atomic Writes', () => {
     events.forEach(event => appendEvent(event));
 
     const stats = driver.getStats();
-    
+
     // Should make 4 setItem calls (2 temp + 2 main) and 2 removeItem calls
     expect(stats.setItemCalls).toBe(4);
     expect(stats.removeItemCalls).toBe(2);
-    
+
     // Final storage should only contain main key
     expect(stats.storageKeys).toHaveLength(1);
     expect(stats.storageKeys[0]).toBe('atomic-test:spark.events.v1');
-    
+
     // Data should contain both events
     const storedData = driver.getItem('atomic-test:spark.events.v1');
     expect(storedData).toContain('First task');

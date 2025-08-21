@@ -1,15 +1,17 @@
-name: All Drift Checks
+name: Enterprise Compliance Pipeline
 
 on:
   pull_request:
     paths-ignore:
       - '**/*.md'
       - 'LICENSE'
+  push:
+    branches: [main]
   schedule:
     - cron: '0 3 * * 1'
 
 jobs:
-  all-drift-checks:
+  validate-all:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,14 +22,24 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install
         run: npm ci --ignore-scripts
-      - name: SSOT validation
-        run: node tools/validate-ssot.js
-      - name: Stack
-        run: node tools/check-tech-stack.js
-      - name: Dependencies doc
-        run: node tools/check-deps-doc.js
-        env:
-          CI: true  # Enable machine-readable output
+      - name: SSOT Compliance Check
+        run: npm run ssot:check
+      - name: Token Usage Audit
+        run: npm run audit:tokens
+      - name: Type Safety
+        run: npm run typecheck
+      - name: Test Suite
+        run: npm run test
+      - name: Accessibility Tests
+        run: npm run test:accessibility
+      - name: Generate Audit Report
+        run: npm run audit:report
+      - name: Upload Compliance Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: compliance-report
+          path: .out/
       - name: Workspace
         run: node tools/check-workspace-structure.js
       - name: Env

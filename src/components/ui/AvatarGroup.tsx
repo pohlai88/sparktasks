@@ -19,7 +19,10 @@ export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Max number displayed in overflow pill before showing a "+" suffix */
   overflowMax?: number;
   /** Optional click handler for overflow pill (makes the pill interactive) */
-  onOverflowClick?: (count: number, event: React.MouseEvent | React.KeyboardEvent) => void;
+  onOverflowClick?: (
+    count: number,
+    event: React.MouseEvent | React.KeyboardEvent
+  ) => void;
 }
 
 // text size mapping for overflow pill
@@ -32,7 +35,10 @@ const overflowTextSizeMap: Record<NonNullable<AvatarProps['size']>, string> = {
 } as const;
 
 // use avatar size tokens for overflow pill diameter
-const overflowCircleSizeMap: Record<NonNullable<AvatarProps['size']>, string> = {
+const overflowCircleSizeMap: Record<
+  NonNullable<AvatarProps['size']>,
+  string
+> = {
   xs: DESIGN_TOKENS.sizing.avatar.xs,
   sm: DESIGN_TOKENS.sizing.avatar.sm,
   md: DESIGN_TOKENS.sizing.avatar.md,
@@ -70,14 +76,23 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     ref
   ) {
     const safeMax = Math.max(0, max);
-    const visible = React.useMemo(() => avatars.slice(0, safeMax), [avatars, safeMax]);
+    const visible = React.useMemo(
+      () => avatars.slice(0, safeMax),
+      [avatars, safeMax]
+    );
     const overflow = Math.max(0, avatars.length - safeMax);
 
-    const spacingClass = overlap ? spacingClasses.overlap : spacingClasses.spaced;
+    const spacingClass = overlap
+      ? spacingClasses.overlap
+      : spacingClasses.spaced;
     const overflowTextSize = overflowTextSizeMap[size ?? 'md'];
     const overflowCircleSize = overflowCircleSizeMap[size ?? 'md'];
 
-    const containerClasses = combineTokens('flex items-center', spacingClass, className);
+    const containerClasses = combineTokens(
+      'flex items-center',
+      spacingClass,
+      className
+    );
 
     // default overflow content: +N (no cap) or `${overflowMax}+` (capped)
     const defaultOverflow = React.useMemo(() => {
@@ -91,7 +106,7 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       DESIGN_TOKENS.transitions.scale, // hover scale & smooth transition
       overflowCircleSize,
       overflowTextSize,
-      DESIGN_TOKENS.recipe.avatar.border,                 // theme-aware outline
+      DESIGN_TOKENS.recipe.avatar.border, // theme-aware outline
       'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'
     );
 
@@ -118,9 +133,9 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       <div
         ref={ref}
         className={containerClasses}
-        role="group"
+        role='group'
         aria-label={fullAriaLabel}
-        data-testid="avatar-group"
+        data-testid='avatar-group'
         data-count={avatars.length}
         data-visible={visible.length}
         data-overflow={overflow}
@@ -135,7 +150,7 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
             <span
               key={key ?? i}
               style={overlap ? { zIndex: z } : undefined}
-              className={overlap ? 'inline-flex' : undefined}
+              className={overlap ? DESIGN_TOKENS.layout.flex.inline : undefined}
               data-avatar-index={i}
             >
               <Avatar
@@ -155,11 +170,12 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
           <span
             className={combineTokens(
               overflowPillClasses,
-              isOverflowInteractive && combineTokens(
-                'cursor-pointer',
-                DESIGN_TOKENS.focus.onLight,
-                DESIGN_TOKENS.focus.forcedColors
-              )
+              isOverflowInteractive &&
+                combineTokens(
+                  'cursor-pointer',
+                  DESIGN_TOKENS.focus.onLight,
+                  DESIGN_TOKENS.focus.forcedColors
+                )
             )}
             title={`${overflow} more avatars`}
             aria-label={`${overflow} more avatars`}
@@ -167,11 +183,12 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               ? {
                   role: 'button' as const,
                   tabIndex: 0,
-                  onClick: (e: React.MouseEvent) => onOverflowClick?.(overflow, e),
+                  onClick: (e: React.MouseEvent) =>
+                    onOverflowClick?.(overflow, e),
                   onKeyDown: onOverflowKeyDown,
                 }
               : {})}
-            data-testid="avatar-group-overflow"
+            data-testid='avatar-group-overflow'
             data-overflow-count={overflow}
           >
             {defaultOverflow}

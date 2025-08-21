@@ -203,11 +203,15 @@ describe('Task Undo/Redo', () => {
       const taskId = getFirstTaskId();
 
       // Snooze the task
-      const snoozeUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+      const snoozeUntil = new Date(
+        Date.now() + 24 * 60 * 60 * 1000
+      ).toISOString();
       snoozeTask(taskId, snoozeUntil);
 
       // Check task was snoozed
-      expect(useTaskStore.getState().byId[taskId]!.snoozeUntil).toBe(snoozeUntil);
+      expect(useTaskStore.getState().byId[taskId]!.snoozeUntil).toBe(
+        snoozeUntil
+      );
 
       // Undo the snooze
       undo();
@@ -329,13 +333,17 @@ describe('Task Undo/Redo', () => {
 
       // Undo and redo multiple times
       undo();
-      expect(useTaskStore.getState().byId[taskId]!.title).toBe(originalTask.title);
+      expect(useTaskStore.getState().byId[taskId]!.title).toBe(
+        originalTask.title
+      );
 
       redo();
       expect(useTaskStore.getState().byId[taskId]!.title).toBe('Updated');
 
       undo();
-      expect(useTaskStore.getState().byId[taskId]!.title).toBe(originalTask.title);
+      expect(useTaskStore.getState().byId[taskId]!.title).toBe(
+        originalTask.title
+      );
 
       redo();
       expect(useTaskStore.getState().byId[taskId]!.title).toBe('Updated');

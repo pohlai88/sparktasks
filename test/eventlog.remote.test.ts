@@ -3,7 +3,12 @@ import { RemoteAdapter } from '../src/storage/remote';
 import type { StorageDriver } from '../src/storage/types';
 import type { RemoteTransport } from '../src/storage/remoteTypes';
 import { SyncLocalStorageDriver } from '../src/storage/local';
-import { configureStorage, appendEvent, loadEvents, compactWithSnapshot } from '../src/domain/task/eventlog';
+import {
+  configureStorage,
+  appendEvent,
+  loadEvents,
+  compactWithSnapshot,
+} from '../src/domain/task/eventlog';
 
 // Mock storage driver that captures operations
 class MockStorageDriver implements StorageDriver {
@@ -51,11 +56,15 @@ class MockRemoteTransport implements RemoteTransport {
     const _token = sinceToken; // Acknowledge parameter
     const items = Array.from(this.data.entries())
       .filter(([key]) => key.startsWith(namespace))
-      .map(([key, data]) => ({ key, value: data.value, updatedAt: data.updatedAt }));
-    
+      .map(([key, data]) => ({
+        key,
+        value: data.value,
+        updatedAt: data.updatedAt,
+      }));
+
     return {
       items,
-      nextSince: `token-${++this.syncs}`
+      nextSince: `token-${++this.syncs}`,
     };
   }
 
@@ -100,10 +109,13 @@ describe('RemoteAdapter - EventLog-like Integration', () => {
 
   describe('Basic RemoteAdapter Functionality', () => {
     it('should queue operations for later sync', async () => {
-      await adapter.setItem('eventLog', JSON.stringify([
-        { type: 'task.created', id: '1', name: 'Task 1' },
-        { type: 'task.completed', id: '1' }
-      ]));
+      await adapter.setItem(
+        'eventLog',
+        JSON.stringify([
+          { type: 'task.created', id: '1', name: 'Task 1' },
+          { type: 'task.completed', id: '1' },
+        ])
+      );
 
       // Verify data is in local storage with proper namespace
       const localData = mockLocal.getData();
@@ -121,7 +133,10 @@ describe('RemoteAdapter - EventLog-like Integration', () => {
     it('should handle multiple keys like eventlog storage pattern', async () => {
       // Simulate eventlog pattern with separate keys
       await adapter.setItem('spark.events.v1', 'event1\nevent2\nevent3');
-      await adapter.setItem('spark.snapshot.v1', JSON.stringify({ tasks: {}, hash: 'abc123' }));
+      await adapter.setItem(
+        'spark.snapshot.v1',
+        JSON.stringify({ tasks: {}, hash: 'abc123' })
+      );
 
       const result = await adapter.sync();
       expect(result.pushed).toBe(2);
@@ -135,10 +150,10 @@ describe('RemoteAdapter - EventLog-like Integration', () => {
     it('should handle delete operations', async () => {
       await adapter.setItem('tempKey', 'tempValue');
       await adapter.sync();
-      
+
       await adapter.removeItem('tempKey');
       const result = await adapter.sync();
-      
+
       expect(result.pushed).toBe(1);
       expect(mockRemote.getData().has('tasks:tempKey')).toBe(false);
     });
@@ -151,11 +166,11 @@ describe('RemoteAdapter - EventLog-like Integration', () => {
       // Simulate remote conflict by making remote newer
       mockRemote.get = vi.fn().mockResolvedValue({
         value: 'remoteValue',
-        updatedAt: new Date(Date.now() + 1000).toISOString()
+        updatedAt: new Date(Date.now() + 1000).toISOString(),
       });
 
       const result = await adapter.sync();
-      
+
       // Local should be updated with remote value due to LWW
       expect(await adapter.getItem('conflictKey')).toBe('remoteValue');
       expect(result.pushed).toBe(0); // Push skipped due to conflict
@@ -166,11 +181,11 @@ describe('RemoteAdapter - EventLog-like Integration', () => {
       await adapter.setItem('normal', 'normalValue');
       await adapter.setItem('conflict', 'localConflict');
 
-      mockRemote.get = vi.fn().mockImplementation(async (key) => {
+      mockRemote.get = vi.fn().mockImplementation(async key => {
         if (key.includes('conflict')) {
           return {
             value: 'remoteConflict',
-            updatedAt: new Date(Date.now() + 1000).toISOString()
+            updatedAt: new Date(Date.now() + 1000).toISOString(),
           };
         }
         return null;
@@ -189,12 +204,17 @@ describe('RemoteAdapter - EventLog-like Integration', () => {
     it('should batch operations efficiently', async () => {
       // Add many operations like a busy eventlog
       for (let i = 1; i <= 20; i++) {
-        await adapter.setItem(`event-${i}`, JSON.stringify({ type: 'task.created', id: i }));
+        await adapter.setItem(
+          `event-${i}`,
+          JSON.stringify({ type: 'task.created', id: i })
+        );
       }
 
       // Sync with limited batch size
-      const limitedAdapter = new RemoteAdapter(mockLocal, mockRemote, 'tasks', { maxBatch: 5 });
-      
+      const limitedAdapter = new RemoteAdapter(mockLocal, mockRemote, 'tasks', {
+        maxBatch: 5,
+      });
+
       const result = await limitedAdapter.sync();
       expect(result.pushed).toBe(5); // Should be limited by batch size
 
@@ -225,18 +245,23 @@ describe('RemoteAdapter - EventLog-like Integration', () => {
 
   describe('Error Recovery', () => {
     it('should recover from sync failures without losing data', async () => {
-      await adapter.setItem('importantEvent', JSON.stringify({ type: 'critical.event', id: '1' }));
+      await adapter.setItem(
+        'importantEvent',
+        JSON.stringify({ type: 'critical.event', id: '1' })
+      );
 
       // Mock remote to fail first time
       let putCallCount = 0;
-      mockRemote.put = vi.fn().mockImplementation(async (key, value, updatedAt) => {
-        putCallCount++;
-        if (putCallCount === 1) {
-          throw new Error('Network error');
-        }
-        // Succeeds on retry
-        mockRemote.getData().set(key, { value, updatedAt });
-      });
+      mockRemote.put = vi
+        .fn()
+        .mockImplementation(async (key, value, updatedAt) => {
+          putCallCount++;
+          if (putCallCount === 1) {
+            throw new Error('Network error');
+          }
+          // Succeeds on retry
+          mockRemote.getData().set(key, { value, updatedAt });
+        });
 
       // First sync should fail
       await expect(adapter.sync()).rejects.toThrow('Network error');
@@ -256,12 +281,14 @@ describe('RemoteAdapter - EventLog-like Integration', () => {
       await adapter.setItem('success2', 'value2');
 
       // Mock to fail on specific key
-      mockRemote.put = vi.fn().mockImplementation(async (key, value, updatedAt) => {
-        if (key.includes('fail')) {
-          throw new Error('Specific failure');
-        }
-        mockRemote.getData().set(key, { value, updatedAt });
-      });
+      mockRemote.put = vi
+        .fn()
+        .mockImplementation(async (key, value, updatedAt) => {
+          if (key.includes('fail')) {
+            throw new Error('Specific failure');
+          }
+          mockRemote.getData().set(key, { value, updatedAt });
+        });
 
       await expect(adapter.sync()).rejects.toThrow('Specific failure');
 

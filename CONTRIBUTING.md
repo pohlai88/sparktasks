@@ -13,6 +13,7 @@ SparkTasks maintains strict Single Source of Truth (SSOT) discipline to ensure a
 ### Sync Requirements
 
 If you update `docs/SSOT.md`:
+
 1. **Update the version/date header** (e.g. `v1.0.1, 2025-08-15`).
 2. **Copy any changed text** from Section 1 (the "Short System Prompt") into `SHORT_PROMPT.md`.
 3. **Commit both files together** in the same PR so the CI gate passes.
@@ -22,16 +23,19 @@ If you update `docs/SSOT.md`:
 ### Drift Detection & Debugging
 
 If `tools/validate-ssot.js` fails, the error output includes:
+
 - **Specific mismatch location** (line numbers and diff snippets)
 - **Expected vs actual text** for quick identification
 - **Actionable fix instructions** to resolve the drift
 
 Common failure scenarios:
+
 - ❌ Section 1 text modified but `SHORT_PROMPT.md` not updated
 - ❌ Version header not incremented after changes
 - ❌ Whitespace or formatting differences between files
 
 ### Copy & paste snippet (for AI extensions)
+
 Use the contents of `SHORT_PROMPT.md` when your AI extension asks "what should the assistant know about the project?". Do not paste secrets or credentials. Example instruction for GitHub Copilot Chat (Custom Instructions): paste the contents of `SHORT_PROMPT.md` into the "context" / "what should the assistant know" field.
 
 ### Ownership & Hand-off
@@ -40,11 +44,14 @@ Use the contents of `SHORT_PROMPT.md` when your AI extension asks "what should t
 - **Ownership Changes**: When SSOT ownership transfers, update the owner field in `docs/SSOT.md` header within 5 business days and notify the team via PR.
 
 ### CI & Process
+
 - The validator is intentionally strict to avoid drift. If CI fails on SSOT changes, update both files in a single PR, and include the DoD/Acceptance Test IDs in the PR description.
 - All SSOT changes require review from the designated owner before merging.
 
 ### PR Checklist Integration
+
 When creating PRs that touch `docs/SSOT.md`, ensure:
+
 - [ ] Version/date header incremented
 - [ ] `SHORT_PROMPT.md` updated if Section 1 changed
 - [ ] SSOT owner field current and accurate

@@ -58,33 +58,36 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
     const isControlled = controlledOpen !== undefined;
     const open = isControlled ? controlledOpen : uncontrolledOpen;
-    
+
     const showTimeoutRef = React.useRef<number | null>(null);
     const hideTimeoutRef = React.useRef<number | null>(null);
     const tooltipId = React.useId();
     const triggerRef = React.useRef<HTMLElement>(null);
-    
+
     const triggers = Array.isArray(trigger) ? trigger : [trigger];
     const hasHover = triggers.includes('hover');
     const hasFocus = triggers.includes('focus');
     const hasClick = triggers.includes('click');
 
-    const setOpen = React.useCallback((newOpen: boolean) => {
-      if (disabled) return;
-      
-      if (isControlled) {
-        onOpenChange?.(newOpen);
-      } else {
-        setUncontrolledOpen(newOpen);
-      }
-    }, [disabled, isControlled, onOpenChange]);
+    const setOpen = React.useCallback(
+      (newOpen: boolean) => {
+        if (disabled) return;
+
+        if (isControlled) {
+          onOpenChange?.(newOpen);
+        } else {
+          setUncontrolledOpen(newOpen);
+        }
+      },
+      [disabled, isControlled, onOpenChange]
+    );
 
     const show = React.useCallback(() => {
       if (hideTimeoutRef.current) {
         clearTimeout(hideTimeoutRef.current);
         hideTimeoutRef.current = null;
       }
-      
+
       if (!open) {
         if (delayShow > 0) {
           showTimeoutRef.current = window.setTimeout(() => {
@@ -101,7 +104,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         clearTimeout(showTimeoutRef.current);
         showTimeoutRef.current = null;
       }
-      
+
       if (open) {
         if (delayHide > 0) {
           hideTimeoutRef.current = window.setTimeout(() => {
@@ -122,12 +125,15 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     }, []);
 
     // Keyboard handling
-    const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
-      if (e.key === 'Escape' && open) {
-        e.preventDefault();
-        hide();
-      }
-    }, [open, hide]);
+    const handleKeyDown = React.useCallback(
+      (e: React.KeyboardEvent) => {
+        if (e.key === 'Escape' && open) {
+          e.preventDefault();
+          hide();
+        }
+      },
+      [open, hide]
+    );
 
     // Event handlers
     const handleMouseEnter = hasHover ? show : undefined;
@@ -164,35 +170,46 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     const enhancedTrigger = React.cloneElement(children, {
       ref: triggerRef,
       'aria-describedby': open ? tooltipId : undefined,
-      onMouseEnter: combineHandlers(children.props.onMouseEnter, handleMouseEnter),
-      onMouseLeave: combineHandlers(children.props.onMouseLeave, handleMouseLeave),
+      onMouseEnter: combineHandlers(
+        children.props.onMouseEnter,
+        handleMouseEnter
+      ),
+      onMouseLeave: combineHandlers(
+        children.props.onMouseLeave,
+        handleMouseLeave
+      ),
       onFocus: combineHandlers(children.props.onFocus, handleFocus),
       onBlur: combineHandlers(children.props.onBlur, handleBlur),
       onClick: combineHandlers(children.props.onClick, handleClick),
-      onTouchStart: combineHandlers(children.props.onTouchStart, handleTouchStart),
+      onTouchStart: combineHandlers(
+        children.props.onTouchStart,
+        handleTouchStart
+      ),
       onTouchEnd: combineHandlers(children.props.onTouchEnd, handleTouchEnd),
       onKeyDown: combineHandlers(children.props.onKeyDown, handleKeyDown),
     });
 
     return (
-      <span 
-        className="relative inline-block"
-        data-testid="tooltip-wrapper"
+      <span
+        className={combineTokens('relative', 'inline-block')}
+        data-testid='tooltip-wrapper'
       >
         {enhancedTrigger}
         {open && !disabled && (
           <div
             ref={ref}
             id={tooltipId}
-            role="tooltip"
-            aria-label={ariaLabel || (typeof content === 'string' ? content : undefined)}
+            role='tooltip'
+            aria-label={
+              ariaLabel || (typeof content === 'string' ? content : undefined)
+            }
             className={combineTokens(
               DESIGN_TOKENS.dataViz.tooltip,
               'absolute z-50',
               getPositionClasses(position),
               className
             )}
-            data-testid="tooltip-content"
+            data-testid='tooltip-content'
             data-position={position}
           >
             {content}
@@ -202,7 +219,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
                 'absolute',
                 getArrowClasses(position)
               )}
-              aria-hidden="true"
+              aria-hidden='true'
             />
           </div>
         )}
@@ -219,7 +236,7 @@ function combineHandlers<T extends (...args: never[]) => void>(
   if (!original && !additional) return undefined;
   if (!original) return additional;
   if (!additional) return original;
-  
+
   return ((...args: Parameters<T>) => {
     original(...args);
     additional(...args);

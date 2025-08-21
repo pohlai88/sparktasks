@@ -3,7 +3,12 @@ import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== PROGRESS BAR TYPES & INTERFACES =====
 
-export type ProgressBarVariant = 'primary' | 'success' | 'warning' | 'error' | 'info';
+export type ProgressBarVariant =
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'info';
 export type ProgressBarSize = 'sm' | 'md' | 'lg' | 'xl';
 
 export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -127,23 +132,30 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 
     // Announce progress changes for accessibility
     React.useEffect(() => {
-      if (announceProgress && !indeterminate && value !== previousValueRef.current) {
+      if (
+        announceProgress &&
+        !indeterminate &&
+        value !== previousValueRef.current
+      ) {
         const announcement = `Progress: ${percentage}%`;
-        
+
         // Create a live region announcement
         const announcement_el = document.createElement('div');
-        announcement_el.setAttribute('aria-live', priority === 'high' ? 'assertive' : 'polite');
+        announcement_el.setAttribute(
+          'aria-live',
+          priority === 'high' ? 'assertive' : 'polite'
+        );
         announcement_el.setAttribute('aria-atomic', 'true');
         announcement_el.className = 'sr-only';
         announcement_el.textContent = announcement;
-        
+
         document.body.appendChild(announcement_el);
-        
+
         // Clean up after announcement
         setTimeout(() => {
           document.body.removeChild(announcement_el);
         }, 1000);
-        
+
         previousValueRef.current = value;
       }
     }, [value, percentage, announceProgress, indeterminate, priority]);
@@ -159,36 +171,32 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
     }, [normalizedValue, max, formatValue]);
 
     // Composite aria attributes
-    const compositeAriaLabel = ariaLabel || 
-      (label ? undefined : `Progress ${percentage}%`);
-    
-    const compositeAriaLabelledBy = ariaLabelledBy || 
-      (label ? labelId : undefined);
-    
-    const compositeAriaDescribedBy = ariaDescribedBy || 
-      (description ? descriptionId : undefined);
+    const compositeAriaLabel =
+      ariaLabel || (label ? undefined : `Progress ${percentage}%`);
+
+    const compositeAriaLabelledBy =
+      ariaLabelledBy || (label ? labelId : undefined);
+
+    const compositeAriaDescribedBy =
+      ariaDescribedBy || (description ? descriptionId : undefined);
 
     return (
-      <div
-        ref={ref}
-        className={combineTokens(
-          'w-full',
-          className
-        )}
-        {...props}
-      >
+      <div ref={ref} className={combineTokens('w-full', className)} {...props}>
         {/* Label */}
         {label && (
-          <div
-            id={labelId}
-            className={DESIGN_TOKENS.recipe.progress.label}
-          >
+          <div id={labelId} className={DESIGN_TOKENS.recipe.progress.label}>
             {label}
           </div>
         )}
 
         {/* Progress bar container with optional percentage/value */}
-        <div className="flex items-center gap-3">
+        <div
+          className={combineTokens(
+            DESIGN_TOKENS.layout.flex.row,
+            DESIGN_TOKENS.layout.flex.itemsCenter,
+            DESIGN_TOKENS.layout.spacing.gap.md
+          )}
+        >
           {/* Progress bar */}
           <div
             className={combineTokens(
@@ -197,7 +205,7 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
               variantStyles.background,
               containerClassName
             )}
-            role="progressbar"
+            role='progressbar'
             aria-valuenow={indeterminate ? undefined : normalizedValue}
             aria-valuemin={0}
             aria-valuemax={max}
@@ -221,8 +229,8 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
               style={{
                 width: indeterminate ? '100%' : `${percentage}%`,
                 transform: indeterminate ? 'translateX(-100%)' : undefined,
-                animation: indeterminate 
-                  ? 'progressIndeterminate 1.5s ease-in-out infinite' 
+                animation: indeterminate
+                  ? 'progressIndeterminate 1.5s ease-in-out infinite'
                   : undefined,
               }}
             />
@@ -230,20 +238,24 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 
           {/* Percentage display */}
           {showPercentage && !indeterminate && (
-            <div className={combineTokens(
-              DESIGN_TOKENS.recipe.progress.percentage,
-              'min-w-[3rem] tabular-nums'
-            )}>
+            <div
+              className={combineTokens(
+                DESIGN_TOKENS.recipe.progress.percentage,
+                'min-w-[3rem] tabular-nums'
+              )}
+            >
               {percentage}%
             </div>
           )}
 
           {/* Value display */}
           {showValue && !indeterminate && (
-            <div className={combineTokens(
-              DESIGN_TOKENS.recipe.progress.percentage,
-              'min-w-[4rem] tabular-nums'
-            )}>
+            <div
+              className={combineTokens(
+                DESIGN_TOKENS.recipe.progress.percentage,
+                'min-w-[4rem] tabular-nums'
+              )}
+            >
               {formattedValue}
             </div>
           )}
@@ -267,29 +279,34 @@ ProgressBar.displayName = 'ProgressBar';
 
 // ===== PROGRESS BAR VARIANTS =====
 
-export const ProgressBarPrimary = React.forwardRef<HTMLDivElement, Omit<ProgressBarProps, 'variant'>>(
-  (props, ref) => <ProgressBar ref={ref} variant="primary" {...props} />
-);
+export const ProgressBarPrimary = React.forwardRef<
+  HTMLDivElement,
+  Omit<ProgressBarProps, 'variant'>
+>((props, ref) => <ProgressBar ref={ref} variant='primary' {...props} />);
 ProgressBarPrimary.displayName = 'ProgressBarPrimary';
 
-export const ProgressBarSuccess = React.forwardRef<HTMLDivElement, Omit<ProgressBarProps, 'variant'>>(
-  (props, ref) => <ProgressBar ref={ref} variant="success" {...props} />
-);
+export const ProgressBarSuccess = React.forwardRef<
+  HTMLDivElement,
+  Omit<ProgressBarProps, 'variant'>
+>((props, ref) => <ProgressBar ref={ref} variant='success' {...props} />);
 ProgressBarSuccess.displayName = 'ProgressBarSuccess';
 
-export const ProgressBarWarning = React.forwardRef<HTMLDivElement, Omit<ProgressBarProps, 'variant'>>(
-  (props, ref) => <ProgressBar ref={ref} variant="warning" {...props} />
-);
+export const ProgressBarWarning = React.forwardRef<
+  HTMLDivElement,
+  Omit<ProgressBarProps, 'variant'>
+>((props, ref) => <ProgressBar ref={ref} variant='warning' {...props} />);
 ProgressBarWarning.displayName = 'ProgressBarWarning';
 
-export const ProgressBarError = React.forwardRef<HTMLDivElement, Omit<ProgressBarProps, 'variant'>>(
-  (props, ref) => <ProgressBar ref={ref} variant="error" {...props} />
-);
+export const ProgressBarError = React.forwardRef<
+  HTMLDivElement,
+  Omit<ProgressBarProps, 'variant'>
+>((props, ref) => <ProgressBar ref={ref} variant='error' {...props} />);
 ProgressBarError.displayName = 'ProgressBarError';
 
-export const ProgressBarInfo = React.forwardRef<HTMLDivElement, Omit<ProgressBarProps, 'variant'>>(
-  (props, ref) => <ProgressBar ref={ref} variant="info" {...props} />
-);
+export const ProgressBarInfo = React.forwardRef<
+  HTMLDivElement,
+  Omit<ProgressBarProps, 'variant'>
+>((props, ref) => <ProgressBar ref={ref} variant='info' {...props} />);
 ProgressBarInfo.displayName = 'ProgressBarInfo';
 
 // ===== PROGRESS BAR HOOK =====
@@ -328,7 +345,7 @@ export const useProgressBar = ({
   // Handle value changes
   React.useEffect(() => {
     onChange?.(value, percentage);
-    
+
     if (value >= max) {
       onComplete?.();
       if (intervalRef.current) {
@@ -357,21 +374,30 @@ export const useProgressBar = ({
     };
   }, [autoIncrement, step, value, max]);
 
-  const increment = React.useCallback((amount = step) => {
-    setValue(prev => Math.min(prev + amount, max));
-  }, [step, max]);
+  const increment = React.useCallback(
+    (amount = step) => {
+      setValue(prev => Math.min(prev + amount, max));
+    },
+    [step, max]
+  );
 
-  const decrement = React.useCallback((amount = step) => {
-    setValue(prev => Math.max(prev - amount, 0));
-  }, [step]);
+  const decrement = React.useCallback(
+    (amount = step) => {
+      setValue(prev => Math.max(prev - amount, 0));
+    },
+    [step]
+  );
 
   const reset = React.useCallback(() => {
     setValue(initialValue);
   }, [initialValue]);
 
-  const setProgress = React.useCallback((newValue: number) => {
-    setValue(Math.min(Math.max(newValue, 0), max));
-  }, [max]);
+  const setProgress = React.useCallback(
+    (newValue: number) => {
+      setValue(Math.min(Math.max(newValue, 0), max));
+    },
+    [max]
+  );
 
   return {
     value,
@@ -401,7 +427,9 @@ export interface ProgressBarContextValue {
   setActive: (active: boolean) => void;
 }
 
-const ProgressBarContext = React.createContext<ProgressBarContextValue | undefined>(undefined);
+const ProgressBarContext = React.createContext<
+  ProgressBarContextValue | undefined
+>(undefined);
 
 export interface ProgressBarProviderProps {
   children: React.ReactNode;
@@ -425,24 +453,30 @@ export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({
   const [progress, setProgressState] = React.useState(initialValue);
   const [isActive, setActive] = React.useState(false);
 
-  const setProgress = React.useCallback((value: number) => {
-    const normalizedValue = Math.min(Math.max(value, 0), max);
-    setProgressState(normalizedValue);
-    
-    if (normalizedValue >= max) {
-      onComplete?.();
-      if (autoReset) {
-        setTimeout(() => {
-          setProgressState(initialValue);
-          setActive(false);
-        }, 1000);
-      }
-    }
-  }, [max, onComplete, autoReset, initialValue]);
+  const setProgress = React.useCallback(
+    (value: number) => {
+      const normalizedValue = Math.min(Math.max(value, 0), max);
+      setProgressState(normalizedValue);
 
-  const increment = React.useCallback((amount = 1) => {
-    setProgress(progress + amount);
-  }, [progress, setProgress]);
+      if (normalizedValue >= max) {
+        onComplete?.();
+        if (autoReset) {
+          setTimeout(() => {
+            setProgressState(initialValue);
+            setActive(false);
+          }, 1000);
+        }
+      }
+    },
+    [max, onComplete, autoReset, initialValue]
+  );
+
+  const increment = React.useCallback(
+    (amount = 1) => {
+      setProgress(progress + amount);
+    },
+    [progress, setProgress]
+  );
 
   const reset = React.useCallback(() => {
     setProgressState(initialValue);
@@ -468,7 +502,9 @@ export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({
 export const useProgressBarContext = (): ProgressBarContextValue => {
   const context = React.useContext(ProgressBarContext);
   if (!context) {
-    throw new Error('useProgressBarContext must be used within a ProgressBarProvider');
+    throw new Error(
+      'useProgressBarContext must be used within a ProgressBarProvider'
+    );
   }
   return context;
 };

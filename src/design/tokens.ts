@@ -113,12 +113,12 @@ export const DESIGN_TOKENS = {
       // ===== RADIUS FOUNDATION (Enterprise Corner System) =====
       radius: {
         none: 'rounded-none',
-        sm: 'rounded-sm',      // 2px - subtle rounding
-        md: 'rounded-md',      // 6px - default rounding
-        lg: 'rounded-lg',      // 8px - card/modal rounding  
-        xl: 'rounded-xl',      // 12px - prominent rounding
-        xxl: 'rounded-2xl',    // 16px - large container rounding
-        full: 'rounded-full',  // 9999px - pills/avatars
+        sm: 'rounded-sm', // 2px - subtle rounding
+        md: 'rounded-md', // 6px - default rounding
+        lg: 'rounded-lg', // 8px - card/modal rounding
+        xl: 'rounded-xl', // 12px - prominent rounding
+        xxl: 'rounded-2xl', // 16px - large container rounding
+        full: 'rounded-full', // 9999px - pills/avatars
       },
       elevation: {
         card: 'shadow-lg shadow-slate-200/50',
@@ -236,17 +236,19 @@ export const DESIGN_TOKENS = {
   // 📈 DATA VISUALIZATION SYSTEM (Charts, Graphs & Analytics) - V3 ENHANCEMENT
   dataViz: {
     // ===== CHART CONTAINERS =====
-    chartContainer: 'relative bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-6',
-    chartHeader: 'flex items-center justify-between mb-4 pb-2 border-b border-slate-200 dark:border-slate-700',
+    chartContainer:
+      'relative bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-6',
+    chartHeader:
+      'flex items-center justify-between mb-4 pb-2 border-b border-slate-200 dark:border-slate-700',
     chartTitle: 'text-lg font-semibold text-slate-900 dark:text-slate-100',
     chartSubtitle: 'text-sm text-slate-600 dark:text-slate-400',
-    
+
     // ===== CHART COLOR PALETTES =====
     colors: {
       // Primary data series (8 colors for multiple series)
       series: {
         primary: 'stroke-blue-500 fill-blue-500',
-        secondary: 'stroke-green-500 fill-green-500', 
+        secondary: 'stroke-green-500 fill-green-500',
         tertiary: 'stroke-amber-500 fill-amber-500',
         quaternary: 'stroke-red-500 fill-red-500',
         fifth: 'stroke-purple-500 fill-purple-500',
@@ -264,53 +266,58 @@ export const DESIGN_TOKENS = {
     },
 
     // ===== METRIC CARDS & KPIs =====
-    metricCard: 'bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4',
+    metricCard:
+      'bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4',
     metricValue: 'text-2xl font-bold text-slate-900 dark:text-slate-100',
     metricLabel: 'text-sm text-slate-600 dark:text-slate-400 mb-1',
     metricChange: 'text-xs font-medium',
     metricChangePositive: 'text-green-600 dark:text-green-400',
     metricChangeNegative: 'text-red-600 dark:text-red-400',
-    
+
     // ===== PROGRESS INDICATORS =====
     progressBar: 'w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2',
     progressFill: 'h-2 bg-primary-500 rounded-full transition-all duration-300',
     progressText: 'text-xs text-slate-600 dark:text-slate-400 mt-1',
-    
+
     // ===== GAUGE/CIRCULAR PROGRESS =====
     gauge: 'relative w-32 h-32',
     gaugeTrack: 'stroke-slate-200 dark:stroke-slate-700',
     gaugeFill: 'stroke-blue-500 transition-all duration-500',
     gaugeText: 'text-xl font-bold text-slate-900 dark:text-slate-100',
-    
+
     // ===== SPARKLINES =====
     sparkline: 'w-full h-8',
     sparklinePositive: 'stroke-green-500 fill-none stroke-2',
     sparklineNegative: 'stroke-red-500 fill-none stroke-2',
     sparklineNeutral: 'stroke-slate-400 fill-none stroke-2',
-    
+
     // ===== CHART LEGENDS =====
     legend: 'flex flex-wrap gap-4 mt-4',
-    legendItem: 'flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400',
+    legendItem:
+      'flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400',
     legendDot: 'w-3 h-3 rounded-full',
     legendLine: 'w-4 h-0.5',
-    
+
     // ===== CHART TOOLTIPS =====
-    tooltip: 'absolute z-50 px-2 py-1 text-xs text-white bg-slate-900 dark:bg-slate-800 rounded shadow-lg pointer-events-none',
-    tooltipArrow: 'absolute w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-slate-900 dark:border-t-slate-800',
-    
+    tooltip:
+      'absolute z-50 px-2 py-1 text-xs text-white bg-slate-900 dark:bg-slate-800 rounded shadow-lg pointer-events-none',
+    tooltipArrow:
+      'absolute w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-slate-900 dark:border-t-slate-800',
+
     // ===== AXIS & GRID PATTERNS =====
     xAxis: 'stroke-slate-300 dark:stroke-slate-600 stroke-1',
     yAxis: 'stroke-slate-300 dark:stroke-slate-600 stroke-1',
     gridMajor: 'stroke-slate-200 dark:stroke-slate-700 stroke-1',
     gridMinor: 'stroke-slate-100 dark:stroke-slate-800 stroke-0.5',
     axisLabel: 'text-xs text-slate-600 dark:text-slate-400 fill-current',
-    
+
     // ===== DASHBOARD ANALYTICS LAYOUTS =====
-    dashboardGrid: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6',
+    dashboardGrid:
+      'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6',
     analyticsSection: 'space-y-6',
     metricsRow: 'grid grid-cols-2 md:grid-cols-4 gap-4',
     chartsRow: 'grid grid-cols-1 lg:grid-cols-2 gap-6',
-    
+
     // ===== LOADING STATES FOR CHARTS =====
     chartSkeleton: 'animate-pulse bg-slate-200 dark:bg-slate-700 rounded h-64',
     metricSkeleton: 'animate-pulse bg-slate-200 dark:bg-slate-700 rounded h-4',
@@ -322,39 +329,55 @@ export const DESIGN_TOKENS = {
     hover: 'hover:opacity-95 hover:shadow-md transition-all duration-200',
     active: 'active:scale-[0.99] active:shadow-sm',
     selected: 'ring-2 ring-offset-2 ring-primary-600',
-    disabled: 'disabled:opacity-50 disabled:cursor-not-allowed pointer-events-none',
+    disabled:
+      'disabled:opacity-50 disabled:cursor-not-allowed pointer-events-none',
     pressed: 'data-[state=pressed]:scale-[0.98] data-[state=pressed]:shadow-sm',
     loading: 'opacity-70 cursor-wait',
     destructive: 'hover:bg-error-50 active:bg-error-100',
     muted: 'opacity-60',
 
     // ===== ADVANCED INTERACTION STATES (Enterprise UX) =====
-    pending: 'data-[state=pending]:opacity-70 data-[state=pending]:cursor-wait data-[state=pending]:pointer-events-none',
-    invalid: 'aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-error-500 aria-[invalid=true]:border-error-500 aria-[invalid=true]:bg-error-50 dark:aria-[invalid=true]:bg-error-950/50',
-    valid: 'data-[state=valid]:ring-2 data-[state=valid]:ring-success-500 data-[state=valid]:border-success-500 data-[state=valid]:bg-success-50 dark:data-[state=valid]:bg-success-950/50',
-    readonly: 'aria-[readonly=true]:opacity-60 aria-[readonly=true]:pointer-events-none aria-[readonly=true]:select-none aria-[readonly=true]:bg-secondary-50 dark:aria-[readonly=true]:bg-secondary-900',
-    required: 'data-[required=true]:after:content-["*"] data-[required=true]:after:text-error-500 data-[required=true]:after:ml-1',
-    optional: 'data-[optional=true]:after:content-["(optional)"] data-[optional=true]:after:text-secondary-500 data-[optional=true]:after:ml-1 data-[optional=true]:after:text-xs',
-    
+    pending:
+      'data-[state=pending]:opacity-70 data-[state=pending]:cursor-wait data-[state=pending]:pointer-events-none',
+    invalid:
+      'aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-error-500 aria-[invalid=true]:border-error-500 aria-[invalid=true]:bg-error-50 dark:aria-[invalid=true]:bg-error-950/50',
+    valid:
+      'data-[state=valid]:ring-2 data-[state=valid]:ring-success-500 data-[state=valid]:border-success-500 data-[state=valid]:bg-success-50 dark:data-[state=valid]:bg-success-950/50',
+    readonly:
+      'aria-[readonly=true]:opacity-60 aria-[readonly=true]:pointer-events-none aria-[readonly=true]:select-none aria-[readonly=true]:bg-secondary-50 dark:aria-[readonly=true]:bg-secondary-900',
+    required:
+      'data-[required=true]:after:content-["*"] data-[required=true]:after:text-error-500 data-[required=true]:after:ml-1',
+    optional:
+      'data-[optional=true]:after:content-["(optional)"] data-[optional=true]:after:text-secondary-500 data-[optional=true]:after:ml-1 data-[optional=true]:after:text-xs',
+
     // Form validation states
-    validating: 'data-[validating=true]:opacity-75 data-[validating=true]:cursor-progress',
-    dirty: 'data-[dirty=true]:border-warning-300 data-[dirty=true]:bg-warning-50/30 dark:data-[dirty=true]:bg-warning-950/20',
-    pristine: 'data-[pristine=true]:border-secondary-200 dark:data-[pristine=true]:border-secondary-700',
+    validating:
+      'data-[validating=true]:opacity-75 data-[validating=true]:cursor-progress',
+    dirty:
+      'data-[dirty=true]:border-warning-300 data-[dirty=true]:bg-warning-50/30 dark:data-[dirty=true]:bg-warning-950/20',
+    pristine:
+      'data-[pristine=true]:border-secondary-200 dark:data-[pristine=true]:border-secondary-700',
   },
 
-  // 🎨 FOCUS MANAGEMENT (Accessibility Excellence) - V3 ENHANCEMENT  
+  // 🎨 FOCUS MANAGEMENT (Accessibility Excellence) - V3 ENHANCEMENT
   focus: {
     // ===== ENTERPRISE FOCUS SYSTEM (WCAG 2.1 AAA + Windows High Contrast) =====
-    onLight: 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2',
-    onDark: 'focus-visible:ring-primary-400 focus-visible:ring-offset-slate-900',
+    onLight:
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2',
+    onDark:
+      'focus-visible:ring-primary-400 focus-visible:ring-offset-slate-900',
     inset: 'focus-visible:ring-inset',
     // Windows High Contrast compliance
     forcedColors: 'forced-colors:outline forced-colors:outline-2',
     // Semantic focus states
-    default: 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 forced-colors:outline forced-colors:outline-2',
-    error: 'focus-visible:ring-error-500 forced-colors:outline forced-colors:outline-2',
-    warning: 'focus-visible:ring-warning-500 forced-colors:outline forced-colors:outline-2',  
-    success: 'focus-visible:ring-success-500 forced-colors:outline forced-colors:outline-2',
+    default:
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 forced-colors:outline forced-colors:outline-2',
+    error:
+      'focus-visible:ring-error-500 forced-colors:outline forced-colors:outline-2',
+    warning:
+      'focus-visible:ring-warning-500 forced-colors:outline forced-colors:outline-2',
+    success:
+      'focus-visible:ring-success-500 forced-colors:outline forced-colors:outline-2',
     // Legacy ring patterns (for migration)
     ringBlue: 'ring-2 ring-primary-500 ring-offset-2',
     ringGreen: 'ring-2 ring-success-500 ring-offset-2',
@@ -458,12 +481,14 @@ export const DESIGN_TOKENS = {
 
     // ===== CODE & KEYBOARD TYPOGRAPHY (Enterprise Foundation) =====
     code: {
-      inline: 'font-mono text-[0.9em] px-1.5 py-0.5 rounded bg-secondary-100 dark:bg-secondary-800 text-secondary-800 dark:text-secondary-200 border border-secondary-200 dark:border-secondary-700',
-      block: 'font-mono text-[0.9em] leading-relaxed p-4 rounded-lg bg-secondary-900 dark:bg-secondary-950 text-secondary-100 overflow-x-auto scrollbar-thin scrollbar-thumb-secondary-600 scrollbar-track-secondary-800',
+      inline:
+        'font-mono text-[0.9em] px-1.5 py-0.5 rounded bg-secondary-100 dark:bg-secondary-800 text-secondary-800 dark:text-secondary-200 border border-secondary-200 dark:border-secondary-700',
+      block:
+        'font-mono text-[0.9em] leading-relaxed p-4 rounded-lg bg-secondary-900 dark:bg-secondary-950 text-secondary-100 overflow-x-auto scrollbar-thin scrollbar-thumb-secondary-600 scrollbar-track-secondary-800',
       // Syntax highlighting tokens for code blocks
       syntax: {
         keyword: 'text-purple-400',
-        string: 'text-emerald-300', 
+        string: 'text-emerald-300',
         number: 'text-amber-300',
         comment: 'text-secondary-400 italic',
         type: 'text-accent-300',
@@ -474,8 +499,10 @@ export const DESIGN_TOKENS = {
     },
     kbd: {
       base: 'px-2 py-1 rounded border border-secondary-300 dark:border-secondary-600 bg-secondary-100 dark:bg-secondary-700 text-xs font-mono text-secondary-800 dark:text-secondary-100 shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)] dark:shadow-[inset_0_-1px_0_rgba(255,255,255,0.12)]',
-      combo: 'px-2 py-1 rounded border border-secondary-300 dark:border-secondary-600 bg-secondary-100 dark:bg-secondary-700 text-[11px] font-mono tracking-wide text-secondary-800 dark:text-secondary-100',
-      shortcut: 'inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-50 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 text-xs font-mono text-secondary-700 dark:text-secondary-300',
+      combo:
+        'px-2 py-1 rounded border border-secondary-300 dark:border-secondary-600 bg-secondary-100 dark:bg-secondary-700 text-[11px] font-mono tracking-wide text-secondary-800 dark:text-secondary-100',
+      shortcut:
+        'inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-50 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 text-xs font-mono text-secondary-700 dark:text-secondary-300',
     },
   },
 
@@ -550,16 +577,18 @@ export const DESIGN_TOKENS = {
       flexCol: 'flex flex-col',
       gridAuto: 'grid grid-cols-auto',
       absoluteInset: 'absolute inset-0',
-      absoluteCenter: 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
-      
+      absoluteCenter:
+        'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+
       // Form-specific patterns
       formRow: 'flex items-center gap-3',
       formFooter: 'flex justify-end space-x-3 pt-4 border-t',
       formGroup: 'space-y-4',
-      
+
       // Input-specific patterns (avoiding duplicates)
-      inputIconContainer: 'absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none',
-      
+      inputIconContainer:
+        'absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none',
+
       // Header patterns from audit (non-duplicates)
       pageHeader: 'flex items-center justify-between mb-8',
 
@@ -643,30 +672,174 @@ export const DESIGN_TOKENS = {
     spacing: {
       // Granular spacing for precise control
       px: 'space-x-px space-y-px',
-      0.5: 'space-x-0.5 space-y-0.5',  // 2px
-      1: 'space-x-1 space-y-1',        // 4px
-      1.5: 'space-x-1.5 space-y-1.5',  // 6px
-      2: 'space-x-2 space-y-2',        // 8px
-      2.5: 'space-x-2.5 space-y-2.5',  // 10px
-      3: 'space-x-3 space-y-3',        // 12px
-      4: 'space-x-4 space-y-4',        // 16px
-      5: 'space-x-5 space-y-5',        // 20px
-      6: 'space-x-6 space-y-6',        // 24px
-      8: 'space-x-8 space-y-8',        // 32px
+      0.5: 'space-x-0.5 space-y-0.5', // 2px
+      1: 'space-x-1 space-y-1', // 4px
+      1.5: 'space-x-1.5 space-y-1.5', // 6px
+      2: 'space-x-2 space-y-2', // 8px
+      2.5: 'space-x-2.5 space-y-2.5', // 10px
+      3: 'space-x-3 space-y-3', // 12px
+      4: 'space-x-4 space-y-4', // 16px
+      5: 'space-x-5 space-y-5', // 20px
+      6: 'space-x-6 space-y-6', // 24px
+      8: 'space-x-8 space-y-8', // 32px
+
+      // Margin utilities
+      margin: {
+        b: {
+          xs: 'mb-1', // 4px bottom margin
+          sm: 'mb-2', // 8px bottom margin
+          md: 'mb-3', // 12px bottom margin
+          lg: 'mb-4', // 16px bottom margin
+          xl: 'mb-6', // 24px bottom margin
+        },
+        t: {
+          xs: 'mt-1', // 4px top margin
+          sm: 'mt-2', // 8px top margin
+          md: 'mt-3', // 12px top margin
+          lg: 'mt-4', // 16px top margin
+          xl: 'mt-6', // 24px top margin
+        },
+        r: {
+          xs: 'mr-1', // 4px right margin
+          sm: 'mr-2', // 8px right margin
+          md: 'mr-3', // 12px right margin
+          lg: 'mr-4', // 16px right margin
+        },
+        l: {
+          xs: 'ml-1', // 4px left margin
+          sm: 'ml-2', // 8px left margin
+          md: 'ml-3', // 12px left margin
+          lg: 'ml-4', // 16px left margin
+        },
+      },
+
+      // Stack (vertical) spacing utilities
+      stack: {
+        tight: 'space-y-2', // 8px vertical spacing
+        normal: 'space-y-3', // 12px vertical spacing
+        relaxed: 'space-y-4', // 16px vertical spacing
+        loose: 'space-y-6', // 24px vertical spacing
+      },
+
+      // Gap utilities
+      gap: {
+        xs: 'gap-1', // 4px gaps
+        sm: 'gap-2', // 8px gaps
+        md: 'gap-3', // 12px gaps
+        lg: 'gap-4', // 16px gaps
+        xl: 'gap-6', // 24px gaps
+        xxl: 'gap-8', // 32px gaps
+
+        // Common specific gap values
+        0: 'gap-0', // 0px gaps
+        0.5: 'gap-0.5', // 2px gaps
+        1.5: 'gap-1.5', // 6px gaps
+        2.5: 'gap-2.5', // 10px gaps
+        3: 'gap-3', // 12px gaps (alias for md)
+        5: 'gap-5', // 20px gaps
+        7: 'gap-7', // 28px gaps
+        10: 'gap-10', // 40px gaps
+        12: 'gap-12', // 48px gaps
+      },
+
       // Fine-grained utilities
       fine: {
-        gapXs: 'gap-1',         // 4px gaps
-        gapSm: 'gap-1.5',       // 6px gaps  
-        gapMd: 'gap-2',         // 8px gaps
-        padXs: 'p-1',           // 4px padding
-        padSm: 'p-1.5',         // 6px padding
-        padMd: 'p-2',           // 8px padding
-        inlineXs: 'space-x-1',  // 4px horizontal spacing
+        gapXs: 'gap-1', // 4px gaps
+        gapSm: 'gap-1.5', // 6px gaps
+        gapMd: 'gap-2', // 8px gaps
+        padXs: 'p-1', // 4px padding
+        padSm: 'p-1.5', // 6px padding
+        padMd: 'p-2', // 8px padding
+        inlineXs: 'space-x-1', // 4px horizontal spacing
         inlineSm: 'space-x-1.5', // 6px horizontal spacing
-        stackXs: 'space-y-1',   // 4px vertical spacing
+        inlineMd: 'space-x-2', // 8px horizontal spacing
+        stackXs: 'space-y-1', // 4px vertical spacing
         stackSm: 'space-y-1.5', // 6px vertical spacing
-        marginXs: 'm-1',        // 4px margin
-        marginSm: 'm-1.5',      // 6px margin
+        stackMd: 'space-y-2', // 8px vertical spacing
+        stackLg: 'space-y-4', // 16px vertical spacing
+        marginXs: 'm-1', // 4px margin
+        marginSm: 'm-1.5', // 6px margin
+        marginMd: 'm-2', // 8px margin
+
+        // Common individual utilities
+        spaceY2: 'space-y-2', // 8px vertical spacing
+        spaceY4: 'space-y-4', // 16px vertical spacing
+        spaceX2: 'space-x-2', // 8px horizontal spacing
+        spaceX4: 'space-x-4', // 16px horizontal spacing
+        pt2: 'pt-2', // 8px top padding
+        pt4: 'pt-4', // 16px top padding
+        pb2: 'pb-2', // 8px bottom padding
+        pb4: 'pb-4', // 16px bottom padding
+        mt1: 'mt-1', // 4px top margin
+        mt2: 'mt-2', // 8px top margin
+        mr1: 'mr-1', // 4px right margin
+        mr1_5: 'mr-1.5', // 6px right margin
+        ml1: 'ml-1', // 4px left margin
+
+        // Size utilities
+        size4: 'size-4', // 16px size (w-4 h-4)
+        size5: 'size-5', // 20px size (w-5 h-5)
+
+        // Width utilities
+        w12: 'w-12', // 48px width
+
+        // Display utilities
+        inlineBlock: 'inline-block', // Inline block display
+
+        // Font utilities
+        fontMono: 'font-mono', // Monospace font
+
+        // Flex utilities
+        flex1: 'flex-1', // Flex grow to fill
+        overflowXAuto: 'overflow-x-auto', // Horizontal scroll
+        overflowYAuto: 'overflow-y-auto', // Vertical scroll
+
+        // Text utilities
+        textSm: 'text-sm', // Small text
+        textRight: 'text-right', // Right align text
+        fontMedium: 'font-medium', // Medium font weight
+        italic: 'italic', // Italic text
+
+        // Color utilities
+        textSlate600: 'text-slate-600 dark:text-slate-400',
+        textSlate700: 'text-slate-700 dark:text-slate-300',
+        textSlate300: 'text-slate-300',
+        textSlate400: 'text-slate-400',
+        textSlate500: 'text-slate-500',
+        textRed400: 'text-red-400',
+        textRed600: 'text-red-600 dark:text-red-400',
+        textGreen400: 'text-green-400',
+        textGreen600: 'text-green-600 dark:text-green-400',
+        textBlue400: 'text-blue-400',
+
+        // Size utilities
+        sizeFull: 'size-full',
+
+        // Spacing utilities
+        mr2: 'mr-2',
+        mb1: 'mb-1',
+        p4: 'p-4',
+
+        // Position utilities
+        relative: 'relative',
+
+        // Background utilities
+        bgWhite: 'bg-white',
+
+        // Border utilities
+        border0: 'border-0',
+
+        // Animation utilities
+        animateSpin: 'animate-spin',
+
+        // Complex patterns
+        spinner:
+          'size-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent',
+        flexColMinH0: 'flex min-h-0 flex-1 flex-col',
+
+        // Text utilities (consolidated)
+        textXs: 'text-xs', // Extra small text
+        textGray500: 'text-gray-500', // Gray 500 text color
       },
     },
 
@@ -677,6 +850,35 @@ export const DESIGN_TOKENS = {
     flexEnd: 'flex items-center justify-end',
     flexCol: 'flex flex-col',
     flexColCenter: 'flex flex-col items-center justify-center',
+
+    // Flex base utilities
+    flex: {
+      row: 'flex', // Basic flex container
+      col: 'flex flex-col', // Column flex container
+      inline: 'inline-flex', // Inline flex container
+      shrinkNone: 'shrink-0', // Prevent shrinking
+      shrink: 'shrink', // Allow shrinking
+      shrink0: 'shrink-0', // Prevent shrinking (alias)
+      shrink1: 'shrink', // Default shrinking (alias)
+      grow: 'grow', // Allow growing
+      growNone: 'grow-0', // Prevent growing
+      grow0: 'grow-0', // Prevent growing (alias)
+      grow1: 'grow', // Default growing (alias)
+
+      // Common flex patterns
+      itemsCenter: 'items-center',
+      itemsStart: 'items-start', // Items align to start
+      justifyCenter: 'justify-center',
+      justifyBetween: 'justify-between',
+      justifyStart: 'justify-start',
+      justifyEnd: 'justify-end',
+      wrap: 'flex-wrap',
+      nowrap: 'flex-nowrap',
+
+      // Flex sizing utilities
+      flex1: 'flex-1', // Flex grow and shrink
+      minW0: 'min-w-0', // Minimum width 0
+    },
     // Grid patterns
     gridCols2: 'grid grid-cols-2',
     gridCols3: 'grid grid-cols-3',
@@ -687,6 +889,10 @@ export const DESIGN_TOKENS = {
     maxContent: 'max-w-7xl mx-auto',
     maxContentSm: 'max-w-2xl mx-auto',
     maxContentMd: 'max-w-4xl mx-auto',
+
+    // Base positioning utilities
+    relative: 'relative',
+
     // Focus management
     focus: {
       ringBlue: 'ring-2 ring-blue-500 ring-offset-2',
@@ -808,10 +1014,12 @@ export const DESIGN_TOKENS = {
   motion: {
     // ===== PERFORMANCE-OPTIMIZED TRANSITIONS (Enterprise UX) =====
     // Scoped transitions prevent layout thrash
-    smooth: 'transition-[color,background-color,box-shadow,transform] duration-200 ease-out',
+    smooth:
+      'transition-[color,background-color,box-shadow,transform] duration-200 ease-out',
     fast: 'transition-[color,background-color,box-shadow,transform] duration-150 ease-out',
     slow: 'transition-[color,background-color,box-shadow,transform] duration-300 ease-out',
-    slowest: 'transition-[color,background-color,box-shadow,transform] duration-500 ease-out',
+    slowest:
+      'transition-[color,background-color,box-shadow,transform] duration-500 ease-out',
     // Accessibility - reduced motion support
     respectReduced: 'motion-reduce:transition-none motion-reduce:animate-none',
     // Specific property transitions
@@ -899,6 +1107,11 @@ export const DESIGN_TOKENS = {
     scale: 'transition-transform duration-200 ease-out hover:scale-105',
     fade: 'transition-opacity duration-200 ease-out',
     slide: 'transition-transform duration-200 ease-out',
+
+    // Accessibility-aware transitions
+    accessible: 'motion-reduce:transition-none',
+    colors: 'transition-colors duration-200 motion-reduce:transition-none',
+
     // Spring animations
     spring: 'transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
     bounce:
@@ -910,12 +1123,18 @@ export const DESIGN_TOKENS = {
     // ===== BUTTON SYSTEM (Complete button recipes) =====
     button: {
       base: 'inline-flex items-center justify-center font-medium rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 forced-colors:outline forced-colors:outline-2 disabled:pointer-events-none disabled:opacity-50 transition-[color,background-color,box-shadow,transform] duration-200 ease-out motion-reduce:transition-none data-[state=pending]:opacity-70 data-[state=pending]:cursor-wait data-[state=pending]:pointer-events-none',
-      primary: 'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800',
-      primaryWithStates: 'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus:ring-2 focus:ring-primary-500 disabled:opacity-50',
-      secondary: 'bg-secondary-100 text-secondary-900 hover:bg-secondary-200 active:bg-secondary-300',
-      ghost: 'hover:bg-secondary-100 hover:text-secondary-900 text-secondary-600',
-      destructive: 'bg-error-600 text-white hover:bg-error-700 active:bg-error-800',
-      outline: 'border border-secondary-300 bg-transparent hover:bg-secondary-50 active:bg-secondary-100',
+      primary:
+        'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800',
+      primaryWithStates:
+        'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus:ring-2 focus:ring-primary-500 disabled:opacity-50',
+      secondary:
+        'bg-secondary-100 text-secondary-900 hover:bg-secondary-200 active:bg-secondary-300',
+      ghost:
+        'hover:bg-secondary-100 hover:text-secondary-900 text-secondary-600',
+      destructive:
+        'bg-error-600 text-white hover:bg-error-700 active:bg-error-800',
+      outline:
+        'border border-secondary-300 bg-transparent hover:bg-secondary-50 active:bg-secondary-100',
       link: 'text-primary-600 underline-offset-4 hover:underline',
       // Sizes
       sm: 'h-8 px-3 text-xs',
@@ -944,10 +1163,13 @@ export const DESIGN_TOKENS = {
     // ===== KEYBOARD & CODE RECIPES (Typography recipes) =====
     text: {
       code: 'font-mono text-[0.9em] px-1.5 py-0.5 rounded bg-secondary-100 dark:bg-secondary-800 text-secondary-800 dark:text-secondary-200 border border-secondary-200 dark:border-secondary-700',
-      codeBlock: 'font-mono text-[0.9em] leading-relaxed p-4 rounded-lg bg-secondary-900 dark:bg-secondary-950 text-secondary-100 overflow-x-auto scrollbar-thin scrollbar-thumb-secondary-600 scrollbar-track-secondary-800',
+      codeBlock:
+        'font-mono text-[0.9em] leading-relaxed p-4 rounded-lg bg-secondary-900 dark:bg-secondary-950 text-secondary-100 overflow-x-auto scrollbar-thin scrollbar-thumb-secondary-600 scrollbar-track-secondary-800',
       kbd: 'px-2 py-1 rounded border border-secondary-300 dark:border-secondary-600 bg-secondary-100 dark:bg-secondary-700 text-xs font-mono text-secondary-800 dark:text-secondary-100 shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)] dark:shadow-[inset_0_-1px_0_rgba(255,255,255,0.12)]',
-      kbdCombo: 'px-2 py-1 rounded border border-secondary-300 dark:border-secondary-600 bg-secondary-100 dark:bg-secondary-700 text-[11px] font-mono tracking-wide text-secondary-800 dark:text-secondary-100',
-      kbdShortcut: 'inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-50 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 text-xs font-mono text-secondary-700 dark:text-secondary-300',
+      kbdCombo:
+        'px-2 py-1 rounded border border-secondary-300 dark:border-secondary-600 bg-secondary-100 dark:bg-secondary-700 text-[11px] font-mono tracking-wide text-secondary-800 dark:text-secondary-100',
+      kbdShortcut:
+        'inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-50 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 text-xs font-mono text-secondary-700 dark:text-secondary-300',
     },
 
     // ===== CARD SYSTEM (Card component recipes) =====
@@ -967,21 +1189,91 @@ export const DESIGN_TOKENS = {
     // ===== WELL SYSTEM (Inset content area recipes) =====
     well: {
       base: 'rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_2px_4px_rgba(0,0,0,0.12)]',
-      interactive: 'cursor-pointer transition-colors hover:bg-slate-100 dark:hover:bg-slate-800/70',
-      elevated: 'shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)]',
+      interactive:
+        'cursor-pointer transition-colors hover:bg-slate-100 dark:hover:bg-slate-800/70',
+      elevated:
+        'shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)]',
       flat: 'shadow-none border-0',
       outlined: 'border-2',
       // Variants
-      success: 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 shadow-[inset_0_2px_4px_rgba(34,197,94,0.1)]',
-      warning: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 shadow-[inset_0_2px_4px_rgba(245,158,11,0.1)]',
-      error: 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 shadow-[inset_0_2px_4px_rgba(239,68,68,0.1)]',
+      success:
+        'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 shadow-[inset_0_2px_4px_rgba(34,197,94,0.1)]',
+      warning:
+        'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 shadow-[inset_0_2px_4px_rgba(245,158,11,0.1)]',
+      error:
+        'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 shadow-[inset_0_2px_4px_rgba(239,68,68,0.1)]',
       info: 'border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20 shadow-[inset_0_2px_4px_rgba(59,130,246,0.1)]',
+    },
+
+    // ===== ATTACHMENT SYSTEM (File attachment components) =====
+    attachment: {
+      // Base attachment styles
+      base: 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg p-4 transition-colors',
+      interactive:
+        'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600',
+
+      // Layout patterns
+      container: 'flex items-start gap-3',
+      content: 'min-w-0 flex-1',
+      header: 'flex items-start justify-between gap-2',
+      metadata: 'mt-1 flex items-center gap-2',
+
+      // Common layout patterns
+      flexCenterSpaced: 'flex items-center space-x-2',
+      flexCenterTight: 'flex items-center space-x-1',
+      flexSpaced: 'flex space-x-1',
+      flexCenter: 'flex items-center',
+
+      // Icon styles (size-5 with colors)
+      typeIcon: {
+        base: 'size-5 shrink-0',
+        file: 'size-5 shrink-0 text-blue-600',
+        link: 'size-5 shrink-0 text-green-600',
+        image: 'size-5 shrink-0 text-purple-600',
+        document: 'size-5 shrink-0 text-red-600',
+        video: 'size-5 shrink-0 text-orange-600',
+        audio: 'size-5 shrink-0 text-pink-600',
+        archive: 'size-5 shrink-0 text-gray-600',
+        spreadsheet: 'size-5 shrink-0 text-green-600',
+        presentation: 'size-5 shrink-0 text-orange-600',
+        default: 'size-5 shrink-0 text-gray-600',
+      },
+
+      // Status icons (size-4 with colors)
+      statusIcon: {
+        base: 'size-4 shrink-0',
+        uploading: 'size-4 shrink-0 text-blue-500',
+        complete: 'size-4 shrink-0 text-green-500',
+        error: 'size-4 shrink-0 text-red-500',
+        pending: 'size-4 shrink-0 text-orange-500',
+      },
+
+      // Text styles
+      text: {
+        meta: 'text-xs text-gray-500',
+        progress: 'mt-1 text-xs text-gray-500',
+      },
+    },
+
+    // ===== AUDIO SYSTEM (Audio player components) =====
+    audio: {
+      // Layout patterns
+      container: 'min-w-0 flex-1',
+      controls: 'flex flex-1 items-center gap-2',
+      actions: 'flex items-center gap-2',
+      waveform: 'mt-4 flex h-16 items-center justify-center gap-1',
+
+      // Progress bar
+      progressTrack:
+        'h-2 flex-1 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700',
+      progressBar: 'h-full bg-primary-600 transition-all duration-100',
     },
 
     // ===== LIST SYSTEM (Structured list components) =====
     list: {
       base: 'divide-y divide-slate-200 dark:divide-slate-700',
-      bordered: 'border border-slate-200 dark:border-slate-700 rounded-md divide-y divide-slate-200 dark:divide-slate-700',
+      bordered:
+        'border border-slate-200 dark:border-slate-700 rounded-md divide-y divide-slate-200 dark:divide-slate-700',
       flush: 'divide-y divide-slate-200 dark:divide-slate-700',
       spaced: 'space-y-2',
       relaxed: 'space-y-4',
@@ -999,12 +1291,14 @@ export const DESIGN_TOKENS = {
     },
     listItem: {
       base: 'flex items-start px-4 py-3 transition-colors focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:ring-offset-2 relative',
-      interactive: 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 active:bg-slate-100 dark:active:bg-slate-800/70',
+      interactive:
+        'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 active:bg-slate-100 dark:active:bg-slate-800/70',
       compact: 'px-3 py-2',
       comfortable: 'px-4 py-4',
       spacious: 'px-6 py-5',
       // State variants
-      selected: 'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500',
+      selected:
+        'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500',
       disabled: 'opacity-50 cursor-not-allowed pointer-events-none',
       // Content layouts
       singleLine: 'items-center min-h-[2.5rem]',
@@ -1022,7 +1316,8 @@ export const DESIGN_TOKENS = {
       base: 'flex-1 min-w-0',
       title: 'font-medium text-slate-900 dark:text-slate-100 truncate',
       subtitle: 'text-sm text-slate-600 dark:text-slate-400 truncate mt-0.5',
-      description: 'text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed',
+      description:
+        'text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed',
       meta: 'text-xs text-slate-500 dark:text-slate-500 mt-1',
     },
     listItemIcon: {
@@ -1035,14 +1330,16 @@ export const DESIGN_TOKENS = {
     },
     listItemAction: {
       base: 'flex-shrink-0 ml-auto',
-      button: 'p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors',
+      button:
+        'p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors',
       link: 'text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium',
     },
 
     // ===== DESCRIPTION LIST SYSTEM (Key-value pair components) =====
     descriptionList: {
       base: 'divide-y divide-slate-200 dark:divide-slate-700',
-      bordered: 'border border-slate-200 dark:border-slate-700 rounded-md divide-y divide-slate-200 dark:divide-slate-700',
+      bordered:
+        'border border-slate-200 dark:border-slate-700 rounded-md divide-y divide-slate-200 dark:divide-slate-700',
       flush: 'divide-y divide-slate-200 dark:divide-slate-700',
       spaced: 'space-y-4',
       relaxed: 'space-y-6',
@@ -1072,8 +1369,10 @@ export const DESIGN_TOKENS = {
       vertical: 'py-4 px-4 space-y-1',
       stacked: 'py-3 px-4 space-y-2',
       // Interactive states
-      interactive: 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors',
-      selected: 'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500',
+      interactive:
+        'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors',
+      selected:
+        'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500',
       // Semantic variants
       success: 'bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500',
       warning: 'bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500',
@@ -1083,7 +1382,8 @@ export const DESIGN_TOKENS = {
     descriptionTerm: {
       base: 'text-sm font-medium text-slate-900 dark:text-slate-100 sm:col-span-1',
       required: 'after:content-["*"] after:text-red-500 after:ml-1',
-      optional: 'after:content-["(optional)"] after:text-slate-500 after:ml-1 after:font-normal',
+      optional:
+        'after:content-["(optional)"] after:text-slate-500 after:ml-1 after:font-normal',
       // Sizes
       sm: 'text-xs font-medium',
       md: 'text-sm font-medium',
@@ -1107,16 +1407,20 @@ export const DESIGN_TOKENS = {
       truncated: 'truncate',
       expandable: 'line-clamp-3',
       // Interactive content
-      copyable: 'cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded px-1 -mx-1 transition-colors',
+      copyable:
+        'cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded px-1 -mx-1 transition-colors',
       link: 'text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline underline-offset-2',
       // List content
       list: 'space-y-1',
       inlineList: 'flex flex-wrap gap-2',
       // Badge content
-      badge: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200',
+      badge:
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200',
       // Status indicators
-      statusSuccess: 'inline-flex items-center text-green-600 dark:text-green-400',
-      statusWarning: 'inline-flex items-center text-amber-600 dark:text-amber-400',
+      statusSuccess:
+        'inline-flex items-center text-green-600 dark:text-green-400',
+      statusWarning:
+        'inline-flex items-center text-amber-600 dark:text-amber-400',
       statusError: 'inline-flex items-center text-red-600 dark:text-red-400',
       statusInfo: 'inline-flex items-center text-blue-600 dark:text-blue-400',
     },
@@ -1131,7 +1435,8 @@ export const DESIGN_TOKENS = {
     badgeWarning:
       'border-transparent bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
     badgeDanger: 'border-transparent bg-red-100 text-red-800 hover:bg-red-200',
-    badgeInfo: 'border-transparent bg-primary-100 text-primary-800 hover:bg-primary-200',
+    badgeInfo:
+      'border-transparent bg-primary-100 text-primary-800 hover:bg-primary-200',
     badgeOutline:
       'border-slate-300 bg-transparent text-slate-900 hover:bg-slate-50',
     badgeInline:
@@ -1140,7 +1445,13 @@ export const DESIGN_TOKENS = {
       'ml-1 inline-flex h-4 w-4 items-center justify-center rounded-full text-current hover:bg-black hover:bg-opacity-10 focus:bg-black focus:bg-opacity-10 focus:outline-none',
 
     // ===== CHIP SYSTEM (Interactive tags) =====
-    chip: 'inline-flex items-center rounded-full border font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+    chip: {
+      base: 'inline-flex items-center rounded-full border font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+      closeButton:
+        'ml-1 inline-flex items-center justify-center rounded-full focus:outline-none focus:ring-1 focus:ring-inset hover:bg-black/10 dark:hover:bg-white/10',
+      countBadge:
+        'ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-gray-100 px-1.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-200',
+    },
 
     // ===== MODAL SYSTEM (Overlay components) =====
     modal: {
@@ -1197,10 +1508,74 @@ export const DESIGN_TOKENS = {
       info: 'border-blue-200 bg-blue-50 text-blue-900',
     },
 
+    // ===== ALERT SYSTEM (Alert-specific component patterns) =====
+    alert: {
+      // Alert semantic colors (referencing existing semantic tokens)
+      color: {
+        info: {
+          container:
+            'border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-950/30 text-primary-900 dark:text-primary-100',
+          icon: 'text-primary-600 dark:text-primary-400',
+          title: 'text-primary-900 dark:text-primary-100',
+          content: 'text-primary-800 dark:text-primary-200',
+          dismiss:
+            'text-primary-500 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-200',
+        },
+        success: {
+          container:
+            'border border-success-200 dark:border-success-800 bg-success-50 dark:bg-success-950/30 text-success-900 dark:text-success-100',
+          icon: 'text-success-600 dark:text-success-400',
+          title: 'text-success-900 dark:text-success-100',
+          content: 'text-success-800 dark:text-success-200',
+          dismiss:
+            'text-success-500 hover:text-success-700 dark:text-success-400 dark:hover:text-success-200',
+        },
+        warning: {
+          container:
+            'border border-warning-200 dark:border-warning-800 bg-warning-50 dark:bg-warning-950/30 text-warning-900 dark:text-warning-100',
+          icon: 'text-warning-600 dark:text-warning-400',
+          title: 'text-warning-900 dark:text-warning-100',
+          content: 'text-warning-800 dark:text-warning-200',
+          dismiss:
+            'text-warning-500 hover:text-warning-700 dark:text-warning-400 dark:hover:text-warning-200',
+        },
+        error: {
+          container:
+            'border border-error-200 dark:border-error-800 bg-error-50 dark:bg-error-950/30 text-error-900 dark:text-error-100',
+          icon: 'text-error-600 dark:text-error-400',
+          title: 'text-error-900 dark:text-error-100',
+          content: 'text-error-800 dark:text-error-200',
+          dismiss:
+            'text-error-500 hover:text-error-700 dark:text-error-400 dark:hover:text-error-200',
+        },
+      },
+
+      // Alert content layout (namespaced to avoid drift)
+      content: {
+        base: 'flex-1 min-w-0', // Dedicated alert content layout
+      },
+
+      // Alert action button patterns
+      action: {
+        base: 'inline-flex items-center justify-center',
+        primary:
+          'px-3 py-1.5 text-sm font-medium rounded-md transition-colors duration-200 motion-reduce:transition-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400 dark:focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800',
+        secondary:
+          'px-3 py-1.5 text-sm font-medium rounded-md transition-colors duration-200 motion-reduce:transition-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400 dark:focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed bg-transparent text-current border border-current hover:bg-current/10 active:bg-current/20',
+      },
+      // Alert group spacing patterns
+      group: {
+        tight: 'space-y-2',
+        normal: 'space-y-3',
+        relaxed: 'space-y-4',
+      },
+    },
+
     // ===== AVATAR SYSTEM (User avatar components) =====
     avatar: {
       base: 'relative flex shrink-0 overflow-hidden rounded-full',
-      fallback: 'flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-slate-600 font-medium',
+      fallback:
+        'flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-slate-600 font-medium',
       ringOnline: 'ring-2 ring-green-500',
       ringBusy: 'ring-2 ring-red-500',
       ringOffline: 'ring-2 ring-slate-400',
@@ -1215,32 +1590,32 @@ export const DESIGN_TOKENS = {
     progress: {
       // Base progress container
       base: 'relative w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800',
-      
+
       // Progress indicator/fill
       indicator: 'h-full transition-all duration-300 ease-out rounded-full',
-      
+
       // Size variants
       sm: 'h-1',
-      md: 'h-2', 
+      md: 'h-2',
       lg: 'h-3',
       xl: 'h-4',
-      
+
       // Color variants
       primary: 'bg-blue-600 dark:bg-blue-500',
       success: 'bg-green-600 dark:bg-green-500',
       warning: 'bg-amber-600 dark:bg-amber-500',
       error: 'bg-red-600 dark:bg-red-500',
       info: 'bg-blue-600 dark:bg-blue-500',
-      
+
       // States
       indeterminate: 'animate-pulse',
       pulse: 'animate-pulse duration-1000',
-      
+
       // Progress text/label
       label: 'text-sm font-medium text-slate-700 dark:text-slate-300 mb-2',
       percentage: 'text-xs text-slate-500 dark:text-slate-400 mt-1 text-right',
       description: 'text-xs text-slate-500 dark:text-slate-400 mt-1',
-      
+
       // Container backgrounds for different variants
       backgroundPrimary: 'bg-blue-100 dark:bg-blue-950/30',
       backgroundSuccess: 'bg-green-100 dark:bg-green-950/30',
@@ -1274,7 +1649,7 @@ export const DESIGN_TOKENS = {
       // Core panel
       panel: 'absolute rounded-lg overflow-auto',
       content: 'p-4 max-h-full',
-      
+
       // Position variants (for non-portal mode)
       position: {
         top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
@@ -1290,24 +1665,28 @@ export const DESIGN_TOKENS = {
         'right-start': 'left-full top-0 ml-2',
         'right-end': 'left-full bottom-0 ml-2',
       },
-      
+
       // Size variants
       size: {
-        sm: 'w-60 max-h-48',      // 240px width, 192px max height
-        md: 'w-80 max-h-64',      // 320px width, 256px max height
+        sm: 'w-60 max-h-48', // 240px width, 192px max height
+        md: 'w-80 max-h-64', // 320px width, 256px max height
         lg: 'w-[480px] max-h-80', // 480px width, 320px max height
         xl: 'w-[640px] max-h-96', // 640px width, 384px max height
       },
-      
+
       // Visual variants (theme-safe)
       variant: {
-        default: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-card',
-        elevation: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-floating',
-        minimal: 'bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 shadow-tooltip',
+        default:
+          'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-card',
+        elevation:
+          'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-floating',
+        minimal:
+          'bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 shadow-tooltip',
         rich: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-modal',
-        interactive: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-lg transition-shadow',
+        interactive:
+          'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-lg transition-shadow',
       },
-      
+
       // Arrow system
       arrow: {
         base: 'absolute after:content-[""] after:block after:w-2.5 after:h-2.5 after:rotate-45 after:bg-inherit after:border-inherit',
@@ -1325,6 +1704,81 @@ export const DESIGN_TOKENS = {
         'right-start': 'right-full top-4 after:-mr-1.5',
         'right-end': 'right-full bottom-4 after:-mr-1.5',
       },
+    },
+
+    // ===== CODEPLAYGROUND SYSTEM (Interactive code editor components) =====
+    codePlayground: {
+      // Container patterns
+      editorContainer: 'flex flex-col',
+      editorHeader:
+        'flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700',
+      editorTitleContainer: 'flex items-center space-x-2',
+      editorIcon: 'size-4 text-slate-600 dark:text-slate-400',
+      editorTitle: 'text-sm font-medium text-slate-700 dark:text-slate-300',
+      editorTabs: 'flex space-x-1',
+      editorTabActive:
+        'px-2 py-1 text-xs rounded bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+      editorTabInactive:
+        'px-2 py-1 text-xs rounded text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
+      editorContent: 'relative flex-1',
+      editorLineNumbers:
+        'absolute left-0 top-0 bottom-0 w-12 px-2 py-4 bg-slate-50 dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 text-xs font-mono text-slate-500 dark:text-slate-400 leading-relaxed select-none overflow-hidden',
+      editorLineNumber: 'text-right',
+      editorTextarea:
+        'w-full h-full resize-none border-0 bg-transparent font-mono text-sm leading-relaxed text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-0 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600',
+      editorTextareaWithNumbers: 'pl-14 pr-4 py-4',
+      editorTextareaSimple: 'p-4',
+      editorReadOnly: 'cursor-not-allowed opacity-75',
+
+      // Preview patterns
+      previewContainer:
+        'flex flex-col border-l border-slate-200 dark:border-slate-700',
+      previewVertical: 'border-l-0 border-t',
+      previewHeader:
+        'flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700',
+      previewTitleContainer: 'flex items-center space-x-2',
+      previewIcon: 'size-4 text-slate-600 dark:text-slate-400',
+      previewTitle: 'text-sm font-medium text-slate-700 dark:text-slate-300',
+      previewStatus: 'flex items-center space-x-2',
+      previewError: 'text-xs text-red-600 dark:text-red-400',
+      previewSuccess: 'text-xs text-green-600 dark:text-green-400',
+      previewContent: 'flex-1 bg-white',
+      previewIframe: 'size-full border-0',
+
+      // Console patterns
+      consoleContainer:
+        'flex flex-col border-t border-slate-200 dark:border-slate-700 h-48 bg-slate-900 text-slate-100',
+      consoleHeader:
+        'flex items-center justify-between px-3 py-2 bg-slate-800 border-b border-slate-700',
+      consoleTitle: 'flex items-center',
+      consoleTitleIcon: 'mr-2 size-4 text-slate-400',
+      consoleTitleText: 'text-sm font-medium text-slate-300',
+      consoleClearButton:
+        'px-2 py-1 text-xs text-slate-400 hover:text-slate-200 transition-colors rounded',
+      consoleOutput: 'flex-1 overflow-y-auto p-4 font-mono text-sm',
+      consoleRunning: 'mb-1 text-blue-400',
+      consoleError: 'text-red-400',
+      consoleSuccess: 'text-green-400',
+      consoleIcon: 'text-slate-400',
+      consoleEmpty: 'italic text-slate-500',
+
+      // Loading and notifications
+      loadingOverlay:
+        'absolute inset-0 bg-black/20 dark:bg-white/10 flex items-center justify-center backdrop-blur-sm',
+      loadingCard:
+        'bg-white dark:bg-slate-900 rounded-lg shadow-lg px-4 py-3 flex items-center space-x-3 border border-slate-200 dark:border-slate-700',
+      loadingSpinner:
+        'size-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent',
+      loadingText: 'text-sm font-medium text-slate-700 dark:text-slate-300',
+      successNotification:
+        'absolute top-4 right-4 px-3 py-2 rounded-lg bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm font-medium shadow-lg border border-green-200 dark:border-green-700',
+
+      // Layout patterns
+      layoutHorizontalHalf: 'w-1/2',
+      layoutVertical: 'flex-col',
+      layoutContainer: 'flex min-h-0 flex-1 flex-col',
+      layoutInner: 'flex-1 flex min-h-0',
+      layoutHidden: 'hidden',
     },
   },
 
@@ -1371,30 +1825,30 @@ export const DESIGN_TOKENS = {
     // ===== WORKSPACE-SPECIFIC SPACING (Critical for SSOT auto-fix) =====
     workspace: {
       // Icon spacing (most common violations)
-      iconLeft: 'mr-2',      // For left icons
-      iconRight: 'ml-2',     // For right icons  
-      iconSmallSpacing: 'mr-1.5',   // Small icon spacing
-      iconLargeSpacing: 'mr-3',     // Large icon spacing
-      
+      iconLeft: 'mr-2', // For left icons
+      iconRight: 'ml-2', // For right icons
+      iconSmallSpacing: 'mr-1.5', // Small icon spacing
+      iconLargeSpacing: 'mr-3', // Large icon spacing
+
       // Common spacing patterns
-      buttonSpacing: 'space-x-3',  // Button group spacing
-      formFooter: 'pt-4',    // Form footer spacing
-      headerMargin: 'mb-6',  // Header margins
+      buttonSpacing: 'space-x-3', // Button group spacing
+      formFooter: 'pt-4', // Form footer spacing
+      headerMargin: 'mb-6', // Header margins
       sectionMargin: 'mb-4', // Section margins
-      cardPadding: 'p-6',    // Card padding
-      modalPadding: 'p-8',   // Modal padding
-      
+      cardPadding: 'p-6', // Card padding
+      modalPadding: 'p-8', // Modal padding
+
       // Layout spacing
-      pageSpacing: 'space-y-6',     // Page sections
-      formSpacing: 'space-y-4',     // Form elements
-      listSpacing: 'space-y-2',     // List items
-      inlineSpacing: 'space-x-2',   // Inline elements
-      
+      pageSpacing: 'space-y-6', // Page sections
+      formSpacing: 'space-y-4', // Form elements
+      listSpacing: 'space-y-2', // List items
+      inlineSpacing: 'space-x-2', // Inline elements
+
       // Component margins
-      titleMargin: 'mb-8',          // Page titles
-      subtitleMargin: 'mb-4',       // Subtitles
-      paragraphMargin: 'mb-3',      // Paragraphs
-      dividerMargin: 'my-6',        // Dividers
+      titleMargin: 'mb-8', // Page titles
+      subtitleMargin: 'mb-4', // Subtitles
+      paragraphMargin: 'mb-3', // Paragraphs
+      dividerMargin: 'my-6', // Dividers
     },
   },
 
@@ -1420,8 +1874,10 @@ export const DESIGN_TOKENS = {
     spinnerXl: 'animate-spin h-6 w-6',
     pulse: 'animate-pulse',
     skeleton: 'animate-pulse bg-slate-200/60 dark:bg-slate-700/50 h-4 rounded',
-    skeletonText: 'animate-pulse bg-slate-200/60 dark:bg-slate-700/50 h-3 rounded',
-    skeletonAvatar: 'animate-pulse bg-slate-200/60 dark:bg-slate-700/50 rounded-full',
+    skeletonText:
+      'animate-pulse bg-slate-200/60 dark:bg-slate-700/50 h-3 rounded',
+    skeletonAvatar:
+      'animate-pulse bg-slate-200/60 dark:bg-slate-700/50 rounded-full',
   },
 
   // 📱 RESPONSIVE BREAKPOINTS (Mobile-first design) - V3 ENHANCEMENT
@@ -1430,17 +1886,18 @@ export const DESIGN_TOKENS = {
     mobileNav: 'md:hidden',
     desktopNav: 'hidden md:flex',
     collapseSidebar: 'hidden lg:flex lg:w-64',
-    responsiveGrid: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+    responsiveGrid:
+      'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
     responsiveFlex: 'flex-col md:flex-row',
-    
+
     // Responsive spacing
     responsivePadding: 'px-4 sm:px-6 lg:px-8',
     responsiveMargin: 'mx-4 sm:mx-6 lg:mx-8',
-    
+
     // Container queries (future-ready)
     containerBase: 'container mx-auto',
     containerPadded: 'container mx-auto px-4 sm:px-6 lg:px-8',
-    
+
     // Breakpoint utilities
     hideMobile: 'hidden sm:block',
     hideTablet: 'sm:hidden lg:block',
@@ -1455,19 +1912,21 @@ export const DESIGN_TOKENS = {
     // Screen reader utilities
     srOnly: 'sr-only',
     notSrOnly: 'not-sr-only',
-    
+
     // Focus management
-    focusVisible: 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+    focusVisible:
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
     focusTrap: 'focus:outline-none focus:ring-2 focus:ring-blue-500',
-    skipLink: 'absolute left-[-10000px] top-auto w-[1px] h-[1px] overflow-hidden focus:left-6 focus:top-7 focus:w-auto focus:h-auto focus:overflow-visible',
-    
+    skipLink:
+      'absolute left-[-10000px] top-auto w-[1px] h-[1px] overflow-hidden focus:left-6 focus:top-7 focus:w-auto focus:h-auto focus:overflow-visible',
+
     // Reduced motion
     reduceMotion: 'motion-reduce:transition-none motion-reduce:animate-none',
     respectMotion: 'motion-safe:transition-all motion-safe:duration-200',
-    
+
     // High contrast support
     highContrast: 'contrast-more:border-black contrast-more:border-2',
-    
+
     // Target sizes (44px minimum)
     touchTarget: 'min-h-[44px] min-w-[44px]',
     touchTargetSm: 'min-h-[32px] min-w-[32px]',
@@ -1478,18 +1937,20 @@ export const DESIGN_TOKENS = {
     // Field states
     fieldValid: 'border-green-500 focus:ring-green-500 focus:border-green-500',
     fieldInvalid: 'border-red-500 focus:ring-red-500 focus:border-red-500',
-    fieldWarning: 'border-amber-500 focus:ring-amber-500 focus:border-amber-500',
+    fieldWarning:
+      'border-amber-500 focus:ring-amber-500 focus:border-amber-500',
     fieldPending: 'border-blue-500 focus:ring-blue-500 focus:border-blue-500',
-    
+
     // Message styling
     messageValid: 'text-green-600 text-sm mt-1',
     messageInvalid: 'text-red-600 text-sm mt-1',
     messageWarning: 'text-amber-600 text-sm mt-1',
     messageHelp: 'text-slate-500 text-sm mt-1',
-    
+
     // Required indicators
     required: "after:content-['*'] after:text-red-500 after:ml-1",
-    optional: "after:content-['(optional)'] after:text-slate-400 after:ml-1 after:text-xs",
+    optional:
+      "after:content-['(optional)'] after:text-slate-400 after:ml-1 after:text-xs",
   },
 
   // 🌈 COLOR UTILITIES (Extended palette) - V3 ENHANCEMENT
@@ -1805,11 +2266,11 @@ export const ICON_A11Y = {
 
 // 📱 BREAKPOINT SYSTEM (Responsive consistency) - V3 ENTERPRISE FOUNDATION
 export const BREAKPOINTS = {
-  sm: 'sm:',    // 640px+ - mobile landscape
-  md: 'md:',    // 768px+ - tablet portrait
-  lg: 'lg:',    // 1024px+ - tablet landscape / small desktop
-  xl: 'xl:',    // 1280px+ - desktop
-  xxl: '2xl:',  // 1536px+ - large desktop
+  sm: 'sm:', // 640px+ - mobile landscape
+  md: 'md:', // 768px+ - tablet portrait
+  lg: 'lg:', // 1024px+ - tablet landscape / small desktop
+  xl: 'xl:', // 1280px+ - desktop
+  xxl: '2xl:', // 1536px+ - large desktop
 } as const;
 
 // 🎯 HELPER FUNCTIONS (Legacy support for Badge component) - V3 MAINTAINED
@@ -1993,7 +2454,9 @@ export function getTypographyClass(scale: TypographyScale): string {
   ];
 }
 
-export function combineTokens(...tokens: (string | undefined | false | null)[]): string {
+export function combineTokens(
+  ...tokens: (string | undefined | false | null)[]
+): string {
   return tokens.filter(Boolean).join(' ');
 }
 
@@ -2053,7 +2516,9 @@ export function getMetricChangeColor(value: number): string {
   return DESIGN_TOKENS.dataViz.colors.neutral;
 }
 
-export function getSparklineColor(trend: 'positive' | 'negative' | 'neutral'): string {
+export function getSparklineColor(
+  trend: 'positive' | 'negative' | 'neutral'
+): string {
   const colorMap = {
     positive: DESIGN_TOKENS.dataViz.sparklinePositive,
     negative: DESIGN_TOKENS.dataViz.sparklineNegative,
@@ -2070,7 +2535,9 @@ export function getProgressColor(percentage: number): string {
 }
 
 // 📊 CHART LAYOUT HELPERS - V3 NEW
-export function getChartContainer(type: 'metric' | 'chart' | 'dashboard'): string {
+export function getChartContainer(
+  type: 'metric' | 'chart' | 'dashboard'
+): string {
   const containerMap = {
     metric: DESIGN_TOKENS.dataViz.metricCard,
     chart: DESIGN_TOKENS.dataViz.chartContainer,
@@ -2079,7 +2546,9 @@ export function getChartContainer(type: 'metric' | 'chart' | 'dashboard'): strin
   return containerMap[type];
 }
 
-export function getDashboardLayout(section: 'metrics' | 'charts' | 'analytics'): string {
+export function getDashboardLayout(
+  section: 'metrics' | 'charts' | 'analytics'
+): string {
   const layoutMap = {
     metrics: DESIGN_TOKENS.dataViz.metricsRow,
     charts: DESIGN_TOKENS.dataViz.chartsRow,
@@ -2089,28 +2558,40 @@ export function getDashboardLayout(section: 'metrics' | 'charts' | 'analytics'):
 }
 
 // 🎯 ENTERPRISE TOKEN HELPERS (Type-safe composition) - V3.1 STRATEGIC
-export function getRadiusToken(size: keyof typeof DESIGN_TOKENS.theme.light.radius = 'md'): string {
+export function getRadiusToken(
+  size: keyof typeof DESIGN_TOKENS.theme.light.radius = 'md'
+): string {
   return DESIGN_TOKENS.theme.light.radius[size];
 }
 
-export function getFocusToken(variant: 'default' | 'error' | 'warning' | 'success' = 'default'): string {
+export function getFocusToken(
+  variant: 'default' | 'error' | 'warning' | 'success' = 'default'
+): string {
   return DESIGN_TOKENS.focus[variant];
 }
 
-export function getMotionToken(speed: keyof typeof DESIGN_TOKENS.motion = 'smooth'): string {
+export function getMotionToken(
+  speed: keyof typeof DESIGN_TOKENS.motion = 'smooth'
+): string {
   return `${DESIGN_TOKENS.motion[speed]} ${DESIGN_TOKENS.motion.respectReduced}`;
 }
 
 // 🎯 ENTERPRISE PRIMITIVE HELPERS (New foundation utilities) - V3.2 ENHANCEMENT
 export function getCodeToken(variant: 'inline' | 'block' = 'inline'): string {
-  return variant === 'block' ? DESIGN_TOKENS.typography.code.block : DESIGN_TOKENS.typography.code.inline;
+  return variant === 'block'
+    ? DESIGN_TOKENS.typography.code.block
+    : DESIGN_TOKENS.typography.code.inline;
 }
 
-export function getKbdToken(variant: 'base' | 'combo' | 'shortcut' = 'base'): string {
+export function getKbdToken(
+  variant: 'base' | 'combo' | 'shortcut' = 'base'
+): string {
   return DESIGN_TOKENS.typography.kbd[variant];
 }
 
-export function getSpacingToken(size: keyof typeof DESIGN_TOKENS.layout.spacing.fine = 'gapMd'): string {
+export function getSpacingToken(
+  size: keyof typeof DESIGN_TOKENS.layout.spacing.fine = 'gapMd'
+): string {
   return DESIGN_TOKENS.layout.spacing.fine[size];
 }
 
@@ -2118,44 +2599,54 @@ export function getStateToken(state: keyof typeof DESIGN_TOKENS.state): string {
   return DESIGN_TOKENS.state[state];
 }
 
-export function getAdvancedInputClasses(options: {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  variant?: 'error' | 'success' | 'warning';
-} = {}): string {
+export function getAdvancedInputClasses(
+  options: {
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+    variant?: 'error' | 'success' | 'warning';
+  } = {}
+): string {
   const { size = 'md', variant } = options;
-  
+
   let classes = DESIGN_TOKENS.recipe.input.base;
-  
+
   if (size !== 'md') {
     classes += ` ${DESIGN_TOKENS.recipe.input[size]}`;
   }
-  
+
   if (variant) {
     classes += ` ${DESIGN_TOKENS.recipe.input[variant]}`;
   }
-  
+
   return classes;
 }
 
-export function getAdvancedButtonClasses(options: {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'destructive' | 'outline' | 'link';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  pending?: boolean;
-  iconPosition?: 'left' | 'right' | 'only';
-} = {}): string {
+export function getAdvancedButtonClasses(
+  options: {
+    variant?:
+      | 'primary'
+      | 'secondary'
+      | 'ghost'
+      | 'destructive'
+      | 'outline'
+      | 'link';
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+    pending?: boolean;
+    iconPosition?: 'left' | 'right' | 'only';
+  } = {}
+): string {
   const { variant = 'primary', size = 'md', iconPosition } = options;
-  
+
   let classes = `${DESIGN_TOKENS.recipe.button.base} ${DESIGN_TOKENS.recipe.button[variant]}`;
-  
+
   if (size !== 'md') {
     classes += ` ${DESIGN_TOKENS.recipe.button[size]}`;
   }
-  
+
   if (iconPosition === 'only') {
     classes += ` ${DESIGN_TOKENS.recipe.button.iconOnly}`;
   } else if (iconPosition) {
     classes += ` ${DESIGN_TOKENS.recipe.button[`icon${iconPosition === 'left' ? 'Left' : 'Right'}`]}`;
   }
-  
+
   return classes;
 }

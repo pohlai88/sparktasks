@@ -1,0 +1,472 @@
+[
+  {
+    "name": "Button",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 147,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "High",
+    "blockers": []
+  },
+  {
+    "name": "Card",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 220,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "High",
+    "blockers": []
+  },
+  {
+    "name": "Dialog",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 229,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "High",
+    "blockers": []
+  },
+  {
+    "name": "Dropdown",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 167,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "High",
+    "blockers": []
+  },
+  {
+    "name": "IconButton",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 214,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "High",
+    "blockers": []
+  },
+  {
+    "name": "Popover",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 218,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "High",
+    "blockers": []
+  },
+  {
+    "name": "Toast",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 194,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "High",
+    "blockers": []
+  },
+  {
+    "name": "Avatar",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Medium",
+    "blockers": []
+  },
+  {
+    "name": "AvatarGroup",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 200,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Medium",
+    "blockers": []
+  },
+  {
+    "name": "Badge",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Medium",
+    "blockers": []
+  },
+  {
+    "name": "Banner",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 208,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Medium",
+    "blockers": []
+  },
+  {
+    "name": "Callout",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Medium",
+    "blockers": []
+  },
+  {
+    "name": "ProgressBar",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 0,
+    "hasTests": false,
+    "status": "✅ Complete",
+    "priority": "Medium",
+    "blockers": ["No tests", "Insufficient test coverage"]
+  },
+  {
+    "name": "Skeleton",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Medium",
+    "blockers": []
+  },
+  {
+    "name": "Spinner",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 150,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Medium",
+    "blockers": []
+  },
+  {
+    "name": "Alert",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 267,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Attachment",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 202,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Audio",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 165,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "ButtonGroup",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Carousel",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 145,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Chip",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "CodeBlock",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 126,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "CodePlayground",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 257,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "ContextMenu",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 289,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "DescriptionList",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Document",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 231,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Drawer",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 176,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "EmptyState",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 83,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "FAB",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 170,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Gallery",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 159,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "HoverCard",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 192,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Image",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 131,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "KBD",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 200,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "KebabMenu",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 209,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "List",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 276,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Note",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 271,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Panel",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Prose",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "SpeedDial",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 138,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "SplitButton",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 125,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "TableOfContents",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 203,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Tag",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 273,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "TestButton",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 300,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Thumbnail",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 218,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Tooltip",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 83,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Video",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 158,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  },
+  {
+    "name": "Well",
+    "hardcodedClasses": 0,
+    "tokenCoverage": 209,
+    "testCoverage": 100,
+    "hasTests": true,
+    "status": "✅ Complete",
+    "priority": "Low",
+    "blockers": []
+  }
+]

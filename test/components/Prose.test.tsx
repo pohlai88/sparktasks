@@ -38,7 +38,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <div dangerouslySetInnerHTML={{ __html: mockSimpleContent }} />
         </Prose>
       );
-      
+
       expect(screen.getByTestId('prose')).toBeInTheDocument();
     });
 
@@ -49,18 +49,20 @@ describe('Prose Component - Enterprise Grade', () => {
           <p>Test paragraph</p>
         </Prose>
       );
-      
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Test Heading');
+
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'Test Heading'
+      );
       expect(screen.getByText('Test paragraph')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
       render(
-        <Prose className="custom-prose">
+        <Prose className='custom-prose'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('custom-prose');
     });
@@ -72,7 +74,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <p>Content</p>
         </Prose>
       );
-      
+
       expect(ref.current).toBeInstanceOf(HTMLDivElement);
     });
 
@@ -82,7 +84,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'default');
       expect(prose).toHaveAttribute('data-reading-mode', 'default');
@@ -93,66 +95,66 @@ describe('Prose Component - Enterprise Grade', () => {
   describe('Variant Styling', () => {
     it('applies default variant styling', () => {
       render(
-        <Prose variant="default">
+        <Prose variant='default'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'default');
     });
 
     it('applies article variant styling', () => {
       render(
-        <Prose variant="article">
+        <Prose variant='article'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'article');
     });
 
     it('applies documentation variant styling', () => {
       render(
-        <Prose variant="documentation">
+        <Prose variant='documentation'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'documentation');
     });
 
     it('applies legal variant styling', () => {
       render(
-        <Prose variant="legal">
+        <Prose variant='legal'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'legal');
     });
 
     it('applies compact variant styling', () => {
       render(
-        <Prose variant="compact">
+        <Prose variant='compact'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'compact');
     });
 
     it('applies large variant styling', () => {
       render(
-        <Prose variant="large">
+        <Prose variant='large'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'large');
     });
@@ -161,33 +163,33 @@ describe('Prose Component - Enterprise Grade', () => {
   describe('Reading Mode', () => {
     it('applies default reading mode', () => {
       render(
-        <Prose readingMode="default">
+        <Prose readingMode='default'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-reading-mode', 'default');
     });
 
     it('applies comfortable reading mode', () => {
       render(
-        <Prose readingMode="comfortable">
+        <Prose readingMode='comfortable'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-reading-mode', 'comfortable');
     });
 
     it('applies dense reading mode', () => {
       render(
-        <Prose readingMode="dense">
+        <Prose readingMode='dense'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-reading-mode', 'dense');
     });
@@ -196,44 +198,44 @@ describe('Prose Component - Enterprise Grade', () => {
   describe('Size Variants', () => {
     it('applies small size correctly', () => {
       render(
-        <Prose size="sm">
+        <Prose size='sm'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-size', 'sm');
     });
 
     it('applies medium size correctly', () => {
       render(
-        <Prose size="md">
+        <Prose size='md'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-size', 'md');
     });
 
     it('applies large size correctly', () => {
       render(
-        <Prose size="lg">
+        <Prose size='lg'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-size', 'lg');
     });
 
     it('applies extra large size correctly', () => {
       render(
-        <Prose size="xl">
+        <Prose size='xl'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-size', 'xl');
     });
@@ -242,66 +244,66 @@ describe('Prose Component - Enterprise Grade', () => {
   describe('Max Width Settings', () => {
     it('applies no max width', () => {
       render(
-        <Prose maxWidth="none">
+        <Prose maxWidth='none'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).not.toHaveClass('max-w-');
     });
 
     it('applies small max width', () => {
       render(
-        <Prose maxWidth="sm">
+        <Prose maxWidth='sm'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('max-w-sm');
     });
 
     it('applies medium max width (default)', () => {
       render(
-        <Prose maxWidth="md">
+        <Prose maxWidth='md'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('max-w-2xl');
     });
 
     it('applies large max width', () => {
       render(
-        <Prose maxWidth="lg">
+        <Prose maxWidth='lg'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('max-w-4xl');
     });
 
     it('applies extra large max width', () => {
       render(
-        <Prose maxWidth="xl">
+        <Prose maxWidth='xl'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('max-w-6xl');
     });
 
     it('applies full max width', () => {
       render(
-        <Prose maxWidth="full">
+        <Prose maxWidth='full'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('max-w-full');
     });
@@ -310,16 +312,16 @@ describe('Prose Component - Enterprise Grade', () => {
   describe('Link Handling', () => {
     it('handles link clicks with custom handler', () => {
       const mockLinkHandler = vi.fn();
-      
+
       render(
         <Prose onLinkClick={mockLinkHandler}>
-          <a href="https://example.com">Test Link</a>
+          <a href='https://example.com'>Test Link</a>
         </Prose>
       );
-      
+
       const link = screen.getByRole('link');
       fireEvent.click(link);
-      
+
       expect(mockLinkHandler).toHaveBeenCalledWith(
         'https://example.com/',
         expect.any(Object)
@@ -328,16 +330,16 @@ describe('Prose Component - Enterprise Grade', () => {
 
     it('supports keyboard navigation for links', () => {
       const mockLinkHandler = vi.fn();
-      
+
       render(
         <Prose onLinkClick={mockLinkHandler}>
-          <a href="https://example.com">Test Link</a>
+          <a href='https://example.com'>Test Link</a>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       fireEvent.keyDown(prose, { key: 'Enter' });
-      
+
       // Should be callable via keyboard
       expect(prose).toBeInTheDocument();
     });
@@ -345,10 +347,10 @@ describe('Prose Component - Enterprise Grade', () => {
     it('does not interfere with normal links when no handler provided', () => {
       render(
         <Prose>
-          <a href="https://example.com">Test Link</a>
+          <a href='https://example.com'>Test Link</a>
         </Prose>
       );
-      
+
       const link = screen.getByRole('link');
       expect(link).toHaveAttribute('href', 'https://example.com');
     });
@@ -361,7 +363,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('prose', 'prose-slate');
     });
@@ -372,7 +374,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('dark:prose-invert');
     });
@@ -383,7 +385,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveClass('mx-auto');
     });
@@ -396,24 +398,24 @@ describe('Prose Component - Enterprise Grade', () => {
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('role', 'article');
     });
 
     it('supports keyboard navigation when link handler provided', () => {
       const mockLinkHandler = vi.fn();
-      
+
       render(
         <Prose onLinkClick={mockLinkHandler}>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       fireEvent.keyDown(prose, { key: 'Enter' });
       fireEvent.keyDown(prose, { key: ' ' });
-      
+
       expect(prose).toBeInTheDocument();
     });
 
@@ -427,7 +429,7 @@ describe('Prose Component - Enterprise Grade', () => {
           </ul>
         </Prose>
       );
-      
+
       expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
       expect(screen.getByRole('list')).toBeInTheDocument();
       expect(screen.getByRole('listitem')).toBeInTheDocument();
@@ -441,9 +443,13 @@ describe('Prose Component - Enterprise Grade', () => {
           <div dangerouslySetInnerHTML={{ __html: mockContent }} />
         </Prose>
       );
-      
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Main Heading');
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Secondary Heading');
+
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'Main Heading'
+      );
+      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+        'Secondary Heading'
+      );
       expect(screen.getByRole('list')).toBeInTheDocument();
     });
 
@@ -457,7 +463,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <blockquote>Quote content</blockquote>
         </Prose>
       );
-      
+
       expect(screen.getByText('bold')).toBeInTheDocument();
       expect(screen.getByText('italic')).toBeInTheDocument();
       expect(screen.getByText('Quote content')).toBeInTheDocument();
@@ -471,7 +477,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <p>Simple content</p>
         </Prose>
       );
-      
+
       // Should have a clean, minimal DOM structure
       const proseElement = container.firstChild;
       expect(proseElement).toBeInstanceOf(HTMLDivElement);
@@ -479,26 +485,30 @@ describe('Prose Component - Enterprise Grade', () => {
 
     it('memoizes class calculations', () => {
       const { rerender } = render(
-        <Prose variant="default" size="md">
+        <Prose variant='default' size='md'>
           <p>Content</p>
         </Prose>
       );
-      
+
       // Re-render with same props should not cause issues
       rerender(
-        <Prose variant="default" size="md">
+        <Prose variant='default' size='md'>
           <p>Content</p>
         </Prose>
       );
-      
+
       expect(screen.getByTestId('prose')).toBeInTheDocument();
     });
   });
 
   describe('Error Handling', () => {
     it('handles empty content gracefully', () => {
-      render(<Prose><div /></Prose>);
-      
+      render(
+        <Prose>
+          <div />
+        </Prose>
+      );
+
       expect(screen.getByTestId('prose')).toBeInTheDocument();
     });
 
@@ -508,7 +518,7 @@ describe('Prose Component - Enterprise Grade', () => {
           <div dangerouslySetInnerHTML={{ __html: '<p>Unclosed paragraph' }} />
         </Prose>
       );
-      
+
       expect(screen.getByTestId('prose')).toBeInTheDocument();
     });
   });
@@ -516,17 +526,17 @@ describe('Prose Component - Enterprise Grade', () => {
   describe('Edge Cases', () => {
     it('combines multiple styling options correctly', () => {
       render(
-        <Prose 
-          variant="article" 
-          readingMode="comfortable" 
-          size="lg" 
-          maxWidth="xl"
-          className="custom-class"
+        <Prose
+          variant='article'
+          readingMode='comfortable'
+          size='lg'
+          maxWidth='xl'
+          className='custom-class'
         >
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'article');
       expect(prose).toHaveAttribute('data-reading-mode', 'comfortable');
@@ -536,23 +546,23 @@ describe('Prose Component - Enterprise Grade', () => {
 
     it('handles rapid prop changes', () => {
       const { rerender } = render(
-        <Prose variant="default">
+        <Prose variant='default'>
           <p>Content</p>
         </Prose>
       );
-      
+
       rerender(
-        <Prose variant="article">
+        <Prose variant='article'>
           <p>Content</p>
         </Prose>
       );
-      
+
       rerender(
-        <Prose variant="documentation">
+        <Prose variant='documentation'>
           <p>Content</p>
         </Prose>
       );
-      
+
       const prose = screen.getByTestId('prose');
       expect(prose).toHaveAttribute('data-variant', 'documentation');
     });

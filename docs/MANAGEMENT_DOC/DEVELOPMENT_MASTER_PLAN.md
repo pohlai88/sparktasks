@@ -1,4 +1,5 @@
 # SparkTasks Development Master Plan
+
 ## Strategic Build Governance for Vibe-Driven Development
 
 > **A step-by-step prompt-by-prompt guide for building SparkTasks safely, based on 30+ years of SaaS architecture experience and the PRD requirements**
@@ -10,6 +11,7 @@
 This master plan provides a systematic approach to building SparkTasks as a storage-neutral, local-first task platform. The plan is designed for vibe-driven development with clear prompts, safety gates, and measurable outcomes at each step.
 
 ### Core Principles:
+
 1. **Security-First Architecture** - Every component designed with E2EE and data isolation
 2. **Performance Budgets** - CI-enforced performance gates at every commit
 3. **BYOS Compliance** - Storage-neutral design from day one
@@ -20,9 +22,11 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ## Phase 1: Foundation & Core Infrastructure (Days 1-20)
 
 ### 1.1 Project Foundation Setup
+
 **Prompt:** "Set up the foundational architecture for SparkTasks with TypeScript, React 18, Vite, and enterprise-grade tooling including ESLint, Prettier, and comprehensive testing infrastructure."
 
 **Deliverables:**
+
 - ✅ Project structure with clean separation of concerns
 - ✅ TypeScript configuration with strict type checking
 - ✅ ESLint + Prettier with React/TypeScript/Tailwind rules
@@ -30,15 +34,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - ✅ CI/CD pipeline with performance budgets
 
 **Success Criteria:**
+
 - Build time < 30 seconds
 - Bundle size < 250KB gzipped (enforced in CI)
 - Zero linting warnings
 - 100% type coverage
 
 ### 1.2 Core UI System & Design Tokens
+
 **Prompt:** "Create a minimal, accessible UI component system using Tailwind CSS with SparkTasks brand colors, focusing on Today/Later/Done views and quick-add functionality. Implement semantic HTML with focus management and ARIA compliance."
 
 **Deliverables:**
+
 - Design token system (colors, typography, spacing)
 - Base components: Button, Card, Input, Layout
 - Focus management utilities
@@ -46,15 +53,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Accessibility testing suite
 
 **Success Criteria:**
+
 - WCAG 2.1 AA compliance
 - Keyboard navigation 100% functional
 - Mobile-responsive design tested on 3 devices
 - Component bundle < 50KB
 
 ### 1.3 Local Storage & State Management Foundation
+
 **Prompt:** "Implement Zustand state management with persistent storage capabilities, designed for local-first architecture. Include state hydration, error boundaries, and data migration patterns."
 
 **Deliverables:**
+
 - Zustand store architecture
 - Local storage persistence layer
 - State hydration and error recovery
@@ -62,6 +72,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - State devtools integration
 
 **Success Criteria:**
+
 - State persistence works offline
 - Hydration time < 100ms for 1k tasks
 - Error recovery handles corrupted state
@@ -72,9 +83,11 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ## Phase 2: Core Task Management (Days 21-35)
 
 ### 2.1 Task Data Model & JSONL Architecture
+
 **Prompt:** "Design and implement the task data model using event-sourced architecture with JSONL files. Create the task entity with ID, title, status, due date, assignee, and metadata. Implement append-only event logging for audit trails."
 
 **Deliverables:**
+
 - Task type definitions with Zod validation
 - Event-sourced task mutations
 - JSONL read/write utilities
@@ -82,15 +95,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Schema versioning system
 
 **Success Criteria:**
+
 - 100% type safety for task operations
 - Event replay reconstructs state correctly
 - JSONL files are human-readable
 - Schema validation catches corrupt data
 
 ### 2.2 Today/Later/Done Views
+
 **Prompt:** "Build the core Today, Later, and Done task views with drag-and-drop functionality, keyboard shortcuts, and virtualized lists for performance. Implement the Snooze feature as a core workflow."
 
 **Deliverables:**
+
 - Three-column layout with responsive design
 - Drag-and-drop task movement
 - Keyboard shortcuts (j/k navigation, s for snooze)
@@ -98,15 +114,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Snooze date picker with smart defaults
 
 **Success Criteria:**
+
 - 60 FPS scrolling with 10k tasks
 - Drag-and-drop works on mobile
 - Keyboard shortcuts accessible
 - Snooze workflow < 3 clicks
 
 ### 2.3 Quick-Add with NLP Parsing
+
 **Prompt:** "Implement intelligent quick-add functionality that parses natural language input to extract due dates, assignees, and priority. Include keyboard shortcuts and smart suggestions."
 
 **Deliverables:**
+
 - NLP parser for due dates ("tomorrow", "next Friday")
 - @mention parsing for assignees
 - Priority detection (urgent, high, normal, low)
@@ -114,6 +133,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Keyboard shortcut activation (Cmd+K)
 
 **Success Criteria:**
+
 - 90% accuracy on common date formats
 - Parse time < 50ms
 - Fallback for unparseable input
@@ -124,9 +144,11 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ## Phase 3: BYOS Storage Layer (Days 36-50)
 
 ### 3.1 Storage Abstraction Layer
+
 **Prompt:** "Design a storage abstraction layer that supports multiple backends (Google Drive, Dropbox, local file system) with a common interface. Include error handling, rate limiting, and exponential backoff."
 
 **Deliverables:**
+
 - Storage interface definition
 - Error handling and retry logic
 - Rate limiting with exponential backoff
@@ -134,15 +156,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Storage health dashboard
 
 **Success Criteria:**
+
 - Interface supports all required operations
 - Graceful degradation on network issues
 - Rate limit compliance (no API violations)
 - Status visible to users
 
 ### 3.2 Google Drive Integration
+
 **Prompt:** "Implement Google Drive storage adapter using the Drive API v3. Support both App Folder and user-selected folder modes. Handle authentication, file operations, and delta sync with conflict detection."
 
 **Deliverables:**
+
 - OAuth 2.0 authentication flow
 - Drive API integration with proper scopes
 - File upload/download with chunking
@@ -150,15 +175,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Conflict detection and resolution
 
 **Success Criteria:**
+
 - Authentication flow < 60 seconds
 - File sync reliability ≥99%
 - Delta sync detects changes within 30 seconds
 - No data loss during conflicts
 
 ### 3.3 Export/Import with .sparkpack
+
 **Prompt:** "Create the .sparkpack export/import system with dry-run diffs and rollback capabilities. Include schema validation and data integrity checks."
 
 **Deliverables:**
+
 - ZIP-based .sparkpack format
 - Dry-run diff preview
 - Import validation and sanitization
@@ -166,6 +194,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Progress indicators for large imports
 
 **Success Criteria:**
+
 - Round-trip accuracy ≥99% (target KPI)
 - Export/import works offline
 - Dry-run shows accurate preview
@@ -176,9 +205,11 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ## Phase 4: Local Search & Performance (Days 51-60)
 
 ### 4.1 Local Full-Text Search
+
 **Prompt:** "Implement local full-text search using SQLite WASM with FTS5 for sub-200ms search performance at 1k tasks. Include search indexing, query optimization, and result ranking."
 
 **Deliverables:**
+
 - SQLite WASM integration
 - FTS5 index configuration
 - Search query parser
@@ -186,15 +217,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Index rebuilding from JSONL
 
 **Success Criteria:**
+
 - p95 search time < 200ms @ 1k tasks (target KPI)
 - Search covers task content and metadata
 - Index corruption recovery works
 - Fuzzy search handles typos
 
 ### 4.2 Performance Monitoring & Budgets
+
 **Prompt:** "Implement performance monitoring with CI-enforced budgets for bundle size, runtime performance, and memory usage. Include Web Vitals tracking and regression detection."
 
 **Deliverables:**
+
 - Bundle size monitoring
 - Runtime performance metrics
 - Memory usage tracking
@@ -202,6 +236,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - CI performance gates
 
 **Success Criteria:**
+
 - Core bundle < 250KB gzipped (enforced)
 - LCP < 2.5s, FID < 100ms, CLS < 0.1
 - Memory usage stable during long sessions
@@ -212,9 +247,11 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ## Phase 5: Collaboration & Sync (Days 61-75)
 
 ### 5.1 CRDT Implementation for Notes
+
 **Prompt:** "Implement CRDT (Conflict-free Replicated Data Types) for task notes and comments using Yjs or Automerge. Handle offline edits and automatic conflict resolution."
 
 **Deliverables:**
+
 - CRDT library integration
 - Notes/comments editing
 - Offline change tracking
@@ -222,15 +259,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Conflict visualization for users
 
 **Success Criteria:**
+
 - Offline edits merge correctly
 - No data loss during conflicts
 - Merge time < 500ms
 - Conflict UI helps users understand changes
 
 ### 5.2 Comments and @Mentions
+
 **Prompt:** "Add commenting system with @mentions, notifications, and threading. Integrate with the CRDT system for conflict-free collaboration."
 
 **Deliverables:**
+
 - Comment threading UI
 - @mention autocomplete
 - Notification system
@@ -238,6 +278,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Email/Slack digest integration
 
 **Success Criteria:**
+
 - @mentions trigger notifications within 5 minutes
 - Comment threads load < 100ms
 - Activity feed shows relevant updates
@@ -248,9 +289,11 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ## Phase 6: Insights & Automation (Days 76-90)
 
 ### 6.1 Explainable Insights Dashboard
+
 **Prompt:** "Build analytics dashboard showing throughput, cycle time, and aging WIP with drill-down capabilities. Each metric should link to the underlying events that generated it."
 
 **Deliverables:**
+
 - Metrics calculation engine
 - Interactive dashboard with charts
 - Drill-down to source events
@@ -258,15 +301,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Export capabilities for reporting
 
 **Success Criteria:**
+
 - Dashboard loads < 2 seconds
 - Metrics update in real-time
 - Drill-down shows relevant events
 - Insights drive user action
 
 ### 6.2 Accountable Automation
+
 **Prompt:** "Implement small, auditable automations like aging WIP alerts and unblock summaries. Each automation must show its reasoning and link to triggering events."
 
 **Deliverables:**
+
 - Rule engine for automations
 - Aging WIP detection
 - Unblock summary generation
@@ -274,6 +320,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - User-configurable thresholds
 
 **Success Criteria:**
+
 - False positive rate < 5% (target KPI)
 - All alerts link to triggering events
 - Users understand automation reasoning
@@ -284,9 +331,11 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ## Phase 7: Security & Trust (Days 91-120)
 
 ### 7.1 End-to-End Encryption
+
 **Prompt:** "Implement E2EE for task content using user-controlled keys. Include key generation, secure storage, and key recovery mechanisms."
 
 **Deliverables:**
+
 - Client-side encryption implementation
 - Key generation and storage
 - Recovery key system
@@ -294,15 +343,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Security audit preparation
 
 **Success Criteria:**
+
 - All task content encrypted at rest
 - Keys never leave client control
 - Recovery system prevents data loss
 - Security audit passes
 
 ### 7.2 Cross-Workspace Isolation
+
 **Prompt:** "Implement strict workspace isolation to prevent data leakage between projects. Include access controls, permission systems, and audit logging."
 
 **Deliverables:**
+
 - Workspace boundary enforcement
 - Permission system implementation
 - Access control middleware
@@ -310,6 +362,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Security testing suite
 
 **Success Criteria:**
+
 - Zero cross-workspace data access
 - Permissions enforced at API level
 - Audit logs capture all access
@@ -320,9 +373,11 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ## Phase 8: Team Features & Polish (Days 121-150)
 
 ### 8.1 Team Management & OIDC
+
 **Prompt:** "Add team management features with OIDC/SSO integration, user roles, and workspace administration."
 
 **Deliverables:**
+
 - OIDC authentication integration
 - Role-based access control
 - Team invitation system
@@ -330,15 +385,18 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Usage analytics for admins
 
 **Success Criteria:**
+
 - SSO login < 30 seconds
 - Role permissions enforced correctly
 - Team onboarding < 5 minutes
 - Admin features provide value
 
 ### 8.2 Integration Ecosystem
+
 **Prompt:** "Build integration points for GitHub, Calendar, Slack, and VS Code. Include webhook system and typed SDK for third-party developers."
 
 **Deliverables:**
+
 - GitHub issue synchronization
 - Calendar integration for due dates
 - Slack notifications and commands
@@ -346,6 +404,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Webhook system with SDK
 
 **Success Criteria:**
+
 - Integrations work reliably
 - API rate limits respected
 - SDK enables third-party development
@@ -358,6 +417,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 ### 🛡️ Anti-Drift Enforcement System
 
 **Pre-Commit Hooks (Automated):**
+
 - Lint and format validation (block commit if errors)
 - Bundle size budget check (fail if exceeded)
 - Test coverage threshold enforcement (≥90%)
@@ -365,6 +425,7 @@ This master plan provides a systematic approach to building SparkTasks as a stor
 - Dependency audit (block unauthorized additions)
 
 **Commit Message Validation:**
+
 ```
 Format: [scope]: description
 Required: Performance impact, test results, SSOT alignment
@@ -372,6 +433,7 @@ Example: [task-mgmt]: Add snooze feature (+2KB bundle, all tests pass, PRD-align
 ```
 
 **Branch Protection Rules:**
+
 - No direct commits to main/develop
 - Required status checks: tests, lint, budgets, security scan
 - SSOT validation must pass
@@ -380,6 +442,7 @@ Example: [task-mgmt]: Add snooze feature (+2KB bundle, all tests pass, PRD-align
 ### Continuous Validation Checkpoints
 
 **Every Commit (Automated CI):**
+
 - Performance budgets (bundle size, runtime, memory)
 - Test suite execution (unit + integration)
 - Security vulnerability scan
@@ -388,6 +451,7 @@ Example: [task-mgmt]: Add snooze feature (+2KB bundle, all tests pass, PRD-align
 - API contract validation (if backend changed)
 
 **Daily Automated Checks:**
+
 - Dependency audit for vulnerabilities
 - Performance trend analysis
 - Test flakiness detection
@@ -395,6 +459,7 @@ Example: [task-mgmt]: Add snooze feature (+2KB bundle, all tests pass, PRD-align
 - SSOT document synchronization
 
 **Weekly Reviews (Human + Automated):**
+
 - KPI tracking against PRD targets
 - User feedback analysis and prioritization
 - Performance trend analysis and optimization needs
@@ -403,6 +468,7 @@ Example: [task-mgmt]: Add snooze feature (+2KB bundle, all tests pass, PRD-align
 - SSOT document accuracy verification
 
 **Phase Gate Reviews (Human Approval Required):**
+
 - Feature completeness validation against PRD
 - KPI achievement verification (gate blocking)
 - Technical debt assessment and paydown plan
@@ -413,24 +479,28 @@ Example: [task-mgmt]: Add snooze feature (+2KB bundle, all tests pass, PRD-align
 ### Kill Criteria (Automatic Development Halt)
 
 **Performance Violations:**
+
 - If p95 search time ≥200ms @ 1k tasks → halt feature development, optimize performance
 - If bundle size >250KB gzipped → block all merges until optimization
 - If memory leaks detected → immediate investigation and fix required
 - If Web Vitals regression >10% → rollback and investigation
 
 **Product KPI Failures:**
+
 - If BYOS adoption <20% → pause expansion, fix storage UX
 - If D7 retention <35% → focus on core flow, no new features
 - If round-trip accuracy <95% → block releases, fix data integrity
 - If TTFT >60 seconds → emergency UX optimization required
 
 **Quality Gate Failures:**
+
 - Test coverage drops below 90% → block merges until coverage restored
 - Lint errors introduced → automatic commit rejection
 - Security vulnerabilities introduced → immediate patch required
 - Accessibility regressions → block release until fixed
 
 **SSOT Drift Detected:**
+
 - Unauthorized changes to TECH_STACK.md → revert and process through governance
 - API contract violations → block deployment until contracts updated
 - Workspace structure violations → immediate correction required
@@ -439,14 +509,15 @@ Example: [task-mgmt]: Add snooze feature (+2KB bundle, all tests pass, PRD-align
 ### Drift Prevention Measures
 
 **Code Change Constraints:**
+
 ```yaml
 # .drift-safe-rules.yml
 max_files_per_commit: 5
 max_lines_per_file_change: 200
 prohibited_patterns:
-  - "TODO: remove this hack"
-  - "temporary fix"
-  - "will refactor later"
+  - 'TODO: remove this hack'
+  - 'temporary fix'
+  - 'will refactor later'
 required_approvals:
   SSOT_changes: [tech-lead, product-lead]
   security_changes: [security-team]
@@ -454,6 +525,7 @@ required_approvals:
 ```
 
 **Automated Drift Detection:**
+
 - File change pattern analysis (prevent mass refactoring)
 - Import/dependency change monitoring
 - Bundle composition change detection
@@ -461,6 +533,7 @@ required_approvals:
 - Configuration drift assessment
 
 **Human Oversight Triggers:**
+
 - Changes affecting >3 files → senior review required
 - Performance budget impact >5% → performance team review
 - New dependencies → security and architecture review
@@ -470,6 +543,7 @@ required_approvals:
 ### 🚨 Common Drift Patterns & Prevention
 
 **Pattern 1: Scope Creep During Implementation**
+
 ```
 ❌ BAD: "While adding search, I also refactored the task model and updated styling"
 ✅ GOOD: "Added search functionality only, preserved existing task model exactly"
@@ -481,6 +555,7 @@ Prevention:
 ```
 
 **Pattern 2: "Helpful" Refactoring**
+
 ```
 ❌ BAD: "I cleaned up the code while implementing the feature"
 ✅ GOOD: "Implemented feature with minimal changes, no refactoring"
@@ -492,6 +567,7 @@ Prevention:
 ```
 
 **Pattern 3: Dependency Drift**
+
 ```
 ❌ BAD: "I updated React to the latest version to fix the bug"
 ✅ GOOD: "Fixed bug within current dependency constraints"
@@ -503,6 +579,7 @@ Prevention:
 ```
 
 **Pattern 4: Configuration Creep**
+
 ```
 ❌ BAD: "I tweaked the bundle config to make builds faster"
 ✅ GOOD: "Used existing build configuration unchanged"
@@ -514,6 +591,7 @@ Prevention:
 ```
 
 **Pattern 5: SSOT Violations**
+
 ```
 ❌ BAD: "I updated the tech stack while implementing auth"
 ✅ GOOD: "Implemented auth within approved tech stack constraints"
@@ -525,6 +603,7 @@ Prevention:
 ```
 
 **Drift Detection Automation:**
+
 ```bash
 # Pre-commit hook example
 #!/bin/bash
@@ -556,12 +635,14 @@ echo "✅ No drift detected"
 ## Risk Mitigation Strategies
 
 ### Technical Risks
+
 1. **Storage API Changes:** Maintain adapter abstraction, implement graceful fallbacks
 2. **Performance Degradation:** Enforce CI budgets, monitor Web Vitals continuously
 3. **Data Corruption:** JSONL append-only design, checksums, auto-recovery
 4. **Security Vulnerabilities:** Regular audits, dependency scanning, penetration testing
 
 ### Product Risks
+
 1. **Feature Creep:** Additive-only flags, performance budget enforcement
 2. **Poor UX:** User testing every 2 weeks, dogfooding internally
 3. **Integration Failures:** Circuit breakers, graceful degradation
@@ -574,6 +655,7 @@ echo "✅ No drift detected"
 ### 🛡 Drift‑Safe Coding Instruction Template
 
 **MANDATORY HEADER FOR ALL DEVELOPMENT TASKS:**
+
 ```
 🛡 DRIFT-SAFE CODING INSTRUCTION — SparkTasks (v2.1)
 
@@ -597,7 +679,7 @@ Output format: **Unified git diff only** (no prose, no code fences, no logs)
    - No touching unrelated code, comments, or documentation
    - No "helpful" cleanup or optimization
 
-3. **SSOT & Contract Protection** 
+3. **SSOT & Contract Protection**
    - Do **not** modify public APIs, feature flags, error codes, schema, budgets, or dependency ledgers unless explicitly instructed
    - Never touch TECH_STACK.md, API_CONTRACTS.md, WORKSPACE_RULES.md without governance approval
    - Check against forbidden paths before making any changes
@@ -620,6 +702,7 @@ Output format: **Unified git diff only** (no prose, no code fences, no logs)
    - If UI components touched, include accessibility validation
 
 **Definition of Done (ALL must pass):**
+
 ```bash
 ✅ Type checks: npm run type-check (no errors)
 ✅ Tests: npm test (no failures, no snapshot updates unless asked)
@@ -631,16 +714,19 @@ Output format: **Unified git diff only** (no prose, no code fences, no logs)
 ```
 
 **Commit Hygiene:**
+
 - Format: `feat|fix|refactor(scope): short rationale`
 - Example: `feat(task-mgmt): add snooze feature (+2KB bundle, PRD-aligned)`
 - Atomic commit mapped to single issue/story
 
 **Drift Confirmation:**
+
 - Compare changed files against SSOT documents
 - Report any unrequested variance before merge
 - Validate changes align with PRD requirements
 
 ### Feature Development Prompt Template
+
 ```
 🛡 DRIFT-SAFE CODING — SparkTasks Feature Implementation
 
@@ -651,7 +737,7 @@ Output format: **Unified git diff only** (no prose, no code fences, no logs)
 
 📋 REQUIREMENTS: [specific requirements from PRD]
 
-⚠️ CONSTRAINTS: 
+⚠️ CONSTRAINTS:
 - Bundle size impact < [X] KB (enforced in CI)
 - Performance: [specific metrics - p95 times, FPS targets]
 - Security: [security considerations - E2EE, input validation]
@@ -659,7 +745,7 @@ Output format: **Unified git diff only** (no prose, no code fences, no logs)
 
 ✅ DEFINITION OF DONE:
 - npm run type-check (no errors)
-- npm test (no failures)  
+- npm test (no failures)
 - npm run build (successful)
 - npm run lint (zero warnings on affected files)
 - npm run format:check (all affected files formatted)
@@ -680,6 +766,7 @@ Output format: **Unified git diff only** (no prose, no code fences, no logs)
 ```
 
 ### Code Review Prompt Template
+
 ```
 🔍 DRIFT-SAFE CODE REVIEW — SparkTasks
 
@@ -726,6 +813,7 @@ Required Actions: [specific fixes needed]
 ```
 
 ### Integration Testing Prompt Template
+
 ```
 🧪 DRIFT-SAFE INTEGRATION TEST — SparkTasks
 
@@ -771,6 +859,7 @@ Required Actions: [specific fixes needed]
 ```
 
 ### Emergency Hotfix Prompt Template
+
 ```
 🚨 DRIFT-SAFE EMERGENCY HOTFIX — SparkTasks
 
@@ -790,7 +879,7 @@ Required Actions: [specific fixes needed]
 
 📋 ACCELERATED VALIDATION:
 1. [ ] Targeted tests for the specific fix
-2. [ ] Smoke tests for critical user journeys  
+2. [ ] Smoke tests for critical user journeys
 3. [ ] Performance impact assessment (must be neutral)
 4. [ ] Security implications review
 
@@ -805,12 +894,13 @@ Required Actions: [specific fixes needed]
 - Monitoring alerts configured
 - Success criteria defined (SLA restoration)
 ```
+
 ```
 🎯 CONTEXT: Building [feature] for SparkTasks, a storage-neutral task platform
 
 📋 REQUIREMENTS: [specific requirements from PRD]
 
-⚠️ CONSTRAINTS: 
+⚠️ CONSTRAINTS:
 - Bundle size impact < [limit] KB
 - Performance: [specific metrics - p95 times, FPS targets]
 - Security: [security considerations - E2EE, input validation]
@@ -831,6 +921,7 @@ Required Actions: [specific fixes needed]
 ```
 
 ### Code Review Prompt Template
+
 ```
 🔍 DRIFT-SAFE CODE REVIEW CHECKLIST:
 
@@ -867,6 +958,7 @@ Required Actions: [specific fixes needed]
 ```
 
 ### Integration Testing Prompt Template
+
 ```
 🧪 COMPREHENSIVE INTEGRATION TEST PROTOCOL:
 
@@ -908,41 +1000,47 @@ Required Actions: [specific fixes needed]
 **Quick Reference One-Liners (Copy-Paste Ready):**
 
 **Bugfix (Ultra-Short):**
+
 ```
-Fix `<bug>` in `src/**`. Diff-only; no collateral edits; no new deps. 
-Ensure type-check, tests, build, lint+prettier (affected files) pass. 
+Fix `<bug>` in `src/**`. Diff-only; no collateral edits; no new deps.
+Ensure type-check, tests, build, lint+prettier (affected files) pass.
 If scope insufficient, ask one question.
 ```
 
 **Feature (MVP):**
+
 ```
-Implement `<feature>` minimally within `src/components/**`. 
-Keep APIs/SSOT unchanged. Add tests. Pass full checks. 
+Implement `<feature>` minimally within `src/components/**`.
+Keep APIs/SSOT unchanged. Add tests. Pass full checks.
 Output **diff only**.
 ```
 
 **Refactor (Scoped):**
+
 ```
-Refactor `<unit>` for `<reason>` within `src/utils/**`. 
-No behavior change; no API changes; tests updated if needed. 
+Refactor `<unit>` for `<reason>` within `src/utils/**`.
+No behavior change; no API changes; tests updated if needed.
 Pass checks. **Diff only**.
 ```
 
 **UI Component:**
+
 ```
-Create `<component>` in `src/components/` with Tailwind CSS. 
-WCAG 2.1 AA compliant, keyboard navigation, <2KB bundle impact. 
+Create `<component>` in `src/components/` with Tailwind CSS.
+WCAG 2.1 AA compliant, keyboard navigation, <2KB bundle impact.
 Tests included. **Diff only**.
 ```
 
 **Performance Optimization:**
+
 ```
-Optimize `<specific area>` for `<metric>` within `src/**`. 
-Maintain exact functionality. Measure before/after. 
+Optimize `<specific area>` for `<metric>` within `src/**`.
+Maintain exact functionality. Measure before/after.
 Pass performance budgets. **Diff only**.
 ```
 
 **Effective Prompt Structure:**
+
 ```
 🎯 OBJECTIVE: [Single, specific goal]
 📋 SCOPE: [Exact boundaries - what to change and what NOT to change]
@@ -953,10 +1051,11 @@ Pass performance budgets. **Diff only**.
 ```
 
 **Example High-Quality Prompt:**
+
 ```
 🎯 OBJECTIVE: Add keyboard shortcut 'j/k' for task navigation in Today view
 
-📋 SCOPE: 
+📋 SCOPE:
 - Modify src/components/Today.tsx only
 - Add keyboard event listeners for j/k keys
 - Update focus styling for selected task
@@ -988,6 +1087,7 @@ Pass performance budgets. **Diff only**.
 ```
 
 **Prompt Quality Checklist:**
+
 - [ ] Single, measurable objective
 - [ ] Clear scope boundaries (what changes, what doesn't)
 - [ ] Specific constraints and budgets
@@ -1004,18 +1104,21 @@ Pass performance budgets. **Diff only**.
 ## Success Metrics Dashboard
 
 ### Development Velocity
+
 - Features delivered per sprint
 - Bug resolution time
 - Code review cycle time
 - CI/CD pipeline success rate
 
 ### Quality Metrics
+
 - Test coverage percentage
 - Performance budget compliance
 - Security scan results
 - Accessibility audit scores
 
 ### Product KPIs (from PRD)
+
 - TTFT (Time to First Task) < 60s
 - D7 retention ≥ 35%
 - BYOS adoption ≥ 60%
@@ -1023,6 +1126,7 @@ Pass performance budgets. **Diff only**.
 - p95 search time < 200ms @ 1k tasks
 
 ### User Experience
+
 - Task creation via quick-add ≥ 50%
 - Digest action rate ≥ 40%
 - Support ticket volume

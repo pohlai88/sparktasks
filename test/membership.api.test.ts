@@ -6,15 +6,15 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest';
 import type { StorageDriver } from '../src/storage/types';
 import type { MTransport, MRecord } from '../src/membership/types';
-import { 
-  configureMembership, 
-  getMembership, 
-  assertPermission, 
-  addMember, 
-  changeRole, 
+import {
+  configureMembership,
+  getMembership,
+  assertPermission,
+  addMember,
+  changeRole,
   removeMember,
   planMemberSync,
-  runMemberSync
+  runMemberSync,
 } from '../src/membership/api';
 
 describe('Workspace Membership & Roles', () => {
@@ -32,20 +32,30 @@ describe('Workspace Membership & Roles', () => {
     const store = new Map<string, string>();
     storage = {
       getItem: vi.fn(async (key: string) => store.get(key) || null),
-      setItem: vi.fn(async (key: string, value: string) => { store.set(key, value); }),
-      removeItem: vi.fn(async (key: string) => { store.delete(key); }),
-      listKeys: vi.fn(async (prefix: string) => Array.from(store.keys()).filter(k => k.startsWith(prefix)))
+      setItem: vi.fn(async (key: string, value: string) => {
+        store.set(key, value);
+      }),
+      removeItem: vi.fn(async (key: string) => {
+        store.delete(key);
+      }),
+      listKeys: vi.fn(async (prefix: string) =>
+        Array.from(store.keys()).filter(k => k.startsWith(prefix))
+      ),
     };
 
     // Mock transport
     const remoteStore = new Map<string, string>();
     transport = {
       list: vi.fn(async (ns: string) => ({
-        keys: Array.from(remoteStore.keys()).filter(k => k.startsWith(`m:${ns}:`)),
-        nextSince: 'next-cursor'
+        keys: Array.from(remoteStore.keys()).filter(k =>
+          k.startsWith(`m:${ns}:`)
+        ),
+        nextSince: 'next-cursor',
       })),
       get: vi.fn(async (key: string) => remoteStore.get(key) || null),
-      put: vi.fn(async (key: string, data: string) => { remoteStore.set(key, data); })
+      put: vi.fn(async (key: string, data: string) => {
+        remoteStore.set(key, data);
+      }),
     };
 
     // Mock console
@@ -56,7 +66,7 @@ describe('Workspace Membership & Roles', () => {
 
   test('bootstrap: first OWNER establishes initial ownership', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
-    
+
     const state = await getMembership();
     expect(state.users[OWNER_PUB]).toBe('OWNER');
     expect(state.owners).toContain(OWNER_PUB);
@@ -70,23 +80,29 @@ describe('Workspace Membership & Roles', () => {
   test('assertPermission blocks insufficient role', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     await addMember(OWNER_PUB, MEMBER_PUB, 'MEMBER');
-    
-    await expect(assertPermission(MEMBER_PUB, 'ROLE_SET')).rejects.toThrow('Access denied: ROLE_SET requires ADMIN');
+
+    await expect(assertPermission(MEMBER_PUB, 'ROLE_SET')).rejects.toThrow(
+      'Access denied: ROLE_SET requires ADMIN'
+    );
   });
 
   test('assertPermission allows sufficient role', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     await addMember(OWNER_PUB, ADMIN_PUB, 'ADMIN');
-    
-    await expect(assertPermission(ADMIN_PUB, 'INVITE_CREATE')).resolves.not.toThrow();
-    await expect(assertPermission(OWNER_PUB, 'ROLE_SET')).resolves.not.toThrow();
+
+    await expect(
+      assertPermission(ADMIN_PUB, 'INVITE_CREATE')
+    ).resolves.not.toThrow();
+    await expect(
+      assertPermission(OWNER_PUB, 'ROLE_SET')
+    ).resolves.not.toThrow();
   });
 
   test('ADMIN can add MEMBER', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     await addMember(OWNER_PUB, ADMIN_PUB, 'ADMIN');
     await addMember(ADMIN_PUB, MEMBER_PUB, 'MEMBER');
-    
+
     const state = await getMembership();
     expect(state.users[MEMBER_PUB]).toBe('MEMBER');
   });
@@ -94,22 +110,26 @@ describe('Workspace Membership & Roles', () => {
   test('MEMBER cannot set roles', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     await addMember(OWNER_PUB, MEMBER_PUB, 'MEMBER');
-    
-    await expect(addMember(MEMBER_PUB, 'new-user', 'VIEWER')).rejects.toThrow('Access denied');
+
+    await expect(addMember(MEMBER_PUB, 'new-user', 'VIEWER')).rejects.toThrow(
+      'Access denied'
+    );
   });
 
   test('only OWNER can grant OWNER role', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     await addMember(OWNER_PUB, ADMIN_PUB, 'ADMIN');
-    
-    await expect(changeRole(ADMIN_PUB, MEMBER_PUB, 'OWNER')).rejects.toThrow('Only OWNER can grant OWNER role');
+
+    await expect(changeRole(ADMIN_PUB, MEMBER_PUB, 'OWNER')).rejects.toThrow(
+      'Only OWNER can grant OWNER role'
+    );
   });
 
   test('ADMIN→OWNER by OWNER succeeds', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     await addMember(OWNER_PUB, ADMIN_PUB, 'ADMIN');
     await changeRole(OWNER_PUB, ADMIN_PUB, 'OWNER');
-    
+
     const state = await getMembership();
     expect(state.users[ADMIN_PUB]).toBe('OWNER');
     expect(state.owners).toContain(ADMIN_PUB);
@@ -120,7 +140,7 @@ describe('Workspace Membership & Roles', () => {
     await addMember(OWNER_PUB, ADMIN_PUB, 'ADMIN');
     await addMember(ADMIN_PUB, MEMBER_PUB, 'MEMBER');
     await removeMember(ADMIN_PUB, MEMBER_PUB);
-    
+
     const state = await getMembership();
     expect(state.users[MEMBER_PUB]).toBeUndefined();
   });
@@ -128,14 +148,18 @@ describe('Workspace Membership & Roles', () => {
   test('MEMBER cannot remove others', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     await addMember(OWNER_PUB, MEMBER_PUB, 'MEMBER');
-    
-    await expect(removeMember(MEMBER_PUB, OWNER_PUB)).rejects.toThrow('Access denied');
+
+    await expect(removeMember(MEMBER_PUB, OWNER_PUB)).rejects.toThrow(
+      'Access denied'
+    );
   });
 
   test('cannot remove last OWNER', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
-    
-    await expect(removeMember(OWNER_PUB, OWNER_PUB)).rejects.toThrow('Cannot remove last OWNER');
+
+    await expect(removeMember(OWNER_PUB, OWNER_PUB)).rejects.toThrow(
+      'Cannot remove last OWNER'
+    );
   });
 
   test('planMemberSync returns sync plan', async () => {
@@ -150,15 +174,15 @@ describe('Workspace Membership & Roles', () => {
       applied: 0,
       pushed: 0,
       errors: [],
-      completed: true
+      completed: true,
     });
   });
 
   test('sync pushes queued records', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
-    
+
     const result = await runMemberSync();
-    
+
     expect(result.pushed).toBe(1);
     expect(result.completed).toBe(true);
     expect(transport.put).toHaveBeenCalled();
@@ -173,17 +197,17 @@ describe('Workspace Membership & Roles', () => {
       user: 'remote-user',
       role: 'MEMBER',
       workspaceId: NAMESPACE,
-      issuer: { pubB64u: ADMIN_PUB, sigB64u: 'valid-sig' }
+      issuer: { pubB64u: ADMIN_PUB, sigB64u: 'valid-sig' },
     };
-    
+
     const key = `m:${NAMESPACE}:r:${record.ts}:${record.id}`;
-    
+
     vi.mocked(transport.list).mockResolvedValue({ keys: [key] });
     vi.mocked(transport.get).mockResolvedValue(JSON.stringify(record));
-    
+
     // Since signature verification will fail without real crypto, expect error
     const result = await runMemberSync();
-    
+
     expect(result.errors.some(e => e.includes('Invalid signature'))).toBe(true);
   });
 
@@ -196,16 +220,16 @@ describe('Workspace Membership & Roles', () => {
       user: 'untrusted-user',
       role: 'MEMBER',
       workspaceId: NAMESPACE,
-      issuer: { pubB64u: 'untrusted-key', sigB64u: 'invalid-sig' }
+      issuer: { pubB64u: 'untrusted-key', sigB64u: 'invalid-sig' },
     };
-    
+
     const key = `m:${NAMESPACE}:r:${record.ts}:${record.id}`;
-    
+
     vi.mocked(transport.list).mockResolvedValue({ keys: [key] });
     vi.mocked(transport.get).mockResolvedValue(JSON.stringify(record));
-    
+
     const result = await runMemberSync();
-    
+
     expect(result.errors.some(e => e.includes('Untrusted issuer'))).toBe(true);
   });
 
@@ -218,17 +242,17 @@ describe('Workspace Membership & Roles', () => {
       user: 'test-user',
       role: 'MEMBER',
       workspaceId: NAMESPACE,
-      issuer: { pubB64u: ADMIN_PUB, sigB64u: 'placeholder-sig' }
+      issuer: { pubB64u: ADMIN_PUB, sigB64u: 'placeholder-sig' },
     };
-    
+
     const key1 = `m:${NAMESPACE}:r:1:${record.id}`;
     const key2 = `m:${NAMESPACE}:r:2:${record.id}`;
-    
+
     vi.mocked(transport.list).mockResolvedValue({ keys: [key1, key2] });
     vi.mocked(transport.get).mockResolvedValue(JSON.stringify(record));
-    
+
     const result = await runMemberSync();
-    
+
     // Should only process once despite two keys
     expect(result.applied).toBeLessThanOrEqual(1);
   });
@@ -242,25 +266,30 @@ describe('Workspace Membership & Roles', () => {
       user: 'future-user',
       role: 'MEMBER',
       workspaceId: NAMESPACE,
-      issuer: { pubB64u: ADMIN_PUB, sigB64u: 'placeholder-sig' }
+      issuer: { pubB64u: ADMIN_PUB, sigB64u: 'placeholder-sig' },
     };
-    
+
     const key = `m:${NAMESPACE}:r:${futureRecord.ts}:${futureRecord.id}`;
-    
+
     vi.mocked(transport.list).mockResolvedValue({ keys: [key] });
     vi.mocked(transport.get).mockResolvedValue(JSON.stringify(futureRecord));
-    
+
     await runMemberSync();
-    
-    expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('Clock skew detected'));
+
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Clock skew detected')
+    );
   });
 
   test('maintains sync state monotonicity', async () => {
-    await storage.setItem(`m:${NAMESPACE}:__sync_state__`, JSON.stringify({ since: 'cursor-100' }));
-    
+    await storage.setItem(
+      `m:${NAMESPACE}:__sync_state__`,
+      JSON.stringify({ since: 'cursor-100' })
+    );
+
     const plan = { pullKeys: [], since: 'cursor-200' };
     await runMemberSync(plan);
-    
+
     const state = await storage.getItem(`m:${NAMESPACE}:__sync_state__`);
     const parsedState = JSON.parse(state!);
     expect(parsedState.since).toBe('cursor-200');
@@ -271,32 +300,48 @@ describe('Workspace Membership & Roles', () => {
     await addMember(OWNER_PUB, ADMIN_PUB, 'ADMIN');
     await addMember(ADMIN_PUB, MEMBER_PUB, 'MEMBER');
     await addMember(ADMIN_PUB, 'viewer-key', 'VIEWER');
-    
+
     // VIEWER can only read tasks
-    await expect(assertPermission('viewer-key', 'TASK_READ')).resolves.not.toThrow();
-    await expect(assertPermission('viewer-key', 'TASK_WRITE')).rejects.toThrow();
-    
+    await expect(
+      assertPermission('viewer-key', 'TASK_READ')
+    ).resolves.not.toThrow();
+    await expect(
+      assertPermission('viewer-key', 'TASK_WRITE')
+    ).rejects.toThrow();
+
     // MEMBER can read/write tasks but not admin actions
-    await expect(assertPermission(MEMBER_PUB, 'TASK_READ')).resolves.not.toThrow();
-    await expect(assertPermission(MEMBER_PUB, 'TASK_WRITE')).resolves.not.toThrow();
-    await expect(assertPermission(MEMBER_PUB, 'INVITE_CREATE')).rejects.toThrow();
-    
+    await expect(
+      assertPermission(MEMBER_PUB, 'TASK_READ')
+    ).resolves.not.toThrow();
+    await expect(
+      assertPermission(MEMBER_PUB, 'TASK_WRITE')
+    ).resolves.not.toThrow();
+    await expect(
+      assertPermission(MEMBER_PUB, 'INVITE_CREATE')
+    ).rejects.toThrow();
+
     // ADMIN can do admin actions but not grant OWNER
-    await expect(assertPermission(ADMIN_PUB, 'INVITE_CREATE')).resolves.not.toThrow();
-    await expect(assertPermission(ADMIN_PUB, 'ROLE_SET')).resolves.not.toThrow();
-    
+    await expect(
+      assertPermission(ADMIN_PUB, 'INVITE_CREATE')
+    ).resolves.not.toThrow();
+    await expect(
+      assertPermission(ADMIN_PUB, 'ROLE_SET')
+    ).resolves.not.toThrow();
+
     // OWNER can do everything
-    await expect(assertPermission(OWNER_PUB, 'ROLE_SET')).resolves.not.toThrow();
+    await expect(
+      assertPermission(OWNER_PUB, 'ROLE_SET')
+    ).resolves.not.toThrow();
   });
 
   test('idempotent record application', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     const state1 = await getMembership();
-    
+
     // Apply same operation again
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     const state2 = await getMembership();
-    
+
     expect(state2.users).toEqual(state1.users);
     expect(state2.owners).toEqual(state1.owners);
   });
@@ -304,9 +349,9 @@ describe('Workspace Membership & Roles', () => {
   test('change role operation', async () => {
     await addMember(OWNER_PUB, OWNER_PUB, 'OWNER');
     await addMember(OWNER_PUB, MEMBER_PUB, 'VIEWER');
-    
+
     await changeRole(OWNER_PUB, MEMBER_PUB, 'MEMBER');
-    
+
     const state = await getMembership();
     expect(state.users[MEMBER_PUB]).toBe('MEMBER');
   });
@@ -320,16 +365,20 @@ describe('Workspace Membership & Roles', () => {
       user: 'attacker-user',
       role: 'ADMIN',
       workspaceId: 'different-workspace',
-      issuer: { pubB64u: ADMIN_PUB, sigB64u: 'valid-sig' }
+      issuer: { pubB64u: ADMIN_PUB, sigB64u: 'valid-sig' },
     };
-    
+
     const key = `m:${NAMESPACE}:r:${crossWorkspaceRecord.ts}:${crossWorkspaceRecord.id}`;
-    
+
     vi.mocked(transport.list).mockResolvedValue({ keys: [key] });
-    vi.mocked(transport.get).mockResolvedValue(JSON.stringify(crossWorkspaceRecord));
-    
+    vi.mocked(transport.get).mockResolvedValue(
+      JSON.stringify(crossWorkspaceRecord)
+    );
+
     const result = await runMemberSync();
-    
-    expect(result.errors.some(e => e.includes('Cross-workspace replay blocked'))).toBe(true);
+
+    expect(
+      result.errors.some(e => e.includes('Cross-workspace replay blocked'))
+    ).toBe(true);
   });
 });

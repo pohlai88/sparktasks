@@ -5,15 +5,21 @@
 
 import { describe, test, expect, beforeEach } from 'vitest';
 import type { StorageDriver } from '../src/storage/types';
-import type { PendingAnchor, AnchorLocator } from '../src/federation/discovery-types';
+import type {
+  PendingAnchor,
+  AnchorLocator,
+} from '../src/federation/discovery-types';
 import {
   addAnchorLocator,
   getPendingAnchors,
   setPendingAnchors,
   getDiscoveryMetrics,
-  cleanExpiredPendingAnchors
+  cleanExpiredPendingAnchors,
 } from '../src/federation/discovery-registry';
-import { planAnchorDiscovery, runAnchorDiscovery } from '../src/federation/discovery-engine';
+import {
+  planAnchorDiscovery,
+  runAnchorDiscovery,
+} from '../src/federation/discovery-engine';
 import { autoPromotePendingAnchors } from '../src/federation/discovery-promote';
 import { configureFederationRegistry } from '../src/federation/registry';
 import * as AuditApi from '../src/audit/api';
@@ -21,19 +27,19 @@ import * as AuditApi from '../src/audit/api';
 // Simple mock storage for testing
 class MockStorage implements StorageDriver {
   private storage = new Map<string, string>();
-  
+
   async getItem(key: string): Promise<string | null> {
     return this.storage.get(key) || null;
   }
-  
+
   async setItem(key: string, value: string): Promise<void> {
     this.storage.set(key, value);
   }
-  
+
   async removeItem(key: string): Promise<void> {
     this.storage.delete(key);
   }
-  
+
   async listKeys(): Promise<string[]> {
     return Array.from(this.storage.keys());
   }
@@ -59,14 +65,14 @@ describe('Federation Discovery Risk-Hardening', () => {
         pubB64u: 'original-pubkey',
         status: 'ACTIVE',
         seenAt: '2025-08-16T10:00:00.000Z',
-        src: { transportId: 'source-1', path: 'path-1', packSeq: 1 }
+        src: { transportId: 'source-1', path: 'path-1', packSeq: 1 },
       };
       await setPendingAnchors(ns, 'test-org', [initialAnchor], storage);
 
       // Add locator
       const locator: AnchorLocator = {
         orgId: 'test-org',
-        ref: { transportId: 'source-2', path: 'path-2' }
+        ref: { transportId: 'source-2', path: 'path-2' },
       };
       await addAnchorLocator(ns, storage, locator);
 
@@ -74,7 +80,7 @@ describe('Federation Discovery Risk-Hardening', () => {
       const locators = [locator];
       const plan = await planAnchorDiscovery(ns, locators, null);
       const result = await runAnchorDiscovery(ns, plan, storage, {
-        conflictResolution: 'REJECT'
+        conflictResolution: 'REJECT',
       });
 
       // Since mock pack has empty anchors, no actual conflicts will occur
@@ -82,7 +88,7 @@ describe('Federation Discovery Risk-Hardening', () => {
       expect(result.conflicts).toBeGreaterThanOrEqual(0);
       expect(result.rewinds).toBeGreaterThanOrEqual(0);
       expect(result.expired).toBeGreaterThanOrEqual(0);
-      
+
       // Original anchor should remain unchanged
       const pending = await getPendingAnchors(ns, 'test-org', storage);
       const anchor = pending.find(a => a.kid === 'conflicted-key');
@@ -98,7 +104,7 @@ describe('Federation Discovery Risk-Hardening', () => {
         pubB64u: 'old-pubkey',
         status: 'ACTIVE',
         seenAt: '2025-08-16T10:00:00.000Z',
-        src: { transportId: 'source-1', path: 'path-1', packSeq: 1 }
+        src: { transportId: 'source-1', path: 'path-1', packSeq: 1 },
       };
       await setPendingAnchors(ns, 'test-org', [initialAnchor], storage);
 
@@ -106,13 +112,13 @@ describe('Federation Discovery Risk-Hardening', () => {
       // This is simulated by the mock pack in runAnchorDiscovery
       const locator: AnchorLocator = {
         orgId: 'test-org',
-        ref: { transportId: 'source-2', path: 'path-2' }
+        ref: { transportId: 'source-2', path: 'path-2' },
       };
       await addAnchorLocator(ns, storage, locator);
 
       const plan = await planAnchorDiscovery(ns, [locator], null);
       const result = await runAnchorDiscovery(ns, plan, storage, {
-        conflictResolution: 'PREFER_NEWER'
+        conflictResolution: 'PREFER_NEWER',
       });
 
       // Should handle sequence-based resolution
@@ -134,7 +140,7 @@ describe('Federation Discovery Risk-Hardening', () => {
           status: 'ACTIVE',
           seenAt: '2025-08-16T09:00:00.000Z',
           expiresAt: pastExpiry,
-          src: { transportId: 'test', path: 'test', packSeq: 1 }
+          src: { transportId: 'test', path: 'test', packSeq: 1 },
         },
         {
           orgId: 'test-org',
@@ -143,7 +149,7 @@ describe('Federation Discovery Risk-Hardening', () => {
           status: 'ACTIVE',
           seenAt: '2025-08-16T10:00:00.000Z',
           expiresAt: futureExpiry,
-          src: { transportId: 'test', path: 'test', packSeq: 1 }
+          src: { transportId: 'test', path: 'test', packSeq: 1 },
         },
         {
           orgId: 'test-org',
@@ -151,15 +157,19 @@ describe('Federation Discovery Risk-Hardening', () => {
           pubB64u: 'no-ttl-pubkey',
           status: 'ACTIVE',
           seenAt: '2025-08-16T10:00:00.000Z',
-          src: { transportId: 'test', path: 'test', packSeq: 1 }
-        }
+          src: { transportId: 'test', path: 'test', packSeq: 1 },
+        },
       ];
 
       await setPendingAnchors(ns, 'test-org', anchors, storage);
 
       // Clean expired anchors
-      const cleanupResult = await cleanExpiredPendingAnchors(ns, 'test-org', storage);
-      
+      const cleanupResult = await cleanExpiredPendingAnchors(
+        ns,
+        'test-org',
+        storage
+      );
+
       expect(cleanupResult.expired).toBe(1);
 
       // Verify only non-expired anchors remain
@@ -172,7 +182,7 @@ describe('Federation Discovery Risk-Hardening', () => {
 
     test('autoPromotePendingAnchors - includes TTL cleanup', async () => {
       const pastExpiry = new Date(Date.now() - 60000).toISOString();
-      
+
       const anchors: PendingAnchor[] = [
         {
           orgId: 'test-org',
@@ -180,7 +190,7 @@ describe('Federation Discovery Risk-Hardening', () => {
           pubB64u: 'promotable-pubkey',
           status: 'ACTIVE',
           seenAt: '2025-08-16T10:00:00.000Z',
-          src: { transportId: 'test', path: 'test', packSeq: 1 }
+          src: { transportId: 'test', path: 'test', packSeq: 1 },
         },
         {
           orgId: 'test-org',
@@ -189,8 +199,8 @@ describe('Federation Discovery Risk-Hardening', () => {
           status: 'ACTIVE',
           seenAt: '2025-08-16T09:00:00.000Z',
           expiresAt: pastExpiry,
-          src: { transportId: 'test', path: 'test', packSeq: 1 }
-        }
+          src: { transportId: 'test', path: 'test', packSeq: 1 },
+        },
       ];
 
       await setPendingAnchors(ns, 'test-org', anchors, storage);
@@ -205,7 +215,7 @@ describe('Federation Discovery Risk-Hardening', () => {
   describe('Observability Metrics', () => {
     test('getDiscoveryMetrics - returns default metrics', async () => {
       const metrics = await getDiscoveryMetrics(ns, storage);
-      
+
       expect(metrics).toEqual({
         totalPulls: 0,
         totalPending: 0,
@@ -213,24 +223,24 @@ describe('Federation Discovery Risk-Hardening', () => {
         totalRejected: 0,
         totalConflicts: 0,
         totalRewinds: 0,
-        totalExpired: 0
+        totalExpired: 0,
       });
     });
 
     test('discovery operations demonstrate metrics structure', async () => {
       const locator: AnchorLocator = {
         orgId: 'metrics-org',
-        ref: { transportId: 'metrics-test', path: 'metrics-path' }
+        ref: { transportId: 'metrics-test', path: 'metrics-path' },
       };
       await addAnchorLocator(ns, storage, locator);
 
       const plan = await planAnchorDiscovery(ns, [locator], null);
       await runAnchorDiscovery(ns, plan, storage, {
-        conflictResolution: 'PREFER_NEWER'
+        conflictResolution: 'PREFER_NEWER',
       });
 
       const metrics = await getDiscoveryMetrics(ns, storage);
-      
+
       // Metrics structure should be present even if values are 0 due to mock
       expect(metrics).toHaveProperty('totalPulls');
       expect(metrics).toHaveProperty('totalPending');
@@ -251,20 +261,20 @@ describe('Federation Discovery Risk-Hardening', () => {
         pubB64u: 'original-pubkey',
         status: 'ACTIVE',
         seenAt: '2025-08-16T10:00:00.000Z',
-        src: { transportId: 'source-1', path: 'path-1', packSeq: 10 }
+        src: { transportId: 'source-1', path: 'path-1', packSeq: 10 },
       };
       await setPendingAnchors(ns, 'rewind-org', [initialAnchor], storage);
 
       // Discovery would simulate lower sequence (rewind)
       const locator: AnchorLocator = {
         orgId: 'rewind-org',
-        ref: { transportId: 'source-2', path: 'path-2' }
+        ref: { transportId: 'source-2', path: 'path-2' },
       };
       await addAnchorLocator(ns, storage, locator);
 
       const plan = await planAnchorDiscovery(ns, [locator], null);
       const result = await runAnchorDiscovery(ns, plan, storage, {
-        conflictResolution: 'PREFER_NEWER'
+        conflictResolution: 'PREFER_NEWER',
       });
 
       // Mock pack has seq: 1, which is lower than existing seq: 10
@@ -279,12 +289,12 @@ describe('Federation Discovery Risk-Hardening', () => {
       const locators: AnchorLocator[] = [
         {
           orgId: 'priority-org',
-          ref: { transportId: 'high-priority', path: 'path-1' }
+          ref: { transportId: 'high-priority', path: 'path-1' },
         },
         {
-          orgId: 'priority-org', 
-          ref: { transportId: 'low-priority', path: 'path-2' }
-        }
+          orgId: 'priority-org',
+          ref: { transportId: 'low-priority', path: 'path-2' },
+        },
       ];
 
       for (const locator of locators) {
@@ -295,7 +305,7 @@ describe('Federation Discovery Risk-Hardening', () => {
       const plan = await planAnchorDiscovery(ns, locators, null);
       const discoveryResult = await runAnchorDiscovery(ns, plan, storage, {
         conflictResolution: 'PREFER_NEWER',
-        ttlMinutes: 60
+        ttlMinutes: 60,
       });
 
       // Verify result structure (values may be 0 due to mock)
@@ -313,7 +323,11 @@ describe('Federation Discovery Risk-Hardening', () => {
       expect(metrics).toHaveProperty('totalExpired');
 
       // Test promotion with TTL
-      const promotionResult = await autoPromotePendingAnchors(ns, 'priority-org', storage);
+      const promotionResult = await autoPromotePendingAnchors(
+        ns,
+        'priority-org',
+        storage
+      );
       expect(promotionResult).toHaveProperty('promoted');
       expect(promotionResult).toHaveProperty('expired');
     });

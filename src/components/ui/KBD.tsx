@@ -50,7 +50,7 @@ export const KBDLabels = {
   option: '⌥',
   shift: '⇧',
   meta: '⌘',
-  
+
   // Arrow keys
   up: '↑',
   down: '↓',
@@ -60,7 +60,7 @@ export const KBDLabels = {
   arrowdown: '↓',
   arrowleft: '←',
   arrowright: '→',
-  
+
   // Special keys
   enter: '⏎',
   return: '⏎',
@@ -72,7 +72,7 @@ export const KBDLabels = {
   spacebar: 'Space',
   escape: 'Esc',
   esc: 'Esc',
-  
+
   // Function keys
   f1: 'F1',
   f2: 'F2',
@@ -86,7 +86,7 @@ export const KBDLabels = {
   f10: 'F10',
   f11: 'F11',
   f12: 'F12',
-  
+
   // Common keys
   home: 'Home',
   end: 'End',
@@ -100,7 +100,7 @@ export const KBDLabels = {
 
 /**
  * KBD: Enterprise-grade keyboard key display component
- * 
+ *
  * Features:
  * - Multiple variants (default, combo, shortcut, pressed states)
  * - Responsive sizing (xs, sm, md, lg)
@@ -110,7 +110,7 @@ export const KBDLabels = {
  * - DESIGN_TOKENS SSOT compliance
  * - Support for key combinations and separators
  * - Press state animations with proper visual feedback
- * 
+ *
  * @example
  * <KBD>⌘</KBD>
  * <KBD variant="combo">Ctrl+C</KBD>
@@ -143,11 +143,11 @@ export const KBD = React.forwardRef<HTMLElement, KBDProps>(function KBD(
     (effectiveVariant === 'combo'
       ? 'tracking-wide'
       : effectiveVariant === 'pressed'
-      ? combineTokens(
-          'translate-y-px shadow-inner',
-          'motion-reduce:transition-none' // respect reduced motion
-        )
-      : '');
+        ? combineTokens(
+            'translate-y-px shadow-inner',
+            'motion-reduce:transition-none' // respect reduced motion
+          )
+        : '');
 
   const kbdClasses = combineTokens(
     'inline-flex items-center justify-center font-mono font-medium',
@@ -166,10 +166,21 @@ export const KBD = React.forwardRef<HTMLElement, KBDProps>(function KBD(
 
   // Render combo: "Ctrl+K" -> tokenized parts + visual separator
   const renderKeyContent = () => {
-    if (typeof children === 'string' && effectiveVariant === 'combo' && children.includes('+')) {
+    if (
+      typeof children === 'string' &&
+      effectiveVariant === 'combo' &&
+      children.includes('+')
+    ) {
       const parts = children.split('+').map(k => k.trim());
       const defaultSep = (
-        <span className="mx-1 text-slate-400 dark:text-slate-500" aria-hidden="true">
+        <span
+          className={combineTokens(
+            'mx-1',
+            'text-slate-400',
+            'dark:text-slate-500'
+          )}
+          aria-hidden='true'
+        >
           +
         </span>
       );
@@ -180,7 +191,7 @@ export const KBD = React.forwardRef<HTMLElement, KBDProps>(function KBD(
         return (
           <React.Fragment key={`${raw}-${i}`}>
             {i > 0 && (separator ?? defaultSep)}
-            <span className="font-medium">{display}</span>
+            <span className={combineTokens('font-medium')}>{display}</span>
           </React.Fragment>
         );
       });
@@ -206,7 +217,7 @@ export const KBD = React.forwardRef<HTMLElement, KBDProps>(function KBD(
       ref={ref}
       className={kbdClasses}
       aria-label={computedAriaLabel}
-      data-testid="kbd"
+      data-testid='kbd'
       data-variant={effectiveVariant}
       data-size={size}
       data-pressed={pressed ? 'true' : undefined}
@@ -214,7 +225,7 @@ export const KBD = React.forwardRef<HTMLElement, KBDProps>(function KBD(
       {...props}
     >
       {renderKeyContent()}
-      {srLabel && <span className="sr-only">{srLabel}</span>}
+      {srLabel && <span className={combineTokens('sr-only')}>{srLabel}</span>}
     </kbd>
   );
 });

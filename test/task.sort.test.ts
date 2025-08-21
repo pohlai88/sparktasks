@@ -39,22 +39,22 @@ describe('Task Sorting', () => {
 
   describe('Due date sorting (same priority)', () => {
     it('should sort earlier due date first', () => {
-      const earlyTask = createTask({ 
+      const earlyTask = createTask({
         priority: 'P1',
-        dueDate: '2025-08-15T10:00:00.000Z' 
+        dueDate: '2025-08-15T10:00:00.000Z',
       });
-      const lateTask = createTask({ 
+      const lateTask = createTask({
         priority: 'P1',
-        dueDate: '2025-08-16T10:00:00.000Z' 
+        dueDate: '2025-08-16T10:00:00.000Z',
       });
       expect(compareTasks(earlyTask, lateTask)).toBeLessThan(0);
       expect(compareTasks(lateTask, earlyTask)).toBeGreaterThan(0);
     });
 
     it('should sort tasks with due dates before tasks without', () => {
-      const withDue = createTask({ 
+      const withDue = createTask({
         priority: 'P1',
-        dueDate: '2025-08-16T10:00:00.000Z' 
+        dueDate: '2025-08-16T10:00:00.000Z',
       });
       const withoutDue = createTask({ priority: 'P1' });
       expect(compareTasks(withDue, withoutDue)).toBeLessThan(0);
@@ -64,13 +64,13 @@ describe('Task Sorting', () => {
 
   describe('Created date sorting (same priority, same due date)', () => {
     it('should sort by created date ascending', () => {
-      const earlier = createTask({ 
+      const earlier = createTask({
         priority: 'P1',
-        createdAt: '2025-08-15T09:00:00.000Z' 
+        createdAt: '2025-08-15T09:00:00.000Z',
       });
-      const later = createTask({ 
+      const later = createTask({
         priority: 'P1',
-        createdAt: '2025-08-15T11:00:00.000Z' 
+        createdAt: '2025-08-15T11:00:00.000Z',
       });
       expect(compareTasks(earlier, later)).toBeLessThan(0);
       expect(compareTasks(later, earlier)).toBeGreaterThan(0);
@@ -80,37 +80,37 @@ describe('Task Sorting', () => {
   describe('Complex sorting scenarios', () => {
     it('should sort by priority first, ignoring due date', () => {
       const p0NoDue = createTask({ priority: 'P0' });
-      const p1WithDue = createTask({ 
+      const p1WithDue = createTask({
         priority: 'P1',
-        dueDate: '2025-08-15T10:00:00.000Z' 
+        dueDate: '2025-08-15T10:00:00.000Z',
       });
       expect(compareTasks(p0NoDue, p1WithDue)).toBeLessThan(0);
     });
 
     it('should handle multiple tasks with proper ordering', () => {
       const tasks = [
-        createTask({ 
+        createTask({
           id: '1',
-          priority: 'P1', 
+          priority: 'P1',
           dueDate: '2025-08-16T10:00:00.000Z',
-          createdAt: '2025-08-15T10:00:00.000Z'
+          createdAt: '2025-08-15T10:00:00.000Z',
         }),
-        createTask({ 
+        createTask({
           id: '2',
           priority: 'P0',
-          createdAt: '2025-08-15T11:00:00.000Z'
+          createdAt: '2025-08-15T11:00:00.000Z',
         }),
-        createTask({ 
+        createTask({
           id: '3',
-          priority: 'P1', 
+          priority: 'P1',
           dueDate: '2025-08-15T10:00:00.000Z',
-          createdAt: '2025-08-15T09:00:00.000Z'
+          createdAt: '2025-08-15T09:00:00.000Z',
         }),
-        createTask({ 
+        createTask({
           id: '4',
           priority: 'P2',
           dueDate: '2025-08-14T10:00:00.000Z',
-          createdAt: '2025-08-15T08:00:00.000Z'
+          createdAt: '2025-08-15T08:00:00.000Z',
         }),
       ];
 

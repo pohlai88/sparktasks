@@ -5,7 +5,13 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { StorageDriver } from '../src/storage/types';
-import { appendLeaf, genProof, verifyProof, emitCheckpoint, verifyCheckpoint } from '../src/transparency/api';
+import {
+  appendLeaf,
+  genProof,
+  verifyProof,
+  emitCheckpoint,
+  verifyCheckpoint,
+} from '../src/transparency/api';
 import { TLStateV1, TLCheckpointV1 } from '../src/transparency/types';
 
 // Mock storage driver
@@ -63,7 +69,7 @@ describe('Transparency Log - Phase B Task 24', () => {
       // Verify state consistency
       const stateData = await storage.getItem(`tl:${ns}:state`);
       expect(stateData).toBeTruthy();
-      
+
       const state: TLStateV1 = JSON.parse(stateData!);
       expect(state.v).toBe(1);
       expect(state.n).toBe(3);
@@ -73,7 +79,7 @@ describe('Transparency Log - Phase B Task 24', () => {
     it('should handle single leaf correctly', async () => {
       const leaf = new TextEncoder().encode('single');
       const result = await appendLeaf(ns, leaf, storage);
-      
+
       expect(result.index).toBe(0);
       expect(result.n).toBe(1);
       expect(result.rootB64u).toBeTruthy();
@@ -87,7 +93,7 @@ describe('Transparency Log - Phase B Task 24', () => {
         new TextEncoder().encode('leaf0'),
         new TextEncoder().encode('leaf1'),
         new TextEncoder().encode('leaf2'),
-        new TextEncoder().encode('leaf3')
+        new TextEncoder().encode('leaf3'),
       ];
 
       let finalRoot = '';
@@ -112,9 +118,9 @@ describe('Transparency Log - Phase B Task 24', () => {
     it('should reject tampered proofs', async () => {
       const leaf = new TextEncoder().encode('testleaf');
       const result = await appendLeaf(ns, leaf, storage);
-      
+
       const proof = await genProof(ns, 0, storage);
-      
+
       // Tamper with proof siblings
       if (proof.siblings.length > 0) {
         proof.siblings[0] = 'tampered-hash';
@@ -126,9 +132,13 @@ describe('Transparency Log - Phase B Task 24', () => {
 
     it('should throw on invalid index', async () => {
       await appendLeaf(ns, new TextEncoder().encode('leaf'), storage);
-      
-      await expect(genProof(ns, 1, storage)).rejects.toThrow('index_out_of_range');
-      await expect(genProof(ns, -1, storage)).rejects.toThrow('index_out_of_range');
+
+      await expect(genProof(ns, 1, storage)).rejects.toThrow(
+        'index_out_of_range'
+      );
+      await expect(genProof(ns, -1, storage)).rejects.toThrow(
+        'index_out_of_range'
+      );
     });
   });
 
@@ -138,8 +148,10 @@ describe('Transparency Log - Phase B Task 24', () => {
       await appendLeaf(ns, new TextEncoder().encode('leaf1'), storage);
       await appendLeaf(ns, new TextEncoder().encode('leaf2'), storage);
 
-      const checkpoint = await emitCheckpoint(ns, storage, { kid: 'active-signer' });
-      
+      const checkpoint = await emitCheckpoint(ns, storage, {
+        kid: 'active-signer',
+      });
+
       expect(checkpoint.v).toBe(1);
       expect(checkpoint.ns).toBe(ns);
       expect(checkpoint.n).toBe(2);
@@ -151,40 +163,52 @@ describe('Transparency Log - Phase B Task 24', () => {
 
     it('should verify valid checkpoint', async () => {
       await appendLeaf(ns, new TextEncoder().encode('leaf'), storage);
-      
-      const checkpoint = await emitCheckpoint(ns, storage, { kid: 'active-signer' });
+
+      const checkpoint = await emitCheckpoint(ns, storage, {
+        kid: 'active-signer',
+      });
       const verification = await verifyCheckpoint(ns, checkpoint);
-      
+
       expect(verification.ok).toBe(true);
     });
 
     it('should reject REVOKED signer checkpoint', async () => {
       await appendLeaf(ns, new TextEncoder().encode('leaf'), storage);
-      
-      const checkpoint = await emitCheckpoint(ns, storage, { kid: 'revoked-signer' });
+
+      const checkpoint = await emitCheckpoint(ns, storage, {
+        kid: 'revoked-signer',
+      });
       const verification = await verifyCheckpoint(ns, checkpoint);
-      
+
       expect(verification.ok).toBe(false);
       expect(verification.reason).toContain('signer_revoked');
     });
 
     it('should handle RETIRED signer with grace period', async () => {
       await appendLeaf(ns, new TextEncoder().encode('leaf'), storage);
-      
-      const checkpoint = await emitCheckpoint(ns, storage, { kid: 'retired-signer' });
-      
+
+      const checkpoint = await emitCheckpoint(ns, storage, {
+        kid: 'retired-signer',
+      });
+
       // Within grace period
-      const verification1 = await verifyCheckpoint(ns, checkpoint, { retiredGraceMs: 24 * 60 * 60 * 1000 });
+      const verification1 = await verifyCheckpoint(ns, checkpoint, {
+        retiredGraceMs: 24 * 60 * 60 * 1000,
+      });
       expect(verification1.ok).toBe(true);
-      
+
       // Beyond grace period
-      const verification2 = await verifyCheckpoint(ns, checkpoint, { retiredGraceMs: 0 });
+      const verification2 = await verifyCheckpoint(ns, checkpoint, {
+        retiredGraceMs: 0,
+      });
       expect(verification2.ok).toBe(false);
       expect(verification2.reason).toContain('signer_expired');
     });
 
     it('should reject checkpoint for empty log', async () => {
-      await expect(emitCheckpoint(ns, storage)).rejects.toThrow('invalid_state');
+      await expect(emitCheckpoint(ns, storage)).rejects.toThrow(
+        'invalid_state'
+      );
     });
   });
 
@@ -200,7 +224,11 @@ describe('Transparency Log - Phase B Task 24', () => {
       expect(state1.n).toBe(2);
 
       // Append more leaves
-      const result3 = await appendLeaf(ns, new TextEncoder().encode('leaf3'), storage);
+      const result3 = await appendLeaf(
+        ns,
+        new TextEncoder().encode('leaf3'),
+        storage
+      );
       expect(result3.n).toBe(3);
 
       // Verify continuity
@@ -210,18 +238,22 @@ describe('Transparency Log - Phase B Task 24', () => {
     });
 
     it('should store leaf hashes for diagnostics', async () => {
-      const result = await appendLeaf(ns, new TextEncoder().encode('test'), storage);
-      
+      const result = await appendLeaf(
+        ns,
+        new TextEncoder().encode('test'),
+        storage
+      );
+
       const leafHash = await storage.getItem(`tl:${ns}:leaf:${result.index}`);
       expect(leafHash).toBe(result.leafHashB64u);
     });
 
     it('should store checkpoints by leaf count', async () => {
       await appendLeaf(ns, new TextEncoder().encode('leaf'), storage);
-      
+
       const checkpoint = await emitCheckpoint(ns, storage);
       const storedChk = await storage.getItem(`tl:${ns}:chk:${checkpoint.n}`);
-      
+
       expect(storedChk).toBeTruthy();
       const parsed: TLCheckpointV1 = JSON.parse(storedChk!);
       expect(parsed.n).toBe(checkpoint.n);
@@ -232,7 +264,7 @@ describe('Transparency Log - Phase B Task 24', () => {
   describe('5. Determinism', () => {
     it('should produce identical roots for same leaf sequence', async () => {
       const leaves = ['a', 'b', 'c'].map(s => new TextEncoder().encode(s));
-      
+
       // First log
       const storage1 = new MockStorage();
       const ns1 = 'test1';
@@ -259,17 +291,17 @@ describe('Transparency Log - Phase B Task 24', () => {
     it('should handle power-of-2 leaf counts', async () => {
       // Test 2^n leaf counts which affect tree structure
       const counts = [1, 2, 4, 8];
-      
+
       for (const count of counts) {
         const testStorage = new MockStorage();
         const testNs = `test-${count}`;
-        
+
         let finalResult;
         for (let i = 0; i < count; i++) {
           const leaf = new TextEncoder().encode(`leaf-${i}`);
           finalResult = await appendLeaf(testNs, leaf, testStorage);
         }
-        
+
         expect(finalResult!.n).toBe(count);
         expect(finalResult!.rootB64u).toBeTruthy();
 
@@ -284,19 +316,19 @@ describe('Transparency Log - Phase B Task 24', () => {
 
     it('should handle odd leaf counts', async () => {
       const counts = [3, 5, 7];
-      
+
       for (const count of counts) {
         const testStorage = new MockStorage();
         const testNs = `test-odd-${count}`;
-        
+
         let finalResult;
         for (let i = 0; i < count; i++) {
           const leaf = new TextEncoder().encode(`leaf-${i}`);
           finalResult = await appendLeaf(testNs, leaf, testStorage);
         }
-        
+
         expect(finalResult!.n).toBe(count);
-        
+
         // Verify all proofs work with odd counts
         for (let i = 0; i < count; i++) {
           const proof = await genProof(testNs, i, testStorage);
@@ -308,10 +340,12 @@ describe('Transparency Log - Phase B Task 24', () => {
 
     it('should handle unknown signer in verification', async () => {
       await appendLeaf(ns, new TextEncoder().encode('leaf'), storage);
-      
-      const checkpoint = await emitCheckpoint(ns, storage, { kid: 'unknown-signer' });
+
+      const checkpoint = await emitCheckpoint(ns, storage, {
+        kid: 'unknown-signer',
+      });
       const verification = await verifyCheckpoint(ns, checkpoint);
-      
+
       expect(verification.ok).toBe(false);
       expect(verification.reason).toContain('unknown_signer');
     });
@@ -325,7 +359,7 @@ describe('Transparency Log - Phase B Task 24', () => {
           // Simple mock encryption
           return 'encrypted:' + btoa(value);
         }
-        
+
         private decrypt(value: string): string {
           if (value.startsWith('encrypted:')) {
             return atob(value.substring(10));
@@ -344,11 +378,15 @@ describe('Transparency Log - Phase B Task 24', () => {
       }
 
       const encryptedStorage = new EncryptedMockStorage();
-      
+
       // Operations should work normally
-      const result = await appendLeaf(ns, new TextEncoder().encode('encrypted-test'), encryptedStorage);
+      const result = await appendLeaf(
+        ns,
+        new TextEncoder().encode('encrypted-test'),
+        encryptedStorage
+      );
       expect(result.index).toBe(0);
-      
+
       const proof = await genProof(ns, 0, encryptedStorage);
       const verification = await verifyProof(proof, result.rootB64u);
       expect(verification.ok).toBe(true);

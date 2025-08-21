@@ -1,0 +1,54 @@
+{
+  "layout": {
+    "flex": {
+      "row": "flex",
+      "col": "flex flex-col",
+      "shrinkNone": "shrink-0",
+      "grow": "grow",
+      "growNone": "grow-0"
+    },
+    "spacing": {
+      "tight": "space-y-2",
+      "normal": "space-y-4",
+      "relaxed": "space-y-6",
+      "fine": "size-5"
+    }
+  },
+  "theme": {
+    "light": {
+      "radius": {
+        "base": "rounded",
+        "md": "rounded-md",
+        "lg": "rounded-lg"
+      }
+    }
+  },
+  "accessibility": {
+    "srOnly": "sr-only"
+  },
+  "recipe": {
+    "alert": {
+      "color": {
+        "info": {
+          "container": "bg-blue-50",
+          "icon": "text-blue-600"
+        },
+        "success": {
+          "container": "bg-green-50",
+          "icon": "text-green-600"
+        },
+        "warning": {
+          "container": "bg-yellow-50",
+          "icon": "text-yellow-600"
+        },
+        "error": {
+          "container": "bg-red-50",
+          "icon": "text-red-600"
+        }
+      },
+      "content": {
+        "base": "space-y-2"
+      }
+    }
+  }
+}

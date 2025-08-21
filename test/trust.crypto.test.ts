@@ -4,8 +4,8 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import './crypto-setup'; // Import the polyfill setup
-import { validateCryptoSetup } from './crypto-setup';
+// Crypto environment automatically loaded via vitest.crypto.ts
+import { validateCryptoSetup } from './vitest.crypto';
 import type { StorageDriver } from '../src/storage/types';
 import type { TrustRoot, TrustManifest } from '../src/trust/types';
 import * as TrustEngine from '../src/trust/engine';
@@ -15,7 +15,7 @@ const mockStorage: StorageDriver = {
   getItem: vi.fn(),
   setItem: vi.fn(),
   removeItem: vi.fn(),
-  listKeys: vi.fn()
+  listKeys: vi.fn(),
 };
 
 // Helper: Canonical JSON (matches implementation)
@@ -32,7 +32,7 @@ describe('Trust Crypto Integration', () => {
     mockStorage.getItem = vi.fn().mockResolvedValue(null);
     mockStorage.setItem = vi.fn().mockResolvedValue(undefined);
     TrustEngine.configureTrust(mockStorage, 'test-workspace');
-    
+
     // Validate crypto is available before each test
     const cryptoValid = await validateCryptoSetup();
     expect(cryptoValid).toBe(true);
@@ -41,7 +41,7 @@ describe('Trust Crypto Integration', () => {
   it('should have crypto available in test environment', async () => {
     expect(globalThis.crypto).toBeDefined();
     expect(globalThis.crypto.subtle).toBeDefined();
-    
+
     // Test the exact operations that were failing
     const testData = new TextEncoder().encode('test-data');
     const hash = await globalThis.crypto.subtle.digest('SHA-256', testData);
@@ -100,8 +100,8 @@ describe('Trust Crypto Integration', () => {
         id: 'test-root',
         pubB64u: 'mock-public-key-base64url',
         role: 'PRIMARY',
-        createdAt: Date.now()
-      }
+        createdAt: Date.now(),
+      },
     ];
 
     const manifest: TrustManifest = {
@@ -109,7 +109,7 @@ describe('Trust Crypto Integration', () => {
       namespace: 'test-workspace',
       roots,
       threshold: 1,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
 
     // Test canonical serialization
@@ -120,7 +120,7 @@ describe('Trust Crypto Integration', () => {
 
     // Basic manifest validation (without signatures)
     const validation = await TrustEngine.validateTrustManifest(manifest, []);
-    
+
     expect(validation.manifestValid).toBe(true); // Structure is valid
     expect(validation.thresholdMet).toBe(false); // No signatures provided
     expect(validation.signaturesValid).toBe(true); // No signatures to validate
@@ -135,18 +135,20 @@ describe('Trust Crypto Integration', () => {
       currentManifest: {
         version: 1,
         namespace: 'test-workspace',
-        roots: [{
-          id: 'root1',
-          pubB64u: 'mock-key',
-          role: 'PRIMARY' as const,
-          createdAt: Date.now()
-        }],
+        roots: [
+          {
+            id: 'root1',
+            pubB64u: 'mock-key',
+            role: 'PRIMARY' as const,
+            createdAt: Date.now(),
+          },
+        ],
         threshold: 1,
-        createdAt: Date.now()
+        createdAt: Date.now(),
       },
       pendingOperations: [],
       operationHistory: [],
-      lastUpdated: Date.now()
+      lastUpdated: Date.now(),
     };
 
     mockStorage.getItem = vi.fn().mockResolvedValue(JSON.stringify(mockState));
@@ -171,24 +173,28 @@ describe('Trust Crypto Integration', () => {
     const initialManifest = {
       version: 1,
       namespace: 'test-workspace',
-      roots: [{
-        id: 'admin1',
-        pubB64u: 'admin1-key',
-        role: 'PRIMARY' as const,
-        createdAt: Date.now()
-      }],
+      roots: [
+        {
+          id: 'admin1',
+          pubB64u: 'admin1-key',
+          role: 'PRIMARY' as const,
+          createdAt: Date.now(),
+        },
+      ],
       threshold: 1,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
 
     const existingState = {
       currentManifest: initialManifest,
       pendingOperations: [],
       operationHistory: [],
-      lastUpdated: Date.now()
+      lastUpdated: Date.now(),
     };
 
-    mockStorage.getItem = vi.fn().mockResolvedValue(JSON.stringify(existingState));
+    mockStorage.getItem = vi
+      .fn()
+      .mockResolvedValue(JSON.stringify(existingState));
 
     // Create a trust operation
     const newManifest = {
@@ -199,11 +205,11 @@ describe('Trust Crypto Integration', () => {
           id: 'admin2',
           pubB64u: 'admin2-key',
           role: 'SECONDARY' as const,
-          createdAt: Date.now()
-        }
+          createdAt: Date.now(),
+        },
       ],
       version: 2,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
 
     const operation = await TrustEngine.createTrustOperation(
@@ -226,32 +232,38 @@ describe('Trust Crypto Integration', () => {
     const manifest = {
       version: 1,
       namespace: 'test-workspace',
-      roots: [{
-        id: 'admin1',
-        pubB64u: 'mock-public-key',
-        role: 'PRIMARY' as const,
-        createdAt: Date.now()
-      }],
+      roots: [
+        {
+          id: 'admin1',
+          pubB64u: 'mock-public-key',
+          role: 'PRIMARY' as const,
+          createdAt: Date.now(),
+        },
+      ],
       threshold: 1,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
 
     const mockIssuer = {
       rootId: 'admin1',
       pubB64u: 'mock-public-key',
       sigB64u: 'mock-signature',
-      signedAt: Date.now()
+      signedAt: Date.now(),
     };
 
     // Mock crypto.subtle.verify to return true
     if (globalThis.crypto?.subtle) {
       const originalVerify = globalThis.crypto.subtle.verify;
       const originalImportKey = globalThis.crypto.subtle.importKey;
-      
-      vi.spyOn(globalThis.crypto.subtle, 'verify').mockResolvedValue(true);
-      vi.spyOn(globalThis.crypto.subtle, 'importKey').mockResolvedValue({} as CryptoKey);
 
-      const validation = await TrustEngine.validateTrustManifest(manifest, [mockIssuer]);
+      vi.spyOn(globalThis.crypto.subtle, 'verify').mockResolvedValue(true);
+      vi.spyOn(globalThis.crypto.subtle, 'importKey').mockResolvedValue(
+        {} as CryptoKey
+      );
+
+      const validation = await TrustEngine.validateTrustManifest(manifest, [
+        mockIssuer,
+      ]);
 
       expect(validation.valid).toBe(true);
       expect(validation.signaturesValid).toBe(true);

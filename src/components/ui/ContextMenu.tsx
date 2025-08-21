@@ -1,15 +1,15 @@
-import React, { 
-  createContext, 
-  useContext, 
-  useState, 
-  useRef, 
-  useEffect, 
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
   useCallback,
   ReactNode,
   MouseEvent,
-  KeyboardEvent
+  KeyboardEvent,
 } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== TYPES =====
 interface MenuItem {
@@ -68,12 +68,12 @@ export const useContextMenu = () => {
 };
 
 // ===== CONTEXT MENU ITEM COMPONENT =====
-const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ 
-  item, 
-  onSelect, 
+const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
+  item,
+  onSelect,
   onClose,
   isActive = false,
-  onActivate
+  onActivate,
 }) => {
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [submenuSide, setSubmenuSide] = useState<'right' | 'left'>('right');
@@ -93,7 +93,7 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
   // Submenu positioning collision detection
   useEffect(() => {
     if (!showSubmenu || !submenuRef.current) return;
-    
+
     const rect = submenuRef.current.getBoundingClientRect();
     if (rect.right > window.innerWidth) {
       setSubmenuSide('left');
@@ -105,9 +105,9 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
   const handleClick = (event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    
+
     if (item.disabled) return;
-    
+
     if (hasSubmenu) {
       setShowSubmenu(!showSubmenu);
     } else {
@@ -145,7 +145,7 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
           itemRef.current?.focus();
         }
         break;
-        // Note: Escape is handled at the menu level, not here
+      // Note: Escape is handled at the menu level, not here
     }
   };
 
@@ -178,48 +178,50 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
 
   if (item.divider) {
     return (
-      <div 
-        className={`h-px my-1 ${DESIGN_TOKENS.semantic.border.muted}`}
-        role="separator"
-        data-slot="divider"
+      <div
+        className={`my-1 h-px ${DESIGN_TOKENS.semantic.border.muted}`}
+        role='separator'
+        data-slot='divider'
       />
     );
   }
 
   return (
-    <div className="relative">
+    <div className={combineTokens('relative')}>
       <button
         ref={itemRef}
-        type="button"
-        className={`
-          w-full text-left
-          ${DESIGN_TOKENS.recipe.dropdown.item}
-          ${item.disabled ? 'opacity-50 cursor-not-allowed' : ''}
-          ${item.danger ? `${DESIGN_TOKENS.semantic.text.error} hover:${DESIGN_TOKENS.semantic.background.error}` : ''}
-          ${showSubmenu ? DESIGN_TOKENS.theme.light.surface.subtle : ''}
-        `}
-        role="menuitem"
+        type='button'
+        className={`w-full text-left ${DESIGN_TOKENS.recipe.dropdown.item} ${item.disabled ? 'cursor-not-allowed opacity-50' : ''} ${item.danger ? `${DESIGN_TOKENS.semantic.text.error} hover:${DESIGN_TOKENS.semantic.background.error}` : ''} ${showSubmenu ? DESIGN_TOKENS.theme.light.surface.subtle : ''} `}
+        role='menuitem'
         disabled={!!item.disabled}
         tabIndex={isActive ? 0 : -1}
         aria-disabled={!!item.disabled}
         aria-haspopup={hasSubmenu ? 'menu' : undefined}
         aria-expanded={hasSubmenu ? showSubmenu : undefined}
-        data-slot="item"
+        data-slot='item'
         data-item-id={item.id}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="flex items-center gap-2">
+        <div className={combineTokens(DESIGN_TOKENS.layout.patterns.flexGapSm)}>
           {item.icon && (
-            <span className={`flex-shrink-0 ${DESIGN_TOKENS.icon.size.sm}`} aria-hidden="true">
+            <span
+              className={`shrink-0 ${DESIGN_TOKENS.icon.size.sm}`}
+              aria-hidden='true'
+            >
               {item.icon}
             </span>
           )}
-          <span className="flex-1">{item.label}</span>
+          <span className={combineTokens(DESIGN_TOKENS.layout.flex.flex1)}>
+            {item.label}
+          </span>
           {hasSubmenu && (
-            <span className={`${DESIGN_TOKENS.icon.size.sm} ${DESIGN_TOKENS.semantic.text.muted}`} aria-hidden="true">
+            <span
+              className={`${DESIGN_TOKENS.icon.size.sm} ${DESIGN_TOKENS.semantic.text.muted}`}
+              aria-hidden='true'
+            >
               ▶
             </span>
           )}
@@ -230,18 +232,12 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
       {showSubmenu && hasSubmenu && (
         <div
           ref={submenuRef}
-          className={`
-            absolute ${submenuSide === 'right' ? 'left-full ml-1' : 'right-full mr-1'} top-0
-            ${DESIGN_TOKENS.recipe.dropdown.content}
-            ${DESIGN_TOKENS.theme.light.surface.base}
-            ${DESIGN_TOKENS.theme.light.elevation.dropdown}
-            ${DESIGN_TOKENS.zIndex.popover}
-            ${DESIGN_TOKENS.motion.smooth}
-          `}
-          role="menu"
+          className={`absolute ${submenuSide === 'right' ? 'left-full ml-1' : 'right-full mr-1'} top-0 ${DESIGN_TOKENS.recipe.dropdown.content} ${DESIGN_TOKENS.theme.light.surface.base} ${DESIGN_TOKENS.theme.light.elevation.dropdown} ${DESIGN_TOKENS.zIndex.popover} ${DESIGN_TOKENS.motion.smooth} `}
+          role='menu'
           aria-label={`${item.label} submenu`}
-          data-slot="submenu"
+          data-slot='submenu'
           data-parent-id={item.id}
+          tabIndex={-1}
           onMouseEnter={() => {
             if (closeTimerRef.current) {
               clearTimeout(closeTimerRef.current);
@@ -263,12 +259,12 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
 };
 
 // ===== CONTEXT MENU COMPONENT =====
-const ContextMenu: React.FC<ContextMenuProps> = ({ 
-  x, 
-  y, 
-  items, 
-  onClose, 
-  visible 
+const ContextMenu: React.FC<ContextMenuProps> = ({
+  x,
+  y,
+  items,
+  onClose,
+  visible,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x, y });
@@ -277,11 +273,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
   // Filter enabled items for roving focus
   const enabledItems = items.filter(item => !item.divider && !item.disabled);
-  
+
   // Navigation helpers
   const move = (direction: 1 | -1) => {
     setActiveIdx(current => {
-      const newIdx = (current + direction + enabledItems.length) % enabledItems.length;
+      const newIdx =
+        (current + direction + enabledItems.length) % enabledItems.length;
       return newIdx;
     });
   };
@@ -290,11 +287,11 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   const handleTypeahead = (character: string) => {
     const newBuffer = typeaheadBuffer + character.toLowerCase();
     setTypeaheadBuffer(newBuffer);
-    
-    const matchIdx = enabledItems.findIndex(item => 
+
+    const matchIdx = enabledItems.findIndex(item =>
       item.label?.toLowerCase().startsWith(newBuffer)
     );
-    
+
     if (matchIdx >= 0) {
       setActiveIdx(matchIdx);
     }
@@ -318,13 +315,15 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   // Focus management - focus first item when menu opens
   useEffect(() => {
     if (!visible || !menuRef.current) return;
-    
+
     // Small delay to ensure menu is rendered
     const timer = setTimeout(() => {
-      const firstButton = menuRef.current?.querySelector('button[data-slot="item"]:not([disabled])') as HTMLButtonElement;
+      const firstButton = menuRef.current?.querySelector(
+        'button[data-slot="item"]:not([disabled])'
+      ) as HTMLButtonElement;
       firstButton?.focus();
     }, 10);
-    
+
     return () => clearTimeout(timer);
   }, [visible]);
 
@@ -353,7 +352,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
         break;
       default:
         // Typeahead
-        if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        if (
+          event.key.length === 1 &&
+          !event.ctrlKey &&
+          !event.metaKey &&
+          !event.altKey
+        ) {
           event.preventDefault();
           handleTypeahead(event.key);
         }
@@ -418,8 +422,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
     };
   }, [visible, onClose]);
 
-  const handleItemSelect = (_item: MenuItem) => {
+  const handleItemSelect = () => {
     // Item selection is handled in ContextMenuItem
+    // This handler can be extended for additional logic if needed
   };
 
   if (!visible || items.length === 0) {
@@ -429,29 +434,25 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   return (
     <div
       ref={menuRef}
-      className={`
-        fixed
-        ${DESIGN_TOKENS.recipe.dropdown.content}
-        ${DESIGN_TOKENS.theme.light.surface.base}
-        ${DESIGN_TOKENS.theme.light.elevation.dropdown}
-        ${DESIGN_TOKENS.zIndex.popover}
-        ${DESIGN_TOKENS.motion.semantic.modalEnter}
-      `}
-      style={{ 
-        left: position.x, 
+      className={`fixed ${DESIGN_TOKENS.recipe.dropdown.content} ${DESIGN_TOKENS.theme.light.surface.base} ${DESIGN_TOKENS.theme.light.elevation.dropdown} ${DESIGN_TOKENS.zIndex.popover} ${DESIGN_TOKENS.motion.semantic.modalEnter} `}
+      style={{
+        left: position.x,
         top: position.y,
-        minWidth: '12rem'
+        minWidth: '12rem',
       }}
-      role="menu"
-      aria-label="Context menu"
-      data-slot="menu"
+      role='menu'
+      aria-label='Context menu'
+      data-slot='menu'
+      tabIndex={-1}
       onKeyDown={handleMenuKeyDown}
     >
       {items.map((item, index) => {
         // Calculate if this item is active (for non-dividers)
-        const enabledIndex = enabledItems.findIndex(enabledItem => enabledItem === item);
+        const enabledIndex = enabledItems.findIndex(
+          enabledItem => enabledItem === item
+        );
         const isActive = enabledIndex >= 0 && enabledIndex === activeIdx;
-        
+
         return (
           <ContextMenuItem
             key={item.id || index}
@@ -468,33 +469,32 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 };
 
 // ===== CONTEXT MENU TRIGGER =====
-export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({ 
-  children, 
-  items, 
-  disabled = false 
+export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({
+  children,
+  items,
+  disabled = false,
 }) => {
   const { showMenu } = useContextMenu();
 
   const handleContextMenu = (event: MouseEvent) => {
     if (disabled) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
     showMenu(event, items);
   };
 
   return (
-    <div 
-      onContextMenu={handleContextMenu}
-      style={{ userSelect: 'none' }}
-    >
+    <div onContextMenu={handleContextMenu} style={{ userSelect: 'none' }}>
       {children}
     </div>
   );
 };
 
 // ===== CONTEXT MENU PROVIDER =====
-export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ children }) => {
+export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({
+  children,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -502,7 +502,7 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
   const showMenu = useCallback((event: MouseEvent, items: MenuItem[]) => {
     event.preventDefault();
     event.stopPropagation();
-    
+
     setMenuPosition({ x: event.clientX, y: event.clientY });
     setMenuItems(items);
     setIsVisible(true);

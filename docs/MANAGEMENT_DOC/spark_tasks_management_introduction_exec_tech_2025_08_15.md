@@ -238,4 +238,3 @@ A: E2EE with user‑held keys; import validation; workspace isolation. Trust Pac
 
 **Owner:** Product\
 **Stakeholders:** Engineering, Security, Finance/Procurement, GTM
-

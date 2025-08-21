@@ -1,8 +1,8 @@
 /**
  * Callout Component
- * 
+ *
  * Enterprise-grade highlighted information blocks for critical content emphasis.
- * 
+ *
  * Features:
  * - Multiple semantic variants (info, success, warning, error, note)
  * - Icon integration with automatic semantic mapping
@@ -12,7 +12,7 @@
  * - Dark mode support through DESIGN_TOKENS
  * - Responsive design with mobile-first approach
  * - Rich content support with nested elements
- * 
+ *
  * @version 1.0.0
  * @author SparkTasks Enterprise UI Team
  */
@@ -56,32 +56,87 @@ const getSemanticIcon = (variant: CalloutVariant): React.ReactNode => {
   switch (variant) {
     case 'info':
       return (
-        <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg
+          className={iconClasses}
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          aria-hidden='true'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+          />
         </svg>
       );
     case 'success':
       return (
-        <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg
+          className={iconClasses}
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          aria-hidden='true'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+          />
         </svg>
       );
     case 'warning':
       return (
-        <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+        <svg
+          className={iconClasses}
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          aria-hidden='true'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z'
+          />
         </svg>
       );
     case 'error':
       return (
-        <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg
+          className={iconClasses}
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          aria-hidden='true'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
+          />
         </svg>
       );
     case 'note':
       return (
-        <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+        <svg
+          className={iconClasses}
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          aria-hidden='true'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'
+          />
         </svg>
       );
     default:
@@ -131,25 +186,12 @@ const getCalloutClasses = (
   }[variant];
 
   const sizeClasses = {
-    sm: combineTokens(
-      DESIGN_TOKENS.spacing.sm,
-      'gap-2'
-    ),
-    md: combineTokens(
-      DESIGN_TOKENS.spacing.md,
-      'gap-3'
-    ),
-    lg: combineTokens(
-      DESIGN_TOKENS.spacing.lg,
-      'gap-4'
-    ),
+    sm: combineTokens(DESIGN_TOKENS.spacing.sm, 'gap-2'),
+    md: combineTokens(DESIGN_TOKENS.spacing.md, 'gap-3'),
+    lg: combineTokens(DESIGN_TOKENS.spacing.lg, 'gap-4'),
   }[size];
 
-  return combineTokens(
-    baseClasses,
-    variantClasses,
-    sizeClasses
-  );
+  return combineTokens(baseClasses, variantClasses, sizeClasses);
 };
 
 const getTitleClasses = (size: CalloutSize): string => {
@@ -208,7 +250,9 @@ const getAriaRole = (variant: CalloutVariant): string => {
   }
 };
 
-const getAriaLive = (variant: CalloutVariant): 'polite' | 'assertive' | undefined => {
+const getAriaLive = (
+  variant: CalloutVariant
+): 'polite' | 'assertive' | undefined => {
   switch (variant) {
     case 'error':
       return 'assertive';
@@ -225,81 +269,93 @@ const getAriaLive = (variant: CalloutVariant): 'polite' | 'assertive' | undefine
 
 // ===== MAIN COMPONENT =====
 
-const Callout = forwardRef<HTMLDivElement, CalloutProps>(({
-  variant = 'info',
-  size = 'md',
-  title,
-  icon,
-  showIcon = true,
-  dismissible = false,
-  onDismiss,
-  children,
-  className,
-  ...props
-}, ref) => {
-  const [isDismissed, setIsDismissed] = useState(false);
+const Callout = forwardRef<HTMLDivElement, CalloutProps>(
+  (
+    {
+      variant = 'info',
+      size = 'md',
+      title,
+      icon,
+      showIcon = true,
+      dismissible = false,
+      onDismiss,
+      children,
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    const [isDismissed, setIsDismissed] = useState(false);
 
-  const handleDismiss = () => {
-    setIsDismissed(true);
-    onDismiss?.();
-  };
+    const handleDismiss = () => {
+      setIsDismissed(true);
+      onDismiss?.();
+    };
 
-  if (isDismissed) {
-    return null;
-  }
+    if (isDismissed) {
+      return null;
+    }
 
-  const calloutClasses = getCalloutClasses(variant, size);
-  const titleClasses = getTitleClasses(size);
-  const contentClasses = getContentClasses(size);
-  const dismissButtonClasses = getDismissButtonClasses();
+    const calloutClasses = getCalloutClasses(variant, size);
+    const titleClasses = getTitleClasses(size);
+    const contentClasses = getContentClasses(size);
+    const dismissButtonClasses = getDismissButtonClasses();
 
-  const semanticIcon = showIcon ? (icon || getSemanticIcon(variant)) : null;
-  const ariaRole = getAriaRole(variant);
-  const ariaLive = getAriaLive(variant);
+    const semanticIcon = showIcon ? icon || getSemanticIcon(variant) : null;
+    const ariaRole = getAriaRole(variant);
+    const ariaLive = getAriaLive(variant);
 
-  return (
-    <div
-      ref={ref}
-      role={ariaRole}
-      aria-live={ariaLive}
-      className={combineTokens(calloutClasses, className)}
-      {...props}
-    >
-      {/* Icon */}
-      {semanticIcon && (
-        <div className="shrink-0" aria-hidden="true">
-          {semanticIcon}
-        </div>
-      )}
-
-      {/* Content */}
-      <div className={DESIGN_TOKENS.recipe.listItemContent.base}>
-        {title && (
-          <div className={titleClasses}>
-            {title}
+    return (
+      <div
+        ref={ref}
+        role={ariaRole}
+        aria-live={ariaLive}
+        className={combineTokens(calloutClasses, className)}
+        {...props}
+      >
+        {/* Icon */}
+        {semanticIcon && (
+          <div
+            className={combineTokens(DESIGN_TOKENS.layout.flex.shrinkNone)}
+            aria-hidden='true'
+          >
+            {semanticIcon}
           </div>
         )}
-        <div className={contentClasses}>
-          {children}
-        </div>
-      </div>
 
-      {/* Dismiss Button */}
-      {dismissible && (
-        <button
-          type="button"
-          onClick={handleDismiss}
-          className={dismissButtonClasses}
-          aria-label="Dismiss callout"
-        >
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      )}
-    </div>
-  );
-});
+        {/* Content */}
+        <div className={DESIGN_TOKENS.recipe.listItemContent.base}>
+          {title && <div className={titleClasses}>{title}</div>}
+          <div className={contentClasses}>{children}</div>
+        </div>
+
+        {/* Dismiss Button */}
+        {dismissible && (
+          <button
+            type='button'
+            onClick={handleDismiss}
+            className={dismissButtonClasses}
+            aria-label='Dismiss callout'
+          >
+            <svg
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              aria-hidden='true'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M6 18L18 6M6 6l12 12'
+              />
+            </svg>
+          </button>
+        )}
+      </div>
+    );
+  }
+);
 
 Callout.displayName = 'Callout';
 

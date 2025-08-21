@@ -1,6 +1,6 @@
 /**
  * Spinner Component - Enterprise-Grade Loading Indicator
- * 
+ *
  * A sophisticated loading spinner component built with DESIGN_TOKENS V3.2:
  * - Multiple sizes (xs, sm, md, lg, xl) with icon-consistent sizing
  * - Semantic variants (primary, secondary, muted) for different contexts
@@ -8,18 +8,18 @@
  * - Motion-safe design respecting user's reduced motion preferences
  * - Theme-aware with light/dark mode support
  * - Customizable speed and styles while maintaining design system consistency
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
  * <Spinner />
- * 
+ *
  * // Large spinner with custom label
  * <Spinner size="lg" label="Loading dashboard data..." />
- * 
+ *
  * // Secondary variant for subtle loading states
  * <Spinner variant="secondary" size="sm" />
- * 
+ *
  * // Inline spinner with text
  * <div className="flex items-center gap-2">
  *   <Spinner size="sm" />
@@ -89,7 +89,7 @@ const spinnerSizes = {
     viewBox: '0 0 24 24',
   },
   sm: {
-    container: 'h-4 w-4', 
+    container: 'h-4 w-4',
     strokeWidth: '2.5',
     viewBox: '0 0 24 24',
   },
@@ -114,40 +114,42 @@ const spinnerSizes = {
 
 const spinnerSpeeds = {
   slow: '[animation-duration:2s]',
-  normal: '[animation-duration:1s]', 
+  normal: '[animation-duration:1s]',
   fast: '[animation-duration:0.5s]',
 } as const;
 
 // ===== SPINNER COMPONENT =====
 
 export const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(
-  ({ 
-    size = 'md',
-    variant = 'primary',
-    speed = 'normal',
-    label = 'Loading...',
-    className,
-    inline = false,
-    'data-testid': testId,
-    ...props
-  }, ref) => {
-    
+  (
+    {
+      size = 'md',
+      variant = 'primary',
+      speed = 'normal',
+      label = 'Loading...',
+      className,
+      inline = false,
+      'data-testid': testId,
+      ...props
+    },
+    ref
+  ) => {
     const sizeConfig = spinnerSizes[size];
     const variantStyles = spinnerVariants[variant];
     const speedClass = spinnerSpeeds[speed];
-    
+
     const containerClasses = combineTokens(
       // Base spinner animation and sizing
       DESIGN_TOKENS.motion.spin,
       sizeConfig.container,
       speedClass,
-      
+
       // Display mode
       inline ? 'inline-block' : 'block',
-      
+
       // Motion reduction support
       'motion-reduce:animate-none motion-reduce:opacity-50',
-      
+
       // Custom classes
       className
     );
@@ -157,46 +159,46 @@ export const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(
         ref={ref}
         className={containerClasses}
         viewBox={sizeConfig.viewBox}
-        role="status"
+        role='status'
         aria-label={label}
-        aria-live="polite"
+        aria-live='polite'
         data-testid={testId}
         {...props}
       >
         {/* Background circle track */}
         <circle
-          cx="12"
-          cy="12"
-          r="10"
+          cx='12'
+          cy='12'
+          r='10'
           strokeWidth={sizeConfig.strokeWidth}
           className={variantStyles.track}
-          opacity="0.25"
+          opacity='0.25'
         />
-        
+
         {/* Animated progress circle */}
         <circle
-          cx="12"
-          cy="12"
-          r="10"
+          cx='12'
+          cy='12'
+          r='10'
           strokeWidth={sizeConfig.strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray="32"
-          strokeDashoffset="24"
+          strokeLinecap='round'
+          strokeDasharray='32'
+          strokeDashoffset='24'
           className={variantStyles.circle}
-          transform="rotate(-90 12 12)"
+          transform='rotate(-90 12 12)'
         >
           {/* Only animate if motion is not reduced */}
           <animateTransform
-            attributeName="transform"
-            attributeType="XML"
-            type="rotate"
-            from="-90 12 12"
-            to="270 12 12"
+            attributeName='transform'
+            attributeType='XML'
+            type='rotate'
+            from='-90 12 12'
+            to='270 12 12'
             dur={speed === 'fast' ? '0.5s' : speed === 'slow' ? '2s' : '1s'}
-            repeatCount="indefinite"
+            repeatCount='indefinite'
           />
         </circle>
-        
+
         {/* Screen reader text */}
         <title>{label}</title>
       </svg>
@@ -225,24 +227,22 @@ export const SpinnerWithText: React.FC<SpinnerWithTextProps> = ({
   ...spinnerProps
 }) => {
   const isVertical = textPosition === 'bottom';
-  
+
   return (
-    <div 
+    <div
       className={combineTokens(
         'flex items-center',
         isVertical ? 'flex-col gap-2' : 'gap-3'
       )}
       aria-label={`${spinnerProps.label || 'Loading'}: ${text}`}
     >
-      <Spinner 
-        size={size} 
-        inline={!isVertical}
-        {...spinnerProps} 
-      />
-      <span className={combineTokens(
-        DESIGN_TOKENS.semantic.text.muted,
-        DESIGN_TOKENS.typography.body.small
-      )}>
+      <Spinner size={size} inline={!isVertical} {...spinnerProps} />
+      <span
+        className={combineTokens(
+          DESIGN_TOKENS.semantic.text.muted,
+          DESIGN_TOKENS.typography.body.small
+        )}
+      >
         {text}
       </span>
     </div>
@@ -254,30 +254,39 @@ export const SpinnerWithText: React.FC<SpinnerWithTextProps> = ({
 /**
  * Page Spinner - Full page loading overlay
  */
-export interface PageSpinnerProps extends Pick<SpinnerProps, 'label' | 'variant'> {
+export interface PageSpinnerProps
+  extends Pick<SpinnerProps, 'label' | 'variant'> {
   /** Whether to show backdrop */
   backdrop?: boolean;
 }
 
-export const PageSpinner: React.FC<PageSpinnerProps> = ({ 
+export const PageSpinner: React.FC<PageSpinnerProps> = ({
   label = 'Loading page...',
   variant = 'primary',
-  backdrop = true 
+  backdrop = true,
 }) => {
   return (
-    <div 
+    <div
       className={combineTokens(
         'fixed inset-0 z-50 flex items-center justify-center',
-        backdrop && 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm'
+        backdrop && 'bg-white/80 backdrop-blur-sm dark:bg-gray-900/80'
       )}
       aria-label={label}
     >
-      <div className="flex flex-col items-center gap-4">
-        <Spinner size="xl" variant={variant} label={label} />
-        <p className={combineTokens(
-          DESIGN_TOKENS.semantic.text.muted,
-          DESIGN_TOKENS.typography.body.small
-        )}>
+      <div
+        className={combineTokens(
+          DESIGN_TOKENS.layout.flex.col,
+          DESIGN_TOKENS.layout.flex.itemsCenter,
+          DESIGN_TOKENS.layout.spacing.gap.lg
+        )}
+      >
+        <Spinner size='xl' variant={variant} label={label} />
+        <p
+          className={combineTokens(
+            DESIGN_TOKENS.semantic.text.muted,
+            DESIGN_TOKENS.typography.body.small
+          )}
+        >
           {label}
         </p>
       </div>
@@ -288,7 +297,8 @@ export const PageSpinner: React.FC<PageSpinnerProps> = ({
 /**
  * Button Spinner - For loading states in buttons
  */
-export interface ButtonSpinnerProps extends Pick<SpinnerProps, 'size' | 'variant'> {
+export interface ButtonSpinnerProps
+  extends Pick<SpinnerProps, 'size' | 'variant'> {
   /** Whether button is in loading state */
   loading?: boolean;
   /** Content to show when not loading */
@@ -299,21 +309,20 @@ export const ButtonSpinner: React.FC<ButtonSpinnerProps> = ({
   loading = false,
   size = 'sm',
   variant = 'primary',
-  children
+  children,
 }) => {
   return (
-    <div className="flex items-center gap-2">
-      {loading && (
-        <Spinner 
-          size={size} 
-          variant={variant}
-          inline
-          label="Processing..."
-        />
+    <div
+      className={combineTokens(
+        DESIGN_TOKENS.layout.flex.row,
+        DESIGN_TOKENS.layout.flex.itemsCenter,
+        DESIGN_TOKENS.layout.spacing.gap.sm
       )}
-      <span className={loading ? 'opacity-70' : undefined}>
-        {children}
-      </span>
+    >
+      {loading && (
+        <Spinner size={size} variant={variant} inline label='Processing...' />
+      )}
+      <span className={loading ? 'opacity-70' : undefined}>{children}</span>
     </div>
   );
 };

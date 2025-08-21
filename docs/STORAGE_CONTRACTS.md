@@ -5,18 +5,19 @@ This document defines the storage layer contracts and patterns used across Spark
 ## Storage Driver Interface
 
 ### Basic Operations
+
 ```typescript
 interface StorageDriver {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
   removeItem(key: string): Promise<void>;
   listKeys(prefix: string): Promise<string[]>;
-  
+
   // Optional atomic operations capability
   atomic?: {
     // Atomically write multiple key-value pairs
     setItems?(items: Array<{ key: string; value: string }>): Promise<void>;
-    
+
     // Advertise atomicity capability
     capability: 'transaction' | 'temp-swap' | 'none';
   };
@@ -28,7 +29,7 @@ interface StorageDriver {
 Storage drivers can implement different levels of atomicity:
 
 - **`transaction`**: True ACID transactions (e.g., IndexedDB transactions)
-- **`temp-swap`**: Atomic operations using temporary keys + swap pattern  
+- **`temp-swap`**: Atomic operations using temporary keys + swap pattern
 - **`none`**: No atomicity guarantees beyond single operations
 
 ## RemoteAdapter Metadata Contract
@@ -53,7 +54,7 @@ Each stored key has associated metadata stored at `namespace:__meta__:key`:
 ### Namespace Conventions
 
 - **Data keys**: `namespace:key`
-- **Metadata keys**: `namespace:__meta__:key`  
+- **Metadata keys**: `namespace:__meta__:key`
 - **Temporary keys**: `namespace:key__tmp__timestamp`
 
 Temporary keys are automatically cleaned up on startup and excluded from listings.
@@ -79,7 +80,7 @@ RemoteAdapter ensures atomic writes of value and metadata:
 if (driver.atomic?.capability === 'transaction') {
   await driver.atomic.setItems([
     { key: dataKey, value: data },
-    { key: metaKey, value: metadata }
+    { key: metaKey, value: metadata },
   ]);
 }
 
@@ -87,7 +88,7 @@ if (driver.atomic?.capability === 'transaction') {
 else {
   const tempData = `${dataKey}__tmp__${timestamp}`;
   const tempMeta = `${metaKey}__tmp__${timestamp}`;
-  
+
   try {
     await driver.setItem(tempData, data);
     await driver.setItem(tempMeta, metadata);
@@ -133,9 +134,10 @@ When encountering keys without metadata during sync:
 On initialization, RemoteAdapter cleans up orphaned temporary keys:
 
 ```typescript
-const tempKeys = await driver.listKeys(namespace)
+const tempKeys = await driver
+  .listKeys(namespace)
   .filter(key => key.includes('__tmp__'));
-  
+
 for (const tempKey of tempKeys) {
   await driver.removeItem(tempKey);
 }

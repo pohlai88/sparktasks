@@ -21,63 +21,73 @@ export async function createInviteWithPolicy(args: {
   storage: StorageDriver; // Add storage for policy
 }) {
   const { ns, signerPubB64u, role, storage } = args;
-  
+
   // Get actor role for policy context
   const membershipState = await membershipApi.getMembership();
   const actorRole = membershipState.users[signerPubB64u];
-  
+
   // 🔌 POLICY ENFORCEMENT - Wire before existing authorization
-  await enforcePolicy({
-    op: "invite.create",
-    ns,
-    actorId: signerPubB64u,
-    actorRole,
-    targetRole: role,
-    nowISO: new Date().toISOString()
-  }, storage, { 
-    audit: true,     // Log all policy decisions
-    commitCap: true  // Increment daily cap on allow
-  });
-  
+  await enforcePolicy(
+    {
+      op: 'invite.create',
+      ns,
+      actorId: signerPubB64u,
+      actorRole,
+      targetRole: role,
+      nowISO: new Date().toISOString(),
+    },
+    storage,
+    {
+      audit: true, // Log all policy decisions
+      commitCap: true, // Increment daily cap on allow
+    }
+  );
+
   // Continue with existing logic...
   if (membershipApi) {
-    await membershipApi.assertPermission(signerPubB64u, 'INVITE_CREATE', { targetRole: role });
+    await membershipApi.assertPermission(signerPubB64u, 'INVITE_CREATE', {
+      targetRole: role,
+    });
   }
   // ... rest of createInvite function
 }
 
 /**
- * Example 2: Membership Addition with Policy Enforcement  
+ * Example 2: Membership Addition with Policy Enforcement
  * Wire point: src/membership/api.ts around line 125
  */
 export async function addMemberWithPolicy(
-  issuer: string, 
-  user: string, 
+  issuer: string,
+  user: string,
   role: 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER',
   storage: StorageDriver
 ) {
   const state = await getMembership();
-  
+
   // Handle initial owner case first (before policy)
   if (state.owners.length === 0 && role === 'OWNER') {
     // Initial owner setup - skip policy for bootstrap
     // ... existing initial owner logic
     return;
   }
-  
+
   // 🔌 POLICY ENFORCEMENT - Wire before assertPermission
-  await enforcePolicy({
-    op: "membership.add",
-    ns: namespace,
-    actorId: issuer,
-    actorRole: state.users[issuer],
-    targetRole: role,
-    nowISO: new Date().toISOString()
-  }, storage, { 
-    audit: true,
-    commitCap: false  // No daily cap for membership changes
-  });
-  
+  await enforcePolicy(
+    {
+      op: 'membership.add',
+      ns: namespace,
+      actorId: issuer,
+      actorRole: state.users[issuer],
+      targetRole: role,
+      nowISO: new Date().toISOString(),
+    },
+    storage,
+    {
+      audit: true,
+      commitCap: false, // No daily cap for membership changes
+    }
+  );
+
   // Continue with existing authorization
   await assertPermission(issuer, 'ROLE_SET');
   // ... rest of addMember function
@@ -95,25 +105,29 @@ export async function createRecoveryOverrideWithPolicy(opts: {
   storage: StorageDriver;
 }) {
   const { ns, actorId, beneficiaryId, storage } = opts;
-  
+
   // Get membership context for policy
   const membership = await MembershipApi.getMembership();
   const actorRole = membership.users[actorId];
   const beneficiaryRole = membership.users[beneficiaryId];
-  
-  // 🔌 POLICY ENFORCEMENT - Wire before assertPermission  
-  await enforcePolicy({
-    op: "override.create",
-    ns,
-    actorId,
-    actorRole,
-    targetRole: beneficiaryRole,
-    nowISO: new Date().toISOString()
-  }, storage, { 
-    audit: true,
-    commitCap: true  // Track daily override creation
-  });
-  
+
+  // 🔌 POLICY ENFORCEMENT - Wire before assertPermission
+  await enforcePolicy(
+    {
+      op: 'override.create',
+      ns,
+      actorId,
+      actorRole,
+      targetRole: beneficiaryRole,
+      nowISO: new Date().toISOString(),
+    },
+    storage,
+    {
+      audit: true,
+      commitCap: true, // Track daily override creation
+    }
+  );
+
   // Continue with existing authorization
   await MembershipApi.assertPermission(actorId, 'RECOVERY_OVERRIDE_CREATE');
   // ... rest of createRecoveryOverride function
@@ -133,23 +147,27 @@ export async function unlinkDeviceWithPolicy(args: {
   actorId: string;
 }) {
   const { signerPubB64u, storage, ns, actorId } = args;
-  
+
   // Get actor role for policy context
   const membershipState = await getMembership(); // Need to import from membership
   const actorRole = membershipState.users[actorId];
-  
+
   // 🔌 POLICY ENFORCEMENT - Wire before revokeSigner
-  await enforcePolicy({
-    op: "device.unlink", 
-    ns,
-    actorId,
-    actorRole,
-    nowISO: new Date().toISOString()
-  }, storage, { 
-    audit: true,
-    commitCap: false
-  });
-  
+  await enforcePolicy(
+    {
+      op: 'device.unlink',
+      ns,
+      actorId,
+      actorRole,
+      nowISO: new Date().toISOString(),
+    },
+    storage,
+    {
+      audit: true,
+      commitCap: false,
+    }
+  );
+
   // Continue with existing revocation
   await revokeSigner(signerPubB64u);
   // ... rest of unlinkDevice function
@@ -165,17 +183,17 @@ export async function safeRolloutExample(
   storage: StorageDriver
 ) {
   // Phase 1: Observe mode - log but don't enforce
-  await enforcePolicy(context, storage, { 
-    observeMode: true,  // 🔍 Safe observation
-    audit: true 
+  await enforcePolicy(context, storage, {
+    observeMode: true, // 🔍 Safe observation
+    audit: true,
   });
-  
+
   // Phase 2: Gradual enforcement (environment-based)
   const enforceMode = process.env.POLICY_ENFORCE === '1';
-  await enforcePolicy(context, storage, { 
-    observeMode: !enforceMode,  // Conditional enforcement
+  await enforcePolicy(context, storage, {
+    observeMode: !enforceMode, // Conditional enforcement
     audit: true,
-    commitCap: enforceMode
+    commitCap: enforceMode,
   });
 }
 
@@ -190,10 +208,9 @@ export async function operationWithPolicyErrorHandling(
 ) {
   try {
     await enforcePolicy(context, storage, { audit: true });
-    
+
     // Continue with business logic...
     console.log(`✅ ${operation} authorized`);
-    
   } catch (error) {
     if (error.message.includes('POLICY_DENIED')) {
       console.error(`🚫 Policy denied ${operation}: ${error.message}`);
@@ -214,15 +231,17 @@ export async function bootstrapOrganizationPolicies(
   ownerActor: { id: string; role: 'OWNER' }
 ) {
   // Import policy functions
-  const { createStarterPolicy, savePolicies } = await import('../src/policy/engine');
-  
+  const { createStarterPolicy, savePolicies } = await import(
+    '../src/policy/engine'
+  );
+
   // Create and deploy starter policy
   const starterPolicy = createStarterPolicy();
-  starterPolicy.minEngine = "1.0.0";
+  starterPolicy.minEngine = '1.0.0';
   starterPolicy.rev = 1;
-  
+
   await savePolicies(ns, storage, starterPolicy, ownerActor);
-  
+
   console.log('✅ Organization bootstrapped with starter policies');
   console.log(`   • Prevented non-OWNERs from issuing OWNER invites`);
   console.log(`   • Set business hours enforcement for sensitive operations`);
@@ -237,5 +256,5 @@ export {
   unlinkDeviceWithPolicy,
   safeRolloutExample,
   operationWithPolicyErrorHandling,
-  bootstrapOrganizationPolicies
+  bootstrapOrganizationPolicies,
 };

@@ -2,9 +2,9 @@ name: Accessibility Snapshot Validation
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
       - 'src/**'
       - 'test/e2e/**'
@@ -15,80 +15,80 @@ jobs:
   accessibility-validation:
     timeout-minutes: 10
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
-    
-    - name: Run Accessibility Snapshot Tests
-      run: npx playwright test test/e2e/a5-accessibility-snapshots.spec.ts --project=chromium --reporter=github
-      env:
-        # Never update snapshots in CI - always validate against baselines
-        UPDATE_SNAPSHOTS: false
-    
-    - name: Upload Accessibility Test Results
-      uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-        name: accessibility-test-results
-        path: |
-          test-results/
-          test/accessibility-snapshots/*.failed.json
-        retention-days: 7
-    
-    - name: Comment PR with Accessibility Status
-      if: github.event_name == 'pull_request' && failure()
-      uses: actions/github-script@v7
-      with:
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: `🚨 **Accessibility Regression Detected**
-            
-            The accessibility snapshot tests have detected structural changes that may affect screen reader users.
-            
-            **Next Steps:**
-            1. Review the failed snapshots in the test artifacts
-            2. If changes are intentional, update baselines locally:
-               \`\`\`bash
-               UPDATE_SNAPSHOTS=true npx playwright test test/e2e/a5-accessibility-snapshots.spec.ts
-               \`\`\`
-            3. Commit the updated snapshots with your changes
-            
-            **Documentation:** See \`docs/E2E_TESTING_STANDARDS.md\` for detailed troubleshooting.`
-          })
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Accessibility Snapshot Tests
+        run: npx playwright test test/e2e/a5-accessibility-snapshots.spec.ts --project=chromium --reporter=github
+        env:
+          # Never update snapshots in CI - always validate against baselines
+          UPDATE_SNAPSHOTS: false
+
+      - name: Upload Accessibility Test Results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: accessibility-test-results
+          path: |
+            test-results/
+            test/accessibility-snapshots/*.failed.json
+          retention-days: 7
+
+      - name: Comment PR with Accessibility Status
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚨 **Accessibility Regression Detected**
+              
+              The accessibility snapshot tests have detected structural changes that may affect screen reader users.
+              
+              **Next Steps:**
+              1. Review the failed snapshots in the test artifacts
+              2. If changes are intentional, update baselines locally:
+                 \`\`\`bash
+                 UPDATE_SNAPSHOTS=true npx playwright test test/e2e/a5-accessibility-snapshots.spec.ts
+                 \`\`\`
+              3. Commit the updated snapshots with your changes
+              
+              **Documentation:** See \`docs/E2E_TESTING_STANDARDS.md\` for detailed troubleshooting.`
+            })
 
   # Integration with existing test matrix
   integration-validation:
     needs: accessibility-validation
     runs-on: ubuntu-latest
     if: success()
-    
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
-    
-    # Run all E2E tests to ensure accessibility changes don't break functionality
-    - name: Run Full E2E Test Suite
-      run: npx playwright test --project=chromium --reporter=github
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      # Run all E2E tests to ensure accessibility changes don't break functionality
+      - name: Run Full E2E Test Suite
+        run: npx playwright test --project=chromium --reporter=github

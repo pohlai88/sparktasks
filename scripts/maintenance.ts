@@ -90,12 +90,15 @@ async function main() {
       try {
         await keyring.getActiveKey();
       } catch (error) {
-        console.error(JSON.stringify({
-          error: 'REKEY_BLOCKED',
-          message: 'Keyring is locked or inaccessible. REKEY operations require unlocked keyring.',
-          rekeyPrefix: options.rekeyPrefix,
-          timestamp: new Date().toISOString()
-        }));
+        console.error(
+          JSON.stringify({
+            error: 'REKEY_BLOCKED',
+            message:
+              'Keyring is locked or inaccessible. REKEY operations require unlocked keyring.',
+            rekeyPrefix: options.rekeyPrefix,
+            timestamp: new Date().toISOString(),
+          })
+        );
         process.exit(1);
       }
     }
@@ -107,33 +110,36 @@ async function main() {
       sweepPrefix: options.sweepPrefix,
       sample: options.sample,
       sweepFix: options.fix,
-      batchSize: 100 // Reasonable default for CLI
+      batchSize: 100, // Reasonable default for CLI
     });
 
     if (plan.actions.length === 0) {
-      console.log(JSON.stringify({
-        status: 'NO_ACTION_NEEDED',
-        message: 'No maintenance actions required based on current state',
-        timestamp: new Date().toISOString(),
-        options
-      }));
+      console.log(
+        JSON.stringify({
+          status: 'NO_ACTION_NEEDED',
+          message: 'No maintenance actions required based on current state',
+          timestamp: new Date().toISOString(),
+          options,
+        })
+      );
       process.exit(0);
     }
 
     // Execute maintenance
     const startTime = Date.now();
-    const report = await runMaintenance(plan, { 
-      storage, 
-      encrypted, 
+    const report = await runMaintenance(plan, {
+      storage,
+      encrypted,
       keyring,
-      resumeToken: options.resume 
+      resumeToken: options.resume,
     });
     const duration = Date.now() - startTime;
 
     // Determine exit code based on failures
     let hasFailures = false;
     if (report.rekey?.failures && report.rekey.failures > 0) hasFailures = true;
-    if (report.sweep?.failed && report.sweep.failed.length > 0) hasFailures = true;
+    if (report.sweep?.failed && report.sweep.failed.length > 0)
+      hasFailures = true;
 
     // Output JSON report
     const output = {
@@ -142,53 +148,60 @@ async function main() {
       duration_ms: duration,
       plan: {
         actions: plan.actions.length,
-        types: plan.actions.map(a => a.type)
+        types: plan.actions.map(a => a.type),
       },
       report,
-      options
+      options,
     };
 
     console.log(JSON.stringify(output, null, 2));
     process.exit(hasFailures ? 1 : 0);
-
   } catch (error) {
-    console.error(JSON.stringify({
-      status: 'FATAL_ERROR',
-      message: error instanceof Error ? error.message : 'Unknown error',
-      timestamp: new Date().toISOString(),
-      options
-    }));
+    console.error(
+      JSON.stringify({
+        status: 'FATAL_ERROR',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString(),
+        options,
+      })
+    );
     process.exit(1);
   }
 }
 
 // Handle process signals gracefully
 process.on('SIGINT', () => {
-  console.error(JSON.stringify({
-    status: 'INTERRUPTED',
-    message: 'Maintenance interrupted by user',
-    timestamp: new Date().toISOString()
-  }));
+  console.error(
+    JSON.stringify({
+      status: 'INTERRUPTED',
+      message: 'Maintenance interrupted by user',
+      timestamp: new Date().toISOString(),
+    })
+  );
   process.exit(1);
 });
 
 process.on('SIGTERM', () => {
-  console.error(JSON.stringify({
-    status: 'TERMINATED',
-    message: 'Maintenance terminated by system',
-    timestamp: new Date().toISOString()
-  }));
+  console.error(
+    JSON.stringify({
+      status: 'TERMINATED',
+      message: 'Maintenance terminated by system',
+      timestamp: new Date().toISOString(),
+    })
+  );
   process.exit(1);
 });
 
 if (require.main === module) {
   main().catch(error => {
-    console.error(JSON.stringify({
-      status: 'UNCAUGHT_ERROR',
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString()
-    }));
+    console.error(
+      JSON.stringify({
+        status: 'UNCAUGHT_ERROR',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        timestamp: new Date().toISOString(),
+      })
+    );
     process.exit(1);
   });
 }

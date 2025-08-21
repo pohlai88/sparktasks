@@ -1,6 +1,6 @@
 /**
  * KebabMenu Component - Enterprise-Grade Three-Dot Action Menu
- * 
+ *
  * Features:
  * - Iconic three-dot button trigger with hover states
  * - Contextual action menu with advanced positioning
@@ -17,15 +17,21 @@
  * - Loading and disabled states
  */
 
-import React, { useState, useRef, useEffect } from 'react';
-import { DESIGN_TOKENS } from '@/design/tokens';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 import { MoreHorizontal, ExternalLink } from 'lucide-react';
 
 // Type definitions
-export type KebabMenuPlacement = 
-  | 'bottom-start' 
-  | 'bottom-end' 
-  | 'top-start' 
+export type KebabMenuPlacement =
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'top-start'
   | 'top-end'
   | 'left-start'
   | 'left-end'
@@ -48,28 +54,28 @@ export interface KebabMenuProps {
   // Content
   items: KebabMenuItem[];
   children?: React.ReactNode; // For custom content instead of items
-  
+
   // Trigger configuration
   buttonSize?: 'sm' | 'md' | 'lg';
   buttonVariant?: 'ghost' | 'outline' | 'secondary';
   triggerClassName?: string;
-  
+
   // Menu configuration
   placement?: KebabMenuPlacement;
   contentClassName?: string;
-  
+
   // Accessibility
   ariaLabel?: string;
   menuId?: string;
-  
+
   // State
   disabled?: boolean;
   loading?: boolean;
-  
+
   // Controlled state
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  
+
   // Events
   onSelect?: (item: KebabMenuItem) => void;
 }
@@ -88,18 +94,21 @@ export function KebabMenu({
   loading = false,
   isOpen: controlledOpen,
   onOpenChange,
-  onSelect
+  onSelect,
 }: KebabMenuProps) {
   // State management
   const [internalOpen, setInternalOpen] = useState(false);
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
-  
-  const setIsOpen = (open: boolean) => {
-    if (controlledOpen === undefined) {
-      setInternalOpen(open);
-    }
-    onOpenChange?.(open);
-  };
+
+  const setIsOpen = useCallback(
+    (open: boolean) => {
+      if (controlledOpen === undefined) {
+        setInternalOpen(open);
+      }
+      onOpenChange?.(open);
+    },
+    [controlledOpen, onOpenChange]
+  );
 
   // Refs for DOM manipulation
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -107,16 +116,25 @@ export function KebabMenu({
   const [focusedIndex, setFocusedIndex] = useState(-1);
 
   // Generate unique IDs
-  const generatedMenuId = useRef(`kebab-menu-${Math.random().toString(36).substr(2, 9)}`);
+  const generatedMenuId = useRef(
+    `kebab-menu-${Math.random().toString(36).substr(2, 9)}`
+  );
   const actualMenuId = menuId || generatedMenuId.current;
 
   // Get valid menu items (exclude separators for keyboard navigation)
-  const validItems = items.filter(item => !item.separator && !item.disabled);
+  const validItems = useMemo(
+    () => items.filter(item => !item.separator && !item.disabled),
+    [items]
+  );
 
   // Focus management for keyboard navigation
   useEffect(() => {
     if (isOpen && focusedIndex >= 0 && menuRef.current) {
-      const validItems = Array.from(menuRef.current.querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])'));
+      const validItems = Array.from(
+        menuRef.current.querySelectorAll(
+          '[role="menuitem"]:not([aria-disabled="true"])'
+        )
+      );
       const itemToFocus = validItems[focusedIndex] as HTMLElement;
       if (itemToFocus) {
         itemToFocus.focus();
@@ -175,7 +193,20 @@ export function KebabMenu({
           event.preventDefault();
           if (focusedIndex >= 0 && focusedIndex < validItems.length) {
             const item = validItems[focusedIndex];
-            handleItemClick(item);
+            const actualItem = items.find(i => i === item);
+            if (actualItem && !actualItem.disabled) {
+              if (actualItem.onClick) {
+                actualItem.onClick();
+              } else if (actualItem.href) {
+                if (actualItem.target === '_blank') {
+                  window.open(actualItem.href, '_blank', 'noopener,noreferrer');
+                } else {
+                  window.location.href = actualItem.href;
+                }
+              }
+              setIsOpen(false);
+              setFocusedIndex(-1);
+            }
           }
           break;
 
@@ -191,7 +222,7 @@ export function KebabMenu({
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isOpen, focusedIndex, validItems]);
+  }, [isOpen, focusedIndex, validItems, items, setIsOpen]);
 
   // Position calculation based on placement
   const getPositionClasses = (placement: KebabMenuPlacement): string => {
@@ -203,7 +234,7 @@ export function KebabMenu({
       'left-start': 'right-full top-0 mr-1',
       'left-end': 'right-full bottom-0 mr-1',
       'right-start': 'left-full top-0 ml-1',
-      'right-end': 'left-full bottom-0 ml-1'
+      'right-end': 'left-full bottom-0 ml-1',
     };
     return positions[placement] || positions['bottom-end'];
   };
@@ -218,31 +249,34 @@ export function KebabMenu({
     }
   };
 
-  const handleItemClick = (item: KebabMenuItem) => {
-    if (item.disabled) return;
+  const handleItemClick = useCallback(
+    (item: KebabMenuItem) => {
+      if (item.disabled) return;
 
-    // Handle link navigation
-    if (item.href) {
-      if (item.target === '_blank') {
-        window.open(item.href, '_blank', 'noopener,noreferrer');
-      } else {
-        window.location.href = item.href;
+      // Handle link navigation
+      if (item.href) {
+        if (item.target === '_blank') {
+          window.open(item.href, '_blank', 'noopener,noreferrer');
+        } else {
+          window.location.href = item.href;
+        }
       }
-    }
 
-    // Call item onClick handler
-    item.onClick?.();
-    
-    // Call menu onSelect handler
-    onSelect?.(item);
+      // Call item onClick handler
+      item.onClick?.();
 
-    // Close menu after selection
-    setIsOpen(false);
-    setFocusedIndex(-1);
-    
-    // Return focus to trigger
-    triggerRef.current?.focus();
-  };
+      // Call menu onSelect handler
+      onSelect?.(item);
+
+      // Close menu after selection
+      setIsOpen(false);
+      setFocusedIndex(-1);
+
+      // Return focus to trigger
+      triggerRef.current?.focus();
+    },
+    [onSelect, setIsOpen, setFocusedIndex]
+  );
 
   // Styling classes
   const triggerClasses = [
@@ -259,9 +293,11 @@ export function KebabMenu({
     disabled ? DESIGN_TOKENS.state.disabled : '',
     loading ? 'cursor-wait' : '',
     isOpen ? 'bg-slate-100 dark:bg-slate-800' : '',
-    triggerClassName
-  ].filter(Boolean).join(' ');
-  
+    triggerClassName,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   const contentClasses = [
     DESIGN_TOKENS.recipe.dropdown.content,
     DESIGN_TOKENS.zIndex.dropdown,
@@ -273,24 +309,33 @@ export function KebabMenu({
     isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none',
     DESIGN_TOKENS.motion.smooth,
     // Custom styling
-    contentClassName
-  ].filter(Boolean).join(' ');
+    contentClassName,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   // Get item classes with proper enterprise token usage
-  const getItemClasses = (item: KebabMenuItem) => [
-    DESIGN_TOKENS.recipe.dropdown.item,
-    // Focus state
-    focusedIndex === validItems.indexOf(item) ? 'bg-slate-100 dark:bg-slate-800' : '',
-    // Destructive styling
-    item.destructive ? 'text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20' : '',
-    // Disabled state
-    item.disabled ? DESIGN_TOKENS.state.disabled : 'cursor-pointer',
-    // Link styling
-    item.href ? 'flex items-center justify-between' : ''
-  ].filter(Boolean).join(' ');
+  const getItemClasses = (item: KebabMenuItem) =>
+    [
+      DESIGN_TOKENS.recipe.dropdown.item,
+      // Focus state
+      focusedIndex === validItems.indexOf(item)
+        ? 'bg-slate-100 dark:bg-slate-800'
+        : '',
+      // Destructive styling
+      item.destructive
+        ? 'text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20'
+        : '',
+      // Disabled state
+      item.disabled ? DESIGN_TOKENS.state.disabled : 'cursor-pointer',
+      // Link styling
+      item.href ? 'flex items-center justify-between' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
 
   return (
-    <div className="relative inline-block">
+    <div className={combineTokens('relative', 'inline-block')}>
       {/* Trigger Button */}
       <button
         ref={triggerRef}
@@ -299,12 +344,14 @@ export function KebabMenu({
         disabled={disabled}
         aria-label={ariaLabel}
         aria-expanded={isOpen}
-        aria-haspopup="menu"
+        aria-haspopup='menu'
         aria-controls={isOpen ? actualMenuId : undefined}
-        type="button"
+        type='button'
       >
         {loading ? (
-          <div className={`${DESIGN_TOKENS.icon.size[buttonSize]} animate-spin rounded-full border-2 border-current border-t-transparent`} />
+          <div
+            className={`${DESIGN_TOKENS.icon.size[buttonSize]} animate-spin rounded-full border-2 border-current border-t-transparent`}
+          />
         ) : (
           <MoreHorizontal className={DESIGN_TOKENS.icon.size[buttonSize]} />
         )}
@@ -315,8 +362,8 @@ export function KebabMenu({
         ref={menuRef}
         id={actualMenuId}
         className={contentClasses}
-        role="menu"
-        aria-orientation="vertical"
+        role='menu'
+        aria-orientation='vertical'
         aria-labelledby={triggerRef.current?.id}
       >
         {children || (
@@ -327,39 +374,63 @@ export function KebabMenu({
                 return (
                   <div
                     key={`separator-${index}`}
-                    className="my-1 border-t border-slate-200 dark:border-slate-700"
-                    role="separator"
+                    className={combineTokens(
+                      'my-1',
+                      'border-t',
+                      'border-slate-200',
+                      'dark:border-slate-700'
+                    )}
+                    role='separator'
                   />
                 );
               }
 
               const validIndex = validItems.indexOf(item);
-              
+
               return (
                 <div
                   key={item.id}
                   className={getItemClasses(item)}
-                  role="menuitem"
+                  role='menuitem'
                   aria-disabled={item.disabled}
                   tabIndex={focusedIndex === validIndex ? 0 : -1}
                   onClick={() => handleItemClick(item)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleItemClick(item);
+                    }
+                  }}
                   onMouseEnter={() => setFocusedIndex(validIndex)}
                   onFocus={() => setFocusedIndex(validIndex)}
                 >
-                  <div className="flex items-center gap-2 flex-1">
+                  <div
+                    className={combineTokens(
+                      'flex',
+                      'items-center',
+                      'gap-2',
+                      'flex-1'
+                    )}
+                  >
                     {item.icon && (
                       <span className={DESIGN_TOKENS.icon.size.sm}>
                         {item.icon}
                       </span>
                     )}
-                    <span className={item.destructive ? 'text-red-600 dark:text-red-400' : ''}>
+                    <span
+                      className={
+                        item.destructive ? 'text-red-600 dark:text-red-400' : ''
+                      }
+                    >
                       {item.label}
                     </span>
                   </div>
-                  
+
                   {/* External link indicator */}
                   {item.href && item.target === '_blank' && (
-                    <ExternalLink className={`${DESIGN_TOKENS.icon.size.xs} opacity-60`} />
+                    <ExternalLink
+                      className={`${DESIGN_TOKENS.icon.size.xs} opacity-60`}
+                    />
                   )}
                 </div>
               );

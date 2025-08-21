@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { useTaskStore, selectToday, selectLater, selectDone } from '../src/stores/taskStore';
+import {
+  useTaskStore,
+  selectToday,
+  selectLater,
+  selectDone,
+} from '../src/stores/taskStore';
 
 // Mock localStorage
 const localStorageMock = {
@@ -21,21 +26,21 @@ describe('Task Store Lanes', () => {
 
   it('should categorize tasks into correct lanes', () => {
     const store = useTaskStore.getState();
-    
+
     // Add tasks with different statuses and conditions
     store.addTask({
       title: 'Today Task',
       status: 'TODAY',
       priority: 'P1',
     });
-    
+
     store.addTask({
       title: 'Later Task',
       status: 'LATER',
       priority: 'P0',
       dueDate: '2025-08-20T10:00:00.000Z', // future
     });
-    
+
     store.addTask({
       title: 'Overdue Task',
       status: 'LATER',
@@ -59,7 +64,7 @@ describe('Task Store Lanes', () => {
 
   it('should sort tasks correctly within lanes', () => {
     const store = useTaskStore.getState();
-    
+
     // Add tasks with different priorities and due dates
     store.addTask({
       title: 'P2 Task',
@@ -67,21 +72,21 @@ describe('Task Store Lanes', () => {
       priority: 'P2',
       dueDate: '2025-08-15T10:00:00.000Z',
     });
-    
+
     store.addTask({
       title: 'P0 Task',
       status: 'TODAY',
       priority: 'P0',
       dueDate: '2025-08-16T10:00:00.000Z',
     });
-    
+
     store.addTask({
       title: 'P1 Early Due',
       status: 'TODAY',
       priority: 'P1',
       dueDate: '2025-08-15T09:00:00.000Z',
     });
-    
+
     store.addTask({
       title: 'P1 Late Due',
       status: 'TODAY',
@@ -101,7 +106,7 @@ describe('Task Store Lanes', () => {
 
   it('should handle completed tasks correctly', () => {
     const store = useTaskStore.getState();
-    
+
     store.addTask({
       title: 'Task to Complete',
       status: 'TODAY',
@@ -111,7 +116,7 @@ describe('Task Store Lanes', () => {
     let updatedStore = useTaskStore.getState();
     const taskId = Object.keys(updatedStore.byId)[0];
     if (!taskId) throw new Error('Task ID not found');
-    
+
     // Complete the task
     store.completeTask(taskId);
 
@@ -129,7 +134,7 @@ describe('Task Store Lanes', () => {
 
   it('should sort done tasks by updatedAt descending', async () => {
     const store = useTaskStore.getState();
-    
+
     // Add and complete tasks with delays to ensure different updatedAt times
     store.addTask({
       title: 'First Completed',
@@ -140,7 +145,7 @@ describe('Task Store Lanes', () => {
     let updatedStore = useTaskStore.getState();
     const firstTaskId = Object.keys(updatedStore.byId)[0];
     if (!firstTaskId) throw new Error('First task ID not found');
-    
+
     store.completeTask(firstTaskId);
 
     // Small delay to ensure different timestamps
@@ -154,9 +159,11 @@ describe('Task Store Lanes', () => {
     });
 
     updatedStore = useTaskStore.getState();
-    const secondTaskId = Object.keys(updatedStore.byId).find(id => id !== firstTaskId);
+    const secondTaskId = Object.keys(updatedStore.byId).find(
+      id => id !== firstTaskId
+    );
     if (!secondTaskId) throw new Error('Second task ID not found');
-    
+
     store.completeTask(secondTaskId);
 
     updatedStore = useTaskStore.getState();

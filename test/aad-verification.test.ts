@@ -6,21 +6,21 @@ if (!globalThis.crypto) {
   Object.defineProperty(globalThis, 'crypto', {
     value: webcrypto,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis.crypto, 'subtle', {
     value: webcrypto.subtle,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.getRandomValues) {
   Object.defineProperty(globalThis.crypto, 'getRandomValues', {
     value: webcrypto.getRandomValues.bind(webcrypto),
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 
@@ -96,17 +96,17 @@ describe('EncryptedDriver AAD verification', () => {
   it('should reject envelopes with mismatched AAD', async () => {
     // Store a valid encrypted value
     await driver.setItem('testkey', 'testvalue');
-    
+
     // Get the stored envelope and tamper with AAD
     const storedEnvelope = mockStorage.data.get('testkey')!;
     const envelope = JSON.parse(storedEnvelope);
-    
+
     // Tamper with AAD (simulate cross-namespace/key replay attack)
     envelope.aad = 'dGFtcGVyZWQ'; // 'tampered' in base64
-    
+
     // Store the tampered envelope
     mockStorage.data.set('testkey', JSON.stringify(envelope));
-    
+
     // Should throw AAD mismatch error
     await expect(driver.getItem('testkey')).rejects.toThrow(/AAD mismatch/);
   });
@@ -115,7 +115,7 @@ describe('EncryptedDriver AAD verification', () => {
     // Store and retrieve - should work normally
     await driver.setItem('testkey', 'testvalue');
     const result = await driver.getItem('testkey');
-    
+
     expect(result).toBe('testvalue');
   });
 
@@ -124,11 +124,11 @@ describe('EncryptedDriver AAD verification', () => {
     await driver.setItem('testkey', 'testvalue');
     const storedEnvelope = mockStorage.data.get('testkey')!;
     const envelope = JSON.parse(storedEnvelope);
-    
+
     // Remove AAD field to simulate legacy envelope
     delete envelope.aad;
     mockStorage.data.set('testkey', JSON.stringify(envelope));
-    
+
     // Should still work (legacy compatibility)
     const result = await driver.getItem('testkey');
     expect(result).toBe('testvalue');

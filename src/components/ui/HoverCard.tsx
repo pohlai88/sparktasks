@@ -1,26 +1,26 @@
 /**
  * @fileoverview HoverCard Component - Enterprise-grade hover-triggered popover system
- * 
+ *
  * @component HoverCard
- * @description A sophisticated hover-triggered popover component for displaying rich contextual 
+ * @description A sophisticated hover-triggered popover component for displaying rich contextual
  * content. Designed for Fortune 500 enterprises with comprehensive accessibility, positioning,
  * and interaction patterns. Perfect for user profiles, previews, and contextual information.
- * 
+ *
  * @version 1.0.0
  * @author Spark Tasks Team
  * @since 2024
- * 
+ *
  * @implements {React.ForwardRefExoticComponent}
  * @implements {WCAG 2.1 AA Standards}
  * @implements {DESIGN_TOKENS V3.2}
- * 
+ *
  * Key Features:
  * - Hover and focus triggering with smart delays
  * - 12 positioning options with collision detection
  * - 4 sizes (sm, md, lg, xl) with responsive design
  * - 5 variants (default, elevation, minimal, rich, interactive)
  * - Portal rendering with z-index management
- * - Touch support with mobile optimizations  
+ * - Touch support with mobile optimizations
  * - Keyboard navigation and escape handling
  * - Animation system with motion preferences
  * - Content overflow handling
@@ -28,55 +28,56 @@
  * - Full accessibility compliance
  */
 
-import React, { 
-  useEffect, 
-  useRef, 
-  useCallback, 
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
   useState,
-  useLayoutEffect
+  useLayoutEffect,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { DESIGN_TOKENS } from '@/design/tokens';
+import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 
 // ===== ISOMORPHIC LAYOUT EFFECT =====
-const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const useIsoLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 // ===== TYPE DEFINITIONS =====
 
 /**
  * HoverCard position options with intelligent collision detection
  */
-export type HoverCardPosition = 
-  | 'top'           // Above trigger, center aligned
-  | 'top-start'     // Above trigger, left aligned
-  | 'top-end'       // Above trigger, right aligned
-  | 'bottom'        // Below trigger, center aligned
-  | 'bottom-start'  // Below trigger, left aligned
-  | 'bottom-end'    // Below trigger, right aligned
-  | 'left'          // Left of trigger, center aligned
-  | 'left-start'    // Left of trigger, top aligned
-  | 'left-end'      // Left of trigger, bottom aligned
-  | 'right'         // Right of trigger, center aligned
-  | 'right-start'   // Right of trigger, top aligned
-  | 'right-end';    // Right of trigger, bottom aligned
+export type HoverCardPosition =
+  | 'top' // Above trigger, center aligned
+  | 'top-start' // Above trigger, left aligned
+  | 'top-end' // Above trigger, right aligned
+  | 'bottom' // Below trigger, center aligned
+  | 'bottom-start' // Below trigger, left aligned
+  | 'bottom-end' // Below trigger, right aligned
+  | 'left' // Left of trigger, center aligned
+  | 'left-start' // Left of trigger, top aligned
+  | 'left-end' // Left of trigger, bottom aligned
+  | 'right' // Right of trigger, center aligned
+  | 'right-start' // Right of trigger, top aligned
+  | 'right-end'; // Right of trigger, bottom aligned
 
 /**
  * HoverCard size variants for different content types
  */
-export type HoverCardSize = 
-  | 'sm'    // 240px - Quick tooltips, status info
-  | 'md'    // 320px - User profiles, basic previews
-  | 'lg'    // 480px - Rich content, detailed previews
-  | 'xl';   // 640px - Complex content, media previews
+export type HoverCardSize =
+  | 'sm' // 240px - Quick tooltips, status info
+  | 'md' // 320px - User profiles, basic previews
+  | 'lg' // 480px - Rich content, detailed previews
+  | 'xl'; // 640px - Complex content, media previews
 
 /**
  * HoverCard visual variants
  */
 export type HoverCardVariant =
-  | 'default'     // Standard card styling
-  | 'elevation'   // Enhanced shadow and depth
-  | 'minimal'     // Reduced visual weight
-  | 'rich'        // Enhanced for media content
+  | 'default' // Standard card styling
+  | 'elevation' // Enhanced shadow and depth
+  | 'minimal' // Reduced visual weight
+  | 'rich' // Enhanced for media content
   | 'interactive'; // Enhanced for interactive content
 
 /**
@@ -171,31 +172,31 @@ const getArrowClasses = (position: HoverCardPosition): string => {
  * Get animation classes based on animation type and position
  */
 const getAnimationClasses = (
-  animation: HoverCardAnimation, 
+  animation: HoverCardAnimation,
   isVisible: boolean
 ): string => {
   if (animation === 'none') return '';
-  
+
   const baseClasses = DESIGN_TOKENS.motion.respectReduced;
-  
+
   if (animation === 'scale') {
-    return isVisible 
+    return isVisible
       ? `${DESIGN_TOKENS.motion.semantic.modalEnter} ${baseClasses}`
       : `${DESIGN_TOKENS.motion.semantic.modalExit} ${baseClasses}`;
   }
-  
+
   if (animation === 'fade') {
     return isVisible
       ? `${DESIGN_TOKENS.motion.semantic.overlayEnter} ${baseClasses}`
       : `${DESIGN_TOKENS.motion.semantic.overlayExit} ${baseClasses}`;
   }
-  
+
   if (animation === 'slide') {
     return isVisible
       ? `${DESIGN_TOKENS.motion.semantic.contentEnter} ${baseClasses}`
       : `${DESIGN_TOKENS.motion.semantic.contentExit} ${baseClasses}`;
   }
-  
+
   return '';
 };
 
@@ -231,13 +232,13 @@ const useHoverCardPosition = (
   collisionDetection: boolean
 ) => {
   const [actualPosition, setActualPosition] = useState(position);
-  
+
   useIsoLayoutEffect(() => {
     if (!collisionDetection || !triggerRef.current || !contentRef.current) {
       setActualPosition(position);
       return;
     }
-    
+
     const trigger = triggerRef.current;
     const content = contentRef.current;
     const triggerRect = trigger.getBoundingClientRect();
@@ -246,23 +247,35 @@ const useHoverCardPosition = (
       width: window.innerWidth,
       height: window.innerHeight,
     };
-    
+
     let bestPosition = position;
-    
+
     // Simple collision detection - flip if would overflow
-    if (position.startsWith('top') && triggerRect.top - contentRect.height - offset < 0) {
+    if (
+      position.startsWith('top') &&
+      triggerRect.top - contentRect.height - offset < 0
+    ) {
       bestPosition = position.replace('top', 'bottom') as HoverCardPosition;
-    } else if (position.startsWith('bottom') && triggerRect.bottom + contentRect.height + offset > viewport.height) {
+    } else if (
+      position.startsWith('bottom') &&
+      triggerRect.bottom + contentRect.height + offset > viewport.height
+    ) {
       bestPosition = position.replace('bottom', 'top') as HoverCardPosition;
-    } else if (position.startsWith('left') && triggerRect.left - contentRect.width - offset < 0) {
+    } else if (
+      position.startsWith('left') &&
+      triggerRect.left - contentRect.width - offset < 0
+    ) {
       bestPosition = position.replace('left', 'right') as HoverCardPosition;
-    } else if (position.startsWith('right') && triggerRect.right + contentRect.width + offset > viewport.width) {
+    } else if (
+      position.startsWith('right') &&
+      triggerRect.right + contentRect.width + offset > viewport.width
+    ) {
       bestPosition = position.replace('right', 'left') as HoverCardPosition;
     }
-    
+
     setActualPosition(bestPosition);
   }, [position, offset, collisionDetection, triggerRef, contentRef]);
-  
+
   return actualPosition;
 };
 
@@ -281,27 +294,30 @@ const useHoverCardInteraction = (
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
   const showTimeoutRef = useRef<number | null>(null);
   const hideTimeoutRef = useRef<number | null>(null);
-  
-  const setOpen = useCallback((open: boolean) => {
-    if (disabled) return;
-    
-    // Always notify, controlled or not
-    onOpenChange?.(open);
-    // Only update internal state when uncontrolled
-    if (!isControlled) {
-      setUncontrolledOpen(open);
-    }
-  }, [disabled, isControlled, onOpenChange]);
-  
+
+  const setOpen = useCallback(
+    (open: boolean) => {
+      if (disabled) return;
+
+      // Always notify, controlled or not
+      onOpenChange?.(open);
+      // Only update internal state when uncontrolled
+      if (!isControlled) {
+        setUncontrolledOpen(open);
+      }
+    },
+    [disabled, isControlled, onOpenChange]
+  );
+
   const handleMouseEnter = useCallback(() => {
     if (disabled || (trigger !== 'hover' && trigger !== 'both')) return;
-    
+
     // Clear any hide timeout
     if (hideTimeoutRef.current) {
       clearTimeout(hideTimeoutRef.current);
       hideTimeoutRef.current = null;
     }
-    
+
     // Set show timeout or show immediately
     if (showDelay > 0) {
       showTimeoutRef.current = window.setTimeout(() => {
@@ -311,16 +327,16 @@ const useHoverCardInteraction = (
       setOpen(true);
     }
   }, [trigger, disabled, showDelay, setOpen]);
-  
+
   const handleMouseLeave = useCallback(() => {
     if (disabled || (trigger !== 'hover' && trigger !== 'both')) return;
-    
+
     // Clear any show timeout
     if (showTimeoutRef.current) {
       clearTimeout(showTimeoutRef.current);
       showTimeoutRef.current = null;
     }
-    
+
     // Set hide timeout or hide immediately
     if (hideDelay > 0) {
       hideTimeoutRef.current = window.setTimeout(() => {
@@ -330,30 +346,33 @@ const useHoverCardInteraction = (
       setOpen(false);
     }
   }, [trigger, disabled, hideDelay, setOpen]);
-  
+
   const handleFocus = useCallback(() => {
     if (disabled || (trigger !== 'focus' && trigger !== 'both')) return;
-    
+
     // Clear any pending hide timeout
     if (hideTimeoutRef.current) {
       clearTimeout(hideTimeoutRef.current);
       hideTimeoutRef.current = null;
     }
-    
+
     setOpen(true);
   }, [trigger, disabled, setOpen]);
-  
+
   const handleBlur = useCallback(() => {
     if (disabled || (trigger !== 'focus' && trigger !== 'both')) return;
     setOpen(false);
   }, [trigger, disabled, setOpen]);
-  
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      setOpen(false);
-    }
-  }, [setOpen]);
-  
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+      }
+    },
+    [setOpen]
+  );
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -361,9 +380,9 @@ const useHoverCardInteraction = (
       if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
     };
   }, []);
-  
+
   return {
-    open: isControlled ? (controlledOpen || false) : uncontrolledOpen,
+    open: isControlled ? controlledOpen || false : uncontrolledOpen,
     handlers: {
       onMouseEnter: handleMouseEnter,
       onMouseLeave: handleMouseLeave,
@@ -403,7 +422,8 @@ function useOutsideDismiss(params: {
   rootRef?: React.RefObject<HTMLElement>;
   onDismiss: () => void;
 }) {
-  const { enabled, isOpen, triggerRef, contentRef, rootRef, onDismiss } = params;
+  const { enabled, isOpen, triggerRef, contentRef, rootRef, onDismiss } =
+    params;
 
   useEffect(() => {
     if (!enabled || !isOpen || typeof document === 'undefined') return;
@@ -436,71 +456,71 @@ function useOutsideDismiss(params: {
  * Compute fixed coordinates for portal positioning
  */
 function computePortalCoords(
-  triggerRect: DOMRect, 
-  contentRect: DOMRect, 
-  position: HoverCardPosition, 
+  triggerRect: DOMRect,
+  contentRect: DOMRect,
+  position: HoverCardPosition,
   offset: number
 ): { top: number; left: number } {
   const centerX = triggerRect.left + triggerRect.width / 2;
   const centerY = triggerRect.top + triggerRect.height / 2;
-  
+
   const coordMap = {
-    top: { 
-      top: triggerRect.top - contentRect.height - offset, 
-      left: centerX - contentRect.width / 2 
+    top: {
+      top: triggerRect.top - contentRect.height - offset,
+      left: centerX - contentRect.width / 2,
     },
-    'top-start': { 
-      top: triggerRect.top - contentRect.height - offset, 
-      left: triggerRect.left 
+    'top-start': {
+      top: triggerRect.top - contentRect.height - offset,
+      left: triggerRect.left,
     },
-    'top-end': { 
-      top: triggerRect.top - contentRect.height - offset, 
-      left: triggerRect.right - contentRect.width 
+    'top-end': {
+      top: triggerRect.top - contentRect.height - offset,
+      left: triggerRect.right - contentRect.width,
     },
-    bottom: { 
-      top: triggerRect.bottom + offset, 
-      left: centerX - contentRect.width / 2 
+    bottom: {
+      top: triggerRect.bottom + offset,
+      left: centerX - contentRect.width / 2,
     },
-    'bottom-start': { 
-      top: triggerRect.bottom + offset, 
-      left: triggerRect.left 
+    'bottom-start': {
+      top: triggerRect.bottom + offset,
+      left: triggerRect.left,
     },
-    'bottom-end': { 
-      top: triggerRect.bottom + offset, 
-      left: triggerRect.right - contentRect.width 
+    'bottom-end': {
+      top: triggerRect.bottom + offset,
+      left: triggerRect.right - contentRect.width,
     },
-    left: { 
-      top: centerY - contentRect.height / 2, 
-      left: triggerRect.left - contentRect.width - offset 
+    left: {
+      top: centerY - contentRect.height / 2,
+      left: triggerRect.left - contentRect.width - offset,
     },
-    'left-start': { 
-      top: triggerRect.top, 
-      left: triggerRect.left - contentRect.width - offset 
+    'left-start': {
+      top: triggerRect.top,
+      left: triggerRect.left - contentRect.width - offset,
     },
-    'left-end': { 
-      top: triggerRect.bottom - contentRect.height, 
-      left: triggerRect.left - contentRect.width - offset 
+    'left-end': {
+      top: triggerRect.bottom - contentRect.height,
+      left: triggerRect.left - contentRect.width - offset,
     },
-    right: { 
-      top: centerY - contentRect.height / 2, 
-      left: triggerRect.right + offset 
+    right: {
+      top: centerY - contentRect.height / 2,
+      left: triggerRect.right + offset,
     },
-    'right-start': { 
-      top: triggerRect.top, 
-      left: triggerRect.right + offset 
+    'right-start': {
+      top: triggerRect.top,
+      left: triggerRect.right + offset,
     },
-    'right-end': { 
-      top: triggerRect.bottom - contentRect.height, 
-      left: triggerRect.right + offset 
+    'right-end': {
+      top: triggerRect.bottom - contentRect.height,
+      left: triggerRect.right + offset,
     },
   } as const;
-  
+
   return coordMap[position];
 }
 
 /**
  * HoverCard: Enterprise-grade hover-triggered popover component
- * 
+ *
  * Provides sophisticated hover interactions for displaying rich contextual content.
  * Designed for enterprise applications with comprehensive accessibility and UX patterns.
  */
@@ -536,8 +556,8 @@ export const HoverCardBase = React.forwardRef<HTMLDivElement, HoverCardProps>(
     const rootRef = useRef<HTMLSpanElement>(null);
     const lastActiveRef = useRef<HTMLElement | null>(null);
     const hoverCardId = React.useId();
-    
-    // Use the proper interaction hook 
+
+    // Use the proper interaction hook
     const interaction = useHoverCardInteraction(
       trigger,
       showDelay,
@@ -547,9 +567,9 @@ export const HoverCardBase = React.forwardRef<HTMLDivElement, HoverCardProps>(
       onOpenChange,
       controlledOpen
     );
-    
+
     const isOpen = interaction.open;
-    
+
     const actualPosition = useHoverCardPosition(
       triggerRef,
       contentRef,
@@ -557,32 +577,35 @@ export const HoverCardBase = React.forwardRef<HTMLDivElement, HoverCardProps>(
       offset,
       collisionDetection
     );
-    
+
     // Portal positioning state
     const [inlineStyle, setInlineStyle] = useState<React.CSSProperties>();
-    
+
     // Portal target (only when portal=true)
     const shouldPortal = portal && typeof document !== 'undefined';
-    const portalTarget = shouldPortal ? (container || document.body) : null;
-    
+    const portalTarget = shouldPortal ? container || document.body : null;
+
     // Determine ARIA attributes based on variant
     const isInteractive = variant === 'interactive' || variant === 'rich';
     const role = isInteractive ? 'dialog' : 'tooltip';
     const triggerAria = isInteractive
-      ? { 
+      ? {
           'aria-haspopup': 'dialog' as const,
           'aria-controls': isOpen ? hoverCardId : undefined,
-          'aria-expanded': isOpen || undefined
+          'aria-expanded': isOpen || undefined,
         }
       : { 'aria-describedby': isOpen ? hoverCardId : undefined };
-    
+
     // Outside click behavior - default to true for interactive variants
     const defaultCloseOutside = isInteractive;
     const shouldCloseOnOutside = closeOnOutsideClick ?? defaultCloseOutside;
-    
+
     // Close function that respects controlled/uncontrolled
-    const requestClose = React.useCallback(() => interaction.setOpen(false), [interaction]);
-    
+    const requestClose = React.useCallback(
+      () => interaction.setOpen(false),
+      [interaction]
+    );
+
     // Outside dismiss hook
     useOutsideDismiss({
       enabled: !!shouldCloseOnOutside && !disabled,
@@ -592,7 +615,7 @@ export const HoverCardBase = React.forwardRef<HTMLDivElement, HoverCardProps>(
       rootRef,
       onDismiss: requestClose,
     });
-    
+
     // Get token-based classes
     const sizeClasses = getSizeClasses(size);
     const variantClasses = getVariantClasses(variant);
@@ -601,55 +624,70 @@ export const HoverCardBase = React.forwardRef<HTMLDivElement, HoverCardProps>(
     const originClass = getTransformOrigin(actualPosition);
     const panelBase = DESIGN_TOKENS.recipe.hoverCard.panel;
     const contentClasses = DESIGN_TOKENS.recipe.hoverCard.content;
-    
+
     // Portal positioning effect
     useIsoLayoutEffect(() => {
-      if (!shouldPortal || !isOpen || !triggerRef.current || !contentRef.current) {
+      if (
+        !shouldPortal ||
+        !isOpen ||
+        !triggerRef.current ||
+        !contentRef.current
+      ) {
         return;
       }
-      
+
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const contentRect = contentRef.current.getBoundingClientRect();
-      const coords = computePortalCoords(triggerRect, contentRect, actualPosition, offset);
-      
-      setInlineStyle({ 
-        position: 'fixed', 
-        top: coords.top, 
+      const coords = computePortalCoords(
+        triggerRect,
+        contentRect,
+        actualPosition,
+        offset
+      );
+
+      setInlineStyle({
+        position: 'fixed',
+        top: coords.top,
         left: coords.left,
       });
     }, [shouldPortal, isOpen, actualPosition, offset]);
-    
+
     // Auto-update portal positioning on scroll/resize
     useIsoLayoutEffect(() => {
       if (!shouldPortal || !isOpen) return;
-      
+
       const updatePosition = () => {
         if (triggerRef.current && contentRef.current) {
           const triggerRect = triggerRef.current.getBoundingClientRect();
           const contentRect = contentRef.current.getBoundingClientRect();
-          const coords = computePortalCoords(triggerRect, contentRect, actualPosition, offset);
-          
-          setInlineStyle(prev => ({ 
+          const coords = computePortalCoords(
+            triggerRect,
+            contentRect,
+            actualPosition,
+            offset
+          );
+
+          setInlineStyle(prev => ({
             ...prev,
-            top: coords.top, 
-            left: coords.left 
+            top: coords.top,
+            left: coords.left,
           }));
         }
       };
-      
+
       window.addEventListener('scroll', updatePosition, true);
       window.addEventListener('resize', updatePosition);
-      
+
       return () => {
         window.removeEventListener('scroll', updatePosition, true);
         window.removeEventListener('resize', updatePosition);
       };
     }, [shouldPortal, isOpen, actualPosition, offset]);
-    
+
     // Interactive focus management
     useEffect(() => {
       if (!isInteractive) return;
-      
+
       if (isOpen && contentRef.current) {
         // Store current focus and move to card
         lastActiveRef.current = document.activeElement as HTMLElement;
@@ -660,29 +698,60 @@ export const HoverCardBase = React.forwardRef<HTMLDivElement, HoverCardProps>(
         lastActiveRef.current.focus?.();
       }
     }, [isOpen, isInteractive]);
-    
+
     // Enhance trigger element with interaction handlers
     const enhancedTrigger = React.cloneElement(children, {
-      ref: composeRefs((children as React.ReactElement & { ref?: React.Ref<HTMLElement> }).ref, triggerRef),
+      ref: composeRefs(
+        (children as React.ReactElement & { ref?: React.Ref<HTMLElement> }).ref,
+        triggerRef
+      ),
       ...triggerAria,
-      onMouseEnter: combineHandlers(children.props.onMouseEnter, interaction.handlers.onMouseEnter),
-      onMouseOver: combineHandlers(children.props.onMouseOver, interaction.handlers.onMouseEnter),
-      onMouseLeave: combineHandlers(children.props.onMouseLeave, interaction.handlers.onMouseLeave),
-      onMouseOut: combineHandlers(children.props.onMouseOut, interaction.handlers.onMouseLeave),
-      onPointerEnter: combineHandlers(children.props.onPointerEnter, interaction.handlers.onMouseEnter),
-      onPointerLeave: combineHandlers(children.props.onPointerLeave, interaction.handlers.onMouseLeave),
-      onFocus: combineHandlers(children.props.onFocus, interaction.handlers.onFocus),
-      onBlur: combineHandlers(children.props.onBlur, interaction.handlers.onBlur),
+      onMouseEnter: combineHandlers(
+        children.props.onMouseEnter,
+        interaction.handlers.onMouseEnter
+      ),
+      onMouseOver: combineHandlers(
+        children.props.onMouseOver,
+        interaction.handlers.onMouseEnter
+      ),
+      onMouseLeave: combineHandlers(
+        children.props.onMouseLeave,
+        interaction.handlers.onMouseLeave
+      ),
+      onMouseOut: combineHandlers(
+        children.props.onMouseOut,
+        interaction.handlers.onMouseLeave
+      ),
+      onPointerEnter: combineHandlers(
+        children.props.onPointerEnter,
+        interaction.handlers.onMouseEnter
+      ),
+      onPointerLeave: combineHandlers(
+        children.props.onPointerLeave,
+        interaction.handlers.onMouseLeave
+      ),
+      onFocus: combineHandlers(
+        children.props.onFocus,
+        interaction.handlers.onFocus
+      ),
+      onBlur: combineHandlers(
+        children.props.onBlur,
+        interaction.handlers.onBlur
+      ),
     });
-    
+
     // Keyboard event handling
     useEffect(() => {
       if (isOpen) {
         document.addEventListener('keydown', interaction.handlers.onKeyDown);
-        return () => document.removeEventListener('keydown', interaction.handlers.onKeyDown);
+        return () =>
+          document.removeEventListener(
+            'keydown',
+            interaction.handlers.onKeyDown
+          );
       }
     }, [isOpen, interaction.handlers.onKeyDown]);
-    
+
     // HoverCard content
     const hoverCardContent = isOpen && !disabled && (
       <div
@@ -702,7 +771,9 @@ export const HoverCardBase = React.forwardRef<HTMLDivElement, HoverCardProps>(
           originClass, // Add transform origin for natural animations
           shouldPortal ? '' : positionClasses, // Only use class positioning when not portaled
           contentClassName || '',
-        ].filter(Boolean).join(' ')}
+        ]
+          .filter(Boolean)
+          .join(' ')}
         data-testid={testId && `${testId}-content`}
         data-position={actualPosition}
         data-size={size}
@@ -715,40 +786,37 @@ export const HoverCardBase = React.forwardRef<HTMLDivElement, HoverCardProps>(
         onPointerLeave={interaction.handlers.onMouseLeave}
         onFocus={interaction.handlers.onFocus}
         onBlur={interaction.handlers.onBlur}
-        onPointerDown={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
+        onPointerDown={e => e.stopPropagation()}
+        onMouseDown={e => e.stopPropagation()}
       >
         {/* Arrow pointer */}
         {showArrow && (
           <div
             className={arrowClasses}
-            aria-hidden="true"
+            aria-hidden='true'
             data-testid={testId && `${testId}-arrow`}
           />
         )}
-        
+
         {/* Content */}
-        <div className={contentClasses}>
-          {content}
-        </div>
+        <div className={contentClasses}>{content}</div>
       </div>
     );
-    
+
     return (
-      <span 
+      <span
         ref={composeRefs(ref, rootRef)}
-        className="relative inline-block"
+        className={combineTokens('relative', 'inline-block')}
         data-testid={testId && `${testId}-wrapper`}
         onFocus={interaction.handlers.onFocus}
         onBlur={interaction.handlers.onBlur}
       >
         {enhancedTrigger}
-        
+
         {/* Render in portal or inline */}
-        {shouldPortal && portalTarget 
+        {shouldPortal && portalTarget
           ? createPortal(hoverCardContent, portalTarget)
-          : hoverCardContent
-        }
+          : hoverCardContent}
       </span>
     );
   }
@@ -766,10 +834,9 @@ export const HoverCardHeader = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={`
-        ${DESIGN_TOKENS.layout.patterns.cardHeader}
-        ${className || ''}
-      `.trim().replace(/\s+/g, ' ')}
+      className={` ${DESIGN_TOKENS.layout.patterns.cardHeader} ${className || ''} `
+        .trim()
+        .replace(/\s+/g, ' ')}
       {...props}
     />
   );
@@ -785,10 +852,7 @@ export const HoverCardContent = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={`
-        space-y-3
-        ${className || ''}
-      `.trim().replace(/\s+/g, ' ')}
+      className={`space-y-3 ${className || ''} `.trim().replace(/\s+/g, ' ')}
       {...props}
     />
   );
@@ -804,12 +868,9 @@ export const HoverCardFooter = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={`
-        px-3 py-2
-        border-t pt-3 mt-3
-        border-gray-200 dark:border-gray-700
-        ${className || ''}
-      `.trim().replace(/\s+/g, ' ')}
+      className={`mt-3 border-t border-gray-200 px-3 py-2 pt-3 dark:border-gray-700 ${className || ''} `
+        .trim()
+        .replace(/\s+/g, ' ')}
       {...props}
     />
   );
@@ -820,7 +881,10 @@ export const HoverCardFooter = React.forwardRef<
 /**
  * HoverCard component with sub-components
  */
-interface HoverCardCompound extends React.ForwardRefExoticComponent<HoverCardProps & React.RefAttributes<HTMLDivElement>> {
+interface HoverCardCompound
+  extends React.ForwardRefExoticComponent<
+    HoverCardProps & React.RefAttributes<HTMLDivElement>
+  > {
   Header: typeof HoverCardHeader;
   Content: typeof HoverCardContent;
   Footer: typeof HoverCardFooter;
@@ -846,7 +910,7 @@ function combineHandlers<T extends (...args: never[]) => void>(
   if (!original && !additional) return undefined;
   if (!original) return additional;
   if (!additional) return original;
-  
+
   return ((...args: Parameters<T>) => {
     original(...args);
     additional(...args);

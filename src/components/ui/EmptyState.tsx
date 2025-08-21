@@ -1,19 +1,19 @@
 /**
  * @fileoverview EmptyState Component - Enterprise-grade empty state component system
- * 
+ *
  * @component EmptyState
  * @description A comprehensive empty state component system for indicating no data,
  * no results, errors, and other states with customizable icons, content, and actions.
  * Implements "Sir Steve" principles: reduce friction, show promise, invite action.
- * 
+ *
  * @version 1.0.0
  * @author Spark Tasks Team
  * @since 2024
- * 
+ *
  * @implements {React.ForwardRefExoticComponent}
  * @implements {WCAG 2.1 AA Standards}
  * @implements {DESIGN_TOKENS V3.2}
- * 
+ *
  * Key Features:
  * - Multiple variants (no-data, no-results, error, search, network, onboarding)
  * - Size variants (small, medium, large)
@@ -28,21 +28,21 @@
 
 import React from 'react';
 import { cn } from '../../utils/cn';
-import { DESIGN_TOKENS } from '../../design/tokens';
+import { DESIGN_TOKENS, combineTokens } from '../../design/tokens';
 
 // ===== TYPE DEFINITIONS =====
 
 /**
  * Variant types for different empty state scenarios
  */
-export type EmptyStateVariant = 
-  | 'no-data'      // General no data state
-  | 'no-results'   // Search/filter results empty
-  | 'error'        // Error state
-  | 'search'       // Search empty state
-  | 'network'      // Network/connection issues
-  | 'onboarding'   // First-time user experience
-  | 'generic';     // Generic empty state
+export type EmptyStateVariant =
+  | 'no-data' // General no data state
+  | 'no-results' // Search/filter results empty
+  | 'error' // Error state
+  | 'search' // Search empty state
+  | 'network' // Network/connection issues
+  | 'onboarding' // First-time user experience
+  | 'generic'; // Generic empty state
 
 /**
  * Size variants for the empty state
@@ -122,38 +122,115 @@ export interface EmptyStateProps {
  */
 const EmptyStateIcons = {
   'no-data': (
-    <svg className="size-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+    <svg
+      className={combineTokens('size-full')}
+      fill='none'
+      stroke='currentColor'
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={1.5}
+        d='M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'
+      />
     </svg>
   ),
   'no-results': (
-    <svg className="size-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    <svg
+      className={combineTokens('size-full')}
+      fill='none'
+      stroke='currentColor'
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={1.5}
+        d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+      />
     </svg>
   ),
-  'error': (
-    <svg className="size-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+  error: (
+    <svg
+      className='size-full'
+      fill='none'
+      stroke='currentColor'
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={1.5}
+        d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z'
+      />
     </svg>
   ),
-  'search': (
-    <svg className="size-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  search: (
+    <svg
+      className='size-full'
+      fill='none'
+      stroke='currentColor'
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={1.5}
+        d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+      />
     </svg>
   ),
-  'network': (
-    <svg className="size-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+  network: (
+    <svg
+      className='size-full'
+      fill='none'
+      stroke='currentColor'
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={1.5}
+        d='M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0'
+      />
     </svg>
   ),
-  'onboarding': (
-    <svg className="size-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.5v15m7.5-7.5h-15" />
+  onboarding: (
+    <svg
+      className='size-full'
+      fill='none'
+      stroke='currentColor'
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={1.5}
+        d='M12 4.5v15m7.5-7.5h-15'
+      />
     </svg>
   ),
-  'generic': (
-    <svg className="size-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+  generic: (
+    <svg
+      className='size-full'
+      fill='none'
+      stroke='currentColor'
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={1.5}
+        d='M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4'
+      />
     </svg>
   ),
 };
@@ -174,23 +251,23 @@ const getDefaultContent = (variant: EmptyStateVariant) => {
       title: 'No results found',
       description: 'Try adjusting your search criteria or filters.',
     },
-    'error': {
+    error: {
       title: 'Something went wrong',
       description: 'An error occurred while loading the data.',
     },
-    'search': {
+    search: {
       title: 'Start your search',
       description: 'Enter a search term to find what you are looking for.',
     },
-    'network': {
+    network: {
       title: 'Connection problem',
       description: 'Check your internet connection and try again.',
     },
-    'onboarding': {
+    onboarding: {
       title: 'Create your first task',
       description: 'Capture what matters and start checking things off.',
     },
-    'generic': {
+    generic: {
       title: 'Make it yours',
       description: 'Plan today, track progress, and get it done.',
     },
@@ -242,27 +319,27 @@ const getVariantColorClasses = (variant: EmptyStateVariant) => {
       title: 'text-slate-700 dark:text-slate-300',
       description: 'text-slate-600 dark:text-slate-400',
     },
-    'error': {
+    error: {
       icon: 'text-error-400 dark:text-error-500',
       title: 'text-error-700 dark:text-error-300',
       description: 'text-error-600 dark:text-error-400',
     },
-    'search': {
+    search: {
       icon: 'text-primary-400 dark:text-primary-500',
       title: 'text-slate-700 dark:text-slate-300',
       description: 'text-slate-600 dark:text-slate-400',
     },
-    'network': {
+    network: {
       icon: 'text-warning-400 dark:text-warning-500',
       title: 'text-warning-700 dark:text-warning-300',
       description: 'text-warning-600 dark:text-warning-400',
     },
-    'onboarding': {
+    onboarding: {
       icon: 'text-primary-500 dark:text-primary-400',
       title: 'text-slate-800 dark:text-slate-200',
       description: 'text-slate-600 dark:text-slate-400',
     },
-    'generic': {
+    generic: {
       icon: 'text-slate-400 dark:text-slate-500',
       title: 'text-slate-700 dark:text-slate-300',
       description: 'text-slate-600 dark:text-slate-400',
@@ -286,13 +363,11 @@ const EmptyStateIconComponent: React.FC<{
 
   const sizeClasses = getSizeClasses(size);
   const colorClasses = getVariantColorClasses(variant);
-  
+
   const iconElement = icon?.element || EmptyStateIcons[variant];
 
   return (
-    <div className={cn(sizeClasses.icon, colorClasses.icon)}>
-      {iconElement}
-    </div>
+    <div className={cn(sizeClasses.icon, colorClasses.icon)}>{iconElement}</div>
   );
 };
 
@@ -305,11 +380,14 @@ const EmptyStateSuggestions: React.FC<{
   if (!suggestions.length) return null;
 
   return (
-    <div className="flex flex-wrap justify-center gap-2" aria-label="Suggestions">
+    <div
+      className={combineTokens('flex', 'flex-wrap', 'justify-center', 'gap-2')}
+      aria-label='Suggestions'
+    >
       {suggestions.map((suggestion, index) => (
         <button
           key={index}
-          type="button"
+          type='button'
           onClick={suggestion.onClick}
           disabled={suggestion.disabled}
           className={cn(
@@ -337,7 +415,8 @@ const EmptyStateActions: React.FC<{
 }> = ({ actions, size }) => {
   if (!actions.length) return null;
 
-  const containerClasses = size === 'small' ? 'mt-3 space-y-2' : 'mt-6 space-y-3';
+  const containerClasses =
+    size === 'small' ? 'mt-3 space-y-2' : 'mt-6 space-y-3';
 
   return (
     <div className={containerClasses}>
@@ -348,7 +427,7 @@ const EmptyStateActions: React.FC<{
           disabled={action.disabled || action.loading}
           className={cn(
             DESIGN_TOKENS.recipe.button.base,
-            action.variant === 'primary' 
+            action.variant === 'primary'
               ? DESIGN_TOKENS.recipe.button.primary
               : DESIGN_TOKENS.recipe.button.secondary,
             DESIGN_TOKENS.sizing.button.md
@@ -358,23 +437,28 @@ const EmptyStateActions: React.FC<{
         >
           {action.loading && (
             <svg
-              className="-ml-1 mr-2 size-4 animate-spin"
-              fill="none"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+              className={combineTokens(
+                '-ml-1',
+                'mr-2',
+                'size-4',
+                'animate-spin'
+              )}
+              fill='none'
+              viewBox='0 0 24 24'
+              aria-hidden='true'
             >
               <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
+                className={combineTokens('opacity-25')}
+                cx='12'
+                cy='12'
+                r='10'
+                stroke='currentColor'
+                strokeWidth='4'
               />
               <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                className={combineTokens('opacity-75')}
+                fill='currentColor'
+                d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
               />
             </svg>
           )}
@@ -389,19 +473,19 @@ const EmptyStateActions: React.FC<{
 
 /**
  * EmptyState - Enterprise-grade empty state component
- * 
+ *
  * A comprehensive empty state component for displaying no data, no results,
  * errors, and other empty states with built-in accessibility and design token integration.
  * Implements "Sir Steve" UX principles for conversion-focused empty states.
- * 
+ *
  * @param props - EmptyState component props
  * @returns Rendered EmptyState component
- * 
+ *
  * @example
  * ```tsx
  * // Basic onboarding empty state
  * <EmptyState variant="onboarding" />
- * 
+ *
  * // With actions and suggestions (Sir Steve pattern)
  * <EmptyState
  *   variant="onboarding"
@@ -417,7 +501,7 @@ const EmptyStateActions: React.FC<{
  *     { text: 'Pay invoices', onClick: () => createTask('Pay invoices') }
  *   ]}
  * />
- * 
+ *
  * // With custom icon
  * <EmptyState
  *   variant="generic"
@@ -426,74 +510,86 @@ const EmptyStateActions: React.FC<{
  * />
  * ```
  */
-const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(({
-  variant = 'generic',
-  size = 'medium',
-  title,
-  description,
-  icon,
-  actions = [],
-  suggestions = [],
-  children,
-  className,
-  'aria-label': ariaLabel,
-  'data-testid': testId,
-  ...props
-}, ref) => {
-  const sizeClasses = getSizeClasses(size);
-  const colorClasses = getVariantColorClasses(variant);
-  const defaultContent = getDefaultContent(variant);
+const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
+  (
+    {
+      variant = 'generic',
+      size = 'medium',
+      title,
+      description,
+      icon,
+      actions = [],
+      suggestions = [],
+      children,
+      className,
+      'aria-label': ariaLabel,
+      'data-testid': testId,
+      ...props
+    },
+    ref
+  ) => {
+    const sizeClasses = getSizeClasses(size);
+    const colorClasses = getVariantColorClasses(variant);
+    const defaultContent = getDefaultContent(variant);
 
-  // Use provided content or fall back to defaults
-  const displayTitle = title ?? defaultContent.title;
-  const displayDescription = description ?? defaultContent.description;
+    // Use provided content or fall back to defaults
+    const displayTitle = title ?? defaultContent.title;
+    const displayDescription = description ?? defaultContent.description;
 
-  // Build accessibility label
-  const accessibilityLabel = ariaLabel || `Empty state: ${displayTitle}`;
+    // Build accessibility label
+    const accessibilityLabel = ariaLabel || `Empty state: ${displayTitle}`;
 
-  if (children) {
+    if (children) {
+      return (
+        <div
+          ref={ref}
+          className={cn(sizeClasses.container, className)}
+          aria-labelledby={displayTitle ? undefined : 'empty-state-label'}
+          aria-label={displayTitle ? undefined : accessibilityLabel}
+          data-testid={testId}
+          {...props}
+        >
+          {children}
+        </div>
+      );
+    }
+
     return (
       <div
         ref={ref}
         className={cn(sizeClasses.container, className)}
-        aria-labelledby={displayTitle ? undefined : 'empty-state-label'}
-        aria-label={displayTitle ? undefined : accessibilityLabel}
+        aria-labelledby='empty-state-title'
         data-testid={testId}
         {...props}
       >
-        {children}
+        <EmptyStateIconComponent
+          variant={variant}
+          size={size}
+          {...(icon && { icon })}
+        />
+
+        {displayTitle && (
+          <h3
+            id='empty-state-title'
+            className={cn(sizeClasses.title, colorClasses.title)}
+          >
+            {displayTitle}
+          </h3>
+        )}
+
+        {displayDescription && (
+          <p className={cn(sizeClasses.description, colorClasses.description)}>
+            {displayDescription}
+          </p>
+        )}
+
+        <EmptyStateActions actions={actions} size={size} />
+
+        <EmptyStateSuggestions suggestions={suggestions} />
       </div>
     );
   }
-
-  return (
-    <div
-      ref={ref}
-      className={cn(sizeClasses.container, className)}
-      aria-labelledby="empty-state-title"
-      data-testid={testId}
-      {...props}
-    >
-      <EmptyStateIconComponent variant={variant} size={size} {...(icon && { icon })} />
-      
-      {displayTitle && (
-        <h3 id="empty-state-title" className={cn(sizeClasses.title, colorClasses.title)}>
-          {displayTitle}
-        </h3>
-      )}
-      
-      {displayDescription && (
-        <p className={cn(sizeClasses.description, colorClasses.description)}>
-          {displayDescription}
-        </p>
-      )}
-      
-      <EmptyStateActions actions={actions} size={size} />
-      
-      <EmptyStateSuggestions suggestions={suggestions} />
-    </div>
-  );
-});
+);
 
 EmptyState.displayName = 'EmptyState';
 
@@ -502,50 +598,56 @@ EmptyState.displayName = 'EmptyState';
 /**
  * EmptyState.NoData - Specialized no data empty state
  */
-const EmptyStateNoData = React.forwardRef<HTMLDivElement, Omit<EmptyStateProps, 'variant'>>(
-  (props, ref) => <EmptyState ref={ref} variant="no-data" {...props} />
-);
+const EmptyStateNoData = React.forwardRef<
+  HTMLDivElement,
+  Omit<EmptyStateProps, 'variant'>
+>((props, ref) => <EmptyState ref={ref} variant='no-data' {...props} />);
 EmptyStateNoData.displayName = 'EmptyState.NoData';
 
 /**
  * EmptyState.NoResults - Specialized no results empty state
  */
-const EmptyStateNoResults = React.forwardRef<HTMLDivElement, Omit<EmptyStateProps, 'variant'>>(
-  (props, ref) => <EmptyState ref={ref} variant="no-results" {...props} />
-);
+const EmptyStateNoResults = React.forwardRef<
+  HTMLDivElement,
+  Omit<EmptyStateProps, 'variant'>
+>((props, ref) => <EmptyState ref={ref} variant='no-results' {...props} />);
 EmptyStateNoResults.displayName = 'EmptyState.NoResults';
 
 /**
  * EmptyState.Error - Specialized error empty state
  */
-const EmptyStateError = React.forwardRef<HTMLDivElement, Omit<EmptyStateProps, 'variant'>>(
-  (props, ref) => <EmptyState ref={ref} variant="error" {...props} />
-);
+const EmptyStateError = React.forwardRef<
+  HTMLDivElement,
+  Omit<EmptyStateProps, 'variant'>
+>((props, ref) => <EmptyState ref={ref} variant='error' {...props} />);
 EmptyStateError.displayName = 'EmptyState.Error';
 
 /**
  * EmptyState.Search - Specialized search empty state
  */
-const EmptyStateSearch = React.forwardRef<HTMLDivElement, Omit<EmptyStateProps, 'variant'>>(
-  (props, ref) => <EmptyState ref={ref} variant="search" {...props} />
-);
+const EmptyStateSearch = React.forwardRef<
+  HTMLDivElement,
+  Omit<EmptyStateProps, 'variant'>
+>((props, ref) => <EmptyState ref={ref} variant='search' {...props} />);
 EmptyStateSearch.displayName = 'EmptyState.Search';
 
 /**
  * EmptyState.Network - Specialized network empty state
  */
-const EmptyStateNetwork = React.forwardRef<HTMLDivElement, Omit<EmptyStateProps, 'variant'>>(
-  (props, ref) => <EmptyState ref={ref} variant="network" {...props} />
-);
+const EmptyStateNetwork = React.forwardRef<
+  HTMLDivElement,
+  Omit<EmptyStateProps, 'variant'>
+>((props, ref) => <EmptyState ref={ref} variant='network' {...props} />);
 EmptyStateNetwork.displayName = 'EmptyState.Network';
 
 /**
  * EmptyState.Onboarding - Specialized onboarding empty state
  * Implements Sir Steve's conversion-focused patterns
  */
-const EmptyStateOnboarding = React.forwardRef<HTMLDivElement, Omit<EmptyStateProps, 'variant'>>(
-  (props, ref) => <EmptyState ref={ref} variant="onboarding" {...props} />
-);
+const EmptyStateOnboarding = React.forwardRef<
+  HTMLDivElement,
+  Omit<EmptyStateProps, 'variant'>
+>((props, ref) => <EmptyState ref={ref} variant='onboarding' {...props} />);
 EmptyStateOnboarding.displayName = 'EmptyState.Onboarding';
 
 // ===== EXPORTS =====

@@ -4,9 +4,14 @@
  */
 
 import { describe, beforeEach, test, expect } from 'vitest';
-import { 
-  addSigner, setActiveSigner, retireSigner, revokeSigner, 
-  listSigners, rotateSigner, configureSignerRegistry 
+import {
+  addSigner,
+  setActiveSigner,
+  retireSigner,
+  revokeSigner,
+  listSigners,
+  rotateSigner,
+  configureSignerRegistry,
 } from '../src/sync/signer-registry';
 import { attestPack, verifyPackAttestation } from '../src/sync/attestation';
 import { configureAudit } from '../src/audit/api';
@@ -47,7 +52,7 @@ describe('Signer Lifecycle', () => {
       format: 'sparkpack/1+json',
       createdAt: new Date().toISOString(),
       eventsCount: 1,
-      eventsHash: 'abc123'
+      eventsHash: 'abc123',
     },
     events: [
       {
@@ -58,10 +63,10 @@ describe('Signer Lifecycle', () => {
           id: 'test-task',
           priority: 'P1' as const,
           title: 'Test Task',
-          tags: ['test']
-        }
-      }
-    ]
+          tags: ['test'],
+        },
+      },
+    ],
   };
 
   beforeEach(async () => {
@@ -71,29 +76,29 @@ describe('Signer Lifecycle', () => {
     configureAudit(storage, ns);
 
     // Generate test key pairs
-    keyPair1 = await crypto.subtle.generateKey(
-      { name: 'Ed25519' },
-      true,
-      ['sign', 'verify']
-    );
+    keyPair1 = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, [
+      'sign',
+      'verify',
+    ]);
 
-    keyPair2 = await crypto.subtle.generateKey(
-      { name: 'Ed25519' },
-      true,
-      ['sign', 'verify']
-    );
+    keyPair2 = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, [
+      'sign',
+      'verify',
+    ]);
   });
 
   test('happy path - add signer, attest, verify', async () => {
     const pubKey = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add signer
     await addSigner(ns, {
       kid: 'test-signer-1',
       pubB64u,
-      note: 'Primary signer'
+      note: 'Primary signer',
     });
 
     // Attest pack
@@ -108,23 +113,27 @@ describe('Signer Lifecycle', () => {
   test('rotation sequence - overlapping active periods', async () => {
     const pubKey1 = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u1 = btoa(String.fromCharCode(...new Uint8Array(pubKey1)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     const pubKey2 = await crypto.subtle.exportKey('spki', keyPair2.publicKey);
     const pubB64u2 = btoa(String.fromCharCode(...new Uint8Array(pubKey2)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add first signer
     await addSigner(ns, {
       kid: 'signer-v1',
       pubB64u: pubB64u1,
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     });
 
     // Rotate to new signer
     await rotateSigner(ns, {
       kid: 'signer-v2',
-      pubB64u: pubB64u2
+      pubB64u: pubB64u2,
     });
 
     // Both should be able to attest during overlap
@@ -133,7 +142,7 @@ describe('Signer Lifecycle', () => {
 
     const result1 = await verifyPackAttestation(attested1, { ns });
     const result2 = await verifyPackAttestation(attested2, { ns });
-    
+
     expect(result1.ok).toBe(true);
     expect(result2.ok).toBe(true);
   });
@@ -141,22 +150,37 @@ describe('Signer Lifecycle', () => {
   test('dual attestation - multiple signatures on same pack', async () => {
     const pubKey1 = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u1 = btoa(String.fromCharCode(...new Uint8Array(pubKey1)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     const pubKey2 = await crypto.subtle.exportKey('spki', keyPair2.publicKey);
     const pubB64u2 = btoa(String.fromCharCode(...new Uint8Array(pubKey2)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add first signer as ACTIVE
-    await addSigner(ns, { kid: 'primary', pubB64u: pubB64u1, status: 'ACTIVE' });
-    
+    await addSigner(ns, {
+      kid: 'primary',
+      pubB64u: pubB64u1,
+      status: 'ACTIVE',
+    });
+
     // Rotate to second signer with overlap
     const futureOverlap = new Date(Date.now() + 60 * 1000).toISOString(); // 1 min from now
-    await rotateSigner(ns, { kid: 'secondary', pubB64u: pubB64u2 }, { overlapUntil: futureOverlap });
+    await rotateSigner(
+      ns,
+      { kid: 'secondary', pubB64u: pubB64u2 },
+      { overlapUntil: futureOverlap }
+    );
 
     // Create dual attestation with overlap window
-    const dualAttested = await attestPack(mockPack, keyPair2, { ns, dualSignUntil: futureOverlap });
-    
+    const dualAttested = await attestPack(mockPack, keyPair2, {
+      ns,
+      dualSignUntil: futureOverlap,
+    });
+
     expect(Array.isArray(dualAttested.att)).toBe(true);
     if (Array.isArray(dualAttested.att)) {
       expect(dualAttested.att).toHaveLength(2);
@@ -170,7 +194,9 @@ describe('Signer Lifecycle', () => {
   test('revocation - immediate rejection', async () => {
     const pubKey = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add and attest while active
     await addSigner(ns, { kid: 'compromised', pubB64u });
@@ -190,7 +216,9 @@ describe('Signer Lifecycle', () => {
   test('audit events - track all lifecycle changes', async () => {
     const pubKey = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Lifecycle: add -> retire -> revoke
     await addSigner(ns, { kid: 'audit-test', pubB64u });
@@ -201,7 +229,7 @@ describe('Signer Lifecycle', () => {
     const auditPrefix = `audit:${ns}:e:`;
     const auditKeys = await storage.listKeys(auditPrefix);
     expect(auditKeys.length).toBeGreaterThanOrEqual(3);
-    
+
     // Parse audit entries and check event types
     const eventTypes = [];
     for (const key of auditKeys) {
@@ -223,18 +251,18 @@ describe('Signer Lifecycle', () => {
       manifest: {
         content: {
           eventsHash: 'legacy-hash',
-          eventsCount: 1
+          eventsCount: 1,
         },
         bytes: 100,
-        meta: mockPack.meta
+        meta: mockPack.meta,
       },
       att: {
         alg: 'Ed25519' as const,
         signer: 'legacy-signer-key',
         sig: 'legacy-signature',
-        ts: new Date().toISOString()
+        ts: new Date().toISOString(),
         // No kid field - this is the legacy case
-      }
+      },
     };
 
     const result = await verifyPackAttestation(legacyAttested, { ns });
@@ -248,13 +276,15 @@ describe('Signer Lifecycle', () => {
     // Add ACTIVE signer first, attest pack, then retire with past expiry
     const pubKey = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+
     // Add as ACTIVE first
     await addSigner(ns, {
       kid: 'expired-signer',
       pubB64u,
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     });
 
     // Attest pack while ACTIVE
@@ -272,32 +302,39 @@ describe('Signer Lifecycle', () => {
     }
 
     // Should succeed with sufficient grace period
-    const result2 = await verifyPackAttestation(attested, { ns, graceSecs: 7200 }); // 2h grace
+    const result2 = await verifyPackAttestation(attested, {
+      ns,
+      graceSecs: 7200,
+    }); // 2h grace
     expect(result2.ok).toBe(true);
   });
 
   test('list signers - ordering and filtering', async () => {
     const pubKey1 = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u1 = btoa(String.fromCharCode(...new Uint8Array(pubKey1)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     const pubKey2 = await crypto.subtle.exportKey('spki', keyPair2.publicKey);
     const pubB64u2 = btoa(String.fromCharCode(...new Uint8Array(pubKey2)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     // Add signers in sequence
     await addSigner(ns, {
       kid: 'first-signer',
       pubB64u: pubB64u1,
       status: 'ACTIVE',
-      note: 'First signer'
+      note: 'First signer',
     });
 
     await addSigner(ns, {
       kid: 'second-signer',
       pubB64u: pubB64u2,
       status: 'ACTIVE',
-      note: 'Second signer'
+      note: 'Second signer',
     });
 
     const signers = await listSigners(ns);
@@ -310,19 +347,21 @@ describe('Signer Lifecycle', () => {
     // Verify registry uses storage (which would be encrypted in real usage)
     const pubKey = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+
     await addSigner(ns, {
       kid: 'e2ee-test',
       pubB64u,
-      note: 'E2EE compatibility test'
+      note: 'E2EE compatibility test',
     });
 
     // Check storage contains registry data
     const registryKey = `attest:${ns}:signers:v2`;
     const stored = await storage.getItem(registryKey);
     expect(stored).toBeTruthy();
-    
+
     const parsed = JSON.parse(stored!);
     expect(parsed).toBeInstanceOf(Array);
     expect(parsed[0].kid).toBe('e2ee-test');
@@ -331,30 +370,36 @@ describe('Signer Lifecycle', () => {
   test('determinism - canonicalization unchanged, signatures stable', async () => {
     const pubKey = await crypto.subtle.exportKey('spki', keyPair1.publicKey);
     const pubB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+
     await addSigner(ns, {
       kid: 'determinism-test',
-      pubB64u
+      pubB64u,
     });
 
     // Create two identical attestations
     const attested1 = await attestPack(mockPack, keyPair1, { ns });
-    
+
     // Wait a moment and create another
     await new Promise(resolve => setTimeout(resolve, 50));
     const attested2 = await attestPack(mockPack, keyPair1, { ns });
 
-    // Signatures should be the same (deterministic over content) but timestamps different  
-    const att1 = Array.isArray(attested1.att) ? attested1.att[0] : attested1.att;
-    const att2 = Array.isArray(attested2.att) ? attested2.att[0] : attested2.att;
-    
-    expect(att1.sig).toBe(att2.sig);  // Same content = same signature
-    expect(att1.ts).not.toBe(att2.ts);  // Different timestamps
-    
+    // Signatures should be the same (deterministic over content) but timestamps different
+    const att1 = Array.isArray(attested1.att)
+      ? attested1.att[0]
+      : attested1.att;
+    const att2 = Array.isArray(attested2.att)
+      ? attested2.att[0]
+      : attested2.att;
+
+    expect(att1.sig).toBe(att2.sig); // Same content = same signature
+    expect(att1.ts).not.toBe(att2.ts); // Different timestamps
+
     const result1 = await verifyPackAttestation(attested1, { ns });
     const result2 = await verifyPackAttestation(attested2, { ns });
-    
+
     expect(result1.ok).toBe(true);
     expect(result2.ok).toBe(true);
   });

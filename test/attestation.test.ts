@@ -5,7 +5,11 @@
 
 import { describe, beforeEach, test, expect } from 'vitest';
 import { attestPack, verifyPackAttestation } from '../src/sync/attestation';
-import { addTrustedSigner, listTrustedSigners, configureTrustStore } from '../src/sync/trust';
+import {
+  addTrustedSigner,
+  listTrustedSigners,
+  configureTrustStore,
+} from '../src/sync/trust';
 import { verifyPacksInPlan } from '../src/sync/verification';
 import { configureAudit } from '../src/audit/api';
 import type { Sparkpack } from '../src/domain/pack/types';
@@ -46,14 +50,20 @@ describe('Attested Sparkpacks', () => {
 
   beforeEach(async () => {
     storage = new MockStorage();
-    
+
     // Configure both audit and trust store
     configureAudit(storage, ns);
     configureTrustStore(storage);
 
     // Generate test key pairs
-    keyPair = await crypto.subtle.generateKey('Ed25519', true, ['sign', 'verify']);
-    untrustedKeyPair = await crypto.subtle.generateKey('Ed25519', true, ['sign', 'verify']);
+    keyPair = await crypto.subtle.generateKey('Ed25519', true, [
+      'sign',
+      'verify',
+    ]);
+    untrustedKeyPair = await crypto.subtle.generateKey('Ed25519', true, [
+      'sign',
+      'verify',
+    ]);
 
     // Mock Sparkpack for testing
     mockPack = {
@@ -62,36 +72,39 @@ describe('Attested Sparkpacks', () => {
         format: 'sparkpack/1+json',
         createdAt: '2025-08-15T10:00:00.000Z',
         eventsCount: 2,
-        eventsHash: 'abc123ef'
+        eventsHash: 'abc123ef',
       },
       events: [
-        { 
-          type: 'TASK_CREATED', 
-          timestamp: '2025-08-15T10:00:00.000Z', 
-          payload: { 
-            id: 'task1', 
+        {
+          type: 'TASK_CREATED',
+          timestamp: '2025-08-15T10:00:00.000Z',
+          payload: {
+            id: 'task1',
             title: 'Test Task',
             status: 'TODAY' as const,
             priority: 'P1' as const,
-            tags: []
-          } 
+            tags: [],
+          },
         },
-        { 
-          type: 'TASK_UPDATED', 
-          timestamp: '2025-08-15T10:01:00.000Z', 
-          payload: { 
-            id: 'task1', 
-            changes: { title: 'Updated Task' }
-          } 
-        }
-      ]
+        {
+          type: 'TASK_UPDATED',
+          timestamp: '2025-08-15T10:01:00.000Z',
+          payload: {
+            id: 'task1',
+            changes: { title: 'Updated Task' },
+          },
+        },
+      ],
     };
   });
 
   test('sign/verify happy path - valid attestation with trusted signer', async () => {
     // Add signer to trust store
     const signerSpki = await crypto.subtle.exportKey('spki', keyPair.publicKey);
-    const signerB64u = btoa(String.fromCharCode(...new Uint8Array(signerSpki))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const signerB64u = btoa(String.fromCharCode(...new Uint8Array(signerSpki)))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
     await addTrustedSigner(ns, signerB64u);
 
     // Attest the pack
@@ -109,8 +122,16 @@ describe('Attested Sparkpacks', () => {
 
   test('wrong key - valid signature by untrusted signer rejected', async () => {
     // Add trusted signer (different from the one we'll use)
-    const trustedSpki = await crypto.subtle.exportKey('spki', keyPair.publicKey);
-    const trustedB64u = btoa(String.fromCharCode(...new Uint8Array(trustedSpki))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const trustedSpki = await crypto.subtle.exportKey(
+      'spki',
+      keyPair.publicKey
+    );
+    const trustedB64u = btoa(
+      String.fromCharCode(...new Uint8Array(trustedSpki))
+    )
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
     await addTrustedSigner(ns, trustedB64u);
 
     // Attest with untrusted key
@@ -130,9 +151,11 @@ describe('Attested Sparkpacks', () => {
     // First add the signer to trusted list
     const pubKey = await crypto.subtle.exportKey('spki', keyPair.publicKey);
     const pubKeyB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
     await addTrustedSigner(ns, pubKeyB64u);
-    
+
     // Attest the pack
     const attested = await attestPack(mockPack, keyPair);
 
@@ -159,7 +182,9 @@ describe('Attested Sparkpacks', () => {
     const unattested = legacyPack as any;
 
     // Verify should succeed with allowUnsigned
-    const result = await verifyPackAttestation(unattested, { allowUnsigned: true });
+    const result = await verifyPackAttestation(unattested, {
+      allowUnsigned: true,
+    });
 
     expect(result.ok).toBe(true);
   });
@@ -181,9 +206,11 @@ describe('Attested Sparkpacks', () => {
     // First add the signer to trusted list
     const pubKey = await crypto.subtle.exportKey('spki', keyPair.publicKey);
     const pubKeyB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
     await addTrustedSigner(ns, pubKeyB64u);
-    
+
     // Attest the pack
     const attested = await attestPack(mockPack, keyPair);
 
@@ -194,8 +221,8 @@ describe('Attested Sparkpacks', () => {
       manifest: {
         meta: attested.manifest.meta,
         bytes: attested.manifest.bytes,
-        content: attested.manifest.content
-      }
+        content: attested.manifest.content,
+      },
     };
 
     // Get allowed signers
@@ -209,7 +236,10 @@ describe('Attested Sparkpacks', () => {
   test('sync integration - mixed packs merge only verified', async () => {
     // Setup trusted signer
     const signerSpki = await crypto.subtle.exportKey('spki', keyPair.publicKey);
-    const signerB64u = btoa(String.fromCharCode(...new Uint8Array(signerSpki))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const signerB64u = btoa(String.fromCharCode(...new Uint8Array(signerSpki)))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
     await addTrustedSigner(ns, signerB64u);
 
     // Create one valid and one invalid pack
@@ -218,7 +248,7 @@ describe('Attested Sparkpacks', () => {
 
     const packData = [
       { key: 'valid-pack', data: JSON.stringify(validAttested) },
-      { key: 'invalid-pack', data: JSON.stringify(invalidAttested) }
+      { key: 'invalid-pack', data: JSON.stringify(invalidAttested) },
     ];
 
     // Mock sync plan
@@ -227,11 +257,15 @@ describe('Attested Sparkpacks', () => {
       pullKeys: ['valid-pack', 'invalid-pack'],
       mergePlan: null,
       pushEvents: [],
-      hasChanges: true
+      hasChanges: true,
     };
 
     // Verify packs
-    const { filteredPlan, stats } = await verifyPacksInPlan(mockPlan, ns, packData);
+    const { filteredPlan, stats } = await verifyPacksInPlan(
+      mockPlan,
+      ns,
+      packData
+    );
 
     expect(stats.verified).toBe(1);
     expect(stats.rejected).toBe(1);
@@ -243,9 +277,11 @@ describe('Attested Sparkpacks', () => {
     // First add the signer to trusted list
     const pubKey = await crypto.subtle.exportKey('spki', keyPair.publicKey);
     const pubKeyB64u = btoa(String.fromCharCode(...new Uint8Array(pubKey)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
     await addTrustedSigner(ns, pubKeyB64u);
-    
+
     // Attest pack (timestamp is created during attestation)
     const attested = await attestPack(mockPack, keyPair);
 
@@ -264,8 +300,11 @@ describe('Attested Sparkpacks', () => {
 
     // Add trusted signer
     const signerSpki = await crypto.subtle.exportKey('spki', keyPair.publicKey);
-    const signerB64u = btoa(String.fromCharCode(...new Uint8Array(signerSpki))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    
+    const signerB64u = btoa(String.fromCharCode(...new Uint8Array(signerSpki)))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+
     await addTrustedSigner(ns, signerB64u);
 
     // Verify it's added

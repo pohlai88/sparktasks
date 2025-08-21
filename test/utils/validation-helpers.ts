@@ -18,7 +18,8 @@ export function validateTaskImmutability(task: Task): {
   return {
     isFrozen: Object.isFrozen(task),
     hasExpectedId: task.id.startsWith('task_'),
-    hasValidDates: task.createdAt instanceof Date && task.updatedAt instanceof Date
+    hasValidDates:
+      task.createdAt instanceof Date && task.updatedAt instanceof Date,
   };
 }
 
@@ -30,19 +31,18 @@ export function validateTestHelpers(): {
   isFrozen: boolean;
   hasAllMethods: boolean;
 } {
-  const hasAllMethods = (
+  const hasAllMethods =
     typeof globalThis.testHelpers?.createMockTask === 'function' &&
     typeof globalThis.testHelpers?.createMockTaskSerialized === 'function' &&
     typeof globalThis.testHelpers?.createMockHealthResponse === 'function' &&
     typeof globalThis.testHelpers?.createMockErrorResponse === 'function' &&
     typeof globalThis.testHelpers?.setDeterministicClock === 'function' &&
-    typeof globalThis.testHelpers?.resetClock === 'function'
-  );
+    typeof globalThis.testHelpers?.resetClock === 'function';
 
   return {
     isAvailable: typeof globalThis.testHelpers !== 'undefined',
     isFrozen: Object.isFrozen(globalThis.testHelpers),
-    hasAllMethods
+    hasAllMethods,
   };
 }
 
@@ -55,26 +55,24 @@ export function validateErrorResponse(errorResponse: unknown): {
   hasValidStructure: boolean;
 } {
   const isValid = isValidErrorResponse(errorResponse);
-  
+
   // Additional manual checks for robustness
-  const hasRequiredFields = (
+  const hasRequiredFields =
     typeof errorResponse === 'object' &&
     errorResponse !== null &&
     'error' in errorResponse &&
     typeof (errorResponse as any).error === 'object' &&
     'code' in (errorResponse as any).error &&
-    'message' in (errorResponse as any).error
-  );
+    'message' in (errorResponse as any).error;
 
-  const hasValidStructure = (
+  const hasValidStructure =
     hasRequiredFields &&
     typeof (errorResponse as any).error.code === 'string' &&
-    typeof (errorResponse as any).error.message === 'string'
-  );
+    typeof (errorResponse as any).error.message === 'string';
 
   return {
     isValid,
     hasRequiredFields,
-    hasValidStructure
+    hasValidStructure,
   };
 }

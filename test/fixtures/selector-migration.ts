@@ -27,7 +27,9 @@ export class SelectorMigration {
     completeButton: (taskText: string) => {
       // OLD: page.getByText(taskText).locator('..').getByRole('button', { name: /complete/i })
       // NEW: Use SSOT selector
-      const taskCard = this.page.getByRole('article').filter({ hasText: taskText });
+      const taskCard = this.page
+        .getByRole('article')
+        .filter({ hasText: taskText });
       return taskCard.getByRole('button', { name: /mark complete/i });
     },
 
@@ -39,13 +41,15 @@ export class SelectorMigration {
     snoozeButton: (taskText: string) => {
       // OLD: Clock icon hunting
       // NEW: Accessible button
-      const taskCard = this.page.getByRole('article').filter({ hasText: taskText });
+      const taskCard = this.page
+        .getByRole('article')
+        .filter({ hasText: taskText });
       return taskCard.getByRole('button', { name: /snooze to later/i });
     },
 
     // Form operations
     quickAddInput: () => {
-      // NEW: Use SSOT test ID 
+      // NEW: Use SSOT test ID
       return this.page.getByTestId('quick-add-input');
     },
 
@@ -68,10 +72,12 @@ export class SelectorMigration {
       return this.page.getByTestId('search-input');
     },
 
-    // Column operations  
+    // Column operations
     column: (columnName: string) => {
       // NEW: Use list role like working tests do
-      return this.page.getByRole('list', { name: new RegExp(`${columnName} tasks`, 'i') });
+      return this.page.getByRole('list', {
+        name: new RegExp(`${columnName} tasks`, 'i'),
+      });
     },
 
     columnOption: (columnName: string) => {
@@ -97,7 +103,9 @@ export class SelectorMigration {
 
     // Legacy support with warnings
     firstTaskButton: () => {
-      console.warn('DEPRECATED: addTaskButton selector. Use quickAddInput + quickAddButton for main add, or specific column buttons');
+      console.warn(
+        'DEPRECATED: addTaskButton selector. Use quickAddInput + quickAddButton for main add, or specific column buttons'
+      );
       // Try to find "Add Your First Task" button
       return this.page.getByRole('button', { name: /add your first task/i });
     },
@@ -115,9 +123,9 @@ export class SelectorMigration {
     };
 
     const results = {
-      hasHeader: await landmarks.header.count() > 0,
-      hasMain: await landmarks.main.count() > 0,
-      hasNav: await landmarks.navigation.count() > 0,
+      hasHeader: (await landmarks.header.count()) > 0,
+      hasMain: (await landmarks.main.count()) > 0,
+      hasNav: (await landmarks.navigation.count()) > 0,
     };
 
     return results;
@@ -161,36 +169,48 @@ export class TestHelpers {
     // Use SSOT test IDs to avoid button conflicts
     const quickAddInput = this.page.getByTestId('quick-add-input');
     const addButton = this.page.getByTestId('quick-add-button');
-    
+
     // Clear any existing content
     await quickAddInput.clear();
     await quickAddInput.fill(taskTitle);
-    
+
     // Click the button and wait for response
     await addButton.click();
-    
+
     // Wait for the specific status message for our task (handles multiple status messages)
     try {
-      await this.page.getByText(`Task created: ${taskTitle}`).waitFor({ state: 'visible', timeout: 5000 });
+      await this.page
+        .getByText(`Task created: ${taskTitle}`)
+        .waitFor({ state: 'visible', timeout: 5000 });
     } catch {
       // Fallback: wait for any status message containing "Task created"
       await this.page.waitForTimeout(1500);
     }
-    
+
     // Extract the base title (before any parsing syntax like !p0 #tags)
-    const baseTitle = taskTitle.split(' !')[0]?.split(' #')[0]?.split(' @')[0] || taskTitle;
-    
+    const baseTitle =
+      taskTitle.split(' !')[0]?.split(' #')[0]?.split(' @')[0] || taskTitle;
+
     // Wait for task to appear in UI with retry logic
     try {
-      await this.page.getByRole('article').filter({ hasText: baseTitle }).waitFor({ 
-        state: 'visible', 
-        timeout: 5000 
-      });
+      await this.page
+        .getByRole('article')
+        .filter({ hasText: baseTitle })
+        .waitFor({
+          state: 'visible',
+          timeout: 5000,
+        });
       return true;
     } catch {
       // Final fallback: check if task exists even if not immediately visible
-      const taskExists = await this.page.getByRole('article').filter({ hasText: baseTitle }).count() > 0;
-      console.log(`Task verification for "${taskTitle}": ${taskExists ? 'found (base: ${baseTitle})' : 'not found'}`);
+      const taskExists =
+        (await this.page
+          .getByRole('article')
+          .filter({ hasText: baseTitle })
+          .count()) > 0;
+      console.log(
+        `Task verification for "${taskTitle}": ${taskExists ? 'found (base: ${baseTitle})' : 'not found'}`
+      );
       return taskExists;
     }
   }
@@ -202,10 +222,10 @@ export class TestHelpers {
     // Use SSOT test ID
     const searchInput = this.page.getByTestId('search-input');
     await searchInput.fill(query);
-    
+
     // Wait for debounce
     await this.page.waitForTimeout(300);
-    
+
     // Return results - use SSOT test ID
     return this.page.getByTestId('search-results');
   }
@@ -216,16 +236,16 @@ export class TestHelpers {
   async completeTask(taskTitle: string) {
     const migration = new SelectorMigration(this.page);
     const completeButton = migration.migrate.completeButton(taskTitle);
-    
+
     // Verify button is accessible
     const isVisible = await completeButton.isVisible();
-    
+
     if (!isVisible) {
       throw new Error(`Complete button not visible for task: ${taskTitle}`);
     }
-    
+
     await completeButton.click();
-    
+
     // Verify completion toast or state change
     return this.page.getByText(/completed/i).first();
   }
@@ -234,7 +254,9 @@ export class TestHelpers {
    * Navigate between columns with keyboard
    */
   async navigateColumns(direction: 'left' | 'right') {
-    await this.page.keyboard.press(direction === 'left' ? 'ArrowLeft' : 'ArrowRight');
+    await this.page.keyboard.press(
+      direction === 'left' ? 'ArrowLeft' : 'ArrowRight'
+    );
   }
 }
 
@@ -245,14 +267,14 @@ export const DEPRECATED_PATTERNS = {
   // DON'T: Hardcoded text selectors
   getByText: 'Use getByTestIdOrRole with TEST_IDS registry',
   locator: 'Use specific test ID or role-based selector',
-  
+
   // DON'T: Complex CSS selectors
   'css:': 'Use data-testid or ARIA roles',
   xpath: 'Use semantic selectors',
-  
+
   // DON'T: Hardcoded waits
   waitForTimeout: 'Use expect().toBeVisible() or waitForSelector()',
-  
+
   // DON'T: Index-based selection without context
   first: 'Use specific test ID or filter',
   last: 'Use specific test ID or filter',

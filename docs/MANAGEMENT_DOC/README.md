@@ -3,6 +3,7 @@
 This folder contains stable and living documents you can drop into your repo without external dependencies.
 
 ## Files
+
 - `PRD_SparkTasks_v1.0.md` — **Stable** build contract (versioned)
 - `Strategy_Annex_Market_Wedge_Research.md` — **Living** analysis (full market gaps, sources, competitor view, TCO)
 - `Experiment_Plan_30-60-90.md` — **Living** pilots, metrics, dashboards, kill criteria

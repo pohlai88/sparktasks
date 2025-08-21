@@ -3,6 +3,7 @@
 ## Current State Analysis (Manual Testing Results)
 
 ### ✅ What Works Well
+
 1. **Basic Edit Functionality**: Task title and notes editing works correctly
 2. **Priority Display**: P0, P1, P2 priorities are shown with badges
 3. **Tag Display**: Tags are correctly parsed and displayed (#urgent, #test)
@@ -15,10 +16,12 @@
 ## 1. Edit Form is Severely Limited (Major Issue)
 
 **Current State:**
+
 - Only has `Task Title` and `Notes` fields
 - Missing: Priority editing, Tags editing, Due date picker, Status/column selection
 
 **User Impact:**
+
 - Cannot change priority after creation
 - Cannot modify tags without recreating task
 - Cannot set/change due dates in edit mode
@@ -26,6 +29,7 @@
 
 **Recommendation:**
 Create a comprehensive edit form with:
+
 ```typescript
 interface TaskEditForm {
   title: string;
@@ -40,17 +44,20 @@ interface TaskEditForm {
 ## 2. Natural Language Date Parsing is Broken
 
 **Current Issue:**
+
 - Input: `@due:tomorrow 5pm` → Error: "Invalid datetime"
 - Only accepts ISO format: `@due:2025-08-19T17:00:00.000Z`
 
 **Root Cause:**
 The `resolveDateToken` function only handles:
+
 - `today`, `tomorrow`
 - ISO dates (`YYYY-MM-DD`)
 - `next monday`, `in 3d`, `in 2w`
 - But NOT time specifications like "5pm", "4:30pm"
 
 **User Impact:**
+
 - Examples in UI show `tomorrow 4pm #ops` but this fails
 - Users expect natural language like Todoist/Things but get errors
 - Very poor user experience for a "competitive" task manager
@@ -58,11 +65,13 @@ The `resolveDateToken` function only handles:
 ## 3. Priority System Issues
 
 **Current State:**
+
 - ✅ Default priority: `P1` (hardcoded in `src/domain/quickadd/parse.ts`)
 - ✅ System supports: P0 (high), P1 (medium), P2 (low)
 - ✅ Parsing works: `!p0`, `!p1`, `!p2`
 
 **Issues:**
+
 - No visual priority indicators (colors are basic)
 - No easy way to change priority after creation
 - Priority meanings not clear to users (what does P0 vs P1 mean?)
@@ -70,6 +79,7 @@ The `resolveDateToken` function only handles:
 ## 4. Due Date Display Issues
 
 **Current State:**
+
 - ✅ Shows "Due: 8/20/2025" when present
 - ❌ No overdue highlighting
 - ❌ No relative time display ("Due tomorrow", "Overdue 2 days")
@@ -78,6 +88,7 @@ The `resolveDateToken` function only handles:
 ## 5. Missing Modern UI Features
 
 Compared to Trello/Todoist/Things, missing:
+
 - ❌ Drag & drop between columns
 - ❌ Task thumbnails/previews
 - ❌ Rich text editing
@@ -97,14 +108,14 @@ Based on anti-drift analysis, improvements are split into **A-Series (safe now)*
 **See: `docs/MANAGEMENT_DOC/A-SERIES-UI-HOTFIXES.md`**
 
 1. **Enhanced Edit Form** - Uses existing store methods only
-   - Priority dropdown (P0/P1/P2) 
+   - Priority dropdown (P0/P1/P2)
    - Tags input with chips and autocomplete from existing tags
    - Due date + time fields (native inputs, no libs)
    - Status selector (maps to existing moveTask())
 
 2. **Due Date Display Upgrades** - Pure UI formatting
    - Relative display: "Due tomorrow", "Overdue 2 days"
-   - Time inclusion: "Due today 17:00" 
+   - Time inclusion: "Due today 17:00"
    - Accessible overdue highlighting
 
 3. **Priority System Clarity** - Visual design only
@@ -144,17 +155,17 @@ Based on anti-drift analysis, improvements are split into **A-Series (safe now)*
 
 ## Quality Comparison: Current vs A-Series Target vs B-Series Vision
 
-| Feature | Current | A-Series Target | B-Series Vision |
-|---------|---------|----------------|-----------------|
-| Edit Form | 2/10 | 8/10 | 9/10 |
-| Date Parsing | 3/10 | 4/10 (better errors) | 9/10 (natural language) |
-| Date Display | 4/10 | 8/10 | 9/10 |
-| Visual Design | 4/10 | 7/10 | 8/10 |
-| Priority System | 5/10 | 8/10 | 9/10 |
-| Tag Management | 2/10 | 7/10 | 9/10 |
-| Keyboard UX | 6/10 | 7/10 | 9/10 |
-| Drag & Drop | 0/10 | 0/10 (deferred) | 9/10 |
-| Modern Features | 2/10 | 3/10 | 8/10 |
+| Feature         | Current | A-Series Target      | B-Series Vision         |
+| --------------- | ------- | -------------------- | ----------------------- |
+| Edit Form       | 2/10    | 8/10                 | 9/10                    |
+| Date Parsing    | 3/10    | 4/10 (better errors) | 9/10 (natural language) |
+| Date Display    | 4/10    | 8/10                 | 9/10                    |
+| Visual Design   | 4/10    | 7/10                 | 8/10                    |
+| Priority System | 5/10    | 8/10                 | 9/10                    |
+| Tag Management  | 2/10    | 7/10                 | 9/10                    |
+| Keyboard UX     | 6/10    | 7/10                 | 9/10                    |
+| Drag & Drop     | 0/10    | 0/10 (deferred)      | 9/10                    |
+| Modern Features | 2/10    | 3/10                 | 8/10                    |
 
 ## Development Priority (Respecting Anti-Drift)
 

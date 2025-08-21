@@ -7,9 +7,10 @@
 ## Implementation Details
 
 ### Files Delivered (148/220 LOC Budget)
+
 - `src/transparency/compact-types.ts` (9 LOC) - Core type definitions
 - `src/transparency/compact-merkle.ts` (75 LOC) - Merkle accumulator with frontier
-- `src/transparency/compact-api.ts` (62 LOC) - Checkpoint signing/verification with audit hooks  
+- `src/transparency/compact-api.ts` (62 LOC) - Checkpoint signing/verification with audit hooks
 - `src/transparency/compact-index.ts` (2 LOC) - Public exports
 
 ### Core Features Implemented
@@ -24,15 +25,18 @@
 8. **Policy Integration**: Placeholder hooks for policy enforcement
 
 ### Domain Separation & Security
+
 - Leaf hashes: `H(0x00 || SHA256(leafBytes))`
-- Internal nodes: `H(0x01 || left || right)` 
+- Internal nodes: `H(0x01 || left || right)`
 - Deterministic canonical JSON for checkpoint signing
 - Signer status validation (ACTIVE, RETIRED with grace period, REVOKED)
 
 ### Test Coverage (11/10 Required Tests)
+
 ✅ All 11 tests passing covering:
+
 1. Append & root computation
-2. Inclusion proof generation/verification  
+2. Inclusion proof generation/verification
 3. Checkpoint emission with ACTIVE signer
 4. Valid checkpoint verification
 5. REVOKED signer rejection
@@ -44,6 +48,7 @@
 11. Power-of-2 and odd leaf count handling
 
 ### Storage Layout
+
 ```
 tl:<ns>:state         -> TLStateV1 (frontier state)
 tl:<ns>:leaf:<index>  -> leafHashB64u (diagnostics)
@@ -51,6 +56,7 @@ tl:<ns>:chk:<n>       -> TLCheckpointV1 (signed checkpoints)
 ```
 
 ### API Surface (Exact Signatures per Spec)
+
 ```typescript
 appendLeaf(ns: string, leafBytes: Uint8Array, storage: StorageDriver): Promise<AppendResult>
 emitCheckpoint(ns: string, storage: StorageDriver, opts?: {kid?: string, at?: string}): Promise<TLCheckpointV1>
@@ -60,6 +66,7 @@ verifyCheckpoint(ns: string, chk: TLCheckpointV1, policy?: {retiredGraceMs?: num
 ```
 
 ### Audit Events Implemented
+
 - `TL_APPEND` { ns, index, n, leafHash }
 - `TL_CHECKPOINT_EMIT` { ns, n, root, signerKid }
 - `TL_PROOF_GEN` { ns, index, n }
@@ -67,6 +74,7 @@ verifyCheckpoint(ns: string, chk: TLCheckpointV1, policy?: {retiredGraceMs?: num
 - `TL_CHECKPOINT_VERIFY_OK/FAIL` { ns, n, signerKid?, reason? }
 
 ### Reason Codes
+
 - `invalid_leaf`, `index_out_of_range`, `hash_mismatch`
 - `sig_invalid`, `signer_revoked:<kid>`, `signer_expired:<kid>`, `unknown_signer:<kid>`
 - `invalid_state` (empty log checkpoint)
@@ -78,7 +86,7 @@ verifyCheckpoint(ns: string, chk: TLCheckpointV1, policy?: {retiredGraceMs?: num
 ✅ **Checkpoint Ed25519 signing/verification** with registry status checks  
 ✅ **Policy & audit hooks** wired (no-op when disabled)  
 ✅ **Unit tests**: 11 covering all requirements (green)  
-✅ **LOC**: 148 ≤ 220 across 4 files  
+✅ **LOC**: 148 ≤ 220 across 4 files
 
 ## Production Readiness
 
@@ -92,8 +100,14 @@ The implementation provides a solid foundation for production deployment:
 6. **Auditable**: Comprehensive event logging for compliance
 
 ## Usage Example
+
 ```typescript
-import { appendLeaf, emitCheckpoint, genProof, verifyProof } from './src/transparency/compact-index';
+import {
+  appendLeaf,
+  emitCheckpoint,
+  genProof,
+  verifyProof,
+} from './src/transparency/compact-index';
 
 // Append attestation & checkpoint
 const { rootB64u, n } = await appendLeaf('org:acme', attestationBytes, storage);

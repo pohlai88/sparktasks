@@ -1,6 +1,6 @@
 /**
  * Document Demo Component
- * 
+ *
  * Comprehensive demonstration of the Document component showcasing
  * all variants, formats, and enterprise features.
  */
@@ -8,7 +8,11 @@
 import React, { useState } from 'react';
 import Document from '@/components/ui/Document';
 import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
-import type { DocumentFormat, DocumentStatus, DocumentSize } from '@/components/ui/Document';
+import type {
+  DocumentFormat,
+  DocumentStatus,
+  DocumentSize,
+} from '@/components/ui/Document';
 
 const DocumentDemo: React.FC = () => {
   // Sample documents data
@@ -24,10 +28,11 @@ const DocumentDemo: React.FC = () => {
         modifiedAt: new Date('2024-01-20T15:30:00Z'),
         version: '2.1.0',
         tags: ['financial', 'quarterly', 'board-review'],
-        description: 'Comprehensive financial analysis for Q4 2024 including revenue, expenses, and forecasting.',
+        description:
+          'Comprehensive financial analysis for Q4 2024 including revenue, expenses, and forecasting.',
         pageCount: 45,
-        isConfidential: true
-      }
+        isConfidential: true,
+      },
     },
     {
       title: 'Project Proposal - Digital Transformation',
@@ -40,9 +45,10 @@ const DocumentDemo: React.FC = () => {
         modifiedAt: new Date('2024-02-05T14:20:00Z'),
         version: '1.4.0',
         tags: ['proposal', 'strategy', 'digital'],
-        description: 'Strategic proposal for company-wide digital transformation initiative.',
-        pageCount: 28
-      }
+        description:
+          'Strategic proposal for company-wide digital transformation initiative.',
+        pageCount: 28,
+      },
     },
     {
       title: 'Sales Data Analysis',
@@ -55,9 +61,10 @@ const DocumentDemo: React.FC = () => {
         modifiedAt: new Date('2024-02-02T16:45:00Z'),
         version: '3.0.0',
         tags: ['analytics', 'sales', 'q1-data'],
-        description: 'Detailed sales performance analysis with trends and predictions.',
-        pageCount: 1
-      }
+        description:
+          'Detailed sales performance analysis with trends and predictions.',
+        pageCount: 1,
+      },
     },
     {
       title: 'Company Presentation Template',
@@ -70,9 +77,10 @@ const DocumentDemo: React.FC = () => {
         modifiedAt: new Date('2024-02-10T17:30:00Z'),
         version: '1.0.0',
         tags: ['template', 'presentation', 'branding'],
-        description: 'Official company presentation template with updated branding guidelines.',
-        pageCount: 24
-      }
+        description:
+          'Official company presentation template with updated branding guidelines.',
+        pageCount: 24,
+      },
     },
     {
       title: 'Archive - Old Policies.zip',
@@ -85,10 +93,11 @@ const DocumentDemo: React.FC = () => {
         modifiedAt: new Date('2023-12-15T12:00:00Z'),
         version: '1.0.0',
         tags: ['archived', 'policies', 'legacy'],
-        description: 'Archived collection of previous company policies and procedures.',
-        expiresAt: new Date('2023-12-31T23:59:59Z')
-      }
-    }
+        description:
+          'Archived collection of previous company policies and procedures.',
+        expiresAt: new Date('2023-12-31T23:59:59Z'),
+      },
+    },
   ];
 
   const [showActions, setShowActions] = useState(true);
@@ -100,7 +109,7 @@ const DocumentDemo: React.FC = () => {
   };
 
   const handleDownload = (title: string) => {
-    // Handle download action  
+    // Handle download action
     alert(`Download: ${title}`);
   };
 
@@ -115,66 +124,77 @@ const DocumentDemo: React.FC = () => {
   };
 
   return (
-    <div className={combineTokens(
-      DESIGN_TOKENS.spacing.sectionLarge,
-      'max-w-6xl mx-auto'
-    )}>
+    <div
+      className={combineTokens(
+        DESIGN_TOKENS.spacing.sectionLarge,
+        'mx-auto max-w-6xl'
+      )}
+    >
       {/* Header */}
       <div className={DESIGN_TOKENS.spacing.sectionMargin}>
         <h1 className={DESIGN_TOKENS.typography.heading.h1}>
           Document Component Demo
         </h1>
-        <p className={combineTokens(
-          DESIGN_TOKENS.typography.body.primary,
-          DESIGN_TOKENS.spacing.tightMargin
-        )}>
-          Enterprise-grade document display component with comprehensive format support and professional features.
+        <p
+          className={combineTokens(
+            DESIGN_TOKENS.typography.body.primary,
+            DESIGN_TOKENS.spacing.tightMargin
+          )}
+        >
+          Enterprise-grade document display component with comprehensive format
+          support and professional features.
         </p>
       </div>
 
       {/* Controls */}
       <section className={DESIGN_TOKENS.spacing.sectionMargin}>
-        <h2 className={combineTokens(
-          DESIGN_TOKENS.typography.heading.h3,
-          DESIGN_TOKENS.spacing.workspace.subtitleMargin
-        )}>
+        <h2
+          className={combineTokens(
+            DESIGN_TOKENS.typography.heading.h3,
+            DESIGN_TOKENS.spacing.workspace.subtitleMargin
+          )}
+        >
           Demo Controls
         </h2>
-        
-        <div className="flex flex-wrap items-center gap-4 p-4 bg-gray-50 rounded-lg">
+
+        <div className='flex flex-wrap items-center gap-4 rounded-lg bg-gray-50 p-4'>
           {/* Size Control */}
           <div>
-            <label className={combineTokens(
-              DESIGN_TOKENS.typography.body.small,
-              'block mb-2 font-medium'
-            )}>
+            <label
+              className={combineTokens(
+                DESIGN_TOKENS.typography.body.small,
+                'mb-2 block font-medium'
+              )}
+            >
               Size Variant:
             </label>
             <select
               value={selectedSize}
-              onChange={(e) => setSelectedSize(e.target.value as DocumentSize)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              onChange={e => setSelectedSize(e.target.value as DocumentSize)}
+              className='rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500'
             >
-              <option value="compact">Compact</option>
-              <option value="default">Default</option>
-              <option value="detailed">Detailed</option>
+              <option value='compact'>Compact</option>
+              <option value='default'>Default</option>
+              <option value='detailed'>Detailed</option>
             </select>
           </div>
 
           {/* Actions Control */}
           <div>
-            <label className={combineTokens(
-              DESIGN_TOKENS.typography.body.small,
-              'block mb-2 font-medium'
-            )}>
+            <label
+              className={combineTokens(
+                DESIGN_TOKENS.typography.body.small,
+                'mb-2 block font-medium'
+              )}
+            >
               Show Actions:
             </label>
-            <label className="flex items-center">
+            <label className='flex items-center'>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={showActions}
-                onChange={(e) => setShowActions(e.target.checked)}
-                className="mr-2"
+                onChange={e => setShowActions(e.target.checked)}
+                className='mr-2'
               />
               <span className={DESIGN_TOKENS.typography.body.small}>
                 Enable action buttons
@@ -186,14 +206,16 @@ const DocumentDemo: React.FC = () => {
 
       {/* Format Examples */}
       <section className={DESIGN_TOKENS.spacing.sectionMargin}>
-        <h2 className={combineTokens(
-          DESIGN_TOKENS.typography.heading.h3,
-          DESIGN_TOKENS.spacing.workspace.subtitleMargin
-        )}>
+        <h2
+          className={combineTokens(
+            DESIGN_TOKENS.typography.heading.h3,
+            DESIGN_TOKENS.spacing.workspace.subtitleMargin
+          )}
+        >
           Document Format Examples
         </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
           {sampleDocuments.map((doc, index) => (
             <Document
               key={index}
@@ -217,21 +239,31 @@ const DocumentDemo: React.FC = () => {
 
       {/* Status Variants */}
       <section className={DESIGN_TOKENS.spacing.sectionMargin}>
-        <h2 className={combineTokens(
-          DESIGN_TOKENS.typography.heading.h3,
-          DESIGN_TOKENS.spacing.workspace.subtitleMargin
-        )}>
+        <h2
+          className={combineTokens(
+            DESIGN_TOKENS.typography.heading.h3,
+            DESIGN_TOKENS.spacing.workspace.subtitleMargin
+          )}
+        >
           Document Status Indicators
         </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          {(['draft', 'review', 'approved', 'final', 'archived'] as DocumentStatus[]).map((status) => (
+
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5'>
+          {(
+            [
+              'draft',
+              'review',
+              'approved',
+              'final',
+              'archived',
+            ] as DocumentStatus[]
+          ).map(status => (
             <Document
               key={status}
               title={`${status.charAt(0).toUpperCase() + status.slice(1)} Document`}
-              format="pdf"
+              format='pdf'
               status={status}
-              size="compact"
+              size='compact'
               fileSize={1024000}
               showPreview={false}
               showDownload={false}
@@ -243,27 +275,30 @@ const DocumentDemo: React.FC = () => {
 
       {/* Interactive Features */}
       <section className={DESIGN_TOKENS.spacing.sectionMargin}>
-        <h2 className={combineTokens(
-          DESIGN_TOKENS.typography.heading.h3,
-          DESIGN_TOKENS.spacing.workspace.subtitleMargin
-        )}>
+        <h2
+          className={combineTokens(
+            DESIGN_TOKENS.typography.heading.h3,
+            DESIGN_TOKENS.spacing.workspace.subtitleMargin
+          )}
+        >
           Interactive Features
         </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
           {/* External Document */}
           <Document
-            title="External Research Report"
-            format="pdf"
-            status="final"
-            size="default"
+            title='External Research Report'
+            format='pdf'
+            status='final'
+            size='default'
             fileSize={5242880}
             isExternal={true}
             metadata={{
               author: 'External Consultancy',
               modifiedAt: new Date('2024-02-01T10:00:00Z'),
-              description: 'Market research report from external consultancy firm.',
-              tags: ['external', 'research', 'market-analysis']
+              description:
+                'Market research report from external consultancy firm.',
+              tags: ['external', 'research', 'market-analysis'],
             }}
             showPreview={true}
             showDownload={true}
@@ -275,17 +310,18 @@ const DocumentDemo: React.FC = () => {
 
           {/* Confidential Document */}
           <Document
-            title="Strategic Roadmap 2024"
-            format="pptx"
-            status="final"
-            size="default"
+            title='Strategic Roadmap 2024'
+            format='pptx'
+            status='final'
+            size='default'
             fileSize={4194304}
             metadata={{
               author: 'Executive Team',
               modifiedAt: new Date('2024-01-30T16:00:00Z'),
-              description: 'Confidential strategic roadmap and business objectives for 2024.',
+              description:
+                'Confidential strategic roadmap and business objectives for 2024.',
               tags: ['strategy', 'roadmap', 'executive'],
-              isConfidential: true
+              isConfidential: true,
             }}
             showPreview={true}
             showDownload={true}
@@ -296,10 +332,10 @@ const DocumentDemo: React.FC = () => {
 
           {/* Loading State */}
           <Document
-            title="Loading Document..."
-            format="docx"
-            status="draft"
-            size="default"
+            title='Loading Document...'
+            format='docx'
+            status='draft'
+            size='default'
             loading={true}
             showPreview={true}
             showDownload={true}
@@ -307,16 +343,17 @@ const DocumentDemo: React.FC = () => {
 
           {/* Disabled State */}
           <Document
-            title="Unavailable Document"
-            format="xlsx"
-            status="archived"
-            size="default"
+            title='Unavailable Document'
+            format='xlsx'
+            status='archived'
+            size='default'
             fileSize={2048000}
             disabled={true}
             metadata={{
               author: 'System',
               modifiedAt: new Date('2023-12-01T00:00:00Z'),
-              description: 'This document is currently unavailable due to system maintenance.'
+              description:
+                'This document is currently unavailable due to system maintenance.',
             }}
             showPreview={true}
             showDownload={true}
@@ -327,29 +364,38 @@ const DocumentDemo: React.FC = () => {
       {/* Detailed View Example */}
       {selectedSize === 'detailed' && (
         <section className={DESIGN_TOKENS.spacing.sectionMargin}>
-          <h2 className={combineTokens(
-            DESIGN_TOKENS.typography.heading.h3,
-            DESIGN_TOKENS.spacing.workspace.subtitleMargin
-          )}>
+          <h2
+            className={combineTokens(
+              DESIGN_TOKENS.typography.heading.h3,
+              DESIGN_TOKENS.spacing.workspace.subtitleMargin
+            )}
+          >
             Detailed View with Rich Metadata
           </h2>
-          
+
           <Document
-            title="Annual Report 2024 - Complete Analysis"
-            format="pdf"
-            status="final"
-            size="detailed"
+            title='Annual Report 2024 - Complete Analysis'
+            format='pdf'
+            status='final'
+            size='detailed'
             fileSize={15728640} // 15MB
-            thumbnailUrl="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDIwMCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTI4IiBmaWxsPSIjRjNGNEY2Ii8+CjxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjE2OCIgaGVpZ2h0PSI5NiIgZmlsbD0iIzlDQTNBRiIvPgo8dGV4dCB4PSIxMDAiIHk9IjcwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM3NDE1MSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RG9jdW1lbnQgUHJldmlldz48L3RleHQ+Cjwvc3ZnPgo="
+            thumbnailUrl='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDIwMCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTI4IiBmaWxsPSIjRjNGNEY2Ii8+CjxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjE2OCIgaGVpZ2h0PSI5NiIgZmlsbD0iIzlDQTNBRiIvPgo8dGV4dCB4PSIxMDAiIHk9IjcwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM3NDE1MSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RG9jdW1lbnQgUHJldmlldz48L3RleHQ+Cjwvc3ZnPgo='
             metadata={{
               author: 'Corporate Team',
               createdAt: new Date('2024-01-01T00:00:00Z'),
               modifiedAt: new Date('2024-02-15T18:00:00Z'),
               version: '3.2.1',
-              tags: ['annual-report', 'financial', 'comprehensive', 'board-approved', 'public'],
-              description: 'Complete annual report including financial statements, operational highlights, strategic initiatives, and forward-looking guidance for stakeholders and investors.',
+              tags: [
+                'annual-report',
+                'financial',
+                'comprehensive',
+                'board-approved',
+                'public',
+              ],
+              description:
+                'Complete annual report including financial statements, operational highlights, strategic initiatives, and forward-looking guidance for stakeholders and investors.',
               pageCount: 156,
-              isConfidential: false
+              isConfidential: false,
             }}
             showPreview={true}
             showDownload={true}
@@ -364,14 +410,16 @@ const DocumentDemo: React.FC = () => {
 
       {/* File Type Examples */}
       <section className={DESIGN_TOKENS.spacing.sectionMargin}>
-        <h2 className={combineTokens(
-          DESIGN_TOKENS.typography.heading.h3,
-          DESIGN_TOKENS.spacing.workspace.subtitleMargin
-        )}>
+        <h2
+          className={combineTokens(
+            DESIGN_TOKENS.typography.heading.h3,
+            DESIGN_TOKENS.spacing.workspace.subtitleMargin
+          )}
+        >
           Supported File Formats
         </h2>
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+
+        <div className='grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5'>
           {[
             { format: 'pdf' as DocumentFormat, name: 'PDF Document' },
             { format: 'doc' as DocumentFormat, name: 'Word Doc' },
@@ -384,14 +432,14 @@ const DocumentDemo: React.FC = () => {
             { format: 'txt' as DocumentFormat, name: 'Text File' },
             { format: 'image' as DocumentFormat, name: 'Image File' },
             { format: 'archive' as DocumentFormat, name: 'Archive' },
-            { format: 'unknown' as DocumentFormat, name: 'Unknown' }
+            { format: 'unknown' as DocumentFormat, name: 'Unknown' },
           ].map(({ format, name }) => (
             <Document
               key={format}
               title={name}
               format={format}
-              status="final"
-              size="compact"
+              status='final'
+              size='compact'
               fileSize={1024}
               showPreview={false}
               showDownload={false}
@@ -403,58 +451,80 @@ const DocumentDemo: React.FC = () => {
 
       {/* Feature Summary */}
       <section className={DESIGN_TOKENS.spacing.sectionMargin}>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className={combineTokens(
-            DESIGN_TOKENS.typography.heading.h4,
-            'text-blue-900 mb-4'
-          )}>
+        <div className='rounded-lg border border-blue-200 bg-blue-50 p-6'>
+          <h3
+            className={combineTokens(
+              DESIGN_TOKENS.typography.heading.h4,
+              'mb-4 text-blue-900'
+            )}
+          >
             Enterprise Features
           </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>11 supported file formats</span>
+
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <ul className='space-y-2'>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  11 supported file formats
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>5 document status indicators</span>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  5 document status indicators
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>3 size variants (compact, default, detailed)</span>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  3 size variants (compact, default, detailed)
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>Rich metadata support</span>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  Rich metadata support
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>Interactive action buttons</span>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  Interactive action buttons
+                </span>
               </li>
             </ul>
-            
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>WCAG 2.1 AA accessibility</span>
+
+            <ul className='space-y-2'>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  WCAG 2.1 AA accessibility
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>Keyboard navigation support</span>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  Keyboard navigation support
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>Loading and disabled states</span>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  Loading and disabled states
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>Thumbnail preview support</span>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  Thumbnail preview support
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                <span className={DESIGN_TOKENS.typography.body.small}>100% DESIGN_TOKENS compliant</span>
+              <li className='flex items-center gap-2'>
+                <span className='text-green-600'>✓</span>
+                <span className={DESIGN_TOKENS.typography.body.small}>
+                  100% DESIGN_TOKENS compliant
+                </span>
               </li>
             </ul>
           </div>

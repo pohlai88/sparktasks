@@ -115,7 +115,9 @@ describe('Query Engine', () => {
     it('should filter by multiple statuses', () => {
       const result = runQuery(mockTasks, { status: ['TODAY', 'LATER'] });
       expect(result.total).toBe(3);
-      expect(result.items.every(t => t.status === 'TODAY' || t.status === 'LATER')).toBe(true);
+      expect(
+        result.items.every(t => t.status === 'TODAY' || t.status === 'LATER')
+      ).toBe(true);
     });
 
     it('should hide ARCHIVED tasks by default', () => {
@@ -130,9 +132,9 @@ describe('Query Engine', () => {
           tags: [],
           createdAt: '2025-08-15T10:00:00.000Z',
           updatedAt: '2025-08-15T10:00:00.000Z',
-        }
+        },
       ];
-      
+
       // Default query should not include ARCHIVED
       const result = runQuery(tasksWithArchived, {});
       expect(result.total).toBe(5); // Should be same as original mockTasks
@@ -151,9 +153,9 @@ describe('Query Engine', () => {
           tags: [],
           createdAt: '2025-08-15T10:00:00.000Z',
           updatedAt: '2025-08-15T10:00:00.000Z',
-        }
+        },
       ];
-      
+
       // Explicit query for ARCHIVED should include them
       const result = runQuery(tasksWithArchived, { status: ['ARCHIVED'] });
       expect(result.total).toBe(1);
@@ -171,28 +173,34 @@ describe('Query Engine', () => {
     it('should filter by multiple priorities', () => {
       const result = runQuery(mockTasks, { priority: ['P0', 'P1'] });
       expect(result.total).toBe(4);
-      expect(result.items.every(t => t.priority === 'P0' || t.priority === 'P1')).toBe(true);
+      expect(
+        result.items.every(t => t.priority === 'P0' || t.priority === 'P1')
+      ).toBe(true);
     });
   });
 
   describe('Due date filtering', () => {
     it('should filter by due date range', () => {
-      const result = runQuery(mockTasks, { 
+      const result = runQuery(mockTasks, {
         dueFrom: '2025-08-15T00:00:00.000Z',
-        dueTo: '2025-08-18T00:00:00.000Z'
+        dueTo: '2025-08-18T00:00:00.000Z',
       });
       expect(result.total).toBe(1);
       expect(result.items[0]!.title).toBe('Fix urgent bug');
     });
 
     it('should filter by due from only', () => {
-      const result = runQuery(mockTasks, { dueFrom: '2025-08-19T00:00:00.000Z' });
+      const result = runQuery(mockTasks, {
+        dueFrom: '2025-08-19T00:00:00.000Z',
+      });
       expect(result.total).toBe(1);
       expect(result.items[0]!.title).toBe('Write documentation');
     });
 
     it('should exclude tasks without due date', () => {
-      const result = runQuery(mockTasks, { dueFrom: '2025-08-01T00:00:00.000Z' });
+      const result = runQuery(mockTasks, {
+        dueFrom: '2025-08-01T00:00:00.000Z',
+      });
       expect(result.total).toBe(2);
       expect(result.items.every(t => t.dueDate)).toBe(true);
     });
@@ -208,7 +216,11 @@ describe('Query Engine', () => {
 
     it('should filter inactive snooze', () => {
       const result = runQuery(mockTasks, { snoozeActive: false });
-      expect(result.items.every(t => !t.snoozeUntil || new Date(t.snoozeUntil) <= new Date())).toBe(true);
+      expect(
+        result.items.every(
+          t => !t.snoozeUntil || new Date(t.snoozeUntil) <= new Date()
+        )
+      ).toBe(true);
     });
   });
 
@@ -216,10 +228,12 @@ describe('Query Engine', () => {
     it('should filter by created date range', () => {
       const result = runQuery(mockTasks, {
         createdFrom: '2025-08-15T00:00:00.000Z',
-        createdTo: '2025-08-15T23:59:59.999Z'
+        createdTo: '2025-08-15T23:59:59.999Z',
       });
       expect(result.total).toBe(3);
-      expect(result.items.every(t => t.createdAt.startsWith('2025-08-15'))).toBe(true);
+      expect(
+        result.items.every(t => t.createdAt.startsWith('2025-08-15'))
+      ).toBe(true);
     });
   });
 
@@ -228,7 +242,7 @@ describe('Query Engine', () => {
       const result = runQuery(mockTasks, {
         status: ['TODAY'],
         priority: ['P0', 'P1'],
-        text: 'bug'
+        text: 'bug',
       });
       expect(result.total).toBe(1);
       expect(result.items[0]!.title).toBe('Fix urgent bug');

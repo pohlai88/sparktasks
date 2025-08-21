@@ -6,21 +6,21 @@ if (!globalThis.crypto) {
   Object.defineProperty(globalThis, 'crypto', {
     value: webcrypto,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis.crypto, 'subtle', {
     value: webcrypto.subtle,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.getRandomValues) {
   Object.defineProperty(globalThis.crypto, 'getRandomValues', {
     value: webcrypto.getRandomValues.bind(webcrypto),
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 
@@ -152,9 +152,21 @@ describe('EventLog with Encryption', () => {
   it('should maintain event ordering and metadata through encryption', async () => {
     // Create multiple test events
     const events = [
-      { type: 'event1', payload: { data: 'first' }, timestamp: new Date().toISOString() },
-      { type: 'event2', payload: { data: 'second' }, timestamp: new Date().toISOString() },
-      { type: 'event3', payload: { data: 'third' }, timestamp: new Date().toISOString() },
+      {
+        type: 'event1',
+        payload: { data: 'first' },
+        timestamp: new Date().toISOString(),
+      },
+      {
+        type: 'event2',
+        payload: { data: 'second' },
+        timestamp: new Date().toISOString(),
+      },
+      {
+        type: 'event3',
+        payload: { data: 'third' },
+        timestamp: new Date().toISOString(),
+      },
     ];
 
     // Append events
@@ -190,7 +202,7 @@ describe('EventLog with Encryption', () => {
         expect(envelope.ct).toBeTruthy();
         expect(envelope.aad).toBeTruthy();
         expect(envelope.ts).toBeTruthy();
-        
+
         // Ensure no plaintext leakage
         expect(value).not.toContain('test-encryption');
         expect(value).not.toContain('confidential information');

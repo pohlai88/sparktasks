@@ -5,57 +5,57 @@ name: Workspace Compliance
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   workspace-lint:
     name: Validate Workspace Rules
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.16.0'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Run workspace structure validation
-      run: |
-        echo "🔧 Running workspace compliance checks..."
-        node tools/check-workspace-structure.js
-        
-    - name: Run all validators
-      run: |
-        echo "🧪 Running comprehensive validation suite..."
-        npm run validate
-        
-    - name: Check for large files
-      run: |
-        echo "📏 Scanning for oversized files..."
-        find . -type f -size +1M -not -path "./node_modules/*" -not -path "./.git/*" | while read file; do
-          echo "❌ Large file detected: $file ($(du -h "$file" | cut -f1))"
-          exit 1
-        done || echo "✅ No oversized files found"
-        
-    - name: Validate .gitignore patterns
-      run: |
-        echo "🔍 Checking .gitignore compliance..."
-        # Check if common temp/build directories are properly ignored
-        for pattern in "dist/" "build/" "coverage/" ".tmp/" ".cache/"; do
-          if ! grep -q "$pattern" .gitignore; then
-            echo "⚠️  Consider adding $pattern to .gitignore"
-          fi
-        done
-        
-    - name: Report compliance status
-      run: |
-        echo "✅ Workspace compliance validation completed successfully"
-        echo "📖 All files comply with WORKSPACE_RULES.md standards"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.16.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run workspace structure validation
+        run: |
+          echo "🔧 Running workspace compliance checks..."
+          node tools/check-workspace-structure.js
+
+      - name: Run all validators
+        run: |
+          echo "🧪 Running comprehensive validation suite..."
+          npm run validate
+
+      - name: Check for large files
+        run: |
+          echo "📏 Scanning for oversized files..."
+          find . -type f -size +1M -not -path "./node_modules/*" -not -path "./.git/*" | while read file; do
+            echo "❌ Large file detected: $file ($(du -h "$file" | cut -f1))"
+            exit 1
+          done || echo "✅ No oversized files found"
+
+      - name: Validate .gitignore patterns
+        run: |
+          echo "🔍 Checking .gitignore compliance..."
+          # Check if common temp/build directories are properly ignored
+          for pattern in "dist/" "build/" "coverage/" ".tmp/" ".cache/"; do
+            if ! grep -q "$pattern" .gitignore; then
+              echo "⚠️  Consider adding $pattern to .gitignore"
+            fi
+          done
+
+      - name: Report compliance status
+        run: |
+          echo "✅ Workspace compliance validation completed successfully"
+          echo "📖 All files comply with WORKSPACE_RULES.md standards"

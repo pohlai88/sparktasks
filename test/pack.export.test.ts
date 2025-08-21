@@ -1,6 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { exportSparkpack } from '../src/domain/pack/export';
-import { appendEvent, snapshotEvents, restoreEvents } from '../src/domain/task/eventlog';
+import {
+  appendEvent,
+  snapshotEvents,
+  restoreEvents,
+} from '../src/domain/task/eventlog';
 import type { TaskEvent } from '../src/domain/task/events';
 import type { Sparkpack } from '../src/domain/pack/types';
 
@@ -54,7 +58,9 @@ describe('Pack Export', () => {
     expect(sparkpack).toHaveProperty('events');
     expect(sparkpack.meta.version).toBe(1);
     expect(sparkpack.meta.format).toBe('sparkpack/1+json');
-    expect(sparkpack.meta.createdAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+    expect(sparkpack.meta.createdAt).toMatch(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
+    );
     expect(sparkpack.meta.eventsCount).toBe(2);
     expect(sparkpack.meta.eventsHash).toMatch(/^[0-9a-f]{8}$/);
     expect(sparkpack.events).toHaveLength(2);

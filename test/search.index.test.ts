@@ -9,7 +9,7 @@ describe('InMemorySearchIndex', () => {
 
   beforeEach(() => {
     searchIndex = createSearchIndex();
-    
+
     sampleTasks = [
       {
         id: 'task-1',
@@ -22,7 +22,7 @@ describe('InMemorySearchIndex', () => {
         updatedAt: '2024-01-01T10:00:00Z',
       },
       {
-        id: 'task-2', 
+        id: 'task-2',
         title: 'Implement user dashboard',
         notes: 'Create a new dashboard with charts and analytics',
         status: 'LATER',
@@ -50,14 +50,14 @@ describe('InMemorySearchIndex', () => {
         tags: ['security', 'auth', 'review'],
         createdAt: '2024-01-04T14:00:00Z',
         updatedAt: '2024-01-04T14:00:00Z',
-      }
+      },
     ];
   });
 
   describe('build', () => {
     it('should build index from task list', () => {
       searchIndex.build(sampleTasks);
-      
+
       const result = searchIndex.search({ q: 'authentication' });
       expect(result.total).toBe(2);
       expect(result.items.map(t => t.id)).toEqual(['task-1', 'task-4']);
@@ -65,7 +65,7 @@ describe('InMemorySearchIndex', () => {
 
     it('should handle empty task list', () => {
       searchIndex.build([]);
-      
+
       const result = searchIndex.search({ q: 'test' });
       expect(result.total).toBe(0);
       expect(result.items).toEqual([]);
@@ -156,7 +156,7 @@ describe('InMemorySearchIndex', () => {
           tags: [],
           createdAt: '2024-01-01T10:00:00Z',
           updatedAt: '2024-01-01T10:00:00Z',
-        }
+        },
       ]);
     });
 
@@ -164,7 +164,7 @@ describe('InMemorySearchIndex', () => {
       const result = searchIndex.search({ q: 'boost test' });
       expect(result.total).toBe(3);
       expect(result.items[0].id).toBe('task-title'); // title boost = 3
-      expect(result.items[1].id).toBe('task-tags');  // tags boost = 2
+      expect(result.items[1].id).toBe('task-tags'); // tags boost = 2
       expect(result.items[2].id).toBe('task-notes'); // notes boost = 1
     });
 
@@ -207,9 +207,9 @@ describe('InMemorySearchIndex', () => {
     });
 
     it('should combine text query with filters', () => {
-      const result = searchIndex.search({ 
+      const result = searchIndex.search({
         q: 'auth',
-        status: ['TODAY']
+        status: ['TODAY'],
       });
       expect(result.total).toBe(2);
       expect(result.items.every(task => task.status === 'TODAY')).toBe(true);
@@ -232,7 +232,7 @@ describe('InMemorySearchIndex', () => {
       expect(result.facets!.status).toEqual({
         TODAY: 2,
         LATER: 1,
-        DONE: 1
+        DONE: 1,
       });
     });
 
@@ -241,7 +241,7 @@ describe('InMemorySearchIndex', () => {
       expect(result.facets!.priority).toEqual({
         P0: 2,
         P1: 1,
-        P2: 1
+        P2: 1,
       });
     });
 
@@ -257,17 +257,17 @@ describe('InMemorySearchIndex', () => {
         testing: 1,
         api: 1,
         security: 1,
-        review: 1
+        review: 1,
       });
     });
 
     it('should update facets based on search query', () => {
       const result = searchIndex.search({ q: 'auth' });
       expect(result.facets!.status).toEqual({
-        TODAY: 2
+        TODAY: 2,
       });
       expect(result.facets!.priority).toEqual({
-        P0: 2
+        P0: 2,
       });
     });
   });
@@ -331,12 +331,12 @@ describe('InMemorySearchIndex', () => {
           notes: 'Fresh content',
           status: 'TODAY',
           priority: 'P1',
-          tags: ['new']
-        }
+          tags: ['new'],
+        },
       };
 
       searchIndex.updateFromEvent(event);
-      
+
       const result = searchIndex.search({ q: 'searchable' });
       expect(result.total).toBe(1);
       expect(result.items[0]!.id).toBe('new-task');
@@ -350,17 +350,17 @@ describe('InMemorySearchIndex', () => {
           id: 'task-1',
           changes: {
             title: 'Updated searchable title',
-            tags: ['updated', 'modified']
-          }
-        }
+            tags: ['updated', 'modified'],
+          },
+        },
       };
 
       searchIndex.updateFromEvent(event);
-      
+
       const result = searchIndex.search({ q: 'searchable' });
       expect(result.total).toBe(1);
       expect(result.items[0]!.title).toBe('Updated searchable title');
-      
+
       // Old content should no longer match
       const oldResult = searchIndex.search({ q: 'authentication' });
       expect(oldResult.items.find(t => t.id === 'task-1')).toBeUndefined();
@@ -370,11 +370,11 @@ describe('InMemorySearchIndex', () => {
       const event: TaskEvent = {
         type: 'TASK_COMPLETED',
         timestamp: '2024-01-05T10:00:00Z',
-        payload: { id: 'task-1' }
+        payload: { id: 'task-1' },
       };
 
       searchIndex.updateFromEvent(event);
-      
+
       const result = searchIndex.search({ status: ['DONE'] });
       expect(result.items.find(t => t.id === 'task-1')).toBeDefined();
     });
@@ -383,15 +383,15 @@ describe('InMemorySearchIndex', () => {
       const event: TaskEvent = {
         type: 'TASK_MOVED',
         timestamp: '2024-01-05T10:00:00Z',
-        payload: { 
-          id: 'task-1', 
+        payload: {
+          id: 'task-1',
           fromStatus: 'TODAY',
-          toStatus: 'LATER'
-        }
+          toStatus: 'LATER',
+        },
       };
 
       searchIndex.updateFromEvent(event);
-      
+
       const result = searchIndex.search({ status: ['LATER'] });
       expect(result.items.find(t => t.id === 'task-1')).toBeDefined();
     });
@@ -400,11 +400,11 @@ describe('InMemorySearchIndex', () => {
       const event: TaskEvent = {
         type: 'TASK_SNOOZED',
         timestamp: '2024-01-05T10:00:00Z',
-        payload: { id: 'task-1', snoozeUntil: '2024-01-10T10:00:00Z' }
+        payload: { id: 'task-1', snoozeUntil: '2024-01-10T10:00:00Z' },
       };
 
       searchIndex.updateFromEvent(event);
-      
+
       const result = searchIndex.search({ q: 'authentication' });
       const task = result.items.find(t => t.id === 'task-1');
       expect(task?.snoozeUntil).toBe('2024-01-10T10:00:00Z');
@@ -416,8 +416,8 @@ describe('InMemorySearchIndex', () => {
         timestamp: '2024-01-05T10:00:00Z',
         payload: {
           id: 'unknown-task',
-          changes: { title: 'This should not crash' }
-        }
+          changes: { title: 'This should not crash' },
+        },
       };
 
       expect(() => {
@@ -444,7 +444,7 @@ describe('InMemorySearchIndex', () => {
         createdAt: '2024-01-01T10:00:00Z',
         updatedAt: '2024-01-01T10:00:00Z',
       };
-      
+
       searchIndex.build([taskWithMissingFields]);
       const result = searchIndex.search({ q: 'minimal' });
       expect(result.total).toBe(1);

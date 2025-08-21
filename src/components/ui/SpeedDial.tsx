@@ -1,6 +1,6 @@
 /**
  * SpeedDial Component - Enterprise-Grade Floating Action Button with Menu
- * 
+ *
  * Features:
  * - Floating action button (FAB) with expandable menu
  * - 8-direction placement system (top, bottom, left, right, corners)
@@ -17,17 +17,17 @@
  * - Custom trigger and menu item support
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { DESIGN_TOKENS } from '@/design/tokens';
 import { Plus, X } from 'lucide-react';
 
 // Type definitions
-export type SpeedDialPlacement = 
-  | 'top' 
-  | 'top-left' 
+export type SpeedDialPlacement =
+  | 'top'
+  | 'top-left'
   | 'top-right'
-  | 'bottom' 
-  | 'bottom-left' 
+  | 'bottom'
+  | 'bottom-left'
   | 'bottom-right'
   | 'left'
   | 'right';
@@ -47,34 +47,39 @@ export interface SpeedDialProps {
   // Content
   actions: SpeedDialAction[];
   children?: React.ReactNode; // Custom trigger content
-  
+
   // Trigger configuration
   triggerIcon?: React.ReactNode;
   triggerSize?: 'sm' | 'md' | 'lg';
   triggerVariant?: 'primary' | 'secondary' | 'accent';
-  
+
   // Menu configuration
   placement?: SpeedDialPlacement;
-  
+
   // Position
-  position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' | 'custom';
+  position?:
+    | 'bottom-right'
+    | 'bottom-left'
+    | 'top-right'
+    | 'top-left'
+    | 'custom';
   customPosition?: string; // Custom positioning classes
-  
+
   // Accessibility
   ariaLabel?: string;
   menuId?: string;
-  
+
   // State
   disabled?: boolean;
   loading?: boolean;
-  
+
   // Controlled state
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  
+
   // Events
   onActionSelect?: (action: SpeedDialAction) => void;
-  
+
   // Styling
   className?: string;
   menuClassName?: string;
@@ -97,18 +102,21 @@ export function SpeedDial({
   onOpenChange,
   onActionSelect,
   className = '',
-  menuClassName = ''
+  menuClassName = '',
 }: SpeedDialProps) {
   // State management
   const [internalOpen, setInternalOpen] = useState(false);
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
-  
-  const setIsOpen = (open: boolean) => {
-    if (controlledOpen === undefined) {
-      setInternalOpen(open);
-    }
-    onOpenChange?.(open);
-  };
+
+  const setIsOpen = useCallback(
+    (open: boolean) => {
+      if (controlledOpen === undefined) {
+        setInternalOpen(open);
+      }
+      onOpenChange?.(open);
+    },
+    [controlledOpen, onOpenChange]
+  );
 
   // Refs for DOM manipulation
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -116,7 +124,9 @@ export function SpeedDial({
   const [focusedIndex, setFocusedIndex] = useState(-1);
 
   // Generate unique IDs
-  const generatedMenuId = useRef(`speed-dial-${Math.random().toString(36).substr(2, 9)}`);
+  const generatedMenuId = useRef(
+    `speed-dial-${Math.random().toString(36).substr(2, 9)}`
+  );
   const actualMenuId = menuId || generatedMenuId.current;
 
   // Click outside detection
@@ -154,23 +164,36 @@ export function SpeedDial({
         case 'ArrowUp':
         case 'ArrowDown':
         case 'ArrowLeft':
-        case 'ArrowRight':
+        case 'ArrowRight': {
           event.preventDefault();
           const activeActions = actions.filter(action => !action.disabled);
           if (activeActions.length === 0) return;
 
-          const isVertical = placement.includes('top') || placement.includes('bottom') || placement === 'left' || placement === 'right';
-          const isReverse = placement.includes('bottom') || placement === 'right';
-          
+          const isVertical =
+            placement.includes('top') ||
+            placement.includes('bottom') ||
+            placement === 'left' ||
+            placement === 'right';
+          const isReverse =
+            placement.includes('bottom') || placement === 'right';
+
           let shouldMove = false;
           if (isVertical) {
             shouldMove = event.key === 'ArrowUp' || event.key === 'ArrowDown';
           } else {
-            shouldMove = event.key === 'ArrowLeft' || event.key === 'ArrowRight';
+            shouldMove =
+              event.key === 'ArrowLeft' || event.key === 'ArrowRight';
           }
 
           if (shouldMove) {
-            const increment = (event.key === 'ArrowUp' || event.key === 'ArrowLeft') ? (isReverse ? 1 : -1) : (isReverse ? -1 : 1);
+            const increment =
+              event.key === 'ArrowUp' || event.key === 'ArrowLeft'
+                ? isReverse
+                  ? 1
+                  : -1
+                : isReverse
+                  ? -1
+                  : 1;
             setFocusedIndex(prev => {
               const newIndex = prev + increment;
               if (newIndex >= activeActions.length) return 0;
@@ -179,23 +202,28 @@ export function SpeedDial({
             });
           }
           break;
+        }
 
         case 'Enter':
-        case ' ':
+        case ' ': {
           event.preventDefault();
           if (focusedIndex >= 0 && focusedIndex < actions.length) {
             const action = actions.filter(a => !a.disabled)[focusedIndex];
-            if (action) {
-              handleActionClick(action);
+            if (action && !action.disabled && action.onClick) {
+              action.onClick();
+              setIsOpen(false);
+              setFocusedIndex(-1);
             }
           }
           break;
+        }
 
-        case 'Tab':
+        case 'Tab': {
           // Allow tabbing out of the menu
           setIsOpen(false);
           setFocusedIndex(-1);
           break;
+        }
       }
     };
 
@@ -203,35 +231,35 @@ export function SpeedDial({
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isOpen, focusedIndex, actions, placement]);
+  }, [isOpen, focusedIndex, actions, setIsOpen, placement]);
 
   // Get positioning classes based on placement
   const getPositionClasses = (): string => {
     if (customPosition) return customPosition;
-    
+
     const positionMap: Record<string, string> = {
       'bottom-right': DESIGN_TOKENS.position.fixed.bottomRight,
       'bottom-left': DESIGN_TOKENS.position.fixed.bottomLeft,
       'top-right': DESIGN_TOKENS.position.fixed.topRight,
       'top-left': DESIGN_TOKENS.position.fixed.topLeft,
     };
-    
+
     return positionMap[position] || positionMap['bottom-right'];
   };
 
   // Get menu positioning relative to trigger
   const getMenuPlacement = (): string => {
     const placementMap = {
-      'top': 'bottom-0 left-1/2 transform -translate-x-1/2 mb-4',
+      top: 'bottom-0 left-1/2 transform -translate-x-1/2 mb-4',
       'top-left': 'bottom-0 right-0 mb-4 mr-4',
       'top-right': 'bottom-0 left-0 mb-4 ml-4',
-      'bottom': 'top-0 left-1/2 transform -translate-x-1/2 mt-4',
+      bottom: 'top-0 left-1/2 transform -translate-x-1/2 mt-4',
       'bottom-left': 'top-0 right-0 mt-4 mr-4',
       'bottom-right': 'top-0 left-0 mt-4 ml-4',
-      'left': 'right-0 top-1/2 transform -translate-y-1/2 mr-4',
-      'right': 'left-0 top-1/2 transform -translate-y-1/2 ml-4',
+      left: 'right-0 top-1/2 transform -translate-y-1/2 mr-4',
+      right: 'left-0 top-1/2 transform -translate-y-1/2 ml-4',
     };
-    
+
     return placementMap[placement] || placementMap['top'];
   };
 
@@ -265,14 +293,14 @@ export function SpeedDial({
 
     // Call action onClick handler
     action.onClick?.();
-    
+
     // Call menu onActionSelect handler
     onActionSelect?.(action);
 
     // Close menu after selection
     setIsOpen(false);
     setFocusedIndex(-1);
-    
+
     // Return focus to trigger
     triggerRef.current?.focus();
   };
@@ -280,9 +308,9 @@ export function SpeedDial({
   // Get trigger size classes
   const getTriggerSizeClasses = (): string => {
     const sizeMap = {
-      'sm': 'w-12 h-12',
-      'md': 'w-14 h-14',
-      'lg': 'w-16 h-16'
+      sm: 'w-12 h-12',
+      md: 'w-14 h-14',
+      lg: 'w-16 h-16',
     };
     return sizeMap[triggerSize];
   };
@@ -290,9 +318,9 @@ export function SpeedDial({
   // Get trigger variant classes
   const getTriggerVariantClasses = (): string => {
     const variantMap = {
-      'primary': DESIGN_TOKENS.recipe.button.primary,
-      'secondary': DESIGN_TOKENS.recipe.button.secondary,
-      'accent': 'bg-accent-600 hover:bg-accent-700 text-white'
+      primary: DESIGN_TOKENS.recipe.button.primary,
+      secondary: DESIGN_TOKENS.recipe.button.secondary,
+      accent: 'bg-accent-600 hover:bg-accent-700 text-white',
     };
     return variantMap[triggerVariant];
   };
@@ -302,7 +330,7 @@ export function SpeedDial({
     const activeActions = actions.filter(a => !a.disabled);
     const activeIndex = activeActions.indexOf(action);
     const isActionFocused = focusedIndex === activeIndex;
-    
+
     return [
       // Base button styling
       'w-10 h-10 rounded-full shadow-lg border border-white/20',
@@ -318,8 +346,10 @@ export function SpeedDial({
       // Hover effects
       !action.disabled ? DESIGN_TOKENS.motion.semantic.hoverLift : '',
       // Custom classes
-      action.className || ''
-    ].filter(Boolean).join(' ');
+      action.className || '',
+    ]
+      .filter(Boolean)
+      .join(' ');
   };
 
   return (
@@ -342,21 +372,29 @@ export function SpeedDial({
           // Interactive effects
           !disabled && !loading ? DESIGN_TOKENS.motion.semantic.hoverLift : '',
           // Z-index
-          DESIGN_TOKENS.zIndex.overlay
-        ].filter(Boolean).join(' ')}
+          DESIGN_TOKENS.zIndex.overlay,
+        ]
+          .filter(Boolean)
+          .join(' ')}
         disabled={disabled}
         aria-label={ariaLabel}
         aria-expanded={isOpen}
-        aria-haspopup="menu"
+        aria-haspopup='menu'
         aria-controls={isOpen ? actualMenuId : undefined}
-        type="button"
+        type='button'
       >
         {loading ? (
-          <div className={`${DESIGN_TOKENS.icon.size.md} animate-spin rounded-full border-2 border-current border-t-transparent`} />
-        ) : children || (
-          <div className={`${DESIGN_TOKENS.icon.size.md} transition-transform duration-200 ${isOpen ? 'rotate-45' : ''}`}>
-            {triggerIcon || (isOpen ? <X /> : <Plus />)}
-          </div>
+          <div
+            className={`${DESIGN_TOKENS.icon.size.md} animate-spin rounded-full border-2 border-current border-t-transparent`}
+          />
+        ) : (
+          children || (
+            <div
+              className={`${DESIGN_TOKENS.icon.size.md} transition-transform duration-200 ${isOpen ? 'rotate-45' : ''}`}
+            >
+              {triggerIcon || (isOpen ? <X /> : <Plus />)}
+            </div>
+          )
         )}
       </button>
 
@@ -375,32 +413,47 @@ export function SpeedDial({
             // Z-index
             DESIGN_TOKENS.zIndex.overlay,
             // Animation
-            isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none',
+            isOpen
+              ? 'scale-100 opacity-100'
+              : 'pointer-events-none scale-95 opacity-0',
             DESIGN_TOKENS.motion.smooth,
             // Custom styling
-            menuClassName
-          ].filter(Boolean).join(' ')}
-          role="menu"
-          aria-orientation={placement === 'left' || placement === 'right' ? 'horizontal' : 'vertical'}
+            menuClassName,
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          role='menu'
+          aria-orientation={
+            placement === 'left' || placement === 'right'
+              ? 'horizontal'
+              : 'vertical'
+          }
           aria-labelledby={triggerRef.current?.id}
         >
           {actions.map((action, index) => (
             <div
               key={action.id}
               className={getActionButtonClasses(action)}
-              role="menuitem"
+              role='menuitem'
+              tabIndex={action.disabled ? -1 : 0}
               aria-disabled={action.disabled}
               title={action.label}
               onClick={() => handleActionClick(action)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleActionClick(action);
+                }
+              }}
               style={{
                 // Staggered animation delay
-                animationDelay: isOpen ? `${index * 50}ms` : '0ms'
+                animationDelay: isOpen ? `${index * 50}ms` : '0ms',
               }}
             >
-              <span className={DESIGN_TOKENS.icon.size.sm} aria-hidden="true">
+              <span className={DESIGN_TOKENS.icon.size.sm} aria-hidden='true'>
                 {action.icon}
               </span>
-              <span className="sr-only">{action.label}</span>
+              <span className='sr-only'>{action.label}</span>
             </div>
           ))}
         </div>

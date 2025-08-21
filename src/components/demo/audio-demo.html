@@ -1,356 +1,465 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Audio Component Demo</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        .demo-section {
-            margin-bottom: 3rem;
-            padding: 2rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            background: #f9fafb;
-        }
-        .demo-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #111827;
-        }
-        .demo-description {
-            margin-bottom: 1.5rem;
-            color: #6b7280;
-        }
-        .demo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        .demo-item {
-            padding: 1rem;
-            background: white;
-            border-radius: 0.375rem;
-            border: 1px solid #d1d5db;
-        }
-        .demo-label {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: #374151;
-        }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      .demo-section {
+        margin-bottom: 3rem;
+        padding: 2rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        background: #f9fafb;
+      }
+      .demo-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #111827;
+      }
+      .demo-description {
+        margin-bottom: 1.5rem;
+        color: #6b7280;
+      }
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+      .demo-item {
+        padding: 1rem;
+        background: white;
+        border-radius: 0.375rem;
+        border: 1px solid #d1d5db;
+      }
+      .demo-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root">
-        <h1 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; font-weight: 700;">
-            🎵 Audio Component Demo
-        </h1>
-        
-        <div class="demo-section">
-            <h2 class="demo-title">📱 Size Variants</h2>
-            <p class="demo-description">
-                The Audio component supports 5 different sizes: xs, sm, md, lg, and xl.
-            </p>
-            <div id="size-variants"></div>
-        </div>
+      <h1
+        style="
+          text-align: center;
+          margin-bottom: 2rem;
+          font-size: 2.5rem;
+          font-weight: 700;
+        "
+      >
+        🎵 Audio Component Demo
+      </h1>
 
-        <div class="demo-section">
-            <h2 class="demo-title">🎨 Visual Variants</h2>
-            <p class="demo-description">
-                Different visual styles for various use cases: default, rounded, minimal, and compact.
-            </p>
-            <div id="visual-variants"></div>
-        </div>
+      <div class="demo-section">
+        <h2 class="demo-title">📱 Size Variants</h2>
+        <p class="demo-description">
+          The Audio component supports 5 different sizes: xs, sm, md, lg, and
+          xl.
+        </p>
+        <div id="size-variants"></div>
+      </div>
 
-        <div class="demo-section">
-            <h2 class="demo-title">🎵 Track Information</h2>
-            <p class="demo-description">
-                Display track metadata including title, artist, album, and cover art.
-            </p>
-            <div id="track-info"></div>
-        </div>
+      <div class="demo-section">
+        <h2 class="demo-title">🎨 Visual Variants</h2>
+        <p class="demo-description">
+          Different visual styles for various use cases: default, rounded,
+          minimal, and compact.
+        </p>
+        <div id="visual-variants"></div>
+      </div>
 
-        <div class="demo-section">
-            <h2 class="demo-title">🎛️ Advanced Features</h2>
-            <p class="demo-description">
-                Loading states, error handling, custom controls, and keyboard shortcuts.
-            </p>
-            <div id="advanced-features"></div>
-        </div>
+      <div class="demo-section">
+        <h2 class="demo-title">🎵 Track Information</h2>
+        <p class="demo-description">
+          Display track metadata including title, artist, album, and cover art.
+        </p>
+        <div id="track-info"></div>
+      </div>
 
-        <div class="demo-section">
-            <h2 class="demo-title">🔊 Multiple Audio Sources</h2>
-            <p class="demo-description">
-                Support for multiple audio formats with fallback sources.
-            </p>
-            <div id="multiple-sources"></div>
-        </div>
+      <div class="demo-section">
+        <h2 class="demo-title">🎛️ Advanced Features</h2>
+        <p class="demo-description">
+          Loading states, error handling, custom controls, and keyboard
+          shortcuts.
+        </p>
+        <div id="advanced-features"></div>
+      </div>
+
+      <div class="demo-section">
+        <h2 class="demo-title">🔊 Multiple Audio Sources</h2>
+        <p class="demo-description">
+          Support for multiple audio formats with fallback sources.
+        </p>
+        <div id="multiple-sources"></div>
+      </div>
     </div>
 
     <script type="text/babel">
-        // Mock DESIGN_TOKENS for demo purposes
-        const DESIGN_TOKENS = {
-            utils: {
-                spaceBetween: 'flex justify-between items-center',
-                centerContent: 'flex items-center justify-center',
-            },
-            typography: {
-                body: {
-                    medium: 'text-base font-medium',
-                    small: 'text-sm',
-                },
-            },
-            semantic: {
-                text: {
-                    muted: 'text-gray-500',
-                },
-                background: {
-                    muted: 'bg-gray-100',
-                },
-            },
-            spacing: {
-                xs: 'p-1',
-                sm: 'p-2',
-                md: 'p-4',
-                lg: 'p-6',
-                xl: 'p-8',
-            },
-            recipe: {
-                button: {
-                    primary: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-medium transition-colors',
-                    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1.5 rounded transition-colors',
-                    ghost: 'hover:bg-gray-100 text-gray-600 p-2 rounded transition-colors',
-                },
-                card: {
-                    elevated: 'bg-white border border-gray-200 rounded-lg shadow-sm',
-                },
-            },
-            icon: {
-                size: {
-                    sm: 'w-4 h-4',
-                    md: 'w-5 h-5',
-                },
-            },
-        };
+      // Mock DESIGN_TOKENS for demo purposes
+      const DESIGN_TOKENS = {
+        utils: {
+          spaceBetween: 'flex justify-between items-center',
+          centerContent: 'flex items-center justify-center',
+        },
+        typography: {
+          body: {
+            medium: 'text-base font-medium',
+            small: 'text-sm',
+          },
+        },
+        semantic: {
+          text: {
+            muted: 'text-gray-500',
+          },
+          background: {
+            muted: 'bg-gray-100',
+          },
+        },
+        spacing: {
+          xs: 'p-1',
+          sm: 'p-2',
+          md: 'p-4',
+          lg: 'p-6',
+          xl: 'p-8',
+        },
+        recipe: {
+          button: {
+            primary:
+              'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-medium transition-colors',
+            secondary:
+              'bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1.5 rounded transition-colors',
+            ghost:
+              'hover:bg-gray-100 text-gray-600 p-2 rounded transition-colors',
+          },
+          card: {
+            elevated: 'bg-white border border-gray-200 rounded-lg shadow-sm',
+          },
+        },
+        icon: {
+          size: {
+            sm: 'w-4 h-4',
+            md: 'w-5 h-5',
+          },
+        },
+      };
 
-        // Sample audio URLs (using placeholder services)
-        const sampleAudio = 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav';
-        const sampleCover = 'https://via.placeholder.com/300x300/4f46e5/ffffff?text=Album+Cover';
+      // Sample audio URLs (using placeholder services)
+      const sampleAudio =
+        'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav';
+      const sampleCover =
+        'https://via.placeholder.com/300x300/4f46e5/ffffff?text=Album+Cover';
 
-        // Size Variants Demo
-        const SizeVariantsDemo = () => {
-            const sizes = [
-                { size: 'xs', label: 'Extra Small' },
-                { size: 'sm', label: 'Small' },
-                { size: 'md', label: 'Medium (Default)' },
-                { size: 'lg', label: 'Large' },
-                { size: 'xl', label: 'Extra Large' },
-            ];
+      // Size Variants Demo
+      const SizeVariantsDemo = () => {
+        const sizes = [
+          { size: 'xs', label: 'Extra Small' },
+          { size: 'sm', label: 'Small' },
+          { size: 'md', label: 'Medium (Default)' },
+          { size: 'lg', label: 'Large' },
+          { size: 'xl', label: 'Extra Large' },
+        ];
 
-            return (
-                <div className="demo-grid">
-                    {sizes.map(({ size, label }) => (
-                        <div key={size} className="demo-item">
-                            <div className="demo-label">{label} ({size})</div>
-                            <div style={{ padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '0.375rem' }}>
-                                <div className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing[size]}`}>
-                                    <audio controls style={{ width: '100%' }}>
-                                        <source src={sampleAudio} type="audio/wav" />
-                                        <track kind="captions" srcLang="en" label="English captions" default />
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+        return (
+          <div className='demo-grid'>
+            {sizes.map(({ size, label }) => (
+              <div key={size} className='demo-item'>
+                <div className='demo-label'>
+                  {label} ({size})
                 </div>
-            );
-        };
-
-        // Visual Variants Demo
-        const VisualVariantsDemo = () => {
-            const variants = [
-                { variant: 'default', label: 'Default' },
-                { variant: 'rounded', label: 'Rounded' },
-                { variant: 'minimal', label: 'Minimal' },
-                { variant: 'compact', label: 'Compact' },
-            ];
-
-            return (
-                <div className="demo-grid">
-                    {variants.map(({ variant, label }) => (
-                        <div key={variant} className="demo-item">
-                            <div className="demo-label">{label}</div>
-                            <div style={{ padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '0.375rem' }}>
-                                <div className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md} ${variant === 'rounded' ? 'rounded-xl' : variant === 'minimal' ? 'border-none shadow-none' : variant === 'compact' ? 'p-2' : ''}`}>
-                                    <audio controls style={{ width: '100%' }}>
-                                        <source src={sampleAudio} type="audio/wav" />
-                                        <track kind="captions" srcLang="en" label="English captions" default />
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                <div
+                  style={{
+                    padding: '1rem',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '0.375rem',
+                  }}
+                >
+                  <div
+                    className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing[size]}`}
+                  >
+                    <audio controls style={{ width: '100%' }}>
+                      <source src={sampleAudio} type='audio/wav' />
+                      <track
+                        kind='captions'
+                        srcLang='en'
+                        label='English captions'
+                        default
+                      />
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
                 </div>
-            );
-        };
+              </div>
+            ))}
+          </div>
+        );
+      };
 
-        // Track Information Demo
-        const TrackInfoDemo = () => {
-            return (
-                <div className="demo-grid">
-                    <div className="demo-item">
-                        <div className="demo-label">With Track Information</div>
-                        <div className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}>
-                            <div className={`${DESIGN_TOKENS.utils.spaceBetween} mb-2 gap-2`}>
-                                <img 
-                                    src={sampleCover} 
-                                    alt="Album Cover" 
-                                    style={{ width: '60px', height: '60px', borderRadius: '0.375rem', objectFit: 'cover' }}
-                                />
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                    <h3 className={`${DESIGN_TOKENS.typography.body.medium} text-foreground truncate`}>
-                                        Symphonic Dreams
-                                    </h3>
-                                    <p className={`${DESIGN_TOKENS.typography.body.small} ${DESIGN_TOKENS.semantic.text.muted} truncate`}>
-                                        Ethereal Orchestra • Classical Collection
-                                    </p>
-                                </div>
-                            </div>
-                            <audio controls style={{ width: '100%' }}>
-                                <source src={sampleAudio} type="audio/wav" />
-                                <track kind="captions" srcLang="en" label="English captions" default />
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                    </div>
-                    <div className="demo-item">
-                        <div className="demo-label">Minimal Track Info</div>
-                        <div className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}>
-                            <div className="mb-2">
-                                <h3 className={`${DESIGN_TOKENS.typography.body.medium} text-foreground`}>
-                                    Morning Jazz
-                                </h3>
-                                <p className={`${DESIGN_TOKENS.typography.body.small} ${DESIGN_TOKENS.semantic.text.muted}`}>
-                                    Smooth Jazz Ensemble
-                                </p>
-                            </div>
-                            <audio controls style={{ width: '100%' }}>
-                                <source src={sampleAudio} type="audio/wav" />
-                                <track kind="captions" srcLang="en" label="English captions" default />
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                    </div>
+      // Visual Variants Demo
+      const VisualVariantsDemo = () => {
+        const variants = [
+          { variant: 'default', label: 'Default' },
+          { variant: 'rounded', label: 'Rounded' },
+          { variant: 'minimal', label: 'Minimal' },
+          { variant: 'compact', label: 'Compact' },
+        ];
+
+        return (
+          <div className='demo-grid'>
+            {variants.map(({ variant, label }) => (
+              <div key={variant} className='demo-item'>
+                <div className='demo-label'>{label}</div>
+                <div
+                  style={{
+                    padding: '1rem',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '0.375rem',
+                  }}
+                >
+                  <div
+                    className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md} ${variant === 'rounded' ? 'rounded-xl' : variant === 'minimal' ? 'border-none shadow-none' : variant === 'compact' ? 'p-2' : ''}`}
+                  >
+                    <audio controls style={{ width: '100%' }}>
+                      <source src={sampleAudio} type='audio/wav' />
+                      <track
+                        kind='captions'
+                        srcLang='en'
+                        label='English captions'
+                        default
+                      />
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
                 </div>
-            );
-        };
+              </div>
+            ))}
+          </div>
+        );
+      };
 
-        // Advanced Features Demo
-        const AdvancedFeaturesDemo = () => {
-            const [isLoading, setIsLoading] = React.useState(false);
-            const [hasError, setHasError] = React.useState(false);
-
-            const simulateLoading = () => {
-                setIsLoading(true);
-                setTimeout(() => setIsLoading(false), 2000);
-            };
-
-            const simulateError = () => {
-                setHasError(!hasError);
-            };
-
-            return (
-                <div className="demo-grid">
-                    <div className="demo-item">
-                        <div className="demo-label">Loading State</div>
-                        <div className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}>
-                            <button 
-                                onClick={simulateLoading}
-                                className={`${DESIGN_TOKENS.recipe.button.primary} mb-2`}
-                            >
-                                Simulate Loading
-                            </button>
-                            {isLoading && (
-                                <div className="flex items-center justify-center h-16 mb-2">
-                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                                </div>
-                            )}
-                            <audio controls style={{ width: '100%' }} disabled={isLoading}>
-                                <source src={sampleAudio} type="audio/wav" />
-                                <track kind="captions" srcLang="en" label="English captions" default />
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                    </div>
-                    <div className="demo-item">
-                        <div className="demo-label">Error State</div>
-                        <div className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}>
-                            <button 
-                                onClick={simulateError}
-                                className={`${DESIGN_TOKENS.recipe.button.secondary} mb-2`}
-                            >
-                                Toggle Error
-                            </button>
-                            {hasError && (
-                                <div className="bg-red-50 text-red-700 p-3 rounded mb-2">
-                                    ⚠️ Failed to load audio file. Please check your connection.
-                                </div>
-                            )}
-                            <audio controls style={{ width: '100%' }} disabled={hasError}>
-                                <source src={hasError ? '' : sampleAudio} type="audio/wav" />
-                                <track kind="captions" srcLang="en" label="English captions" default />
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                    </div>
+      // Track Information Demo
+      const TrackInfoDemo = () => {
+        return (
+          <div className='demo-grid'>
+            <div className='demo-item'>
+              <div className='demo-label'>With Track Information</div>
+              <div
+                className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}
+              >
+                <div
+                  className={`${DESIGN_TOKENS.utils.spaceBetween} mb-2 gap-2`}
+                >
+                  <img
+                    src={sampleCover}
+                    alt='Album Cover'
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '0.375rem',
+                      objectFit: 'cover',
+                    }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h3
+                      className={`${DESIGN_TOKENS.typography.body.medium} text-foreground truncate`}
+                    >
+                      Symphonic Dreams
+                    </h3>
+                    <p
+                      className={`${DESIGN_TOKENS.typography.body.small} ${DESIGN_TOKENS.semantic.text.muted} truncate`}
+                    >
+                      Ethereal Orchestra • Classical Collection
+                    </p>
+                  </div>
                 </div>
-            );
-        };
-
-        // Multiple Sources Demo
-        const MultipleSourcesDemo = () => {
-            return (
-                <div className="demo-item">
-                    <div className="demo-label">Multiple Format Support</div>
-                    <div className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}>
-                        <p className="mb-2 text-sm text-gray-600">
-                            This audio element includes multiple source formats for maximum browser compatibility.
-                        </p>
-                        <audio controls style={{ width: '100%' }}>
-                            <source src={sampleAudio} type="audio/wav" />
-                            <source src="audio.ogg" type="audio/ogg" />
-                            <source src="audio.mp3" type="audio/mpeg" />
-                            <track kind="captions" srcLang="en" label="English captions" default />
-                            Your browser does not support the audio element.
-                        </audio>
-                        <div className="mt-2 text-xs text-gray-500">
-                            Formats: WAV, OGG, MP3 (in order of preference)
-                        </div>
-                    </div>
+                <audio controls style={{ width: '100%' }}>
+                  <source src={sampleAudio} type='audio/wav' />
+                  <track
+                    kind='captions'
+                    srcLang='en'
+                    label='English captions'
+                    default
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+            <div className='demo-item'>
+              <div className='demo-label'>Minimal Track Info</div>
+              <div
+                className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}
+              >
+                <div className='mb-2'>
+                  <h3
+                    className={`${DESIGN_TOKENS.typography.body.medium} text-foreground`}
+                  >
+                    Morning Jazz
+                  </h3>
+                  <p
+                    className={`${DESIGN_TOKENS.typography.body.small} ${DESIGN_TOKENS.semantic.text.muted}`}
+                  >
+                    Smooth Jazz Ensemble
+                  </p>
                 </div>
-            );
+                <audio controls style={{ width: '100%' }}>
+                  <source src={sampleAudio} type='audio/wav' />
+                  <track
+                    kind='captions'
+                    srcLang='en'
+                    label='English captions'
+                    default
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // Advanced Features Demo
+      const AdvancedFeaturesDemo = () => {
+        const [isLoading, setIsLoading] = React.useState(false);
+        const [hasError, setHasError] = React.useState(false);
+
+        const simulateLoading = () => {
+          setIsLoading(true);
+          setTimeout(() => setIsLoading(false), 2000);
         };
 
-        // Render all demos
-        ReactDOM.render(<SizeVariantsDemo />, document.getElementById('size-variants'));
-        ReactDOM.render(<VisualVariantsDemo />, document.getElementById('visual-variants'));
-        ReactDOM.render(<TrackInfoDemo />, document.getElementById('track-info'));
-        ReactDOM.render(<AdvancedFeaturesDemo />, document.getElementById('advanced-features'));
-        ReactDOM.render(<MultipleSourcesDemo />, document.getElementById('multiple-sources'));
+        const simulateError = () => {
+          setHasError(!hasError);
+        };
+
+        return (
+          <div className='demo-grid'>
+            <div className='demo-item'>
+              <div className='demo-label'>Loading State</div>
+              <div
+                className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}
+              >
+                <button
+                  onClick={simulateLoading}
+                  className={`${DESIGN_TOKENS.recipe.button.primary} mb-2`}
+                >
+                  Simulate Loading
+                </button>
+                {isLoading && (
+                  <div className='mb-2 flex h-16 items-center justify-center'>
+                    <div className='h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500'></div>
+                  </div>
+                )}
+                <audio controls style={{ width: '100%' }} disabled={isLoading}>
+                  <source src={sampleAudio} type='audio/wav' />
+                  <track
+                    kind='captions'
+                    srcLang='en'
+                    label='English captions'
+                    default
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+            <div className='demo-item'>
+              <div className='demo-label'>Error State</div>
+              <div
+                className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}
+              >
+                <button
+                  onClick={simulateError}
+                  className={`${DESIGN_TOKENS.recipe.button.secondary} mb-2`}
+                >
+                  Toggle Error
+                </button>
+                {hasError && (
+                  <div className='mb-2 rounded bg-red-50 p-3 text-red-700'>
+                    ⚠️ Failed to load audio file. Please check your connection.
+                  </div>
+                )}
+                <audio controls style={{ width: '100%' }} disabled={hasError}>
+                  <source src={hasError ? '' : sampleAudio} type='audio/wav' />
+                  <track
+                    kind='captions'
+                    srcLang='en'
+                    label='English captions'
+                    default
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // Multiple Sources Demo
+      const MultipleSourcesDemo = () => {
+        return (
+          <div className='demo-item'>
+            <div className='demo-label'>Multiple Format Support</div>
+            <div
+              className={`${DESIGN_TOKENS.recipe.card.elevated} ${DESIGN_TOKENS.spacing.md}`}
+            >
+              <p className='mb-2 text-sm text-gray-600'>
+                This audio element includes multiple source formats for maximum
+                browser compatibility.
+              </p>
+              <audio controls style={{ width: '100%' }}>
+                <source src={sampleAudio} type='audio/wav' />
+                <source src='audio.ogg' type='audio/ogg' />
+                <source src='audio.mp3' type='audio/mpeg' />
+                <track
+                  kind='captions'
+                  srcLang='en'
+                  label='English captions'
+                  default
+                />
+                Your browser does not support the audio element.
+              </audio>
+              <div className='mt-2 text-xs text-gray-500'>
+                Formats: WAV, OGG, MP3 (in order of preference)
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // Render all demos
+      ReactDOM.render(
+        <SizeVariantsDemo />,
+        document.getElementById('size-variants')
+      );
+      ReactDOM.render(
+        <VisualVariantsDemo />,
+        document.getElementById('visual-variants')
+      );
+      ReactDOM.render(<TrackInfoDemo />, document.getElementById('track-info'));
+      ReactDOM.render(
+        <AdvancedFeaturesDemo />,
+        document.getElementById('advanced-features')
+      );
+      ReactDOM.render(
+        <MultipleSourcesDemo />,
+        document.getElementById('multiple-sources')
+      );
     </script>
-</body>
+  </body>
 </html>

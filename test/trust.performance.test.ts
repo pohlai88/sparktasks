@@ -13,7 +13,7 @@ const mockStorage: StorageDriver = {
   getItem: vi.fn(),
   setItem: vi.fn(),
   removeItem: vi.fn(),
-  listKeys: vi.fn()
+  listKeys: vi.fn(),
 };
 
 // Helper functions
@@ -28,7 +28,7 @@ function createTestRoot(
     pubB64u: pubKey,
     role,
     createdAt: Date.now(),
-    ...(expiresAt && { expiresAt })
+    ...(expiresAt && { expiresAt }),
   };
 }
 
@@ -43,7 +43,7 @@ function createTestManifest(
     roots,
     threshold,
     createdAt: Date.now(),
-    ...(precedingHash && { precedingHash })
+    ...(precedingHash && { precedingHash }),
   };
 }
 
@@ -58,9 +58,9 @@ describe('Trust System Performance & Edge Cases', () => {
   describe('📊 Performance Tests', () => {
     it('should handle large trust root sets efficiently', async () => {
       const startTime = performance.now();
-      
+
       // Create 20 trust roots (stress test)
-      const largeRootSet: TrustRoot[] = Array.from({ length: 20 }, (_, i) => 
+      const largeRootSet: TrustRoot[] = Array.from({ length: 20 }, (_, i) =>
         createTestRoot(`root-${i}`, `pubkey-${i}`, 'SECONDARY')
       );
 
@@ -71,7 +71,7 @@ describe('Trust System Performance & Edge Cases', () => {
 
       // Validation should handle large sets without issues
       const validation = await TrustEngine.validateTrustManifest(manifest, []);
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
 
@@ -88,15 +88,15 @@ describe('Trust System Performance & Edge Cases', () => {
         createTestRoot('active-1', 'key1', 'PRIMARY'),
         createTestRoot('active-2', 'key2', 'PRIMARY'),
         createTestRoot('expired-1', 'key3', 'EMERGENCY', now - 1000), // Expired
-        createTestRoot('expired-2', 'key4', 'EMERGENCY', now - 500),  // Expired
-        createTestRoot('future-1', 'key5', 'EMERGENCY', now + 10000)  // Active
+        createTestRoot('expired-2', 'key4', 'EMERGENCY', now - 500), // Expired
+        createTestRoot('future-1', 'key5', 'EMERGENCY', now + 10000), // Active
       ];
 
       const state = {
         currentManifest: createTestManifest(roots, 3),
         pendingOperations: [],
         operationHistory: [],
-        lastUpdated: now
+        lastUpdated: now,
       };
       mockStorage.getItem = vi.fn().mockResolvedValue(JSON.stringify(state));
 
@@ -119,23 +119,27 @@ describe('Trust System Performance & Edge Cases', () => {
       const roots = [
         createTestRoot('admin1', 'trusted-key-1'),
         createTestRoot('admin2', 'trusted-key-2'),
-        createTestRoot('admin3', 'trusted-key-3')
+        createTestRoot('admin3', 'trusted-key-3'),
       ];
 
       const state = {
         currentManifest: createTestManifest(roots, 2),
         pendingOperations: [],
         operationHistory: [],
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       };
       mockStorage.getItem = vi.fn().mockResolvedValue(JSON.stringify(state));
 
       // Benchmark 100 trust verification queries
       const startTime = performance.now();
-      
+
       const results = await Promise.all([
-        ...Array.from({ length: 50 }, () => TrustEngine.isTrustedKey('trusted-key-1')),
-        ...Array.from({ length: 50 }, () => TrustEngine.isTrustedKey('untrusted-key'))
+        ...Array.from({ length: 50 }, () =>
+          TrustEngine.isTrustedKey('trusted-key-1')
+        ),
+        ...Array.from({ length: 50 }, () =>
+          TrustEngine.isTrustedKey('untrusted-key')
+        ),
       ]);
 
       const endTime = performance.now();
@@ -145,7 +149,9 @@ describe('Trust System Performance & Edge Cases', () => {
       expect(results.filter(r => !r)).toHaveLength(50); // 50 untrusted
       expect(duration).toBeLessThan(200); // Should complete under 200ms
 
-      console.log(`✅ 100 trust queries: ${duration.toFixed(2)}ms (${(duration/100).toFixed(2)}ms avg)`);
+      console.log(
+        `✅ 100 trust queries: ${duration.toFixed(2)}ms (${(duration / 100).toFixed(2)}ms avg)`
+      );
     });
   });
 
@@ -158,7 +164,7 @@ describe('Trust System Performance & Edge Cases', () => {
           namespace: 'test-workspace',
           roots: [],
           threshold: 1,
-          createdAt: Date.now()
+          createdAt: Date.now(),
         },
         // Threshold too high
         {
@@ -166,7 +172,7 @@ describe('Trust System Performance & Edge Cases', () => {
           namespace: 'test-workspace',
           roots: [createTestRoot('root1', 'key1')],
           threshold: 5, // > root count
-          createdAt: Date.now()
+          createdAt: Date.now(),
         },
         // Threshold zero
         {
@@ -174,12 +180,15 @@ describe('Trust System Performance & Edge Cases', () => {
           namespace: 'test-workspace',
           roots: [createTestRoot('root1', 'key1')],
           threshold: 0,
-          createdAt: Date.now()
-        }
+          createdAt: Date.now(),
+        },
       ] as TrustManifest[];
 
       for (const manifest of malformedManifests) {
-        const validation = await TrustEngine.validateTrustManifest(manifest, []);
+        const validation = await TrustEngine.validateTrustManifest(
+          manifest,
+          []
+        );
         expect(validation.valid).toBe(false);
         expect(validation.manifestValid).toBe(false);
         expect(validation.errors.length).toBeGreaterThan(0);
@@ -193,12 +202,12 @@ describe('Trust System Performance & Edge Cases', () => {
         new Error('Storage quota exceeded'),
         new Error('Permission denied'),
         null, // Unexpected null
-        undefined // Unexpected undefined
+        undefined, // Unexpected undefined
       ];
 
       for (const error of failureCases) {
         mockStorage.getItem = vi.fn().mockRejectedValue(error);
-        
+
         const state = await TrustEngine.getTrustState();
         expect(state).toBeNull(); // Should handle gracefully
 
@@ -216,50 +225,65 @@ describe('Trust System Performance & Edge Cases', () => {
         '{"malformed": "object"}',
         '[]', // Array instead of object
         'null',
-        '{"currentManifest": null}' // Missing required fields
+        '{"currentManifest": null}', // Missing required fields
       ];
 
       for (const corruptedState of corruptedStates) {
         mockStorage.getItem = vi.fn().mockResolvedValue(corruptedState);
-        
+
         const state = await TrustEngine.getTrustState();
         expect(state).toBeNull(); // Should handle corruption gracefully
       }
     });
 
     it('should handle concurrent operation scenarios', async () => {
-      const initialManifest = createTestManifest([
-        createTestRoot('admin1', 'key1')
-      ], 1);
+      const initialManifest = createTestManifest(
+        [createTestRoot('admin1', 'key1')],
+        1
+      );
 
       const existingState = {
         currentManifest: initialManifest,
         pendingOperations: [],
         operationHistory: [],
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       };
-      mockStorage.getItem = vi.fn().mockResolvedValue(JSON.stringify(existingState));
+      mockStorage.getItem = vi
+        .fn()
+        .mockResolvedValue(JSON.stringify(existingState));
 
       // Simulate concurrent operations
       const operations = await Promise.allSettled([
-        TrustEngine.createTrustOperation('TRUST_ROOT_ADD', {
-          ...initialManifest,
-          roots: [...initialManifest.roots, createTestRoot('admin2', 'key2')],
-          version: 2,
-          createdAt: Date.now()
-        }, 'Add admin2'),
-        TrustEngine.createTrustOperation('TRUST_ROOT_ADD', {
-          ...initialManifest,
-          roots: [...initialManifest.roots, createTestRoot('admin3', 'key3')],
-          version: 2,
-          createdAt: Date.now()
-        }, 'Add admin3'),
-        TrustEngine.createTrustOperation('TRUST_THRESHOLD_UPDATE', {
-          ...initialManifest,
-          threshold: 2,
-          version: 2,
-          createdAt: Date.now()
-        }, 'Update threshold')
+        TrustEngine.createTrustOperation(
+          'TRUST_ROOT_ADD',
+          {
+            ...initialManifest,
+            roots: [...initialManifest.roots, createTestRoot('admin2', 'key2')],
+            version: 2,
+            createdAt: Date.now(),
+          },
+          'Add admin2'
+        ),
+        TrustEngine.createTrustOperation(
+          'TRUST_ROOT_ADD',
+          {
+            ...initialManifest,
+            roots: [...initialManifest.roots, createTestRoot('admin3', 'key3')],
+            version: 2,
+            createdAt: Date.now(),
+          },
+          'Add admin3'
+        ),
+        TrustEngine.createTrustOperation(
+          'TRUST_THRESHOLD_UPDATE',
+          {
+            ...initialManifest,
+            threshold: 2,
+            version: 2,
+            createdAt: Date.now(),
+          },
+          'Update threshold'
+        ),
       ]);
 
       // All operations should succeed (they'll be queued)
@@ -271,17 +295,20 @@ describe('Trust System Performance & Edge Cases', () => {
   describe('🔍 Boundary Condition Tests', () => {
     it('should handle maximum threshold scenarios', async () => {
       const maxRoots = 10;
-      const roots = Array.from({ length: maxRoots }, (_, i) => 
+      const roots = Array.from({ length: maxRoots }, (_, i) =>
         createTestRoot(`root-${i}`, `key-${i}`)
       );
 
       // Test various threshold boundaries
-      const thresholds = [1, maxRoots/2, maxRoots-1, maxRoots];
-      
+      const thresholds = [1, maxRoots / 2, maxRoots - 1, maxRoots];
+
       for (const threshold of thresholds) {
         const manifest = createTestManifest(roots, threshold);
-        const validation = await TrustEngine.validateTrustManifest(manifest, []);
-        
+        const validation = await TrustEngine.validateTrustManifest(
+          manifest,
+          []
+        );
+
         expect(validation.manifestValid).toBe(true);
         expect(manifest.threshold).toBe(threshold);
       }
@@ -291,23 +318,23 @@ describe('Trust System Performance & Edge Cases', () => {
       const now = Date.now();
       const almostExpired = now + 1000; // Expires in 1 second
       const justExpired = now - 100; // Expired 100ms ago
-      
+
       const roots = [
         createTestRoot('emergency-1', 'key1', 'EMERGENCY', almostExpired),
         createTestRoot('emergency-2', 'key2', 'EMERGENCY', justExpired),
-        createTestRoot('primary', 'key3', 'PRIMARY')
+        createTestRoot('primary', 'key3', 'PRIMARY'),
       ];
 
       const state = {
         currentManifest: createTestManifest(roots, 1),
         pendingOperations: [],
         operationHistory: [],
-        lastUpdated: now
+        lastUpdated: now,
       };
       mockStorage.getItem = vi.fn().mockResolvedValue(JSON.stringify(state));
 
       const activeRoots = await TrustEngine.getActiveTrustRoots();
-      
+
       expect(activeRoots).toHaveLength(2); // almostExpired + primary
       expect(activeRoots.find(r => r.id === 'emergency-1')).toBeDefined();
       expect(activeRoots.find(r => r.id === 'emergency-2')).toBeUndefined();
@@ -316,19 +343,19 @@ describe('Trust System Performance & Edge Cases', () => {
 
     it('should handle namespace isolation', async () => {
       const roots = [createTestRoot('admin1', 'shared-key')];
-      
+
       // Configure for different namespaces
       TrustEngine.configureTrust(mockStorage, 'workspace-a');
-      
+
       const stateA = {
         currentManifest: createTestManifest(roots, 1),
         pendingOperations: [],
         operationHistory: [],
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       };
 
       // Mock storage to return state only for workspace-a
-      mockStorage.getItem = vi.fn().mockImplementation((key) => {
+      mockStorage.getItem = vi.fn().mockImplementation(key => {
         if (key.includes('workspace-a')) {
           return Promise.resolve(JSON.stringify(stateA));
         }
@@ -340,7 +367,7 @@ describe('Trust System Performance & Edge Cases', () => {
 
       // Switch to workspace-b
       TrustEngine.configureTrust(mockStorage, 'workspace-b');
-      
+
       const isTrustedInB = await TrustEngine.isTrustedKey('shared-key');
       expect(isTrustedInB).toBe(false); // Not trusted in workspace-b
     });
@@ -348,36 +375,37 @@ describe('Trust System Performance & Edge Cases', () => {
 
   describe('📈 Resource Usage Tests', () => {
     it('should have reasonable memory footprint', async () => {
-      const roots = Array.from({ length: 5 }, (_, i) => 
-        createTestRoot(`root-${i}`, `${'x'.repeat(100)}-${i}`) // Longer keys
+      const roots = Array.from(
+        { length: 5 },
+        (_, i) => createTestRoot(`root-${i}`, `${'x'.repeat(100)}-${i}`) // Longer keys
       );
 
       const largeManifest = createTestManifest(roots, 3);
       const serialized = JSON.stringify(largeManifest);
-      
+
       // Should be under 5KB for reasonable manifest
       expect(serialized.length).toBeLessThan(5000);
-      
+
       const parsed = JSON.parse(serialized);
       expect(parsed.roots).toHaveLength(5);
-      
+
       console.log(`✅ Manifest size: ${serialized.length} bytes`);
     });
 
     it('should handle repeated state access efficiently', async () => {
       const state = {
-        currentManifest: createTestManifest([
-          createTestRoot('admin1', 'key1'),
-          createTestRoot('admin2', 'key2')
-        ], 2),
+        currentManifest: createTestManifest(
+          [createTestRoot('admin1', 'key1'), createTestRoot('admin2', 'key2')],
+          2
+        ),
         pendingOperations: [],
         operationHistory: [],
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       };
       mockStorage.getItem = vi.fn().mockResolvedValue(JSON.stringify(state));
 
       const startTime = performance.now();
-      
+
       // Simulate rapid state access
       const results = await Promise.all(
         Array.from({ length: 50 }, () => TrustEngine.getTrustState())

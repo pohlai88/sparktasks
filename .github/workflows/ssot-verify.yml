@@ -1,4 +1,4 @@
-name: "SSOT Verify"
+name: 'SSOT Verify'
 
 on:
   push:

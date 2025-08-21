@@ -20,48 +20,48 @@ describe('Task Lanes', () => {
     });
 
     it('should return true for LATER with past due date and no snooze', () => {
-      const task = { 
-        ...baseTask, 
+      const task = {
+        ...baseTask,
         status: 'LATER' as const,
-        dueDate: '2025-08-14T10:00:00.000Z' // yesterday
+        dueDate: '2025-08-14T10:00:00.000Z', // yesterday
       };
       expect(isToday(task)).toBe(true);
     });
 
     it('should return true for LATER with today due date and no snooze', () => {
-      const task = { 
-        ...baseTask, 
+      const task = {
+        ...baseTask,
         status: 'LATER' as const,
-        dueDate: '2025-08-15T10:00:00.000Z' // today
+        dueDate: '2025-08-15T10:00:00.000Z', // today
       };
       expect(isToday(task)).toBe(true);
     });
 
     it('should return false for LATER with future due date', () => {
-      const task = { 
-        ...baseTask, 
+      const task = {
+        ...baseTask,
         status: 'LATER' as const,
-        dueDate: '2025-08-16T10:00:00.000Z' // tomorrow
+        dueDate: '2025-08-16T10:00:00.000Z', // tomorrow
       };
       expect(isToday(task)).toBe(false);
     });
 
     it('should return false for LATER with past due date but active snooze', () => {
-      const task = { 
-        ...baseTask, 
+      const task = {
+        ...baseTask,
         status: 'LATER' as const,
         dueDate: '2025-08-14T10:00:00.000Z', // yesterday
-        snoozeUntil: '2025-08-16T10:00:00.000Z' // snoozed until tomorrow
+        snoozeUntil: '2025-08-16T10:00:00.000Z', // snoozed until tomorrow
       };
       expect(isToday(task)).toBe(false);
     });
 
     it('should return true for LATER with past due date and expired snooze', () => {
-      const task = { 
-        ...baseTask, 
+      const task = {
+        ...baseTask,
         status: 'LATER' as const,
         dueDate: '2025-08-14T10:00:00.000Z', // yesterday
-        snoozeUntil: '2025-08-14T10:00:00.000Z' // snooze expired yesterday
+        snoozeUntil: '2025-08-14T10:00:00.000Z', // snooze expired yesterday
       };
       expect(isToday(task)).toBe(true);
     });
@@ -89,29 +89,29 @@ describe('Task Lanes', () => {
     });
 
     it('should return true for LATER with future due date', () => {
-      const task = { 
-        ...baseTask, 
+      const task = {
+        ...baseTask,
         status: 'LATER' as const,
-        dueDate: '2025-08-16T10:00:00.000Z' // tomorrow
+        dueDate: '2025-08-16T10:00:00.000Z', // tomorrow
       };
       expect(isLater(task)).toBe(true);
     });
 
     it('should return false for LATER with past due date', () => {
-      const task = { 
-        ...baseTask, 
+      const task = {
+        ...baseTask,
         status: 'LATER' as const,
-        dueDate: '2025-08-14T10:00:00.000Z' // yesterday
+        dueDate: '2025-08-14T10:00:00.000Z', // yesterday
       };
       expect(isLater(task)).toBe(false);
     });
 
     it('should return true for LATER with active snooze', () => {
-      const task = { 
-        ...baseTask, 
+      const task = {
+        ...baseTask,
         status: 'LATER' as const,
         dueDate: '2025-08-14T10:00:00.000Z', // yesterday
-        snoozeUntil: '2025-08-16T10:00:00.000Z' // snoozed until tomorrow
+        snoozeUntil: '2025-08-16T10:00:00.000Z', // snoozed until tomorrow
       };
       expect(isLater(task)).toBe(true);
     });

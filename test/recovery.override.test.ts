@@ -17,7 +17,7 @@ import * as AuditApiModule from '../src/audit/api';
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis, 'crypto', {
     value: require('node:crypto').webcrypto,
-    writable: false
+    writable: false,
   });
 }
 
@@ -50,18 +50,22 @@ class MockStorage implements StorageDriver {
 // Mock membership API
 function createMockMembershipApi(membershipState: MState): MembershipApi {
   return {
-    getMembership: vi.fn().mockResolvedValue(membershipState)
+    getMembership: vi.fn().mockResolvedValue(membershipState),
   };
 }
 
 // Mock Ed25519 signing function
-async function createMockSigner(): Promise<(bytes: Uint8Array) => Promise<string>> {
+async function createMockSigner(): Promise<
+  (bytes: Uint8Array) => Promise<string>
+> {
   return async (bytes: Uint8Array): Promise<string> => {
     // Create a mock signature based on input
     const normalizedBytes = new Uint8Array(bytes);
     const hash = await crypto.subtle.digest('SHA-256', normalizedBytes);
     const hashArray = new Uint8Array(hash);
-    return btoa(String.fromCharCode(...hashArray)).replace(/[+/]/g, '').slice(0, 64);
+    return btoa(String.fromCharCode(...hashArray))
+      .replace(/[+/]/g, '')
+      .slice(0, 64);
   };
 }
 
@@ -84,12 +88,12 @@ describe('Recovery Override System', () => {
     mockMembershipState = {
       users: {
         'owner-user': 'OWNER',
-        'admin-user': 'ADMIN', 
+        'admin-user': 'ADMIN',
         'member-user': 'MEMBER',
         'viewer-user': 'VIEWER',
-        'beneficiary-user': 'MEMBER'
+        'beneficiary-user': 'MEMBER',
       },
-      owners: ['owner-user']
+      owners: ['owner-user'],
     };
     membership = createMockMembershipApi(mockMembershipState);
 
@@ -97,16 +101,20 @@ describe('Recovery Override System', () => {
     sign = await createMockSigner();
 
     // Mock the membership module functions
-    vi.spyOn(MembershipApiModule, 'assertPermission').mockResolvedValue(undefined);
-    vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(mockMembershipState);
-    
+    vi.spyOn(MembershipApiModule, 'assertPermission').mockResolvedValue(
+      undefined
+    );
+    vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(
+      mockMembershipState
+    );
+
     // Mock audit module
     vi.spyOn(AuditApiModule, 'log').mockResolvedValue({
       v: 1,
       id: 'mock-audit-id',
       ts: new Date().toISOString(),
       type: 'RECOVERY_OVERRIDE_CREATED',
-      hash: 'mock-hash'
+      hash: 'mock-hash',
     } as any);
   });
 
@@ -117,7 +125,7 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'owner-user',
         code: 'OVERRIDE123',
-        sign
+        sign,
       });
 
       expect(result.envelope).toBeDefined();
@@ -131,7 +139,7 @@ describe('Recovery Override System', () => {
         actorId: 'admin-user',
         beneficiaryId: 'member-user',
         code: 'OVERRIDE456',
-        sign
+        sign,
       });
 
       expect(result.envelope).toBeDefined();
@@ -140,25 +148,31 @@ describe('Recovery Override System', () => {
 
     test('ADMIN cannot create override for OWNER', async () => {
       // Mock permission check to throw error
-      vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(mockMembershipState);
-      
-      await expect(createRecoveryOverride({
-        ns: 'test',
-        actorId: 'admin-user',
-        beneficiaryId: 'owner-user',
-        code: 'OVERRIDE789',
-        sign
-      })).rejects.toThrow('cannot create override for OWNER');
+      vi.spyOn(MembershipApiModule, 'getMembership').mockResolvedValue(
+        mockMembershipState
+      );
+
+      await expect(
+        createRecoveryOverride({
+          ns: 'test',
+          actorId: 'admin-user',
+          beneficiaryId: 'owner-user',
+          code: 'OVERRIDE789',
+          sign,
+        })
+      ).rejects.toThrow('cannot create override for OWNER');
     });
 
     test('MEMBER cannot create override for anyone', async () => {
-      await expect(createRecoveryOverride({
-        ns: 'test',
-        actorId: 'member-user',
-        beneficiaryId: 'viewer-user',
-        code: 'OVERRIDE999',
-        sign
-      })).rejects.toThrow('cannot create override for VIEWER');
+      await expect(
+        createRecoveryOverride({
+          ns: 'test',
+          actorId: 'member-user',
+          beneficiaryId: 'viewer-user',
+          code: 'OVERRIDE999',
+          sign,
+        })
+      ).rejects.toThrow('cannot create override for VIEWER');
     });
   });
 
@@ -169,7 +183,7 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'RECOVERY123',
-        sign
+        sign,
       });
 
       expect(result.envelope.v).toBe(1);
@@ -189,35 +203,39 @@ describe('Recovery Override System', () => {
         beneficiaryId: 'beneficiary-user',
         code: 'RECOVERY456',
         scope: 'ACTIVE',
-        sign
+        sign,
       });
 
       expect(result.envelope.content.scope).toBe('ACTIVE');
     });
 
     test('creates override with expiry', async () => {
-      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-      
+      const expiresAt = new Date(
+        Date.now() + 7 * 24 * 60 * 60 * 1000
+      ).toISOString();
+
       const result = await createRecoveryOverride({
         ns: 'test',
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'RECOVERY789',
         expiresAt,
-        sign
+        sign,
       });
 
       expect(result.envelope.content.exp).toBe(expiresAt);
     });
 
     test('throws for unknown beneficiary', async () => {
-      await expect(createRecoveryOverride({
-        ns: 'test',
-        actorId: 'owner-user',
-        beneficiaryId: 'unknown-user',
-        code: 'RECOVERY999',
-        sign
-      })).rejects.toThrow('Beneficiary unknown-user not found in workspace');
+      await expect(
+        createRecoveryOverride({
+          ns: 'test',
+          actorId: 'owner-user',
+          beneficiaryId: 'unknown-user',
+          code: 'RECOVERY999',
+          sign,
+        })
+      ).rejects.toThrow('Beneficiary unknown-user not found in workspace');
     });
   });
 
@@ -228,7 +246,7 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'ACCEPT123',
-        sign
+        sign,
       });
 
       const result = await acceptRecoveryOverride({
@@ -237,7 +255,7 @@ describe('Recovery Override System', () => {
         code: 'ACCEPT123',
         keyring,
         beneficiaryId: 'beneficiary-user',
-        membership
+        membership,
       });
 
       expect(result.imported).toBeGreaterThanOrEqual(0);
@@ -250,39 +268,43 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'CORRECT123',
-        sign
+        sign,
       });
 
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'WRONG123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Invalid recovery code or corrupted override');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'WRONG123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Invalid recovery code or corrupted override');
     });
 
     test('rejects expired override', async () => {
       const expiresAt = new Date(Date.now() - 60000).toISOString(); // 1 minute ago
-      
+
       const { envelope } = await createRecoveryOverride({
         ns: 'test',
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'EXPIRED123',
         expiresAt,
-        sign
+        sign,
       });
 
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'EXPIRED123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Recovery override expired');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'EXPIRED123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Recovery override expired');
     });
 
     test('rejects beneficiary mismatch', async () => {
@@ -291,17 +313,19 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'MISMATCH123',
-        sign
+        sign,
       });
 
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'MISMATCH123',
-        keyring,
-        beneficiaryId: 'wrong-user',
-        membership
-      })).rejects.toThrow('Beneficiary mismatch');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'MISMATCH123',
+          keyring,
+          beneficiaryId: 'wrong-user',
+          membership,
+        })
+      ).rejects.toThrow('Beneficiary mismatch');
     });
 
     test('rejects namespace mismatch', async () => {
@@ -310,17 +334,19 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'NAMESPACE123',
-        sign
+        sign,
       });
 
-      await expect(acceptRecoveryOverride({
-        ns: 'different',
-        envelope,
-        code: 'NAMESPACE123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Namespace mismatch');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'different',
+          envelope,
+          code: 'NAMESPACE123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Namespace mismatch');
     });
 
     test('enforces single-use constraint', async () => {
@@ -329,7 +355,7 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'SINGLE123',
-        sign
+        sign,
       });
 
       // First use should succeed
@@ -339,18 +365,20 @@ describe('Recovery Override System', () => {
         code: 'SINGLE123',
         keyring,
         beneficiaryId: 'beneficiary-user',
-        membership
+        membership,
       });
 
       // Second use should fail
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'SINGLE123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Recovery override already used');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'SINGLE123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Recovery override already used');
     });
 
     test('handles ACTIVE scope correctly', async () => {
@@ -360,7 +388,7 @@ describe('Recovery Override System', () => {
         beneficiaryId: 'beneficiary-user',
         code: 'ACTIVE123',
         scope: 'ACTIVE',
-        sign
+        sign,
       });
 
       const result = await acceptRecoveryOverride({
@@ -369,7 +397,7 @@ describe('Recovery Override System', () => {
         code: 'ACTIVE123',
         keyring,
         beneficiaryId: 'beneficiary-user',
-        membership
+        membership,
       });
 
       expect(result.scope).toBe('ACTIVE');
@@ -383,23 +411,25 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'TAMPER123',
-        sign
+        sign,
       });
 
       // Tamper with ciphertext
       const tamperedEnvelope = {
         ...envelope,
-        ctB64u: envelope.ctB64u.slice(0, -4) + 'XXXX'
+        ctB64u: envelope.ctB64u.slice(0, -4) + 'XXXX',
       };
 
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope: tamperedEnvelope,
-        code: 'TAMPER123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Invalid recovery code or corrupted override');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope: tamperedEnvelope,
+          code: 'TAMPER123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Invalid recovery code or corrupted override');
     });
 
     test('rejects override without signature', async () => {
@@ -408,19 +438,21 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'NOSIG123',
-        sign
+        sign,
       });
 
       const nosigEnvelope = { ...envelope, sigB64u: '' };
 
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope: nosigEnvelope,
-        code: 'NOSIG123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership
-      })).rejects.toThrow('Invalid or missing signature');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope: nosigEnvelope,
+          code: 'NOSIG123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership,
+        })
+      ).rejects.toThrow('Invalid or missing signature');
     });
 
     test('validates beneficiary exists in workspace', async () => {
@@ -429,20 +461,25 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'EXIST123',
-        sign
+        sign,
       });
 
       // Mock membership without beneficiary
-      const emptyMembership = createMockMembershipApi({ users: {}, owners: [] });
+      const emptyMembership = createMockMembershipApi({
+        users: {},
+        owners: [],
+      });
 
-      await expect(acceptRecoveryOverride({
-        ns: 'test',
-        envelope,
-        code: 'EXIST123',
-        keyring,
-        beneficiaryId: 'beneficiary-user',
-        membership: emptyMembership
-      })).rejects.toThrow('Beneficiary beneficiary-user not found in workspace');
+      await expect(
+        acceptRecoveryOverride({
+          ns: 'test',
+          envelope,
+          code: 'EXIST123',
+          keyring,
+          beneficiaryId: 'beneficiary-user',
+          membership: emptyMembership,
+        })
+      ).rejects.toThrow('Beneficiary beneficiary-user not found in workspace');
     });
   });
 
@@ -453,14 +490,14 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'AUDIT123',
-        sign
+        sign,
       });
 
       expect(AuditApiModule.log).toHaveBeenCalledWith(
         'RECOVERY_OVERRIDE_CREATED',
         expect.objectContaining({
           beneficiaryId: 'beneficiary-user',
-          scope: 'ALL'
+          scope: 'ALL',
         }),
         'owner-user'
       );
@@ -472,7 +509,7 @@ describe('Recovery Override System', () => {
         actorId: 'owner-user',
         beneficiaryId: 'beneficiary-user',
         code: 'AUDITUSE123',
-        sign
+        sign,
       });
 
       await acceptRecoveryOverride({
@@ -481,14 +518,14 @@ describe('Recovery Override System', () => {
         code: 'AUDITUSE123',
         keyring,
         beneficiaryId: 'beneficiary-user',
-        membership
+        membership,
       });
 
       expect(AuditApiModule.log).toHaveBeenCalledWith(
         'RECOVERY_OVERRIDE_USED',
         expect.objectContaining({
           beneficiaryId: 'beneficiary-user',
-          scope: 'ALL'
+          scope: 'ALL',
         }),
         'beneficiary-user'
       );

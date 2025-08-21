@@ -22,7 +22,9 @@ describe('TestHoverCard', () => {
       </TestHoverCard>
     );
 
-    expect(screen.getByRole('button', { name: triggerText })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: triggerText })
+    ).toBeInTheDocument();
   });
 
   it('should show content on mouseenter', async () => {
@@ -33,13 +35,13 @@ describe('TestHoverCard', () => {
     );
 
     const trigger = screen.getByRole('button', { name: triggerText });
-    
+
     // Initially content should not be visible
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-    
+
     // Hover over trigger
     fireEvent.mouseEnter(trigger);
-    
+
     // Content should be visible
     expect(screen.getByRole('tooltip')).toBeInTheDocument();
     expect(screen.getByText(contentText)).toBeInTheDocument();
@@ -53,11 +55,11 @@ describe('TestHoverCard', () => {
     );
 
     const trigger = screen.getByRole('button', { name: triggerText });
-    
+
     // Show content first
     fireEvent.mouseEnter(trigger);
     expect(screen.getByRole('tooltip')).toBeInTheDocument();
-    
+
     // Hide content
     fireEvent.mouseLeave(trigger);
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();

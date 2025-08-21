@@ -31,9 +31,9 @@ describe('Transparency Log Basic Test', () => {
   it('should append a leaf', async () => {
     const storage = new SimpleStorage();
     const leaf = new TextEncoder().encode('test leaf');
-    
+
     const result = await appendLeaf('test', leaf, storage);
-    
+
     expect(result.index).toBe(0);
     expect(result.n).toBe(1);
     expect(result.leafHashB64u).toBeTruthy();
@@ -42,12 +42,12 @@ describe('Transparency Log Basic Test', () => {
 
   it('should append multiple leaves', async () => {
     const storage = new SimpleStorage();
-    
+
     const leaf1 = new TextEncoder().encode('leaf1');
     const result1 = await appendLeaf('test', leaf1, storage);
     expect(result1.index).toBe(0);
     expect(result1.n).toBe(1);
-    
+
     const leaf2 = new TextEncoder().encode('leaf2');
     const result2 = await appendLeaf('test', leaf2, storage);
     expect(result2.index).toBe(1);
@@ -57,13 +57,13 @@ describe('Transparency Log Basic Test', () => {
   it('should generate and verify proof for single leaf', async () => {
     const storage = new SimpleStorage();
     const leaf = new TextEncoder().encode('single leaf');
-    
+
     const result = await appendLeaf('test', leaf, storage);
     const proof = await genProof('test', 0, storage);
-    
+
     expect(proof.index).toBe(0);
     expect(proof.leafHashB64u).toBe(result.leafHashB64u);
-    
+
     const verification = await verifyProof(proof, result.rootB64u);
     expect(verification.ok).toBe(true);
   });
@@ -71,9 +71,11 @@ describe('Transparency Log Basic Test', () => {
   it('should throw on invalid proof index', async () => {
     const storage = new SimpleStorage();
     const leaf = new TextEncoder().encode('test');
-    
+
     await appendLeaf('test', leaf, storage);
-    
-    await expect(genProof('test', 1, storage)).rejects.toThrow('index_out_of_range');
+
+    await expect(genProof('test', 1, storage)).rejects.toThrow(
+      'index_out_of_range'
+    );
   });
 });

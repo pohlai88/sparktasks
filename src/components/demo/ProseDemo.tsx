@@ -11,10 +11,18 @@ import { Prose } from '@/components/ui/Prose';
  * Demo showcasing the Prose component capabilities
  */
 export function ProseDemo() {
-  const [selectedVariant, setSelectedVariant] = React.useState<'default' | 'article' | 'documentation' | 'legal' | 'compact' | 'large'>('default');
-  const [selectedSize, setSelectedSize] = React.useState<'sm' | 'md' | 'lg' | 'xl'>('md');
-  const [selectedReadingMode, setSelectedReadingMode] = React.useState<'default' | 'comfortable' | 'dense'>('default');
-  const [selectedMaxWidth, setSelectedMaxWidth] = React.useState<'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'>('md');
+  const [selectedVariant, setSelectedVariant] = React.useState<
+    'default' | 'article' | 'documentation' | 'legal' | 'compact' | 'large'
+  >('default');
+  const [selectedSize, setSelectedSize] = React.useState<
+    'sm' | 'md' | 'lg' | 'xl'
+  >('md');
+  const [selectedReadingMode, setSelectedReadingMode] = React.useState<
+    'default' | 'comfortable' | 'dense'
+  >('default');
+  const [selectedMaxWidth, setSelectedMaxWidth] = React.useState<
+    'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  >('md');
 
   const handleLinkClick = (href: string) => {
     // Custom link handler - in a real app, you might handle routing here
@@ -106,104 +114,126 @@ export function ProseDemo() {
   `;
 
   return (
-    <div className="p-6 min-h-screen bg-white dark:bg-gray-900">
-      <div className="mx-auto max-w-6xl space-y-8">
+    <div className='min-h-screen bg-white p-6 dark:bg-gray-900'>
+      <div className='mx-auto max-w-6xl space-y-8'>
         {/* Header */}
-        <div className="space-y-4 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+        <div className='space-y-4 text-center'>
+          <h1 className='text-4xl font-bold text-gray-900 dark:text-white'>
             Prose Component Demo
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
+          <p className='text-lg text-gray-600 dark:text-gray-300'>
             Showcase of markdown and rich text rendering capabilities
           </p>
         </div>
 
         {/* Controls */}
-        <div className="space-y-4 rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
-          <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
+        <div className='space-y-4 rounded-lg bg-gray-50 p-6 dark:bg-gray-800'>
+          <h2 className='mb-4 text-2xl font-semibold text-gray-900 dark:text-white'>
             Prose Configuration
           </h2>
-          
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
             {/* Variant Control */}
             <div>
-              <label htmlFor="variant-select" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor='variant-select'
+                className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'
+              >
                 Variant
               </label>
               <select
-                id="variant-select"
+                id='variant-select'
                 value={selectedVariant}
-                onChange={(e) => setSelectedVariant(e.target.value as typeof selectedVariant)}
-                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                onChange={e =>
+                  setSelectedVariant(e.target.value as typeof selectedVariant)
+                }
+                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               >
-                <option value="default">Default</option>
-                <option value="article">Article</option>
-                <option value="documentation">Documentation</option>
-                <option value="legal">Legal</option>
-                <option value="compact">Compact</option>
-                <option value="large">Large</option>
+                <option value='default'>Default</option>
+                <option value='article'>Article</option>
+                <option value='documentation'>Documentation</option>
+                <option value='legal'>Legal</option>
+                <option value='compact'>Compact</option>
+                <option value='large'>Large</option>
               </select>
             </div>
 
             {/* Size Control */}
             <div>
-              <label htmlFor="size-select" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor='size-select'
+                className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'
+              >
                 Size
               </label>
               <select
-                id="size-select"
+                id='size-select'
                 value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value as typeof selectedSize)}
-                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                onChange={e =>
+                  setSelectedSize(e.target.value as typeof selectedSize)
+                }
+                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               >
-                <option value="sm">Small</option>
-                <option value="md">Medium</option>
-                <option value="lg">Large</option>
-                <option value="xl">Extra Large</option>
+                <option value='sm'>Small</option>
+                <option value='md'>Medium</option>
+                <option value='lg'>Large</option>
+                <option value='xl'>Extra Large</option>
               </select>
             </div>
 
             {/* Reading Mode Control */}
             <div>
-              <label htmlFor="reading-mode-select" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor='reading-mode-select'
+                className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'
+              >
                 Reading Mode
               </label>
               <select
-                id="reading-mode-select"
+                id='reading-mode-select'
                 value={selectedReadingMode}
-                onChange={(e) => setSelectedReadingMode(e.target.value as typeof selectedReadingMode)}
-                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                onChange={e =>
+                  setSelectedReadingMode(
+                    e.target.value as typeof selectedReadingMode
+                  )
+                }
+                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               >
-                <option value="default">Default</option>
-                <option value="comfortable">Comfortable</option>
-                <option value="dense">Dense</option>
+                <option value='default'>Default</option>
+                <option value='comfortable'>Comfortable</option>
+                <option value='dense'>Dense</option>
               </select>
             </div>
 
             {/* Max Width Control */}
             <div>
-              <label htmlFor="maxwidth-select" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor='maxwidth-select'
+                className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'
+              >
                 Max Width
               </label>
               <select
-                id="maxwidth-select"
+                id='maxwidth-select'
                 value={selectedMaxWidth}
-                onChange={(e) => setSelectedMaxWidth(e.target.value as typeof selectedMaxWidth)}
-                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                onChange={e =>
+                  setSelectedMaxWidth(e.target.value as typeof selectedMaxWidth)
+                }
+                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               >
-                <option value="none">None</option>
-                <option value="sm">Small</option>
-                <option value="md">Medium</option>
-                <option value="lg">Large</option>
-                <option value="xl">Extra Large</option>
-                <option value="full">Full</option>
+                <option value='none'>None</option>
+                <option value='sm'>Small</option>
+                <option value='md'>Medium</option>
+                <option value='lg'>Large</option>
+                <option value='xl'>Extra Large</option>
+                <option value='full'>Full</option>
               </select>
             </div>
           </div>
         </div>
 
         {/* Prose Component Showcase */}
-        <div className="rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+        <div className='rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800'>
           <Prose
             variant={selectedVariant}
             size={selectedSize}
@@ -216,19 +246,19 @@ export function ProseDemo() {
         </div>
 
         {/* Usage Examples */}
-        <div className="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
-          <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
+        <div className='rounded-lg bg-gray-50 p-6 dark:bg-gray-800'>
+          <h2 className='mb-4 text-2xl font-semibold text-gray-900 dark:text-white'>
             Usage Examples
           </h2>
-          
-          <div className="space-y-4">
+
+          <div className='space-y-4'>
             <div>
-              <h4 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
+              <h4 className='mb-2 text-lg font-medium text-gray-900 dark:text-white'>
                 Basic Usage
               </h4>
-              <pre className="overflow-x-auto rounded-md bg-gray-100 p-4 dark:bg-gray-700">
-                <code className="text-sm text-gray-800 dark:text-gray-200">
-{`<Prose>
+              <pre className='overflow-x-auto rounded-md bg-gray-100 p-4 dark:bg-gray-700'>
+                <code className='text-sm text-gray-800 dark:text-gray-200'>
+                  {`<Prose>
   <h1>Article Title</h1>
   <p>Article content...</p>
 </Prose>`}
@@ -237,12 +267,12 @@ export function ProseDemo() {
             </div>
 
             <div>
-              <h4 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
+              <h4 className='mb-2 text-lg font-medium text-gray-900 dark:text-white'>
                 Advanced Configuration
               </h4>
-              <pre className="overflow-x-auto rounded-md bg-gray-100 p-4 dark:bg-gray-700">
-                <code className="text-sm text-gray-800 dark:text-gray-200">
-{`<Prose 
+              <pre className='overflow-x-auto rounded-md bg-gray-100 p-4 dark:bg-gray-700'>
+                <code className='text-sm text-gray-800 dark:text-gray-200'>
+                  {`<Prose 
   variant="article"
   size="lg"
   readingMode="comfortable"

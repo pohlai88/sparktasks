@@ -21,7 +21,7 @@ export const sampleTasks: Task[] = [
     notes: 'Get organic milk from the store',
   },
   {
-    id: 'test-task-2', 
+    id: 'test-task-2',
     title: 'Walk dog',
     status: 'DONE',
     priority: 'P1',
@@ -87,17 +87,23 @@ export async function seedTasks(page: any, tasks: Task[] = sampleTasks) {
   await page.evaluate((tasks: Task[]) => {
     // Clear existing state
     localStorage.clear();
-    
+
     // Set up deterministic task state
     const taskState = {
-      tasks: tasks.reduce((acc: Record<string, Task>, task: Task) => ({ ...acc, [task.id]: task }), {}),
+      tasks: tasks.reduce(
+        (acc: Record<string, Task>, task: Task) => ({
+          ...acc,
+          [task.id]: task,
+        }),
+        {}
+      ),
       taskIds: tasks.map((t: Task) => t.id),
       nextId: tasks.length + 1,
     };
-    
+
     localStorage.setItem('spark-tasks', JSON.stringify(taskState));
   }, tasks);
-  
+
   // Reload to apply state
   await page.reload();
 }
@@ -108,11 +114,17 @@ export async function seedTasks(page: any, tasks: Task[] = sampleTasks) {
 export async function waitForAppReady(page: any) {
   // Wait for main UI elements to be visible
   await page.getByText('SparkTasks').waitFor({ state: 'visible' });
-  
+
   // Wait for task columns to be rendered
-  await page.getByRole('heading', { name: 'Today' }).waitFor({ state: 'visible' });
-  await page.getByRole('heading', { name: 'Later' }).waitFor({ state: 'visible' });
-  await page.getByRole('heading', { name: 'Done' }).waitFor({ state: 'visible' });
+  await page
+    .getByRole('heading', { name: 'Today' })
+    .waitFor({ state: 'visible' });
+  await page
+    .getByRole('heading', { name: 'Later' })
+    .waitFor({ state: 'visible' });
+  await page
+    .getByRole('heading', { name: 'Done' })
+    .waitFor({ state: 'visible' });
 }
 
 /**

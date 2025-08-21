@@ -23,13 +23,13 @@ describe('SimplifiedHoverCard', () => {
     );
 
     const trigger = screen.getByRole('button', { name: triggerText });
-    
+
     // Initially content should not be visible
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-    
+
     // Hover over trigger
     fireEvent.mouseEnter(trigger);
-    
+
     // Content should be visible
     expect(screen.getByRole('tooltip')).toBeInTheDocument();
     expect(screen.getByText(contentText)).toBeInTheDocument();

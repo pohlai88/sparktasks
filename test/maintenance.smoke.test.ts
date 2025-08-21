@@ -6,21 +6,21 @@ if (!globalThis.crypto) {
   Object.defineProperty(globalThis, 'crypto', {
     value: webcrypto,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis.crypto, 'subtle', {
     value: webcrypto.subtle,
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 if (!globalThis.crypto.getRandomValues) {
   Object.defineProperty(globalThis.crypto, 'getRandomValues', {
     value: webcrypto.getRandomValues.bind(webcrypto),
     writable: false,
-    configurable: false
+    configurable: false,
   });
 }
 
@@ -62,7 +62,7 @@ describe('Maintenance Smoke Tests', () => {
     storage = new MockStorageDriver();
     keyring = new KeyringProvider(storage, 'test-keyring');
     encrypted = new EncryptedDriver(storage, 'app', keyring);
-    
+
     // Initialize keyring with low iterations for speed
     await keyring.initNew('test-pass', 500);
   });
@@ -71,10 +71,10 @@ describe('Maintenance Smoke Tests', () => {
     // Since executeCompact calls compactWithSnapshot directly, we need a more minimal test
     // Just test that the plan gets created and executed without error
     const plan = await planMaintenance({ maxEvents: 100 });
-    
+
     // Check if compact action is planned (depends on current eventlog state)
     const hasCompactAction = plan.actions.some(a => a.type === 'COMPACT');
-    
+
     if (hasCompactAction) {
       // Run maintenance - this will call the actual compactWithSnapshot
       const report = await runMaintenance(plan, { storage });
@@ -95,7 +95,7 @@ describe('Maintenance Smoke Tests', () => {
 
     // Store data with encrypted driver using old key first
     await encrypted.setItem('app:old-data', 'test-data');
-    
+
     // Manually create envelope with old kid to simulate aged data
     const now = new Date().toISOString();
     const oldEnvelope = {
@@ -105,9 +105,9 @@ describe('Maintenance Smoke Tests', () => {
       ts: now,
       aad: toB64u(new TextEncoder().encode('app:manual-old').buffer),
       iv: 'mock-iv',
-      data: 'mock-encrypted-data'
+      data: 'mock-encrypted-data',
     } as any;
-    
+
     await storage.setItem('app:manual-old', JSON.stringify(oldEnvelope));
 
     // Plan and run rekey
@@ -140,11 +140,11 @@ describe('Maintenance Smoke Tests', () => {
 
   it('should plan and execute SWEEP operation', async () => {
     const { kid: activeKid } = await keyring.getActiveKey();
-    
+
     // Create test data
     // 1. Valid envelope
     await encrypted.setItem('app:valid', 'valid-data');
-    
+
     // 2. Envelope with wrong AAD
     const wrongAadEnvelope = {
       v: 1,
@@ -153,13 +153,13 @@ describe('Maintenance Smoke Tests', () => {
       ts: new Date().toISOString(),
       aad: toB64u(new TextEncoder().encode('wrong:namespace').buffer),
       iv: 'mock-iv',
-      data: 'mock-data'
+      data: 'mock-data',
     } as any;
     await storage.setItem('app:wrong-aad', JSON.stringify(wrongAadEnvelope));
-    
+
     // 3. Old kid envelope (will be repaired)
     await keyring.rotate();
-    
+
     const oldKidEnvelope = {
       v: 1,
       alg: 'AES-GCM',
@@ -167,10 +167,10 @@ describe('Maintenance Smoke Tests', () => {
       ts: new Date().toISOString(),
       aad: toB64u(new TextEncoder().encode('app:old-kid').buffer),
       iv: 'mock-iv',
-      data: 'mock-data'
+      data: 'mock-data',
     } as any;
     await storage.setItem('app:old-kid', JSON.stringify(oldKidEnvelope));
-    
+
     // 4. Malformed JSON
     await storage.setItem('app:malformed', '{ invalid json');
 
@@ -180,17 +180,17 @@ describe('Maintenance Smoke Tests', () => {
     expect(plan.actions[0]?.type).toBe('SWEEP');
 
     const report = await runMaintenance(plan, { storage, encrypted, keyring });
-    
+
     expect(report.sweep?.scanned).toBeGreaterThan(0);
     expect(report.sweep?.failed.length).toBeGreaterThan(0);
-    
+
     // Should have failed items (wrong AAD and/or malformed)
     const failedKeys = report.sweep?.failed.map(f => f.key) || [];
     expect(failedKeys).toContain('app:wrong-aad');
-    
+
     // Verify sweep processed all items
     expect(report.sweep?.scanned).toBeGreaterThan(3); // At least valid, wrong-aad, old-kid, malformed
-    
+
     // If repair was enabled and items were repaired, verify repair logic worked
     if (report.sweep?.repaired && report.sweep.repaired > 0) {
       // Just verify repair ran - the specific logic may vary

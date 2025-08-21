@@ -4,7 +4,8 @@ import { DESIGN_TOKENS, combineTokens } from '@/design/tokens';
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type AvatarStatus = 'online' | 'busy' | 'offline' | undefined;
 
-export interface AvatarProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt'> {
+export interface AvatarProps
+  extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt'> {
   src: string;
   /** Provide a meaningful alt, or leave undefined for decorative (defaults to '') */
   alt?: string;
@@ -54,118 +55,125 @@ const statusLabels: Record<NonNullable<AvatarStatus>, string> = {
  * - WCAG 2.1 AA accessibility compliance
  * - Full SSOT compliance using DESIGN_TOKENS
  */
-export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
-  {
-    src,
-    alt = '',
-    size = 'md',
-    status,
-    className,
-    fallback,
-    imgRef,
-    onError,
-    loading = 'lazy',
-    decoding = 'async',
-    ...imgProps
-  }: AvatarProps,
-  ref: React.Ref<HTMLSpanElement>
-) {
-  const [imgError, setImgError] = React.useState(false);
-  
-  // 1) Reset error when src changes so new URLs attempt to load again
-  React.useEffect(() => { 
-    setImgError(false); 
-  }, [src]);
+export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
+  function Avatar(
+    {
+      src,
+      alt = '',
+      size = 'md',
+      status,
+      className,
+      fallback,
+      imgRef,
+      onError,
+      loading = 'lazy',
+      decoding = 'async',
+      ...imgProps
+    }: AvatarProps,
+    ref: React.Ref<HTMLSpanElement>
+  ) {
+    const [imgError, setImgError] = React.useState(false);
 
-  // 2) Inner live regions with key prop for stronger status announcements
-  const statusAnnouncement = React.useMemo(() => {
-    if (!status) return null;
-    return (
-      <div
-        key={`status-${status}`}
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      >
-        {`Avatar status: ${statusLabels[status]}`}
-      </div>
+    // 1) Reset error when src changes so new URLs attempt to load again
+    React.useEffect(() => {
+      setImgError(false);
+    }, [src]);
+
+    // 2) Inner live regions with key prop for stronger status announcements
+    const statusAnnouncement = React.useMemo(() => {
+      if (!status) return null;
+      return (
+        <div
+          key={`status-${status}`}
+          aria-live='polite'
+          aria-atomic='true'
+          className='sr-only'
+        >
+          {`Avatar status: ${statusLabels[status]}`}
+        </div>
+      );
+    }, [status]);
+
+    // Use direct lookups instead of useMemo for better performance
+    const sizeClass = sizeMap[size];
+    const statusRing = status ? statusRingMap[status] : '';
+    const statusColor = status ? statusColorMap[status] : '';
+    const statusLabel = status ? statusLabels[status] : '';
+
+    // Optimized error handler with useCallback to prevent re-renders
+    const handleImgError = React.useCallback<
+      React.ReactEventHandler<HTMLImageElement>
+    >(
+      e => {
+        setImgError(true);
+        onError?.(e);
+      },
+      [onError]
     );
-  }, [status]);
-  
-  // Use direct lookups instead of useMemo for better performance
-  const sizeClass = sizeMap[size];
-  const statusRing = status ? statusRingMap[status] : '';
-  const statusColor = status ? statusColorMap[status] : '';
-  const statusLabel = status ? statusLabels[status] : '';
 
-  // Optimized error handler with useCallback to prevent re-renders
-  const handleImgError = React.useCallback<React.ReactEventHandler<HTMLImageElement>>((e) => {
-    setImgError(true);
-    onError?.(e);
-  }, [onError]);
+    // Simplified container classes
+    const containerClasses = combineTokens(
+      DESIGN_TOKENS.recipe.avatar.base,
+      sizeClass,
+      DESIGN_TOKENS.recipe.avatar.border,
+      DESIGN_TOKENS.recipe.avatar.shadow,
+      statusRing,
+      statusColor,
+      className
+    );
 
-  // Simplified container classes
-  const containerClasses = combineTokens(
-    DESIGN_TOKENS.recipe.avatar.base,
-    sizeClass,
-    DESIGN_TOKENS.recipe.avatar.border,
-    DESIGN_TOKENS.recipe.avatar.shadow,
-    statusRing,
-    statusColor,
-    className
-  );
+    // Fallback render - optimized with early return
+    if ((imgError || !src) && fallback) {
+      return (
+        <>
+          {statusAnnouncement}
+          <span
+            ref={ref}
+            className={combineTokens(
+              containerClasses,
+              DESIGN_TOKENS.recipe.avatar.fallback
+            )}
+            role='img'
+            aria-label={alt || fallback}
+            data-size={size}
+            data-status={status}
+            data-testid='avatar-fallback'
+          >
+            {fallback}
+          </span>
+        </>
+      );
+    }
 
-  // Fallback render - optimized with early return
-  if ((imgError || !src) && fallback) {
+    // Normal image render - optimized structure
     return (
       <>
         {statusAnnouncement}
         <span
           ref={ref}
-          className={combineTokens(
-            containerClasses,
-            DESIGN_TOKENS.recipe.avatar.fallback
-          )}
-          role="img"
-          aria-label={alt || fallback}
+          className={containerClasses}
+          aria-label={alt || `Avatar${status ? ` (${statusLabel})` : ''}`}
           data-size={size}
           data-status={status}
-          data-testid="avatar-fallback"
+          data-testid='avatar-container'
         >
-          {fallback}
+          {src && (
+            <img
+              ref={imgRef}
+              src={src}
+              alt={alt}
+              className={combineTokens(
+                'rounded-full object-cover',
+                'size-full'
+              )}
+              loading={loading}
+              decoding={decoding}
+              onError={handleImgError}
+              {...imgProps}
+            />
+          )}
         </span>
       </>
     );
   }
-
-  // Normal image render - optimized structure
-  return (
-    <>
-      {statusAnnouncement}
-      <span
-        ref={ref}
-        className={containerClasses}
-        aria-label={alt || `Avatar${status ? ` (${statusLabel})` : ''}`}
-        data-size={size}
-        data-status={status}
-        data-testid="avatar-container"
-      >
-        {src && (
-          <img
-            ref={imgRef}
-            src={src}
-            alt={alt}
-            className={combineTokens(
-              'object-cover rounded-full',
-              'size-full'
-            )}
-            loading={loading}
-            decoding={decoding}
-            onError={handleImgError}
-            {...imgProps}
-          />
-        )}
-      </span>
-    </>
-  );
-});
+);

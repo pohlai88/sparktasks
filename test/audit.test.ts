@@ -12,7 +12,7 @@ import type { StorageDriver } from '../src/storage/types';
 if (!globalThis.crypto.subtle) {
   Object.defineProperty(globalThis, 'crypto', {
     value: require('node:crypto').webcrypto,
-    writable: false
+    writable: false,
   });
 }
 
@@ -48,7 +48,11 @@ describe('Transparent Audit Log (Headless)', () => {
   describe('Basic Logging', () => {
     it('should log audit entries with hash chaining', async () => {
       // First entry
-      const entry1 = await AuditApi.log('INVITE_CREATED', { inviteId: 'invite-123' }, 'user-1');
+      const entry1 = await AuditApi.log(
+        'INVITE_CREATED',
+        { inviteId: 'invite-123' },
+        'user-1'
+      );
       expect(entry1.v).toBe(1);
       expect(entry1.type).toBe('INVITE_CREATED');
       expect(entry1.actor).toBe('user-1');
@@ -57,7 +61,11 @@ describe('Transparent Audit Log (Headless)', () => {
       expect(entry1.hash).toBeDefined();
 
       // Second entry should chain to first
-      const entry2 = await AuditApi.log('INVITE_ACCEPTED', { inviteId: 'invite-123' }, 'user-2');
+      const entry2 = await AuditApi.log(
+        'INVITE_ACCEPTED',
+        { inviteId: 'invite-123' },
+        'user-2'
+      );
       expect(entry2.prev).toBe(entry1.hash);
       expect(entry2.hash).toBeDefined();
       expect(entry2.hash).not.toBe(entry1.hash);
@@ -74,7 +82,7 @@ describe('Transparent Audit Log (Headless)', () => {
         ctB64u: 'encrypted-data',
         ivB64u: 'iv-data',
         wrapped: 'wrapped-key',
-        publicInfo: 'safe-data'
+        publicInfo: 'safe-data',
       });
 
       expect(entry.ctx?.passcode).toBe('***');
@@ -106,7 +114,7 @@ describe('Transparent Audit Log (Headless)', () => {
 
     it('should list entries in chronological order', async () => {
       const result = await AuditApi.list();
-      
+
       expect(result.items).toHaveLength(4);
       expect(result.items[0]!.type).toBe('INVITE_CREATED');
       expect(result.items[1]!.type).toBe('INVITE_ACCEPTED');
@@ -116,15 +124,18 @@ describe('Transparent Audit Log (Headless)', () => {
 
     it('should support pagination with limit', async () => {
       const page1 = await AuditApi.list({ limit: 2 });
-      
+
       expect(page1.items).toHaveLength(2);
       expect(page1.nextCursor).toBeDefined();
       expect(page1.items[0]!.type).toBe('INVITE_CREATED');
       expect(page1.items[1]!.type).toBe('INVITE_ACCEPTED');
 
       if (page1.nextCursor) {
-        const page2 = await AuditApi.list({ limit: 2, cursor: page1.nextCursor });
-        
+        const page2 = await AuditApi.list({
+          limit: 2,
+          cursor: page1.nextCursor,
+        });
+
         expect(page2.items).toHaveLength(2);
         expect(page2.items[0]!.type).toBe('DEVICE_UNLINKED');
         expect(page2.items[1]!.type).toBe('RECOVERY_USED');
@@ -154,14 +165,14 @@ describe('Transparent Audit Log (Headless)', () => {
       await AuditApi.log('INVITE_CREATED', { step: 1 });
       await AuditApi.log('INVITE_ACCEPTED', { step: 2 });
       await AuditApi.log('SYNC_RUN', { step: 3 });
-      
+
       const exported = await AuditApi.exportAll();
       testEntries = exported.items;
     });
 
     it('should export all entries with valid chain', async () => {
       const result = await AuditApi.exportAll();
-      
+
       expect(result.items).toHaveLength(3);
       expect(result.valid).toBe(true);
       expect(result.items[0]!.ctx?.step).toBe(1);
@@ -175,7 +186,7 @@ describe('Transparent Audit Log (Headless)', () => {
       const entry = tamperedEntries[1]!;
       tamperedEntries[1] = {
         ...entry,
-        ctx: { ...(entry.ctx || {}), step: 999 }
+        ctx: { ...(entry.ctx || {}), step: 999 },
       };
 
       const isValid = await AuditApi.verifyChain(tamperedEntries);
@@ -188,7 +199,7 @@ describe('Transparent Audit Log (Headless)', () => {
       const entry = brokenEntries[1]!;
       brokenEntries[1] = {
         ...entry,
-        prev: 'fake-hash'
+        prev: 'fake-hash',
       };
 
       const isValid = await AuditApi.verifyChain(brokenEntries);
@@ -212,24 +223,31 @@ describe('Transparent Audit Log (Headless)', () => {
   describe('Error Handling', () => {
     it('should throw error when not configured', async () => {
       AuditApi.configureAudit(storage, ''); // Reset configuration
-      
-      await expect(AuditApi.log('ERROR', {}))
-        .rejects.toThrow('Audit not configured');
-      
-      await expect(AuditApi.list())
-        .rejects.toThrow('Audit not configured');
-      
-      await expect(AuditApi.exportAll())
-        .rejects.toThrow('Audit not configured');
+
+      await expect(AuditApi.log('ERROR', {})).rejects.toThrow(
+        'Audit not configured'
+      );
+
+      await expect(AuditApi.list()).rejects.toThrow('Audit not configured');
+
+      await expect(AuditApi.exportAll()).rejects.toThrow(
+        'Audit not configured'
+      );
     });
 
     it('should handle storage errors gracefully', async () => {
       // Mock storage that throws errors
       const faultyStorage: StorageDriver = {
-        getItem: async () => { throw new Error('Storage error'); },
-        setItem: async () => { throw new Error('Storage error'); },
-        removeItem: async () => { throw new Error('Storage error'); },
-        listKeys: async () => []  // Return empty array instead of throwing
+        getItem: async () => {
+          throw new Error('Storage error');
+        },
+        setItem: async () => {
+          throw new Error('Storage error');
+        },
+        removeItem: async () => {
+          throw new Error('Storage error');
+        },
+        listKeys: async () => [], // Return empty array instead of throwing
       };
 
       AuditApi.configureAudit(faultyStorage, 'test');
@@ -244,7 +262,7 @@ describe('Transparent Audit Log (Headless)', () => {
     it('should support all required event types', async () => {
       const events = [
         'INVITE_CREATED',
-        'INVITE_ACCEPTED', 
+        'INVITE_ACCEPTED',
         'INVITE_REVOKED',
         'DEVICE_UNLINKED',
         'DEK_ROTATED',
@@ -252,7 +270,7 @@ describe('Transparent Audit Log (Headless)', () => {
         'RECOVERY_USED',
         'SYNC_RUN',
         'MAINTENANCE_RUN',
-        'ERROR'
+        'ERROR',
       ] as const;
 
       for (const eventType of events) {
