@@ -3,6 +3,7 @@
  *
  * Live demonstration of the enterprise-grade Document component
  * showcasing all variants, formats, and professional features.
+ * Updated for lint-staged testing.
  */
 
 import React, { useState } from 'react';
