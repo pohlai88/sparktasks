@@ -39,52 +39,34 @@ const enhancedBreadcrumbVariants = cva(
     variants: {
       variant: {
         // Default: Clean navigation breadcrumb
-        default: [
-          'py-2',
-        ],
-        
+        default: ['py-2'],
+
         // Compact: Dense layout for limited space
-        compact: [
-          'py-1 text-xs space-x-0.5',
-        ],
-        
+        compact: ['space-x-0.5 py-1 text-xs'],
+
         // Pills: Rounded pill-style navigation
-        pills: [
-          'py-1 space-x-2',
-        ],
-        
+        pills: ['space-x-2 py-1'],
+
         // Glass: Liquid glass material styling
         glass: [
-          'py-2 px-3 rounded-lg',
+          'rounded-lg px-3 py-2',
           'bg-background/80 backdrop-blur-sm',
           'border border-border/20',
           'shadow-sm',
         ],
       },
-      
+
       size: {
-        sm: [
-          'text-xs gap-1',
-        ],
-        md: [
-          'text-sm gap-2',
-        ],
-        lg: [
-          'text-base gap-3',
-        ],
+        sm: ['gap-1 text-xs'],
+        md: ['gap-2 text-sm'],
+        lg: ['gap-3 text-base'],
       },
-      
+
       // Surface variants following MAPS v2.2 foundation
       surface: {
-        elevated: [
-          'bg-background-elevated',
-        ],
-        panel: [
-          'bg-background-panel',
-        ],
-        glass: [
-          'bg-background/80 backdrop-blur-sm',
-        ],
+        elevated: ['bg-background-elevated'],
+        panel: ['bg-background-panel'],
+        glass: ['bg-background/80 backdrop-blur-sm'],
       },
     },
     defaultVariants: {
@@ -120,26 +102,19 @@ const enhancedBreadcrumbItemVariants = cva(
         link: [
           'text-accent hover:text-accent-hover',
           'rounded-sm px-1 py-0.5',
-          'hover:underline decoration-1 underline-offset-2',
+          'decoration-1 underline-offset-2 hover:underline',
         ],
       },
-      
+
       isCurrentPage: {
-        true: [
-          'text-foreground font-medium',
-          'cursor-default',
-        ],
-        false: [
-          'cursor-pointer',
-        ],
+        true: ['font-medium text-foreground', 'cursor-default'],
+        false: ['cursor-pointer'],
       },
-      
+
       // AAA compliance enforcement
       enforceAAA: {
         false: '',
-        true: [
-          'aaa:text-accent-solid-aaa',
-        ],
+        true: ['aaa:text-accent-solid-aaa'],
       },
     },
     defaultVariants: {
@@ -160,15 +135,9 @@ const enhancedBreadcrumbSeparatorVariants = cva(
   {
     variants: {
       variant: {
-        chevron: [
-          'size-4',
-        ],
-        slash: [
-          'text-base font-light',
-        ],
-        dot: [
-          'size-1 rounded-full bg-muted-foreground/40',
-        ],
+        chevron: ['size-4'],
+        slash: ['text-base font-light'],
+        dot: ['size-1 rounded-full bg-muted-foreground/40'],
       },
     },
     defaultVariants: {
@@ -229,7 +198,7 @@ interface EnhancedBreadcrumbEllipsisProps extends React.ComponentProps<'span'> {
 
 /**
  * Enhanced Breadcrumb - Navigation hierarchy component
- * 
+ *
  * MAPS v2.2 Implementation:
  * - Apple HIG navigation patterns
  * - Dark-first foundation styling
@@ -249,7 +218,7 @@ const EnhancedBreadcrumb = React.forwardRef<
       surface = 'elevated',
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       maxItems: _unused_maxItems,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars  
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       separator: _unused_separator = 'chevron',
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       homeIcon: _unused_homeIcon,
@@ -266,7 +235,7 @@ const EnhancedBreadcrumb = React.forwardRef<
     return (
       <Comp
         ref={ref}
-        aria-label="Breadcrumb navigation"
+        aria-label='Breadcrumb navigation'
         className={cn(
           enhancedBreadcrumbVariants({
             variant,
@@ -299,7 +268,10 @@ const EnhancedBreadcrumbList = React.forwardRef<
   return (
     <Comp
       ref={ref}
-      className={cn('flex flex-wrap items-center gap-1.5 break-words', className)}
+      className={cn(
+        'flex flex-wrap items-center gap-1.5 break-words',
+        className
+      )}
       {...props}
     />
   );
@@ -377,7 +349,7 @@ const EnhancedBreadcrumbLink = React.forwardRef<
             'cursor-default',
             className
           )}
-          aria-current="page"
+          aria-current='page'
         >
           {children}
         </span>
@@ -422,12 +394,12 @@ const EnhancedBreadcrumbPage = React.forwardRef<
   return (
     <Comp
       ref={ref}
-      role="link"
-      aria-disabled="true"
-      aria-current="page"
+      role='link'
+      aria-disabled='true'
+      aria-current='page'
       className={cn(
         'font-medium text-foreground',
-        'px-1 py-0.5 rounded-sm',
+        'rounded-sm px-1 py-0.5',
         className
       )}
       {...props}
@@ -445,13 +417,7 @@ const EnhancedBreadcrumbSeparator = React.forwardRef<
   EnhancedBreadcrumbSeparatorProps
 >(
   (
-    {
-      asChild = false,
-      variant = 'chevron',
-      children,
-      className,
-      ...props
-    },
+    { asChild = false, variant = 'chevron', children, className, ...props },
     ref
   ) => {
     const Comp = asChild ? Slot : 'li';
@@ -459,7 +425,7 @@ const EnhancedBreadcrumbSeparator = React.forwardRef<
     return (
       <Comp
         ref={ref}
-        role="presentation"
+        role='presentation'
         className={cn(
           enhancedBreadcrumbSeparatorVariants({ variant }),
           className
@@ -469,12 +435,19 @@ const EnhancedBreadcrumbSeparator = React.forwardRef<
         {children || (
           <>
             {variant === 'chevron' && (
-              <AccessibleIcon label="Breadcrumb separator">
-                <ChevronRight className="size-4" />
+              <AccessibleIcon label='Breadcrumb separator'>
+                <ChevronRight className='size-4' />
               </AccessibleIcon>
             )}
             {variant === 'slash' && <span>/</span>}
-            {variant === 'dot' && <span className="size-1 rounded-full bg-muted-foreground/40" />}
+            {variant === 'dot' && (
+              <span
+                className={cn(
+                  'size-1 rounded-full bg-muted-foreground/40',
+                  'size-1 rounded-full bg-muted-foreground/40'
+                )}
+              />
+            )}
           </>
         )}
       </Comp>
@@ -496,7 +469,7 @@ const EnhancedBreadcrumbEllipsis = React.forwardRef<
   return (
     <Comp
       ref={ref}
-      role="presentation"
+      role='presentation'
       className={cn(
         'flex items-center justify-center',
         'size-9 text-muted-foreground/60',
@@ -504,8 +477,8 @@ const EnhancedBreadcrumbEllipsis = React.forwardRef<
       )}
       {...props}
     >
-      <AccessibleIcon label="More pages">
-        <MoreHorizontal className="size-4" />
+      <AccessibleIcon label='More pages'>
+        <MoreHorizontal className='size-4' />
       </AccessibleIcon>
       <VisuallyHidden>More pages</VisuallyHidden>
     </Comp>
@@ -572,7 +545,7 @@ export const createHomeBreadcrumb = (
 ) => ({
   href,
   label,
-  icon: icon || <Home className="size-4" />,
+  icon: icon || <Home className='size-4' />,
   isHome: true,
 });
 
@@ -590,21 +563,23 @@ export const truncateBreadcrumb = (
   maxItems: number = 3
 ) => {
   if (items.length <= maxItems) return items;
-  
+
   const first = items[0];
   const last = items.at(-1);
   const remaining = items.slice(1, -1);
-  
+
   if (maxItems === 3) {
     return [first, { href: '#', label: '...', isEllipsis: true }, last];
   }
-  
+
   const showCount = maxItems - 2;
   const truncatedRemaining = remaining.slice(-showCount);
-  
+
   return [
     first,
-    ...(remaining.length > showCount ? [{ href: '#', label: '...', isEllipsis: true }] : []),
+    ...(remaining.length > showCount
+      ? [{ href: '#', label: '...', isEllipsis: true }]
+      : []),
     ...truncatedRemaining,
     last,
   ];
@@ -627,7 +602,9 @@ export {
 
 // ===== TYPE EXPORTS =====
 
-export type BreadcrumbVariantProps = VariantProps<typeof enhancedBreadcrumbVariants>;
+export type BreadcrumbVariantProps = VariantProps<
+  typeof enhancedBreadcrumbVariants
+>;
 
 export type {
   EnhancedBreadcrumbProps,

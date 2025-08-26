@@ -11,6 +11,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
 
     /* Linting */
     "strict": true,
@@ -46,6 +48,13 @@
     /* React support */
     "jsx": "react-jsx"
   },
-  "include": ["src", "test", "vitest", "vite.config.ts", "vitest.config.ts", "tsup.config.ts"],
+  "include": [
+    "src",
+    "test",
+    "vitest",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "tsup.config.ts"
+  ],
   "exclude": ["node_modules", "dist", "coverage", "test-results", "e2e"]
 }

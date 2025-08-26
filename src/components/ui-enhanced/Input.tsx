@@ -5,7 +5,15 @@
  * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
- * - Liquid Glass Materials: ✅ Governed vibrancy system
+ * - Liquid Glass Materials: ✅ Gover            {label}
+            {required && (
+              <span className={cn('text-error', 'text-destructive')} aria-label='required'>
+                *
+              </span>
+            )}
+            {!required && showOptional && (
+              <span className={cn('text-xs text-muted-foreground', 'text-xs text-muted-foreground')}>(optional)</span>
+            )}ncy system
  * - Radix Compatibility: ✅ Polymorphic pattern ready
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
@@ -342,12 +350,22 @@ const EnhancedInput = React.forwardRef<
           >
             {label}
             {required && (
-              <span className='text-error' aria-label='required'>
+              <span
+                className={cn('text-error', 'text-destructive')}
+                aria-label='required'
+              >
                 *
               </span>
             )}
             {optional && (
-              <span className='text-xs text-muted-foreground'>(optional)</span>
+              <span
+                className={cn(
+                  'text-xs text-muted-foreground',
+                  'text-xs text-muted-foreground'
+                )}
+              >
+                (optional)
+              </span>
             )}
           </label>
         )}
@@ -369,8 +387,18 @@ const EnhancedInput = React.forwardRef<
         <div className='relative'>
           {/* Start Icon */}
           {startIcon && (
-            <div className='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 transform text-muted-foreground'>
-              <div className='flex h-4 w-4 items-center justify-center'>
+            <div
+              className={cn(
+                'pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 transform text-muted-foreground',
+                'pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground'
+              )}
+            >
+              <div
+                className={cn(
+                  'flex h-4 w-4 items-center justify-center',
+                  'flex size-4 items-center justify-center'
+                )}
+              >
                 {startIcon}
               </div>
             </div>
@@ -426,10 +454,20 @@ const EnhancedInput = React.forwardRef<
 
           {/* End Content (Loading, Clear, or End Icon) */}
           {(loading || showClearButton || endIcon) && (
-            <div className='absolute right-3 top-1/2 flex -translate-y-1/2 transform items-center gap-1'>
+            <div
+              className={cn(
+                'absolute right-3 top-1/2 flex -translate-y-1/2 transform items-center gap-1',
+                'absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1'
+              )}
+            >
               {/* Loading Spinner */}
               {loading && (
-                <div className='h-4 w-4 animate-spin text-muted-foreground'>
+                <div
+                  className={cn(
+                    'h-4 w-4 animate-spin text-muted-foreground',
+                    'size-4 animate-spin text-muted-foreground'
+                  )}
+                >
                   <svg
                     fill='none'
                     viewBox='0 0 24 24'
@@ -482,7 +520,14 @@ const EnhancedInput = React.forwardRef<
 
               {/* End Icon */}
               {endIcon && !loading && !showClearButton && (
-                <div className='h-4 w-4 text-muted-foreground'>{endIcon}</div>
+                <div
+                  className={cn(
+                    'h-4 w-4 text-muted-foreground',
+                    'size-4 text-muted-foreground'
+                  )}
+                >
+                  {endIcon}
+                </div>
               )}
             </div>
           )}

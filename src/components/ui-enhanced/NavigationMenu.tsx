@@ -464,7 +464,7 @@ const EnhancedNavigationMenuTrigger = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : NavigationMenuPrimitive.Trigger;
-    
+
     return (
       <Comp
         ref={ref}
@@ -478,7 +478,12 @@ const EnhancedNavigationMenuTrigger = React.forwardRef<
         {children}
         {showIndicator && (
           <AccessibleIcon>
-            <ChevronDown className='relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180' />
+            <ChevronDown
+              className={cn(
+                'relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180',
+                'relative ml-1 size-3 transition duration-200 group-data-[state=open]:rotate-180'
+              )}
+            />
           </AccessibleIcon>
         )}
       </Comp>
@@ -547,11 +552,11 @@ const EnhancedNavigationMenuLink = React.forwardRef<
             enhancedNavigationMenuLinkVariants({ variant, active }),
             className
           )}
-          {...(props as any)}
+          {...(props as React.ComponentPropsWithoutRef<'div'>)}
         />
       );
     }
-    
+
     return (
       <NavigationMenuPrimitive.Link
         ref={ref}
@@ -579,7 +584,12 @@ const EnhancedNavigationMenuIndicator = React.forwardRef<
     className={cn(enhancedNavigationMenuIndicatorVariants(), className)}
     {...props}
   >
-    <div className='relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-md' />
+    <div
+      className={cn(
+        'relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-md',
+        'top-3/5 relative size-2 rotate-45 rounded-tl-sm bg-border shadow-md'
+      )}
+    />
   </NavigationMenuPrimitive.Indicator>
 ));
 

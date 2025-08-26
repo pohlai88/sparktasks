@@ -76,20 +76,9 @@ const enhancedDatePickerVariants = cva(
        * ANTI-DRIFT: All values from CSS custom properties via Tailwind config
        */
       surface: {
-        default: [
-          'bg-background',
-          'hover:bg-background/90',
-        ],
-        elevated: [
-          'bg-card',
-          'shadow-sm',
-          'hover:bg-card/90',
-        ],
-        glass: [
-          'bg-card/50',
-          'backdrop-blur-lg',
-          'hover:bg-card/60',
-        ],
+        default: ['bg-background', 'hover:bg-background/90'],
+        elevated: ['bg-card', 'shadow-sm', 'hover:bg-card/90'],
+        glass: ['bg-card/50', 'backdrop-blur-lg', 'hover:bg-card/60'],
       },
 
       /**
@@ -97,18 +86,9 @@ const enhancedDatePickerVariants = cva(
        * ANTI-DRIFT: All spacing from design tokens
        */
       size: {
-        sm: [
-          'h-8',
-          'text-sm',
-        ],
-        md: [
-          'h-9',
-          'text-sm',
-        ],
-        lg: [
-          'h-10',
-          'text-base',
-        ],
+        sm: ['h-8', 'text-sm'],
+        md: ['h-9', 'text-sm'],
+        lg: ['h-10', 'text-base'],
       },
 
       /**
@@ -150,10 +130,7 @@ const enhancedDatePickerVariants = cva(
        */
       aaaMode: {
         standard: '',
-        enhanced: [
-          'border-2',
-          'focus-within:ring-4',
-        ],
+        enhanced: ['border-2', 'focus-within:ring-4'],
       },
     },
     defaultVariants: {
@@ -170,10 +147,7 @@ const enhancedDatePickerVariants = cva(
  * Date picker trigger styling for enhanced hierarchy
  */
 const enhancedDatePickerTriggerVariants = cva(
-  [
-    'justify-start text-left font-normal',
-    'w-full h-full',
-  ],
+  ['justify-start text-left font-normal', 'h-full w-full'],
   {
     variants: {
       hasValue: {
@@ -367,7 +341,7 @@ export const EnhancedDatePicker = React.forwardRef<
         >
           <PopoverTrigger asChild>
             <EnhancedButton
-              variant="ghost"
+              variant='ghost'
               size={size || 'md'}
               disabled={disabled}
               className={cn(
@@ -379,31 +353,43 @@ export const EnhancedDatePicker = React.forwardRef<
               aria-label={ariaLabel}
               aria-describedby={ariaDescribedBy}
               aria-expanded={isOpen}
-              aria-haspopup="dialog"
+              aria-haspopup='dialog'
               aria-required={ariaRequired}
             >
-              <span className="flex-1 truncate">
+              <span className='flex-1 truncate'>
                 {formattedDate ? (
                   <span>{formattedDate}</span>
                 ) : (
-                  <span className="text-muted-foreground">{placeholder}</span>
+                  <span
+                    className={cn(
+                      'text-muted-foreground',
+                      'text-muted-foreground'
+                    )}
+                  >
+                    {placeholder}
+                  </span>
                 )}
               </span>
               <AccessibleIcon>
-                <CalendarIcon className="h-4 w-4 shrink-0 opacity-50" />
+                <CalendarIcon
+                  className={cn(
+                    'h-4 w-4 shrink-0 opacity-50',
+                    'h-4 w-4 shrink-0 opacity-50'
+                  )}
+                />
               </AccessibleIcon>
             </EnhancedButton>
           </PopoverTrigger>
 
           <PopoverContent
-            className="w-auto p-0"
-            align="start"
+            className={cn('w-auto p-0', 'w-auto p-0')}
+            align='start'
           >
             <EnhancedCalendar
-              mode="single"
+              mode='single'
               selected={selectedDate}
               onSelect={handleDateSelect}
-              disabled={(date) => {
+              disabled={date => {
                 if (disabled) return true;
                 if (isDateDisabled?.(date)) return true;
                 if (minDate && date < minDate) return true;
@@ -538,9 +524,9 @@ export const EnhancedDatePickerRange = React.forwardRef<
     ref
   ) => {
     // Internal state for uncontrolled usage
-    const [internalRange, setInternalRange] = React.useState<DateRange | undefined>(
-      defaultValue
-    );
+    const [internalRange, setInternalRange] = React.useState<
+      DateRange | undefined
+    >(defaultValue);
     const [isOpen, setIsOpen] = React.useState(false);
 
     // Determine if controlled or uncontrolled
@@ -562,9 +548,10 @@ export const EnhancedDatePickerRange = React.forwardRef<
 
         // Handle array format (range mode)
         if (Array.isArray(date)) {
-          const newRange: DateRange | undefined = date.length > 0 && date[0]
-            ? { from: date[0], to: date[1] }
-            : undefined;
+          const newRange: DateRange | undefined =
+            date.length > 0 && date[0]
+              ? { from: date[0], to: date[1] }
+              : undefined;
           if (!isControlled) {
             setInternalRange(newRange);
           }
@@ -620,7 +607,7 @@ export const EnhancedDatePickerRange = React.forwardRef<
         >
           <PopoverTrigger asChild>
             <EnhancedButton
-              variant="ghost"
+              variant='ghost'
               size={size || 'md'}
               disabled={disabled}
               className={cn(
@@ -632,31 +619,50 @@ export const EnhancedDatePickerRange = React.forwardRef<
               aria-label={ariaLabel}
               aria-describedby={ariaDescribedBy}
               aria-expanded={isOpen}
-              aria-haspopup="dialog"
+              aria-haspopup='dialog'
               aria-required={ariaRequired}
             >
-              <span className="flex-1 truncate">
+              <span className='flex-1 truncate'>
                 {formattedRange ? (
                   <span>{formattedRange}</span>
                 ) : (
-                  <span className="text-muted-foreground">{placeholder}</span>
+                  <span
+                    className={cn(
+                      'text-muted-foreground',
+                      'text-muted-foreground'
+                    )}
+                  >
+                    {placeholder}
+                  </span>
                 )}
               </span>
               <AccessibleIcon>
-                <CalendarIcon className="h-4 w-4 shrink-0 opacity-50" />
+                <CalendarIcon
+                  className={cn(
+                    'h-4 w-4 shrink-0 opacity-50',
+                    'h-4 w-4 shrink-0 opacity-50'
+                  )}
+                />
               </AccessibleIcon>
             </EnhancedButton>
           </PopoverTrigger>
 
           <PopoverContent
-            className="w-auto p-0"
-            align="start"
+            className={cn('w-auto p-0', 'w-auto p-0')}
+            align='start'
           >
             <EnhancedCalendar
-              mode="range"
-              selected={selectedRange ? [selectedRange.from, ...(selectedRange.to ? [selectedRange.to] : [])] : undefined}
+              mode='range'
+              selected={
+                selectedRange
+                  ? [
+                      selectedRange.from,
+                      ...(selectedRange.to ? [selectedRange.to] : []),
+                    ]
+                  : undefined
+              }
               onSelect={handleRangeSelect}
-              disabled={(date) => {
+              disabled={date => {
                 if (disabled) return true;
                 if (isDateDisabled?.(date)) return true;
                 if (minDate && date < minDate) return true;
@@ -686,42 +692,42 @@ export const DatePickerFactory = {
    * Default single date picker
    */
   default: (props: Partial<EnhancedDatePickerProps> = {}) => (
-    <EnhancedDatePicker surface="default" {...props} />
+    <EnhancedDatePicker surface='default' {...props} />
   ),
 
   /**
    * Elevated surface single date picker
    */
   elevated: (props: Partial<EnhancedDatePickerProps> = {}) => (
-    <EnhancedDatePicker surface="elevated" {...props} />
+    <EnhancedDatePicker surface='elevated' {...props} />
   ),
 
   /**
    * Glass surface single date picker
    */
   glass: (props: Partial<EnhancedDatePickerProps> = {}) => (
-    <EnhancedDatePicker surface="glass" {...props} />
+    <EnhancedDatePicker surface='glass' {...props} />
   ),
 
   /**
    * Compact single date picker
    */
   compact: (props: Partial<EnhancedDatePickerProps> = {}) => (
-    <EnhancedDatePicker size="sm" density="compact" {...props} />
+    <EnhancedDatePicker size='sm' density='compact' {...props} />
   ),
 
   /**
    * Large single date picker
    */
   large: (props: Partial<EnhancedDatePickerProps> = {}) => (
-    <EnhancedDatePicker size="lg" density="spacious" {...props} />
+    <EnhancedDatePicker size='lg' density='spacious' {...props} />
   ),
 
   /**
    * Range date picker
    */
   range: (props: Partial<EnhancedDatePickerRangeProps> = {}) => (
-    <EnhancedDatePickerRange surface="default" {...props} />
+    <EnhancedDatePickerRange surface='default' {...props} />
   ),
 };
 
@@ -735,4 +741,6 @@ export type {
   DateRange,
 };
 
-export type DatePickerVariantProps = VariantProps<typeof enhancedDatePickerVariants>;
+export type DatePickerVariantProps = VariantProps<
+  typeof enhancedDatePickerVariants
+>;

@@ -137,9 +137,9 @@ const enhancedDropdownMenuItemVariants = cva(
 
     // Foundation: Interaction States - Enhanced contrast like Select component
     'transition-colors duration-150 ease-out',
-    'focus:text-accent-foreground focus:bg-accent',
+    'focus:bg-accent focus:text-accent-foreground',
     'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-    'hover:text-accent-foreground hover:bg-accent/80',
+    'hover:bg-accent/80 hover:text-accent-foreground',
 
     // Foundation: Platform Awareness
     'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
@@ -167,8 +167,8 @@ const enhancedDropdownMenuItemVariants = cva(
       // AAA Compliance Mode
       enforceAAA: {
         true: [
-          'focus:text-accent-foreground focus:bg-accent',
-          'hover:text-accent-foreground hover:bg-accent',
+          'focus:bg-accent focus:text-accent-foreground',
+          'hover:bg-accent hover:text-accent-foreground',
         ],
         false: '',
       },
@@ -328,9 +328,9 @@ const DropdownMenuCheckboxItem = React.forwardRef<
     className={cn(
       'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none',
       'transition-colors duration-150 ease-out',
-      'focus:text-accent-foreground focus:bg-accent',
+      'focus:bg-accent focus:text-accent-foreground',
       'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-      'hover:text-accent-foreground hover:bg-accent/80',
+      'hover:bg-accent/80 hover:text-accent-foreground',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       'motion-reduce:transition-none',
       className
@@ -338,9 +338,19 @@ const DropdownMenuCheckboxItem = React.forwardRef<
     checked={checked}
     {...props}
   >
-    <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+    <span
+      className={cn(
+        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
+        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center'
+      )}
+    >
       <DropdownMenuPrimitive.ItemIndicator>
-        <Check className='text-accent-foreground h-4 w-4' />
+        <Check
+          className={cn(
+            'h-4 w-4 text-accent-foreground',
+            'h-4 w-4 text-accent-foreground'
+          )}
+        />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -360,18 +370,28 @@ const DropdownMenuRadioItem = React.forwardRef<
     className={cn(
       'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none',
       'transition-colors duration-150 ease-out',
-      'focus:text-accent-foreground focus:bg-accent',
+      'focus:bg-accent focus:text-accent-foreground',
       'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-      'hover:text-accent-foreground hover:bg-accent/80',
+      'hover:bg-accent/80 hover:text-accent-foreground',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       'motion-reduce:transition-none',
       className
     )}
     {...props}
   >
-    <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+    <span
+      className={cn(
+        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
+        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center'
+      )}
+    >
       <DropdownMenuPrimitive.ItemIndicator>
-        <Circle className='text-accent-foreground h-2 w-2 fill-current' />
+        <Circle
+          className={cn(
+            'h-2 w-2 fill-current text-accent-foreground',
+            'h-2 w-2 fill-current text-accent-foreground'
+          )}
+        />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -433,10 +453,10 @@ const DropdownMenuSubTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       'flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none',
-      'focus:text-accent-foreground focus:bg-accent',
+      'focus:bg-accent focus:text-accent-foreground',
       'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-      'hover:text-accent-foreground hover:bg-accent/80',
-      'data-[state=open]:text-accent-foreground data-[state=open]:bg-accent',
+      'hover:bg-accent/80 hover:text-accent-foreground',
+      'data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
       'transition-colors duration-150 ease-out',
       'motion-reduce:transition-none',
       inset && 'pl-8',
@@ -445,7 +465,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <ChevronRight className='ml-auto h-4 w-4' />
+    <ChevronRight className={cn('ml-auto h-4 w-4', 'ml-auto h-4 w-4')} />
   </DropdownMenuPrimitive.SubTrigger>
 ));
 DropdownMenuSubTrigger.displayName =

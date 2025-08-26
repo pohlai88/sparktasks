@@ -11,146 +11,161 @@
  * - WCAG AAA accessibility baseline
  */
 
-import { cva, type VariantProps } from 'class-variance-authority'
+import { cva, type VariantProps } from 'class-variance-authority';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronsLeftIcon,
   ChevronsRightIcon,
-  MoreHorizontalIcon
-} from 'lucide-react'
-import React from 'react'
+  MoreHorizontalIcon,
+} from 'lucide-react';
+import React from 'react';
 
-import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens'
-import { cn } from '../../../utils/cn'
-import { VisuallyHidden } from '../../primitives/VisuallyHidden'
-import type { TablePaginationProps } from '../types'
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
+import { cn } from '../../../utils/cn';
+import { VisuallyHidden } from '../../primitives/VisuallyHidden';
+import type { TablePaginationProps } from '../types';
 
 // ===== MAPS v3.0 PAGINATION VARIANTS =====
 
-const paginationVariants = cva([
-  // Foundation styling with MAPS tokens
-  'flex items-center justify-between gap-4 p-4',
-], {
-  variants: {
-    position: {
-      top: 'border-b',
-      bottom: 'border-t',
-      both: 'border-y',
+const paginationVariants = cva(
+  [
+    // Foundation styling with MAPS tokens
+    'flex items-center justify-between gap-4 p-4',
+  ],
+  {
+    variants: {
+      position: {
+        top: 'border-b',
+        bottom: 'border-t',
+        both: 'border-y',
+      },
+      surface: {
+        elevated: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+        ],
+        glass: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+        ],
+      },
+      size: {
+        sm: 'gap-2 px-2 py-2',
+        md: 'gap-4 px-4 py-4',
+        lg: 'gap-6 px-6 py-6',
+      },
     },
-    surface: {
-      elevated: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated1,
-        ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-      ],
-      glass: [
-        ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.glass.surface,
-        ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
-      ],
+    defaultVariants: {
+      position: 'bottom',
+      surface: 'elevated',
+      size: 'md',
     },
-    size: {
-      sm: 'px-2 py-2 gap-2',
-      md: 'px-4 py-4 gap-4',
-      lg: 'px-6 py-6 gap-6',
-    },
-  },
-  defaultVariants: {
-    position: 'bottom',
-    surface: 'elevated',
-    size: 'md',
-  },
-})
+  }
+);
 
-const paginationButtonVariants = cva([
-  'inline-flex items-center justify-center rounded-md',
-  'font-medium transition-colors',
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.safe,
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.focus.ring,
-], {
-  variants: {
-    variant: {
-      default: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated2,
-        ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-        'border',
-        ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-        ENHANCED_DESIGN_TOKENS.foundation.interaction.hover.surface,
-      ],
-      ghost: [
-        'bg-transparent',
-        ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-        ENHANCED_DESIGN_TOKENS.foundation.interaction.hover.surface,
-      ],
-      active: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.bg,
-        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.fg,
-      ],
+const paginationButtonVariants = cva(
+  [
+    'inline-flex items-center justify-center rounded-md',
+    'font-medium transition-colors',
+    'duration-200 ease-in-out',
+    'focus:ring-2 focus:ring-primary focus:ring-offset-2',
+  ],
+  {
+    variants: {
+      variant: {
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'border',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          'hover:bg-surface-hover',
+        ],
+        ghost: [
+          'bg-transparent',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'hover:bg-surface-hover',
+        ],
+        active: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg,
+        ],
+      },
+      size: {
+        sm: [
+          'h-8 w-8 text-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        ],
+        md: ['h-10 w-10', ENHANCED_DESIGN_TOKENS.foundation.typography.button],
+        lg: [
+          'h-12 w-12',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+        ],
+      },
+      disabled: {
+        true: [
+          'cursor-not-allowed opacity-50',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.disabled,
+        ],
+        false: '',
+      },
     },
-    size: {
-      sm: [
-        'h-8 w-8 text-sm',
-        ENHANCED_DESIGN_TOKENS.foundation.typography.caption1,
-      ],
-      md: [
-        'h-10 w-10',
-        ENHANCED_DESIGN_TOKENS.foundation.typography.button,
-      ],
-      lg: [
-        'h-12 w-12',
-        ENHANCED_DESIGN_TOKENS.foundation.typography.callout,
-      ],
+    defaultVariants: {
+      variant: 'default',
+      size: 'md',
+      disabled: false,
     },
-    disabled: {
-      true: [
-        'opacity-50 cursor-not-allowed',
-        ENHANCED_DESIGN_TOKENS.foundation.color.content.disabled,
-      ],
-      false: '',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-    size: 'md',
-    disabled: false,
-  },
-})
+  }
+);
 
-const pageInfoVariants = cva([
-  'flex items-center gap-2',
-  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
-], {
-  variants: {
-    size: {
-      sm: ENHANCED_DESIGN_TOKENS.foundation.typography.caption2,
-      md: ENHANCED_DESIGN_TOKENS.foundation.typography.footnote,
-      lg: ENHANCED_DESIGN_TOKENS.foundation.typography.body,
+const pageInfoVariants = cva(
+  [
+    'flex items-center gap-2',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+  ],
+  {
+    variants: {
+      size: {
+        sm: ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        md: ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        lg: ENHANCED_DESIGN_TOKENS.foundation.typography.body,
+      },
     },
-  },
-  defaultVariants: {
-    size: 'md',
-  },
-})
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
 
-const selectVariants = cva([
-  'flex h-10 items-center rounded-md border px-3 py-2',
-  'transition-colors',
-  ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
-  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-  ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.focus.ring,
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.safe,
-], {
-  variants: {
-    size: {
-      sm: 'h-8 px-2 text-sm',
-      md: 'h-10 px-3',
-      lg: 'h-12 px-4',
+const selectVariants = cva(
+  [
+    'flex h-10 items-center rounded-md border px-3 py-2',
+    'transition-colors',
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+    'focus:ring-2 focus:ring-primary focus:ring-offset-2',
+    'duration-200 ease-in-out',
+  ],
+  {
+    variants: {
+      size: {
+        sm: 'h-8 px-2 text-sm',
+        md: 'h-10 px-3',
+        lg: 'h-12 px-4',
+      },
     },
-  },
-  defaultVariants: {
-    size: 'md',
-  },
-})
+    defaultVariants: {
+      size: 'md',
+    },
+  }
+);
+
+// Utility variants for consistent styling
+const flexCenterGap2Variants = cva(['flex items-center gap-2']);
+const flexCenterGap4Variants = cva(['flex items-center gap-4']);
+const iconSizeVariants = cva(['h-4 w-4']);
+const flexGap1Variants = cva(['flex gap-1']);
 
 // ===== PAGE SIZE SELECTOR COMPONENT =====
 
@@ -160,30 +175,28 @@ function PageSizeSelector({
   onChange,
   size = 'md',
 }: {
-  pageSize: number
-  options?: number[]
-  onChange?: (size: number) => void
-  size?: 'sm' | 'md' | 'lg'
+  pageSize: number;
+  options?: number[];
+  onChange?: (size: number) => void;
+  size?: 'sm' | 'md' | 'lg';
 }) {
   return (
-    <div className="flex items-center gap-2">
-      <span className={pageInfoVariants({ size })}>
-        Rows per page:
-      </span>
+    <div className={flexCenterGap2Variants()}>
+      <span className={pageInfoVariants({ size })}>Rows per page:</span>
       <select
         value={pageSize}
-        onChange={(e) => onChange?.(Number(e.target.value))}
+        onChange={e => onChange?.(Number(e.target.value))}
         className={selectVariants({ size })}
-        aria-label="Rows per page"
+        aria-label='Rows per page'
       >
-        {options.map((option) => (
+        {options.map(option => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
       </select>
     </div>
-  )
+  );
 }
 
 // ===== QUICK JUMPER COMPONENT =====
@@ -194,49 +207,42 @@ function QuickJumper({
   onPageChange,
   size = 'md',
 }: {
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
-  size?: 'sm' | 'md' | 'lg'
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  size?: 'sm' | 'md' | 'lg';
 }) {
-  const [inputValue, setInputValue] = React.useState(currentPage.toString())
+  const [inputValue, setInputValue] = React.useState(currentPage.toString());
 
   React.useEffect(() => {
-    setInputValue(currentPage.toString())
-  }, [currentPage])
+    setInputValue(currentPage.toString());
+  }, [currentPage]);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const page = Number(inputValue)
+    e.preventDefault();
+    const page = Number(inputValue);
     if (page >= 1 && page <= totalPages && page !== currentPage) {
-      onPageChange(page)
+      onPageChange(page);
     } else {
-      setInputValue(currentPage.toString())
+      setInputValue(currentPage.toString());
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2">
-      <span className={pageInfoVariants({ size })}>
-        Go to page:
-      </span>
+    <form onSubmit={handleSubmit} className={flexCenterGap2Variants()}>
+      <span className={pageInfoVariants({ size })}>Go to page:</span>
       <input
-        type="number"
-        min="1"
+        type='number'
+        min='1'
         max={totalPages}
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        className={cn(
-          selectVariants({ size }),
-          'w-20 text-center'
-        )}
+        onChange={e => setInputValue(e.target.value)}
+        className={cn(selectVariants({ size }), 'w-20 text-center')}
         aria-label={`Go to page, current page ${currentPage} of ${totalPages}`}
       />
-      <span className={pageInfoVariants({ size })}>
-        of {totalPages}
-      </span>
+      <span className={pageInfoVariants({ size })}>of {totalPages}</span>
     </form>
-  )
+  );
 }
 
 // ===== PAGE INFO COMPONENT =====
@@ -249,23 +255,24 @@ function PageInfo({
   showTotal = true,
   size = 'md',
 }: {
-  currentPage: number
-  totalPages: number
-  totalItems: number
-  pageSize: number
-  showTotal?: boolean
-  size?: 'sm' | 'md' | 'lg'
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  pageSize: number;
+  showTotal?: boolean;
+  size?: 'sm' | 'md' | 'lg';
 }) {
-  if (!showTotal) return null
+  if (!showTotal) return null;
 
-  const startItem = (currentPage - 1) * pageSize + 1
-  const endItem = Math.min(currentPage * pageSize, totalItems)
+  const startItem = (currentPage - 1) * pageSize + 1;
+  const endItem = Math.min(currentPage * pageSize, totalItems);
 
   return (
     <div className={pageInfoVariants({ size })}>
-      Showing {startItem.toLocaleString()} to {endItem.toLocaleString()} of {totalItems.toLocaleString()} entries
+      Showing {startItem.toLocaleString()} to {endItem.toLocaleString()} of{' '}
+      {totalItems.toLocaleString()} entries
     </div>
-  )
+  );
 }
 
 // ===== PAGE BUTTONS COMPONENT =====
@@ -281,62 +288,69 @@ function PageButtons({
   ariaLabel,
   pageAriaLabel,
 }: {
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
-  adjacentCount?: number
-  boundaryCount?: number
-  showFirstLast?: boolean
-  size?: 'sm' | 'md' | 'lg'
-  ariaLabel?: string
-  pageAriaLabel?: (page: number) => string
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  adjacentCount?: number;
+  boundaryCount?: number;
+  showFirstLast?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  ariaLabel?: string;
+  pageAriaLabel?: (page: number) => string;
 }) {
   const getPageNumbers = () => {
-    const pages: (number | 'ellipsis')[] = []
+    const pages: (number | 'ellipsis')[] = [];
 
     // Always include boundary pages
     for (let i = 1; i <= Math.min(boundaryCount, totalPages); i++) {
-      pages.push(i)
+      pages.push(i);
     }
 
     // Calculate range around current page
-    const start = Math.max(boundaryCount + 1, currentPage - adjacentCount)
-    const end = Math.min(totalPages - boundaryCount, currentPage + adjacentCount)
+    const start = Math.max(boundaryCount + 1, currentPage - adjacentCount);
+    const end = Math.min(
+      totalPages - boundaryCount,
+      currentPage + adjacentCount
+    );
 
     // Add ellipsis if there's a gap
     if (start > boundaryCount + 1) {
-      pages.push('ellipsis')
+      pages.push('ellipsis');
     }
 
     // Add pages around current page
     for (let i = start; i <= end; i++) {
       if (i > boundaryCount) {
-        pages.push(i)
+        pages.push(i);
       }
     }
 
     // Add ellipsis if there's a gap
     if (end < totalPages - boundaryCount) {
-      pages.push('ellipsis')
+      pages.push('ellipsis');
     }
 
     // Add final boundary pages
-    for (let i = Math.max(totalPages - boundaryCount + 1, end + 1); i <= totalPages; i++) {
+    for (
+      let i = Math.max(totalPages - boundaryCount + 1, end + 1);
+      i <= totalPages;
+      i++
+    ) {
       if (i > boundaryCount) {
-        pages.push(i)
+        pages.push(i);
       }
     }
 
-    return pages
-  }
+    return pages;
+  };
 
-  const pageNumbers = getPageNumbers()
+  const pageNumbers = getPageNumbers();
 
   return (
     <nav
-      role="navigation"
+      role='navigation'
       aria-label={ariaLabel || 'Pagination navigation'}
-      className="flex items-center gap-1"
+      className={flexGap1Variants()}
     >
       {/* First Page Button */}
       {showFirstLast && (
@@ -347,12 +361,12 @@ function PageButtons({
             paginationButtonVariants({
               variant: 'ghost',
               size,
-              disabled: currentPage === 1
+              disabled: currentPage === 1,
             })
           )}
-          aria-label="Go to first page"
+          aria-label='Go to first page'
         >
-          <ChevronsLeftIcon className="h-4 w-4" />
+          <ChevronsLeftIcon className={iconSizeVariants()} />
           <VisuallyHidden>First page</VisuallyHidden>
         </button>
       )}
@@ -365,12 +379,12 @@ function PageButtons({
           paginationButtonVariants({
             variant: 'ghost',
             size,
-            disabled: currentPage === 1
+            disabled: currentPage === 1,
           })
         )}
-        aria-label="Go to previous page"
+        aria-label='Go to previous page'
       >
-        <ChevronLeftIcon className="h-4 w-4" />
+        <ChevronLeftIcon className={iconSizeVariants()} />
         <VisuallyHidden>Previous page</VisuallyHidden>
       </button>
 
@@ -385,13 +399,13 @@ function PageButtons({
                 'cursor-default'
               )}
             >
-              <MoreHorizontalIcon className="h-4 w-4" />
+              <MoreHorizontalIcon className={iconSizeVariants()} />
               <VisuallyHidden>More pages</VisuallyHidden>
             </span>
-          )
+          );
         }
 
-        const isActive = page === currentPage
+        const isActive = page === currentPage;
 
         return (
           <button
@@ -400,15 +414,17 @@ function PageButtons({
             className={cn(
               paginationButtonVariants({
                 variant: isActive ? 'active' : 'default',
-                size
+                size,
               })
             )}
-            aria-label={pageAriaLabel ? pageAriaLabel(page) : `Go to page ${page}`}
+            aria-label={
+              pageAriaLabel ? pageAriaLabel(page) : `Go to page ${page}`
+            }
             aria-current={isActive ? 'page' : undefined}
           >
             {page}
           </button>
-        )
+        );
       })}
 
       {/* Next Page Button */}
@@ -419,12 +435,12 @@ function PageButtons({
           paginationButtonVariants({
             variant: 'ghost',
             size,
-            disabled: currentPage === totalPages
+            disabled: currentPage === totalPages,
           })
         )}
-        aria-label="Go to next page"
+        aria-label='Go to next page'
       >
-        <ChevronRightIcon className="h-4 w-4" />
+        <ChevronRightIcon className={iconSizeVariants()} />
         <VisuallyHidden>Next page</VisuallyHidden>
       </button>
 
@@ -437,17 +453,17 @@ function PageButtons({
             paginationButtonVariants({
               variant: 'ghost',
               size,
-              disabled: currentPage === totalPages
+              disabled: currentPage === totalPages,
             })
           )}
-          aria-label="Go to last page"
+          aria-label='Go to last page'
         >
-          <ChevronsRightIcon className="h-4 w-4" />
+          <ChevronsRightIcon className={iconSizeVariants()} />
           <VisuallyHidden>Last page</VisuallyHidden>
         </button>
       )}
     </nav>
-  )
+  );
 }
 
 // ===== MAIN TABLE PAGINATION COMPONENT =====
@@ -491,17 +507,19 @@ export function TablePagination({
 
   ...props
 }: TablePaginationProps & React.HTMLAttributes<HTMLDivElement>) {
-
   // Don't render if no pages
   if (totalPages <= 1 && !showSizeChanger) {
-    return null
+    return null;
   }
 
   // Infinite scroll mode
   if (virtualized && onLoadMore) {
     return (
       <div
-        className={cn(paginationVariants({ position, surface, size }), className)}
+        className={cn(
+          paginationVariants({ position, surface, size }),
+          className
+        )}
         {...props}
       >
         <PageInfo
@@ -513,11 +531,9 @@ export function TablePagination({
           size={size}
         />
 
-        <div className="flex items-center gap-4">
+        <div className={flexCenterGap4Variants()}>
           {loadingMore ? (
-            <span className={pageInfoVariants({ size })}>
-              Loading more...
-            </span>
+            <span className={pageInfoVariants({ size })}>Loading more...</span>
           ) : (
             <button
               onClick={onLoadMore}
@@ -530,7 +546,7 @@ export function TablePagination({
           )}
         </div>
       </div>
-    )
+    );
   }
 
   // Standard pagination mode
@@ -540,7 +556,7 @@ export function TablePagination({
       {...props}
     >
       {/* Left Section - Page Info */}
-      <div className="flex items-center gap-4">
+      <div className={flexCenterGap4Variants()}>
         <PageInfo
           currentPage={currentPage}
           totalPages={totalPages}
@@ -584,8 +600,8 @@ export function TablePagination({
         />
       )}
     </div>
-  )
+  );
 }
 
 // Export types for external use
-export type TablePaginationVariants = VariantProps<typeof paginationVariants>
+export type TablePaginationVariants = VariantProps<typeof paginationVariants>;

@@ -2,7 +2,15 @@
  * FormWizard - Multi-Step Form Component
  *
  * Advanced wizard component for complex multi-step forms with progress tracking and validation.
- * Built with MAPS v3.0 design system integration.
+ * Built with MAPS v3.0      ],
+      md: [
+        'h-10 px-4',
+        ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+      ],
+      lg: [
+        'h-12 px-6',
+        ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+      ],ystem integration.
  *
  * MAPS Compliance:
  * - Uses ENHANCED_DESIGN_TOKENS exclusively
@@ -11,21 +19,19 @@
  * - WCAG AAA accessibility baseline
  */
 
-import { cva, type VariantProps } from 'class-variance-authority'
-import { ChevronLeft, ChevronRight, Check } from 'lucide-react'
-import React from 'react'
-import { useForm, type FieldValues } from 'react-hook-form'
+import { cva, type VariantProps } from 'class-variance-authority';
+import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import React from 'react';
+import { useForm, type FieldValues } from 'react-hook-form';
 
-import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens'
-import { cn } from '../../../utils/cn'
-import { VisuallyHidden } from '../../primitives/VisuallyHidden'
-import type { FormWizardProps, FormWizardStep } from '../types'
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
+import { cn } from '../../../utils/cn';
+import { VisuallyHidden } from '../../primitives/VisuallyHidden';
+import type { FormWizardProps, FormWizardStep } from '../types';
 
 // ===== MAPS v3.0 WIZARD VARIANTS =====
 
-const wizardVariants = cva([
-  'w-full max-w-4xl mx-auto',
-], {
+const wizardVariants = cva(['mx-auto w-full max-w-4xl'], {
   variants: {
     layout: {
       vertical: 'space-y-8',
@@ -33,12 +39,12 @@ const wizardVariants = cva([
     },
     surface: {
       elevated: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated1,
+        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
         'rounded-lg border',
         ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
       ],
       glass: [
-        ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.glass.surface,
+        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
         'rounded-lg border',
         ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
       ],
@@ -47,35 +53,31 @@ const wizardVariants = cva([
   defaultVariants: {
     layout: 'vertical',
   },
-})
+});
 
 const progressBarVariants = cva([
   'flex items-center justify-between',
-  'px-6 py-4 border-b',
+  'border-b px-6 py-4',
   ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
-])
+]);
 
-const stepIndicatorVariants = cva([
-  'flex items-center gap-4',
-], {
+const stepIndicatorVariants = cva(['flex items-center gap-4'], {
   variants: {
     orientation: {
-      horizontal: 'justify-between w-full',
+      horizontal: 'w-full justify-between',
       vertical: 'flex-col items-start',
     },
   },
   defaultVariants: {
     orientation: 'horizontal',
   },
-})
+});
 
-const stepItemVariants = cva([
-  'flex items-center gap-3 relative',
-], {
+const stepItemVariants = cva(['relative flex items-center gap-3'], {
   variants: {
     state: {
       completed: ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg,
-      current: ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.fg,
+      current: ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg,
       pending: ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
       error: ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg,
     },
@@ -88,120 +90,133 @@ const stepItemVariants = cva([
     state: 'pending',
     orientation: 'horizontal',
   },
-})
+});
 
-const stepCircleVariants = cva([
-  'flex items-center justify-center rounded-full border-2 font-medium transition-colors',
-  'h-10 w-10',
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.safe,
-], {
-  variants: {
-    state: {
-      completed: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.bg,
-        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg,
-        'border-green-500',
-      ],
-      current: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.bg,
-        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.fg,
-        'border-blue-500',
-      ],
-      pending: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
-        ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
-        ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-      ],
-      error: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.bg,
-        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg,
-        'border-red-500',
-      ],
+const stepCircleVariants = cva(
+  [
+    'flex items-center justify-center rounded-full border-2 font-medium transition-colors',
+    'h-10 w-10',
+    'duration-200 ease-in-out',
+  ],
+  {
+    variants: {
+      state: {
+        completed: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg,
+          'border-green-500',
+        ],
+        current: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg,
+          'border-blue-500',
+        ],
+        pending: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+        ],
+        error: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg,
+          'border-red-500',
+        ],
+      },
     },
-  },
-  defaultVariants: {
-    state: 'pending',
-  },
-})
+    defaultVariants: {
+      state: 'pending',
+    },
+  }
+);
 
-const stepContentVariants = cva([
-  'flex-1 min-h-0',
-])
+const stepContentVariants = cva(['min-h-0 flex-1']);
 
-const stepFormVariants = cva([
-  'p-6 space-y-6',
-])
+const stepFormVariants = cva(['space-y-6 p-6']);
 
 const navigationVariants = cva([
-  'flex items-center justify-between px-6 py-4 border-t',
+  'flex items-center justify-between border-t px-6 py-4',
   ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
-])
+]);
 
-const buttonVariants = cva([
-  'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2',
-  'font-medium transition-colors',
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.safe,
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.focus.ring,
-], {
-  variants: {
-    variant: {
-      primary: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.bg,
-        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.fg,
-        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.hover.bg,
-      ],
-      secondary: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated2,
-        ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-        'border',
-        ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-        ENHANCED_DESIGN_TOKENS.foundation.interaction.hover.surface,
-      ],
-      ghost: [
-        'bg-transparent',
-        ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-        ENHANCED_DESIGN_TOKENS.foundation.interaction.hover.surface,
-      ],
+const buttonVariants = cva(
+  [
+    'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2',
+    'font-medium transition-colors',
+    'duration-200 ease-in-out',
+    'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+  ],
+  {
+    variants: {
+      variant: {
+        primary: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.hover,
+        ],
+        secondary: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'border',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          'hover:bg-surface-hover',
+        ],
+        ghost: [
+          'bg-transparent',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'hover:bg-surface-hover',
+        ],
+      },
+      size: {
+        sm: ['h-8 px-3', ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: ['h-10 px-4', ENHANCED_DESIGN_TOKENS.foundation.typography.button],
+        lg: [
+          'h-11 px-6',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+        ],
+      },
+      disabled: {
+        true: [
+          'cursor-not-allowed opacity-50',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.disabled,
+        ],
+        false: '',
+      },
     },
-    size: {
-      sm: [
-        'h-8 px-3',
-        ENHANCED_DESIGN_TOKENS.foundation.typography.caption1,
-      ],
-      md: [
-        'h-10 px-4',
-        ENHANCED_DESIGN_TOKENS.foundation.typography.button,
-      ],
-      lg: [
-        'h-11 px-6',
-        ENHANCED_DESIGN_TOKENS.foundation.typography.callout,
-      ],
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+      disabled: false,
     },
-    disabled: {
-      true: [
-        'opacity-50 cursor-not-allowed',
-        ENHANCED_DESIGN_TOKENS.foundation.color.content.disabled,
-      ],
-      false: '',
-    },
-  },
-  defaultVariants: {
-    variant: 'primary',
-    size: 'md',
-    disabled: false,
-  },
-})
+  }
+);
+
+// Additional utility variants for consistent styling
+const iconVariants = cva(['h-5 w-5']);
+
+const smallIconVariants = cva(['h-4 w-4']);
+
+const flexCenterVariants = cva(['flex items-center gap-4']);
+
+const flexCenterSmallVariants = cva(['flex items-center gap-3']);
+
+const spacingVariants = cva(['space-y-6']);
+
+const fieldSpacingVariants = cva(['space-y-2']);
+
+const errorContainerVariants = cva(['p-8 text-center']);
+
+const errorTextRedVariants = cva(['text-red-500']);
 
 // ===== WIZARD COMPONENTS =====
 
 interface StepIndicatorProps {
-  steps: FormWizardStep<FieldValues>[]
-  currentStep: number
-  completedSteps: Set<number>
-  errorSteps: Set<number>
-  orientation?: 'horizontal' | 'vertical'
-  onStepClick?: (stepIndex: number) => void
-  allowStepNavigation?: boolean
+  steps: FormWizardStep<FieldValues>[];
+  currentStep: number;
+  completedSteps: Set<number>;
+  errorSteps: Set<number>;
+  orientation?: 'horizontal' | 'vertical';
+  onStepClick?: (stepIndex: number) => void;
+  allowStepNavigation?: boolean;
 }
 
 function StepIndicator({
@@ -216,20 +231,25 @@ function StepIndicator({
   return (
     <div className={stepIndicatorVariants({ orientation })}>
       {steps.map((step, index) => {
-        const isCompleted = completedSteps.has(index)
-        const isCurrent = index === currentStep
-        const hasError = errorSteps.has(index)
-        const isClickable = allowStepNavigation && (isCompleted || index < currentStep)
+        const isCompleted = completedSteps.has(index);
+        const isCurrent = index === currentStep;
+        const hasError = errorSteps.has(index);
+        const isClickable =
+          allowStepNavigation && (isCompleted || index < currentStep);
 
-        const state = hasError ? 'error' :
-                    isCompleted ? 'completed' :
-                    isCurrent ? 'current' : 'pending'
+        const state = hasError
+          ? 'error'
+          : isCompleted
+            ? 'completed'
+            : isCurrent
+              ? 'current'
+              : 'pending';
 
         return (
           <React.Fragment key={step.id}>
             {isClickable ? (
               <button
-                type="button"
+                type='button'
                 className={cn(
                   stepItemVariants({ state, orientation }),
                   'cursor-pointer hover:opacity-75',
@@ -240,26 +260,32 @@ function StepIndicator({
               >
                 <div className={stepCircleVariants({ state })}>
                   {isCompleted ? (
-                    <Check className="h-5 w-5" />
+                    <Check className={iconVariants()} />
                   ) : (
                     <span>{index + 1}</span>
                   )}
                 </div>
 
                 <div>
-                  <div className={cn(
-                    'font-medium',
-                    ENHANCED_DESIGN_TOKENS.foundation.typography.subhead,
-                    isCurrent && ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.fg
-                  )}>
+                  <div
+                    className={cn(
+                      'font-medium',
+                      ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+                      isCurrent &&
+                        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg
+                    )}
+                  >
                     {step.title}
                   </div>
                   {step.description && (
-                    <div className={cn(
-                      'text-sm',
-                      ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
-                      ENHANCED_DESIGN_TOKENS.foundation.typography.caption1
-                    )}>
+                    <div
+                      className={cn(
+                        'text-sm',
+                        ENHANCED_DESIGN_TOKENS.foundation.color.content
+                          .tertiary,
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.caption
+                      )}
+                    >
                       {step.description}
                     </div>
                   )}
@@ -269,26 +295,32 @@ function StepIndicator({
               <div className={stepItemVariants({ state, orientation })}>
                 <div className={stepCircleVariants({ state })}>
                   {isCompleted ? (
-                    <Check className="h-5 w-5" />
+                    <Check className={iconVariants()} />
                   ) : (
                     <span>{index + 1}</span>
                   )}
                 </div>
 
                 <div>
-                  <div className={cn(
-                    'font-medium',
-                    ENHANCED_DESIGN_TOKENS.foundation.typography.subhead,
-                    isCurrent && ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.fg
-                  )}>
+                  <div
+                    className={cn(
+                      'font-medium',
+                      ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+                      isCurrent &&
+                        ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg
+                    )}
+                  >
                     {step.title}
                   </div>
                   {step.description && (
-                    <div className={cn(
-                      'text-sm',
-                      ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
-                      ENHANCED_DESIGN_TOKENS.foundation.typography.caption1
-                    )}>
+                    <div
+                      className={cn(
+                        'text-sm',
+                        ENHANCED_DESIGN_TOKENS.foundation.color.content
+                          .tertiary,
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.caption
+                      )}
+                    >
                       {step.description}
                     </div>
                   )}
@@ -298,37 +330,45 @@ function StepIndicator({
 
             {/* Connector Line */}
             {index < steps.length - 1 && orientation === 'horizontal' && (
-              <div className={cn(
-                'flex-1 h-px min-w-8 mx-4',
-                isCompleted ? 'bg-green-500' : ENHANCED_DESIGN_TOKENS.foundation.color.border.default
-              )} />
+              <div
+                className={cn(
+                  'mx-4 h-px min-w-8 flex-1',
+                  isCompleted
+                    ? 'bg-green-500'
+                    : ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+                )}
+              />
             )}
 
             {index < steps.length - 1 && orientation === 'vertical' && (
-              <div className={cn(
-                'w-px h-8 ml-5',
-                isCompleted ? 'bg-green-500' : ENHANCED_DESIGN_TOKENS.foundation.color.border.default
-              )} />
+              <div
+                className={cn(
+                  'ml-5 h-8 w-px',
+                  isCompleted
+                    ? 'bg-green-500'
+                    : ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+                )}
+              />
             )}
           </React.Fragment>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
 interface NavigationProps {
-  currentStep: number
-  totalSteps: number
-  onPrevious: () => void
-  onNext: () => void
-  onSubmit: () => void
-  isSubmitting: boolean
-  canProceed: boolean
-  previousLabel?: string
-  nextLabel?: string
-  submitLabel?: string
-  showProgress?: boolean
+  currentStep: number;
+  totalSteps: number;
+  onPrevious: () => void;
+  onNext: () => void;
+  onSubmit: () => void;
+  isSubmitting: boolean;
+  canProceed: boolean;
+  previousLabel?: string;
+  nextLabel?: string;
+  submitLabel?: string;
+  showProgress?: boolean;
 }
 
 function Navigation({
@@ -344,42 +384,46 @@ function Navigation({
   submitLabel = 'Submit',
   showProgress = true,
 }: NavigationProps) {
-  const isFirstStep = currentStep === 0
-  const isLastStep = currentStep === totalSteps - 1
+  const isFirstStep = currentStep === 0;
+  const isLastStep = currentStep === totalSteps - 1;
 
   return (
     <div className={navigationVariants()}>
-      <div className="flex items-center gap-4">
+      <div className={flexCenterVariants()}>
         {!isFirstStep && (
           <button
-            type="button"
+            type='button'
             onClick={onPrevious}
             className={cn(buttonVariants({ variant: 'secondary' }))}
             disabled={isSubmitting}
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className={smallIconVariants()} />
             {previousLabel}
           </button>
         )}
       </div>
 
       {showProgress && (
-        <div className="flex items-center gap-3">
-          <span className={cn(
-            'text-sm',
-            ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
-            ENHANCED_DESIGN_TOKENS.foundation.typography.caption1
-          )}>
+        <div className={flexCenterSmallVariants()}>
+          <span
+            className={cn(
+              'text-sm',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
+              ENHANCED_DESIGN_TOKENS.foundation.typography.caption
+            )}
+          >
             Step {currentStep + 1} of {totalSteps}
           </span>
-          <div className={cn(
-            'h-2 w-32 rounded-full',
-            ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated2
-          )}>
+          <div
+            className={cn(
+              'h-2 w-32 rounded-full',
+              ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
+            )}
+          >
             <div
               className={cn(
                 'h-2 rounded-full transition-all duration-300',
-                ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.rest.bg
+                ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
               )}
               style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
             />
@@ -387,10 +431,10 @@ function Navigation({
         </div>
       )}
 
-      <div className="flex items-center gap-4">
+      <div className={flexCenterVariants()}>
         {isLastStep ? (
           <button
-            type="button"
+            type='button'
             onClick={onSubmit}
             className={cn(
               buttonVariants({
@@ -404,7 +448,7 @@ function Navigation({
           </button>
         ) : (
           <button
-            type="button"
+            type='button'
             onClick={onNext}
             className={cn(
               buttonVariants({
@@ -415,12 +459,12 @@ function Navigation({
             disabled={!canProceed || isSubmitting}
           >
             {nextLabel}
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className={smallIconVariants()} />
           </button>
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // ===== MAIN FORM WIZARD COMPONENT =====
@@ -467,15 +511,18 @@ export function FormWizard<TFormData extends FieldValues>({
 
   ...props
 }: FormWizardProps<TFormData> & React.HTMLAttributes<HTMLDivElement>) {
-  const layout = 'vertical' // Default layout since it's not in the props interface
-  const stepIndicatorOrientation = 'horizontal' // Default orientation
-  const allowStepNavigation = false // Default navigation setting
-  const [uncontrolledCurrentStep, setUncontrolledCurrentStep] = React.useState(0)
-  const [completedSteps, setCompletedSteps] = React.useState<Set<number>>(new Set())
-  const [errorSteps, setErrorSteps] = React.useState<Set<number>>(new Set())
+  const layout = 'vertical'; // Default layout since it's not in the props interface
+  const stepIndicatorOrientation = 'horizontal'; // Default orientation
+  const allowStepNavigation = false; // Default navigation setting
+  const [uncontrolledCurrentStep, setUncontrolledCurrentStep] =
+    React.useState(0);
+  const [completedSteps, setCompletedSteps] = React.useState<Set<number>>(
+    new Set()
+  );
+  const [errorSteps, setErrorSteps] = React.useState<Set<number>>(new Set());
 
-  const currentStep = controlledCurrentStep ?? uncontrolledCurrentStep
-  const currentStepConfig = steps[currentStep]
+  const currentStep = controlledCurrentStep ?? uncontrolledCurrentStep;
+  const currentStepConfig = steps[currentStep];
 
   const {
     register,
@@ -487,95 +534,106 @@ export function FormWizard<TFormData extends FieldValues>({
   } = useForm<TFormData>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     defaultValues: defaultValues as any,
-  })
+  });
 
   // Handle step validation
   const validateCurrentStep = async (): Promise<boolean> => {
-    if (!validateOnStepChange || !currentStepConfig?.fields) return true
+    if (!validateOnStepChange || !currentStepConfig?.fields) return true;
 
-    const fieldNames = currentStepConfig.fields.map(field => field.name as string)
+    const fieldNames = currentStepConfig.fields.map(
+      field => field.name as string
+    );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const isStepValid = await trigger(fieldNames as any)
+    const isStepValid = await trigger(fieldNames as any);
 
     if (!isStepValid) {
-      setErrorSteps(prev => new Set(prev).add(currentStep))
+      setErrorSteps(prev => new Set(prev).add(currentStep));
     } else {
       setErrorSteps(prev => {
-        const next = new Set(prev)
-        next.delete(currentStep)
-        return next
-      })
+        const next = new Set(prev);
+        next.delete(currentStep);
+        return next;
+      });
     }
 
-    return isStepValid
-  }
+    return isStepValid;
+  };
 
   // Navigation handlers
-  const goToStep = React.useCallback((stepIndex: number) => {
-    if (stepIndex >= 0 && stepIndex < steps.length) {
-      if (controlledCurrentStep !== undefined) {
-        onStepChange?.(stepIndex)
-      } else {
-        setUncontrolledCurrentStep(stepIndex)
+  const goToStep = React.useCallback(
+    (stepIndex: number) => {
+      if (stepIndex >= 0 && stepIndex < steps.length) {
+        if (controlledCurrentStep !== undefined) {
+          onStepChange?.(stepIndex);
+        } else {
+          setUncontrolledCurrentStep(stepIndex);
+        }
       }
-    }
-  }, [controlledCurrentStep, onStepChange, steps.length])
+    },
+    [controlledCurrentStep, onStepChange, steps.length]
+  );
 
   const handleNext = async () => {
-    const isValid = await validateCurrentStep()
-    if (!isValid) return
+    const isValid = await validateCurrentStep();
+    if (!isValid) return;
 
     // Mark current step as completed
-    setCompletedSteps(prev => new Set(prev).add(currentStep))
+    setCompletedSteps(prev => new Set(prev).add(currentStep));
 
     // TODO: Add onStepSubmit callback if needed in the future
     // const stepData = getValues()
     // await onStepSubmit?.(currentStep, stepData)
 
-    goToStep(currentStep + 1)
-  }
+    goToStep(currentStep + 1);
+  };
 
   const handlePrevious = () => {
-    goToStep(currentStep - 1)
-  }
+    goToStep(currentStep - 1);
+  };
 
   const handleStepClick = async (stepIndex: number) => {
     if (stepIndex <= currentStep || completedSteps.has(stepIndex - 1)) {
-      goToStep(stepIndex)
+      goToStep(stepIndex);
     }
-  }
+  };
 
   const handleFormSubmit = async (data: TFormData) => {
     try {
-      const isValid = await validateCurrentStep()
-      if (!isValid) return
+      const isValid = await validateCurrentStep();
+      if (!isValid) return;
 
-      await onSubmit(data)
+      await onSubmit(data);
 
       // Mark final step as completed
-      setCompletedSteps(prev => new Set(prev).add(currentStep))
+      setCompletedSteps(prev => new Set(prev).add(currentStep));
     } catch {
       // Error handling could be added here in the future
       // For now, we just catch and ignore to prevent uncaught promise rejections
     }
-  }
+  };
 
   // Calculate if we can proceed
-  const canProceed = isValid || !validateOnStepChange
+  const canProceed = isValid || !validateOnStepChange;
 
   // Early return if no current step config
   if (!currentStepConfig) {
     return (
-      <div className={cn(wizardVariants({ layout, surface }), className)} {...props}>
-        <div className="text-center p-8">
-          <p className="text-red-500">Invalid step configuration</p>
+      <div
+        className={cn(wizardVariants({ layout, surface }), className)}
+        {...props}
+      >
+        <div className={errorContainerVariants()}>
+          <p className={errorTextRedVariants()}>Invalid step configuration</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className={cn(wizardVariants({ layout, surface }), className)} {...props}>
+    <div
+      className={cn(wizardVariants({ layout, surface }), className)}
+      {...props}
+    >
       {/* Step Indicator */}
       <div className={progressBarVariants()}>
         <StepIndicator
@@ -596,19 +654,23 @@ export function FormWizard<TFormData extends FieldValues>({
             {/* Step Title */}
             {currentStepConfig.title && (
               <div>
-                <h2 className={cn(
-                  'font-semibold',
-                  ENHANCED_DESIGN_TOKENS.foundation.typography.title2,
-                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
-                )}>
+                <h2
+                  className={cn(
+                    'font-semibold',
+                    ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
+                    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                  )}
+                >
                   {currentStepConfig.title}
                 </h2>
                 {currentStepConfig.description && (
-                  <p className={cn(
-                    'mt-2',
-                    ENHANCED_DESIGN_TOKENS.foundation.typography.body,
-                    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
-                  )}>
+                  <p
+                    className={cn(
+                      'mt-2',
+                      ENHANCED_DESIGN_TOKENS.foundation.typography.body,
+                      ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                    )}
+                  >
                     {currentStepConfig.description}
                   </p>
                 )}
@@ -617,19 +679,25 @@ export function FormWizard<TFormData extends FieldValues>({
 
             {/* Step Fields */}
             {currentStepConfig.fields && (
-              <div className="space-y-6">
-                {currentStepConfig.fields.map((field) => {
-                  const fieldError = errors[field.name as keyof typeof errors]
+              <div className={spacingVariants()}>
+                {currentStepConfig.fields.map(field => {
+                  const fieldError = errors[field.name as keyof typeof errors];
 
                   return (
-                    <div key={String(field.name)} className="space-y-2">
+                    <div
+                      key={String(field.name)}
+                      className={fieldSpacingVariants()}
+                    >
                       <label
                         htmlFor={String(field.name)}
                         className={cn(
                           'block font-medium',
-                          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-                          ENHANCED_DESIGN_TOKENS.foundation.typography.subhead,
-                          field.required && "after:content-['*'] after:ml-1 after:text-red-500"
+                          ENHANCED_DESIGN_TOKENS.foundation.color.content
+                            .primary,
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.body
+                            .medium,
+                          field.required &&
+                            "after:ml-1 after:text-red-500 after:content-['*']"
                         )}
                       >
                         {field.label}
@@ -642,12 +710,15 @@ export function FormWizard<TFormData extends FieldValues>({
                           disabled={field.disabled}
                           className={cn(
                             'flex w-full rounded-md border px-3 py-2',
-                            'placeholder:text-muted-foreground resize-vertical',
-                            'transition-colors min-h-[80px]',
-                            ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
-                            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-                            ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-                            ENHANCED_DESIGN_TOKENS.foundation.interaction.focus.ring,
+                            'resize-vertical placeholder:text-muted-foreground',
+                            'min-h-[80px] transition-colors',
+                            ENHANCED_DESIGN_TOKENS.foundation.color.surface
+                              .canvas,
+                            ENHANCED_DESIGN_TOKENS.foundation.color.content
+                              .primary,
+                            ENHANCED_DESIGN_TOKENS.foundation.color.border
+                              .default,
+                            'focus:ring-2 focus:ring-primary focus:ring-offset-2',
                             fieldError && 'border-red-500 focus:border-red-500'
                           )}
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -658,20 +729,26 @@ export function FormWizard<TFormData extends FieldValues>({
                           id={String(field.name)}
                           disabled={field.disabled}
                           className={cn(
-                            'flex w-full rounded-md border px-3 py-2 h-10',
+                            'flex h-10 w-full rounded-md border px-3 py-2',
                             'transition-colors',
-                            ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
-                            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-                            ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-                            ENHANCED_DESIGN_TOKENS.foundation.interaction.focus.ring,
+                            ENHANCED_DESIGN_TOKENS.foundation.color.surface
+                              .canvas,
+                            ENHANCED_DESIGN_TOKENS.foundation.color.content
+                              .primary,
+                            ENHANCED_DESIGN_TOKENS.foundation.color.border
+                              .default,
+                            'focus:ring-2 focus:ring-primary focus:ring-offset-2',
                             fieldError && 'border-red-500 focus:border-red-500'
                           )}
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           {...register(field.name as any)}
                         >
-                          <option value="">Select {field.label}</option>
-                          {field.options?.map((option) => (
-                            <option key={String(option.value)} value={String(option.value)}>
+                          <option value=''>Select {field.label}</option>
+                          {field.options?.map(option => (
+                            <option
+                              key={String(option.value)}
+                              value={String(option.value)}
+                            >
                               {option.label}
                             </option>
                           ))}
@@ -683,12 +760,15 @@ export function FormWizard<TFormData extends FieldValues>({
                           placeholder={field.placeholder}
                           disabled={field.disabled}
                           className={cn(
-                            'flex w-full rounded-md border px-3 py-2 h-10',
-                            'placeholder:text-muted-foreground transition-colors',
-                            ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
-                            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-                            ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-                            ENHANCED_DESIGN_TOKENS.foundation.interaction.focus.ring,
+                            'flex h-10 w-full rounded-md border px-3 py-2',
+                            'transition-colors placeholder:text-muted-foreground',
+                            ENHANCED_DESIGN_TOKENS.foundation.color.surface
+                              .canvas,
+                            ENHANCED_DESIGN_TOKENS.foundation.color.content
+                              .primary,
+                            ENHANCED_DESIGN_TOKENS.foundation.color.border
+                              .default,
+                            'focus:ring-2 focus:ring-primary focus:ring-offset-2',
                             fieldError && 'border-red-500 focus:border-red-500'
                           )}
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -697,26 +777,32 @@ export function FormWizard<TFormData extends FieldValues>({
                       )}
 
                       {field.description && (
-                        <div className={cn(
-                          'text-sm',
-                          ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
-                          ENHANCED_DESIGN_TOKENS.foundation.typography.caption1
-                        )}>
+                        <div
+                          className={cn(
+                            'text-sm',
+                            ENHANCED_DESIGN_TOKENS.foundation.color.content
+                              .tertiary,
+                            ENHANCED_DESIGN_TOKENS.foundation.typography.caption
+                          )}
+                        >
                           {field.description}
                         </div>
                       )}
 
                       {fieldError && (
-                        <div className={cn(
-                          'text-sm flex items-center gap-2',
-                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg,
-                          ENHANCED_DESIGN_TOKENS.foundation.typography.caption1
-                        )}>
+                        <div
+                          className={cn(
+                            'flex items-center gap-2 text-sm',
+                            ENHANCED_DESIGN_TOKENS.foundation.color.feedback
+                              .error.fg,
+                            ENHANCED_DESIGN_TOKENS.foundation.typography.caption
+                          )}
+                        >
                           {String(fieldError.message || 'Invalid input')}
                         </div>
                       )}
                     </div>
-                  )
+                  );
                 })}
               </div>
             )}
@@ -726,14 +812,16 @@ export function FormWizard<TFormData extends FieldValues>({
               data: {} as Partial<TFormData>,
               updateData: () => {},
               errors,
-              goNext: () => { handleNext().catch(() => {}) },
+              goNext: () => {
+                handleNext().catch(() => {});
+              },
               goBack: handlePrevious,
               skip: () => {},
             })}
           </div>
 
           <VisuallyHidden>
-            <button type="submit" tabIndex={-1}>
+            <button type='submit' tabIndex={-1}>
               Submit form
             </button>
           </VisuallyHidden>
@@ -755,8 +843,8 @@ export function FormWizard<TFormData extends FieldValues>({
         showProgress={showProgress}
       />
     </div>
-  )
+  );
 }
 
 // Export types for external use
-export type FormWizardVariants = VariantProps<typeof wizardVariants>
+export type FormWizardVariants = VariantProps<typeof wizardVariants>;

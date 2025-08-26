@@ -19,6 +19,13 @@ coverage/
 test-results/
 e2e/playwright-report/
 
+# Test files - exclude from production linting
+vitest/
+**/*.test.*
+**/*.spec.*
+e2e/
+test/
+
 # Temporary files
 *.tmp
 *.temp

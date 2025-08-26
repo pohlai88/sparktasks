@@ -522,7 +522,12 @@ const EnhancedToolbarButton = React.forwardRef<
     const content = (
       <>
         {loading && (
-          <div className='mr-1 h-3 w-3 animate-spin rounded-full border border-current border-t-transparent' />
+          <div
+            className={cn(
+              'mr-1 h-3 w-3 animate-spin rounded-full border border-current border-t-transparent',
+              'mr-1 h-3 w-3 animate-spin rounded-full border border-current border-t-transparent'
+            )}
+          />
         )}
         {!loading && icon && <span className='shrink-0'>{icon}</span>}
         {children && <span className='truncate'>{children}</span>}

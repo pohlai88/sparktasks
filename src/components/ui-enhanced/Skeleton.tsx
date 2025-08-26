@@ -38,16 +38,16 @@ const enhancedSkeletonVariants = cva(
     // Foundation: Base skeleton styling
     'relative overflow-hidden',
     'rounded-md',
-    
+
     // Foundation: Background colors using semantic tokens
     'bg-muted',
-    
+
     // Foundation: Pulse animation for loading indication
     'animate-pulse',
-    
+
     // Foundation: Motion preferences
     'motion-reduce:animate-none',
-    
+
     // Foundation: Accessibility
     'aria-live="polite" aria-busy="true"',
   ],
@@ -56,26 +56,26 @@ const enhancedSkeletonVariants = cva(
       variant: {
         // Default: Standard rectangular skeleton
         default: [],
-        
+
         // Text: Text line skeleton with proper proportions
         text: ['h-4 rounded'],
-        
+
         // Avatar: Circular skeleton for profile images
         avatar: ['rounded-full'],
-        
+
         // Button: Button-shaped skeleton
         button: ['h-10 rounded-md'],
-        
+
         // Card: Card skeleton with proper proportions
         card: ['rounded-lg'],
-        
+
         // Input: Input field skeleton
         input: ['h-10 rounded-md'],
-        
+
         // Badge: Small badge skeleton
         badge: ['h-5 rounded-full'],
       },
-      
+
       size: {
         sm: [],
         md: [],
@@ -83,11 +83,11 @@ const enhancedSkeletonVariants = cva(
         xl: [],
         full: ['w-full'],
       },
-      
+
       animation: {
         // Pulse: Standard pulse animation
         pulse: ['animate-pulse'],
-        
+
         // Wave: Shimmer wave animation
         wave: [
           'relative',
@@ -97,39 +97,33 @@ const enhancedSkeletonVariants = cva(
           'before:bg-gradient-to-r',
           'before:from-transparent before:via-white/10 before:to-transparent',
         ],
-        
+
         // None: No animation (for motion-sensitive users)
         none: ['animate-none'],
       },
-      
+
       surface: {
         elevated: ['bg-background-elevated'],
         panel: ['bg-background-panel'],
-        glass: [
-          'bg-background/50 backdrop-blur-sm',
-          'border border-border/30',
-        ],
+        glass: ['bg-background/50 backdrop-blur-sm', 'border border-border/30'],
         floating: [
           'bg-background/40 backdrop-blur-md',
           'border border-border/20',
           'shadow-elevation-floating',
         ],
       },
-      
+
       density: {
         comfortable: [],
         compact: ['scale-95'],
       },
-      
+
       enforceAAA: {
         false: '',
-        true: [
-          'aaa:bg-muted-aaa',
-          'aaa:border-border-aaa',
-        ],
+        true: ['aaa:bg-muted-aaa', 'aaa:border-border-aaa'],
       },
     },
-    
+
     compoundVariants: [
       // Size variants for different skeleton types
       {
@@ -152,7 +146,7 @@ const enhancedSkeletonVariants = cva(
         size: 'xl',
         className: 'h-6',
       },
-      
+
       // Avatar size variants
       {
         variant: 'avatar',
@@ -174,7 +168,7 @@ const enhancedSkeletonVariants = cva(
         size: 'xl',
         className: 'h-16 w-16',
       },
-      
+
       // Button size variants
       {
         variant: 'button',
@@ -196,7 +190,7 @@ const enhancedSkeletonVariants = cva(
         size: 'xl',
         className: 'h-14',
       },
-      
+
       // Card size variants
       {
         variant: 'card',
@@ -218,7 +212,7 @@ const enhancedSkeletonVariants = cva(
         size: 'xl',
         className: 'h-80',
       },
-      
+
       // Badge size variants
       {
         variant: 'badge',
@@ -235,7 +229,7 @@ const enhancedSkeletonVariants = cva(
         size: 'lg',
         className: 'h-6 w-20',
       },
-      
+
       // Surface + AAA combinations
       {
         surface: 'elevated',
@@ -247,14 +241,14 @@ const enhancedSkeletonVariants = cva(
         enforceAAA: true,
         className: 'aaa:bg-background-aaa/50 aaa:border-border-aaa/30',
       },
-      
+
       // Animation + motion preferences
       {
         animation: 'wave',
         className: 'motion-reduce:animate-pulse motion-reduce:before:hidden',
       },
     ],
-    
+
     defaultVariants: {
       variant: 'default',
       size: 'md',
@@ -275,17 +269,17 @@ interface EnhancedSkeletonProps
    * Polymorphic rendering support
    */
   asChild?: boolean;
-  
+
   /**
    * Custom width for the skeleton
    */
   width?: string | number;
-  
+
   /**
    * Custom height for the skeleton
    */
   height?: string | number;
-  
+
   /**
    * Accessibility label for screen readers
    */
@@ -297,7 +291,10 @@ interface EnhancedSkeletonProps
 /**
  * Enhanced Skeleton Component
  */
-const EnhancedSkeleton = React.forwardRef<HTMLDivElement, EnhancedSkeletonProps>(
+const EnhancedSkeleton = React.forwardRef<
+  HTMLDivElement,
+  EnhancedSkeletonProps
+>(
   (
     {
       variant = 'default',
@@ -317,12 +314,14 @@ const EnhancedSkeleton = React.forwardRef<HTMLDivElement, EnhancedSkeletonProps>
     ref
   ) => {
     const Comp = asChild ? Slot : 'div';
-    
+
     // Build custom styles for width/height
     const customStyle: React.CSSProperties = {
       ...style,
       ...(width && { width: typeof width === 'number' ? `${width}px` : width }),
-      ...(height && { height: typeof height === 'number' ? `${height}px` : height }),
+      ...(height && {
+        height: typeof height === 'number' ? `${height}px` : height,
+      }),
     };
 
     return (
@@ -341,7 +340,7 @@ const EnhancedSkeleton = React.forwardRef<HTMLDivElement, EnhancedSkeletonProps>
         )}
         style={customStyle}
         aria-label={ariaLabel}
-        role="status"
+        role='status'
         {...props}
       />
     );
@@ -485,31 +484,33 @@ const SkeletonFactory = {
 /**
  * Text Lines Skeleton - Multiple text lines
  */
-interface SkeletonTextLinesProps extends Omit<EnhancedSkeletonProps, 'variant'> {
+interface SkeletonTextLinesProps
+  extends Omit<EnhancedSkeletonProps, 'variant'> {
   lines?: number;
   lastLineWidth?: string | number;
   'data-testid'?: string;
 }
 
-const SkeletonTextLines = React.forwardRef<HTMLDivElement, SkeletonTextLinesProps>(
-  ({ lines = 3, lastLineWidth = '75%', className, ...props }, ref) => {
-    // Destructure to prevent forwarding data-testid to children
-    const { 'data-testid': testId, ...skeletonProps } = props;
-    
-    return (
-      <div ref={ref} className={cn('space-y-2', className)} data-testid={testId}>
-        {Array.from({ length: lines }).map((_, index) => (
-          <EnhancedSkeleton
-            key={index}
-            variant="text"
-            width={index === lines - 1 ? lastLineWidth : '100%'}
-            {...skeletonProps}
-          />
-        ))}
-      </div>
-    );
-  }
-);
+const SkeletonTextLines = React.forwardRef<
+  HTMLDivElement,
+  SkeletonTextLinesProps
+>(({ lines = 3, lastLineWidth = '75%', className, ...props }, ref) => {
+  // Destructure to prevent forwarding data-testid to children
+  const { 'data-testid': testId, ...skeletonProps } = props;
+
+  return (
+    <div ref={ref} className={cn('space-y-2', className)} data-testid={testId}>
+      {Array.from({ length: lines }).map((_, index) => (
+        <EnhancedSkeleton
+          key={index}
+          variant='text'
+          width={index === lines - 1 ? lastLineWidth : '100%'}
+          {...skeletonProps}
+        />
+      ))}
+    </div>
+  );
+});
 SkeletonTextLines.displayName = 'SkeletonTextLines';
 
 /**
@@ -525,32 +526,56 @@ const SkeletonCard = React.forwardRef<HTMLDivElement, SkeletonCardProps>(
   ({ showAvatar = false, showFooter = false, className, ...props }, ref) => {
     // Destructure to prevent forwarding data-testid to children
     const { 'data-testid': testId, ...skeletonProps } = props;
-    
+
     return (
-      <div ref={ref} className={cn('space-y-4 p-4', className)} data-testid={testId}>
+      <div
+        ref={ref}
+        className={cn('space-y-4 p-4', className)}
+        data-testid={testId}
+      >
         {/* Header with optional avatar */}
-        <div className="flex items-center space-x-3">
-          {showAvatar && (
-            <EnhancedSkeleton variant="avatar" size="md" {...skeletonProps} />
+        <div
+          className={cn(
+            'flex items-center space-x-3',
+            'flex items-center space-x-3'
           )}
-          <div className="space-y-2 flex-1">
-            <EnhancedSkeleton variant="text" size="lg" width="60%" {...skeletonProps} />
-            <EnhancedSkeleton variant="text" size="sm" width="40%" {...skeletonProps} />
+        >
+          {showAvatar && (
+            <EnhancedSkeleton variant='avatar' size='md' {...skeletonProps} />
+          )}
+          <div className={cn('flex-1 space-y-2', 'flex-1 space-y-2')}>
+            <EnhancedSkeleton
+              variant='text'
+              size='lg'
+              width='60%'
+              {...skeletonProps}
+            />
+            <EnhancedSkeleton
+              variant='text'
+              size='sm'
+              width='40%'
+              {...skeletonProps}
+            />
           </div>
         </div>
-        
+
         {/* Content */}
-        <div className="space-y-2">
-          <EnhancedSkeleton variant="text" width="100%" {...skeletonProps} />
-          <EnhancedSkeleton variant="text" width="100%" {...skeletonProps} />
-          <EnhancedSkeleton variant="text" width="75%" {...skeletonProps} />
+        <div className={cn('space-y-2', 'space-y-2')}>
+          <EnhancedSkeleton variant='text' width='100%' {...skeletonProps} />
+          <EnhancedSkeleton variant='text' width='100%' {...skeletonProps} />
+          <EnhancedSkeleton variant='text' width='75%' {...skeletonProps} />
         </div>
-        
+
         {/* Footer */}
         {showFooter && (
-          <div className="flex justify-between items-center pt-2">
-            <EnhancedSkeleton variant="badge" {...skeletonProps} />
-            <EnhancedSkeleton variant="button" size="sm" width="80px" {...skeletonProps} />
+          <div className='flex items-center justify-between pt-2'>
+            <EnhancedSkeleton variant='badge' {...skeletonProps} />
+            <EnhancedSkeleton
+              variant='button'
+              size='sm'
+              width='80px'
+              {...skeletonProps}
+            />
           </div>
         )}
       </div>
@@ -573,35 +598,42 @@ const SkeletonTable = React.forwardRef<HTMLDivElement, SkeletonTableProps>(
   ({ rows = 5, columns = 4, showHeader = true, className, ...props }, ref) => {
     // Destructure to prevent forwarding data-testid to children
     const { 'data-testid': testId, ...skeletonProps } = props;
-    
+
     return (
-      <div ref={ref} className={cn('space-y-2', className)} data-testid={testId}>
+      <div
+        ref={ref}
+        className={cn('space-y-2', className)}
+        data-testid={testId}
+      >
         {/* Header */}
         {showHeader && (
-          <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+          <div
+            className={cn('grid gap-4', 'grid gap-4')}
+            style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
+          >
             {Array.from({ length: columns }).map((_, index) => (
               <EnhancedSkeleton
                 key={`header-${index}`}
-                variant="text"
-                size="sm"
-                width="80%"
+                variant='text'
+                size='sm'
+                width='80%'
                 {...skeletonProps}
               />
             ))}
           </div>
         )}
-        
+
         {/* Rows */}
         {Array.from({ length: rows }).map((_, rowIndex) => (
           <div
             key={`row-${rowIndex}`}
-            className="grid gap-4"
+            className={cn('grid gap-4', 'grid gap-4')}
             style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
           >
             {Array.from({ length: columns }).map((_, colIndex) => (
               <EnhancedSkeleton
                 key={`cell-${rowIndex}-${colIndex}`}
-                variant="text"
+                variant='text'
                 width={colIndex === 0 ? '90%' : '70%'}
                 {...skeletonProps}
               />

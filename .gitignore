@@ -69,3 +69,12 @@ demo-*.ts
 # Runtime and development artifacts
 *.log
 .nyc_output/
+
+# Legacy folders (cleaned up during refactoring)
+**/eslint-plugin-maps-token-guard/
+**/*-backup.*
+
+# Reports that can be regenerated
+eslint-report.json
+audit-report.md
+.gitignore-analysis.md

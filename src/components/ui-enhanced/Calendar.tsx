@@ -60,26 +60,21 @@ const enhancedCalendarVariants = cva(
     variants: {
       variant: {
         // Default: Clean, professional baseline
-        default: [
-          'bg-background border-border',
-        ],
+        default: ['border-border bg-background'],
 
         // Elevated: Subtle depth with enhanced surface
-        elevated: [
-          'bg-background-elevated border-border-strong',
-          'shadow-sm',
-        ],
+        elevated: ['border-border-strong bg-background-elevated', 'shadow-sm'],
 
         // Glass: Liquid glass materials effect
         glass: [
-          'bg-background/80 border-border/20',
+          'border-border/20 bg-background/80',
           'backdrop-blur-sm',
           'shadow-sm',
         ],
 
         // Floating: Elevated glass effect
         floating: [
-          'bg-background-panel/80 border-border/30',
+          'border-border/30 bg-background-panel/80',
           'backdrop-blur-md',
           'shadow-lg',
         ],
@@ -126,16 +121,13 @@ const enhancedCalendarNavVariants = cva([
   'transition-all duration-200 ease-out motion-reduce:transition-none',
   'hover:bg-muted hover:text-foreground',
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-  'disabled:opacity-50 disabled:pointer-events-none',
+  'disabled:pointer-events-none disabled:opacity-50',
 ]);
 
 /**
  * Calendar grid variants
  */
-const enhancedCalendarGridVariants = cva([
-  'grid grid-cols-7 gap-1',
-  'w-full',
-]);
+const enhancedCalendarGridVariants = cva(['grid grid-cols-7 gap-1', 'w-full']);
 
 /**
  * Calendar day variants
@@ -159,14 +151,8 @@ const enhancedCalendarDayVariants = cva(
   {
     variants: {
       variant: {
-        default: [
-          'text-foreground',
-          'hover:bg-muted hover:text-foreground',
-        ],
-        selected: [
-          'bg-accent text-accent-foreground',
-          'hover:bg-accent-hover',
-        ],
+        default: ['text-foreground', 'hover:bg-muted hover:text-foreground'],
+        selected: ['bg-accent text-accent-foreground', 'hover:bg-accent-hover'],
         today: [
           'bg-accent/20 text-accent',
           'hover:bg-accent/30',
@@ -256,7 +242,7 @@ interface EnhancedCalendarWeekdayProps extends React.ComponentProps<'div'> {
 
 /**
  * Enhanced Calendar - Date selection component
- * 
+ *
  * MAPS v2.2 Implementation:
  * - Apple HIG calendar patterns
  * - Dark-first foundation styling
@@ -278,7 +264,7 @@ const EnhancedCalendar = React.forwardRef<
       mode = 'single',
       disabled,
       showOutsideDays = true,
-      numberOfMonths = 1,
+      numberOfMonths: _numberOfMonths = 1,
       defaultMonth,
       enforceAAA = false,
       className,
@@ -289,15 +275,25 @@ const EnhancedCalendar = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : 'div';
-    
+
     // State management for calendar
     const [currentMonth, setCurrentMonth] = React.useState(
       defaultMonth || new Date()
     );
 
     const monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
 
     const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -306,26 +302,26 @@ const EnhancedCalendar = React.forwardRef<
     const generateCalendarDays = (date: Date) => {
       const year = date.getFullYear();
       const month = date.getMonth();
-      
+
       const firstDay = new Date(year, month, 1);
       const lastDay = new Date(year, month + 1, 0);
       const startDate = new Date(firstDay);
       const endDate = new Date(lastDay);
-      
+
       // Start from the previous Sunday
       startDate.setDate(startDate.getDate() - startDate.getDay());
-      
+
       // End on the next Saturday
       endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
-      
+
       const days: Date[] = [];
       const current = new Date(startDate);
-      
+
       while (current <= endDate) {
         days.push(new Date(current));
         current.setDate(current.getDate() + 1);
       }
-      
+
       return days;
     };
 
@@ -334,11 +330,15 @@ const EnhancedCalendar = React.forwardRef<
 
     // Navigation handlers
     const navigateToPreviousMonth = () => {
-      setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+      setCurrentMonth(
+        new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1)
+      );
     };
 
     const navigateToNextMonth = () => {
-      setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+      setCurrentMonth(
+        new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
+      );
     };
 
     // Date selection handler
@@ -349,10 +349,16 @@ const EnhancedCalendar = React.forwardRef<
         onSelect?.(date);
       } else if (mode === 'multiple') {
         const currentSelected = Array.isArray(selected) ? selected : [];
-        const isSelected = currentSelected.some(d => d.toDateString() === date.toDateString());
-        
+        const isSelected = currentSelected.some(
+          d => d.toDateString() === date.toDateString()
+        );
+
         if (isSelected) {
-          onSelect?.(currentSelected.filter(d => d.toDateString() !== date.toDateString()));
+          onSelect?.(
+            currentSelected.filter(
+              d => d.toDateString() !== date.toDateString()
+            )
+          );
         } else {
           onSelect?.([...currentSelected, date]);
         }
@@ -363,11 +369,11 @@ const EnhancedCalendar = React.forwardRef<
     // Date comparison helpers
     const isSelected = (date: Date) => {
       if (!selected) return false;
-      
+
       if (Array.isArray(selected)) {
         return selected.some(d => d.toDateString() === date.toDateString());
       }
-      
+
       return selected.toDateString() === date.toDateString();
     };
 
@@ -382,11 +388,11 @@ const EnhancedCalendar = React.forwardRef<
     return (
       <Comp
         ref={ref}
-        role="application"
-        aria-label="Calendar"
+        role='application'
+        aria-label='Calendar'
         className={cn(
           enhancedCalendarVariants({ variant, size, surface }),
-          enforceAAA && 'aaa:bg-background aaa:border-accent-solid-aaa',
+          enforceAAA && 'aaa:border-accent-solid-aaa aaa:bg-background',
           className
         )}
         data-aaa={enforceAAA}
@@ -397,36 +403,37 @@ const EnhancedCalendar = React.forwardRef<
           <>
             <EnhancedCalendarHeader>
               <EnhancedCalendarNav
-                direction="previous"
+                direction='previous'
                 onClick={navigateToPreviousMonth}
-                aria-label="Previous month"
-                data-testid="calendar-prev"
+                aria-label='Previous month'
+                data-testid='calendar-prev'
               >
-                <AccessibleIcon label="Previous month">
-                  <ChevronLeft className="size-4" />
+                <AccessibleIcon label='Previous month'>
+                  <ChevronLeft className='size-4' />
                 </AccessibleIcon>
               </EnhancedCalendarNav>
-              
-              <h2 className="text-lg font-semibold">
-                {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+
+              <h2 className={cn('text-lg font-semibold', 'text-foreground')}>
+                {monthNames[currentMonth.getMonth()]}{' '}
+                {currentMonth.getFullYear()}
               </h2>
-              
+
               <EnhancedCalendarNav
-                direction="next"
+                direction='next'
                 onClick={navigateToNextMonth}
-                aria-label="Next month"
-                data-testid="calendar-next"
+                aria-label='Next month'
+                data-testid='calendar-next'
               >
-                <AccessibleIcon label="Next month">
-                  <ChevronRight className="size-4" />
+                <AccessibleIcon label='Next month'>
+                  <ChevronRight className='size-4' />
                 </AccessibleIcon>
               </EnhancedCalendarNav>
             </EnhancedCalendarHeader>
 
-            <div className="space-y-2">
+            <div className={cn('space-y-2', 'flex flex-col gap-2')}>
               {/* Weekday headers */}
               <EnhancedCalendarGrid>
-                {weekdays.map((day) => (
+                {weekdays.map(day => (
                   <EnhancedCalendarWeekday key={day}>
                     {day}
                   </EnhancedCalendarWeekday>
@@ -437,9 +444,9 @@ const EnhancedCalendar = React.forwardRef<
               <EnhancedCalendarGrid>
                 {days.map((date, index) => {
                   const outside = isOutside(date);
-                  
+
                   if (!showOutsideDays && outside) {
-                    return <div key={index} className="size-9" />;
+                    return <div key={index} className='size-9' />;
                   }
 
                   return (
@@ -497,20 +504,25 @@ EnhancedCalendarHeader.displayName = 'EnhancedCalendarHeader';
 const EnhancedCalendarNav = React.forwardRef<
   HTMLButtonElement,
   EnhancedCalendarNavProps
->(({ asChild = false, direction, className, children, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'button';
+>(
+  (
+    { asChild = false, direction: _direction, className, children, ...props },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : 'button';
 
-  return (
-    <Comp
-      ref={ref}
-      type="button"
-      className={cn(enhancedCalendarNavVariants(), className)}
-      {...props}
-    >
-      {children}
-    </Comp>
-  );
-});
+    return (
+      <Comp
+        ref={ref}
+        type='button'
+        className={cn(enhancedCalendarNavVariants(), className)}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  }
+);
 
 EnhancedCalendarNav.displayName = 'EnhancedCalendarNav';
 
@@ -546,7 +558,7 @@ const EnhancedCalendarDay = React.forwardRef<
   (
     {
       asChild = false,
-      date,
+      date: _date,
       selected = false,
       today = false,
       outside = false,
@@ -561,8 +573,9 @@ const EnhancedCalendarDay = React.forwardRef<
     const Comp = asChild ? Slot : 'button';
 
     // Determine variant based on state
-    let variant: 'default' | 'selected' | 'today' | 'outside' | 'disabled' = 'default';
-    
+    let variant: 'default' | 'selected' | 'today' | 'outside' | 'disabled' =
+      'default';
+
     if (disabled) {
       variant = 'disabled';
     } else if (selected) {
@@ -576,7 +589,7 @@ const EnhancedCalendarDay = React.forwardRef<
     return (
       <Comp
         ref={ref}
-        type="button"
+        type='button'
         disabled={disabled}
         aria-selected={selected}
         className={cn(
@@ -624,7 +637,9 @@ export const CalendarFactory = {
   /**
    * Create standard calendar configuration
    */
-  standard: (props?: Partial<EnhancedCalendarProps>): EnhancedCalendarProps => ({
+  standard: (
+    props?: Partial<EnhancedCalendarProps>
+  ): EnhancedCalendarProps => ({
     variant: 'default',
     size: 'md',
     mode: 'single',
@@ -657,7 +672,9 @@ export const CalendarFactory = {
   /**
    * Create accessible calendar configuration
    */
-  accessible: (props?: Partial<EnhancedCalendarProps>): EnhancedCalendarProps => ({
+  accessible: (
+    props?: Partial<EnhancedCalendarProps>
+  ): EnhancedCalendarProps => ({
     variant: 'default',
     size: 'lg',
     mode: 'single',
@@ -668,7 +685,9 @@ export const CalendarFactory = {
   /**
    * Create multi-select calendar configuration
    */
-  multiSelect: (props?: Partial<EnhancedCalendarProps>): EnhancedCalendarProps => ({
+  multiSelect: (
+    props?: Partial<EnhancedCalendarProps>
+  ): EnhancedCalendarProps => ({
     variant: 'elevated',
     size: 'md',
     mode: 'multiple',
@@ -691,9 +710,15 @@ export const createDateDisabled = (options: {
   return (date: Date): boolean => {
     if (options.before && date < options.before) return true;
     if (options.after && date > options.after) return true;
-    if (options.weekends && (date.getDay() === 0 || date.getDay() === 6)) return true;
-    if (options.holidays?.some(holiday => holiday.toDateString() === date.toDateString())) return true;
-    
+    if (options.weekends && (date.getDay() === 0 || date.getDay() === 6))
+      return true;
+    if (
+      options.holidays?.some(
+        holiday => holiday.toDateString() === date.toDateString()
+      )
+    )
+      return true;
+
     return false;
   };
 };
@@ -701,21 +726,25 @@ export const createDateDisabled = (options: {
 /**
  * Format date for display
  */
-export const formatCalendarDate = (date: Date, format: 'short' | 'long' | 'iso' = 'short'): string => {
+export const formatCalendarDate = (
+  date: Date,
+  format: 'short' | 'long' | 'iso' = 'short'
+): string => {
   switch (format) {
     case 'long':
-      return date.toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
       });
-    case 'iso':
+    case 'iso': {
       // Fix: Ensure proper UTC date formatting without timezone offset issues
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
+    }
     case 'short':
     default:
       return date.toLocaleDateString();
@@ -728,12 +757,12 @@ export const formatCalendarDate = (date: Date, format: 'short' | 'long' | 'iso' 
 export const getCalendarMonthInfo = (date: Date) => {
   const year = date.getFullYear();
   const month = date.getMonth();
-  
+
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
   const daysInMonth = lastDay.getDate();
   const firstDayOfWeek = firstDay.getDay();
-  
+
   return {
     year,
     month,
@@ -746,7 +775,9 @@ export const getCalendarMonthInfo = (date: Date) => {
 
 // ===== TYPE EXPORTS =====
 
-export type CalendarVariantProps = VariantProps<typeof enhancedCalendarVariants>;
+export type CalendarVariantProps = VariantProps<
+  typeof enhancedCalendarVariants
+>;
 
 export type {
   EnhancedCalendarProps,

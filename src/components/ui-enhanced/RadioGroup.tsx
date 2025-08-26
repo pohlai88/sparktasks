@@ -269,15 +269,15 @@ const EnhancedRadioGroup = React.forwardRef<
       density = 'comfortable',
       enforceAAA = false,
       description,
-      asChild = false,
+      asChild: _asChild = false,
       children,
       ...props
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : RadioGroupPrimitive.Root;
-    
-    if (asChild) {
+    const Comp = _asChild ? Slot : RadioGroupPrimitive.Root;
+
+    if (_asChild) {
       return (
         <Comp
           ref={ref}
@@ -291,7 +291,7 @@ const EnhancedRadioGroup = React.forwardRef<
         </Comp>
       );
     }
-    
+
     return (
       <div>
         {description && (
@@ -363,7 +363,7 @@ const EnhancedRadioGroupItem = React.forwardRef<
       indicatorStyle = 'dot',
       enforceAAA = false,
       description,
-      asChild = false,
+      asChild: _asChild = false,
       id,
       ...props
     },
@@ -393,13 +393,28 @@ const EnhancedRadioGroupItem = React.forwardRef<
           className={cn(enhancedRadioIndicatorVariants({ indicatorStyle }))}
         >
           {indicatorStyle === 'dot' && (
-            <Circle className='h-2.5 w-2.5 fill-current text-current' />
+            <Circle
+              className={cn(
+                'h-2.5 w-2.5 fill-current text-current',
+                'size-2.5 fill-current'
+              )}
+            />
           )}
           {indicatorStyle === 'icon' && (
-            <Circle className='h-3 w-3 fill-current text-current' />
+            <Circle
+              className={cn(
+                'h-3 w-3 fill-current text-current',
+                'size-3 fill-current'
+              )}
+            />
           )}
           {indicatorStyle === 'filled' && (
-            <div className='h-2 w-2 rounded-full bg-current' />
+            <div
+              className={cn(
+                'h-2 w-2 rounded-full bg-current',
+                'size-2 rounded-full bg-current'
+              )}
+            />
           )}
         </RadioGroupPrimitive.Indicator>
       </RadioGroupPrimitive.Item>
@@ -436,9 +451,9 @@ const EnhancedRadioGroupItem = React.forwardRef<
     // Handle different label positions
     if (labelPosition === 'top') {
       return (
-        <div className='space-y-1'>
+        <div className={cn('space-y-1', 'flex flex-col gap-1')}>
           {labelElement}
-          <div className='flex items-center'>
+          <div className={cn('flex items-center', 'flex items-center')}>
             {radioButton}
             {children}
           </div>
@@ -449,8 +464,8 @@ const EnhancedRadioGroupItem = React.forwardRef<
 
     if (labelPosition === 'bottom') {
       return (
-        <div className='space-y-1'>
-          <div className='flex items-center'>
+        <div className={cn('space-y-1', 'flex flex-col gap-1')}>
+          <div className={cn('flex items-center', 'flex items-center')}>
             {radioButton}
             {children}
           </div>
@@ -462,7 +477,7 @@ const EnhancedRadioGroupItem = React.forwardRef<
 
     // Default: side positioning (left or right)
     return (
-      <div className='space-y-1'>
+      <div className={cn('space-y-1', 'flex flex-col gap-1')}>
         <div
           className={cn(
             'flex items-center',
@@ -559,7 +574,12 @@ const EnhancedRadioGroupCard = React.forwardRef<
           aria-describedby={description ? `${itemId}-description` : undefined}
           {...props}
         >
-          <div className='flex items-start space-x-3'>
+          <div
+            className={cn(
+              'flex items-start space-x-3',
+              'flex items-start space-x-3'
+            )}
+          >
             {/* Radio indicator */}
             <div className='mt-0.5 flex items-center justify-center'>
               <div
@@ -597,7 +617,7 @@ const EnhancedRadioGroupCard = React.forwardRef<
             )}
 
             {/* Content */}
-            <div className='min-w-0 flex-1'>
+            <div className={cn('min-w-0 flex-1', 'min-w-0 flex-1')}>
               <div
                 className={cn(
                   'text-sm font-medium leading-5 text-foreground',

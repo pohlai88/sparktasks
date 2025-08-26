@@ -56,37 +56,37 @@ const enhancedCommandVariants = cva(
   {
     variants: {
       variant: {
-        default: ['bg-background border-border'],
+        default: ['border-border bg-background'],
         elevated: [
-          'bg-background-elevated border-border-strong',
+          'border-border-strong bg-background-elevated',
           'shadow-elevation-high',
         ],
         glass: [
-          'bg-background/80 border-border/20',
+          'border-border/20 bg-background/80',
           'backdrop-blur-sm backdrop-saturate-[135%]',
           'shadow-glass',
         ],
         floating: [
-          'bg-background-panel/80 border-border/30',
+          'border-border/30 bg-background-panel/80',
           'backdrop-blur-md backdrop-saturate-[135%]',
           'shadow-elevation-high',
         ],
       },
       size: {
-        sm: ['max-w-xs max-h-64', 'text-xs'],
-        md: ['max-w-sm max-h-80', 'text-sm'],
-        lg: ['max-w-md max-h-96', 'text-base'],
-        xl: ['max-w-lg max-h-[32rem]', 'text-base'],
-        full: ['w-full h-full', 'text-sm'],
+        sm: ['max-h-64 max-w-xs', 'text-xs'],
+        md: ['max-h-80 max-w-sm', 'text-sm'],
+        lg: ['max-h-96 max-w-md', 'text-base'],
+        xl: ['max-h-[32rem] max-w-lg', 'text-base'],
+        full: ['h-full w-full', 'text-sm'],
       },
       density: {
-        comfortable: ['p-2 gap-2'],
-        compact: ['p-1 gap-1'],
+        comfortable: ['gap-2 p-2'],
+        compact: ['gap-1 p-1'],
       },
       enforceAAA: {
         false: '',
         true: [
-          'aaa:bg-background aaa:border-accent-solid-aaa',
+          'aaa:border-accent-solid-aaa aaa:bg-background',
           'aaa:shadow-none',
         ],
       },
@@ -133,13 +133,15 @@ const enhancedCommandInputVariants = cva(
         default: ['border-border focus-visible:border-accent'],
         ghost: ['border-transparent focus-visible:border-border'],
         filled: [
-          'bg-muted border-transparent rounded-md',
+          'rounded-md border-transparent bg-muted',
           'focus-visible:border-accent focus-visible:bg-background',
         ],
       },
       enforceAAA: {
         false: '',
-        true: ['aaa:border-accent-solid-aaa aaa:focus-visible:border-accent-solid-aaa'],
+        true: [
+          'aaa:border-accent-solid-aaa aaa:focus-visible:border-accent-solid-aaa',
+        ],
       },
     },
     defaultVariants: {
@@ -327,21 +329,26 @@ export interface EnhancedCommandProps
 const EnhancedCommand = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
   EnhancedCommandProps
->(({ className, variant, size, density, enforceAAA, asChild, ...props }, ref) => {
-  const Comp = asChild ? Slot : CommandPrimitive;
+>(
+  (
+    { className, variant, size, density, enforceAAA, asChild, ...props },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : CommandPrimitive;
 
-  return (
-    <Comp
-      ref={ref}
-      className={cn(
-        enhancedCommandVariants({ variant, size, density, enforceAAA }),
-        className
-      )}
-      data-aaa={enforceAAA}
-      {...props}
-    />
-  );
-});
+    return (
+      <Comp
+        ref={ref}
+        className={cn(
+          enhancedCommandVariants({ variant, size, density, enforceAAA }),
+          className
+        )}
+        data-aaa={enforceAAA}
+        {...props}
+      />
+    );
+  }
+);
 EnhancedCommand.displayName = 'EnhancedCommand';
 
 /**
@@ -360,8 +367,19 @@ const EnhancedCommandInput = React.forwardRef<
   EnhancedCommandInputProps
 >(({ className, variant, enforceAAA, ...props }, ref) => {
   return (
-    <div className="flex items-center border-b border-border px-3" data-cmdk-input-wrapper="">
-      <Search className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
+    <div
+      className={cn(
+        'flex items-center border-b border-border px-3',
+        'flex items-center border-b border-border px-3'
+      )}
+      data-cmdk-input-wrapper=''
+    >
+      <Search
+        className={cn(
+          'mr-2 h-4 w-4 shrink-0 text-muted-foreground',
+          'mr-2 h-4 w-4 shrink-0 text-muted-foreground'
+        )}
+      />
       <CommandPrimitive.Input
         ref={ref}
         className={cn(
@@ -420,7 +438,10 @@ const EnhancedCommandEmpty = React.forwardRef<
   return (
     <Comp
       ref={ref}
-      className={cn('py-6 text-center text-sm text-muted-foreground', className)}
+      className={cn(
+        'py-6 text-center text-sm text-muted-foreground',
+        className
+      )}
       {...props}
     />
   );

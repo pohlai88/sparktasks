@@ -1,13 +1,14 @@
 /**
- * Primitives Index - MAPS v3.0 Enhanced with Primitive Governance Layer
+ * Primitives Index - MAPS v3.0 Clean Architecture
  *
- * Centralized exports for Radix utilities integrated with MAPS architecture.
- * These primitives standardize accessibility and composition patterns.
+ * Centralized exports for Radix utilities and the new clean primitives system.
+ * These primitives provide a clean, token-based foundation for all components.
  *
- * PRIMITIVE GOVERNANCE LAYER - THE MOAT:
- * - TokenGuard: ESLint plugin for token compliance
- * - ZIndexOrchestrator: Layer management system
- * - MotionPresets: Governed animation library
+ * CLEAN ARCHITECTURE PRINCIPLES:
+ * - Single Source of Truth: ENHANCED_DESIGN_TOKENS
+ * - Simple APIs: No overengineering
+ * - Type Safety: Full TypeScript integration
+ * - Auto Cleanup: Memory-safe component lifecycle
  */
 
 // Accessibility Primitives
@@ -28,39 +29,57 @@ export { RadixSlot } from './Slot';
 export { default as DirectionProvider } from './DirectionProvider';
 export type { DirectionProviderProps } from './DirectionProvider';
 
-// PRIMITIVE GOVERNANCE LAYER - THE MOAT
-export { TokenGuard, useTokenGuard, withTokenGuard } from './token-guard';
+// CLEAN ARCHITECTURE LAYER - Z-INDEX REGISTRY
 export {
-  ZIndexOrchestrator,
-  ZIndexProvider,
-  useZIndex,
-  useZIndexMonitor,
-  getZIndexValue,
+  registerComponentLayer,
+  getZIndex,
+  getTailwindClass,
+  hasConflict,
+  performAutoCleanup,
+  validateTokenName,
+  getDebuggerSnapshot,
   getAvailableLayers,
-  isValidLayer
-} from './z-index-orchestrator';
-export {
-  MotionPresets,
-  MotionProvider,
-  useMotion,
-  useMotionPerformance,
-  getMotionPreset,
-  getAvailableMotions,
-  isValidMotion,
-  createMotionClass
-} from './motion-presets';
+  getLayerStats,
+  getConflictResolution,
+  resetRegistry,
+} from './z-index-registry';
 
-// Governance Types
+// CLEAN ARCHITECTURE LAYER - MOTION UTILITIES
+export {
+  getMotionClasses,
+  getMotionValues,
+  createTransition,
+  prefersReducedMotion,
+  getAdaptiveMotionClasses,
+  getAvailableMotionPresets,
+} from './motion-utils';
+
+// CLEAN ARCHITECTURE LAYER - REACT HOOKS
+export { useZIndex, useZIndexDebugger } from './use-z-index';
+
+// CLEAN ARCHITECTURE LAYER - DEMO
+// export {
+//   PrimitiveArchitectureDemo,
+//   ExampleModal,
+//   ExampleTooltip,
+//   ExampleToast,
+//   ZIndexDebugPanel,
+// } from './architecture-demo';
+
+// Clean Architecture Types
 export type {
-  TokenGuardConfig,
-  TokenViolation,
-  ZIndexLayer,
-  ZIndexConfig,
-  ZIndexViolation,
+  ZIndexToken,
+  ComponentLayerEntry,
+  ConflictResolution,
+  LayerDebugInfo,
   MotionPreset,
-  MotionConfig,
-  MotionViolation,
-  PrimitiveGovernanceConfig,
-  GovernanceReport,
-  EnforcementHookConfig,
+  MotionOptions,
+  ZIndexLayerName,
+  MotionDuration,
+  MotionEasing,
+  ValidationResult,
+  isValidLayerName,
+  isValidMotionPreset,
+  isValidMotionDuration,
+  isValidMotionEasing,
 } from './types';

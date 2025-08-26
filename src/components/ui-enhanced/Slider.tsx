@@ -365,7 +365,7 @@ const EnhancedSlider = React.forwardRef<
             className
           )}
           orientation={orientation || undefined}
-          {...(props as any)}
+          {...(props as any)} // eslint-disable-line @typescript-eslint/no-explicit-any
         >
           <SliderPrimitives.Track
             className={cn(

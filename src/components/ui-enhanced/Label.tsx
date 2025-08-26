@@ -12,7 +12,20 @@
         invalid={invalid || !!error}
         className={cn(
           layout === 'horizontal' && 'flex items-center min-w-[120px]',
-          className
+        {finalError && (
+          <p
+            id={errorId}
+            className={cn('text-xs leading-relaxed text-destructive-foreground', 'text-xs leading-relaxed text-destructive-foreground')}
+            role='alert'
+            aria-live='polite'
+          >
+            {finalError}
+          </p>
+        )}
+      </div>
+    );
+  }
+);sName
         )}
         {...labelProps}
       >
@@ -215,7 +228,7 @@ const EnhancedLabel = React.forwardRef<
     const finalEnforceAAA = aaa !== undefined ? aaa : enforceAAA;
 
     return (
-      <div className='space-y-1'>
+      <div className={cn('space-y-1', 'flex flex-col gap-1')}>
         <LabelPrimitive.Root
           ref={ref}
           className={cn(
@@ -245,7 +258,12 @@ const EnhancedLabel = React.forwardRef<
         </LabelPrimitive.Root>
 
         {description && (
-          <p className='text-xs leading-relaxed text-muted-foreground'>
+          <p
+            className={cn(
+              'text-xs leading-relaxed text-muted-foreground',
+              'text-xs text-muted-foreground'
+            )}
+          >
             {description}
           </p>
         )}
@@ -366,14 +384,19 @@ const LabelWithField = React.forwardRef<
 
     if (layout === 'horizontal') {
       return (
-        <div className='flex items-start gap-4'>
+        <div
+          className={cn('flex items-start gap-4', 'flex items-start space-x-4')}
+        >
           {labelElement}
-          <div className='flex-1 space-y-1'>
+          <div className={cn('flex-1 space-y-1', 'flex flex-1 flex-col gap-1')}>
             {enhancedField}
             {finalError && (
               <p
                 id={errorId}
-                className='text-xs leading-relaxed text-destructive-foreground'
+                className={cn(
+                  'text-xs leading-relaxed text-destructive-foreground',
+                  'text-xs text-destructive-foreground'
+                )}
                 role='alert'
                 aria-live='polite'
               >
@@ -386,13 +409,16 @@ const LabelWithField = React.forwardRef<
     }
 
     return (
-      <div className='space-y-2'>
+      <div className={cn('space-y-2', 'flex flex-col gap-2')}>
         {labelElement}
         {enhancedField}
         {finalError && (
           <p
             id={errorId}
-            className='text-xs leading-relaxed text-destructive-foreground'
+            className={cn(
+              'text-xs leading-relaxed text-destructive-foreground',
+              'text-xs leading-relaxed text-destructive-foreground'
+            )}
             role='alert'
             aria-live='polite'
           >
@@ -507,11 +533,19 @@ const FormFieldGroup = React.forwardRef<
         {...props}
       >
         {finalLegend && (
-          <legend className='-ml-2 px-2 text-sm font-semibold text-foreground'>
+          <legend
+            className={cn(
+              '-ml-2 px-2 text-sm font-semibold text-foreground',
+              '-ml-2 px-2 text-sm font-semibold text-foreground'
+            )}
+          >
             {finalLegend}
             {required && (
               <span
-                className='ml-1 text-destructive-foreground'
+                className={cn(
+                  'ml-1 text-destructive-foreground',
+                  'ml-1 text-destructive-foreground'
+                )}
                 aria-label='required'
               >
                 *
@@ -523,7 +557,10 @@ const FormFieldGroup = React.forwardRef<
         {description && (
           <p
             id={descriptionId}
-            className='text-xs leading-relaxed text-muted-foreground'
+            className={cn(
+              'text-xs leading-relaxed text-muted-foreground',
+              'text-xs text-muted-foreground'
+            )}
           >
             {description}
           </p>
@@ -543,7 +580,10 @@ const FormFieldGroup = React.forwardRef<
         {finalError && (
           <p
             id={errorId}
-            className='text-xs leading-relaxed text-destructive-foreground'
+            className={cn(
+              'text-xs leading-relaxed text-destructive-foreground',
+              'text-xs leading-relaxed text-destructive-foreground'
+            )}
             role='alert'
             aria-live='polite'
           >

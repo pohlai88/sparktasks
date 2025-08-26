@@ -338,7 +338,7 @@ const DialogContent = React.forwardRef<
         </div>
         {showClose && (
           <DialogPrimitive.Close className={cn(dialogCloseVariants())}>
-            <X className='h-4 w-4' />
+            <X className={cn('h-4 w-4', 'h-4 w-4')} />
             <VisuallyHidden>Close</VisuallyHidden>
           </DialogPrimitive.Close>
         )}

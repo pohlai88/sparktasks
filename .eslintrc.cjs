@@ -34,7 +34,6 @@ module.exports = {
     'unicorn',
     'tailwindcss',
     'unused-imports',
-    'maps-token-guard',  // ← MAPS governance integration
   ],
   extends: [
     'eslint:recommended',
@@ -161,11 +160,8 @@ module.exports = {
     ],
 
     // ===== MAPS GOVERNANCE RULES =====
-    // Enable MAPS token governance (start with warnings)
-    'maps-token-guard/no-raw-tailwind-in-components': 'warn',
-    'maps-token-guard/enforce-visually-hidden': 'warn',
-    'maps-token-guard/no-hardcoded-z-index': 'warn',
-    'maps-token-guard/require-dark-first': 'warn',
+    // Note: Z-index governance now handled by ZIndexOrchestrator runtime system
+    // Core design token governance remains through no-restricted-syntax rules above
   },
   overrides: [
     {

@@ -58,7 +58,7 @@ const enhancedSelectTriggerVariants = cva(
 
     // Foundation: Focus - AAA compliant ring system using enhanced tokens
     'focus:outline-none',
-    'focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:ring-offset-background',
+    'focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background',
 
     // Foundation: Apple HIG interaction patterns - Platform-aware
     'motion-reduce:transition-none',
@@ -81,7 +81,7 @@ const enhancedSelectTriggerVariants = cva(
           'border-transparent',
           'bg-transparent',
           'hover:bg-muted',
-          'focus:bg-input focus:border-accent',
+          'focus:border-accent focus:bg-input',
         ],
         glass: [
           // Liquid glass material - MAPS compliance for vibrancy-on-surface-only
@@ -189,12 +189,12 @@ const enhancedSelectItemVariants = cva(
       variant: {
         default: [
           // Enhanced contrast for better visibility - increased opacity
-          'focus:text-accent-foreground focus:bg-accent',
+          'focus:bg-accent focus:text-accent-foreground',
           'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-          'data-[state=checked]:text-accent-foreground data-[state=checked]:bg-accent',
+          'data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground',
           'data-[state=checked]:font-medium',
           // Add hover as backup
-          'hover:text-accent-foreground hover:bg-accent/60',
+          'hover:bg-accent/60 hover:text-accent-foreground',
         ],
         ghost: [
           'focus:bg-muted focus:text-foreground',
@@ -205,9 +205,9 @@ const enhancedSelectItemVariants = cva(
         ],
         glass: [
           // Enhanced opacity for better visibility
-          'focus:text-accent-foreground focus:bg-accent/90',
+          'focus:bg-accent/90 focus:text-accent-foreground',
           'data-[highlighted]:bg-accent/80 data-[highlighted]:text-white data-[highlighted]:shadow-md',
-          'data-[state=checked]:text-accent-foreground data-[state=checked]:bg-accent/80',
+          'data-[state=checked]:bg-accent/80 data-[state=checked]:text-accent-foreground',
           'data-[state=checked]:font-medium',
           'hover:bg-accent/40',
         ],
@@ -253,7 +253,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className='h-4 w-4 opacity-50' />
+      <ChevronDown className={cn('h-4 w-4 opacity-50', 'h-4 w-4 opacity-50')} />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -274,7 +274,7 @@ const SelectScrollUpButton = React.forwardRef<
     )}
     {...props}
   >
-    <ChevronDown className='h-4 w-4 rotate-180' />
+    <ChevronDown className={cn('h-4 w-4 rotate-180', 'h-4 w-4 rotate-180')} />
   </SelectPrimitive.ScrollUpButton>
 ));
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
@@ -291,7 +291,7 @@ const SelectScrollDownButton = React.forwardRef<
     )}
     {...props}
   >
-    <ChevronDown className='h-4 w-4' />
+    <ChevronDown className={cn('h-4 w-4', 'h-4 w-4')} />
   </SelectPrimitive.ScrollDownButton>
 ));
 SelectScrollDownButton.displayName =
@@ -343,7 +343,7 @@ const SelectLabel = React.forwardRef<
   <SelectPrimitive.Label
     ref={ref}
     className={cn(
-      'text-muted-foreground py-1.5 pl-8 pr-2 text-sm font-semibold',
+      'py-1.5 pl-8 pr-2 text-sm font-semibold text-muted-foreground',
       className
     )}
     {...props}
@@ -364,9 +364,19 @@ const SelectItem = React.forwardRef<
     className={cn(enhancedSelectItemVariants({ variant, className }))}
     {...props}
   >
-    <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+    <span
+      className={cn(
+        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
+        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center'
+      )}
+    >
       <SelectPrimitive.ItemIndicator>
-        <Check className='text-accent-foreground h-4 w-4' />
+        <Check
+          className={cn(
+            'h-4 w-4 text-accent-foreground',
+            'h-4 w-4 text-accent-foreground'
+          )}
+        />
       </SelectPrimitive.ItemIndicator>
     </span>
 

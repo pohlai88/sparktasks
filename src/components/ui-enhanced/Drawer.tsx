@@ -49,7 +49,7 @@ const enhancedDrawerOverlayVariants = cva([
   // Foundation: Motion - Mobile-optimized transitions
   'data-[state=open]:animate-in data-[state=closed]:animate-out',
   'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-  'data-[state=open]:duration-300 data-[state=closed]:duration-200',
+  'data-[state=closed]:duration-200 data-[state=open]:duration-300',
 
   // Foundation: Respect motion preferences
   'motion-reduce:transition-none',
@@ -65,7 +65,7 @@ const enhancedDrawerContentVariants = cva(
     'flex flex-col',
 
     // Foundation: Mobile-optimized styling
-    'bg-background border-t border-border',
+    'border-t border-border bg-background',
     'rounded-t-2xl',
     'shadow-2xl shadow-black/20',
 
@@ -75,7 +75,7 @@ const enhancedDrawerContentVariants = cva(
     // Foundation: Motion - Spring-like mobile animations
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
     'data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
-    'data-[state=open]:duration-300 data-[state=closed]:duration-200',
+    'data-[state=closed]:duration-200 data-[state=open]:duration-300',
 
     // Foundation: Focus management
     'focus-visible:outline-none',
@@ -96,7 +96,7 @@ const enhancedDrawerContentVariants = cva(
         md: ['max-h-[60vh]'],
         lg: ['max-h-[80vh]'],
         xl: ['max-h-[90vh]'],
-        auto: ['max-h-[90vh] h-auto'],
+        auto: ['h-auto max-h-[90vh]'],
       },
 
       /**
@@ -104,11 +104,11 @@ const enhancedDrawerContentVariants = cva(
        */
       surface: {
         elevated: [
-          'bg-background-elevated border-border',
+          'border-border bg-background-elevated',
           'shadow-elevation-high',
         ],
         panel: [
-          'bg-background-panel border-border-strong',
+          'border-border-strong bg-background-panel',
           'shadow-elevation-floating',
         ],
         glass: [
@@ -186,7 +186,7 @@ const enhancedDrawerHandleVariants = cva([
 const enhancedDrawerHeaderVariants = cva([
   // Foundation: Header layout
   'flex flex-col space-y-2',
-  'px-6 pt-4 pb-2',
+  'px-6 pb-2 pt-4',
 
   // Foundation: Border for content separation
   'border-b border-border/50',
@@ -260,7 +260,7 @@ const enhancedDrawerCloseVariants = cva([
 
   // Foundation: Colors and states
   'text-muted-foreground',
-  'hover:text-foreground hover:bg-muted',
+  'hover:bg-muted hover:text-foreground',
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
   'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 
@@ -471,7 +471,7 @@ const EnhancedDrawerContent = React.forwardRef<
         >
           {/* Mobile gesture handle */}
           {handle !== 'hidden' && (
-            <div className="flex justify-center">
+            <div className='flex justify-center'>
               {handleContent || <EnhancedDrawerHandle />}
             </div>
           )}
@@ -483,9 +483,9 @@ const EnhancedDrawerContent = React.forwardRef<
           <DrawerPrimitive.Close asChild>
             <button
               className={cn(enhancedDrawerCloseVariants())}
-              aria-label="Close drawer"
+              aria-label='Close drawer'
             >
-              <X className="h-5 w-5" />
+              <X className={cn('h-5 w-5', 'h-5 w-5')} />
             </button>
           </DrawerPrimitive.Close>
         </Comp>
@@ -737,4 +737,6 @@ export type {
   EnhancedDrawerCloseProps,
 };
 
-export type DrawerVariantProps = VariantProps<typeof enhancedDrawerContentVariants>;
+export type DrawerVariantProps = VariantProps<
+  typeof enhancedDrawerContentVariants
+>;

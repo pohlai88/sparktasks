@@ -11,28 +11,26 @@
  * - WCAG AAA accessibility baseline
  */
 
-import { ResponsiveBar } from '@nivo/bar'
-import { cva, type VariantProps } from 'class-variance-authority'
-import React from 'react'
+import { ResponsiveBar } from '@nivo/bar';
+import { cva, type VariantProps } from 'class-variance-authority';
+import React from 'react';
 
-import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens'
-import { cn } from '../../../utils/cn'
-import type { BarChartProps } from '../types'
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
+import { cn } from '../../../utils/cn';
+import type { BarChartProps } from '../types';
 
 // ===== MAPS v3.0 CHART VARIANTS =====
 
-const chartVariants = cva([
-  'w-full relative overflow-hidden',
-], {
+const chartVariants = cva(['relative w-full overflow-hidden'], {
   variants: {
     surface: {
       elevated: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated1,
+        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
         'rounded-lg border p-4',
         ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
       ],
       glass: [
-        ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.glass.surface,
+        ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
         'rounded-lg border p-4',
         ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
       ],
@@ -46,11 +44,9 @@ const chartVariants = cva([
   defaultVariants: {
     theme: 'auto',
   },
-})
+});
 
-const chartContainerVariants = cva([
-  'relative',
-], {
+const chartContainerVariants = cva(['relative'], {
   variants: {
     size: {
       sm: 'h-64',
@@ -63,7 +59,7 @@ const chartContainerVariants = cva([
   defaultVariants: {
     size: 'md',
   },
-})
+});
 
 // Unused variants - removing to fix ESLint errors
 // const chartHeaderVariants = cva([
@@ -82,19 +78,19 @@ const chartContainerVariants = cva([
 // ])
 
 const legendVariants = cva([
-  'flex flex-wrap gap-4 mt-4 pt-4 border-t',
+  'mt-4 flex flex-wrap gap-4 border-t pt-4',
   ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
-])
+]);
 
 const legendItemVariants = cva([
   'flex items-center gap-2',
-  ENHANCED_DESIGN_TOKENS.foundation.typography.caption1,
-])
+  ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+]);
 
 const legendColorVariants = cva([
-  'w-3 h-3 rounded-sm border',
+  'h-3 w-3 rounded-sm border',
   ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
-])
+]);
 
 // ===== CHART HELPERS =====
 
@@ -190,7 +186,7 @@ const generateMAPSTheme = (isDark: boolean) => ({
     table: {},
     tableCell: {},
   },
-})
+});
 
 const defaultMAPSColors = [
   '#3B82F6', // blue-500
@@ -203,18 +199,18 @@ const defaultMAPSColors = [
   '#84CC16', // lime-500
   '#EC4899', // pink-500
   '#6366F1', // indigo-500
-]
+];
 
 // ===== CHART COMPONENTS =====
 
 interface ChartLegendProps {
-  keys: string[]
-  colors: string[]
-  showLegend?: boolean
+  keys: string[];
+  colors: string[];
+  showLegend?: boolean;
 }
 
 function ChartLegend({ keys, colors, showLegend = true }: ChartLegendProps) {
-  if (!showLegend) return null
+  if (!showLegend) return null;
 
   return (
     <div className={legendVariants()}>
@@ -228,7 +224,7 @@ function ChartLegend({ keys, colors, showLegend = true }: ChartLegendProps) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 // ===== MAIN BAR CHART COMPONENT =====
@@ -269,47 +265,71 @@ export function BarChart({
 }: BarChartProps & React.HTMLAttributes<HTMLDivElement>) {
   const isDarkMode = React.useMemo(() => {
     if (theme === 'auto') {
-      return globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
+      return (
+        globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
+      );
     }
-    return theme === 'dark'
-  }, [theme])
+    return theme === 'dark';
+  }, [theme]);
 
   const chartColors = React.useMemo(() => {
     if (typeof colors === 'function') {
-      return defaultMAPSColors
+      return defaultMAPSColors;
     }
-    return colors
-  }, [colors])
+    return colors;
+  }, [colors]);
 
-  const chartTheme = React.useMemo(() => generateMAPSTheme(isDarkMode), [isDarkMode])
+  const chartTheme = React.useMemo(
+    () => generateMAPSTheme(isDarkMode),
+    [isDarkMode]
+  );
 
   // Data validation
   if (!data || data.length === 0) {
     return (
-      <div className={cn(chartVariants({ surface, theme }), className)} {...props}>
-        <div className={cn(chartContainerVariants(), 'flex items-center justify-center')}>
-          <div className={cn(
-            'text-center space-y-2',
-            ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary
-          )}>
-            <div className={ENHANCED_DESIGN_TOKENS.foundation.typography.subhead}>
+      <div
+        className={cn(chartVariants({ surface, theme }), className)}
+        {...props}
+      >
+        <div
+          className={cn(
+            chartContainerVariants(),
+            'flex items-center justify-center'
+          )}
+        >
+          <div
+            className={cn(
+              'space-y-2 text-center',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary
+            )}
+          >
+            <div
+              className={
+                ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4
+              }
+            >
               No data available
             </div>
-            <div className={ENHANCED_DESIGN_TOKENS.foundation.typography.caption1}>
+            <div
+              className={ENHANCED_DESIGN_TOKENS.foundation.typography.caption}
+            >
               Add data to display the chart
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className={cn(chartVariants({ surface, theme }), className)} {...props}>
+    <div
+      className={cn(chartVariants({ surface, theme }), className)}
+      {...props}
+    >
       <div
         className={chartContainerVariants()}
         style={{ height: customHeight ? `${customHeight}px` : undefined }}
-        role="img"
+        role='img'
         aria-label={ariaLabel ?? `Bar chart showing ${keys.join(', ')} data`}
       >
         <ResponsiveBar
@@ -355,22 +375,19 @@ export function BarChart({
             modifiers: [['darker', 1.6]],
           }}
           animate={true}
-          motionConfig="gentle"
+          motionConfig='gentle'
           isInteractive={!!onClick || !!onHover}
-          role="application"
+          role='application'
           ariaLabel={ariaLabel}
-          ariaLabelledBy="chart-title"
-          ariaDescribedBy="chart-description"
+          ariaLabelledBy='chart-title'
+          ariaDescribedBy='chart-description'
         />
       </div>
 
-      <ChartLegend
-        keys={keys}
-        colors={chartColors}
-      />
+      <ChartLegend keys={keys} colors={chartColors} />
     </div>
-  )
+  );
 }
 
 // Export types for external use
-export type BarChartVariants = VariantProps<typeof chartVariants>
+export type BarChartVariants = VariantProps<typeof chartVariants>;

@@ -85,6 +85,15 @@
     --ring: 48 176 199; /* #30b0c7 - Focus rings */
     --muted: 36 28 65; /* #241c41 - Muted backgrounds */
 
+    /* Motion System Variables */
+    --motion-duration-instant: 75ms;
+    --motion-duration-fast: 120ms;
+    --motion-duration-normal: 180ms;
+    --motion-duration-slow: 240ms;
+    --motion-easing-linear: linear;
+    --motion-easing-standard: cubic-bezier(0.2, 0, 0.2, 1);
+    --motion-easing-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+
     /* Elevation & Glass Materials */
     --card: var(--background-elevated);
     --popover: var(--background-panel);

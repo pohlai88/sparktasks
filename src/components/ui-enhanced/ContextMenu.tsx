@@ -358,10 +358,15 @@ const ContextMenuCheckboxItem = React.forwardRef<
       )}
       {...props}
     >
-      <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+      <span
+        className={cn(
+          'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
+          'absolute left-2 flex h-3.5 w-3.5 items-center justify-center'
+        )}
+      >
         <RadixContextMenu.ItemIndicator>
           <AccessibleIcon>
-            <Check className='h-4 w-4' />
+            <Check className={cn('h-4 w-4', 'h-4 w-4')} />
           </AccessibleIcon>
         </RadixContextMenu.ItemIndicator>
       </span>
@@ -403,10 +408,17 @@ const ContextMenuRadioItem = React.forwardRef<
       )}
       {...props}
     >
-      <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+      <span
+        className={cn(
+          'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
+          'absolute left-2 flex h-3.5 w-3.5 items-center justify-center'
+        )}
+      >
         <RadixContextMenu.ItemIndicator>
           <AccessibleIcon>
-            <Circle className='h-4 w-4 fill-current' />
+            <Circle
+              className={cn('h-4 w-4 fill-current', 'h-4 w-4 fill-current')}
+            />
           </AccessibleIcon>
         </RadixContextMenu.ItemIndicator>
       </span>
@@ -512,7 +524,7 @@ const ContextMenuSubTrigger = React.forwardRef<
     >
       {children}
       <AccessibleIcon>
-        <ChevronRight className='ml-auto h-4 w-4' />
+        <ChevronRight className={cn('ml-auto h-4 w-4', 'ml-auto h-4 w-4')} />
       </AccessibleIcon>
     </RadixContextMenu.SubTrigger>
   )

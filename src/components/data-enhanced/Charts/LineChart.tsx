@@ -11,28 +11,26 @@
  * - WCAG AAA accessibility baseline
  */
 
-import { ResponsiveLine } from '@nivo/line'
-import { cva, type VariantProps } from 'class-variance-authority'
-import React from 'react'
+import { ResponsiveLine } from '@nivo/line';
+import { cva, type VariantProps } from 'class-variance-authority';
+import React from 'react';
 
-import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens'
-import { cn } from '../../../utils/cn'
-import type { LineChartProps } from '../types'
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
+import { cn } from '../../../utils/cn';
+import type { LineChartProps } from '../types';
 
 // ===== MAPS v3.0 CHART VARIANTS =====
 
-const chartVariants = cva([
-  'w-full relative overflow-hidden',
-], {
+const chartVariants = cva(['relative w-full overflow-hidden'], {
   variants: {
     surface: {
       elevated: [
-        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated1,
+        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
         'rounded-lg border p-4',
         ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
       ],
       glass: [
-        ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.glass.surface,
+        ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
         'rounded-lg border p-4',
         ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
       ],
@@ -46,11 +44,9 @@ const chartVariants = cva([
   defaultVariants: {
     theme: 'auto',
   },
-})
+});
 
-const chartContainerVariants = cva([
-  'relative',
-], {
+const chartContainerVariants = cva(['relative'], {
   variants: {
     size: {
       sm: 'h-64',
@@ -63,7 +59,7 @@ const chartContainerVariants = cva([
   defaultVariants: {
     size: 'md',
   },
-})
+});
 
 // Unused variants - removing to fix ESLint errors
 // const chartHeaderVariants = cva([
@@ -152,7 +148,7 @@ const generateMAPSTheme = (isDark: boolean) => ({
     table: {},
     tableCell: {},
   },
-})
+});
 
 const defaultMAPSColors = [
   '#3B82F6', // blue-500
@@ -165,7 +161,7 @@ const defaultMAPSColors = [
   '#84CC16', // lime-500
   '#EC4899', // pink-500
   '#6366F1', // indigo-500
-]
+];
 
 // ===== CHART COMPONENTS =====
 
@@ -219,51 +215,80 @@ export function LineChart({
 }: LineChartProps & React.HTMLAttributes<HTMLDivElement>) {
   const isDarkMode = React.useMemo(() => {
     if (theme === 'auto') {
-      return globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
+      return (
+        globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
+      );
     }
-    return theme === 'dark'
-  }, [theme])
+    return theme === 'dark';
+  }, [theme]);
 
   const chartColors = React.useMemo(() => {
     if (typeof colors === 'function') {
-      return defaultMAPSColors
+      return defaultMAPSColors;
     }
-    return colors
-  }, [colors])
+    return colors;
+  }, [colors]);
 
-  const chartTheme = React.useMemo(() => generateMAPSTheme(isDarkMode), [isDarkMode])
+  const chartTheme = React.useMemo(
+    () => generateMAPSTheme(isDarkMode),
+    [isDarkMode]
+  );
 
   // Data validation
   if (!data || data.length === 0) {
     return (
-      <div className={cn(chartVariants({ surface, theme }), className)} {...props}>
-        <div className={cn(chartContainerVariants(), 'flex items-center justify-center')}>
-          <div className={cn(
-            'text-center space-y-2',
-            ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary
-          )}>
-            <div className={ENHANCED_DESIGN_TOKENS.foundation.typography.subhead}>
+      <div
+        className={cn(chartVariants({ surface, theme }), className)}
+        {...props}
+      >
+        <div
+          className={cn(
+            chartContainerVariants(),
+            'flex items-center justify-center'
+          )}
+        >
+          <div
+            className={cn(
+              'space-y-2 text-center',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary
+            )}
+          >
+            <div
+              className={
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium
+              }
+            >
               No data available
             </div>
-            <div className={ENHANCED_DESIGN_TOKENS.foundation.typography.caption1}>
+            <div
+              className={ENHANCED_DESIGN_TOKENS.foundation.typography.caption}
+            >
               Add data to display the chart
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className={cn(chartVariants({ surface, theme }), className)} {...props}>
+    <div
+      className={cn(chartVariants({ surface, theme }), className)}
+      {...props}
+    >
       <div
         className={chartContainerVariants()}
         style={{ height: customHeight ? `${customHeight}px` : undefined }}
-        role="img"
+        role='img'
         aria-label={`Line chart showing data`}
       >
         <ResponsiveLine
-          data={data as { id: string; data: Array<{ x: string | number; y: number }> }[]}
+          data={
+            data as {
+              id: string;
+              data: Array<{ x: string | number; y: number }>;
+            }[]
+          }
           margin={margin}
           xScale={{ type: 'point' }}
           yScale={{ type: 'linear', min: 'auto', max: 'auto' }}
@@ -299,17 +324,17 @@ export function LineChart({
           enableCrosshair={true}
           enableSlices={'x'}
           animate={true}
-          motionConfig="gentle"
+          motionConfig='gentle'
           isInteractive={true}
-          role="application"
+          role='application'
           ariaLabel={'Line chart'}
-          ariaLabelledBy="chart-title"
-          ariaDescribedBy="chart-description"
+          ariaLabelledBy='chart-title'
+          ariaDescribedBy='chart-description'
         />
       </div>
     </div>
-  )
+  );
 }
 
 // Export types for external use
-export type LineChartVariants = VariantProps<typeof chartVariants>
+export type LineChartVariants = VariantProps<typeof chartVariants>;

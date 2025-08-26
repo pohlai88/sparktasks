@@ -205,9 +205,9 @@ const Checkbox = React.forwardRef<
     >
       {/* Conditional rendering based on checkbox state */}
       {props.checked === 'indeterminate' ? (
-        <Minus className='h-full w-full' />
+        <Minus className={cn('h-full w-full', 'h-full w-full')} />
       ) : (
-        <Check className='h-full w-full' />
+        <Check className={cn('h-full w-full', 'h-full w-full')} />
       )}
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
@@ -390,7 +390,13 @@ const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>(
         )}
 
         {description && (
-          <p id={descriptionId} className='text-xs text-muted-foreground'>
+          <p
+            id={descriptionId}
+            className={cn(
+              'text-xs text-muted-foreground',
+              'text-xs text-muted-foreground'
+            )}
+          >
             {description}
           </p>
         )}

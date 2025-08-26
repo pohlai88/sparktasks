@@ -3,6 +3,9 @@ export default {
   content: [
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
+    // Exclude node_modules and test files for better performance
+    '!./src/**/*.{test,spec}.{js,ts,jsx,tsx}',
+    '!./node_modules/**/*',
   ],
   darkMode: 'class', // Enable dark mode support
   theme: {

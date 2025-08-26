@@ -55,7 +55,7 @@ const enhancedSheetContentVariants = cva(
   [
     // Foundation: Base positioning and layout
     'fixed z-50 gap-4 p-6',
-    'bg-background border shadow-elevation-high',
+    'border bg-background shadow-elevation-high',
 
     // Foundation: Motion - Elegant entrance animations
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
@@ -72,23 +72,23 @@ const enhancedSheetContentVariants = cva(
       side: {
         top: [
           'inset-x-0 top-0',
-          'border-b rounded-b-lg',
+          'rounded-b-lg border-b',
           'data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
         ],
         bottom: [
           'inset-x-0 bottom-0',
-          'border-t rounded-t-lg',
+          'rounded-t-lg border-t',
           'data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
         ],
         left: [
           'inset-y-0 left-0 h-full w-3/4',
-          'border-r rounded-r-lg',
+          'rounded-r-lg border-r',
           'data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left',
           'sm:max-w-sm md:max-w-md lg:max-w-lg',
         ],
         right: [
           'inset-y-0 right-0 h-full w-3/4',
-          'border-l rounded-l-lg',
+          'rounded-l-lg border-l',
           'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
           'sm:max-w-sm md:max-w-md lg:max-w-lg',
         ],
@@ -101,20 +101,20 @@ const enhancedSheetContentVariants = cva(
         full: [],
       },
       surface: {
-        elevated: ['bg-background-elevated border-border-elevated'],
-        panel: ['bg-background-panel border-border-panel'],
+        elevated: ['border-border-elevated bg-background-elevated'],
+        panel: ['border-border-panel bg-background-panel'],
         glass: [
           'bg-background/95 backdrop-blur-md backdrop-saturate-150',
           'border-border/50',
         ],
         floating: [
           'bg-background/90 backdrop-blur-lg backdrop-saturate-150',
-          'border-border/30 shadow-elevation-floating',
+          'shadow-elevation-floating border-border/30',
         ],
       },
       density: {
-        comfortable: ['p-6 gap-4'],
-        compact: ['p-4 gap-3'],
+        comfortable: ['gap-4 p-6'],
+        compact: ['gap-3 p-4'],
       },
       enforceAAA: {
         false: '',
@@ -181,7 +181,8 @@ const enhancedSheetContentVariants = cva(
       {
         surface: 'elevated',
         enforceAAA: true,
-        className: 'aaa:bg-background-elevated-aaa aaa:border-border-elevated-aaa',
+        className:
+          'aaa:bg-background-elevated-aaa aaa:border-border-elevated-aaa',
       },
       {
         surface: 'glass',
@@ -208,7 +209,7 @@ const enhancedSheetHeaderVariants = cva([
   'text-center sm:text-left',
 
   // Foundation: Border and padding
-  'pb-4 border-b border-border',
+  'border-b border-border pb-4',
 
   // Enhanced: Proper content hierarchy
   'mb-4',
@@ -241,9 +242,9 @@ const enhancedSheetDescriptionVariants = cva([
 const enhancedSheetFooterVariants = cva([
   // Foundation: Layout for actions
   'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
-  
+
   // Foundation: Spacing and borders
-  'pt-4 mt-4 border-t border-border',
+  'mt-4 border-t border-border pt-4',
 ]);
 
 /**
@@ -252,20 +253,20 @@ const enhancedSheetFooterVariants = cva([
 const enhancedSheetCloseVariants = cva([
   // Foundation: Positioning
   'absolute right-4 top-4',
-  
+
   // Foundation: Size and shape
   'rounded-sm p-1.5',
-  
+
   // Foundation: Colors and states
   'text-muted-foreground opacity-70',
-  'hover:opacity-100 hover:bg-muted',
+  'hover:bg-muted hover:opacity-100',
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
   'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-  
+
   // Foundation: Motion
   'transition-all duration-200 ease-out',
   'motion-reduce:transition-none',
-  
+
   // Foundation: Disabled state
   'disabled:pointer-events-none',
 ]);
@@ -422,9 +423,9 @@ const EnhancedSheetContent = React.forwardRef<
           <SheetPrimitive.Close asChild>
             <button
               className={cn(enhancedSheetCloseVariants())}
-              aria-label="Close sheet"
+              aria-label='Close sheet'
             >
-              <X className="h-4 w-4" />
+              <X className={cn('h-4 w-4', 'h-4 w-4')} />
             </button>
           </SheetPrimitive.Close>
         </Comp>

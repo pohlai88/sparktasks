@@ -52,38 +52,35 @@ const enhancedBadgeVariants = cva(
           'border-secondary/20',
           'shadow-sm',
         ],
-        muted: [
-          'bg-muted text-muted-foreground',
-          'border-muted-foreground/20',
-        ],
+        muted: ['bg-muted text-muted-foreground', 'border-muted-foreground/20'],
         accent: [
           'bg-accent text-accent-foreground',
           'border-accent/20',
           'shadow-sm',
         ],
-        
+
         // Status semantic variants
         success: [
           'bg-green-500/10 text-green-700 dark:text-green-400',
           'border-green-500/20',
-          'shadow-green-500/10 shadow-sm',
+          'shadow-sm shadow-green-500/10',
         ],
         warning: [
           'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400',
           'border-yellow-500/20',
-          'shadow-yellow-500/10 shadow-sm',
+          'shadow-sm shadow-yellow-500/10',
         ],
         error: [
           'bg-red-500/10 text-red-700 dark:text-red-400',
           'border-red-500/20',
-          'shadow-red-500/10 shadow-sm',
+          'shadow-sm shadow-red-500/10',
         ],
         info: [
           'bg-blue-500/10 text-blue-700 dark:text-blue-400',
           'border-blue-500/20',
-          'shadow-blue-500/10 shadow-sm',
+          'shadow-sm shadow-blue-500/10',
         ],
-        
+
         // Style variants
         outline: [
           'border-border bg-transparent',
@@ -95,7 +92,7 @@ const enhancedBadgeVariants = cva(
           'text-muted-foreground',
           'hover:bg-accent hover:text-accent-foreground',
         ],
-        
+
         // Liquid glass variants
         glass: [
           'bg-background/60 text-foreground',
@@ -125,16 +122,11 @@ const enhancedBadgeVariants = cva(
         false: '',
       },
       pulse: {
-        true: [
-          'animate-pulse',
-        ],
+        true: ['animate-pulse'],
         false: '',
       },
       dot: {
-        true: [
-          'w-2 h-2 p-0 min-w-0',
-          'rounded-full',
-        ],
+        true: ['h-2 w-2 min-w-0 p-0', 'rounded-full'],
         false: '',
       },
       enforceAAA: {
@@ -167,47 +159,47 @@ export interface EnhancedBadgeProps
    * Render as a different element
    */
   asChild?: boolean;
-  
+
   /**
    * Numeric value for count badges
    */
   count?: number;
-  
+
   /**
    * Maximum count to display before showing overflow
    */
   max?: number;
-  
+
   /**
    * Show overflow indicator (e.g., "99+")
    */
   showOverflow?: boolean;
-  
+
   /**
    * Icon element to display
    */
   icon?: React.ReactNode;
-  
+
   /**
    * Position of icon relative to content
    */
   iconPosition?: 'left' | 'right';
-  
+
   /**
    * Click handler for interactive badges
    */
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
-  
+
   /**
    * Remove handler for dismissible badges
    */
   onRemove?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  
+
   /**
    * Whether badge is dismissible
    */
   dismissible?: boolean;
-  
+
   /**
    * Accessibility label for screen readers
    */
@@ -242,17 +234,17 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
   ) => {
     // Determine if badge should be interactive
     const isInteractive = interactive || Boolean(onClick);
-    
+
     // Format count display
     const displayCount = React.useMemo(() => {
       if (typeof count !== 'number') return;
       if (count <= max) return count.toString();
       return showOverflow ? `${max}+` : count.toString();
     }, [count, max, showOverflow]);
-    
+
     // Content to display
     const content = displayCount || children;
-    
+
     // Handle click events
     const handleClick = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
@@ -262,7 +254,7 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
       },
       [isInteractive, onClick]
     );
-    
+
     // Handle keyboard events for interactive badges
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -278,7 +270,7 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
               altKey: event.altKey,
               metaKey: event.metaKey,
             });
-            
+
             // Manually trigger click with proper event
             const element = event.currentTarget;
             element.dispatchEvent(clickEvent);
@@ -287,7 +279,7 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
       },
       [isInteractive, onClick]
     );
-    
+
     // Remove handler
     const handleRemove = React.useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -298,9 +290,9 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
       },
       [onRemove]
     );
-    
+
     const Comp = asChild ? Slot : 'div';
-    
+
     return (
       <Comp
         ref={ref}
@@ -331,44 +323,39 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
           <>
             {/* Icon - Left Position */}
             {icon && iconPosition === 'left' && (
-              <span className="mr-1 flex items-center">
-                {icon}
-              </span>
+              <span className='mr-1 flex items-center'>{icon}</span>
             )}
-            
+
             {/* Content */}
-            {content && (
-              <span className="flex items-center">
-                {content}
-              </span>
-            )}
-            
+            {content && <span className='flex items-center'>{content}</span>}
+
             {/* Icon - Right Position */}
             {icon && iconPosition === 'right' && (
-              <span className="ml-1 flex items-center">
-                {icon}
-              </span>
+              <span className='ml-1 flex items-center'>{icon}</span>
             )}
-            
+
             {/* Dismissible Close Button */}
             {dismissible && (
               <button
                 onClick={handleRemove}
-                className="ml-1 rounded-full p-0.5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
-                aria-label="Remove badge"
-                type="button"
+                className={cn(
+                  'ml-1 rounded-full p-0.5 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
+                  'hover:bg-surface-hover ml-1 rounded-full p-0.5 transition-colors'
+                )}
+                aria-label='Remove badge'
+                type='button'
               >
                 <svg
-                  className="h-3 w-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  className={cn('h-3 w-3', 'h-3 w-3')}
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
                     strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
+                    d='M6 18L18 6M6 6l12 12'
                   />
                 </svg>
               </button>
@@ -390,141 +377,169 @@ EnhancedBadge.displayName = 'EnhancedBadge';
 export const BadgeFactory = {
   // Semantic variants
   default: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="default" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='default' {...props} />),
   },
-  
+
   secondary: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="secondary" {...props} />
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => (
+      <EnhancedBadge ref={ref} variant='secondary' {...props} />
     )),
   },
-  
+
   muted: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="muted" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='muted' {...props} />),
   },
-  
+
   accent: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="accent" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='accent' {...props} />),
   },
-  
+
   // Status variants
   success: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="success" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='success' {...props} />),
   },
-  
+
   warning: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="warning" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='warning' {...props} />),
   },
-  
+
   error: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="error" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='error' {...props} />),
   },
-  
+
   info: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="info" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='info' {...props} />),
   },
-  
+
   // Style variants
   outline: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="outline" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='outline' {...props} />),
   },
-  
+
   ghost: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="ghost" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='ghost' {...props} />),
   },
-  
+
   glass: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="glass" {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => <EnhancedBadge ref={ref} variant='glass' {...props} />),
   },
-  
+
   floating: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="floating" {...props} />
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant'>
+    >((props, ref) => (
+      <EnhancedBadge ref={ref} variant='floating' {...props} />
     )),
   },
-  
+
   // Interactive variants
   interactive: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'interactive'>>((props, ref) => (
-      <EnhancedBadge ref={ref} interactive {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'interactive'>
+    >((props, ref) => <EnhancedBadge ref={ref} interactive {...props} />),
   },
-  
+
   dismissible: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'dismissible'>>((props, ref) => (
-      <EnhancedBadge ref={ref} dismissible {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'dismissible'>
+    >((props, ref) => <EnhancedBadge ref={ref} dismissible {...props} />),
   },
-  
+
   // Dot variants
   dot: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'dot'>>((props, ref) => (
-      <EnhancedBadge ref={ref} dot {...props} />
-    )),
+    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'dot'>>(
+      (props, ref) => <EnhancedBadge ref={ref} dot {...props} />
+    ),
   },
-  
+
   pulse: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'pulse'>>((props, ref) => (
-      <EnhancedBadge ref={ref} pulse {...props} />
-    )),
+    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'pulse'>>(
+      (props, ref) => <EnhancedBadge ref={ref} pulse {...props} />
+    ),
   },
-  
+
   // Size variants
   small: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'size'>>((props, ref) => (
-      <EnhancedBadge ref={ref} size="sm" {...props} />
-    )),
+    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'size'>>(
+      (props, ref) => <EnhancedBadge ref={ref} size='sm' {...props} />
+    ),
   },
-  
+
   large: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'size'>>((props, ref) => (
-      <EnhancedBadge ref={ref} size="lg" {...props} />
-    )),
+    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'size'>>(
+      (props, ref) => <EnhancedBadge ref={ref} size='lg' {...props} />
+    ),
   },
-  
+
   // Accessibility variant
   aaa: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'enforceAAA'>>((props, ref) => (
-      <EnhancedBadge ref={ref} enforceAAA {...props} />
-    )),
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'enforceAAA'>
+    >((props, ref) => <EnhancedBadge ref={ref} enforceAAA {...props} />),
   },
-  
+
   // Compound patterns
   notification: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant' | 'size' | 'dot'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="error" size="sm" dot {...props} />
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant' | 'size' | 'dot'>
+    >((props, ref) => (
+      <EnhancedBadge ref={ref} variant='error' size='sm' dot {...props} />
     )),
   },
-  
+
   status: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant' | 'pulse'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="success" pulse {...props} />
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant' | 'pulse'>
+    >((props, ref) => (
+      <EnhancedBadge ref={ref} variant='success' pulse {...props} />
     )),
   },
-  
+
   count: {
-    Badge: React.forwardRef<HTMLDivElement, Omit<EnhancedBadgeProps, 'variant' | 'size'>>((props, ref) => (
-      <EnhancedBadge ref={ref} variant="default" size="sm" {...props} />
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'variant' | 'size'>
+    >((props, ref) => (
+      <EnhancedBadge ref={ref} variant='default' size='sm' {...props} />
     )),
   },
 };
@@ -558,33 +573,39 @@ BadgeFactory.count.Badge.displayName = 'CountBadge';
 /**
  * Utility function to create a badge with count
  */
-export const createCountBadge = (count: number, props?: Partial<EnhancedBadgeProps>) => {
-  return <EnhancedBadge count={count} variant="default" size="sm" {...props} />;
+export const createCountBadge = (
+  count: number,
+  props?: Partial<EnhancedBadgeProps>
+) => {
+  return <EnhancedBadge count={count} variant='default' size='sm' {...props} />;
 };
 
 /**
  * Utility function to create a status dot
  */
-export const createStatusDot = (variant: 'success' | 'warning' | 'error' | 'info', props?: Partial<EnhancedBadgeProps>) => {
+export const createStatusDot = (
+  variant: 'success' | 'warning' | 'error' | 'info',
+  props?: Partial<EnhancedBadgeProps>
+) => {
   return <EnhancedBadge variant={variant} dot pulse {...props} />;
 };
 
 /**
  * Utility function to create a notification badge
  */
-export const createNotificationBadge = (count?: number, props?: Partial<EnhancedBadgeProps>) => {
+export const createNotificationBadge = (
+  count?: number,
+  props?: Partial<EnhancedBadgeProps>
+) => {
   if (count && count > 0) {
-    return <EnhancedBadge count={count} variant="error" size="sm" {...props} />;
+    return <EnhancedBadge count={count} variant='error' size='sm' {...props} />;
   }
-  return <EnhancedBadge variant="error" size="sm" dot {...props} />;
+  return <EnhancedBadge variant='error' size='sm' dot {...props} />;
 };
 
 // ===== EXPORTS =====
 
-export {
-  EnhancedBadge,
-  enhancedBadgeVariants,
-};
+export { EnhancedBadge, enhancedBadgeVariants };
 
 // Default export for convenience
 export default EnhancedBadge;

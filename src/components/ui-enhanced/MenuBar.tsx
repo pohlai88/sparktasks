@@ -365,20 +365,33 @@ const MenuBar = React.forwardRef<
     VariantProps<typeof enhancedMenuBarVariants> & {
       asChild?: boolean;
     }
->(({ className, variant, size, density, enforceAAA, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : MenubarPrimitive.Root;
-  
-  return (
-    <Comp
-      ref={ref}
-      className={cn(
-        enhancedMenuBarVariants({ variant, size, density, enforceAAA }),
-        className
-      )}
-      {...props}
-    />
-  );
-});
+>(
+  (
+    {
+      className,
+      variant,
+      size,
+      density,
+      enforceAAA,
+      asChild = false,
+      ...props
+    },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : MenubarPrimitive.Root;
+
+    return (
+      <Comp
+        ref={ref}
+        className={cn(
+          enhancedMenuBarVariants({ variant, size, density, enforceAAA }),
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
 MenuBar.displayName = 'MenuBar';
 
 /**
@@ -395,20 +408,25 @@ const MenuBarTrigger = React.forwardRef<
     VariantProps<typeof enhancedMenuBarTriggerVariants> & {
       asChild?: boolean;
     }
->(({ className, variant, size, enforceAAA, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : MenubarPrimitive.Trigger;
-  
-  return (
-    <Comp
-      ref={ref}
-      className={cn(
-        enhancedMenuBarTriggerVariants({ variant, size, enforceAAA }),
-        className
-      )}
-      {...props}
-    />
-  );
-});
+>(
+  (
+    { className, variant, size, enforceAAA, asChild = false, ...props },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : MenubarPrimitive.Trigger;
+
+    return (
+      <Comp
+        ref={ref}
+        className={cn(
+          enhancedMenuBarTriggerVariants({ variant, size, enforceAAA }),
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
 MenuBarTrigger.displayName = 'MenuBarTrigger';
 
 /**
@@ -459,33 +477,38 @@ const MenuBarItem = React.forwardRef<
       inset?: boolean;
       asChild?: boolean;
     }
->(({ className, variant, size, enforceAAA, inset, asChild = false, ...props }, ref) => {
-  if (asChild) {
+>(
+  (
+    { className, variant, size, enforceAAA, inset, asChild = false, ...props },
+    ref
+  ) => {
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref}
+          className={cn(
+            enhancedMenuBarItemVariants({ variant, size, enforceAAA }),
+            inset && 'pl-8',
+            className
+          )}
+          {...(props as React.ComponentPropsWithoutRef<'div'>)}
+        />
+      );
+    }
+
     return (
-      <Slot
+      <MenubarPrimitive.Item
         ref={ref}
         className={cn(
           enhancedMenuBarItemVariants({ variant, size, enforceAAA }),
           inset && 'pl-8',
           className
         )}
-        {...(props as any)}
+        {...props}
       />
     );
   }
-  
-  return (
-    <MenubarPrimitive.Item
-      ref={ref}
-      className={cn(
-        enhancedMenuBarItemVariants({ variant, size, enforceAAA }),
-        inset && 'pl-8',
-        className
-      )}
-      {...props}
-    />
-  );
-});
+);
 MenuBarItem.displayName = 'MenuBarItem';
 
 /**
@@ -510,9 +533,14 @@ const MenuBarCheckboxItem = React.forwardRef<
       {...(checked !== undefined && { checked })}
       {...props}
     >
-      <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+      <span
+        className={cn(
+          'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
+          'absolute left-2 flex size-3.5 items-center justify-center'
+        )}
+      >
         <MenubarPrimitive.ItemIndicator>
-          <Check className='h-4 w-4' />
+          <Check className={cn('h-4 w-4', 'size-4')} />
         </MenubarPrimitive.ItemIndicator>
       </span>
       {children}
@@ -538,9 +566,14 @@ const MenuBarRadioItem = React.forwardRef<
     )}
     {...props}
   >
-    <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+    <span
+      className={cn(
+        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
+        'absolute left-2 flex size-3.5 items-center justify-center'
+      )}
+    >
       <MenubarPrimitive.ItemIndicator>
-        <Circle className='h-2 w-2 fill-current' />
+        <Circle className={cn('h-2 w-2 fill-current', 'size-2 fill-current')} />
       </MenubarPrimitive.ItemIndicator>
     </span>
     {children}
@@ -639,7 +672,7 @@ const MenuBarSubTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <ChevronRight className='ml-auto h-4 w-4' />
+      <ChevronRight className={cn('ml-auto h-4 w-4', 'ml-auto size-4')} />
     </MenubarPrimitive.SubTrigger>
   )
 );

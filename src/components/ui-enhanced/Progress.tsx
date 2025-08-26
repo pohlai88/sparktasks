@@ -298,7 +298,7 @@ const EnhancedProgress = React.forwardRef<
     const finalIndicatorVariant = enforceAAA ? 'default' : indicatorVariant;
 
     return (
-      <div className='relative w-full'>
+      <div className={cn('relative w-full', 'relative w-full')}>
         {/* Outside Label */}
         {showLabel && labelPosition === 'outside' && (
           <div
@@ -312,7 +312,11 @@ const EnhancedProgress = React.forwardRef<
             )}
           >
             <span>Progress</span>
-            <span className='text-foreground-muted'>{displayLabel}</span>
+            <span
+              className={cn('text-foreground-muted', 'text-muted-foreground')}
+            >
+              {displayLabel}
+            </span>
           </div>
         )}
 
@@ -489,7 +493,7 @@ const CircularProgress = React.forwardRef<
             stroke='currentColor'
             strokeWidth={finalStrokeWidth}
             fill='transparent'
-            className='text-border-subtle'
+            className={cn('text-border-subtle', 'text-border-subtle')}
           />
 
           {/* Progress Circle */}

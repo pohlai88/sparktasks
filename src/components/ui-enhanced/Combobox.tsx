@@ -213,7 +213,7 @@ const enhancedComboboxContentVariants = cva(
   [
     // Foundation: Elevated dropdown surface
     'relative z-50 max-h-96 min-w-[8rem] overflow-hidden',
-    'rounded-md border bg-popover text-popover-foreground shadow-elevation-high',
+    'bg-popover text-popover-foreground rounded-md border shadow-elevation-high',
 
     // Foundation: Motion
     'animate-in fade-in-0 zoom-in-95',
@@ -257,7 +257,7 @@ const enhancedComboboxItemVariants = cva(
     'transition-colors duration-150 motion-reduce:transition-none',
 
     // Foundation: Focus
-    'focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground',
+    'focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-none',
 
     // Foundation: Hover
     'hover:bg-muted',
@@ -278,7 +278,10 @@ const enhancedComboboxItemVariants = cva(
 // ===== ENHANCED COMBOBOX TYPES =====
 
 interface EnhancedComboboxProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange' | 'onSelect' | 'value' | 'defaultValue'>,
+  extends Omit<
+      React.ButtonHTMLAttributes<HTMLButtonElement>,
+      'onChange' | 'onSelect' | 'value' | 'defaultValue'
+    >,
     VariantProps<typeof enhancedComboboxVariants> {
   /**
    * Polymorphic rendering support
@@ -328,7 +331,10 @@ interface EnhancedComboboxProps
   /**
    * Custom filter function
    */
-  filterFunction?: (options: ComboboxOption[], searchValue: string) => ComboboxOption[];
+  filterFunction?: (
+    options: ComboboxOption[],
+    searchValue: string
+  ) => ComboboxOption[];
 
   /**
    * Allow clearing selection
@@ -391,7 +397,10 @@ interface EnhancedComboboxItemProps
 /**
  * Enhanced Combobox Root Component
  */
-const EnhancedCombobox = React.forwardRef<HTMLButtonElement, EnhancedComboboxProps>(
+const EnhancedCombobox = React.forwardRef<
+  HTMLButtonElement,
+  EnhancedComboboxProps
+>(
   (
     {
       className,
@@ -423,11 +432,14 @@ const EnhancedCombobox = React.forwardRef<HTMLButtonElement, EnhancedComboboxPro
     ref
   ) => {
     const [open, setOpen] = React.useState(false);
-    const [internalValue, setInternalValue] = React.useState(defaultValue || '');
+    const [internalValue, setInternalValue] = React.useState(
+      defaultValue || ''
+    );
     const [internalSearchValue, setInternalSearchValue] = React.useState('');
 
     const currentValue = value !== undefined ? value : internalValue;
-    const currentSearchValue = searchValue !== undefined ? searchValue : internalSearchValue;
+    const currentSearchValue =
+      searchValue !== undefined ? searchValue : internalSearchValue;
 
     const handleValueChange = React.useCallback(
       (newValue: string) => {
@@ -454,7 +466,7 @@ const EnhancedCombobox = React.forwardRef<HTMLButtonElement, EnhancedComboboxPro
     const defaultFilterFunction = React.useCallback(
       (opts: ComboboxOption[], search: string) => {
         if (!search) return opts;
-        return opts.filter((option) =>
+        return opts.filter(option =>
           option.label.toLowerCase().includes(search.toLowerCase())
         );
       },
@@ -467,7 +479,7 @@ const EnhancedCombobox = React.forwardRef<HTMLButtonElement, EnhancedComboboxPro
     }, [options, currentSearchValue, filterFunction, defaultFilterFunction]);
 
     const selectedOption = React.useMemo(() => {
-      return options.find((option) => option.value === currentValue);
+      return options.find(option => option.value === currentValue);
     }, [options, currentValue]);
 
     return (
@@ -486,47 +498,71 @@ const EnhancedCombobox = React.forwardRef<HTMLButtonElement, EnhancedComboboxPro
               }),
               className
             )}
-            type="button"
+            type='button'
             {...props}
           >
-            <div className="flex flex-1 items-center gap-2">
+            <div
+              className={cn(
+                'flex flex-1 items-center gap-2',
+                'flex flex-1 items-center gap-2'
+              )}
+            >
               {selectedOption ? (
-                <span className="text-foreground">{selectedOption.label}</span>
+                <span className={cn('text-foreground', 'text-foreground')}>
+                  {selectedOption.label}
+                </span>
               ) : (
-                <span className="text-muted-foreground">{placeholder}</span>
+                <span
+                  className={cn(
+                    'text-muted-foreground',
+                    'text-muted-foreground'
+                  )}
+                >
+                  {placeholder}
+                </span>
               )}
             </div>
 
-            <div className="flex items-center gap-1">
+            <div
+              className={cn(
+                'flex items-center gap-1',
+                'flex items-center gap-1'
+              )}
+            >
               {clearable && selectedOption && (
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <div
-                  role="button"
+                  role='button'
                   tabIndex={0}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     handleValueChange('');
                   }}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
                       e.stopPropagation();
                       handleValueChange('');
                     }
                   }}
-                  className="flex h-4 w-4 items-center justify-center rounded-sm opacity-50 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
-                  aria-label="Clear selection"
+                  className={cn(
+                    'flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm opacity-50 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    'flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm opacity-50 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                  )}
+                  aria-label='Clear selection'
                 >
-                  <X className="h-3 w-3" />
+                  <X className={cn('h-3 w-3', 'h-3 w-3')} />
                 </div>
               )}
-              <ChevronDown className="h-4 w-4 opacity-50" />
+              <ChevronDown
+                className={cn('h-4 w-4 opacity-50', 'h-4 w-4 opacity-50')}
+              />
             </div>
 
             {/* Hidden input for form submission */}
             {name && (
               <input
-                type="hidden"
+                type='hidden'
                 name={name}
                 value={currentValue}
                 required={required}
@@ -541,12 +577,22 @@ const EnhancedCombobox = React.forwardRef<HTMLButtonElement, EnhancedComboboxPro
               enhancedComboboxContentVariants({ vibrancy }),
               'w-[--radix-popover-trigger-width] p-0'
             )}
-            align="start"
+            align='start'
             sideOffset={4}
           >
             {searchable && (
-              <div className="flex items-center border-b border-border px-3">
-                <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+              <div
+                className={cn(
+                  'flex items-center border-b border-border px-3',
+                  'flex items-center border-b border-border px-3'
+                )}
+              >
+                <Search
+                  className={cn(
+                    'mr-2 h-4 w-4 shrink-0 opacity-50',
+                    'mr-2 h-4 w-4 shrink-0 opacity-50'
+                  )}
+                />
                 <input
                   className={cn(
                     enhancedComboboxInputVariants({ density }),
@@ -554,40 +600,58 @@ const EnhancedCombobox = React.forwardRef<HTMLButtonElement, EnhancedComboboxPro
                   )}
                   placeholder={searchPlaceholder}
                   value={currentSearchValue}
-                  onChange={(e) => handleSearchValueChange(e.target.value)}
+                  onChange={e => handleSearchValueChange(e.target.value)}
                 />
               </div>
             )}
 
-            <div className="max-h-[300px] overflow-auto p-1">
+            <div
+              className={cn(
+                'max-h-[300px] overflow-auto p-1',
+                'max-h-80 overflow-auto p-1'
+              )}
+            >
               {filteredOptions.length === 0 ? (
-                <div className="py-6 text-center text-sm text-muted-foreground">
+                <div
+                  className={cn(
+                    'py-6 text-center text-sm text-muted-foreground',
+                    'py-6 text-center text-sm text-muted-foreground'
+                  )}
+                >
                   {emptyMessage}
                 </div>
               ) : (
-                filteredOptions.map((option) => (
+                filteredOptions.map(option => (
                   <div
                     key={option.value}
                     className={cn(
                       enhancedComboboxItemVariants({ density }),
                       option.disabled && 'pointer-events-none opacity-50',
-                      option.value === currentValue && 'bg-accent text-accent-foreground'
+                      option.value === currentValue &&
+                        'bg-accent text-accent-foreground'
                     )}
-                    onClick={() => !option.disabled && handleValueChange(option.value)}
-                    onKeyDown={(e) => {
-                      if ((e.key === 'Enter' || e.key === ' ') && !option.disabled) {
+                    onClick={() =>
+                      !option.disabled && handleValueChange(option.value)
+                    }
+                    onKeyDown={e => {
+                      if (
+                        (e.key === 'Enter' || e.key === ' ') &&
+                        !option.disabled
+                      ) {
                         e.preventDefault();
                         handleValueChange(option.value);
                       }
                     }}
-                    role="option"
+                    role='option'
                     tabIndex={option.disabled ? -1 : 0}
                     aria-selected={option.value === currentValue}
                   >
                     <Check
                       className={cn(
                         'mr-2 h-4 w-4',
-                        option.value === currentValue ? 'opacity-100' : 'opacity-0'
+                        option.value === currentValue
+                          ? 'opacity-100'
+                          : 'opacity-0'
                       )}
                     />
                     {option.label}
@@ -645,8 +709,14 @@ EnhancedComboboxContent.displayName = 'EnhancedComboboxContent';
 /**
  * Enhanced Combobox Item Component (for custom implementations)
  */
-const EnhancedComboboxItem = React.forwardRef<HTMLDivElement, EnhancedComboboxItemProps>(
-  ({ className, density, asChild = false, value, disabled = false, ...props }, ref) => {
+const EnhancedComboboxItem = React.forwardRef<
+  HTMLDivElement,
+  EnhancedComboboxItemProps
+>(
+  (
+    { className, density, asChild = false, value, disabled = false, ...props },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'div';
 
     return (

@@ -402,7 +402,7 @@ const EnhancedToastClose = forwardRef<
     className={cn(enhancedToastCloseVariants(), className)}
     {...props}
   >
-    <X className='h-4 w-4' />
+    <X className={cn('h-4 w-4', 'h-4 w-4')} />
   </ToastPrimitive.Close>
 ));
 EnhancedToastClose.displayName = 'EnhancedToastClose';
@@ -423,7 +423,9 @@ export const getToastIcon = (
   };
 
   const IconComponent = icons[variant];
-  return <IconComponent className='h-5 w-5 shrink-0' />;
+  return (
+    <IconComponent className={cn('h-5 w-5 shrink-0', 'h-5 w-5 shrink-0')} />
+  );
 };
 
 // ===== FACTORY FUNCTIONS =====

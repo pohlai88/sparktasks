@@ -48,7 +48,7 @@ import {
   Target,
   Rocket,
   Map,
-  Smile
+  Smile,
 } from 'lucide-react';
 import React from 'react';
 
@@ -66,147 +66,166 @@ import { cn } from '@/utils/cn';
 const HUMANIZED_MESSAGES = {
   search: {
     title: "Let's find what you're looking for",
-    description: "Every great discovery starts with a simple search. What brings you here today?",
+    description:
+      'Every great discovery starts with a simple search. What brings you here today?',
     icon: Search,
     emotion: 'curiosity',
-    actionHint: "Try searching for something specific, or explore what's available.",
+    actionHint:
+      "Try searching for something specific, or explore what's available.",
   },
 
   documents: {
-    title: "Your canvas awaits",
-    description: "Every masterpiece begins with a blank page. Ready to create something amazing?",
+    title: 'Your canvas awaits',
+    description:
+      'Every masterpiece begins with a blank page. Ready to create something amazing?',
     icon: FileText,
     emotion: 'potential',
-    actionHint: "Create your first document and watch your ideas come to life.",
+    actionHint: 'Create your first document and watch your ideas come to life.',
   },
 
   team: {
-    title: "Great things happen together",
-    description: "The best teams are built one meaningful connection at a time.",
+    title: 'Great things happen together',
+    description:
+      'The best teams are built one meaningful connection at a time.',
     icon: Users,
     emotion: 'connection',
-    actionHint: "Invite someone to join you on this journey.",
+    actionHint: 'Invite someone to join you on this journey.',
   },
 
   favorites: {
-    title: "Your favorites will appear here",
-    description: "As you explore and discover, the things you love most will find their home here.",
+    title: 'Your favorites will appear here',
+    description:
+      'As you explore and discover, the things you love most will find their home here.',
     icon: Heart,
     emotion: 'discovery',
-    actionHint: "Start exploring to find items worth saving.",
+    actionHint: 'Start exploring to find items worth saving.',
   },
 
   achievements: {
-    title: "Your journey begins now",
-    description: "Every expert was once a beginner. Your first achievement is just around the corner.",
+    title: 'Your journey begins now',
+    description:
+      'Every expert was once a beginner. Your first achievement is just around the corner.',
     icon: Star,
     emotion: 'encouragement',
-    actionHint: "Take the first step, and watch your progress unfold.",
+    actionHint: 'Take the first step, and watch your progress unfold.',
   },
 
   ideas: {
-    title: "Brilliant ideas start here",
-    description: "The next breakthrough could be yours. Sometimes the simplest idea changes everything.",
+    title: 'Brilliant ideas start here',
+    description:
+      'The next breakthrough could be yours. Sometimes the simplest idea changes everything.',
     icon: Lightbulb,
     emotion: 'inspiration',
-    actionHint: "Capture that fleeting thought before it disappears.",
+    actionHint: 'Capture that fleeting thought before it disappears.',
   },
 
   projects: {
-    title: "Ready to build something incredible?",
-    description: "Every project that changed the world started with someone brave enough to begin.",
+    title: 'Ready to build something incredible?',
+    description:
+      'Every project that changed the world started with someone brave enough to begin.',
     icon: Rocket,
     emotion: 'ambition',
-    actionHint: "Start your first project and see where it takes you.",
+    actionHint: 'Start your first project and see where it takes you.',
   },
 
   photos: {
-    title: "Moments are waiting to be captured",
-    description: "Life's most beautiful memories often hide in the everyday moments we almost miss.",
+    title: 'Moments are waiting to be captured',
+    description:
+      "Life's most beautiful memories often hide in the everyday moments we almost miss.",
     icon: Camera,
     emotion: 'nostalgia',
-    actionHint: "Upload your first photo and start building your visual story.",
+    actionHint: 'Upload your first photo and start building your visual story.',
   },
 
   music: {
-    title: "Your soundtrack awaits",
-    description: "Music has the power to transport us, heal us, and bring us together.",
+    title: 'Your soundtrack awaits',
+    description:
+      'Music has the power to transport us, heal us, and bring us together.',
     icon: Music,
     emotion: 'joy',
-    actionHint: "Add your first song and let the rhythm move you.",
+    actionHint: 'Add your first song and let the rhythm move you.',
   },
 
   creative: {
-    title: "Unleash your creativity",
-    description: "Art doesn't have to be perfect to be beautiful. It just has to be yours.",
+    title: 'Unleash your creativity',
+    description:
+      "Art doesn't have to be perfect to be beautiful. It just has to be yours.",
     icon: Palette,
     emotion: 'expression',
-    actionHint: "Create something that speaks to your soul.",
+    actionHint: 'Create something that speaks to your soul.',
   },
 
   learning: {
-    title: "Knowledge is calling",
-    description: "Every expert was once a curious beginner. Your learning adventure starts here.",
+    title: 'Knowledge is calling',
+    description:
+      'Every expert was once a curious beginner. Your learning adventure starts here.',
     icon: BookOpen,
     emotion: 'growth',
-    actionHint: "Take the first step on your learning journey.",
+    actionHint: 'Take the first step on your learning journey.',
   },
 
   gifts: {
-    title: "Surprises await",
-    description: "The best gifts aren't always the biggest ones. Sometimes they're the most thoughtful.",
+    title: 'Surprises await',
+    description:
+      "The best gifts aren't always the biggest ones. Sometimes they're the most thoughtful.",
     icon: Gift,
     emotion: 'gratitude',
-    actionHint: "Create something special for someone you care about.",
+    actionHint: 'Create something special for someone you care about.',
   },
 
   exploration: {
-    title: "Adventure begins with a single step",
-    description: "The most extraordinary places are discovered by those brave enough to wander.",
+    title: 'Adventure begins with a single step',
+    description:
+      'The most extraordinary places are discovered by those brave enough to wander.',
     icon: Compass,
     emotion: 'adventure',
     actionHint: "Explore the unknown and see what wonders you'll find.",
   },
 
   goals: {
-    title: "Your dreams are valid",
-    description: "Every goal achieved was once thought impossible by someone, somewhere.",
+    title: 'Your dreams are valid',
+    description:
+      'Every goal achieved was once thought impossible by someone, somewhere.',
     icon: Target,
     emotion: 'determination',
-    actionHint: "Set your first goal and take the journey one step at a time.",
+    actionHint: 'Set your first goal and take the journey one step at a time.',
   },
 
   community: {
-    title: "You belong here",
-    description: "Community is where strangers become friends and friends become family.",
+    title: 'You belong here',
+    description:
+      'Community is where strangers become friends and friends become family.',
     icon: Smile,
     emotion: 'belonging',
-    actionHint: "Join the conversation and find your tribe.",
+    actionHint: 'Join the conversation and find your tribe.',
   },
 
   peaceful: {
-    title: "Take a moment to breathe",
-    description: "In our busy world, peaceful moments are precious gifts we give ourselves.",
+    title: 'Take a moment to breathe',
+    description:
+      'In our busy world, peaceful moments are precious gifts we give ourselves.',
     icon: Coffee,
     emotion: 'serenity',
     actionHint: "Enjoy this quiet space. You've earned it.",
   },
 
   magical: {
-    title: "Something wonderful is coming",
-    description: "Magic happens when preparation meets opportunity. Yours is on the way.",
+    title: 'Something wonderful is coming',
+    description:
+      'Magic happens when preparation meets opportunity. Yours is on the way.',
     icon: Sparkles,
     emotion: 'wonder',
-    actionHint: "Stay curious. The next moment could change everything.",
+    actionHint: 'Stay curious. The next moment could change everything.',
   },
 
   journey: {
-    title: "Every path leads somewhere beautiful",
-    description: "Not all who wander are lost. Sometimes they're exactly where they need to be.",
+    title: 'Every path leads somewhere beautiful',
+    description:
+      "Not all who wander are lost. Sometimes they're exactly where they need to be.",
     icon: Map,
     emotion: 'wisdom',
     actionHint: "Trust your journey. You're heading in the right direction.",
-  }
+  },
 } as const;
 
 // ===== ENHANCED EMPTY STATE VARIANTS =====
@@ -235,14 +254,10 @@ const enhancedEmptyStateVariants = cva(
     variants: {
       variant: {
         // Default: Clean, approachable baseline
-        default: [
-          'text-foreground',
-        ],
+        default: ['text-foreground'],
 
         // Gentle: Soft, encouraging appearance
-        gentle: [
-          'text-muted-foreground',
-        ],
+        gentle: ['text-muted-foreground'],
 
         // Inspiring: Uplifting, motivational presence
         inspiring: [
@@ -276,11 +291,11 @@ const enhancedEmptyStateVariants = cva(
         none: '',
         glass: [
           'bg-background/80 backdrop-blur-md backdrop-saturate-150',
-          'border border-border/30 rounded-xl',
+          'rounded-xl border border-border/30',
         ],
         floating: [
           'bg-background/75 backdrop-blur-lg backdrop-saturate-150',
-          'border border-border/40 rounded-2xl',
+          'rounded-2xl border border-border/40',
           'shadow-elevation-lg',
         ],
       },
@@ -323,7 +338,7 @@ const enhancedEmptyStateVariants = cva(
       {
         variant: 'gentle',
         vibrancy: 'glass',
-        class: 'backdrop-blur-[16px] bg-background/60',
+        class: 'bg-background/60 backdrop-blur-[16px]',
       },
       // Inspiring + floating = elevated presence
       {
@@ -368,19 +383,10 @@ const enhancedIconVariants = cva(
   {
     variants: {
       variant: {
-        default: [
-          'bg-muted text-muted-foreground',
-        ],
-        gentle: [
-          'bg-muted/50 text-muted-foreground',
-        ],
-        inspiring: [
-          'bg-accent/10 text-accent',
-          'shadow-lg shadow-accent/20',
-        ],
-        peaceful: [
-          'bg-muted/30 text-muted-foreground',
-        ],
+        default: ['bg-muted text-muted-foreground'],
+        gentle: ['bg-muted/50 text-muted-foreground'],
+        inspiring: ['bg-accent/10 text-accent', 'shadow-lg shadow-accent/20'],
+        peaceful: ['bg-muted/30 text-muted-foreground'],
         magical: [
           'bg-gradient-to-br from-accent/10 to-accent-secondary/10',
           'text-accent',
@@ -466,10 +472,10 @@ const enhancedDescriptionVariants = cva(
   {
     variants: {
       size: {
-        sm: ['text-sm max-w-sm'],
-        md: ['text-base max-w-md'],
-        lg: ['text-lg max-w-lg'],
-        xl: ['text-xl max-w-xl'],
+        sm: ['max-w-sm text-sm'],
+        md: ['max-w-md text-base'],
+        lg: ['max-w-lg text-lg'],
+        xl: ['max-w-xl text-xl'],
       },
     },
     defaultVariants: {
@@ -495,10 +501,10 @@ const enhancedActionHintVariants = cva(
   {
     variants: {
       size: {
-        sm: ['text-xs max-w-xs'],
-        md: ['text-sm max-w-sm'],
-        lg: ['text-base max-w-md'],
-        xl: ['text-lg max-w-lg'],
+        sm: ['max-w-xs text-xs'],
+        md: ['max-w-sm text-sm'],
+        lg: ['max-w-md text-base'],
+        xl: ['max-w-lg text-lg'],
       },
     },
     defaultVariants: {
@@ -648,14 +654,15 @@ const EnhancedEmptyState = React.forwardRef<
     ref
   ) => {
     // Get humanized message data
-    const messageData = HUMANIZED_MESSAGES[messageType] || HUMANIZED_MESSAGES.search;
+    const messageData =
+      HUMANIZED_MESSAGES[messageType] || HUMANIZED_MESSAGES.search;
 
     // Determine final content
     const finalTitle = title || messageData.title;
     const finalDescription = description || messageData.description;
     const finalActionHint = actionHint || messageData.actionHint;
     const IconComponent = CustomIcon || messageData.icon;
-    const emotion = messageData.emotion;    // Add gentle pulse animation styles to document head
+    const emotion = messageData.emotion; // Add gentle pulse animation styles to document head
     React.useEffect(() => {
       if (typeof document !== 'undefined') {
         const styleId = 'enhanced-empty-state-animations';
@@ -684,20 +691,29 @@ const EnhancedEmptyState = React.forwardRef<
         data-aaa={enforceAAA ? 'true' : 'false'}
         data-emotion={emotion}
         data-testid={testId}
-        role="region"
-        aria-label="Empty state"
+        role='region'
+        aria-label='Empty state'
         {...props}
       >
         {/* Icon with gentle animation */}
         <AccessibleIcon label={`Empty state icon for ${finalTitle}`}>
           <div className={enhancedIconVariants({ variant, size })}>
             <IconComponent
-              className="h-full w-full"
-              size={size === 'sm' ? 24 : size === 'lg' ? 32 : size === 'xl' ? 36 : 28}
+              className={cn('h-full w-full', 'h-full w-full')}
+              size={
+                size === 'sm'
+                  ? 24
+                  : size === 'lg'
+                    ? 32
+                    : size === 'xl'
+                      ? 36
+                      : 28
+              }
             />
           </div>
-        </AccessibleIcon>        {/* Content section */}
-        <div className="space-y-4">
+        </AccessibleIcon>{' '}
+        {/* Content section */}
+        <div className={cn('space-y-4', 'space-y-4')}>
           {/* Title */}
           <h2
             className={enhancedTitleVariants({ size, emotion })}
@@ -724,19 +740,31 @@ const EnhancedEmptyState = React.forwardRef<
             </p>
           )}
         </div>
-
         {/* Actions */}
         {(primaryAction || secondaryAction) && (
-          <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+          <div
+            className={cn(
+              'flex flex-col gap-3 sm:flex-row sm:gap-4',
+              'flex flex-col gap-3 sm:flex-row sm:gap-4'
+            )}
+          >
             {primaryAction && (
               <EnhancedButton
                 variant={primaryAction.variant || 'primary'}
                 onClick={primaryAction.onClick}
-                {...(primaryAction.loading !== undefined && { pending: primaryAction.loading })}
+                {...(primaryAction.loading !== undefined && {
+                  pending: primaryAction.loading,
+                })}
                 {...(primaryAction.icon && { icon: primaryAction.icon })}
-                size={size === 'sm' ? 'sm' : size === 'lg' || size === 'xl' ? 'lg' : 'md'}
+                size={
+                  size === 'sm'
+                    ? 'sm'
+                    : size === 'lg' || size === 'xl'
+                      ? 'lg'
+                      : 'md'
+                }
                 {...(testId && { 'data-testid': `${testId}-primary-action` })}
-                className="min-w-[120px]"
+                className='min-w-[120px]'
               >
                 {primaryAction.label}
               </EnhancedButton>
@@ -747,20 +775,23 @@ const EnhancedEmptyState = React.forwardRef<
                 variant={secondaryAction.variant || 'outline'}
                 onClick={secondaryAction.onClick}
                 {...(secondaryAction.icon && { icon: secondaryAction.icon })}
-                size={size === 'sm' ? 'sm' : size === 'lg' || size === 'xl' ? 'lg' : 'md'}
+                size={
+                  size === 'sm'
+                    ? 'sm'
+                    : size === 'lg' || size === 'xl'
+                      ? 'lg'
+                      : 'md'
+                }
                 {...(testId && { 'data-testid': `${testId}-secondary-action` })}
-                className="min-w-[120px]"
+                className='min-w-[120px]'
               >
                 {secondaryAction.label}
               </EnhancedButton>
             )}
           </div>
-        )}        {/* Custom children content */}
-        {children && (
-          <div className="mt-6">
-            {children}
-          </div>
-        )}
+        )}{' '}
+        {/* Custom children content */}
+        {children && <div className='mt-6'>{children}</div>}
       </div>
     );
   }
@@ -780,36 +811,41 @@ const EmptyStateFactory = {
    */
   searchResults: (searchTerm?: string, onRetry?: () => void) => (
     <EnhancedEmptyState
-      messageType="search"
-      title={searchTerm ? `No results for "${searchTerm}"` : "Let's find what you're looking for"}
+      messageType='search'
+      title={
+        searchTerm
+          ? `No results for "${searchTerm}"`
+          : "Let's find what you're looking for"
+      }
       {...(searchTerm && {
-        description: "Try adjusting your search or exploring related terms. Sometimes the best discoveries happen by accident."
+        description:
+          'Try adjusting your search or exploring related terms. Sometimes the best discoveries happen by accident.',
       })}
       {...(onRetry && {
         primaryAction: {
           label: 'Try Again',
           onClick: onRetry,
-          icon: <Search size={16} />
-        }
+          icon: <Search size={16} />,
+        },
       })}
-      variant="gentle"
-      data-testid="search-empty-state"
+      variant='gentle'
+      data-testid='search-empty-state'
     />
-  ),  /**
+  ) /**
    * New user experience empty state
-   */
+   */,
   welcome: (onGetStarted: () => void) => (
     <EnhancedEmptyState
-      messageType="journey"
+      messageType='journey'
       primaryAction={{
         label: 'Get Started',
         onClick: onGetStarted,
         icon: <Rocket size={16} />,
-        variant: 'primary'
+        variant: 'primary',
       }}
-      variant="inspiring"
-      vibrancy="floating"
-      data-testid="welcome-empty-state"
+      variant='inspiring'
+      vibrancy='floating'
+      data-testid='welcome-empty-state'
     />
   ),
 
@@ -818,19 +854,19 @@ const EmptyStateFactory = {
    */
   projects: (onCreate: () => void) => (
     <EnhancedEmptyState
-      messageType="projects"
+      messageType='projects'
       primaryAction={{
         label: 'Create Project',
         onClick: onCreate,
-        icon: <Rocket size={16} />
+        icon: <Rocket size={16} />,
       }}
       secondaryAction={{
         label: 'Learn More',
         onClick: () => console.log('Learn more'),
-        variant: 'outline'
+        variant: 'outline',
       }}
-      variant="inspiring"
-      data-testid="projects-empty-state"
+      variant='inspiring'
+      data-testid='projects-empty-state'
     />
   ),
 
@@ -839,14 +875,14 @@ const EmptyStateFactory = {
    */
   team: (onInvite: () => void) => (
     <EnhancedEmptyState
-      messageType="team"
+      messageType='team'
       primaryAction={{
         label: 'Invite Team Member',
         onClick: onInvite,
-        icon: <Users size={16} />
+        icon: <Users size={16} />,
       }}
-      variant="gentle"
-      data-testid="team-empty-state"
+      variant='gentle'
+      data-testid='team-empty-state'
     />
   ),
 
@@ -855,14 +891,14 @@ const EmptyStateFactory = {
    */
   content: (onCreate: () => void) => (
     <EnhancedEmptyState
-      messageType="documents"
+      messageType='documents'
       primaryAction={{
         label: 'Create Content',
         onClick: onCreate,
-        icon: <FileText size={16} />
+        icon: <FileText size={16} />,
       }}
-      variant="inspiring"
-      data-testid="content-empty-state"
+      variant='inspiring'
+      data-testid='content-empty-state'
     />
   ),
 
@@ -871,10 +907,10 @@ const EmptyStateFactory = {
    */
   peaceful: () => (
     <EnhancedEmptyState
-      messageType="peaceful"
-      variant="peaceful"
-      vibrancy="glass"
-      data-testid="peaceful-empty-state"
+      messageType='peaceful'
+      variant='peaceful'
+      vibrancy='glass'
+      data-testid='peaceful-empty-state'
     />
   ),
 
@@ -883,14 +919,14 @@ const EmptyStateFactory = {
    */
   achievements: (onExplore: () => void) => (
     <EnhancedEmptyState
-      messageType="achievements"
+      messageType='achievements'
       primaryAction={{
         label: 'Start Exploring',
         onClick: onExplore,
-        icon: <Star size={16} />
+        icon: <Star size={16} />,
       }}
-      variant="inspiring"
-      data-testid="achievements-empty-state"
+      variant='inspiring'
+      data-testid='achievements-empty-state'
     />
   ),
 
@@ -899,15 +935,15 @@ const EmptyStateFactory = {
    */
   creative: (onCreate: () => void) => (
     <EnhancedEmptyState
-      messageType="creative"
+      messageType='creative'
       primaryAction={{
         label: 'Start Creating',
         onClick: onCreate,
-        icon: <Palette size={16} />
+        icon: <Palette size={16} />,
       }}
-      variant="magical"
-      vibrancy="floating"
-      data-testid="creative-empty-state"
+      variant='magical'
+      vibrancy='floating'
+      data-testid='creative-empty-state'
     />
   ),
 
@@ -916,19 +952,19 @@ const EmptyStateFactory = {
    */
   learning: (onStart: () => void) => (
     <EnhancedEmptyState
-      messageType="learning"
+      messageType='learning'
       primaryAction={{
         label: 'Start Learning',
         onClick: onStart,
-        icon: <BookOpen size={16} />
+        icon: <BookOpen size={16} />,
       }}
       secondaryAction={{
         label: 'Browse Topics',
         onClick: () => console.log('Browse topics'),
-        variant: 'outline'
+        variant: 'outline',
       }}
-      variant="inspiring"
-      data-testid="learning-empty-state"
+      variant='inspiring'
+      data-testid='learning-empty-state'
     />
   ),
 
@@ -937,14 +973,14 @@ const EmptyStateFactory = {
    */
   community: (onJoin: () => void) => (
     <EnhancedEmptyState
-      messageType="community"
+      messageType='community'
       primaryAction={{
         label: 'Join Community',
         onClick: onJoin,
-        icon: <Smile size={16} />
+        icon: <Smile size={16} />,
       }}
-      variant="gentle"
-      data-testid="community-empty-state"
+      variant='gentle'
+      data-testid='community-empty-state'
     />
   ),
 } as const;
@@ -955,11 +991,7 @@ export {
   EnhancedEmptyState,
   EmptyStateFactory,
   enhancedEmptyStateVariants,
-  HUMANIZED_MESSAGES
+  HUMANIZED_MESSAGES,
 };
 
-export type {
-  EnhancedEmptyStateOwnProps,
-  EmptyStateVariantProps,
-  MessageType
-};
+export type { EnhancedEmptyStateOwnProps, EmptyStateVariantProps, MessageType };

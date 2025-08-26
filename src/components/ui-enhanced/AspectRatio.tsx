@@ -425,13 +425,34 @@ export const AspectRatioPlaceholder = React.forwardRef<
     className={cn('border-2 border-dashed border-border-subtle', className)}
     {...props}
   >
-    <div className='text-content-tertiary flex flex-col items-center justify-center gap-2'>
-      {icon && <div className='text-2xl opacity-50'>{icon}</div>}
+    <div
+      className={cn(
+        'text-content-tertiary flex flex-col items-center justify-center gap-2',
+        'text-content-tertiary flex flex-col items-center justify-center gap-2'
+      )}
+    >
+      {icon && (
+        <div className={cn('text-2xl opacity-50', 'text-2xl opacity-50')}>
+          {icon}
+        </div>
+      )}
       {title && (
-        <p className='text-content-secondary text-sm font-medium'>{title}</p>
+        <p
+          className={cn(
+            'text-content-secondary text-sm font-medium',
+            'text-content-secondary text-sm font-medium'
+          )}
+        >
+          {title}
+        </p>
       )}
       {description && (
-        <p className='text-content-tertiary max-w-[200px] text-center text-xs'>
+        <p
+          className={cn(
+            'text-content-tertiary max-w-48 text-center text-xs',
+            'text-content-tertiary max-w-48 text-center text-xs'
+          )}
+        >
           {description}
         </p>
       )}
