@@ -245,7 +245,33 @@ export default {
         'bounce-gentle': 'bounceGentle 0.6s ease-out',
       },
 
-      keyframes: {
+      // 🌈 Z-Index Orchestrator - Fortune-500 tokenic layers
+      zIndex: {
+        surface: '0',
+        overlay: '100',
+        popover: '1100',    // Popover below modal (contextual only)
+        modal: '1300',      // Modal above popover (blocking interactions)
+        toast: '1400',      // Toast above modal (system notifications)
+        tooltip: '1500',    // Tooltip highest (informational overlay)
+      },
+
+      // 🎭 Motion Presets - Exact tokenic durations and easings
+      transitionDuration: {
+        0: '0ms',
+        100: '100ms',
+        120: '120ms',
+        160: '160ms',
+        180: '180ms',
+        200: '200ms',
+        220: '220ms',
+        600: '600ms',
+      },
+      transitionTimingFunction: {
+        standard: 'cubic-bezier(0.2, 0, 0.2, 1)',
+        entrance: 'cubic-bezier(0, 0, 0.2, 1)',
+        exit: 'cubic-bezier(0.4, 0, 1, 1)',
+        spring: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+      },      keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
@@ -275,6 +301,9 @@ export default {
     { pattern: /shadow-(elevation|glass|glow)/ },
     { pattern: /backdrop-blur-(xs|sm|md|lg|xl|2xl|3xl|glass|glass-sm|glass-lg)/ },
     { pattern: /backdrop-saturate-glass/ },
+    { pattern: /z-(surface|overlay|popover|modal|toast|tooltip)/ },  // Z-Index Orchestrator tokens
+    { pattern: /duration-(0|100|120|160|180|200|220|600)/ },  // Motion duration tokens
+    { pattern: /ease-(standard|entrance|exit|spring)/ },  // Motion easing tokens
     // Liquid glass utilities
     'glass',
     'glass-sm',

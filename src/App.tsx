@@ -1,15 +1,15 @@
 /**
- * SparkTasks - Enhanced Button Showcase Application
+ * SparkTasks - Data-Enhanced Components Showcase Application
  *
- * MAPS v2.2 Dark-First Design System demonstration.
+ * MAPS v3.0 Data-Enhanced Components demonstration.
  */
 
-import React from 'react';
+import React from 'react'
 
-import { ComponentsDemo } from '@/components/demo-enhanced';
+import { DataDemo } from '@/components/demo-enhanced/DataDemo'
 
 const App: React.FC = () => {
-  return <ComponentsDemo />;
-};
+  return <DataDemo />
+}
 
-export default App;
+export default App

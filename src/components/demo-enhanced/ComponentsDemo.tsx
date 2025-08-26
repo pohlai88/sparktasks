@@ -83,6 +83,12 @@ import {
 } from '../ui-enhanced/Card';
 import { CheckboxWithLabel, CheckboxGroup } from '../ui-enhanced/Checkbox';
 import {
+  EnhancedDatePicker,
+  EnhancedDatePickerRange,
+  DatePickerFactory,
+} from '../ui-enhanced/DatePicker';
+import type { DateRange } from '../ui-enhanced/DatePicker';
+import {
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -92,6 +98,18 @@ import {
   DialogFooter,
   DialogClose,
 } from '../ui-enhanced/Dialog';
+import {
+  EnhancedDrawer,
+  EnhancedDrawerTrigger,
+  EnhancedDrawerContent,
+  EnhancedDrawerHeader,
+  EnhancedDrawerTitle,
+  EnhancedDrawerDescription,
+  EnhancedDrawerBody,
+  EnhancedDrawerFooter,
+  EnhancedDrawerClose,
+  DrawerFactory,
+} from '../ui-enhanced/Drawer';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -108,11 +126,21 @@ import {
   DropdownMenuRadioGroup,
 } from '../ui-enhanced/DropdownMenu';
 import {
+  EnhancedEmptyState,
+  EmptyStateFactory,
+  HUMANIZED_MESSAGES,
+} from '../ui-enhanced/EmptyState';
+import {
   EnhancedLabel,
   LabelWithField,
   FormFieldGroup,
   createLabelWithField,
 } from '../ui-enhanced/Label';
+import {
+  EnhancedPagination,
+  EnhancedPaginationComplete,
+  PaginationFactory,
+} from '../ui-enhanced/Pagination';
 import {
   Popover,
   PopoverTrigger,
@@ -251,6 +279,10 @@ export const ComponentsDemo: React.FC = () => {
   // Calendar demo states
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [multiSelectedDates, setMultiSelectedDates] = useState<Date[]>([]);
+
+  // DatePicker demo states
+  const [singleDate, setSingleDate] = useState<Date | undefined>();
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   // Toast demo states
   const [toasts, setToasts] = useState<
@@ -1981,7 +2013,7 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Card - Dark-First Content Containers
             </h2>
             <p className='text-muted-foreground'>
-              Sophisticated content containers with Apple HIG philosophy, liquid glass materials, 
+              Sophisticated content containers with Apple HIG philosophy, liquid glass materials,
               and comprehensive accessibility patterns following MAPS v2.2 architecture.
             </p>
 
@@ -2054,8 +2086,8 @@ export const ComponentsDemo: React.FC = () => {
             <div className='space-y-4'>
               <h3 className='text-lg font-medium text-foreground'>Interactive Cards</h3>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                <EnhancedCard 
-                  interactive 
+                <EnhancedCard
+                  interactive
                   onClick={() => showToast('info', 'Card Clicked', 'Interactive card demonstrates click handling')}
                   className='cursor-pointer transition-all hover:scale-[1.02]'
                 >
@@ -2075,7 +2107,7 @@ export const ComponentsDemo: React.FC = () => {
                   </EnhancedCardContent>
                 </EnhancedCard>
 
-                <EnhancedCard 
+                <EnhancedCard
                   variant='outlined'
                   interactive
                   onClick={() => setIsLiked(!isLiked)}
@@ -2170,7 +2202,7 @@ export const ComponentsDemo: React.FC = () => {
                 </CardFactory.default.Card>
 
                 {/* Using interactive factory */}
-                <CardFactory.interactive.Card 
+                <CardFactory.interactive.Card
                   className='max-w-sm'
                   onClick={() => showToast('success', 'Factory Card', 'Interactive factory demonstration')}
                 >
@@ -2279,7 +2311,7 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Badge - Dark-First Status Indicators
             </h2>
             <p className='text-muted-foreground'>
-              Sophisticated status indicators with Apple HIG philosophy, semantic color patterns, 
+              Sophisticated status indicators with Apple HIG philosophy, semantic color patterns,
               and comprehensive accessibility patterns following MAPS v2.2 architecture.
             </p>
 
@@ -2356,27 +2388,27 @@ export const ComponentsDemo: React.FC = () => {
             <div className='space-y-4'>
               <h3 className='text-lg font-medium text-foreground'>Icon Integration</h3>
               <div className='flex flex-wrap gap-3'>
-                <EnhancedBadge 
-                  icon={<Mail className='h-3 w-3' />} 
+                <EnhancedBadge
+                  icon={<Mail className='h-3 w-3' />}
                   variant='default'
                 >
                   Mail
                 </EnhancedBadge>
-                <EnhancedBadge 
-                  icon={<AlertTriangle className='h-3 w-3' />} 
+                <EnhancedBadge
+                  icon={<AlertTriangle className='h-3 w-3' />}
                   iconPosition='right'
                   variant='warning'
                 >
                   Warning
                 </EnhancedBadge>
-                <EnhancedBadge 
-                  icon={<Check className='h-3 w-3' />} 
+                <EnhancedBadge
+                  icon={<Check className='h-3 w-3' />}
                   variant='success'
                 >
                   Complete
                 </EnhancedBadge>
-                <EnhancedBadge 
-                  icon={<Settings className='h-3 w-3' />} 
+                <EnhancedBadge
+                  icon={<Settings className='h-3 w-3' />}
                   iconPosition='right'
                   variant='ghost'
                 >
@@ -2389,21 +2421,21 @@ export const ComponentsDemo: React.FC = () => {
             <div className='space-y-4'>
               <h3 className='text-lg font-medium text-foreground'>Interactive Features</h3>
               <div className='flex flex-wrap gap-3'>
-                <EnhancedBadge 
-                  interactive 
+                <EnhancedBadge
+                  interactive
                   onClick={() => showToast('info', 'Badge Clicked', 'Interactive badge demonstration')}
                   variant='outline'
                 >
                   Clickable
                 </EnhancedBadge>
-                <EnhancedBadge 
-                  dismissible 
+                <EnhancedBadge
+                  dismissible
                   onRemove={() => showToast('success', 'Badge Removed', 'Dismissible badge demonstration')}
                   variant='secondary'
                 >
                   Dismissible
                 </EnhancedBadge>
-                <EnhancedBadge 
+                <EnhancedBadge
                   interactive
                   dismissible
                   onClick={() => showToast('info', 'Badge Clicked')}
@@ -2622,14 +2654,14 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedBadge variant='accent'>Premium</EnhancedBadge>
                     <EnhancedBadge variant='ghost'>Draft</EnhancedBadge>
                     <EnhancedBadge variant='glass'>Glass</EnhancedBadge>
-                    <EnhancedBadge 
-                      dismissible 
+                    <EnhancedBadge
+                      dismissible
                       onRemove={() => showToast('success', 'Tag Removed')}
                       variant='secondary'
                     >
                       Removable
                     </EnhancedBadge>
-                    <EnhancedBadge 
+                    <EnhancedBadge
                       interactive
                       onClick={() => showToast('info', 'Tag Clicked')}
                       variant='outline'
@@ -2673,7 +2705,7 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Breadcrumb - Dark-First Navigation Hierarchy
             </h2>
             <p className='text-muted-foreground'>
-              Sophisticated navigation breadcrumbs with Apple HIG compliance, 
+              Sophisticated navigation breadcrumbs with Apple HIG compliance,
               liquid glass materials, and comprehensive accessibility patterns.
             </p>
 
@@ -2681,7 +2713,7 @@ export const ComponentsDemo: React.FC = () => {
             <div className='space-y-4'>
               <h3 className='text-lg font-medium text-foreground'>Breadcrumb Variants</h3>
               <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
-                
+
                 {/* Default Breadcrumb */}
                 <div className='space-y-2'>
                   <h4 className='text-sm font-medium text-foreground'>Default Navigation</h4>
@@ -2785,7 +2817,7 @@ export const ComponentsDemo: React.FC = () => {
             <div className='space-y-4'>
               <h3 className='text-lg font-medium text-foreground'>Separator Styles</h3>
               <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
-                
+
                 {/* Chevron Separators */}
                 <div className='space-y-2'>
                   <h4 className='text-sm font-medium text-foreground'>Chevron Separators</h4>
@@ -2876,7 +2908,7 @@ export const ComponentsDemo: React.FC = () => {
             <div className='space-y-4'>
               <h3 className='text-lg font-medium text-foreground'>Truncated Navigation</h3>
               <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
-                
+
                 {/* Long breadcrumb with ellipsis */}
                 <div className='space-y-2'>
                   <h4 className='text-sm font-medium text-foreground'>Ellipsis Truncation</h4>
@@ -2914,7 +2946,7 @@ export const ComponentsDemo: React.FC = () => {
                         </EnhancedBreadcrumbItem>
                       </EnhancedBreadcrumbList>
                     </EnhancedBreadcrumb>
-                    
+
                     <EnhancedBreadcrumb {...BreadcrumbFactory.compact()}>
                       <EnhancedBreadcrumbList>
                         <EnhancedBreadcrumbItem>
@@ -2926,7 +2958,7 @@ export const ComponentsDemo: React.FC = () => {
                         </EnhancedBreadcrumbItem>
                       </EnhancedBreadcrumbList>
                     </EnhancedBreadcrumb>
-                    
+
                     <EnhancedBreadcrumb {...BreadcrumbFactory.glass()}>
                       <EnhancedBreadcrumbList>
                         <EnhancedBreadcrumbItem>
@@ -2995,7 +3027,7 @@ export const ComponentsDemo: React.FC = () => {
                 <EnhancedBreadcrumb>
                   <EnhancedBreadcrumbList>
                     <EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbLink 
+                      <EnhancedBreadcrumbLink
                         href="/"
                         onClick={(e) => {
                           e.preventDefault();
@@ -3010,7 +3042,7 @@ export const ComponentsDemo: React.FC = () => {
                     </EnhancedBreadcrumbItem>
                     <EnhancedBreadcrumbSeparator />
                     <EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbLink 
+                      <EnhancedBreadcrumbLink
                         href="/products"
                         onClick={(e) => {
                           e.preventDefault();
@@ -3022,7 +3054,7 @@ export const ComponentsDemo: React.FC = () => {
                     </EnhancedBreadcrumbItem>
                     <EnhancedBreadcrumbSeparator />
                     <EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbLink 
+                      <EnhancedBreadcrumbLink
                         href="/products/electronics"
                         onClick={(e) => {
                           e.preventDefault();
@@ -3115,7 +3147,7 @@ export const ComponentsDemo: React.FC = () => {
                       <p className='font-medium text-foreground'>Selected Dates ({multiSelectedDates.length}):</p>
                       <div className='mt-2 flex flex-wrap gap-1'>
                         {multiSelectedDates.map((date, index) => (
-                          <span 
+                          <span
                             key={index}
                             className='px-2 py-1 rounded bg-accent text-accent-foreground text-xs'
                           >
@@ -3182,8 +3214,8 @@ export const ComponentsDemo: React.FC = () => {
                         showToast('success', 'Future Date', 'Future date selected');
                       }
                     }}
-                    disabled={createDateDisabled({ 
-                      before: new Date() 
+                    disabled={createDateDisabled({
+                      before: new Date()
                     })}
                   />
                 </div>
@@ -3244,7 +3276,7 @@ export const ComponentsDemo: React.FC = () => {
                 <p className='text-sm text-muted-foreground'>
                   Try different calendar configurations and interactions
                 </p>
-                
+
                 {/* Compact Calendar */}
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                   <div className='space-y-3'>
@@ -3260,7 +3292,7 @@ export const ComponentsDemo: React.FC = () => {
                       }}
                     />
                   </div>
-                  
+
                   <div className='space-y-3'>
                     <h4 className='font-medium text-foreground'>Floating Glass</h4>
                     <EnhancedCalendar
@@ -3299,6 +3331,240 @@ export const ComponentsDemo: React.FC = () => {
             </div>
           </section>
 
+          {/* Enhanced DatePicker Showcase - MAPS v2.2 Compliance */}
+          <section className='space-y-6'>
+            <h2 className='text-2xl font-semibold text-foreground'>
+              Enhanced DatePicker - Temporal Selection Interface
+            </h2>
+            <p className='text-muted-foreground'>
+              Enterprise-grade date selection components with Apple HIG harmony,
+              liquid glass materials, range selection capabilities, and comprehensive
+              accessibility patterns following MAPS v2.2 architecture.
+            </p>
+
+            {/* Single Date Picker Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Single Date Selection</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                {/* Default DatePicker */}
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Default Surface</span>
+                  <EnhancedDatePicker
+                    placeholder='Select appointment date'
+                    {...(singleDate && { value: singleDate })}
+                    onChange={(date) => {
+                      setSingleDate(date);
+                      console.log('Selected date:', date);
+                    }}
+                  />
+                </div>
+
+                {/* Glass Surface DatePicker */}
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Glass Material</span>
+                  <EnhancedDatePicker
+                    surface='glass'
+                    placeholder='Select meeting date'
+                    onChange={(date) => console.log('Glass date:', date)}
+                  />
+                </div>
+
+                {/* Elevated Surface DatePicker */}
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Elevated Surface</span>
+                  <EnhancedDatePicker
+                    surface='elevated'
+                    placeholder='Select deadline'
+                    onChange={(date) => console.log('Elevated date:', date)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Size Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Size Variants</h3>
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Small (sm)</span>
+                  <EnhancedDatePicker
+                    size='sm'
+                    placeholder='Compact selection'
+                    onChange={(date) => console.log('Small date:', date)}
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Medium (md)</span>
+                  <EnhancedDatePicker
+                    size='md'
+                    placeholder='Standard selection'
+                    onChange={(date) => console.log('Medium date:', date)}
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Large (lg)</span>
+                  <EnhancedDatePicker
+                    size='lg'
+                    placeholder='Prominent selection'
+                    onChange={(date) => console.log('Large date:', date)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Validation States */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Validation States</h3>
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-destructive'>Error State</span>
+                  <EnhancedDatePicker
+                    validation='error'
+                    placeholder='Invalid date selection'
+                    onChange={(date) => console.log('Error date:', date)}
+                  />
+                  <p className='text-xs text-destructive'>Please select a valid date</p>
+                </div>
+
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-warning'>Warning State</span>
+                  <EnhancedDatePicker
+                    validation='warning'
+                    placeholder='Check your selection'
+                    onChange={(date) => console.log('Warning date:', date)}
+                  />
+                  <p className='text-xs text-warning'>Date is in the past</p>
+                </div>
+
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-success'>Success State</span>
+                  <EnhancedDatePicker
+                    validation='success'
+                    placeholder='Valid selection'
+                    onChange={(date) => console.log('Success date:', date)}
+                  />
+                  <p className='text-xs text-success'>Perfect date selection</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Date Range Picker */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Date Range Selection</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                {/* Default Range Picker */}
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Travel Dates</span>
+                  <EnhancedDatePickerRange
+                    placeholder='Select travel period'
+                    {...(dateRange && { value: dateRange })}
+                    onChange={(range) => {
+                      setDateRange(range);
+                      console.log('Travel range:', range);
+                    }}
+                  />
+                </div>
+
+                {/* Glass Range Picker */}
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Project Duration</span>
+                  <EnhancedDatePickerRange
+                    surface='glass'
+                    placeholder='Select project timeline'
+                    onChange={(range) => console.log('Project range:', range)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Factory Functions */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Factory Presets</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Compact Preset</span>
+                  <DatePickerFactory.compact placeholder='Quick selection' />
+                </div>
+
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Large Preset</span>
+                  <DatePickerFactory.large placeholder='Premium selection' />
+                </div>
+
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Range Preset</span>
+                  <DatePickerFactory.range placeholder='Period selection' />
+                </div>
+              </div>
+            </div>
+
+            {/* Advanced Features */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Advanced Features</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                {/* Disabled Dates */}
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Weekend Restrictions</span>
+                  <EnhancedDatePicker
+                    placeholder='Business days only'
+                    isDateDisabled={(date) => {
+                      const day = date.getDay();
+                      return day === 0 || day === 6; // Disable weekends
+                    }}
+                    onChange={(date) => console.log('Business date:', date)}
+                  />
+                  <p className='text-xs text-muted-foreground'>Weekends are disabled</p>
+                </div>
+
+                {/* Date Range Limits */}
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Future Dates Only</span>
+                  <EnhancedDatePicker
+                    placeholder='Select future date'
+                    minDate={new Date()}
+                    onChange={(date) => console.log('Future date:', date)}
+                  />
+                  <p className='text-xs text-muted-foreground'>Past dates are disabled</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Custom Formats */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Custom Date Formats</h3>
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>ISO Format</span>
+                  <EnhancedDatePicker
+                    placeholder='YYYY-MM-DD'
+                    dateFormat='yyyy-MM-dd'
+                    onChange={(date) => console.log('ISO date:', date)}
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Long Format</span>
+                  <EnhancedDatePicker
+                    placeholder='Full date display'
+                    dateFormat='EEEE, MMMM do, yyyy'
+                    onChange={(date) => console.log('Long date:', date)}
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <span className='text-sm font-medium text-foreground'>Short Format</span>
+                  <EnhancedDatePicker
+                    placeholder='MM/DD/YY'
+                    dateFormat='MM/dd/yy'
+                    onChange={(date) => console.log('Short date:', date)}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Enhanced Alert Showcase - MAPS v2.2 Compliance */}
           <section className='space-y-6'>
             <h2 className='text-2xl font-semibold text-foreground'>
@@ -3306,7 +3572,7 @@ export const ComponentsDemo: React.FC = () => {
             </h2>
             <p className='text-muted-foreground'>
               Apple HIG-inspired notification system with sophisticated visual hierarchy,
-              liquid glass materials, auto-close functionality, and comprehensive 
+              liquid glass materials, auto-close functionality, and comprehensive
               accessibility patterns following MAPS v2.2 architecture.
             </p>
 
@@ -3359,24 +3625,24 @@ export const ComponentsDemo: React.FC = () => {
             <div className='space-y-4'>
               <h3 className='text-lg font-medium text-foreground'>Interactive Features</h3>
               <div className='space-y-4'>
-                <EnhancedAlert 
-                  variant='default' 
-                  title='Dismissible Alert' 
+                <EnhancedAlert
+                  variant='default'
+                  title='Dismissible Alert'
                   description='This alert can be manually dismissed by clicking the close button.'
                   dismissible
                   onDismiss={() => showToast('success', 'Alert Dismissed', 'The alert was successfully dismissed')}
                 />
-                <EnhancedAlert 
-                  variant='info' 
-                  title='Auto-close Alert' 
+                <EnhancedAlert
+                  variant='info'
+                  title='Auto-close Alert'
                   description='This alert will automatically close after 5 seconds.'
                   autoClose={5000}
                   showProgress
                   onDismiss={() => showToast('info', 'Alert Auto-closed', 'The alert closed automatically')}
                 />
-                <EnhancedAlert 
-                  variant='warning' 
-                  title='Dismissible with Auto-close' 
+                <EnhancedAlert
+                  variant='warning'
+                  title='Dismissible with Auto-close'
                   description='This alert has both manual dismiss and auto-close features.'
                   dismissible
                   autoClose={8000}
@@ -3402,14 +3668,14 @@ export const ComponentsDemo: React.FC = () => {
                   description='This alert includes action buttons for user interaction.'
                   actions={
                     <div className='flex gap-2'>
-                      <EnhancedButton 
-                        size='sm' 
+                      <EnhancedButton
+                        size='sm'
                         variant='outline'
                         onClick={() => showToast('info', 'Action Clicked', 'Secondary action was clicked')}
                       >
                         Cancel
                       </EnhancedButton>
-                      <EnhancedButton 
+                      <EnhancedButton
                         size='sm'
                         onClick={() => showToast('success', 'Action Confirmed', 'Primary action was confirmed')}
                       >
@@ -3448,13 +3714,13 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='font-medium text-sm text-foreground'>Glass Materials</h4>
                   <div className='space-y-2'>
                     <AlertFactory.glass.Alert title='Glass Factory' description='Factory-created glass alert.' />
-                    {React.createElement(AlertFactory['glass-success'].Alert, { 
-                      title: 'Glass Success', 
-                      description: 'Factory-created glass success alert.' 
+                    {React.createElement(AlertFactory['glass-success'].Alert, {
+                      title: 'Glass Success',
+                      description: 'Factory-created glass success alert.'
                     })}
-                    {React.createElement(AlertFactory['glass-destructive'].Alert, { 
-                      title: 'Glass Error', 
-                      description: 'Factory-created glass error alert.' 
+                    {React.createElement(AlertFactory['glass-destructive'].Alert, {
+                      title: 'Glass Error',
+                      description: 'Factory-created glass error alert.'
                     })}
                   </div>
                 </div>
@@ -3463,13 +3729,13 @@ export const ComponentsDemo: React.FC = () => {
                 <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
                   <h4 className='font-medium text-sm text-foreground'>Feature Patterns</h4>
                   <div className='space-y-2'>
-                    <AlertFactory.dismissible.Alert 
-                      title='Dismissible Factory' 
+                    <AlertFactory.dismissible.Alert
+                      title='Dismissible Factory'
                       description='Factory-created dismissible alert.'
                       onDismiss={() => showToast('success', 'Factory Alert Dismissed')}
                     />
-                    <AlertFactory.aaa.Alert 
-                      title='AAA Factory' 
+                    <AlertFactory.aaa.Alert
+                      title='AAA Factory'
                       description='Factory-created AAA compliant alert.'
                       variant='glass'
                     />
@@ -3633,6 +3899,285 @@ export const ComponentsDemo: React.FC = () => {
                     <li>• Accessible color combinations</li>
                   </ul>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced EmptyState Showcase - Steve Jobs Philosophy */}
+          <section className='space-y-6'>
+            <div className='text-center'>
+              <h2 className='text-3xl font-bold text-foreground'>
+                Enhanced EmptyState - Steve Jobs Philosophy
+              </h2>
+              <p className='mt-2 text-lg text-muted-foreground'>
+                Humanized empty states that transform void into opportunity • &ldquo;Empty states are invitations to greatness&rdquo; •
+                18 pre-crafted message templates • Emotional design with encouraging guidance
+              </p>
+            </div>
+
+            {/* Humanized Message Templates */}
+            <div className='space-y-6'>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Humanized Message Templates
+              </h3>
+              <p className='text-muted-foreground'>
+                Following Steve Jobs&apos; philosophy of making technology serve humanity, each template
+                speaks to emotions and guides users toward meaningful action.
+              </p>
+
+              <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3'>
+                {/* Search Empty State */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Search Results
+                  </h4>
+                  <div className='min-h-[320px] flex items-center justify-center'>
+                    {EmptyStateFactory.searchResults('React components', () => console.log('Search retry'))}
+                  </div>
+                </div>
+
+                {/* Welcome Empty State */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    New User Welcome
+                  </h4>
+                  <div className='min-h-[320px] flex items-center justify-center'>
+                    {EmptyStateFactory.welcome(() => console.log('Get started'))}
+                  </div>
+                </div>
+
+                {/* Projects Empty State */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Project Creation
+                  </h4>
+                  <div className='min-h-[320px] flex items-center justify-center'>
+                    {EmptyStateFactory.projects(() => console.log('Create project'))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Variant System */}
+            <div className='space-y-6'>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Visual Variants & Emotional Tones
+              </h3>
+
+              <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+                {/* Inspiring Variant */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Inspiring Variant with Floating Vibrancy
+                  </h4>
+                  <div className='min-h-[320px] flex items-center justify-center'>
+                    <EnhancedEmptyState
+                      messageType="creative"
+                      variant="inspiring"
+                      vibrancy="floating"
+                      primaryAction={{
+                        label: 'Start Creating',
+                        onClick: () => console.log('Create'),
+                        icon: <Plus className="h-4 w-4" />
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Magical Variant */
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Magical Variant with Wonder
+                  </h4>
+                  <div className='min-h-[320px] flex items-center justify-center'>
+                    <EnhancedEmptyState
+                      messageType="magical"
+                      variant="magical"
+                      vibrancy="floating"
+                      primaryAction={{
+                        label: 'Discover Magic',
+                        onClick: () => console.log('Discover'),
+                      }}
+                    />
+                  </div>
+                </div>
+}
+                {/* Peaceful Variant */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Peaceful Variant with Glass Materials
+                  </h4>
+                  <div className='min-h-[320px] flex items-center justify-center'>
+                    <EnhancedEmptyState
+                      messageType="peaceful"
+                      variant="peaceful"
+                      vibrancy="glass"
+                    />
+                  </div>
+                </div>
+
+                {/* Community Variant */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Community & Belonging
+                  </h4>
+                  <div className='min-h-[320px] flex items-center justify-center'>
+                    {EmptyStateFactory.community(() => console.log('Join community'))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Factory Functions */}
+            <div className='space-y-6'>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Pre-built Factory Functions
+              </h3>
+              <p className='text-muted-foreground'>
+                Ready-to-use empty state patterns for common scenarios, following
+                Steve Jobs&apos; principle of making complex things simple.
+              </p>
+
+              <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+                {/* Team Empty State */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>Team</h4>
+                  <div className='min-h-[300px] flex items-center justify-center'>
+                    {EmptyStateFactory.team(() => console.log('Invite team'))}
+                  </div>
+                </div>
+
+                {/* Learning Empty State */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>Learning</h4>
+                  <div className='min-h-[300px] flex items-center justify-center'>
+                    {EmptyStateFactory.learning(() => console.log('Start learning'))}
+                  </div>
+                </div>
+
+                {/* Achievements Empty State */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>Achievements</h4>
+                  <div className='min-h-[300px] flex items-center justify-center'>
+                    {EmptyStateFactory.achievements(() => console.log('Start exploring'))}
+                  </div>
+                </div>
+
+                {/* Content Empty State */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>Content</h4>
+                  <div className='min-h-[300px] flex items-center justify-center'>
+                    {EmptyStateFactory.content(() => console.log('Create content'))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Size Variants */}
+            <div className='space-y-6'>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Size Variants & Responsive Design
+              </h3>
+
+              <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+                {/* Small Size */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Small Size (sm)
+                  </h4>
+                  <div className='min-h-[280px] flex items-center justify-center'>
+                    <EnhancedEmptyState
+                      messageType="ideas"
+                      size="sm"
+                      primaryAction={{
+                        label: 'Add Idea',
+                        onClick: () => console.log('Add idea'),
+                        icon: <Plus className="h-3 w-3" />
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Large Size */}
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Large Size (lg)
+                  </h4>
+                  <div className='min-h-[400px] flex items-center justify-center'>
+                    <EnhancedEmptyState
+                      messageType="projects"
+                      size="lg"
+                      variant="inspiring"
+                      primaryAction={{
+                        label: 'Create Project',
+                        onClick: () => console.log('Create project'),
+                        icon: <Plus className="h-4 w-4" />
+                      }}
+                      secondaryAction={{
+                        label: 'Learn More',
+                        onClick: () => console.log('Learn more'),
+                        variant: 'outline'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Accessibility & Steve Jobs Philosophy */}
+            <div className='space-y-4'>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Accessibility & Human-Centered Design
+              </h3>
+              <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>Steve Jobs Philosophy</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• &ldquo;Empty states are opportunities to inspire&rdquo;</li>
+                    <li>• Humanized messaging that speaks to emotions</li>
+                    <li>• Clear guidance without overwhelming</li>
+                    <li>• Beautiful simplicity that feels purposeful</li>
+                  </ul>
+                </div>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>Accessibility Features</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Proper semantic structure with headings</li>
+                    <li>• AccessibleIcon wrapper for screen readers</li>
+                    <li>• Keyboard navigation support</li>
+                    <li>• AAA compliance mode available</li>
+                  </ul>
+                </div>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>MAPS v2.2 Integration</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Token-based styling (anti-drift)</li>
+                    <li>• Liquid glass materials system</li>
+                    <li>• Dark-first design philosophy</li>
+                    <li>• Apple HIG harmony throughout</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Message Template Overview */}
+            <div className='space-y-4'>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Complete Message Template System
+              </h3>
+              <p className='text-muted-foreground'>
+                18 carefully crafted message templates, each designed to transform empty moments into opportunities for engagement and growth.
+              </p>
+              <div className='grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6 text-sm'>
+                {Object.entries(HUMANIZED_MESSAGES).map(([key, message]) => (
+                  <div key={key} className='rounded-lg border border-border bg-card p-3 space-y-2'>
+                    <div className='font-medium text-foreground capitalize'>{key}</div>
+                    <div className='text-xs text-muted-foreground'>{message.emotion}</div>
+                    <div className='text-xs text-muted-foreground truncate' title={message.title}>
+                      {message.title}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
@@ -4208,11 +4753,11 @@ export const ComponentsDemo: React.FC = () => {
                       </EnhancedSheetHeader>
                       <div className='space-y-4 py-4'>
                         <div className='space-y-2'>
-                          <label className='text-sm font-medium text-foreground'>
+                          <EnhancedLabel htmlFor="theme-select" className='text-sm font-medium text-foreground'>
                             Theme
-                          </label>
+                          </EnhancedLabel>
                           <Select>
-                            <SelectTrigger>
+                            <SelectTrigger id="theme-select">
                               <SelectValue placeholder='Select theme' />
                             </SelectTrigger>
                             <SelectContent>
@@ -4223,10 +4768,10 @@ export const ComponentsDemo: React.FC = () => {
                           </Select>
                         </div>
                         <div className='space-y-2'>
-                          <label className='text-sm font-medium text-foreground'>
+                          <EnhancedLabel htmlFor="notifications-switch" className='text-sm font-medium text-foreground'>
                             Notifications
-                          </label>
-                          <EnhancedSwitch />
+                          </EnhancedLabel>
+                          <EnhancedSwitch id="notifications-switch" />
                         </div>
                       </div>
                       <EnhancedSheetFooter>
@@ -4329,7 +4874,7 @@ export const ComponentsDemo: React.FC = () => {
                       </EnhancedSheetHeader>
                       <div className='space-y-3 py-4'>
                         <div className='flex items-center gap-3 p-2 rounded bg-muted/50'>
-                          <div className='h-2 w-2 rounded-full bg-blue-500'></div>
+                          <div className='h-2 w-2 rounded-full bg-blue-500' />
                           <div className='flex-1'>
                             <p className='text-sm font-medium'>System Update</p>
                             <p className='text-xs text-muted-foreground'>
@@ -4338,7 +4883,7 @@ export const ComponentsDemo: React.FC = () => {
                           </div>
                         </div>
                         <div className='flex items-center gap-3 p-2 rounded bg-muted/50'>
-                          <div className='h-2 w-2 rounded-full bg-green-500'></div>
+                          <div className='h-2 w-2 rounded-full bg-green-500' />
                           <div className='flex-1'>
                             <p className='text-sm font-medium'>Task Complete</p>
                             <p className='text-xs text-muted-foreground'>
@@ -4475,17 +5020,18 @@ export const ComponentsDemo: React.FC = () => {
                         <div className='space-y-4 py-4'>
                           <div className='grid grid-cols-2 gap-4'>
                             <div className='space-y-2'>
-                              <label className='text-sm font-medium'>Name</label>
-                              <EnhancedInput placeholder='Enter name' />
+                              <EnhancedLabel htmlFor="name-input" className='text-sm font-medium'>Name</EnhancedLabel>
+                              <EnhancedInput id="name-input" placeholder='Enter name' />
                             </div>
                             <div className='space-y-2'>
-                              <label className='text-sm font-medium'>Email</label>
-                              <EnhancedInput placeholder='Enter email' />
+                              <EnhancedLabel htmlFor="email-input" className='text-sm font-medium'>Email</EnhancedLabel>
+                              <EnhancedInput id="email-input" placeholder='Enter email' />
                             </div>
                           </div>
                           <div className='space-y-2'>
-                            <label className='text-sm font-medium'>Description</label>
-                            <textarea 
+                            <EnhancedLabel htmlFor="description-textarea" className='text-sm font-medium'>Description</EnhancedLabel>
+                            <textarea
+                              id="description-textarea"
                               className='w-full p-3 rounded border border-border bg-background'
                               rows={4}
                               placeholder='Enter description...'
@@ -4626,6 +5172,428 @@ export const ComponentsDemo: React.FC = () => {
                       </li>
                     </ul>
                   </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced Drawer Showcase - MAPS v2.2 Mobile-First */}
+          <section className='space-y-6'>
+            <h2 className='text-2xl font-semibold text-foreground'>
+              Enhanced Drawer - Mobile-Optimized Bottom Sheets
+            </h2>
+            <p className='text-muted-foreground'>
+              Mobile-first drawer components with gesture support, Apple HIG interactions,
+              and sophisticated material handling for bottom sheet patterns.
+            </p>
+
+            {/* Basic Drawer Examples */}
+            <div className='space-y-6'>
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Size & Surface Variants
+                </h3>
+                <div className='flex flex-wrap gap-3'>
+                  <EnhancedDrawer>
+                    <EnhancedDrawerTrigger asChild>
+                      <EnhancedButton variant='outline' size='sm'>
+                        Small Drawer
+                      </EnhancedButton>
+                    </EnhancedDrawerTrigger>
+                    <EnhancedDrawerContent size="sm" surface="elevated">
+                      <EnhancedDrawerHeader>
+                        <EnhancedDrawerTitle>Small Quick Actions</EnhancedDrawerTitle>
+                        <EnhancedDrawerDescription>
+                          Compact drawer for quick interactions and simple choices
+                        </EnhancedDrawerDescription>
+                      </EnhancedDrawerHeader>
+                      <EnhancedDrawerBody>
+                        <div className='space-y-3'>
+                          <EnhancedButton variant='ghost' className='w-full justify-start'>
+                            <Settings className='h-4 w-4 mr-2' />
+                            Settings
+                          </EnhancedButton>
+                          <EnhancedButton variant='ghost' className='w-full justify-start'>
+                            <User className='h-4 w-4 mr-2' />
+                            Profile
+                          </EnhancedButton>
+                        </div>
+                      </EnhancedDrawerBody>
+                    </EnhancedDrawerContent>
+                  </EnhancedDrawer>
+
+                  <EnhancedDrawer>
+                    <EnhancedDrawerTrigger asChild>
+                      <EnhancedButton variant='outline' size='sm'>
+                        Medium Form
+                      </EnhancedButton>
+                    </EnhancedDrawerTrigger>
+                    <EnhancedDrawerContent size="md" surface="panel">
+                      <EnhancedDrawerHeader>
+                        <EnhancedDrawerTitle>Contact Information</EnhancedDrawerTitle>
+                        <EnhancedDrawerDescription>
+                          Enter your details for our newsletter
+                        </EnhancedDrawerDescription>
+                      </EnhancedDrawerHeader>
+                      <EnhancedDrawerBody>
+                        <div className='space-y-4'>
+                          <div className='space-y-2'>
+                            <EnhancedLabel htmlFor="drawer-email">Email</EnhancedLabel>
+                            <EnhancedInput
+                              id="drawer-email"
+                              type="email"
+                              placeholder="your@email.com"
+                            />
+                          </div>
+                          <div className='space-y-2'>
+                            <EnhancedLabel htmlFor="drawer-name">Name</EnhancedLabel>
+                            <EnhancedInput
+                              id="drawer-name"
+                              placeholder="Your name"
+                            />
+                          </div>
+                        </div>
+                      </EnhancedDrawerBody>
+                      <EnhancedDrawerFooter>
+                        <EnhancedButton variant='primary' className='w-full'>
+                          Subscribe
+                        </EnhancedButton>
+                        <EnhancedDrawerClose asChild>
+                          <EnhancedButton variant='ghost' className='w-full'>
+                            Cancel
+                          </EnhancedButton>
+                        </EnhancedDrawerClose>
+                      </EnhancedDrawerFooter>
+                    </EnhancedDrawerContent>
+                  </EnhancedDrawer>
+
+                  <EnhancedDrawer>
+                    <EnhancedDrawerTrigger asChild>
+                      <EnhancedButton variant='outline' size='sm'>
+                        Large Detail
+                      </EnhancedButton>
+                    </EnhancedDrawerTrigger>
+                    <EnhancedDrawerContent size="lg" surface="glass">
+                      <EnhancedDrawerHeader>
+                        <EnhancedDrawerTitle>Product Details</EnhancedDrawerTitle>
+                        <EnhancedDrawerDescription>
+                          Complete product information and specifications
+                        </EnhancedDrawerDescription>
+                      </EnhancedDrawerHeader>
+                      <EnhancedDrawerBody>
+                        <div className='space-y-6'>
+                          <div className='aspect-video rounded-lg bg-muted/50 flex items-center justify-center'>
+                            <div className='text-center space-y-2'>
+                              <div className='text-3xl'>📱</div>
+                              <p className='text-sm text-muted-foreground'>Product Image</p>
+                            </div>
+                          </div>
+                          <div className='space-y-4'>
+                            <div>
+                              <h4 className='font-medium mb-2'>Description</h4>
+                              <p className='text-sm text-muted-foreground'>
+                                This is a comprehensive view of the product with detailed
+                                specifications and feature descriptions.
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className='font-medium mb-2'>Features</h4>
+                              <ul className='space-y-1 text-sm text-muted-foreground'>
+                                <li>• Feature one with detailed explanation</li>
+                                <li>• Feature two with specifications</li>
+                                <li>• Feature three with benefits</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </EnhancedDrawerBody>
+                      <EnhancedDrawerFooter>
+                        <div className='flex gap-3 w-full'>
+                          <EnhancedButton variant='primary' className='flex-1'>
+                            Add to Cart
+                          </EnhancedButton>
+                          <EnhancedButton variant='outline' size='sm' className='w-10 h-10 p-0'>
+                            <Heart className='h-4 w-4' />
+                          </EnhancedButton>
+                        </div>
+                      </EnhancedDrawerFooter>
+                    </EnhancedDrawerContent>
+                  </EnhancedDrawer>
+
+                  <EnhancedDrawer>
+                    <EnhancedDrawerTrigger asChild>
+                      <EnhancedButton variant='outline' size='sm'>
+                        Auto Height
+                      </EnhancedButton>
+                    </EnhancedDrawerTrigger>
+                    <EnhancedDrawerContent size="auto" surface="floating">
+                      <EnhancedDrawerHeader>
+                        <EnhancedDrawerTitle>Dynamic Content</EnhancedDrawerTitle>
+                        <EnhancedDrawerDescription>
+                          Drawer height adapts to content automatically
+                        </EnhancedDrawerDescription>
+                      </EnhancedDrawerHeader>
+                      <EnhancedDrawerBody>
+                        <div className='space-y-3'>
+                          <p className='text-sm text-muted-foreground'>
+                            This drawer automatically sizes itself based on the content within.
+                          </p>
+                          <div className='p-3 rounded bg-card border border-border'>
+                            <p className='text-xs text-muted-foreground'>
+                              Content-aware sizing ensures optimal mobile experience.
+                            </p>
+                          </div>
+                        </div>
+                      </EnhancedDrawerBody>
+                    </EnhancedDrawerContent>
+                  </EnhancedDrawer>
+                </div>
+                <p className='text-sm text-muted-foreground'>
+                  Size variants from compact to auto-sizing with surface material options
+                </p>
+              </div>
+
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Factory Patterns
+                </h3>
+                <div className='flex flex-wrap gap-3'>
+                  <EnhancedDrawer>
+                    <EnhancedDrawerTrigger asChild>
+                      <EnhancedButton variant='secondary' size='sm'>
+                        Action Sheet
+                      </EnhancedButton>
+                    </EnhancedDrawerTrigger>
+                    <EnhancedDrawerContent {...DrawerFactory.actionSheet()}>
+                      <EnhancedDrawerHeader>
+                        <EnhancedDrawerTitle>Quick Actions</EnhancedDrawerTitle>
+                        <EnhancedDrawerDescription>
+                          Choose an action to perform
+                        </EnhancedDrawerDescription>
+                      </EnhancedDrawerHeader>
+                      <EnhancedDrawerBody>
+                        <div className='space-y-2'>
+                          <EnhancedButton variant='ghost' className='w-full justify-start h-12'>
+                            <Download className='h-5 w-5 mr-3' />
+                            Download
+                          </EnhancedButton>
+                          <EnhancedButton variant='ghost' className='w-full justify-start h-12'>
+                            <MessageSquare className='h-5 w-5 mr-3' />
+                            Share
+                          </EnhancedButton>
+                          <EnhancedButton variant='ghost' className='w-full justify-start h-12 text-destructive'>
+                            <X className='h-5 w-5 mr-3' />
+                            Delete
+                          </EnhancedButton>
+                        </div>
+                      </EnhancedDrawerBody>
+                    </EnhancedDrawerContent>
+                  </EnhancedDrawer>
+
+                  <EnhancedDrawer>
+                    <EnhancedDrawerTrigger asChild>
+                      <EnhancedButton variant='secondary' size='sm'>
+                        Bottom Sheet
+                      </EnhancedButton>
+                    </EnhancedDrawerTrigger>
+                    <EnhancedDrawerContent {...DrawerFactory.bottomSheet()}>
+                      <EnhancedDrawerHeader>
+                        <EnhancedDrawerTitle>Media Player</EnhancedDrawerTitle>
+                        <EnhancedDrawerDescription>
+                          Control playback and view details
+                        </EnhancedDrawerDescription>
+                      </EnhancedDrawerHeader>
+                      <EnhancedDrawerBody>
+                        <div className='space-y-6'>
+                          <div className='flex items-center space-x-4'>
+                            <div className='h-16 w-16 rounded-lg bg-muted/50 flex items-center justify-center'>
+                              <div className='text-2xl'>🎵</div>
+                            </div>
+                            <div>
+                              <h4 className='font-medium'>Song Title</h4>
+                              <p className='text-sm text-muted-foreground'>Artist Name</p>
+                            </div>
+                          </div>
+                          <div className='flex items-center justify-center space-x-6'>
+                            <EnhancedButton variant='ghost' size='sm' className='w-10 h-10 p-0'>
+                              <SkipBack className='h-5 w-5' />
+                            </EnhancedButton>
+                            <EnhancedButton variant='primary' size='lg' className='rounded-full'>
+                              <Play className='h-6 w-6' />
+                            </EnhancedButton>
+                            <EnhancedButton variant='ghost' size='sm' className='w-10 h-10 p-0'>
+                              <SkipForward className='h-5 w-5' />
+                            </EnhancedButton>
+                          </div>
+                        </div>
+                      </EnhancedDrawerBody>
+                    </EnhancedDrawerContent>
+                  </EnhancedDrawer>
+
+                  <EnhancedDrawer>
+                    <EnhancedDrawerTrigger asChild>
+                      <EnhancedButton variant='secondary' size='sm'>
+                        Form Drawer
+                      </EnhancedButton>
+                    </EnhancedDrawerTrigger>
+                    <EnhancedDrawerContent {...DrawerFactory.formDrawer()}>
+                      <EnhancedDrawerHeader>
+                        <EnhancedDrawerTitle>Create New Item</EnhancedDrawerTitle>
+                        <EnhancedDrawerDescription>
+                          Fill out the form to create a new item
+                        </EnhancedDrawerDescription>
+                      </EnhancedDrawerHeader>
+                      <EnhancedDrawerBody>
+                        <div className='space-y-4'>
+                          <div className='space-y-2'>
+                            <EnhancedLabel htmlFor="form-title">Title</EnhancedLabel>
+                            <EnhancedInput
+                              id="form-title"
+                              placeholder="Enter title"
+                            />
+                          </div>
+                          <div className='space-y-2'>
+                            <EnhancedLabel htmlFor="form-description">Description</EnhancedLabel>
+                            <textarea
+                              id="form-description"
+                              className='w-full p-3 rounded-md border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent'
+                              rows={4}
+                              placeholder="Enter description"
+                            />
+                          </div>
+                          <div className='space-y-2'>
+                            <EnhancedLabel htmlFor="form-category">Category</EnhancedLabel>
+                            <Select>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select category" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="work">Work</SelectItem>
+                                <SelectItem value="personal">Personal</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                      </EnhancedDrawerBody>
+                      <EnhancedDrawerFooter>
+                        <div className='flex gap-3 w-full'>
+                          <EnhancedDrawerClose asChild>
+                            <EnhancedButton variant='outline' className='flex-1'>
+                              Cancel
+                            </EnhancedButton>
+                          </EnhancedDrawerClose>
+                          <EnhancedButton variant='primary' className='flex-1'>
+                            Create
+                          </EnhancedButton>
+                        </div>
+                      </EnhancedDrawerFooter>
+                    </EnhancedDrawerContent>
+                  </EnhancedDrawer>
+
+                  <EnhancedDrawer>
+                    <EnhancedDrawerTrigger asChild>
+                      <EnhancedButton variant='secondary' size='sm'>
+                        AAA Compliant
+                      </EnhancedButton>
+                    </EnhancedDrawerTrigger>
+                    <EnhancedDrawerContent {...DrawerFactory.accessible()}>
+                      <EnhancedDrawerHeader>
+                        <EnhancedDrawerTitle>Accessible Drawer</EnhancedDrawerTitle>
+                        <EnhancedDrawerDescription>
+                          Enhanced accessibility with AAA compliance
+                        </EnhancedDrawerDescription>
+                      </EnhancedDrawerHeader>
+                      <EnhancedDrawerBody>
+                        <div className='space-y-4'>
+                          <div className='p-4 rounded border border-border bg-card'>
+                            <h4 className='font-medium mb-2 text-foreground'>
+                              AAA Features
+                            </h4>
+                            <ul className='space-y-1 text-sm text-muted-foreground'>
+                              <li>• Enhanced contrast ratios for better readability</li>
+                              <li>• Improved focus indicators for keyboard navigation</li>
+                              <li>• Screen reader optimized structure and labeling</li>
+                              <li>• Touch target sizes meet 44px minimum requirement</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </EnhancedDrawerBody>
+                    </EnhancedDrawerContent>
+                  </EnhancedDrawer>
+                </div>
+                <p className='text-sm text-muted-foreground'>
+                  Pre-configured patterns for common mobile interaction patterns
+                </p>
+              </div>
+
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Technical Features
+                </h3>
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <ul className='space-y-3'>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Mobile-first gesture support with touch interactions
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Apple HIG motion system with natural spring animations
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Snap behavior for proximity and precision interactions
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Safe area inset handling for modern mobile devices
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Liquid glass materials with backdrop blur effects
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Factory pattern configurations for rapid development
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Comprehensive keyboard navigation and focus management
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        WCAG AAA compliance with enforced mode option
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Anti-drift enforcement with token-only references
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Platform-aware 44px minimum touch targets
+                      </span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -9824,6 +10792,246 @@ export const ComponentsDemo: React.FC = () => {
             </div>
           </section>
 
+          {/* Enhanced Pagination Showcase */}
+          <section className='space-y-6'>
+            <div className='text-center'>
+              <h2 className='text-3xl font-bold text-foreground'>
+                Enhanced Pagination Components
+              </h2>
+              <p className='mt-2 text-lg text-muted-foreground'>
+                Professional pagination components with MAPS v2.2 dark-first
+                philosophy, Apple HIG interaction patterns, AAA accessibility
+                compliance, and liquid glass materials
+              </p>
+            </div>
+
+            {/* Complete Pagination Demo */}
+            <div className='rounded-lg border border-border bg-card p-6'>
+              <h3 className='mb-4 text-xl font-semibold text-foreground'>
+                Complete Pagination
+              </h3>
+              <div className='space-y-6'>
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    Default Pagination
+                  </h4>
+                  <EnhancedPaginationComplete
+                    currentPage={3}
+                    totalPages={10}
+                    onPageChange={(page) => console.log('Page:', page)}
+                  />
+                </div>
+
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    Pills Variant
+                  </h4>
+                  <EnhancedPaginationComplete
+                    currentPage={5}
+                    totalPages={12}
+                    itemVariant="pills"
+                    onPageChange={(page) => console.log('Page:', page)}
+                  />
+                </div>
+
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    Large Size with AAA Compliance
+                  </h4>
+                  <EnhancedPaginationComplete
+                    currentPage={2}
+                    totalPages={8}
+                    size="lg"
+                    aaaMode
+                    itemVariant="default"
+                    onPageChange={(page) => console.log('Page:', page)}
+                  />
+                </div>
+
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    Compact with Custom Labels
+                  </h4>
+                  <EnhancedPaginationComplete
+                    currentPage={1}
+                    totalPages={5}
+                    size="sm"
+                    itemVariant="minimal"
+                    labels={{
+                      previous: '← Prev',
+                      next: 'Next →',
+                      first: '⟪',
+                      last: '⟫',
+                    }}
+                    onPageChange={(page) => console.log('Page:', page)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Factory Patterns Demo */}
+            <div className='rounded-lg border border-border bg-card p-6'>
+              <h3 className='mb-4 text-xl font-semibold text-foreground'>
+                Factory Patterns
+              </h3>
+              <div className='space-y-6'>
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    Default Factory
+                  </h4>
+                  <PaginationFactory.default.Root>
+                    <PaginationFactory.default.Item>1</PaginationFactory.default.Item>
+                    <PaginationFactory.default.Item isCurrent page={2}>2</PaginationFactory.default.Item>
+                    <PaginationFactory.default.Item>3</PaginationFactory.default.Item>
+                    <PaginationFactory.default.Ellipsis />
+                    <PaginationFactory.default.Item>10</PaginationFactory.default.Item>
+                  </PaginationFactory.default.Root>
+                </div>
+
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    Pills Factory
+                  </h4>
+                  <PaginationFactory.pills.Root>
+                    <PaginationFactory.pills.Item>1</PaginationFactory.pills.Item>
+                    <PaginationFactory.pills.Item isCurrent page={2}>2</PaginationFactory.pills.Item>
+                    <PaginationFactory.pills.Item>3</PaginationFactory.pills.Item>
+                    <PaginationFactory.pills.Ellipsis />
+                    <PaginationFactory.pills.Item>10</PaginationFactory.pills.Item>
+                  </PaginationFactory.pills.Root>
+                </div>
+
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    AAA Compliant Factory
+                  </h4>
+                  <PaginationFactory.aaa.Root>
+                    <PaginationFactory.aaa.Item>1</PaginationFactory.aaa.Item>
+                    <PaginationFactory.aaa.Item isCurrent page={2}>2</PaginationFactory.aaa.Item>
+                    <PaginationFactory.aaa.Item>3</PaginationFactory.aaa.Item>
+                    <PaginationFactory.aaa.Ellipsis />
+                    <PaginationFactory.aaa.Item>10</PaginationFactory.aaa.Item>
+                  </PaginationFactory.aaa.Root>
+                </div>
+              </div>
+            </div>
+
+            {/* Custom Composition Demo */}
+            <div className='rounded-lg border border-border bg-card p-6'>
+              <h3 className='mb-4 text-xl font-semibold text-foreground'>
+                Custom Composition
+              </h3>
+              <div className='space-y-6'>
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    Custom Navigation with Router Links
+                  </h4>
+                  <EnhancedPagination.Root variant="spaced">
+                    <EnhancedPagination.Item asChild>
+                      <a href="/page/1" className="no-underline">1</a>
+                    </EnhancedPagination.Item>
+                    <EnhancedPagination.Item isCurrent page={2}>
+                      2
+                    </EnhancedPagination.Item>
+                    <EnhancedPagination.Item asChild>
+                      <a href="/page/3" className="no-underline">3</a>
+                    </EnhancedPagination.Item>
+                    <EnhancedPagination.Ellipsis />
+                    <EnhancedPagination.Item asChild>
+                      <a href="/page/10" className="no-underline">10</a>
+                    </EnhancedPagination.Item>
+                  </EnhancedPagination.Root>
+                </div>
+
+                <div className='space-y-4'>
+                  <h4 className='text-sm font-medium text-muted-foreground'>
+                    Liquid Glass with Vibrancy
+                  </h4>
+                  <EnhancedPagination.Root variant="pills">
+                    <EnhancedPagination.Item vibrancy="glass">1</EnhancedPagination.Item>
+                    <EnhancedPagination.Item vibrancy="glass" isCurrent page={2}>
+                      2
+                    </EnhancedPagination.Item>
+                    <EnhancedPagination.Item vibrancy="glass">3</EnhancedPagination.Item>
+                    <EnhancedPagination.Ellipsis />
+                    <EnhancedPagination.Item vibrancy="glass">10</EnhancedPagination.Item>
+                  </EnhancedPagination.Root>
+                </div>
+              </div>
+            </div>
+
+            {/* Technical Details */}
+            <div className='rounded-lg border border-border bg-card p-6'>
+              <h3 className='mb-4 text-xl font-semibold text-foreground'>
+                Technical Implementation
+              </h3>
+              <div className='grid gap-6 md:grid-cols-2'>
+                <div>
+                  <h4 className='mb-3 text-lg font-medium text-foreground'>
+                    MAPS v2.2 Features
+                  </h4>
+                  <ul className='space-y-2'>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Dark-first foundation with ethereal accents
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Apple HIG interaction patterns
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Systematic 8pt grid spacing
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Platform-aware touch targets (44px minimum)
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className='mb-3 text-lg font-medium text-foreground'>
+                    Accessibility & Performance
+                  </h4>
+                  <ul className='space-y-2'>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        WCAG AAA compliance with enforced mode
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Comprehensive keyboard navigation
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Optimized pagination range calculation
+                      </span>
+                    </li>
+                    <li className='flex items-center gap-2'>
+                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <span className='text-foreground'>
+                        Polymorphic asChild pattern support
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Enhanced Radio Group Showcase */}
           <section className='space-y-6'>
             <div className='text-center'>
@@ -9844,7 +11052,7 @@ export const ComponentsDemo: React.FC = () => {
             <p className='text-muted-foreground'>
               MAPS v2.2 Enhanced Component System • Enhanced Button, Dialog,
               Input, Label, Select, Checkbox, Popover, Switch, Toggle, Tabs,
-              Collapsible, AlertDialog, Skeleton & More • Built with Apple HIG Philosophy •
+              Collapsible, AlertDialog, Skeleton, Pagination & More • Built with Apple HIG Philosophy •
               Accessible by Design • Liquid Glass Materials • ~9.6/10 AAA
               Compliance Score
             </p>

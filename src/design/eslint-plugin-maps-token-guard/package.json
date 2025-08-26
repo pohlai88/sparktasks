@@ -1,0 +1,49 @@
+{
+  "name": "eslint-plugin-maps-token-guard",
+  "version": "1.0.0",
+  "description": "ESLint plugin for MAPS Design System token governance and anti-drift enforcement",
+  "main": "dist/index.js",
+  "type": "module",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "design-system",
+    "tokens",
+    "tailwind",
+    "governance",
+    "maps",
+    "accessibility"
+  ],
+  "author": "SparkTasks Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "eslint": "^8.0.0 || ^9.0.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.56.0",
+    "typescript": "^5.0.0",
+    "tsup": "^8.0.0"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "test": "node --test dist/index.test.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aibos-app/sparktasks.git",
+    "directory": "src/design/eslint-plugin-maps-token-guard"
+  },
+  "bugs": {
+    "url": "https://github.com/aibos-app/sparktasks/issues"
+  },
+  "homepage": "https://github.com/aibos-app/sparktasks#readme"
+}

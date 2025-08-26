@@ -406,14 +406,14 @@ export const ENHANCED_DESIGN_TOKENS = {
     // Motion system
     motion: MOTION_SYSTEM,
 
-    // Z-index management
+    // Z-index management - Fortune-500 corrected hierarchy
     zIndex: {
       surface: 0,
-      overlay: 10,
-      modal: 20,
-      popover: 30,
-      toast: 40,
-      tooltip: 50,
+      overlay: 100,
+      popover: 1100,    // Popover below modal (contextual only)
+      modal: 1300,      // Modal above popover (blocking interactions)
+      toast: 1400,      // Toast above modal (system notifications)
+      tooltip: 1500,    // Tooltip highest (informational overlay)
     },
   },
 
@@ -426,10 +426,14 @@ export const ENHANCED_DESIGN_TOKENS = {
       error: `bg-error-solid-aaa`,
     },
 
-    // Screen reader utilities
+    // Screen reader utilities - for <VisuallyHidden> component internal use
     screenReader: {
-      only: 'sr-only',
-      focusable:
+      // NOTE: These tokens are consumed by <VisuallyHidden> from @/components/primitives
+      // Direct usage of these classes is discouraged - use the component instead
+      // eslint-disable-next-line no-restricted-syntax
+      visuallyHidden: 'sr-only',
+      // eslint-disable-next-line no-restricted-syntax
+      visuallyHiddenFocusable:
         'sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0',
     },
 

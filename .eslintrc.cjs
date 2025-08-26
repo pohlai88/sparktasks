@@ -34,6 +34,7 @@ module.exports = {
     'unicorn',
     'tailwindcss',
     'unused-imports',
+    'maps-token-guard',  // ← MAPS governance integration
   ],
   extends: [
     'eslint:recommended',
@@ -63,6 +64,12 @@ module.exports = {
     'unused-imports/no-unused-imports': 'warn',
     'unused-imports/no-unused-vars': [
       'warn',
+      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+    ],
+
+    // Configure TypeScript unused vars to use underscore pattern
+    '@typescript-eslint/no-unused-vars': [
+      'error',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
 
@@ -152,6 +159,13 @@ module.exports = {
         ]
       }
     ],
+
+    // ===== MAPS GOVERNANCE RULES =====
+    // Enable MAPS token governance (start with warnings)
+    'maps-token-guard/no-raw-tailwind-in-components': 'warn',
+    'maps-token-guard/enforce-visually-hidden': 'warn',
+    'maps-token-guard/no-hardcoded-z-index': 'warn',
+    'maps-token-guard/require-dark-first': 'warn',
   },
   overrides: [
     {
@@ -178,6 +192,25 @@ module.exports = {
         '@typescript-eslint/no-floating-promises': 'off',
         '@typescript-eslint/await-thenable': 'off',
         '@typescript-eslint/no-misused-promises': 'off',
+      },
+    },
+    {
+      // Documentation files: disable type-aware parsing
+      files: ['**/docs/**/*.{ts,tsx}'],
+      parserOptions: { project: null },
+      rules: {
+        // Disable type-aware rules for docs
+        '@typescript-eslint/no-floating-promises': 'off',
+        '@typescript-eslint/await-thenable': 'off',
+        '@typescript-eslint/no-misused-promises': 'off',
+      },
+    },
+    {
+      // Primitive components: allow direct Radix imports
+      files: ['src/components/primitives/**/*.{ts,tsx}'],
+      rules: {
+        // Allow primitives to import directly from Radix UI
+        'no-restricted-imports': 'off',
       },
     },
   ],

@@ -778,6 +778,29 @@ export type {
   ToolbarToggleItemProps,
 } from './Toolbar';
 
+// Enhanced Pagination Component
+export {
+  EnhancedPagination,
+  EnhancedPaginationRoot,
+  EnhancedPaginationItem,
+  EnhancedPaginationEllipsis,
+  EnhancedPaginationComplete,
+  PaginationFactory,
+  enhancedPaginationRootVariants,
+  enhancedPaginationItemVariants,
+  enhancedPaginationEllipsisVariants,
+  usePaginationRange,
+} from './Pagination';
+
+// Enhanced Pagination Types
+export type {
+  EnhancedPaginationRootProps,
+  EnhancedPaginationItemProps,
+  EnhancedPaginationEllipsisProps,
+  EnhancedPaginationCompleteProps,
+  PaginationConfig,
+} from './Pagination';
+
 // Enhanced AspectRatio Component
 export {
   EnhancedAspectRatio,
@@ -800,6 +823,68 @@ export type {
   AspectRatioVariantProps,
   AspectRatioContentVariantProps,
 } from './AspectRatio';
+
+// Enhanced DatePicker Component
+export {
+  EnhancedDatePicker,
+  EnhancedDatePickerRange,
+  DatePickerFactory,
+  enhancedDatePickerVariants,
+} from './DatePicker';
+
+// Enhanced DatePicker Types
+export type {
+  EnhancedDatePickerProps,
+  EnhancedDatePickerRangeProps,
+  DatePickerVariantProps,
+} from './DatePicker';
+
+// Enhanced Drawer Component
+export {
+  EnhancedDrawer,
+  EnhancedDrawerTrigger,
+  EnhancedDrawerPortal,
+  EnhancedDrawerOverlay,
+  EnhancedDrawerContent,
+  EnhancedDrawerHeader,
+  EnhancedDrawerTitle,
+  EnhancedDrawerDescription,
+  EnhancedDrawerBody,
+  EnhancedDrawerFooter,
+  EnhancedDrawerClose,
+  DrawerFactory,
+  enhancedDrawerOverlayVariants,
+  enhancedDrawerContentVariants,
+  enhancedDrawerHandleVariants,
+  enhancedDrawerCloseVariants,
+} from './Drawer';
+
+// Enhanced Drawer Types
+export type {
+  EnhancedDrawerContentProps,
+  EnhancedDrawerHeaderProps,
+  EnhancedDrawerTitleProps,
+  EnhancedDrawerDescriptionProps,
+  EnhancedDrawerBodyProps,
+  EnhancedDrawerFooterProps,
+  EnhancedDrawerCloseProps,
+  DrawerVariantProps,
+} from './Drawer';
+
+// Enhanced EmptyState Component
+export {
+  EnhancedEmptyState,
+  EmptyStateFactory,
+  enhancedEmptyStateVariants,
+  HUMANIZED_MESSAGES,
+} from './EmptyState';
+
+// Enhanced EmptyState Types
+export type {
+  EnhancedEmptyStateOwnProps,
+  EmptyStateVariantProps,
+  MessageType,
+} from './EmptyState';
 
 // Re-export Enhanced Button as default for convenience
 export { EnhancedButton as default } from './Button';
