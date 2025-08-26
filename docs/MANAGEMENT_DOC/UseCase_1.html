@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SparkTasks - Enterprise Productivity Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Design Tokens - Zero hardcoded Tailwind */
+            --color-primary: #3b82f6;
+            --color-primary-dark: #2563eb;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --color-background: #f8fafc;
+            --color-surface: #ffffff;
+            --color-text-primary: #1e293b;
+            --color-text-secondary: #64748b;
+            --color-border: #e2e8f0;
+
+            --radius-sm: 0.25rem;
+            --radius-md: 0.375rem;
+            --radius-lg: 0.5rem;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+            --transition-fast: 150ms;
+            --transition-normal: 250ms;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+        }
+
+        /* Layout Components */
+        .app-shell {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: 60px 1fr;
+            height: 100vh;
+        }
+
+        .topbar {
+            grid-column: 1 / -1;
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar {
+            background-color: var(--color-surface);
+            border-right: 1px solid var(--color-border);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        /* UI Components */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f1f5f9;
+        }
+
+        .card {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .kanban-board {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .kanban-column {
+            flex: 0 0 300px;
+            background-color: #f1f5f9;
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .kanban-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .kanban-card {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 0.75rem;
+            cursor: grab;
+            transition: transform var(--transition-fast);
+        }
+
+        .kanban-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-primary {
+            background-color: #dbeafe;
+            color: var(--color-primary-dark);
+        }
+
+        .badge-success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            width: 300px;
+            font-size: 0.875rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Navigation */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: #f1f5f9;
+            color: var(--color-primary);
+        }
+
+        /* Command Palette */
+        .command-palette {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 50;
+            display: none;
+        }
+
+        .command-palette.active {
+            display: block;
+        }
+
+        .command-input {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            font-size: 1.125rem;
+            border: none;
+            border-bottom: 1px solid var(--color-border);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .command-input:focus {
+            outline: none;
+        }
+
+        .command-results {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .command-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+        }
+
+        .command-item:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Task Drawer */
+        .task-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 600px;
+            background-color: var(--color-surface);
+            box-shadow: var(--shadow-lg);
+            z-index: 40;
+            transform: translateX(100%);
+            transition: transform var(--transition-normal);
+            overflow-y: auto;
+        }
+
+        .task-drawer.active {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .drawer-content {
+            padding: 1.5rem;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Utility Classes */
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-3 {
+            gap: 0.75rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .text-muted {
+            color: var(--color-text-secondary);
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn var(--transition-normal) ease-in;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app-shell {
+                grid-template-columns: 240px 1fr;
+            }
+
+            .task-drawer {
+                width: 80%;
+            }
+
+            .command-palette {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .kanban-column {
+                flex: 0 0 260px;
+            }
+
+            .search-input {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="flex items-center gap-4">
+                <div class="font-semibold text-xl">SparkTasks</div>
+                <div class="relative">
+                    <input type="text" class="search-input" placeholder="Search (⌘K)" id="search-input">
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="badge badge-success flex items-center gap-1">
+                    <i class="fas fa-bolt text-xs"></i>
+                    <span>Online</span>
+                </div>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Account</span>
+                </button>
+            </div>
+        </header>
+
+        <aside class="sidebar">
+            <nav class="mb-4">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-table-cells"></i>
+                    <span>Boards</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-file-lines"></i>
+                    <span>Library</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-simple"></i>
+                    <span>Analytics</span>
+                </a>
+            </nav>
+
+            <div class="mb-4">
+                <h3 class="text-sm font-semibold text-muted mb-2">MY PROJECTS</h3>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Marketing Campaign</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Product Launch</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Q3 Planning</span>
+                </a>
+            </div>
+
+            <div>
+                <h3 class="text-sm font-semibold text-muted mb-2">TEAMS</h3>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Design Team</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Engineering</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Marketing</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="font-semibold text-2xl">Marketing Campaign</h1>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Task</span>
+                </button>
+            </div>
+
+            <div class="kanban-board">
+                <div class="kanban-column">
+                    <div class="kanban-column-header">
+                        <h3 class="font-semibold">To Do</h3>
+                        <span class="text-muted text-sm">5 tasks</span>
+                    </div>
+
+                    <div class="kanban-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium">Create campaign strategy</h4>
+                            <img src="https://i.pravatar.cc/24?img=1" class="rounded-full" alt="Assignee">
+                        </div>
+                        <p class="text-muted text-sm mb-2">Develop comprehensive marketing strategy for Q4</p>
+                        <div class="flex gap-2">
+                            <span class="badge badge-primary">High Priority</span>
+                            <span class="badge badge-warning">Due Tomorrow</span>
+                        </div>
+                    </div>
+
+                    <div class="kanban-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium">Design social media assets</h4>
+                            <img src="https://i.pravatar.cc/24?img=2" class="rounded-full" alt="Assignee">
+                        </div>
+                        <p class="text-muted text-sm mb-2">Create graphics for Instagram, Facebook, and Twitter</p>
+                        <div class="flex gap-2">
+                            <span class="badge badge-warning">Medium Priority</span>
+                        </div>
+                    </div>
+
+                    <div class="kanban-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium">Research competitors</h4>
+                            <img src="https://i.pravatar.cc/24?img=3" class="rounded-full" alt="Assignee">
+                        </div>
+                        <p class="text-muted text-sm mb-2">Analyze competitor campaigns for insights</p>
+                        <div class="flex gap-2">
+                            <span class="badge badge-primary">High Priority</span>
+                            <span class="badge badge-success">Research</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-plus"></i>
+                        <span>Add another task</span>
+                    </button>
+                </div>
+
+                <div class="kanban-column">
+                    <div class="kanban-column-header">
+                        <h3 class="font-semibold">In Progress</h3>
+                        <span class="text-muted text-sm">3 tasks</span>
+                    </div>
+
+                    <div class="kanban-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium">Write blog content</h4>
+                            <img src="https://i.pravatar.cc/24?img=4" class="rounded-full" alt="Assignee">
+                        </div>
+                        <p class="text-muted text-sm mb-2">5 articles about industry trends</p>
+                        <div class="flex gap-2">
+                            <span class="badge badge-warning">Medium Priority</span>
+                            <span class="badge badge-success">Content</span>
+                        </div>
+                    </div>
+
+                    <div class="kanban-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium">Set up analytics</h4>
+                            <img src="https://i.pravatar.cc/24?img=5" class="rounded-full" alt="Assignee">
+                        </div>
+                        <p class="text-muted text-sm mb-2">Configure Google Analytics and tracking</p>
+                        <div class="flex gap-2">
+                            <span class="badge badge-primary">High Priority</span>
+                            <span class="badge badge-success">Analytics</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-plus"></i>
+                        <span>Add another task</span>
+                    </button>
+                </div>
+
+                <div class="kanban-column">
+                    <div class="kanban-column-header">
+                        <h3 class="font-semibold">Review</h3>
+                        <span class="text-muted text-sm">2 tasks</span>
+                    </div>
+
+                    <div class="kanban-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium">Finalize ad copy</h4>
+                            <img src="https://i.pravatar.cc/24?img=6" class="rounded-full" alt="Assignee">
+                        </div>
+                        <p class="text-muted text-sm mb-2">Review and approve all advertising copy</p>
+                        <div class="flex gap-2">
+                            <span class="badge badge-warning">Medium Priority</span>
+                            <span class="badge badge-success">Copywriting</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-plus"></i>
+                        <span>Add another task</span>
+                    </button>
+                </div>
+
+                <div class="kanban-column">
+                    <div class="kanban-column-header">
+                        <h3 class="font-semibold">Done</h3>
+                        <span class="text-muted text-sm">4 tasks</span>
+                    </div>
+
+                    <div class="kanban-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium">Define target audience</h4>
+                            <img src="https://i.pravatar.cc/24?img=7" class="rounded-full" alt="Assignee">
+                        </div>
+                        <p class="text-muted text-sm mb-2">Create detailed buyer personas</p>
+                        <div class="flex gap-2">
+                            <span class="badge badge-success">Completed</span>
+                        </div>
+                    </div>
+
+                    <div class="kanban-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-medium">Set campaign budget</h4>
+                            <img src="https://i.pravatar.cc/24?img=8" class="rounded-full" alt="Assignee">
+                        </div>
+                        <p class="text-muted text-sm mb-2">Allocate funds across channels</p>
+                        <div class="flex gap-2">
+                            <span class="badge badge-success">Completed</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-plus"></i>
+                        <span>Add another task</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Command Palette -->
+    <div class="command-palette" id="command-palette">
+        <input type="text" class="command-input" placeholder="Type a command or search...">
+        <div class="command-results">
+            <div class="command-item">
+                <i class="fas fa-tag text-muted"></i>
+                <span>Create new task</span>
+            </div>
+            <div class="command-item">
+                <i class="fas fa-search text-muted"></i>
+                <span>Search tasks</span>
+            </div>
+            <div class="command-item">
+                <i class="fas fa-user-plus text-muted"></i>
+                <span>Add team member</span>
+            </div>
+            <div class="command-item">
+                <i class="fas fa-chart-simple text-muted"></i>
+                <span>View analytics</span>
+            </div>
+            <div class="command-item">
+                <i class="fas fa-gear text-muted"></i>
+                <span>Open settings</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Drawer -->
+    <div class="task-drawer" id="task-drawer">
+        <div class="drawer-header">
+            <h2 class="font-semibold">Create campaign strategy</h2>
+            <button class="btn btn-secondary" id="close-drawer">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Description</label>
+                <p class="text-muted">Develop comprehensive marketing strategy for Q4 product launch, including channel selection, messaging, and KPI targets.</p>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Assignee</label>
+                <div class="flex items-center gap-2">
+                    <img src="https://i.pravatar.cc/32?img=1" class="rounded-full" alt="Assignee">
+                    <span>Sarah Johnson</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Due Date</label>
+                <span class="text-muted">Tomorrow, 5:00 PM</span>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Priority</label>
+                <span class="badge badge-primary">High Priority</span>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Labels</label>
+                <div class="flex gap-2">
+                    <span class="badge badge-success">Strategy</span>
+                    <span class="badge badge-warning">Q4 Planning</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Attachments</label>
+                <div class="card flex items-center gap-3">
+                    <i class="fas fa-file-pdf text-red-500"></i>
+                    <div>
+                        <div class="font-medium">Marketing_Plan.pdf</div>
+                        <div class="text-muted text-xs">Added 2 hours ago</div>
+                    </div>
+                    <div class="ml-auto">
+                        <button class="btn btn-secondary text-xs">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Activity</label>
+                <div class="space-y-3">
+                    <div class="flex gap-3">
+                        <img src="https://i.pravatar.cc/24?img=1" class="rounded-full h-6 w-6 mt-1" alt="User">
+                        <div>
+                            <div class="font-medium">Sarah Johnson</div>
+                            <div class="text-muted text-sm">Changed status from To Do to In Progress</div>
+                            <div class="text-muted text-xs">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <img src="https://i.pravatar.cc/24?img=5" class="rounded-full h-6 w-6 mt-1" alt="User">
+                        <div>
+                            <div class="font-medium">Michael Chen</div>
+                            <div class="text-muted text-sm">Added attachment Marketing_Plan.pdf</div>
+                            <div class="text-muted text-xs">3 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <img src="https://i.pravatar.cc/24?img=3" class="rounded-full h-6 w-6 mt-1" alt="User">
+                        <div>
+                            <div class="font-medium">Emily Rodriguez</div>
+                            <div class="text-muted text-sm">Created this task</div>
+                            <div class="text-muted text-xs">Yesterday at 4:32 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        // Toggle command palette with Cmd+K/Ctrl+K
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('command-palette').classList.toggle('active');
+                document.getElementById('overlay').classList.toggle('active');
+
+                if (document.getElementById('command-palette').classList.contains('active')) {
+                    document.querySelector('.command-input').focus();
+                }
+            }
+
+            // Close with Escape key
+            if (e.key === 'Escape') {
+                document.getElementById('command-palette').classList.remove('active');
+                document.getElementById('task-drawer').classList.remove('active');
+                document.getElementById('overlay').classList.remove('active');
+            }
+        });
+
+        // Open task drawer when clicking on a card
+        document.querySelectorAll('.kanban-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.getElementById('task-drawer').classList.add('active');
+                document.getElementById('overlay').classList.add('active');
+            });
+        });
+
+        // Close drawer
+        document.getElementById('close-drawer').addEventListener('click', () => {
+            document.getElementById('task-drawer').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        });
+
+        // Close when clicking on overlay
+        document.getElementById('overlay').addEventListener('click', () => {
+            document.getElementById('command-palette').classList.remove('active');
+            document.getElementById('task-drawer').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        });
+
+        // Simulate fast loading
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+        });
+    </script>
+</body>
+</html>

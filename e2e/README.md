@@ -1,258 +1,415 @@
-# Enterprise E2E Testing Stack
+# 🎯 SparkTasks E2E Testing Infrastructure
 
-## 🚀 Overview
+## 📋 Overview
 
-World-class Enterprise SaaS E2E testing infrastructure designed to validate superiority over ClickUp, Trello, and enterprise competitors.
+Enterprise-grade Playwright E2E testing suite with **deterministic seeding**, **visual regression testing**, **accessibility compliance**, **performance monitoring**, and **API mocking** capabilities.
 
-### Key Features
+---
 
-- ⚡ **Sub-second setup** via database snapshots
-- 🔒 **Per-worker isolation** (parallel execution)
-- 🎯 **Tagged test execution** (@critical for PRs)
-- 📊 **Performance benchmarking** vs competitors
-- 🏭 **Deterministic data factories**
-- 🔄 **SSOT selector governance**
-- 🚫 **No UI auth** (server-minted sessions)
+## � Quick Start
 
-## 📁 Architecture
-
-```
-e2e/
-├── playwright.config.ts      # Enterprise Playwright configuration
-├── global-setup.ts          # Lightning-fast environment setup
-├── fixtures/
-│   ├── test-fixtures.ts      # Scenario-based test fixtures
-│   ├── auth.ts              # Server-minted authentication
-│   └── selectors.ts         # SSOT selector registry
-├── data/
-│   ├── db-setup.ts          # Database isolation & snapshots
-│   ├── factories/           # Deterministic data generators
-│   ├── scenarios/           # Business scenario overlays
-│   └── seed.contract.test.ts # Data integrity validation
-├── specs/
-│   ├── critical-path/       # @critical tests for PR gating
-│   ├── regression/          # Performance & benchmark tests
-│   └── smoke/              # Quick validation tests
-└── ci/
-    └── github-actions.yml   # Enterprise CI pipeline
-```
-
-## 🎯 Quick Start
-
-### 1. Install Dependencies
+### **Run All Tests**
 
 ```bash
-npm install @playwright/test @faker-js/faker pg
-npx playwright install --with-deps
+npm run test:e2e           # Full test suite
+npm run test:e2e:smoke     # Critical user journeys only
+npm run test:e2e:critical  # Mission-critical flows
 ```
 
-### 2. Run Data Contract Validation
+### **Specialized Test Categories**
 
 ```bash
-npm run test:data-contracts
+npm run test:visual        # Visual regression tests
+npm run test:a11y          # Accessibility compliance
+npm run test:performance   # Performance benchmarking
+npm run test:mocking       # API mocking scenarios
 ```
 
-### 3. Execute Critical Path Tests
+### **Development & Debugging**
 
 ```bash
-npm run e2e:critical
+npm run test:e2e:ui        # Interactive test runner
+npm run test:e2e:debug     # Debug mode with browser dev tools
+npm run test:e2e:report    # View HTML test report
 ```
 
-### 4. Full E2E Suite
+---
 
-```bash
-npm run e2e
-```
+## 🏗️ Test Infrastructure
 
-## ⚡ Enterprise Commands
+### **1. 🌱 Deterministic Data Seeding**
 
-### Core Testing
-
-```bash
-npm run e2e              # Full enterprise E2E suite
-npm run e2e:ui           # Interactive test runner
-npm run e2e:critical     # Critical path only (PR gating)
-npm run e2e:report       # View latest test results
-npm run e2e:debug        # Debug mode with stepping
-```
-
-### Data Management
-
-```bash
-npm run test:data-contracts    # Validate factory integrity
-npm run db:snapshot:create     # Create database snapshot
-npm run db:snapshot:restore    # Restore from snapshot
-npm run seed:base             # Seed reference data
-npm run seed:scenario         # Run specific scenario
-```
-
-## 🏆 Competitive Advantages
-
-### Performance Benchmarks
-
-- **Task Load Time**: <2s (vs ClickUp ~4s)
-- **Search Response**: <100ms (vs Trello ~500ms)
-- **Data Export**: <30s full export (vs limited/manual)
-- **Real-time Updates**: <100ms (vs delayed sync)
-
-### Enterprise Features
-
-- **Per-worker DB isolation** (true parallel testing)
-- **Deterministic factories** (reproducible test data)
-- **Tagged test execution** (efficient CI pipelines)
-- **Performance monitoring** (competitive analysis)
-- **Data sovereignty testing** (migration/backup validation)
-
-## 🎛️ Test Categories
-
-### @critical (PR Gating)
+**Golden Snapshot Pattern** ensures identical test conditions across all runs:
 
 ```typescript
-taskTest(
-  '@critical Admin manages tasks faster than ClickUp',
-  async ({ page, scenario }) => {
-    // Critical user journey validation
-  }
-);
+// e2e/data/seed.base.ts - Base deterministic data
+export const GOLDEN_SNAPSHOT = {
+  users: [
+    { id: 'user-001', email: 'test@sparktasks.com', role: 'admin' }
+  ],
+  tasks: [
+    { id: 'task-001', title: 'Sample Task', status: 'pending' }
+  ],
+  timestamp: '2024-01-01T00:00:00.000Z'
+};
 ```
 
-### Performance Benchmarks
+**Usage:**
 
-```typescript
-benchmarkTest(
-  'Large dataset outperforms ClickUp',
-  async ({ page, scenario }) => {
-    // Competitive performance validation
-  }
-);
+```bash
+npm run db:snapshot:create  # Create golden snapshot
+npm run db:snapshot:restore # Restore to clean state
+npm run seed:base          # Load deterministic data
 ```
 
-### Enterprise Features
+### **2. 📸 Visual Regression Testing**
+
+**Screenshot-based validation** with cross-browser support:
 
 ```typescript
-componentTest('Data export beats all competitors', async ({ page }) => {
-  // Unique SaaS differentiator testing
+// Automatic visual comparison
+await expect(page).toHaveScreenshot('homepage.png');
+
+// Component-level snapshots
+await expect(page.locator('[data-testid="task-card"]')).toHaveScreenshot();
+
+// Responsive testing
+await page.setViewportSize({ width: 375, height: 667 });
+await expect(page).toHaveScreenshot('homepage-mobile.png');
+```
+
+**Management:**
+
+```bash
+npm run test:visual:update # Update baseline screenshots
+```
+
+### **3. ♿ Accessibility Testing**
+
+**WCAG 2.1 Level AA compliance** with axe-playwright:
+
+```typescript
+import { injectAxe, checkA11y } from 'axe-playwright';
+
+test('accessibility compliance', async ({ page }) => {
+  await injectAxe(page);
+  await checkA11y(page, null, {
+    tags: ['wcag2a', 'wcag2aa', 'wcag21aa']
+  });
 });
 ```
 
-## 📊 CI/CD Integration
+**Coverage:**
 
-### Pull Request Flow
+- ✅ Keyboard navigation
+- ✅ Screen reader compatibility
+- ✅ Color contrast validation
+- ✅ Focus management
+- ✅ ARIA attributes
 
-```yaml
-# Runs @critical tests only for fast feedback
-PW_GREP: '@critical'
-Parallel execution: 4 shards
-Expected duration: <5 minutes
+### **4. 🚀 Performance Monitoring**
+
+**Core Web Vitals** and custom performance metrics:
+
+```typescript
+test('performance benchmarks', async ({ page }) => {
+  // Measures LCP, FID, CLS automatically
+  const metrics = await page.evaluate(() => window.webVitals);
+
+  expect(metrics.lcp).toBeLessThan(2500);     // LCP < 2.5s
+  expect(metrics.cls).toBeLessThan(0.1);      // CLS < 0.1
+  expect(metrics.fid).toBeLessThan(100);      // FID < 100ms
+});
 ```
 
-### Main Branch Flow
+**Performance Budgets:**
 
-```yaml
-# Full test suite across all browsers
-Browsers: Chrome, Firefox, Safari
-Parallel execution: 6 workers
-Performance monitoring: Enabled
+- LCP (Largest Contentful Paint): < 2.5s
+- FID (First Input Delay): < 100ms
+- CLS (Cumulative Layout Shift): < 0.1
+- DOM Content Loaded: < 1.5s
+
+### **5. 🔁 API Mocking**
+
+**Deterministic API responses** for reliable testing:
+
+```typescript
+import { createAPIMocker, MockResponses } from '../utils/api-mocks';
+
+test('with mocked APIs', async ({ page }) => {
+  const apiMocker = await createAPIMocker(page);
+
+  // Mock successful responses
+  await apiMocker.mockEndpoint('/api/tasks',
+    MockResponses.success([{ id: '1', title: 'Mock Task' }])
+  );
+
+  // Mock error scenarios
+  await apiMocker.mockEndpoint('/api/error',
+    MockResponses.error('Server Error', 500)
+  );
+});
 ```
 
-### Nightly Testing
+**Mock Scenarios:**
 
-```yaml
-# Comprehensive validation
-Feature flag matrix: Enabled/Disabled
-Competitive benchmarks: Full suite
-Performance reports: Generated
+- ✅ Success responses
+- ✅ Error handling (4xx, 5xx)
+- ✅ Network timeouts
+- ✅ Offline scenarios
+- ✅ Authentication flows
+
+---
+
+## 🏷️ Test Tagging System
+
+### **Execution Priority Tags**
+
+```typescript
+test('critical user flow @critical @smoke', async ({ page }) => {
+  // Always runs in CI/CD and smoke tests
+});
+
+test('edge case validation @regression', async ({ page }) => {
+  // Runs in full regression suite
+});
+
+test('experimental feature @experimental @quarantine', async ({ page }) => {
+  // Excluded from standard runs
+});
 ```
+
+### **Category Tags**
+
+- `@smoke` - Critical user journeys (< 5 minutes)
+- `@critical` - Mission-critical flows
+- `@visual` - Visual regression tests
+- `@a11y` - Accessibility tests
+- `@performance` - Performance benchmarks
+- `@mocking` - API mocking scenarios
+- `@mobile` - Mobile-specific tests
+- `@quarantine` - Temporarily disabled tests
+
+### **Selective Execution**
+
+```bash
+# Run specific categories
+SMOKE=1 npm run test:e2e          # Smoke tests only
+CRITICAL=1 npm run test:e2e       # Critical tests only
+
+# Browser-specific execution
+npx playwright test --project=chromium
+npx playwright test --project=mobile-chrome
+```
+
+---
 
 ## 🔧 Configuration
 
-### Environment Variables
+### **Environment Variables**
 
 ```bash
-APP_BASE_URL=http://localhost:3000
-DATABASE_URL=postgres://user:pass@localhost:5432/test
-PW_GREP=@critical                    # Test filtering
-TEST_WORKER_INDEX=1                  # Worker identification
+# Test execution
+BASE_URL=http://localhost:3000
+CI=true                          # CI mode (retries, workers)
+CI_WORKERS=2                     # Parallel worker count
+
+# Test filtering
+SMOKE=1                          # Run smoke tests only
+CRITICAL=1                       # Run critical tests only
+
+# Deterministic environment
+NODE_ENV=test
+TZ=UTC
+FAKE_NOW=2024-01-01T00:00:00.000Z
+DISABLE_ANALYTICS=1
 ```
 
-### Database Setup
+### **Browser Matrix**
 
-The E2E stack supports multiple database strategies:
+- **Desktop**: Chromium, Firefox, WebKit
+- **Mobile**: Pixel 7 (Chrome), iPhone 14 (Safari)
+- **CI Optimization**: 2 workers, retry on failure
 
-1. **Per-worker schemas** (recommended for Postgres)
-2. **Transaction savepoints** (fastest for single DB)
-3. **In-memory snapshots** (for testing without DB)
+### **Reporting**
 
-## 🎯 Selector Governance
+- **HTML Report**: `test-results/e2e-report/index.html`
+- **JSON Results**: `test-results/results.json`
+- **JUnit XML**: `test-results/junit.xml` (CI integration)
+- **GitHub Actions**: Automatic PR annotations
 
-### SSOT Selector Registry
+---
+
+## 📁 Directory Structure
+
+```
+e2e/
+├── tests/                      # Test specifications
+│   ├── auth.spec.ts           # Authentication flows
+│   ├── visual.spec.ts         # Visual regression
+│   ├── a11y.spec.ts          # Accessibility compliance
+│   ├── performance.spec.ts    # Performance benchmarks
+│   └── api-mocking.spec.ts    # API mocking scenarios
+├── fixtures/                   # Test fixtures & utilities
+│   ├── test-fixtures.ts       # Custom test fixtures
+│   └── authenticated-user.ts  # Pre-authenticated state
+├── utils/                      # Utilities & helpers
+│   ├── page-utils.ts          # Page interaction helpers
+│   ├── api-mocks.ts           # API mocking utilities
+│   └── performance-utils.ts    # Performance measurement
+├── data/                       # Test data & seeding
+│   ├── seed.base.ts           # Deterministic base data
+│   ├── seed.scenarios.ts      # Scenario-specific data
+│   └── storage-state.json     # Authentication state
+├── __screenshots__/            # Visual regression baselines
+│   ├── chromium/              # Browser-specific screenshots
+│   ├── firefox/
+│   └── webkit/
+├── global-setup.ts            # Test environment setup
+├── global-teardown.ts         # Test environment cleanup
+└── playwright.config.ts       # Playwright configuration
+```
+
+---
+
+## 🎯 Best Practices
+
+### **1. Test Isolation**
 
 ```typescript
-import { SEL } from '../fixtures/selectors';
-
-// Use centralized selectors
-await page.locator(SEL.task.quickAdd.input).fill('Test task');
-await page.locator(SEL.task.quickAdd.button).click();
+test.beforeEach(async ({ page }) => {
+  // Restore deterministic state before each test
+  await page.goto('/reset-state');
+});
 ```
 
-### No Magic Strings
+### **2. Reliable Selectors**
 
 ```typescript
-// ❌ Forbidden
-await page.locator('[data-testid="quick-add-input"]');
+// ✅ Preferred - Stable test IDs
+await page.locator('[data-testid="submit-button"]').click();
 
-// ✅ Required
-await page.locator(SEL.task.quickAdd.input);
+// ✅ Semantic selectors
+await page.locator('role=button[name="Submit"]').click();
+
+// ❌ Avoid - Fragile CSS selectors
+await page.locator('.btn-primary.large').click();
 ```
 
-## 📈 Performance Monitoring
+### **3. Wait Strategies**
 
-### Automatic Benchmarking
+```typescript
+// ✅ Wait for specific conditions
+await page.waitForLoadState('networkidle');
+await page.locator('[data-testid="content"]').waitFor();
 
-Every test run captures:
+// ✅ Use expect with timeout
+await expect(page.locator('[data-testid="result"]')).toBeVisible();
 
-- Page load times
-- User interaction response times
-- Search performance metrics
-- Data operation speeds
+// ❌ Avoid fixed timeouts
+await page.waitForTimeout(5000);
+```
 
-### Competitive Analysis
+### **4. Error Handling**
 
-Tests validate superiority over:
+```typescript
+test('graceful error handling', async ({ page }) => {
+  // Test error scenarios with mocked APIs
+  await apiMocker.mockEndpoint('/api/error', MockResponses.error('Server Error'));
 
-- **ClickUp**: Task management performance
-- **Trello**: Search and navigation speed
-- **Enterprise tools**: Data export capabilities
-- **Generic SaaS**: Real-time collaboration
+  await page.goto('/');
+  await expect(page.locator('[data-testid="error-message"]')).toBeVisible();
+});
+```
 
-## 🚫 Anti-Flake Rules
+---
 
-1. **No UI authentication** - server-minted sessions only
-2. **Deterministic data** - fixed PRNG seeds
-3. **SSOT selectors** - no magic strings
-4. **Performance budgets** - hard limits on response times
-5. **Isolation guaranteed** - per-worker database schemas
+## 🔄 CI/CD Integration
 
-## 📋 Migration Guide
+### **GitHub Actions Example**
 
-### From Legacy E2E
+```yaml
+- name: Run E2E Tests
+  run: |
+    npm run test:e2e:critical
+  env:
+    CI: true
+    BASE_URL: ${{ env.PREVIEW_URL }}
 
-1. Move tests from `test/e2e/` to `e2e/specs/`
-2. Replace magic strings with `SEL` registry
-3. Add `@critical` tags for important flows
-4. Use `taskTest` fixtures for authentication
-5. Update CI to use new scripts
+- name: Upload Test Results
+  uses: actions/upload-artifact@v3
+  if: always()
+  with:
+    name: playwright-report
+    path: test-results/
+```
 
-### Adding New Tests
+### **Performance Monitoring**
 
-1. Choose appropriate fixture (`taskTest`, `benchmarkTest`, `componentTest`)
-2. Use `SEL` registry for element targeting
-3. Add performance assertions for competitive advantage
-4. Tag critical paths with `@critical`
-5. Update data contracts if adding new scenarios
+- Automatic slow test detection (> 15s)
+- Performance regression alerts
+- Core Web Vitals tracking
 
-## 🎉 Ready for Enterprise SaaS Dominance
+---
 
-This E2E stack provides the foundation to validate your SaaS superiority over market leaders. Every test execution proves your competitive advantages in speed, reliability, and enterprise features.
+## 🎯 Success Metrics
 
-**Next**: Start implementing atomic components with confidence in your enterprise-grade testing foundation!
+### **Quality Gates**
+
+- ✅ **100% Critical Path Coverage** - All @critical tests pass
+- ✅ **WCAG 2.1 AA Compliance** - All accessibility tests pass
+- ✅ **Performance Budgets Met** - Core Web Vitals within thresholds
+- ✅ **Visual Consistency** - No unintended UI changes
+- ✅ **API Reliability** - All error scenarios handled gracefully
+
+### **Performance Targets**
+
+- **Test Execution**: < 15 minutes for full suite
+- **Smoke Tests**: < 5 minutes for critical flows
+- **Flakiness Rate**: < 1% test failure rate
+- **Cross-Browser Compatibility**: 100% pass rate on target browsers
+
+---
+
+## 🆘 Troubleshooting
+
+### **Common Issues**
+
+**Flaky Tests:**
+
+```bash
+# Check for timing issues
+npm run test:e2e:debug test-name.spec.ts
+
+# Run with retries
+npm run test:e2e -- --retries=3
+```
+
+**Visual Regression Failures:**
+
+```bash
+# Update screenshots after UI changes
+npm run test:visual:update
+
+# Compare differences
+npm run test:e2e:report
+```
+
+**Performance Issues:**
+
+```bash
+# Profile slow tests
+npm run test:performance -- --reporter=verbose
+```
+
+### **Getting Help**
+
+- 📖 **Playwright Docs**: https://playwright.dev
+- 🐛 **Issue Reports**: Create GitHub issues with test logs
+- 💬 **Team Support**: Check internal documentation
+
+---
+
+**🎉 Enterprise-Grade Testing Infrastructure Ready!**
+
+This comprehensive suite provides **Fortune-500 level testing capabilities** with deterministic data, visual regression detection, accessibility compliance, performance monitoring, and reliable API mocking. 🚀

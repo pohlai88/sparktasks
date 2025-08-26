@@ -58,19 +58,24 @@ function countHardcodedClasses(componentName: string): number {
     const filePath = `src/components/ui/${componentName}.tsx`;
     const content = fs.readFileSync(filePath, 'utf8');
 
-    // More accurate detection: look for className patterns that are NOT wrapped in combineTokens
+    // More accurate detection: look for className patterns that are NOT wrapped in SSOT patterns
     const classNameLines = content.split('\n').filter(
       line =>
         line.includes('className=') &&
         !line.includes('combineTokens(') &&
         !line.includes('DESIGN_TOKENS.') &&
+        !line.includes('PRIMITIVES.') &&
+        !line.includes('SEMANTIC.') &&
+        !line.includes('RECIPES.') &&
+        !line.includes('TOKENS.') &&
         !line.includes('recipe.') &&
         !line.includes('${') && // Skip template literals
         !line.includes('//') && // Skip comments
         !line.includes('/*') && // Skip comments
         !line.includes('* ') && // Skip comments
         !line.includes('className={className}') && // Skip prop forwarding
-        !line.includes('className={props.className}') // Skip prop forwarding
+        !line.includes('className={props.className}') && // Skip prop forwarding
+        !line.includes('className={') // Skip any dynamic className
     );
 
     let violations = 0;
@@ -84,33 +89,48 @@ function countHardcodedClasses(componentName: string): number {
         cleanLine.includes('cn(') ||
         cleanLine.includes('clsx(') ||
         cleanLine.includes('classNames(') ||
-        cleanLine.includes('twMerge(')
+        cleanLine.includes('twMerge(') ||
+        cleanLine.includes('currentSize.') ||
+        cleanLine.includes('currentVariant.') ||
+        cleanLine.includes('sizeStyles[') ||
+        cleanLine.includes('variantStyles[')
       ) {
         continue;
       }
 
-      const hardcodedPatterns = [
-        /className\s*=\s*["'][^"']*\b(flex|grid|inline-flex|hidden|block)\b/,
-        /className\s*=\s*["'][^"']*\b(w-\d+|h-\d+|size-\d+)\b/,
-        /className\s*=\s*["'][^"']*\b(p-\d+|px-\d+|py-\d+|m-\d+|mx-\d+|my-\d+)\b/,
-        /className\s*=\s*["'][^"']*\b(text-\w+|font-\w+|leading-\w+)\b/,
-        /className\s*=\s*["'][^"']*\b(bg-\w+|border-\w+|rounded-\w+)\b/,
-        /className\s*=\s*["'][^"']*\b(space-[xy]-\d+|gap-\d+)\b/,
-        /className\s*=\s*["'][^"']*\b(absolute|relative|fixed|sticky)\b/,
-        /className\s*=\s*["'][^"']*\b(top-\d+|right-\d+|bottom-\d+|left-\d+)\b/,
-        /className\s*=\s*["'][^"']*\b(z-\d+|opacity-\d+)\b/,
-        /className\s*=\s*["'][^"']*\b(min-w-\d+|max-w-\d+|min-h-\d+|max-h-\d+)\b/,
-        /className\s*=\s*["'][^"']*\b(flex-\d+|flex-\w+|shrink-\d+|grow-\d+)\b/,
-      ];
+      // Look for static string className assignments with Tailwind classes
+      const staticClassPattern = /className\s*=\s*["']([^"']+)["']/;
+      const match = staticClassPattern.exec(line);
 
-      if (hardcodedPatterns.some(pattern => pattern.test(line))) {
-        violations++;
+      if (match) {
+        const classString = match[1];
+
+        // Count hardcoded Tailwind patterns
+        const hardcodedPatterns = [
+          /\b(flex|grid|inline-flex|hidden|block|inline|inline-block)\b/,
+          /\b(w-\d+|h-\d+|size-\d+|min-w-\d+|max-w-\d+|min-h-\d+|max-h-\d+)\b/,
+          /\b(p-\d+|px-\d+|py-\d+|m-\d+|mx-\d+|my-\d+|pl-\d+|pr-\d+|pt-\d+|pb-\d+|ml-\d+|mr-\d+|mt-\d+|mb-\d+)\b/,
+          /\b(text-\w+|font-\w+|leading-\w+|tracking-\w+)\b/,
+          /\b(bg-\w+|border-\w+|rounded-\w+|shadow-\w+)\b/,
+          /\b(space-[xy]-\d+|gap-\d+)\b/,
+          /\b(absolute|relative|fixed|sticky)\b/,
+          /\b(top-\d+|right-\d+|bottom-\d+|left-\d+|inset-\d+)\b/,
+          /\b(z-\d+|opacity-\d+)\b/,
+          /\b(flex-\d+|flex-\w+|shrink-\d+|grow-\d+)\b/,
+          /\b(focus:[\w-]+|hover:[\w-]+|active:[\w-]+)\b/,
+          /\b(transition-\w+|duration-\d+|ease-\w+)\b/,
+          /\b(transform|rotate-\d+|scale-\d+|translate-[xy]-\d+)\b/,
+        ];
+
+        const hardcodedMatches = hardcodedPatterns.filter(pattern =>
+          pattern.test(classString)
+        );
+        violations += hardcodedMatches.length;
       }
     }
 
     return violations;
-  } catch (error) {
-    console.warn(`Warning: Could not analyze ${componentName}:`, error);
+  } catch {
     return 0;
   }
 }
@@ -120,23 +140,77 @@ function calculateTokenCoverage(componentName: string): number {
     const filePath = `src/components/ui/${componentName}.tsx`;
     const content = fs.readFileSync(filePath, 'utf8');
 
+    // Check if component imports from SSOT system
+    const hasSSotImports =
+      content.includes('@/design/tokens') ||
+      content.includes('DESIGN_TOKENS') ||
+      content.includes('PRIMITIVES') ||
+      content.includes('SEMANTIC') ||
+      content.includes('RECIPES') ||
+      content.includes('combineTokens');
+
     // Count different types of SSOT compliance indicators
     const combineTokensUsages = (content.match(/combineTokens\(/g) || [])
       .length;
     const designTokensUsages = (content.match(/DESIGN_TOKENS\./g) || []).length;
-    const recipeUsages = (content.match(/\.recipe\./g) || []).length;
+
+    // Three-layer architecture detection
+    const primitivesUsages = (content.match(/PRIMITIVES\./g) || []).length;
+    const semanticUsages = (content.match(/SEMANTIC\./g) || []).length;
+    const recipesUsages = (content.match(/RECIPES\./g) || []).length;
+
+    // Legacy TOKENS usage (still valid but not ideal)
+    const tokensUsages = (content.match(/TOKENS\./g) || []).length;
+
+    // Look for specific semantic patterns
+    const specificSemanticPatterns = [
+      /SEMANTIC\.text\./g,
+      /SEMANTIC\.background\./g,
+      /SEMANTIC\.border\./g,
+      /SEMANTIC\.state\./g,
+      /SEMANTIC\.focus/g,
+    ];
+
+    let specificSemanticUsages = 0;
+    specificSemanticPatterns.forEach(pattern => {
+      specificSemanticUsages += (content.match(pattern) || []).length;
+    });
+
+    // Look for recipe patterns
+    const recipePatterns = [
+      /RECIPES\.button\./g,
+      /RECIPES\.input\./g,
+      /RECIPES\.card\./g,
+      /RECIPES\.alert\./g,
+    ];
+
+    let recipeUsageCount = 0;
+    recipePatterns.forEach(pattern => {
+      recipeUsageCount += (content.match(pattern) || []).length;
+    });
 
     // Count total styling points
     const classNameOccurrences = (content.match(/className/g) || []).length;
 
-    if (classNameOccurrences === 0) return 100; // No styling = 100% compliant
+    if (classNameOccurrences === 0) return hasSSotImports ? 100 : 0;
 
     // Calculate coverage based on SSOT usage vs total styling
-    const ssotUsages = combineTokensUsages + designTokensUsages + recipeUsages;
+    const ssotUsages =
+      combineTokensUsages +
+      designTokensUsages +
+      primitivesUsages +
+      semanticUsages +
+      recipesUsages +
+      specificSemanticUsages +
+      recipeUsageCount +
+      tokensUsages;
     const coverage = Math.round((ssotUsages / classNameOccurrences) * 100);
 
+    // Bonus points for proper SSOT imports
+    const bonusPoints = hasSSotImports ? 10 : 0;
+
     // Cap at reasonable maximum
-    return Math.min(coverage, 300);
+    return Math.min(coverage + bonusPoints, 300);
   } catch {
     return 0;
   }

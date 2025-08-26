@@ -1,0 +1,733 @@
+# Build a consolidated single-file HTML preview that embodies the
+# "SparkTasks — Consolidated Product Blueprint" (A1–A20, B1–B4, quick wins).
+# This prototype is interactive but self-contained (no external deps).
+
+html = r"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SparkTasks — Product Blueprint Preview</title>
+<style>
+  :root{
+    /* brand + surfaces */
+    --bg:#0a0f16; --bg-2:#0e1624; --panel:#0d1523; --ink:#e9f1ff; --muted:#a6bbde;
+    --acc:#7cc4ff; --acc2:#78ffd6; --warn:#ffd166; --ok:#40d6a3; --err:#ff6b6b; --border:#1a2436; --chip:#15243c;
+    --ring:#2a87ff;
+    /* type + radii */
+    --f1:28px; --f2:18px; --f3:15px; --f4:13px; --mono: ui-monospace,Menlo,Consolas,monospace;
+    --r-lg:16px; --r-md:12px; --r-sm:9px; --shadow:0 10px 34px rgba(0,0,0,.35);
+    /* layout */
+    --rail-w:280px; --drawer-w:360px; --file-rail-h:112px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:radial-gradient(900px 700px at 70% -10%,#13243d,transparent),linear-gradient(180deg,#080b12,#0a0f16 40%,#0a0f16);
+       color:var(--ink);font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  button{cursor:pointer}
+  .app{display:grid;grid-template-rows:64px 1fr var(--file-rail-h);height:100vh}
+  .top{display:grid;grid-template-columns:1.2fr auto 1fr;gap:12px;align-items:center;padding:0 14px;border-bottom:1px solid var(--border);
+       background:rgba(15,20,32,.82);backdrop-filter: blur(10px)}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--acc2)}
+  .brand h1{margin:0;font-size:var(--f2)}
+  .orgchip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--chip);color:#cddcf6;font-size:12px}
+  .orgchip svg{width:14px;height:14px}
+  .center{display:flex;gap:8px;justify-content:center}
+  .seg{padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:#0f1829;color:var(--muted);font-size:12px}
+  .seg.on{color:var(--ink);outline:1px solid #25466f}
+  .right{display:flex;gap:8px;justify-content:flex-end;align-items:center}
+  .pill{padding:4px 8px;border-radius:999px;border:1px solid var(--border);background:#14233a;font-size:12px;color:#bed0f1}
+  .switch{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--border);border-radius:999px;padding:5px 9px;background:#0f1829;color:#cfe1ff;font-size:12px}
+  .search{position:relative}
+  .search input{width:280px;background:#0f1829;border:1px solid var(--border);border-radius:10px;padding:8px 12px 8px 30px;color:var(--ink)}
+  .search svg{position:absolute;left:8px;top:9px;width:16px;height:16px;opacity:.65}
+  /* main layout */
+  .main{display:grid;grid-template-columns: var(--rail-w) 1fr var(--drawer-w);gap:12px;padding:12px}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);min-height:0}
+  .rail{padding:10px}
+  .rail h3{margin:6px 0 10px;font-size:12px;letter-spacing:.3px;color:var(--muted);text-transform:uppercase}
+  .tree .node{padding:8px;border-radius:8px;display:flex;gap:8px;align-items:center}
+  .tree .node:hover{background:#0f1a2c}
+  .tree .b{width:8px;height:8px;border-radius:3px;background:#2b5e94}
+  .saved{margin-top:12px;padding-top:10px;border-top:1px dashed var(--border);color:var(--muted)}
+  .workspace{display:grid;grid-template-rows:auto 1fr auto}
+  .ws-hd{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px;border-bottom:1px solid var(--border)}
+  .btn{padding:8px 10px;border-radius:10px;border:1px solid #1b3a60;background:#0f1e33;color:#cde6ff;font-size:12px}
+  .btn.primary{background:#0f2a4a;border-color:#2a5c91}
+  .btn.ghost{background:#0e1726;border-color:var(--border);color:#a8bfdf}
+  .tabs{display:flex;gap:6px}
+  .tabs .t{padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:#101b2e;color:#9fb3d6;font-size:12px}
+  .tabs .on{color:#eaf2ff;background:#0f1a2c}
+  .ws-body{display:grid;grid-template-columns:1fr;overflow:auto}
+  .board{display:grid;grid-template-columns:repeat(3, minmax(220px,1fr));gap:10px;padding:10px}
+  .col{border:1px solid var(--border);border-radius:12px;background:#0d192c;padding:8px;display:grid;gap:8px}
+  .card{padding:10px;border:1px solid var(--border);border-radius:10px;background:#0f1c30}
+  .thread{padding:8px;overflow:auto}
+  .msg{display:grid;grid-template-columns:36px 1fr;gap:8px;padding:10px;margin:6px 0;border-radius:12px;background:linear-gradient(180deg,rgba(20,28,42,.65),rgba(12,18,28,.65));border:1px solid var(--border)}
+  .avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#1a2740;color:#8ebcff;font-weight:700}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+  .chip{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:999px;border:1px solid var(--border);background:#14223a;color:#b9c8e9;font-size:12px}
+  .flag{width:8px;height:8px;border-radius:2px}.us{background:#2b78ff}.eu{background:#8b5dff}.ap{background:#40c089}
+  .ribbon{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px;padding:8px;border:1px solid #15233a;background:#0c1422;border-radius:10px}
+  .ribbon select,.ribbon input{background:#0f1829;border:1px solid var(--border);color:var(--ink);padding:6px 8px;border-radius:8px;font-size:12px}
+  .composer{padding:8px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center}
+  .input{flex:1;background:#0f1829;border:1px solid var(--border);color:var(--ink);padding:10px 12px;border-radius:10px}
+  /* drawer */
+  .drawer{display:grid;grid-template-rows:auto 1fr}
+  .drawer .tabbar{display:flex;gap:8px;padding:8px;border-bottom:1px solid var(--border)}
+  .drawer .tabbar .t{padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:#101b2e;color:#9fb3d6;font-size:12px}
+  .drawer .tabbar .on{color:#eaf2ff;background:#0f1a2c}
+  .drawer .body{padding:10px;overflow:auto}
+  .kv{display:grid;grid-template-columns:120px 1fr;gap:8px;padding:6px 0;border-bottom:1px dashed var(--border);font-size:12px}
+  .log{background:#0a121d;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:var(--mono);font-size:12px}
+  /* file rail */
+  .filerail{display:flex;gap:10px;align-items:center;padding:8px 12px;border-top:1px solid var(--border);background:rgba(12,18,27,.82);backdrop-filter: blur(10px)}
+  .thumb{min-width:120px;max-width:120px;height:88px;padding:8px;border-radius:12px;border:1px solid var(--border);background:#0e1624;display:grid;grid-template-rows:1fr auto;gap:6px}
+  .thumb .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9fb0d6}
+  /* overlays & modals */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:40}
+  .modal.on{display:flex}
+  .sheet{width:min(840px,95vw);background:#0f1523;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)}
+  .sheet .hd{padding:14px 16px;border-bottom:1px solid var(--border);font-weight:700}
+  .sheet .bd{padding:16px;display:grid;gap:10px}
+  .sheet .ft{padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+  /* trust halo */
+  .halo-card{position:relative}
+  .halo{position:absolute;inset:-2px;border-radius:14px;pointer-events:none;box-shadow:0 0 0 0 rgba(64,214,163,.0);transition:box-shadow .2s ease}
+  .halo-card.verified .halo{box-shadow:0 0 0 2px rgba(64,214,163,.8),0 0 24px 6px rgba(64,214,163,.18)}
+  .popover{position:absolute;top:6px;right:6px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:#0f1b2c;color:#cfe3ff;font-size:12px;box-shadow:var(--shadow);display:none}
+  .halo-card:hover .popover{display:block}
+  /* perf overlay */
+  .perf{position:fixed;right:14px;bottom:calc(var(--file-rail-h) + 14px);background:#0c1522;border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:#9fb0d6;z-index:50}
+  .kbd{position:fixed;left:14px;bottom:calc(var(--file-rail-h) + 14px);background:#0c1522;border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;color:#9fb0d6;z-index:50}
+  /* a11y focus */
+  :focus{outline:2px solid var(--ring);outline-offset:2px}
+  /* AA/AAA demo */
+  .aaa *{letter-spacing:.02em}
+  .aaa .btn{padding:10px 12px}
+  .aaa .input{padding:12px 14px}
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="SparkTasks Product Blueprint Preview">
+  <!-- Top bar -->
+  <header class="top">
+    <div class="brand">
+      <div class="dot"></div><h1>SparkTasks — ACME Rollout</h1>
+      <span class="orgchip" title="Linked Organization">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 1 0-7.07-7.07L10 5" stroke-width="1.5"/><path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 1 0 7.07 7.07L14 19" stroke-width="1.5"/></svg>
+        Linked Org: <strong>ACME</strong>
+      </span>
+    </div>
+    <div class="center" role="tablist" aria-label="Modes">
+      <button class="seg on" data-mode="individual" role="tab" aria-selected="true">Individual</button>
+      <button class="seg" data-mode="team" role="tab" aria-selected="false">Team</button>
+      <button class="seg" data-mode="org" role="tab" aria-selected="false">Organization</button>
+    </div>
+    <div class="right">
+      <span class="switch" id="zkToggle" role="switch" aria-checked="false" tabindex="0">Zero-Knowledge: <strong id="zkState">OFF</strong></span>
+      <span class="switch" id="wcagToggle" role="switch" aria-checked="false" tabindex="0">WCAG: <strong id="wcagState">AA</strong></span>
+      <button class="btn" id="openOnboarding">Onboard</button>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7" stroke-width="1.5"/><path d="M20 20l-3.5-3.5" stroke-width="1.5"/></svg>
+        <input id="gsearch" placeholder="⌘K Search tasks & files…" aria-label="Search tasks and files"/>
+      </div>
+      <button class="btn" id="openVerify">Verify</button>
+    </div>
+  </header>
+
+  <!-- Main area -->
+  <main class="main">
+    <!-- Left Rail -->
+    <aside class="panel rail" aria-label="Navigation">
+      <h3>Tree</h3>
+      <nav class="tree">
+        <div class="node"><span class="b"></span> Portfolio</div>
+        <div class="node"><span class="b"></span> Project — ACME Rollout</div>
+        <div class="node"><span class="b"></span> Epics</div>
+        <div class="node"><span class="b"></span> Tasks</div>
+      </nav>
+      <div class="saved">
+        <h3>Saved Views</h3>
+        <div class="node">• Approvals Pending</div>
+        <div class="node">• Invoices This Week</div>
+        <div class="node">• PO in Flight</div>
+      </div>
+      <div class="saved">
+        <h3>Governance</h3>
+        <div class="node">Retention: <span class="pill">7y</span></div>
+        <div class="node">DLP: <span class="pill">Strict</span></div>
+        <div class="node">Residency: <span class="pill">US/EU</span></div>
+      </div>
+    </aside>
+
+    <!-- Workspace -->
+    <section class="panel workspace" aria-label="Project Desktop">
+      <div class="ws-hd">
+        <div class="tabs">
+          <button class="t on" data-view="board">Board</button>
+          <button class="t" data-view="thread">Federated Thread</button>
+          <button class="t" data-view="capsules">Capsule Lane</button>
+          <button class="t" data-view="finance">Finance</button>
+          <button class="t" data-view="compliance">Compliance</button>
+          <button class="t" data-view="edisco">eDiscovery</button>
+          <button class="t" data-view="dev">Developer Console</button>
+          <button class="t" data-view="sla">SLA/Perf</button>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button class="btn ghost" id="byokBtn">BYOK/CMK</button>
+          <button class="btn" id="sovMapBtn">Sovereignty Map</button>
+          <button class="btn" id="exportPack">Export .sparkpack</button>
+          <button class="btn" id="importPack">Import .sparkpack</button>
+        </div>
+      </div>
+
+      <div class="ws-body">
+        <!-- Board view -->
+        <div class="board" data-panel="board">
+          <div class="col">
+            <div class="pill">Design</div>
+            <div class="card halo-card verified">
+              <div class="halo"></div>
+              <strong>Brand Guide v7</strong>
+              <div class="chips"><span class="chip"><span class="flag us"></span> Drive • US</span></div>
+              <div class="popover">Verified ✓ • Hash 0x8a1b…91cd • <button class="btn ghost small" id="openVerify2">Open Verify</button></div>
+              <div style="margin-top:6px">
+                <button class="btn" id="annotateBtn">Annotate</button>
+                <button class="btn" id="requestAppr1">Request Approval</button>
+              </div>
+            </div>
+            <div class="card">Draft Contract</div>
+          </div>
+          <div class="col">
+            <div class="pill">Legal</div>
+            <div class="card">MSA Redline</div>
+            <div class="card">Privacy Addendum</div>
+          </div>
+          <div class="col">
+            <div class="pill">Finance</div>
+            <div class="card">Invoice #551</div>
+            <div class="card">PO #3129</div>
+          </div>
+        </div>
+
+        <!-- Federated Thread -->
+        <div class="thread" data-panel="thread" hidden>
+          <div class="msg">
+            <div class="avatar">JW</div>
+            <div>
+              <div><strong>Jack (Spark)</strong></div>
+              <p>Uploaded brand guide from Drive (US). Request approval with quorum 2/3.</p>
+              <div class="chips"><span class="chip"><span class="flag us"></span> Drive • US</span><span class="chip">brand-guide-v7.pdf</span></div>
+              <div class="ribbon">
+                <span>Mode</span>
+                <select><option>Sequential</option><option>Parallel</option><option selected>Quorum</option></select>
+                <label>Quorum <input type="number" min="1" value="2" style="width:60px"></label>
+                <label>Due <input type="date"></label>
+                <label>After <select><option>Generate PO</option><option>Post ERP</option><option>Redline Contract</option></select></label>
+                <button class="btn primary" id="reqApproval">Request</button>
+                <button class="btn" id="openLog">Log</button>
+              </div>
+            </div>
+          </div>
+          <div class="msg">
+            <div class="avatar">AC</div>
+            <div>
+              <div><strong>Carol (ACME)</strong></div>
+              <p>Confirmed appendix stored in EU. Ready for quorum.</p>
+              <div class="chips"><span class="chip"><span class="flag eu"></span> S3 • EU</span><span class="chip">appendix-eu.pdf</span></div>
+            </div>
+          </div>
+          <div class="composer">
+            <input class="input" id="composerInput" placeholder="Type or /approve /po /invoice /pay /witness /zk /aa /aaa /byok /edisco /compliance …">
+            <button class="btn" id="sendMsg">Send</button>
+          </div>
+        </div>
+
+        <!-- Capsule Lane -->
+        <div data-panel="capsules" hidden style="padding:10px">
+          <div class="card" style="margin-bottom:8px">
+            <span class="pill">Executable Approvals</span> • Compose actions to run **after** sign
+          </div>
+          <div class="card" id="lane" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <div class="chip capsule" draggable="true">Generate PO</div><div class="chip capsule" draggable="true">Post ERP</div><div class="chip capsule" draggable="true">Notify Treasury</div>
+            <button class="btn ghost" id="addCapsule">+ Add</button>
+          </div>
+          <div class="card" style="margin-top:10px">
+            <strong>Capsule Proofs</strong>
+            <pre class="log" id="capsLog">- generate-po.wasm
+- post-erp.wasm
+- notify-treasury.wasm</pre>
+            <button class="btn primary" id="runCaps">Run Capsules</button>
+          </div>
+        </div>
+
+        <!-- Finance (Mirror Ledger) -->
+        <div data-panel="finance" hidden style="padding:10px">
+          <div class="card"><strong>Invoice #551</strong> — Amount 10,000</div>
+          <div class="card" style="margin-top:8px">
+            <strong>Mirror Ledger Preview</strong>
+            <pre class="log">Customer: AP Dr 10,000
+Supplier: AR Cr 10,000</pre>
+            <button class="btn primary" id="approvePost">Approve & Post</button>
+          </div>
+        </div>
+
+        <!-- Compliance -->
+        <div data-panel="compliance" hidden style="padding:10px">
+          <div class="card"><strong>Compliance Packs</strong> — SOX • ISO • HIPAA
+            <div style="margin-top:8px;display:flex;gap:8px">
+              <button class="btn">Enable SOX</button>
+              <button class="btn">Enable ISO</button>
+              <button class="btn">Enable HIPAA</button>
+              <button class="btn" id="openCompliance">Open Dashboard</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- eDiscovery -->
+        <div data-panel="edisco" hidden style="padding:10px">
+          <div class="card">
+            <strong>eDiscovery Export Center</strong>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+              <label>Custodian<input class="input" placeholder="alice@spark.com"></label>
+              <label>Date range<input class="input" placeholder="2025-07-01 — 2025-08-24"></label>
+            </div>
+            <div style="margin-top:8px"><button class="btn primary" id="runEdisco">Build signed bundle</button></div>
+            <pre class="log" id="ediscoLog">No exports yet.</pre>
+          </div>
+        </div>
+
+        <!-- Developer Console -->
+        <div data-panel="dev" hidden style="padding:10px">
+          <div class="card"><strong>API Keys & Webhooks</strong>
+            <div style="margin-top:8px;display:flex;gap:8px">
+              <button class="btn" id="genKey">Generate API Key</button>
+              <button class="btn" id="addWebhook">Add Webhook</button>
+              <button class="btn" id="testEvent">Send Test Event</button>
+            </div>
+            <pre class="log" id="devLog">No keys yet.</pre>
+          </div>
+          <div class="card" style="margin-top:8px"><strong>Flow Manifests</strong>
+            <pre class="log">on: approval.signed
+steps:
+  - run: generate-po.wasm
+  - run: post-erp.wasm</pre>
+          </div>
+        </div>
+
+        <!-- SLA/Perf -->
+        <div data-panel="sla" hidden style="padding:10px">
+          <div class="card"><strong>Tenant SLA Dashboard</strong>
+            <pre class="log" id="slaLog">US-East: P95 search 142ms • 60 FPS
+EU-West: P95 search 176ms • 60 FPS</pre>
+            <button class="btn" id="refreshSLA">Refresh</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Drawer -->
+    <aside class="panel drawer" aria-label="Unified Drawer">
+      <div class="tabbar">
+        <button class="t on" data-tab="overview">Overview</button>
+        <button class="t" data-tab="files">Files</button>
+        <button class="t" data-tab="approvals">Approvals</button>
+        <button class="t" data-tab="activity">Activity</button>
+        <button class="t" data-tab="versions">Versions</button>
+        <button class="t" data-tab="verify">Verify</button>
+        <button class="t" data-tab="policies">Policies</button>
+      </div>
+      <div class="body" id="drawerBody">
+        <section data-panel="overview">
+          <div class="kv"><div>Status</div><div><span class="pill">In Review</span></div></div>
+          <div class="kv"><div>Assignees</div><div>Alice, Bob, Carol</div></div>
+          <div class="kv"><div>Residency</div><div>US/EU (BYOS)</div></div>
+          <div class="kv"><div>Next step</div><div>Quorum 2/3 by Friday</div></div>
+        </section>
+        <section data-panel="files" hidden>
+          <div class="kv"><div>brand-guide-v7.pdf</div><div><span class="pill">Drive • US</span></div></div>
+          <div class="kv"><div>appendix-eu.pdf</div><div><span class="pill">S3 • EU</span></div></div>
+        </section>
+        <section data-panel="approvals" hidden>
+          <div class="kv"><div>Mode</div><div>Quorum (2/3)</div></div>
+          <div class="kv"><div>Signers</div><div>Alice ✓ • Bob — • Carol ✓</div></div>
+          <div class="kv"><div>Post Action</div><div>Generate PO → ERP</div></div>
+        </section>
+        <section data-panel="activity" hidden>
+          <pre class="log" id="logBox">13:02 INIT — Approval requested by Jack (0x4f…a2)
+13:05 SIGN — Carol (ACME) (0x8a…91)</pre>
+        </section>
+        <section data-panel="versions" hidden>
+          <div class="kv"><div>v7</div><div>brand-guide-v7.pdf • Proof: ✓ (capsule #224)</div></div>
+          <div class="kv"><div>v6</div><div>brand-guide-v6.pdf • Proof: ✓</div></div>
+        </section>
+        <section data-panel="verify" hidden>
+          <div class="kv"><div>Status</div><div><span class="pill">Verified ✓</span></div></div>
+          <div class="kv"><div>Hash</div><div><code>0x8a1b…91cd</code></div></div>
+          <div class="kv"><div>Merkle</div><div><code>root 0x22ff…ab44</code></div></div>
+          <div class="kv"><div>Witness</div><div><button class="btn" id="openWitness">Independent check</button></div></div>
+        </section>
+        <section data-panel="policies" hidden>
+          <div class="kv"><div>Retention</div><div>7 years</div></div>
+          <div class="kv"><div>DLP</div><div>Strict</div></div>
+          <div class="kv"><div>Zero-Knowledge</div><div><span class="pill" id="zkPill">OFF</span></div></div>
+        </section>
+      </div>
+    </aside>
+  </main>
+
+  <!-- File Rail -->
+  <footer class="filerail" aria-label="File Rail">
+    <div class="thumb halo-card verified">
+      <div class="halo"></div>
+      <div style="display:grid;place-items:center;color:#9fb0d6;font-size:12px">brand-guide-v7.pdf</div>
+      <div class="meta"><span>Drive</span><span class="pill">US</span></div>
+      <div class="popover">Verified ✓ • Hover to quick-verify</div>
+    </div>
+    <div class="thumb">
+      <div style="display:grid;place-items:center;color:#9fb0d6;font-size:12px">appendix-eu.pdf</div>
+      <div class="meta"><span>S3</span><span class="pill">EU</span></div>
+    </div>
+    <div class="thumb">
+      <div style="display:grid;place-items:center;color:#9fb0d6;font-size:12px">invoice-551.pdf</div>
+      <div class="meta"><span>OneDrive</span><span class="pill">US</span></div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn" id="mediaBtn">Open Media Annotator</button>
+      <button class="btn" id="scimBtn">SSO/SCIM</button>
+    </div>
+  </footer>
+</div>
+
+<!-- Modals -->
+<!-- Verify -->
+<div class="modal" id="verifyModal" role="dialog" aria-modal="true" aria-labelledby="verifyTitle">
+  <div class="sheet">
+    <div class="hd" id="verifyTitle">Verification — cryptographic record</div>
+    <div class="bd">
+      <div>Signers: Alice • Bob • Carol</div>
+      <div>Hash: <code>0x8a1b…91cd</code></div>
+      <div>Merkle: <code>root 0x22ff…ab44</code></div>
+      <pre class="log">13:02 Request (Jack)
+13:05 Sign (Carol, ACME)
+13:07 Sign (Alice)</pre>
+    </div>
+    <div class="ft"><button class="btn" id="closeVerify">Close</button></div>
+  </div>
+</div>
+
+<!-- Witness -->
+<div class="modal" id="witnessModal" role="dialog" aria-modal="true" aria-labelledby="witnessTitle">
+  <div class="sheet">
+    <div class="hd" id="witnessTitle">Witness — Independent Verification</div>
+    <div class="bd">
+      <pre class="log" id="witnessLog">Querying witness nodes…
+✓ Proof verified by node eu-1
+✓ Proof verified by node us-2
+Merkle root consensus: 0x22ff…ab44</pre>
+    </div>
+    <div class="ft"><button class="btn" id="closeWitness">Close</button></div>
+  </div>
+</div>
+
+<!-- Onboarding -->
+<div class="modal" id="onboardModal" role="dialog" aria-modal="true" aria-labelledby="onTitle">
+  <div class="sheet">
+    <div class="hd" id="onTitle">90-Second Onboarding</div>
+    <div class="bd">
+      <ol>
+        <li>Choose Mode → <span class="pill">Individual / Team / Organization</span></li>
+        <li>Connect Storage (BYOS) → <span class="pill">Drive / Dropbox / OneDrive / S3</span></li>
+        <li>Start Work → drag a file into thread and <strong>/approve</strong></li>
+      </ol>
+      <pre class="log" id="onLog">Timer: 00:00</pre>
+    </div>
+    <div class="ft"><button class="btn" id="onStart">Start</button><button class="btn" id="onClose">Close</button></div>
+  </div>
+</div>
+
+<!-- BYOK/CMK -->
+<div class="modal" id="byokModal" role="dialog" aria-modal="true" aria-labelledby="byokTitle">
+  <div class="sheet">
+    <div class="hd" id="byokTitle">Key Management (BYOK/CMK)</div>
+    <div class="bd">
+      <div class="kv"><div>Provider</div><div><select id="kmsProv"><option>AWS KMS</option><option>GCP KMS</option><option>Azure Key Vault</option></select></div></div>
+      <div class="kv"><div>Key ID</div><div><input class="input" id="keyId" placeholder="arn:aws:kms:..."></div></div>
+      <div class="kv"><div>Scope</div><div><select id="keyScope"><option>Portfolio</option><option>Project</option><option>Tenant</option></select></div></div>
+      <div class="kv"><div>Rotation</div><div><button class="btn" id="rotateKey">Rotate</button> <button class="btn" id="revokeKey">Revoke</button></div></div>
+      <pre class="log" id="byokLog">No key actions yet.</pre>
+    </div>
+    <div class="ft"><button class="btn" id="closeByok">Close</button></div>
+  </div>
+</div>
+
+<!-- Compliance Dashboard -->
+<div class="modal" id="compModal" role="dialog" aria-modal="true" aria-labelledby="compTitle">
+  <div class="sheet">
+    <div class="hd" id="compTitle">Compliance Dashboard</div>
+    <div class="bd">
+      <div>Controls: SOC2 ✓ • ISO27001 ✓ • HIPAA ◻︎</div>
+      <pre class="log">Evidence readiness: 92%
+Missing: HIPAA BAAs, DLP rule 7 not enforced on EU media</pre>
+      <button class="btn" id="genAudit">Generate Audit Pack (.sparkpack)</button>
+    </div>
+    <div class="ft"><button class="btn" id="closeComp">Close</button></div>
+  </div>
+</div>
+
+<!-- eDiscovery Export -->
+<div class="modal" id="edModal" role="dialog" aria-modal="true" aria-labelledby="edTitle">
+  <div class="sheet">
+    <div class="hd" id="edTitle">eDiscovery Export</div>
+    <div class="bd">
+      <pre class="log" id="edLog">Export bundle ready: edisco_2025-08-24.sparkpack (signed)</pre>
+    </div>
+    <div class="ft"><button class="btn" id="closeEd">Close</button></div>
+  </div>
+</div>
+
+<!-- Media Annotator -->
+<div class="modal" id="mediaModal" role="dialog" aria-modal="true" aria-labelledby="mediaTitle">
+  <div class="sheet">
+    <div class="hd" id="mediaTitle">Media Annotator</div>
+    <div class="bd">
+      <canvas id="canvas" width="640" height="360" style="background:#0a121d;border:1px solid var(--border);border-radius:12px"></canvas>
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="drawRect">Rect</button>
+        <button class="btn" id="drawText">Text</button>
+        <button class="btn" id="clearCanvas">Clear</button>
+      </div>
+    </div>
+    <div class="ft"><button class="btn" id="closeMedia">Close</button></div>
+  </div>
+</div>
+
+<!-- SSO/SCIM -->
+<div class="modal" id="scimModal" role="dialog" aria-modal="true" aria-labelledby="scimTitle">
+  <div class="sheet">
+    <div class="hd" id="scimTitle">SSO / SCIM</div>
+    <div class="bd">
+      <div class="kv"><div>SSO</div><div><button class="btn">Configure SAML</button> <button class="btn">Configure OIDC</button></div></div>
+      <div class="kv"><div>SCIM</div><div><button class="btn">Add SCIM Endpoint</button></div></div>
+      <pre class="log">Provisioning status: OK • Last sync: 14m ago</pre>
+    </div>
+    <div class="ft"><button class="btn" id="closeScim">Close</button></div>
+  </div>
+</div>
+
+<!-- Sovereignty Map -->
+<div class="modal" id="sovModal" role="dialog" aria-modal="true" aria-labelledby="sovTitle">
+  <div class="sheet">
+    <div class="hd" id="sovTitle">Sovereignty Map</div>
+    <div class="bd">
+      <div class="kv"><div>US</div><div>128 files • Retention 7y</div></div>
+      <div class="kv"><div>EU</div><div>53 files • DLP strict</div></div>
+      <div class="kv"><div>APAC</div><div>19 files • Residency enforced</div></div>
+    </div>
+    <div class="ft"><button class="btn" id="closeSov">Close</button></div>
+  </div>
+</div>
+
+<!-- Perf & KBD overlays -->
+<div class="perf" id="perf">P95 search: 118ms • FPS: 60</div>
+<div class="kbd">Shortcuts: ⌘K search • /approve /po /invoice /pay /witness /zk /aa /aaa /byok /edisco /compliance</div>
+
+<script>
+// Helpers
+const $ = (s,ctx=document)=>ctx.querySelector(s);
+const $$ = (s,ctx=document)=>Array.from(ctx.querySelectorAll(s));
+
+// Tabs (workspace)
+$$(".tabs .t").forEach(btn=>btn.addEventListener("click",()=>{
+  $$(".tabs .t").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+  const v = btn.dataset.view;
+  $$("[data-panel]").forEach(p=>p.hidden = (p.dataset.panel!==v));
+}));
+
+// Drawer tabs
+$$(".drawer .tabbar .t").forEach(btn=>btn.addEventListener("click",()=>{
+  $$(".drawer .tabbar .t").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+  const v = btn.dataset.tab;
+  $$("#drawerBody > section").forEach(p=>p.hidden = (p.dataset.panel!==v));
+}));
+
+// Verify modals
+$("#openVerify").addEventListener("click",()=>$("#verifyModal").classList.add("on"));
+$("#openVerify2")?.addEventListener("click",()=>$("#verifyModal").classList.add("on"));
+$("#closeVerify").addEventListener("click",()=>$("#verifyModal").classList.remove("on"));
+
+// Witness
+$("#openWitness").addEventListener("click",()=>$("#witnessModal").classList.add("on"));
+$("#closeWitness").addEventListener("click",()=>$("#witnessModal").classList.remove("on"));
+
+// Onboarding
+let timer=null, sec=0;
+$("#openOnboarding").addEventListener("click",()=>$("#onboardModal").classList.add("on"));
+$("#onStart").addEventListener("click",()=>{
+  if(timer) clearInterval(timer);
+  sec=0;
+  timer=setInterval(()=>{ $("#onLog").textContent = "Timer: " + new Date(sec++*1000).toISOString().substring(14,19); }, 1000);
+});
+$("#onClose").addEventListener("click",()=>{ $("#onboardModal").classList.remove("on"); if(timer) clearInterval(timer); });
+
+// BYOK/CMK
+$("#byokBtn").addEventListener("click",()=>$("#byokModal").classList.add("on"));
+$("#closeByok").addEventListener("click",()=>$("#byokModal").classList.remove("on"));
+$("#rotateKey").addEventListener("click",()=>{ $("#byokLog").textContent += "\\nRotated key " + $("#keyId").value + " (" + $("#keyScope").value + ")"; });
+$("#revokeKey").addEventListener("click",()=>{ $("#byokLog").textContent += "\\nRevoked key " + $("#keyId").value; });
+
+// Compliance
+$("#openCompliance").addEventListener("click",()=>$("#compModal").classList.add("on"));
+$("#closeComp").addEventListener("click",()=>$("#compModal").classList.remove("on"));
+$("#genAudit").addEventListener("click",()=>alert("Audit pack (.sparkpack) generated (demo)"));
+
+// eDiscovery
+$("#runEdisco").addEventListener("click",()=>{ $("#edLog").textContent = "Building export… done. edisco_2025-08-24.sparkpack"; $("#edModal").classList.add("on"); });
+$("#closeEd").addEventListener("click",()=>$("#edModal").classList.remove("on"));
+
+// SSO/SCIM modal
+$("#scimBtn").addEventListener("click",()=>$("#scimModal").classList.add("on"));
+$("#closeScim").addEventListener("click",()=>$("#scimModal").classList.remove("on"));
+
+// Sovereignty Map
+$("#sovMapBtn").addEventListener("click",()=>$("#sovModal").classList.add("on"));
+$("#closeSov").addEventListener("click",()=>$("#sovModal").classList.remove("on"));
+
+// Media Annotator
+$("#mediaBtn").addEventListener("click",()=>$("#mediaModal").classList.add("on"));
+$("#closeMedia").addEventListener("click",()=>$("#mediaModal").classList.remove("on"));
+const ctx = $("#canvas").getContext("2d");
+ctx.strokeStyle = "#7cc4ff"; ctx.lineWidth=2;
+$("#drawRect").addEventListener("click",()=>{ ctx.strokeRect(60,50,200,120); });
+$("#drawText").addEventListener("click",()=>{ ctx.font="14px ui-sans-serif"; ctx.fillStyle="#e9f1ff"; ctx.fillText("Note: adjust margin", 70, 45); });
+$("#clearCanvas").addEventListener("click",()=>{ ctx.clearRect(0,0,640,360); });
+
+// Federated Thread actions
+$("#reqApproval").addEventListener("click",()=>appendLog("REQUEST — Approval (quorum 2/3)"));
+$("#openLog").addEventListener("click",()=>switchDrawer("activity"));
+$("#requestAppr1").addEventListener("click",()=>appendLog("REQUEST — Approval for Brand Guide v7"));
+function appendLog(text){
+  const t = $("#logBox");
+  const now = new Date().toLocaleTimeString();
+  t.textContent += "\\n" + now + " " + text;
+  switchDrawer("activity");
+}
+function switchDrawer(tab){
+  $$(".drawer .tabbar .t").forEach(b=>b.classList.toggle("on", b.dataset.tab===tab));
+  $$("#drawerBody > section").forEach(p=>p.hidden = (p.dataset.panel!==tab));
+}
+
+// Composer slash commands
+$("#sendMsg").addEventListener("click", send);
+$("#composerInput").addEventListener("keydown",(e)=>{ if(e.key==="Enter") send(); });
+function send(){
+  const v=$("#composerInput").value.trim(); if(!v) return;
+  if(v.startsWith("/")) handleSlash(v); else appendLog("MSG — " + v);
+  $("#composerInput").value="";
+}
+function handleSlash(cmd){
+  const map = {
+    "/approve": ()=>$("#verifyModal").classList.add("on"),
+    "/po": ()=>alert("PO macro queued (demo)"),
+    "/invoice": ()=>alert("Invoice submitted (demo)"),
+    "/pay": ()=>alert("Payment escrow check (demo)"),
+    "/witness": ()=>$("#witnessModal").classList.add("on"),
+    "/zk": toggleZK,
+    "/aa": ()=>setWCAG("AA"),
+    "/aaa": ()=>setWCAG("AAA"),
+    "/byok": ()=>$("#byokModal").classList.add("on"),
+    "/edisco": ()=>$("#edModal").classList.add("on"),
+    "/compliance": ()=>$("#compModal").classList.add("on")
+  };
+  const fn = map[cmd.split(" ")[0]]; if(fn) fn(); else appendLog("CMD — Unknown: "+cmd);
+}
+
+// Capsule lane drag/drop
+let dragEl=null;
+$("#lane").addEventListener("dragstart",(e)=>{ if(e.target.classList.contains("capsule")){ dragEl=e.target; e.target.style.outline="2px dashed var(--ring)"; }});
+$("#lane").addEventListener("dragend",()=>{ if(dragEl){ dragEl.style.outline="none"; dragEl=null; updateCaps(); }});
+$("#lane").addEventListener("dragover",(e)=>{
+  e.preventDefault();
+  const after = getAfter($("#lane"), e.clientX);
+  if(after==null) $("#lane").appendChild(dragEl);
+  else $("#lane").insertBefore(dragEl, after);
+});
+function getAfter(container, x){
+  const els=[...container.querySelectorAll(".capsule:not([style*='outline'])")];
+  return els.reduce((closest, child)=>{
+    const box=child.getBoundingClientRect();
+    const offset=x - box.left - box.width/2;
+    if(offset<0 && offset>closest.offset) return {offset,element:child};
+    else return closest;
+  }, {offset:Number.NEGATIVE_INFINITY}).element;
+}
+$("#addCapsule").addEventListener("click",()=>{
+  const c=document.createElement("div"); c.className="chip capsule"; c.draggable=true; c.textContent="Custom Action";
+  $("#lane").insertBefore(c, $("#addCapsule"));
+  updateCaps();
+});
+$("#runCaps").addEventListener("click",()=>alert("Running capsules (demo). Proofs will appear in Verify."));
+function updateCaps(){
+  const names=[...$("#lane").querySelectorAll(".capsule")].map(x=>"- "+x.textContent.trim()).join("\\n");
+  $("#capsLog").textContent = names;
+}
+
+// Finance approve/post
+$("#approvePost").addEventListener("click",()=>appendLog("FIN — Dual-post AR/AP completed (0x91…dd)"));
+
+// eDiscovery quick build
+$("#runEdisco").addEventListener("click",()=>{ $("#ediscoLog").textContent = "Export started… ok. Signed bundle ready."; });
+
+// Developer console
+$("#genKey").addEventListener("click",()=>{ $("#devLog").textContent += "\\nAPI Key: sk_live_"+Math.random().toString(36).slice(2,10); });
+$("#addWebhook").addEventListener("click",()=>{ $("#devLog").textContent += "\\nWebhook: https://example.com/hook/approval.signed"; });
+$("#testEvent").addEventListener("click",()=>{ $("#devLog").textContent += "\\n→ Sent test approval.signed"; });
+
+// SLA refresh
+$("#refreshSLA").addEventListener("click",()=>{
+  const us = 120 + Math.floor(Math.random()*60);
+  const eu = 130 + Math.floor(Math.random()*80);
+  $("#slaLog").textContent = "US-East: P95 search "+us+"ms • 60 FPS\\nEU-West: P95 search "+eu+"ms • 60 FPS";
+});
+
+// Export/Import .sparkpack
+$("#exportPack").addEventListener("click",()=>alert(".sparkpack exported (demo)"));
+$("#importPack").addEventListener("click",()=>alert(".sparkpack import verified (demo)"));
+
+// Switches (ZK and WCAG)
+function toggleZK(){ const on = $("#zkState").textContent==="OFF"? true:false; setZK(!on); }
+$("#zkToggle").addEventListener("click", toggleZK);
+$("#zkToggle").addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleZK(); }});
+function setZK(state){
+  $("#zkState").textContent = state? "ON":"OFF";
+  $("#zkPill").textContent = state? "ON":"OFF";
+  alert("Zero-Knowledge mode "+ (state? "ENABLED":"DISABLED") +" (demo)");
+}
+function setWCAG(level){
+  $("#wcagState").textContent = level;
+  document.body.classList.toggle("aaa", level==="AAA");
+  alert("WCAG "+level+" demo styles applied");
+}
+$("#wcagToggle").addEventListener("click",()=>{
+  const cur = $("#wcagState").textContent;
+  setWCAG(cur==="AA"?"AAA":"AA");
+});
+$("#wcagToggle").addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); const cur=$("#wcagState").textContent; setWCAG(cur==="AA"?"AAA":"AA"); }});
+
+// Perf overlay simulation
+setInterval(()=>{
+  const p95 = Math.floor(105 + Math.random()*60);
+  $("#perf").textContent = "P95 search: "+p95+"ms • FPS: 60";
+}, 1200);
+</script>
+</body>
+</html>
+"""
+with open("/mnt/data/sparktasks_product_blueprint_preview.html","w",encoding="utf-8") as f:
+    f.write(html)
+
+"/mnt/data/sparktasks_product_blueprint_preview.html"

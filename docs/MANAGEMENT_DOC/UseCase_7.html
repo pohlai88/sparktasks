@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI‑BOS Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: grid;
+      grid-template-columns: 220px 1fr 320px;
+      grid-template-rows: 60px 1fr;
+      grid-template-areas:
+        "sidebar topbar verify"
+        "sidebar main verify";
+      height: 100vh;
+      color: #333;
+    }
+    .sidebar {
+      grid-area: sidebar;
+      background: #f5f5f5;
+      padding: 20px;
+      border-right: 1px solid #ccc;
+    }
+    .topbar {
+      grid-area: topbar;
+      background: #fff;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .main {
+      grid-area: main;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .verify {
+      grid-area: verify;
+      background: #f0f0f0;
+      padding: 20px;
+      border-left: 1px solid #ccc;
+    }
+    .nav-item {
+      margin: 12px 0;
+      cursor: pointer;
+    }
+    .nav-item.active {
+      font-weight: bold;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    .verify-section {
+      margin-bottom: 15px;
+    }
+    .link {
+      color: #0077cc;
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h3>Access Mode</h3>
+    <label>
+      <input type="checkbox" /> Enable Accessibility
+    </label>
+    <div class="nav-item active">Dashboard</div>
+    <div class="nav-item">Files</div>
+    <div class="nav-item">Approvals</div>
+    <div class="nav-item">Activity</div>
+    <div class="nav-item">Settings</div>
+  </div>
+
+  <div class="topbar">
+    <input type="text" placeholder="Search..." style="padding: 8px; width: 300px;" />
+    <button style="padding: 8px 12px;">New Request</button>
+  </div>
+
+  <div class="main">
+    <h2>Overview</h2>
+    <div class="card-grid">
+      <div class="card">
+        <strong>Pending Approvals</strong>
+        <p>12 requests awaiting action</p>
+      </div>
+      <div class="card">
+        <strong>Signed Documents</strong>
+        <p>34 verified files</p>
+      </div>
+      <div class="card">
+        <strong>Access Mode Usage</strong>
+        <p>78% of users enabled</p>
+      </div>
+      <div class="card">
+        <strong>System Health</strong>
+        <p>All services operational</p>
+      </div>
+    </div>
+
+    <h3>Recent Files</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Signers</th>
+          <th>Modified</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Contract A</td>
+          <td>👤 👤</td>
+          <td>08/22/2025</td>
+          <td>✅ Signed</td>
+        </tr>
+        <tr>
+          <td>Invoice B</td>
+          <td>👤</td>
+          <td>08/20/2025</td>
+          <td>⏳ Pending</td>
+        </tr>
+        <tr>
+          <td>Report C</td>
+          <td>👤 👤 👤</td>
+          <td>08/18/2025</td>
+          <td>✅ Signed</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="verify">
+    <h3>Verify Panel</h3>
+    <div class="verify-section">✅ <strong>Signed</strong></div>
+    <div class="verify-section"><strong>Signers:</strong> 👤 👤 👤</div>
+    <div class="verify-section"><strong>File Hash:</strong> 9f8a23b7c1e...</div>
+    <div class="verify-section"><strong>Timestamp:</strong> 08/22/2025, 14:03</div>
+    <a class="link" href="#">Open Transparency Log</a>
+  </div>
+</body>
+</html>

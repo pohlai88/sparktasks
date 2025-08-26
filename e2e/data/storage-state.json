@@ -1,0 +1,30 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "user_email",
+          "value": "admin+test@sparktasks.local"
+        },
+        {
+          "name": "auth_token",
+          "value": "test-token-admin-001"
+        },
+        {
+          "name": "user_role",
+          "value": "admin"
+        },
+        {
+          "name": "user_id",
+          "value": "user-001-admin"
+        },
+        {
+          "name": "app_preferences",
+          "value": "{\"theme\":\"light\",\"language\":\"en-US\",\"timezone\":\"UTC\"}"
+        }
+      ]
+    }
+  ]
+}

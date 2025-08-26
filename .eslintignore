@@ -1,0 +1,24 @@
+# Build artifacts
+node_modules/
+dist/
+build/
+coverage/
+
+# Development artifacts
+.next/
+.turbo/
+.vscode/
+.husky/
+
+# Generated files
+*.min.*
+*.d.ts
+.eslintcache
+
+# Test results
+test-results/
+e2e/playwright-report/
+
+# Temporary files
+*.tmp
+*.temp

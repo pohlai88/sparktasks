@@ -19,6 +19,7 @@ import {
   loadSnapshotAsync,
   reduce as reduceAsyncReducer,
 } from '../domain/task/eventlog.async';
+import type { StorageDriver } from '../domain/task/eventlog.async';
 import type { TaskEvent } from '../domain/task/events';
 import { isToday, isLater, isDone } from '../domain/task/lanes';
 import { CreateTaskInputSchema } from '../domain/task/schema';
@@ -744,7 +745,6 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   },
 }));
 
-import type { StorageDriver } from '../domain/task/eventlog.async';
 
 // Optional: small helper to wire the async storage once (used by E2EE bootstrap)
 export function configureAsyncEventlogStorage(driver: StorageDriver) {

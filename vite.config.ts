@@ -29,8 +29,8 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true, // Allow LAN access for mobile testing
-    hmr: { 
-      host: '0.0.0.0' // Prevent HMR issues over LAN
+    hmr: {
+      host: 'localhost' // Fix HMR WebSocket connection issues
     }
   },
   preview: {

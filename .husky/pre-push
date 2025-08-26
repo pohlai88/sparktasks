@@ -1,5 +1,2 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Validate SSOT compliance before push
-npm run ssot:check
+# Block pushes if typecheck or tests fail
+npm run typecheck && npm run test:unit && npm run ssot:check

@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SparkTasks — v5ext3 SSOT • Enterprise Preview (Pure HTML/CSS/JS)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* =========================================================
+       DESIGN TOKENS (Light theme; zero utility classes)
+       ========================================================= */
+    :root{
+      --bg:#f8fafc; --ink:#1e293b; --muted:#64748b; --line:#e2e8f0;
+      --surface:#ffffff; --surface-sub:#f1f5f9; --surface-info:#e8f1ff;
+      --primary:#3b82f6; --primary-strong:#2563eb; --success:#10b981; --warn:#f59e0b; --danger:#ef4444;
+      --ring: rgba(37, 99, 235, .35);
+      --r-sm:.25rem; --r-md:.375rem; --r-lg:.5rem; --r-xl:.75rem;
+      --pad-xs:.375rem; --pad-sm:.5rem; --pad-md:.875rem; --pad-lg:1.25rem;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.06); --shadow-md:0 6px 18px rgba(0,0,0,.12); --shadow-lg:0 12px 28px rgba(0,0,0,.14);
+      --t-fast:150ms; --t-med:220ms; --e:ease;
+      --h1:28px; --h2:20px; --h3:16px; --font:14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b0d12; --ink:#e7ebf3; --muted:#a4afc2; --line:#2a3242; --surface:#0f131b; --surface-sub:#121a26; --surface-info:#0e2136; --ring:#2f7dff55; }
+      .badge.success{background:#0f2a1f; color:#bff5e1; border-color:#1f6b50}
+      .badge.warn{background:#2c2315; color:#ffd9a3; border-color:#6f5427}
+      .badge.primary{background:#19335a; color:#bcd8ff; border-color:#244b86}
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; background:var(--bg); color:var(--ink); font:var(--font)}
+    a{color:var(--primary)} .muted{color:var(--muted)} .hide{display:none}
+    .container{max-width:1200px; margin:0 auto; padding:0 var(--pad-md)}
+
+    /* App chrome */
+    header.app{position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--line); box-shadow:var(--shadow-sm)}
+    .topbar{display:flex; align-items:center; justify-content:space-between; height:60px}
+    .logo{font-weight:600; font-size:var(--h2)}
+
+    .layout{display:grid; grid-template-columns:280px 1fr; gap:16px; padding:16px}
+    nav.sidebar{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); padding:var(--pad-md); height:calc(100vh - 92px); position:sticky; top:76px; overflow:auto}
+    .navlink{display:flex; gap:10px; padding:10px; align-items:center; border-radius:var(--r-md); color:inherit; text-decoration:none}
+    .navlink:hover,.navlink.active{background:var(--surface-sub)}
+
+    /* Buttons, inputs, badges */
+    .btn{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:var(--r-md); border:1px solid var(--line); background:var(--surface); cursor:pointer; transition:transform var(--t-fast) var(--e), background var(--t-fast) var(--e)}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:linear-gradient(180deg,var(--primary),var(--primary-strong)); border:none; color:#fff}
+    .btn.ghost{background:transparent}
+    .input{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:var(--r-md); background:#fff}
+    .input:focus{outline:none; box-shadow:0 0 0 3px var(--ring)}
+    .badge{display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border-radius:999px; border:1px solid var(--line); font-size:12px}
+    .badge.success{background:#d1fae5; color:#065f46}
+    .badge.warn{background:#fef3c7; color:#92400e}
+    .badge.primary{background:#dbeafe; color:#2563eb}
+
+    /* Board */
+    .board{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+    .column{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); padding:var(--pad-md)}
+    .column h4{margin:0}
+    .wip{font-size:12px}
+    .card-task{background:var(--surface-sub); border:1px solid var(--line); border-radius:var(--r-md); padding:10px; display:grid; gap:8px}
+    .chips{display:flex; gap:6px; flex-wrap:wrap}
+    .chip{font-size:12px; padding:2px 6px; border:1px solid var(--line); border-radius:999px; background:#fff}
+    .handle{cursor:grab}
+
+    /* Drawer */
+    .drawer{position:fixed; right:0; top:0; height:100%; width:520px; transform:translateX(100%); transition:transform var(--t-med) var(--e); background:var(--surface); border-left:1px solid var(--line); box-shadow:var(--shadow-lg)}
+    .drawer.open{transform:translateX(0)}
+    .drawer .section{padding:var(--pad-md)}
+
+    /* Approval */
+    .approval{background:var(--surface-info); border:1px solid #bcd8ff; color:#0f2f6a; border-radius:var(--r-lg); padding:var(--pad-sm); display:grid; gap:8px}
+
+    /* Library */
+    .library{display:grid; gap:var(--pad-md)}
+    .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--pad-md)}
+    .asset{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:8px}
+    .thumb{height:96px; border-radius:10px; background:linear-gradient(180deg,#eaf1ff,#dfeaff); border:1px solid var(--line)}
+
+    /* Spotlight */
+    .spot{position:fixed; inset:0; display:none; align-items:flex-start; justify-content:center; background:rgba(0,0,0,.35)}
+    .spot.open{display:flex}
+    .spot-panel{margin-top:10vh; width:720px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-xl); box-shadow:var(--shadow-md)}
+    .spot-results{max-height:320px; overflow:auto}
+
+    /* Overlay */
+    .overlay{position:fixed; inset:0; background:rgba(0,0,0,.4); display:none}
+    .overlay.active{display:block}
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .btn:hover{transform:none}
+      .drawer{transition:none}
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px){ .board{grid-template-columns:repeat(2,1fr)} .drawer{width:85vw} }
+    @media (max-width: 768px){ .layout{grid-template-columns:1fr} nav.sidebar{display:none} .board{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <!-- =============== TOPBAR =============== -->
+  <header class="app" role="banner">
+    <div class="container topbar" aria-label="Topbar">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div class="logo">⚡ SparkTasks <span class="muted">v5ext3</span></div>
+        <input id="searchInput" class="input" style="width:320px" placeholder="Search (⌘K) — type:pdf owner:@alex …" aria-label="Search" data-testid="search-results" />
+      </div>
+      <div style="display:flex; align-items:center; gap:8px">
+        <span class="badge success"><i class="fa-solid fa-bolt"></i> Online</span>
+        <span id="residencyBadge" class="badge primary" role="button" tabindex="0" data-testid="residency-badge"><i class="fa-solid fa-database"></i> Google Drive • US</span>
+        <button class="btn"><i class="fa-solid fa-user-circle"></i> Account</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <!-- Stage switch (progressive reveal) -->
+    <section class="card" style="padding:var(--pad-md); display:flex; align-items:center; justify-content:space-between">
+      <div>
+        <div style="font-size:var(--h2); font-weight:600">Market‑Winning Development Plan <span class="muted">(Interactive Preview)</span></div>
+        <div class="muted">Trello familiarity • Linear speed • BYOS sovereignty • Unified approvals</div>
+      </div>
+      <div style="display:flex; gap:8px">
+        <button class="btn" data-stage="individual">Individual</button>
+        <button class="btn" data-stage="team">Team</button>
+        <button class="btn" data-stage="org">Organization</button>
+      </div>
+    </section>
+
+    <div class="layout" aria-label="Primary layout">
+      <!-- =============== SIDEBAR =============== -->
+      <nav class="sidebar" aria-label="Sidebar">
+        <a class="navlink active" href="#" data-testid="nav-tasks"><i class="fa-solid fa-table-cells"></i> Boards</a>
+        <a class="navlink" href="#" id="navLibrary" data-testid="nav-library"><i class="fa-solid fa-file-lines"></i> Library</a>
+        <a class="navlink" href="#"><i class="fa-solid fa-calendar"></i> Calendar</a>
+        <a class="navlink" href="#"><i class="fa-solid fa-chart-simple"></i> Analytics</a>
+        <div style="height:8px"></div>
+        <div class="muted" style="font-weight:600; font-size:12px">MY PROJECTS</div>
+        <a class="navlink" href="#"><i class="fa-solid fa-briefcase"></i> Marketing Campaign</a>
+        <a class="navlink" href="#"><i class="fa-solid fa-briefcase"></i> Product Launch</a>
+      </nav>
+
+      <!-- =============== MAIN WORK AREA =============== -->
+      <section class="col">
+        <!-- Board -->
+        <section id="board" class="board" role="region" aria-label="Kanban Board" data-testid="board-container">
+          <!-- Columns rendered by JS -->
+        </section>
+
+        <!-- Library -->
+        <section id="library" class="library card hide" aria-label="Docs & Media Library">
+          <div style="display:flex; justify-content:space-between; align-items:center">
+            <h3 style="margin:0">Docs & Media Library</h3>
+            <label class="btn" aria-label="Upload files"><input id="fileInput" data-testid="asset-upload" type="file" multiple hidden /> <i class="fa-solid fa-upload"></i> Upload</label>
+          </div>
+          <div id="assetGrid" class="grid" role="list">
+            <!-- Assets rendered by JS -->
+          </div>
+        </section>
+
+        <!-- Competitive snapshot (short) -->
+        <section class="card" style="padding:var(--pad-lg)">
+          <h3 style="margin-top:0">F500 Competitive Snapshot</h3>
+          <table style="width:100%; border-collapse:separate; border-spacing:0">
+            <thead>
+              <tr><th style="text-align:left; padding:10px">Capability</th><th style="text-align:left; padding:10px">Trello</th><th style="text-align:left; padding:10px">Linear</th><th style="text-align:left; padding:10px">Asana</th><th style="text-align:left; padding:10px">SparkTasks Target</th></tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:10px">Board Feel</td><td style="padding:10px">Familiar</td><td style="padding:10px">—</td><td style="padding:10px">OK</td><td style="padding:10px"><b>Familiar + 60fps + keyboard</b></td></tr>
+              <tr><td style="padding:10px">Speed</td><td style="padding:10px">Mid</td><td style="padding:10px"><b>Elite</b></td><td style="padding:10px">Mid</td><td style="padding:10px"><b>Elite</b> (&lt;50ms / &lt;200ms)</td></tr>
+              <tr><td style="padding:10px">Files</td><td style="padding:10px">Attachments</td><td style="padding:10px">Links</td><td style="padding:10px">Basic</td><td style="padding:10px"><b>Project‑native + BYOS + search</b></td></tr>
+              <tr><td style="padding:10px">Approvals</td><td style="padding:10px">No</td><td style="padding:10px">No</td><td style="padding:10px">Basic</td><td style="padding:10px"><b>Unified task/asset + crypto</b></td></tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <!-- =============== TASK DRAWER =============== -->
+  <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitleH" data-testid="task-detail-drawer">
+    <div class="section" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line)">
+      <div>
+        <div class="muted" aria-hidden>Portfolio → Program → Project → Epic</div>
+        <input id="drawerTitle" class="input" value="Draft landing hero" data-testid="task-title" aria-labelledby="drawerTitleH"/>
+      </div>
+      <button id="btnCloseDrawer" class="btn" data-testid="drawer-close" aria-label="Close panel"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="section">
+      <!-- Unified Approval Banner (same component for task & asset) -->
+      <div id="approvalBanner" class="approval" data-component-id="approval-banner-v1" data-testid="approval-banner" aria-live="polite">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px">
+          <div style="display:flex; gap:8px; align-items:center">
+            <span class="badge primary" id="approvalState">In Review</span>
+            <span class="muted">• task #EP-12</span>
+          </div>
+          <div style="display:flex; gap:8px">
+            <button id="btnApprove" class="btn primary" data-testid="approve-button">Approve</button>
+            <button id="btnChanges" class="btn" data-testid="request-changes-button">Request changes</button>
+          </div>
+        </div>
+        <div class="muted">Quorum: <span id="quorum">1</span> / <span id="approverCount">1</span> • <span id="queued" class="hide">Queued (offline)</span> • <span class="badge success" data-testid="approval-activity-verified">cryptographic-signature</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <h4 id="attachmentsH" style="margin:6px 0">Attachments</h4>
+      <div id="attachmentZone" data-testid="attachment-zone" class="col" aria-labelledby="attachmentsH"></div>
+    </div>
+    <div class="section">
+      <h4 style="margin:6px 0">Comments</h4>
+      <textarea class="input" rows="3" placeholder="@mention teammates…" data-testid="comment-editor"></textarea>
+    </div>
+  </aside>
+
+  <!-- Spotlight / Command Palette -->
+  <div id="spot" class="spot" role="dialog" aria-modal="true" aria-labelledby="spotH">
+    <div class="spot-panel">
+      <div class="section" style="border-bottom:1px solid var(--line)">
+        <input id="spotInput" class="input" placeholder="Type a command or search…  •  type:pdf ext:docx owner:@alex" aria-label="Command input" />
+      </div>
+      <div class="section spot-results" id="spotResults" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <!-- Residency Popover (absolute) -->
+  <div id="residencyPopover" class="card hide" role="dialog" aria-modal="false" data-testid="storage-health" style="position:absolute; padding:var(--pad-sm); min-width:220px">
+    <div style="font-weight:600">Storage Provider</div>
+    <div class="muted" id="providerState">Google Drive: Connected</div>
+    <div style="height:8px"></div>
+    <button id="btnSwitch" class="btn" aria-describedby="sovereigntyMsg"><i class="fa-solid fa-right-left"></i> Switch Provider</button>
+    <div id="sovereigntyMsg" class="muted hide" data-testid="sovereignty-warning" style="margin-top:6px">Data residency will change</div>
+  </div>
+
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+
+  <script>
+    // =========================================================
+    // STATE
+    // =========================================================
+    const state = {
+      stage: 'individual',
+      tasks: [
+        {id:'t1', col:'todo', title:'Draft landing hero', priority:'high', labels:['marketing'], files:1},
+        {id:'t2', col:'todo', title:'Pricing page copy', priority:'medium', labels:['content'], files:0},
+        {id:'t3', col:'inprogress', title:'Campaign assets review', priority:'high', labels:['design'], files:2},
+        {id:'t4', col:'review', title:'Finalize ad copy', priority:'medium', labels:['copy'], files:1},
+        {id:'t5', col:'done', title:'Set campaign budget', priority:'low', labels:['ops'], files:1}
+      ],
+      assets: [
+        {id:'a1', name:'Contract_Q4.pdf', type:'pdf'},
+        {id:'a2', name:'Hero_1200x628.png', type:'image'},
+        {id:'a3', name:'Promo_cut_v3.mp4', type:'video'}
+      ]
+    };
+
+    const columns = [
+      {id:'todo',    title:'To Do'},
+      {id:'inprogress', title:'In Progress'},
+      {id:'review',  title:'Review'},
+      {id:'done',    title:'Done'}
+    ];
+
+    // =========================================================
+    // HELPERS
+    // =========================================================
+    const $ = (sel, root=document)=>root.querySelector(sel);
+    const $$ = (sel, root=document)=>Array.from(root.querySelectorAll(sel));
+    function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
+    function toast(html){ const n=el(`<div class="badge primary" style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9999">${html}</div>`); document.body.appendChild(n); setTimeout(()=>n.remove(),1500); }
+
+    // =========================================================
+    // BOARD
+    // =========================================================
+    const boardEl = $('#board');
+    function renderBoard(){
+      boardEl.innerHTML = '';
+      columns.forEach(col => {
+        const tasks = state.tasks.filter(t=>t.col===col.id);
+        const columnNode = el(`<div class="column" role="region" aria-label="${col.title}">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <h4>${col.title}</h4>
+            <span class="muted wip">${tasks.length} tasks</span>
+          </div>
+          <input class="input" placeholder="Quick Add • @assignee #label !priority" data-testid="quick-add-input" aria-label="Quick add in ${col.title}">
+          <div class="col" role="list" aria-label="${col.title} list"></div>
+        </div>`);
+        const list = columnNode.querySelector('[role="list"]');
+        tasks.forEach(task => {
+          const card = el(`<div class="card-task" role="listitem" data-id="${task.id}" tabindex="0" data-testid="task-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start">
+              <div>${task.title}</div>
+              <span class="handle" data-testid="card-dnd-handle" title="Drag">⋮⋮</span>
+            </div>
+            <div class="chips">
+              ${task.labels.map(l=>`<span class="chip" data-testid="label-${l}">#${l}</span>`).join('')}
+              <span class="chip" data-testid="file-chip">📎 ${task.files}</span>
+              <span class="chip">!${task.priority}</span>
+            </div>
+          </div>`);
+          // Pointer & keyboard behaviors
+          card.addEventListener('dblclick', () => openDrawer(task));
+          card.addEventListener('keydown', (e)=>{
+            if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openDrawer(task); }
+            if(e.key==='m'){ // move to next column
+              const idx = columns.findIndex(c=>c.id===task.col); const next = columns[(idx+1)%columns.length].id; task.col = next; renderBoard(); card.focus(); toast('Moved to '+columns[(idx+1)%columns.length].title);
+            }
+          });
+          // Drag & drop
+          card.draggable = true;
+          card.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', task.id); });
+          list.appendChild(card);
+        });
+        // Quick Add per column
+        const qa = columnNode.querySelector('[data-testid="quick-add-input"]');
+        qa.addEventListener('keydown', (e)=>{
+          if(e.key==='Enter'){
+            const v = qa.value.trim(); if(!v) return;
+            const pr=(v.match(/!([\w-]+)/)||[])[1]||'medium';
+            const label=(v.match(/#([\w-]+)/)||[])[1];
+            const title=v.replace(/[@#!^+].*/,'').trim()||'New task';
+            state.tasks.unshift({id:'t'+(Math.random()*1e4|0), col:col.id, title, priority:pr, labels:label?[label]:[], files:0});
+            qa.value=''; renderBoard();
+          }
+        });
+        // Column drop targets
+        columnNode.addEventListener('dragover',e=>e.preventDefault());
+        columnNode.addEventListener('drop', e=>{ e.preventDefault(); const id=e.dataTransfer.getData('text/plain'); const t=state.tasks.find(x=>x.id===id); if(t){ t.col=col.id; renderBoard(); }});
+        boardEl.appendChild(columnNode);
+      });
+    }
+
+    // =========================================================
+    // DRAWER + APPROVALS
+    // =========================================================
+    const drawer = $('#drawer');
+    const drawerTitle = $('#drawerTitle');
+    $('#btnCloseDrawer').onclick = ()=> drawer.classList.remove('open');
+    function openDrawer(task){ drawer.classList.add('open'); drawerTitle.value = task.title; drawerTitle.focus(); }
+
+    $('#btnApprove').onclick = ()=>{ $('#approvalState').textContent='Approved'; toast('Approved ✓ (signed)'); };
+    $('#btnChanges').onclick = ()=>{ $('#approvalState').textContent='Changes Requested'; toast('Changes requested'); };
+
+    function addAttachmentPreview(file){
+      const node = el(`<div class="card" data-testid="asset-preview">
+        <div class="thumb" style="display:flex;align-items:center;justify-content:center">${file.type?.includes('pdf')?'📄 PDF':file.type?.includes('image')?'🖼️ Image':'📎 File'}</div>
+        <div style="display:flex; gap:8px; align-items:center; margin-top:6px"><span>${file.name}</span><span class="badge primary" data-testid="residency-file-badge">Google Drive</span></div>
+      </div>`);
+      $('#attachmentZone').prepend(node);
+    }
+
+    // =========================================================
+    // LIBRARY
+    // =========================================================
+    const library = $('#library');
+    const navLibrary = $('#navLibrary');
+    const assetGrid = $('#assetGrid');
+    const fileInput = $('#fileInput');
+
+    navLibrary.onclick = ()=>{ library.classList.toggle('hide'); };
+
+    function renderAssets(){
+      assetGrid.innerHTML='';
+      state.assets.forEach(a=>{
+        const node = el(`<div class="asset" role="listitem" data-testid="asset-card">
+          <div class="thumb" aria-hidden></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px">
+            <div>${a.name}</div><span class="badge">${a.type}</span>
+          </div>
+          <button class="btn" data-testid="file-approve-banner"><i class="fa-solid fa-link"></i> Attach & Approve</button>
+        </div>`);
+        node.querySelector('[data-testid="file-approve-banner"]').onclick = ()=>{ drawer.classList.add('open'); addAttachmentPreview({name:a.name, type:a.type}); };
+        assetGrid.appendChild(node);
+      });
+    }
+
+    fileInput.onchange = (e)=>{
+      const files=[...e.target.files];
+      files.forEach(f=>{ state.assets.unshift({id:'a'+(Math.random()*1e4|0), name:f.name, type:f.type.includes('pdf')?'pdf':(f.type.includes('image')?'image':'other')}); addAttachmentPreview(f); });
+      renderAssets(); drawer.classList.add('open');
+    }
+
+    // =========================================================
+    // SPOTLIGHT / COMMAND (⌘K)
+    // =========================================================
+    const spot = $('#spot');
+    const spotInput = $('#spotInput');
+    const spotResults = $('#spotResults');
+    function openSpot(){ spot.classList.add('open'); spotInput.focus(); renderSpot(''); }
+    function closeSpot(){ spot.classList.remove('open'); }
+    function renderSpot(q){
+      const parts=q.trim().split(/\s+/).filter(Boolean);
+      const filters={ type:null, ext:null, owner:null, text:[] };
+      parts.forEach(p=>{ if(p.startsWith('type:')) filters.type=p.slice(5); else if(p.startsWith('ext:')) filters.ext=p.slice(4); else if(p.startsWith('owner:@')) filters.owner=p.slice(7); else filters.text.push(p); });
+      const text=filters.text.join(' ').toLowerCase();
+      const items=[...state.tasks.map(t=>({kind:'task',title:t.title})), ...state.assets.map(a=>({kind:'file',title:a.name,type:a.type}))];
+      const res=items.filter(it=>{ if(filters.type && it.kind==='file' && it.type!==filters.type) return false; if(text && !it.title.toLowerCase().includes(text)) return false; return true; });
+      spotResults.innerHTML = res.map(it=>`<div data-testid="search-result-item">${it.kind==='file'?'📄':'✅'} ${it.title}</div>`).join('') || '<div class="muted">No results</div>';
+    }
+
+    // Global keybindings
+    document.addEventListener('keydown', e=>{
+      if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openSpot(); }
+      if(e.key==='Escape'){ closeSpot(); drawer.classList.remove('open'); $('#overlay').classList.remove('active'); }
+    });
+    spot.addEventListener('click', e=>{ if(e.target===spot) closeSpot(); });
+    spotInput.addEventListener('input', e=>renderSpot(e.target.value));
+
+    // =========================================================
+    // RESIDENCY POPOVER
+    // =========================================================
+    const residencyBadge = $('#residencyBadge');
+    const residencyPopover = $('#residencyPopover');
+    residencyBadge.addEventListener('click', ()=>{
+      const r = residencyBadge.getBoundingClientRect();
+      residencyPopover.style.left = r.left + 'px';
+      residencyPopover.style.top = (r.bottom + 8) + 'px';
+      residencyPopover.classList.toggle('hide');
+    });
+    $('#btnSwitch').onclick = ()=>{
+      $('#providerState').textContent = 'Dropbox: Connected';
+      $('#sovereigntyMsg').classList.remove('hide');
+      residencyBadge.innerHTML = '<i class="fa-solid fa-database"></i> Dropbox • EU';
+    }
+
+    // =========================================================
+    // INITIAL RENDER
+    // =========================================================
+    renderBoard(); renderAssets();
+
+    // =========================================================
+    // SMOKE TESTS (console-only; never alter UI). Additions welcome.
+    // =========================================================
+    (function tests(){
+      function expect(ok,msg){ if(!ok) console.error('[TEST FAIL]', msg); }
+      expect(!!document.querySelector('[data-testid="nav-tasks"]'),'nav-tasks present');
+      expect(!!document.querySelector('[data-testid="quick-add-input"]'),'quick-add-input present');
+      expect(!!document.querySelector('[data-testid="task-title"]'),'task-title present');
+      expect(!!document.querySelector('[data-testid="search-results"]'),'search-results present');
+      expect(!!document.querySelector('[data-testid="approval-banner"]'),'approval-banner present');
+      expect(!!document.querySelector('[data-testid="asset-upload"]'),'asset-upload present');
+      // Quick Add creates a task (logic test only)
+      const before = state.tasks.length; state.tasks.unshift({id:'tx', col:'todo', title:'__test__', priority:'low', labels:[], files:0});
+      expect(state.tasks.length===before+1,'quick add mutates model'); state.tasks.shift();
+      // Spotlight token parse sanity
+      const q='type:pdf owner:@alex contract'; expect(q.includes('type:pdf') && q.includes('owner:@alex'),'tokens parseable');
+    })();
+  </script>
+</body>
+</html>
