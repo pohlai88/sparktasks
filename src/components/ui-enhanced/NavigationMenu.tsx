@@ -32,7 +32,7 @@ import { cva } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
-import { AccessibleIcon } from '@/components/primitives';
+import { AccessibleIcon, Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED NAVIGATION MENU VARIANTS =====
@@ -343,6 +343,7 @@ interface EnhancedNavigationMenuTriggerProps {
   variant?: 'default' | 'subtle' | 'accent';
   size?: 'sm' | 'md' | 'lg';
   showIndicator?: boolean;
+  asChild?: boolean;
 }
 
 interface EnhancedNavigationMenuContentProps {
@@ -357,6 +358,7 @@ interface EnhancedNavigationMenuLinkProps {
   active?: boolean;
   href?: string;
   onSelect?: (event: Event) => void;
+  asChild?: boolean;
 }
 
 // ===== ENHANCED NAVIGATION MENU COMPONENTS =====
@@ -456,27 +458,32 @@ const EnhancedNavigationMenuTrigger = React.forwardRef<
       variant = 'default',
       size = 'md',
       showIndicator = true,
+      asChild = false,
       ...props
     },
     ref
-  ) => (
-    <NavigationMenuPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        enhancedNavigationMenuTriggerVariants({ variant, size }),
-        'group',
-        className
-      )}
-      {...props}
-    >
-      {children}
-      {showIndicator && (
-        <AccessibleIcon>
-          <ChevronDown className='relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180' />
-        </AccessibleIcon>
-      )}
-    </NavigationMenuPrimitive.Trigger>
-  )
+  ) => {
+    const Comp = asChild ? Slot : NavigationMenuPrimitive.Trigger;
+    
+    return (
+      <Comp
+        ref={ref}
+        className={cn(
+          enhancedNavigationMenuTriggerVariants({ variant, size }),
+          'group',
+          className
+        )}
+        {...props}
+      >
+        {children}
+        {showIndicator && (
+          <AccessibleIcon>
+            <ChevronDown className='relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180' />
+          </AccessibleIcon>
+        )}
+      </Comp>
+    );
+  }
 );
 
 /**
@@ -527,21 +534,37 @@ const EnhancedNavigationMenuLink = React.forwardRef<
       active = false,
       href,
       onSelect,
+      asChild = false,
       ...props
     },
     ref
-  ) => (
-    <NavigationMenuPrimitive.Link
-      ref={ref}
-      className={cn(
-        enhancedNavigationMenuLinkVariants({ variant, active }),
-        className
-      )}
-      href={href}
-      {...(onSelect && { onSelect })}
-      {...props}
-    />
-  )
+  ) => {
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref}
+          className={cn(
+            enhancedNavigationMenuLinkVariants({ variant, active }),
+            className
+          )}
+          {...(props as any)}
+        />
+      );
+    }
+    
+    return (
+      <NavigationMenuPrimitive.Link
+        ref={ref}
+        className={cn(
+          enhancedNavigationMenuLinkVariants({ variant, active }),
+          className
+        )}
+        href={href}
+        {...(onSelect && { onSelect })}
+        {...props}
+      />
+    );
+  }
 );
 
 /**

@@ -109,6 +109,49 @@ module.exports = {
     // Tailwind — let Prettier sort classes
     'tailwindcss/classnames-order': 'off',
     'tailwindcss/no-custom-classname': 'off',
+
+    // ===== ANTI-DRIFT GOVERNANCE RULES =====
+    // Block manual accessibility patterns
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: "JSXAttribute[name.name='aria-hidden'][value.value=true]",
+        message: '🚫 Use <AccessibleIcon> wrapper instead of manual aria-hidden'
+      },
+      {
+        selector: "Literal[value='sr-only']",
+        message: '🚫 Use <VisuallyHidden> component instead of sr-only class'
+      },
+      {
+        selector: "Property[key.name='aria-hidden'][value.value=true]",
+        message: '🚫 Use <AccessibleIcon> wrapper instead of object aria-hidden'
+      }
+    ],
+
+    // Block primitive bypassing
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          {
+            name: '@radix-ui/react-visually-hidden',
+            message: '🚫 Import from @/components/primitives instead'
+          },
+          {
+            name: '@radix-ui/react-slot',
+            message: '🚫 Import from @/components/primitives instead'
+          },
+          {
+            name: '@radix-ui/react-accessible-icon',
+            message: '🚫 Import from @/components/primitives instead'
+          },
+          {
+            name: '@radix-ui/react-direction',
+            message: '🚫 Import from @/components/primitives instead'
+          }
+        ]
+      }
+    ],
   },
   overrides: [
     {

@@ -32,6 +32,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Circle } from 'lucide-react';
 import React from 'react';
 
+import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED RADIO GROUP VARIANTS =====
@@ -257,6 +258,8 @@ const EnhancedRadioGroup = React.forwardRef<
       density?: 'comfortable' | 'compact';
       /** Optional description for screen readers */
       description?: string;
+      /** Polymorphic support - render as different element/component */
+      asChild?: boolean;
     }
 >(
   (
@@ -266,11 +269,29 @@ const EnhancedRadioGroup = React.forwardRef<
       density = 'comfortable',
       enforceAAA = false,
       description,
+      asChild = false,
       children,
       ...props
     },
     ref
   ) => {
+    const Comp = asChild ? Slot : RadioGroupPrimitive.Root;
+    
+    if (asChild) {
+      return (
+        <Comp
+          ref={ref}
+          className={cn(
+            enhancedRadioGroupVariants({ orientation, density }),
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </Comp>
+      );
+    }
+    
     return (
       <div>
         {description && (
@@ -284,7 +305,7 @@ const EnhancedRadioGroup = React.forwardRef<
             {description}
           </p>
         )}
-        <RadioGroupPrimitive.Root
+        <Comp
           ref={ref}
           className={cn(
             enhancedRadioGroupVariants({ orientation, density }),
@@ -298,7 +319,7 @@ const EnhancedRadioGroup = React.forwardRef<
           {...props}
         >
           {children}
-        </RadioGroupPrimitive.Root>
+        </Comp>
       </div>
     );
   }
@@ -325,6 +346,8 @@ const EnhancedRadioGroupItem = React.forwardRef<
       enforceAAA?: boolean;
       /** Description text for accessibility */
       description?: string;
+      /** Polymorphic support - render as different element/component */
+      asChild?: boolean;
     }
 >(
   (
@@ -340,6 +363,7 @@ const EnhancedRadioGroupItem = React.forwardRef<
       indicatorStyle = 'dot',
       enforceAAA = false,
       description,
+      asChild = false,
       id,
       ...props
     },

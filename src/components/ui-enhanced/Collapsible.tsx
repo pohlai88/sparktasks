@@ -30,6 +30,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
+import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED COLLAPSIBLE VARIANTS =====
@@ -314,6 +315,10 @@ interface EnhancedCollapsibleRootProps
    * Children components
    */
   children: React.ReactNode;
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 /**
@@ -341,6 +346,10 @@ interface EnhancedCollapsibleTriggerProps
    * @default "right"
    */
   iconPosition?: 'left' | 'right';
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 /**
@@ -354,6 +363,10 @@ interface EnhancedCollapsibleContentProps
    * @default false
    */
   aaaMode?: boolean;
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 /**
@@ -422,22 +435,26 @@ interface EnhancedCollapsibleCompleteProps {
 const EnhancedCollapsibleRoot = React.forwardRef<
   React.ElementRef<typeof CollapsiblePrimitive.Root>,
   EnhancedCollapsibleRootProps
->(({ className, variant, aaaMode, density, children, ...props }, ref) => (
-  <CollapsiblePrimitive.Root
-    ref={ref}
-    className={cn(
-      enhancedCollapsibleRootVariants({
-        variant,
-        aaaMode,
-        density,
-        className,
-      })
-    )}
-    {...props}
-  >
-    {children}
-  </CollapsiblePrimitive.Root>
-));
+>(({ className, variant, aaaMode, density, asChild = false, children, ...props }, ref) => {
+  const Comp = asChild ? Slot : CollapsiblePrimitive.Root;
+  
+  return (
+    <Comp
+      ref={ref}
+      className={cn(
+        enhancedCollapsibleRootVariants({
+          variant,
+          aaaMode,
+          density,
+          className,
+        })
+      )}
+      {...props}
+    >
+      {children}
+    </Comp>
+  );
+});
 
 EnhancedCollapsibleRoot.displayName = 'EnhancedCollapsibleRoot';
 
@@ -456,43 +473,48 @@ const EnhancedCollapsibleTrigger = React.forwardRef<
       showIcon = true,
       icon: IconComponent = ChevronDown,
       iconPosition = 'right',
+      asChild = false,
       children,
       ...props
     },
     ref
-  ) => (
-    <CollapsiblePrimitive.Trigger
-      ref={ref}
-      className={cn(
-        enhancedCollapsibleTriggerVariants({
-          variant,
-          aaaMode,
-          className,
-        })
-      )}
-      {...props}
-    >
-      {showIcon && iconPosition === 'left' && (
-        <IconComponent
-          className={enhancedCollapsibleIconVariants({
+  ) => {
+    const Comp = asChild ? Slot : CollapsiblePrimitive.Trigger;
+    
+    return (
+      <Comp
+        ref={ref}
+        className={cn(
+          enhancedCollapsibleTriggerVariants({
             variant,
             aaaMode,
-          })}
-        />
-      )}
+            className,
+          })
+        )}
+        {...props}
+      >
+        {showIcon && iconPosition === 'left' && (
+          <IconComponent
+            className={enhancedCollapsibleIconVariants({
+              variant,
+              aaaMode,
+            })}
+          />
+        )}
 
-      <span className='flex-1'>{children}</span>
+        <span className='flex-1'>{children}</span>
 
-      {showIcon && iconPosition === 'right' && (
-        <IconComponent
-          className={enhancedCollapsibleIconVariants({
-            variant,
-            aaaMode,
-          })}
-        />
-      )}
-    </CollapsiblePrimitive.Trigger>
-  )
+        {showIcon && iconPosition === 'right' && (
+          <IconComponent
+            className={enhancedCollapsibleIconVariants({
+              variant,
+              aaaMode,
+            })}
+          />
+        )}
+      </Comp>
+    );
+  }
 );
 
 EnhancedCollapsibleTrigger.displayName = 'EnhancedCollapsibleTrigger';
@@ -503,21 +525,25 @@ EnhancedCollapsibleTrigger.displayName = 'EnhancedCollapsibleTrigger';
 const EnhancedCollapsibleContent = React.forwardRef<
   React.ElementRef<typeof CollapsiblePrimitive.Content>,
   EnhancedCollapsibleContentProps
->(({ className, variant, aaaMode, children, ...props }, ref) => (
-  <CollapsiblePrimitive.Content
-    ref={ref}
-    className={cn(
-      enhancedCollapsibleContentVariants({
-        variant,
-        aaaMode,
-        className,
-      })
-    )}
-    {...props}
-  >
-    {children}
-  </CollapsiblePrimitive.Content>
-));
+>(({ className, variant, aaaMode, asChild = false, children, ...props }, ref) => {
+  const Comp = asChild ? Slot : CollapsiblePrimitive.Content;
+  
+  return (
+    <Comp
+      ref={ref}
+      className={cn(
+        enhancedCollapsibleContentVariants({
+          variant,
+          aaaMode,
+          className,
+        })
+      )}
+      {...props}
+    >
+      {children}
+    </Comp>
+  );
+});
 
 EnhancedCollapsibleContent.displayName = 'EnhancedCollapsibleContent';
 

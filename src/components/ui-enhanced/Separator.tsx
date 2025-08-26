@@ -30,7 +30,7 @@ import * as SeparatorPrimitive from '@radix-ui/react-separator';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
-import { AccessibleIcon } from '@/components/primitives';
+import { AccessibleIcon, Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED SEPARATOR VARIANTS =====
@@ -286,6 +286,11 @@ interface EnhancedSeparatorOwnProps {
    * Test ID for testing purposes
    */
   'data-testid'?: string;
+
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 type EnhancedSeparatorProps = EnhancedSeparatorOwnProps &
@@ -309,6 +314,7 @@ const EnhancedSeparator = React.forwardRef<
       aaa = false,
       orientation = 'horizontal',
       decorative = true,
+      asChild = false,
       className,
       'aria-label': ariaLabel,
       'data-testid': dataTestId,
@@ -327,35 +333,10 @@ const EnhancedSeparator = React.forwardRef<
           'aria-orientation': orientation,
         };
 
-    return decorative ? (
-      <AccessibleIcon>
-        <SeparatorPrimitive.Root
-          ref={ref}
-          orientation={orientation}
-          decorative={decorative}
-          className={cn(
-            enhancedSeparatorVariants({
-              variant,
-              size,
-              spacing,
-              decoration,
-              aaa,
-            }),
-            // Apply orientation-specific classes
-            getOrientationClasses(
-              orientation,
-              size || 'default',
-              variant || 'default'
-            ),
-            className
-          )}
-          data-testid={dataTestId}
-          {...accessibilityProps}
-          {...props}
-        />
-      </AccessibleIcon>
-    ) : (
-      <SeparatorPrimitive.Root
+    const Comp = asChild ? Slot : SeparatorPrimitive.Root;
+    
+    const separatorContent = (
+      <Comp
         ref={ref}
         orientation={orientation}
         decorative={decorative}
@@ -379,6 +360,14 @@ const EnhancedSeparator = React.forwardRef<
         {...accessibilityProps}
         {...props}
       />
+    );
+
+    return decorative ? (
+      <AccessibleIcon>
+        {separatorContent}
+      </AccessibleIcon>
+    ) : (
+      separatorContent
     );
   }
 );

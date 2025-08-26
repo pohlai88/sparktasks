@@ -1,0 +1,134 @@
+<!--
+VERSION 3 — ACTIVATED EXCELLENCE
+Full "No‑Compromise" Dashboard UI Concept
+Includes: core functions, all recommended modules, rich KPI layer, multi‑view tabs, modular toggles, inspector, and mobile responsiveness.
+Design philosophy: clarity, modularity, flexibility, and performance.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Activated Excellence — V3 Executive Dashboard</title>
+<style>
+/* --- DESIGN TOKENS --- */
+:root {
+  --bg: #f5f7fa;
+  --surface: #fff;
+  --primary: #0057d9;
+  --primary-dark: #0041a8;
+  --accent: #28c76f;
+  --warn: #ff9f43;
+  --danger: #ea5455;
+  --info: #3b82f6;
+  --text: #0a1f44;
+  --muted: #6b7280;
+  --border: 1px solid #e2e8f0;
+  --radius: 8px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+/* --- BASE --- */
+body {margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);}
+h1,h2,h3,h4{margin:0;}
+a{text-decoration:none;color:inherit;}
+/* --- LAYOUT --- */
+header{height:60px;background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;}
+header .brand{display:flex;align-items:center;gap:0.5rem;font-weight:bold;}
+header nav a{color:#ddd;margin-left:1rem;font-size:0.9rem;}
+.layout{display:flex;min-height:calc(100vh - 60px);}
+aside{width:240px;background:var(--surface);border-right:var(--border);padding:1rem;display:flex;flex-direction:column;gap:1.5rem;}
+main{flex:1;padding:1rem;overflow-y:auto;}
+/* --- NAVIGATION --- */
+.nav-section h4{font-size:0.75rem;letter-spacing:0.05em;color:var(--muted);margin-bottom:0.25rem;}
+.nav-section a{display:block;padding:0.4rem 0.5rem;border-radius:var(--radius);font-size:0.9rem;}
+.nav-section a:hover{background:rgba(0,0,0,0.05);}
+.tag{font-size:0.7rem;padding:0.1rem 0.4rem;border-radius:999px;background:#eef2ff;color:var(--primary);}
+/* --- KPI GRID --- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1rem;}
+.kpi{background:var(--surface);border:var(--border);border-radius:var(--radius);padding:0.75rem;box-shadow:var(--shadow);}
+.kpi h3{font-size:0.85rem;color:var(--muted);}
+.kpi .value{font-size:1.5rem;font-weight:bold;}
+.up{color:var(--accent);} .down{color:var(--danger);}
+.progress{height:6px;background:#e5e7eb;border-radius:999px;margin-top:0.25rem;}
+.progress span{display:block;height:100%;border-radius:999px;background:var(--primary);}
+/* --- TABS --- */
+.tabs{display:flex;gap:0.5rem;border-bottom:var(--border);margin-bottom:1rem;}
+.tab{padding:0.5rem 0.75rem;border-radius:var(--radius) var(--radius) 0 0;background:transparent;cursor:pointer;font-size:0.85rem;color:var(--muted);}
+.tab.active{background:var(--surface);color:var(--primary);border:var(--border);border-bottom:none;}
+.panel{display:none;} .panel.active{display:block;}
+/* --- PLACEHOLDERS --- */
+.placeholder{height:240px;background:repeating-linear-gradient(90deg,#f0f3f9,#f0f3f9 10px,#e4e8f0 10px,#e4e8f0 20px);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--muted);}
+.table-wrap{overflow:auto;background:var(--surface);border:var(--border);border-radius:var(--radius);}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;}
+th,td{padding:0.5rem 0.75rem;border-bottom:var(--border);text-align:left;}
+thead{background:#f9fafb;}
+/* --- RESPONSIVE --- */
+@media(max-width:768px){
+  aside{display:none;}
+  .layout{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span>🔥</span>Activated Excellence V3</div>
+  <nav>
+    <a href="#">Settings</a>
+    <a href="#">Profile</a>
+  </nav>
+</header>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside>
+    <div class="nav-section">
+      <h4>Overview</h4>
+      <a href="#">Dashboard</a>
+      <a href="#">Projects</a>
+      <a href="#">My Tasks</a>
+      <a href="#">Inbox <span class="tag">12</span></a>
+    </div>
+    <div class="nav-section">
+      <h4>Modules</h4>
+      <a href="#">Advanced Prioritization</a>
+      <a href="#">Scrum Mode</a>
+      <a href="#">Advanced Scheduling</a>
+      <a href="#">Lean Analytics</a>
+      <a href="#">MoSCoW Scope</a>
+      <a href="#">Quality & Six Sigma</a>
+    </div>
+  </aside>
+  <!-- MAIN -->
+  <main>
+    <!-- KPI GRID -->
+    <div class="kpis">
+      <div class="kpi"><h3>Activation</h3><div class="value up">78%</div><div class="progress"><span style="width:78%"></span></div></div>
+      <div class="kpi"><h3>Cycle Time</h3><div class="value down">3.1d</div><div class="progress"><span style="width:62%"></span></div></div>
+      <div class="kpi"><h3>User Sentiment</h3><div class="value up">4.7 / 5</div><div class="progress"><span style="width:94%"></span></div></div>
+      <div class="kpi"><h3>Velocity</h3><div class="value up">42 pts</div><div class="progress"><span style="width:70%"></span></div></div>
+    </div>
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" data-tab="overview">Overview</div>
+      <div class="tab" data-tab="kanban">Kanban</div>
+      <div class="tab" data-tab="timeline">Timeline</div>
+      <div class="tab" data-tab="analytics">Analytics</div>
+      <div class="tab" data-tab="backlog">Backlog</div>
+      <div class="tab" data-tab="quality">Quality</div>
+    </div>
+    <!-- PANELS -->
+    <div id="overview" class="panel active">
+      <div class="placeholder">[Charts & Eisenhower Matrix]</div>
+    </div>
+    <div id="kanban" class="panel">
+      <div class="placeholder">[Kanban Columns]</div>
+    </div>
+    <div id="timeline" class="panel">
+      <div class="placeholder">[Gantt / PERT / CPM View]</div>
+    </div>
+    <div id="analytics" class="panel">
+      <div class="placeholder">[CFD, Throughput, WIP Charts]</div>
+    </div>
+    <div id="backlog" class="panel">
+      <div class="table-wrap">
+        <table>
+          <

@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Activated Excellence — Full Dashboard UI</title>
+<meta name="description" content="Activated Excellence — Core + Modules Executive Dashboard UI" />
+<style>
+  /* =========================
+     SSOT Design Tokens
+     ========================= */
+  :root {
+    --color-bg: #f4f6f9;
+    --color-surface: #ffffff;
+    --color-muted: #6b7280;
+    --color-text: #0a1f44;
+    --color-primary: #0057d9;
+    --color-primary-600: #0049b6;
+    --color-accent: #28c76f;
+    --color-warn: #ff9f43;
+    --color-danger: #ea5455;
+    --color-info: #3b82f6;
+
+    --ring: 0 0 0 3px rgba(0, 87, 217, 0.25);
+
+    --radius-xs: 6px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.10);
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+
+    --border: 1px solid #e5e7eb;
+  }
+  [data-theme="dark"] {
+    --color-bg: #0b1220;
+    --color-surface: #121a2b;
+    --color-muted: #9aa4b2;
+    --color-text: #e6eefb;
+    --color-primary: #5aa2ff;
+    --color-primary-600: #468df0;
+    --color-accent: #37e28d;
+    --color-warn: #ffc266;
+    --color-danger: #ff6b6c;
+    --color-info: #6aa8ff;
+
+    --border: 1px solid #1e2a45;
+    --ring: 0 0 0 3px rgba(90, 162, 255, 0.35);
+  }
+
+  /* Reset + Base */
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.35;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  .visually-hidden { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+
+  /* Focus styles */
+  :focus-visible { outline: none; box-shadow: var(--ring); border-radius: var(--radius-xs); }
+
+  /* Layout */
+  .app {
+    display: grid;
+    grid-template-rows: 56px 1fr;
+    height: 100vh;
+  }
+  header.appbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-6);
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
+    color: white;
+  }
+  .brand {
+    display: flex; align-items: center; gap: var(--space-3);
+    font-weight: 700;
+  }
+  .brand .logo {
+    width: 28px; height: 28px; background: white; border-radius: 7px;
+    display: grid; place-items: center; color: var(--color-primary);
+    font-weight: 900;
+  }
+  .app-actions {
+    display: flex; align-items: center; gap: var(--space-4);
+  }
+  .search {
+    position: relative; min-width: 360px;
+  }
+  .search input {
+    width: 100%;
+    padding: 10px 36px 10px 36px;
+    border: none; border-radius: 999px;
+    background: rgba(255,255,255,0.18);
+    color: white;
+  }
+  .search input::placeholder { color: rgba(255,255,255,0.8); }
+  .search .icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.85; }
+  .search .kbd { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 12px; opacity: 0.85; }
+
+  .userbar { display: flex; align-items: center; gap: var(--space-3); }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.8); }
+
+  /* Main layout: sidebar + content + inspector */
+  .shell {
+    display: grid;
+    grid-template-columns: 260px 1fr 340px;
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+  aside.sidebar, aside.inspector {
+    background: var(--color-surface);
+    border: var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
+    padding: var(--space-4);
+    overflow: auto;
+  }
+  main.content {
+    overflow: auto;
+    padding: 0;
+  }
+
+  /* Sidebar navigation */
+  .nav-section + .nav-section { margin-top: var(--space-6); }
+  .nav-title { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); margin-bottom: var(--space-2); }
+  .nav-item {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: 10px 12px; border-radius: var(--radius-sm); color: var(--color-text);
+  }
+  .nav-item[aria-current="page"], .nav-item:hover { background: rgba(0,0,0,0.05); }
+  [data-theme="dark"] .nav-item:hover, [data-theme="dark"] .nav-item[aria-current="page"] { background: rgba(255,255,255,0.05); }
+  .tag {
+    font-size: 11px; padding: 2px 8px; border-radius: 999px; background: #eef2ff; color: #3b5bdb;
+  }
+  [data-theme="dark"] .tag { background: #1b2a4e; color: #8fb2ff; }
+
+  /* Feature flags / module toggles */
+  .toggle {
+    appearance: none; width: 42px; height: 24px; background: #cbd5e1; border-radius: 999px; position: relative; outline: none; cursor: pointer;
+  }
+  .toggle:checked { background: var(--color-primary); }
+  .toggle:before {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform .2s ease;
+  }
+  .toggle:checked:before { transform: translateX(18px); }
+  .flag-row {
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--space-3);
+    padding: 10px 0; border-bottom: var(--border);
+  }
+  .flag-row:last-child { border-bottom: none; }
+  .flag-desc { color: var(--color-muted); font-size: 12px; }
+
+  /* Content header */
+  .content-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--color-surface); border: var(--border); border-radius: var(--radius-md);
+    padding: var(--space-4); margin-bottom: var(--space-4); box-shadow: var(--shadow-xs);
+  }
+  .breadcrumbs { display: flex; gap: var(--space-2); align-items: center; color: var(--color-muted); }
+  .breadcrumbs span.current { color: var(--color-text); font-weight: 600; }
+  .toolbar { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 12px; border-radius: var(--radius-sm); border: var(--border); background: var(--color-surface); cursor: pointer;
+  }
+  .btn.primary { background: var(--color-primary); color: white; border-color: transparent; }
+  .btn.ghost { border-color: transparent; background: transparent; }
+  .btn.danger { background: var(--color-danger); color: white; border-color: transparent; }
+  .btn:hover { filter: brightness(0.98); }
+  .filter-chip { padding: 6px 10px; border-radius: 999px; border: var(--border); background: transparent; }
+  .filter-chip.active { background: rgba(0, 87, 217, 0.1); border-color: var(--color-primary); color: var(--color-primary); }
+  [data-theme="dark"] .filter-chip.active { background: rgba(90,162,255,0.12); }
+
+  /* KPI grid */
+  .kpis {
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-4); margin-bottom: var(--space-4);
+  }
+  .card {
+    background: var(--color-surface); border: var(--border); border-radius: var(--radius-md);
+    padding: var(--space-4); box-shadow: var(--shadow-sm);
+  }
+  .card h3 { margin: 0 0 var(--space-2); font-size: 14px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--color-muted); }
+  .metric { font-size: 28px; font-weight: 700; display: flex; align-items: baseline; gap: 10px; }
+  .delta { font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .delta.up { background: rgba(40, 199, 111, .12); color: var(--color-accent); }
+  .delta.down { background: rgba(234, 84, 85, .12); color: var(--color-danger); }
+  .kpi-1 { grid-column: span 3; }
+  .kpi-2 { grid-column: span 3; }
+  .kpi-3 { grid-column: span 3; }
+  .kpi-4 { grid-column: span 3; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: var(--space-2); border-bottom: var(--border); background: var(--color-surface); border-radius: var(--radius-md); padding: var(--space-2); }
+  .tab {
+    padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; color: var(--color-muted);
+  }
+  .tab[aria-selected="true"] { background: rgba(0, 87, 217, 0.12); color: var(--color-primary); }
+  .panels { margin-top: var(--space-4); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Overview panel */
+  .overview-grid {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-4);
+  }
+  .viz {
+    height: 260px; border-radius: var(--radius-sm);
+    background: repeating-linear-gradient(90deg, #f0f3f9, #f0f3f9 10px, #e4e8f0 10px, #e4e8f0 20px);
+    display: grid; place-items: center; color: var(--color-muted);
+  }
+  [data-theme="dark"] .viz { background: repeating-linear-gradient(90deg, #121a2b, #121a2b 10px, #1a2742 10px, #1a2742 20px); }
+  .progress {
+    height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden;
+  }
+  [data-theme="dark"] .progress { background: #1f2b47; }
+  .progress > span { display: block; height: 100%; background: var(--color-primary); width: 62%; }
+
+  /* Kanban board */
+  .kanban {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4);
+  }
+  .column { background: var(--color-surface); border: var(--border); border-radius: var(--radius-md); padding: var(--space-3); min-height: 340px; box-shadow: var(--shadow-xs); }
+  .column-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
+  .wip { font-size: 12px; color: var(--color-muted); }
+  .card-task {
+    border: var(--border); border-left: 3px solid var(--color-primary); border-radius: var(--radius-sm);
+    padding: var(--space-3); margin-bottom: var(--space-3); background: linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+  }
+  .task-title { font-weight: 600; margin-bottom: 6px; }
+  .labels { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .label { font-size: 11px; padding: 2px 6px; border-radius: 999px; border: var(--border); background: transparent; }
+  .eisenhower-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .p1 { background: var(--color-danger); }
+  .p2 { background: var(--color-warn); }
+  .p3 { background: var(--color-info); }
+  .p4 { background: #9ca3af; }
+
+  /* Backlog table */
+  .table-wrap { overflow: auto; border: var(--border); border-radius: var(--radius-md); background: var(--color-surface); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 12px; border-bottom: var(--border); text-align: left; font-size: 14px; }
+  thead th { background: rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 1; }
+  [data-theme="dark"] thead th { background: rgba(255,255,255,0.04); }
+  .pill { font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .pill.green { background: rgba(40, 199, 111, .12); color: var(--color-accent); }
+  .pill.orange { background: rgba(255, 159, 67, .12); color: var(--color-warn); }
+  .pill.red { background: rgba(234, 84, 85, .12); color: var(--color-danger); }
+  .sortable { cursor: pointer; color: var(--color-muted); }
+  .th-actions { width: 60px; }
+
+  /* Timeline (Gantt placeholder) */
+  .timeline {
+    display: grid; grid-template-columns: 220px 1fr; gap: var(--space-3);
+  }
+  .tl-list { display: grid; gap: var(--space-2); }
+  .tl-row { background: var(--color-surface); border: var(--border); border-radius: var(--radius-sm); padding: 10px; }
+  .tl-chart { background: var(--color-surface); border: var(--border); border-radius: var(--radius-sm); padding: var(--space-3); overflow: hidden; }
+  .bar {
+    height: 18px; border-radius: 999px; background: rgba(59,130,246,.18); border: 1px solid rgba(59,130,246,.3);
+    margin: 8px 0; width: 40%;
+  }
+  .bar.red { background: rgba(234,84,85,.18); border-color: rgba(234,84,85,.35); width: 55%; }
+
+  /* Analytics visuals */
+  .analytics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+  .viz-title { display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px; color: var(--color-muted); font-size: 13px; }
+
+  /* Quality panel */
+  .q-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+
+  /* Inspector pane */
+  .inspector h3 { margin-top: 0; }
+  .inspector-section + .inspector-section { margin-top: var(--space-6); }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; }
+  .legend .item { font-size: 12px; color: var(--color-muted); }
+  .legend .swatch { width: 10px; height: 10px; border-radius: 2px; display:inline-block; margin-right:6px; }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center;
+  }
+  .modal {
+    width: min(720px, 92vw); background: var(--color-surface); border: var(--border);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: var(--space-6);
+  }
+  .modal h2 { margin-top: 0; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  label { font-size: 13px; color: var(--color-muted); display: block; margin-bottom: 6px; }
+  input[type="text"], input[type="date"], select, textarea {
+    width: 100%; padding: 10px 12px; border-radius: var(--radius-sm); border: var(--border); background: transparent; color: inherit;
+  }
+  textarea { min-height: 90px; resize: vertical; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-4); }
+
+  /* Toasts */
+  .toasts { position: fixed; bottom: 20px; right: 20px; display: grid; gap: 10px; z-index: 50; }
+  .toast { background: var(--color-surface); border: var(--border); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm); padding: 10px 12px; box-shadow: var(--shadow-sm); min-width: 280px; }
+
+  /* Responsive adjustments */
+  @media (max-width: 1200px) {
+    .shell { grid-template-columns: 220px 1fr; }
+    aside.inspector { display: none; }
+    .overview-grid { grid-template-columns: 1fr; }
+    .analytics-grid { grid-template-columns: 1fr 1fr; }
+    .kanban { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 840px) {
+    .shell { grid-template-columns: 1fr; }
+    aside.sidebar { display: none; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .analytics-grid { grid-template-columns: 1fr; }
+    .kanban { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+
+<body>
+<a class="visually-hidden" href="#main">Skip to content</a>
+<div class="app" role="application">
+  <!-- App Bar -->
+  <header class="appbar" role="banner">
+    <div class="brand" aria-label="Brand">
+      <div class="logo" aria-hidden="true">AE</div>
+      <div>Activated Excellence</div>
+    </div>
+    <div class="app-actions">
+      <div class="search" role="search">
+        <span class="icon" aria-hidden="true">🔎</span>
+        <input aria-label="Search projects and tasks" placeholder="Search projects, tasks, comments…" />
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="btn ghost" id="themeToggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+      <div class="userbar" aria-label="User menu">
+        <span class="tag">Pro</span>
+        <div class="avatar" title="Wee"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Shell -->
+  <div class="shell">
+    <!-- Primary Sidebar -->
+    <aside class="sidebar" aria-label="Primary navigation">
+      <nav>
+        <div class="nav-section">
+          <div class="nav-title">General</div>
+          <a class="nav-item" aria-current="page" href="#"><span>🏠</span>Overview</a>
+          <a class="nav-item" href="#"><span>📁</span>Projects</a>
+          <a class="nav-item" href="#"><span>📝</span>My Tasks</a>
+          <a class="nav-item" href="#"><span>📥</span>Inbox <span class="tag">12</span></a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-title">Modules</div>
+          <a class="nav-item" href="#"><span>⚡</span>Advanced Prioritization</a>
+          <a class="nav-item" href="#"><span>🧭</span>Scrum Mode</a>
+          <a class="nav-item" href="#"><span>🗓️</span>Advanced Scheduling</a>
+          <a class="nav-item" href="#"><span>📈</span>Lean & Analytics</a>
+          <a class="nav-item" href="#"><span>🧮</span>MoSCoW Scope</a>
+          <a class="nav-item" href="#"><span>✅</span>Quality & Six Sigma</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-title">Admin</div>
+          <a class="nav-item" href="#"><span>🔐</span>Security</a>
+          <a class="nav-item" href="#"><span>⚙️</span>Settings</a>
+          <a class="nav-item" href="#"><span>🧪</span>Feature Flags</a>
+        </div>
+      </nav>
+
+      <div class="nav-section">
+        <div class="nav-title">Workspace</div>
+        <div class="flag-row">
+          <div>
+            <div><strong>advanced_prioritization</strong></div>
+            <div class="flag-desc">RICE & WSJF fields and sorting</div>
+          </div>
+          <input id="flag1" type="checkbox" class="toggle" checked aria-label="Toggle Advanced Prioritization">
+        </div>
+        <div class="flag-row">
+          <div>
+            <div><strong>scrum_mode</strong></div>
+            <div class="flag-desc">Sprints, velocity, burndown</div>
+          </div>
+          <input id="flag2" type="checkbox" class="toggle" checked aria-label="Toggle Scrum Mode">
+        </div>
+        <div class="flag-row">
+          <div>
+            <div><strong>advanced_scheduling</strong></div>
+            <div class="flag-desc">Dependencies, CPM, PERT estimates</div>
+          </div>
+          <input id="flag3" type="checkbox" class="toggle" aria-label="Toggle Advanced Scheduling">
+        </div>
+        <div class="flag-row">
+          <div>
+            <div><strong>lean_analytics</strong></div>
+            <div class="flag-desc">CFD, WIP policies, aging alerts</div>
+          </div>
+          <input id="flag4" type="checkbox" class="toggle" checked aria-label="Toggle Lean Analytics">
+        </div>
+        <div class="flag-row">
+          <div>
+            <div><strong>moscow_scope</strong></div>
+            <div class="flag-desc">Must/Should/Could/Won’t tracking</div>
+          </div>
+          <input id="flag5" type="checkbox" class="toggle" aria-label="Toggle MoSCoW Scope">
+        </div>
+        <div class="flag-row">
+          <div>
+            <div><strong>quality_sigma</strong></div>
+            <div class="flag-desc">Defects, control charts</div>
+          </div>
+          <input id="flag6" type="checkbox" class="toggle" aria-label="Toggle Quality & Six Sigma">
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main" class="content" role="main" aria-label="Dashboard main">
+      <!-- Header + Toolbar -->
+      <div class="content-header">
+        <div class="breadcrumbs" aria-label="Breadcrumb">
+          <span>Home</span> › <span>Dashboard</span> › <span class="current">Overview</span>
+        </div>
+        <div class="toolbar" role="toolbar" aria-label="Dashboard actions">
+          <button class="filter-chip active" aria-pressed="true">Eisenhower: P1</button>
+          <button class="filter-chip">Due: Next 7d</button>
+          <button class="filter-chip">Assignee: Me</button>
+          <button class="btn ghost" id="openCreate">+ Quick Task</button>
+          <button class="btn primary">Export</button>
+        </div>
+      </div>
+
+      <!-- KPI Grid -->
+      <section class="kpis" aria-label="Key performance indicators">
+        <div class="card kpi-1">
+          <h3>Activation</h3>
+          <div class="metric">78% <span class="delta up">+6%</span></div>
+          <div class="progress" aria-label="Activation progress"><span style="width:78%"></span></div>
+        </div>
+        <div class="card kpi-2">
+          <h3>Cycle Time (median)</h3>
+          <div class="metric">3.1d <span class="delta down">-0.4d</span></div>
+          <div class="legend">
+            <span class="item"><span class="swatch" style="background:#3b82f6"></span>Design</span>
+            <span class="item"><span class="swatch" style="background:#10b981"></span>Build</span>
+            <span class="item"><span class="swatch" style="background:#f59e0b"></span>Review</span>
+          </div>
+        </div>
+        <div class="card kpi-3">
+          <h3>Overdue by Quadrant</h3>
+          <div class="metric">12% <span class="delta up">P1: 4%</span></div>
+          <div class="legend">
+            <span class="item"><span class="swatch" style="background:#ea5455"></span>P1 Do</span>
+            <span class="item"><span class="swatch" style="background:#ff9f43"></span>P2 Schedule</span>
+            <span class="item"><span class="swatch" style="background:#3b82f6"></span>P3 Delegate</span>
+            <span class="item"><span class="swatch" style="background:#9ca3af"></span>P4 Eliminate</span>
+          </div>
+        </div>
+        <div class="card kpi-4">
+          <h3>Velocity (avg)</h3>
+          <div class="metric">42 pts <span class="delta up">+8</span></div>
+          <div class="progress" aria-label="Velocity goal"><span style="width:62%"></span></div>
+        </div>
+      </section>
+
+      <!-- Tabs -->
+      <div class="tabs" role="tablist" aria-label="Dashboard views">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="panel-overview" id="tab-overview">Overview</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-kanban" id="tab-kanban">Kanban</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-timeline" id="tab-timeline">Timeline</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-analytics" id="tab-analytics">Analytics</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-backlog" id="tab-backlog">Backlog</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-quality" id="tab-quality">Quality</button>
+      </div>
+
+      <div class="panels">
+        <!-- Overview Panel -->
+        <section id="panel-overview" class="panel active" role="tabpanel" aria-labelledby="tab-overview">
+          <div class="overview-grid">
+            <div class="card">
+              <div class="viz-title">
+                <span>Time-in-Quadrant (last 30d)</span>
+                <span class="tag">Eisenhower</span>
+              </div>
+              <div class="viz">[Area chart placeholder]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title">
+                <span>Completion Velocity</span>
+                <span class="tag">Insights</span>
+              </div>
+              <div class="viz">[Spark bars / velocity]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title">
+                <span>Upcoming (7 days)</span>
+                <span class="tag">Due</span>
+              </div>
+              <div style="display:grid; gap:10px;">
+                <div class="card-task">
+                  <div class="task-title"><span class="eisenhower-dot p1"></span>Finalize pricing page</div>
+                  <div class="labels">
+                    <span class="label">Assignee: Ana</span>
+                    <span class="label">Due: Today</span>
+                    <span class="label pill red">P1</span>
+                  </div>
+                </div>
+                <div class="card-task" style="border-left-color:#ff9f43">
+                  <div class="task-title"><span class="eisenhower-dot p2"></span>Legal review</div>
+                  <div class="labels">
+                    <span class="label">Assignee: Minh</span>
+                    <span class="label">Due: Tomorrow</span>
+                    <span class="label pill orange">P2</span>
+                  </div>
+                </div>
+                <div class="card-task" style="border-left-color:#3b82f6">
+                  <div class="task-title"><span class="eisenhower-dot p3"></span>QA regression suite</div>
+                  <div class="labels">
+                    <span class="label">Assignee: Joe</span>
+                    <span class="label">Due: Fri</span>
+                    <span class="label pill">P3</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="viz-title">
+                <span>Risk Heatmap</span>
+                <span class="tag">RAID</span>
+              </div>
+              <div class="viz">[Risk heatmap grid]</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Kanban Panel -->
+        <section id="panel-kanban" class="panel" role="tabpanel" aria-labelledby="tab-kanban">
+          <div class="kanban" aria-label="Kanban board">
+            <div class="column">
+              <div class="column-header">
+                <strong>Todo</strong>
+                <span class="wip">WIP 7/8</span>
+              </div>
+              <div class="card-task">
+                <div class="task-title"><span class="eisenhower-dot p1"></span>Auth: rate-limits & audit log</div>
+                <div class="labels">
+                  <span class="label">Owner: Tuan</span>
+                  <span class="label">Priority: High</span>
+                  <span class="label pill red">P1</span>
+                </div>
+              </div>
+              <div class="card-task">
+                <div class="task-title"><span class="eisenhower-dot p2"></span>Mobile gestures polish</div>
+                <div class="labels">
+                  <span class="label">Owner: Linh</span>
+                  <span class="label pill orange">P2</span>
+                </div>
+              </div>
+              <div class="card-task">
+                <div class="task-title"><span class="eisenhower-dot p4"></span>Cleanup old feature flags</div>
+                <div class="labels">
+                  <span class="label">Owner: Ravi</span>
+                  <span class="label">Tech debt</span>
+                  <span class="label pill">P4</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="column-header">
+                <strong>Doing</strong>
+                <span class="wip">WIP 4/4</span>
+              </div>
+              <div class="card-task" style="border-left-color:#10b981">
+                <div class="task-title"><span class="eisenhower-dot p1"></span>RLS policy tests</div>
+                <div class="labels">
+                  <span class="label">Owner: Trang</span>
+                  <span class="label">Due: Thu</span>
+                  <span class="label pill red">P1</span>
+                </div>
+              </div>
+              <div class="card-task" style="border-left-color:#f59e0b">
+                <div class="task-title"><span class="eisenhower-dot p2"></span>Burndown chart</div>
+                <div class="labels">
+                  <span class="label">Owner: Adi</span>
+                  <span class="label">Sprint #23</span>
+                  <span class="label pill orange">P2</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="column-header">
+                <strong>Review</strong>
+                <span class="wip">WIP 2/3</span>
+              </div>
+              <div class="card-task" style="border-left-color:#3b82f6">
+                <div class="task-title"><span class="eisenhower-dot p3"></span>CSV import e2e</div>
+                <div class="labels">
+                  <span class="label">Owner: Huy</span>
+                  <span class="label pill">P3</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="column-header">
+                <strong>Done</strong>
+                <span class="wip">WIP 9</span>
+              </div>
+              <div class="card-task" style="opacity:0.8;">
+                <div class="task-title"><span class="eisenhower-dot p2"></span>Insights mini-dashboard</div>
+                <div class="labels"><span class="label">Owner: Sara</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Timeline Panel -->
+        <section id="panel-timeline" class="panel" role="tabpanel" aria-labelledby="tab-timeline">
+          <div class="timeline">
+            <div class="tl-list">
+              <div class="tl-row"><strong>Epic A</strong><div class="flag-desc">FS on Task 12, lag 2d</div></div>
+              <div class="tl-row"><strong>Epic B</strong><div class="flag-desc">SS on Task 18</div></div>
+              <div class="tl-row"><strong>Epic C</strong><div class="flag-desc">FF with Task 22</div></div>
+            </div>
+            <div class="tl-chart">
+              <div class="bar"></div>
+              <div class="bar red"></div>
+              <div class="bar" style="width:65%"></div>
+              <div class="legend" style="margin-top:12px;">
+                <span class="item"><span class="swatch" style="background:#3b82f6;"></span>Planned</span>
+                <span class="item"><span class="swatch" style="background:#ff6b6c;"></span>Critical Path</span>
+                <span class="item"><span class="swatch" style="background:#10b981;"></span>Slack</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Analytics Panel -->
+        <section id="panel-analytics" class="panel" role="tabpanel" aria-labelledby="tab-analytics">
+          <div class="analytics-grid">
+            <div class="card">
+              <div class="viz-title"><span>Cumulative Flow Diagram</span><span class="tag">Lean</span></div>
+              <div class="viz">[CFD bands]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title"><span>Lead Time Distribution (P85)</span><span class="tag">Flow</span></div>
+              <div class="viz">[Histogram]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title"><span>Throughput by Week</span><span class="tag">Ops</span></div>
+              <div class="viz">[Bar chart]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title"><span>RICE — Scenario A</span><span class="tag">Prioritization</span></div>
+              <div class="viz">[Scatter / table]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title"><span>WSJF — Sequencing</span><span class="tag">Economics</span></div>
+              <div class="viz">[Ordered list / graph]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title"><span>WIP Policy Violations</span><span class="tag">Policy</span></div>
+              <div class="viz">[Alerts / counters]</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Backlog Panel -->
+        <section id="panel-backlog" class="panel" role="tabpanel" aria-labelledby="tab-backlog">
+          <div class="card" style="margin-bottom:16px;">
+            <div class="toolbar" style="justify-content:space-between;">
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="filter-chip active">RICE</button>
+                <button class="filter-chip">WSJF</button>
+                <button class="filter-chip">All</button>
+                <button class="filter-chip">My Items</button>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn">Download CSV</button>
+                <button class="btn primary">Save Scenario</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap" role="region" aria-label="Backlog with prioritization">
+            <table>
+              <thead>
+                <tr>
+                  <th class="th-actions" aria-label="select"></th>
+                  <th class="sortable">Item</th>
+                  <th class="sortable">Reach</th>
+                  <th class="sortable">Impact</th>
+                  <th class="sortable">Confidence</th>
+                  <th class="sortable">Effort</th>
+                  <th class="sortable">RICE</th>
+                  <th>Status</th>
+                  <th>Assignee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select row 1" /></td>
+                  <td>Enable SSO (SAML)</td>
+                  <td>1200</td>
+                  <td>3.5</td>
+                  <td>0.8</td>
+                  <td>8</td>
+                  <td><span class="pill green">420</span></td>
+                  <td>Planned</td>
+                  <td>Ana</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select row 2" /></td>
+                  <td>PERT estimate helper</td>
+                  <td>600</td>
+                  <td>3.0</td>
+                  <td>0.7</td>
+                  <td>4</td>
+                  <td><span class="pill green">315</span></td>
+                  <td>Design</td>
+                  <td>Minh</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select row 3" /></td>
+                  <td>Control chart presets</td>
+                  <td>450</td>
+                  <td>2.2</td>
+                  <td>0.9</td>
+                  <td>3</td>
+                  <td><span class="pill orange">297</span></td>
+                  <td>Backlog</td>
+                  <td>Joe</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select row 4" /></td>
+                  <td>CSV Import improvements</td>
+                  <td>2000</td>
+                  <td>1.3</td>
+                  <td>0.6</td>
+                  <td>2</td>
+                  <td><span class="pill green">780</span></td>
+                  <td>In Review</td>
+                  <td>Trang</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select row 5" /></td>
+                  <td>Audit export templates</td>
+                  <td>300</td>
+                  <td>1.1</td>
+                  <td>0.95</td>
+                  <td>2</td>
+                  <td><span class="pill">157</span></td>
+                  <td>Planned</td>
+                  <td>Huy</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Quality Panel -->
+        <section id="panel-quality" class="panel" role="tabpanel" aria-labelledby="tab-quality">
+          <div class="q-grid">
+            <div class="card">
+              <div class="viz-title"><span>Control Chart</span><span class="tag">Six Sigma</span></div>
+              <div class="viz">[X-bar / MR bands]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title"><span>Defect Reasons</span><span class="tag">Pareto</span></div>
+              <div class="viz">[80/20 bars]</div>
+            </div>
+            <div class="card">
+              <div class="viz-title"><span>Reopen Rate</span><span class="tag">Quality</span></div>
+              <div class="metric">3.8% <span class="delta up">-1.1%</span></div>
+              <div class="progress"><span style="width:72%"></span></div>
+            </div>
+            <div class="card">
+              <div class="viz-title"><span>MTTR (defects)</span><span class="tag">Ops</span></div>
+              <div class="metric">14h <span class="delta down">+2h</span></div>
+              <div class="progress"><span style="width:48%"></span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Inspector Pane -->
+    <aside class="inspector" aria-label="Inspector and context">
+      <div class="inspector-section">
+        <h3>Filters</h3>
+        <label for="f1">Project</label>
+        <select id="f1"><option>All Projects</option><option>Website Revamp</option><option>Mobile App</option></select>
+        <label for="f2" style="margin-top:10px;">Assignee</label>
+        <select id="f2"><option>Any</option><option>Ana</option><option>Minh</option><option>Joe</option></select>
+        <label for="f3" style="margin-top:10px;">Due</label>
+        <select id="f3"><option>Any</option><option>Today</option><option>Next 7 days</option><option>Overdue</option></select>
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button class="btn">Reset</button>
+          <button class="btn primary">Apply</button>
+        </div>
+      </div>
+
+      <div class="inspector-section">
+        <h3>Policies</h3>
+        <div class="flag-row">
+          <div>
+            <div><strong>WIP: Doing</strong></div>
+            <div class="flag-desc">Max cards: 4</div>
+          </div>
+          <input type="checkbox" class="toggle" checked aria-label="Enforce WIP Doing">
+        </div>
+        <div class="flag-row">
+          <div>
+            <div><strong>Blocker alerts</strong></div>
+            <div class="flag-desc">Age > 3d not moved</div>
+          </div>
+          <input type="checkbox" class="toggle" checked aria-label="Enable blocker alerts">
+        </div>
+        <div class="flag-row">
+          <div>
+            <div><strong>Scope approvals</strong></div>
+            <div class="flag-desc">Required for Must</div>
+          </div>
+          <input type="checkbox" class="toggle" aria-label="Require scope approvals">
+        </div>
+      </div>
+
+      <div class="inspector-section">
+        <h3>Shortcuts</h3>
+        <div class="flag-desc">Eisenhower cycle: E, Complete: C, New Task: N, Focus Search: ⌘K</div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Modal: Create Task -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <h2 id="modalTitle">Create task</h2>
+    <div class="grid-2">
+      <div>
+        <label for="t_title">Title</label>
+        <input id="t_title" type="text" placeholder="Short, action-oriented title" />
+      </div>
+      <div>
+        <label for="t_project">Project</label>
+        <select id="t_project">
+          <option>Website Revamp</option>
+          <option>Mobile App</option>
+          <option>Platform</option>
+        </select>
+      </div>
+      <div>
+        <label for="t_assignee">Assignee</label>
+        <select id="t_assignee">
+          <option>Unassigned</option>
+          <option>Ana</option>
+          <option>Minh</option>
+          <option>Joe</option>
+        </select>
+      </div>
+      <div>
+        <label for="t_due">Due date</label>
+        <input id="t_due" type="date" />
+      </div>
+      <div>
+        <label for="t_priority">Eisenhower priority</label>
+        <select id="t_priority">
+          <option value="P1">P1 — Do</option>
+          <option value="P2">P2 — Schedule</option>
+          <option value="P3">P3 — Delegate</option>
+          <option value="P4">P4 — Eliminate</option>
+        </select>
+      </div>
+      <div>
+        <label for="t_recur">Recurrence rule</label>
+        <input id="t_recur" type="text" placeholder="RRULE:FREQ=WEEKLY;BYDAY=MO" />
+      </div>
+      <div style="grid-column: 1 / -1;">
+        <label for="t_desc">Description</label>
+        <textarea id="t_desc" placeholder="Add context, acceptance criteria, links…"></textarea>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="closeCreate">Cancel</button>
+      <button class="btn primary" id="saveTask">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="toasts" aria-live="polite" aria-atomic="true" id="toasts"></div>
+
+<script>
+  // Dark mode toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  themeToggle.addEventListener('click', () => {
+    const dark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', dark ? 'light' : 'dark');
+    themeToggle.setAttribute('aria-pressed', String(!dark));
+    themeToggle.textContent = dark ? '🌙' : '🌞';
+  });
+
+  // Tabs
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+
+  // Modal create task
+  const openCreate = document.getElementById('openCreate');
+  const closeCreate = document.getElementById('closeCreate');
+  const modal = document.getElementById('modalBackdrop');
+  openCreate.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    document.getElementById('t_title').focus();
+  });
+  closeCreate.addEventListener('click', () => modal.style.display = 'none');
+
+  // Toast helper
+  const toasts = document.getElementById('toasts');
+  function toast(msg) {
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.innerHTML = msg;
+    toasts.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+
+  // Save task demo
+  document.getElementById('saveTask').addEventListener('click', () => {
+    modal.style.display = 'none';
+    toast('✅ Task created and scheduled. Recurrence validated.');
+  });
+
+  // Keyboard shortcuts (demo)
+  document.addEventListener('keydown', (e) => {
+    // ⌘K or Ctrl+K to focus search
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      const search = document.querySelector('.search input');
+      search.focus();
+      e.preventDefault();
+    }
+    // N for new task
+    if (!e.metaKey && !e.ctrlKey && e.key.toLowerCase() === 'n') {
+      modal.style.display = 'flex';
+    }
+  });
+</script>
+</body>
+</html>
+it

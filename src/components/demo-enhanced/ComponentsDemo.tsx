@@ -29,6 +29,15 @@ import React, { useState } from 'react';
 
 import { EnhancedButton, EnhancedInput } from '../ui-enhanced';
 import {
+  EnhancedAlert,
+  AlertFactory,
+  createSuccessAlert,
+  createErrorAlert,
+  createWarningAlert,
+  createInfoAlert,
+  createNotificationAlert,
+} from '../ui-enhanced/Alert';
+import {
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
@@ -40,6 +49,38 @@ import {
   AlertDialogCancel,
   EnhancedAlertDialog,
 } from '../ui-enhanced/AlertDialog';
+import {
+  EnhancedBadge,
+  BadgeFactory,
+  createCountBadge,
+  createStatusDot,
+  createNotificationBadge,
+} from '../ui-enhanced/Badge';
+import {
+  EnhancedBreadcrumb,
+  EnhancedBreadcrumbList,
+  EnhancedBreadcrumbItem,
+  EnhancedBreadcrumbLink,
+  EnhancedBreadcrumbPage,
+  EnhancedBreadcrumbSeparator,
+  EnhancedBreadcrumbEllipsis,
+  BreadcrumbFactory,
+} from '../ui-enhanced/Breadcrumb';
+import {
+  EnhancedCalendar,
+  CalendarFactory,
+  createDateDisabled,
+  formatCalendarDate,
+} from '../ui-enhanced/Calendar';
+import {
+  EnhancedCard,
+  EnhancedCardHeader,
+  EnhancedCardTitle,
+  EnhancedCardDescription,
+  EnhancedCardContent,
+  EnhancedCardFooter,
+  CardFactory,
+} from '../ui-enhanced/Card';
 import { CheckboxWithLabel, CheckboxGroup } from '../ui-enhanced/Checkbox';
 import {
   Dialog,
@@ -98,6 +139,24 @@ import {
   StrongSeparator,
   AccentSeparator,
 } from '../ui-enhanced/Separator';
+import {
+  EnhancedSheet,
+  EnhancedSheetTrigger,
+  EnhancedSheetContent,
+  EnhancedSheetHeader,
+  EnhancedSheetTitle,
+  EnhancedSheetDescription,
+  EnhancedSheetFooter,
+  EnhancedSheetClose,
+  SheetFactory,
+} from '../ui-enhanced/Sheet';
+import {
+  EnhancedSkeleton,
+  SkeletonFactory,
+  SkeletonTextLines,
+  SkeletonCard,
+  SkeletonTable,
+} from '../ui-enhanced/Skeleton';
 import {
   EnhancedSlider,
   SliderFactory,
@@ -188,6 +247,10 @@ export const ComponentsDemo: React.FC = () => {
   const [priceRange, setPriceRange] = useState([100, 500]);
   const [qualityScore, setQualityScore] = useState([8.5]);
   const [progressValue, setProgressValue] = useState([33]);
+
+  // Calendar demo states
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [multiSelectedDates, setMultiSelectedDates] = useState<Date[]>([]);
 
   // Toast demo states
   const [toasts, setToasts] = useState<
@@ -1912,6 +1975,1668 @@ export const ComponentsDemo: React.FC = () => {
             </div>
           </section>
 
+          {/* Enhanced Card Showcase - MAPS v2.2 Foundation */}
+          <section className='space-y-6'>
+            <h2 className='text-2xl font-semibold text-foreground'>
+              Enhanced Card - Dark-First Content Containers
+            </h2>
+            <p className='text-muted-foreground'>
+              Sophisticated content containers with Apple HIG philosophy, liquid glass materials, 
+              and comprehensive accessibility patterns following MAPS v2.2 architecture.
+            </p>
+
+            {/* Core Card Variants */}
+            <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3'>
+              {/* Default Card */}
+              <EnhancedCard className='max-w-sm'>
+                <EnhancedCardHeader>
+                  <EnhancedCardTitle>Default Card</EnhancedCardTitle>
+                  <EnhancedCardDescription>
+                    Clean, minimal design with subtle borders and balanced spacing.
+                  </EnhancedCardDescription>
+                </EnhancedCardHeader>
+                <EnhancedCardContent>
+                  <p className='text-sm text-muted-foreground'>
+                    Perfect for content sections, form groups, and general information display.
+                  </p>
+                </EnhancedCardContent>
+                <EnhancedCardFooter justify='between'>
+                  <span className='text-xs text-muted-foreground'>Updated 2h ago</span>
+                  <EnhancedButton variant='secondary' size='sm'>
+                    View Details
+                  </EnhancedButton>
+                </EnhancedCardFooter>
+              </EnhancedCard>
+
+              {/* Elevated Card */}
+              <EnhancedCard variant='elevated' className='max-w-sm'>
+                <EnhancedCardHeader>
+                  <EnhancedCardTitle>Elevated Card</EnhancedCardTitle>
+                  <EnhancedCardDescription>
+                    Enhanced with Apple-style elevation for visual hierarchy.
+                  </EnhancedCardDescription>
+                </EnhancedCardHeader>
+                <EnhancedCardContent>
+                  <p className='text-sm text-muted-foreground'>
+                    Ideal for important content, feature highlights, and call-to-action sections.
+                  </p>
+                </EnhancedCardContent>
+                <EnhancedCardFooter>
+                  <EnhancedButton variant='primary' size='sm' className='w-full'>
+                    Get Started
+                  </EnhancedButton>
+                </EnhancedCardFooter>
+              </EnhancedCard>
+
+              {/* Glass Card */}
+              <EnhancedCard variant='glass' className='max-w-sm'>
+                <EnhancedCardHeader>
+                  <EnhancedCardTitle>Glass Card</EnhancedCardTitle>
+                  <EnhancedCardDescription>
+                    Sophisticated vibrancy with liquid glass materials.
+                  </EnhancedCardDescription>
+                </EnhancedCardHeader>
+                <EnhancedCardContent>
+                  <p className='text-sm text-muted-foreground'>
+                    Advanced visual treatment for premium features and modern interfaces.
+                  </p>
+                </EnhancedCardContent>
+                <EnhancedCardFooter justify='center'>
+                  <EnhancedButton variant='outline' size='sm'>
+                    <Settings className='mr-2 h-4 w-4' />
+                    Configure
+                  </EnhancedButton>
+                </EnhancedCardFooter>
+              </EnhancedCard>
+            </div>
+
+            {/* Interactive Cards */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Interactive Cards</h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                <EnhancedCard 
+                  interactive 
+                  onClick={() => showToast('info', 'Card Clicked', 'Interactive card demonstrates click handling')}
+                  className='cursor-pointer transition-all hover:scale-[1.02]'
+                >
+                  <EnhancedCardHeader>
+                    <EnhancedCardTitle className='flex items-center'>
+                      <MessageSquare className='mr-2 h-5 w-5' />
+                      Interactive Features
+                    </EnhancedCardTitle>
+                    <EnhancedCardDescription>
+                      Click this card to see interaction feedback
+                    </EnhancedCardDescription>
+                  </EnhancedCardHeader>
+                  <EnhancedCardContent>
+                    <p className='text-sm text-muted-foreground'>
+                      Full keyboard navigation support with proper focus management and ARIA attributes.
+                    </p>
+                  </EnhancedCardContent>
+                </EnhancedCard>
+
+                <EnhancedCard 
+                  variant='outlined'
+                  interactive
+                  onClick={() => setIsLiked(!isLiked)}
+                  className='cursor-pointer transition-all hover:border-primary/50'
+                >
+                  <EnhancedCardHeader>
+                    <EnhancedCardTitle className='flex items-center justify-between'>
+                      <span>Likeable Content</span>
+                      <Heart className={`h-5 w-5 transition-colors ${isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} />
+                    </EnhancedCardTitle>
+                    <EnhancedCardDescription>
+                      Interactive state management example
+                    </EnhancedCardDescription>
+                  </EnhancedCardHeader>
+                  <EnhancedCardContent>
+                    <p className='text-sm text-muted-foreground'>
+                      Demonstrates stateful interactions with visual feedback.
+                    </p>
+                  </EnhancedCardContent>
+                  <EnhancedCardFooter>
+                    <span className='text-xs text-muted-foreground'>
+                      {likeCount} likes
+                    </span>
+                  </EnhancedCardFooter>
+                </EnhancedCard>
+              </div>
+            </div>
+
+            {/* Size Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Size Variants</h3>
+              <div className='grid grid-cols-1 gap-4 lg:grid-cols-4'>
+                <EnhancedCard size='sm' variant='outlined'>
+                  <EnhancedCardHeader size='sm'>
+                    <EnhancedCardTitle size='sm'>Small Card</EnhancedCardTitle>
+                    <EnhancedCardDescription>Compact design</EnhancedCardDescription>
+                  </EnhancedCardHeader>
+                  <EnhancedCardContent size='sm'>
+                    <p className='text-xs text-muted-foreground'>Minimal content space</p>
+                  </EnhancedCardContent>
+                </EnhancedCard>
+
+                <EnhancedCard size='md'>
+                  <EnhancedCardHeader size='md'>
+                    <EnhancedCardTitle size='md'>Medium Card</EnhancedCardTitle>
+                    <EnhancedCardDescription>Standard size</EnhancedCardDescription>
+                  </EnhancedCardHeader>
+                  <EnhancedCardContent size='md'>
+                    <p className='text-sm text-muted-foreground'>Default card sizing</p>
+                  </EnhancedCardContent>
+                </EnhancedCard>
+
+                <EnhancedCard size='lg' variant='elevated'>
+                  <EnhancedCardHeader size='lg'>
+                    <EnhancedCardTitle size='lg'>Large Card</EnhancedCardTitle>
+                    <EnhancedCardDescription>Spacious layout</EnhancedCardDescription>
+                  </EnhancedCardHeader>
+                  <EnhancedCardContent size='lg'>
+                    <p className='text-sm text-muted-foreground'>Extended content areas</p>
+                  </EnhancedCardContent>
+                </EnhancedCard>
+
+                <EnhancedCard size='xl' variant='glass'>
+                  <EnhancedCardHeader size='xl'>
+                    <EnhancedCardTitle size='xl'>Extra Large</EnhancedCardTitle>
+                    <EnhancedCardDescription>Maximum spacing</EnhancedCardDescription>
+                  </EnhancedCardHeader>
+                  <EnhancedCardContent size='xl'>
+                    <p className='text-sm text-muted-foreground'>Premium card experience</p>
+                  </EnhancedCardContent>
+                </EnhancedCard>
+              </div>
+            </div>
+
+            {/* Factory Function Examples */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Factory Functions</h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
+                {/* Using default factory */}
+                <CardFactory.default.Card className='max-w-sm'>
+                  <CardFactory.default.Header>
+                    <CardFactory.default.Title>Default Factory</CardFactory.default.Title>
+                    <CardFactory.default.Description>
+                      Pre-configured default variant
+                    </CardFactory.default.Description>
+                  </CardFactory.default.Header>
+                  <CardFactory.default.Content>
+                    <p className='text-sm text-muted-foreground'>
+                      Semantic component creation with factory functions.
+                    </p>
+                  </CardFactory.default.Content>
+                </CardFactory.default.Card>
+
+                {/* Using interactive factory */}
+                <CardFactory.interactive.Card 
+                  className='max-w-sm'
+                  onClick={() => showToast('success', 'Factory Card', 'Interactive factory demonstration')}
+                >
+                  <CardFactory.interactive.Header>
+                    <CardFactory.interactive.Title>Interactive Factory</CardFactory.interactive.Title>
+                    <CardFactory.interactive.Description>
+                      Pre-configured interactive behavior
+                    </CardFactory.interactive.Description>
+                  </CardFactory.interactive.Header>
+                  <CardFactory.interactive.Content>
+                    <p className='text-sm text-muted-foreground'>
+                      Built-in interaction patterns and accessibility.
+                    </p>
+                  </CardFactory.interactive.Content>
+                </CardFactory.interactive.Card>
+
+                {/* Using AAA factory */}
+                <CardFactory.aaa.Card variant='glass' className='max-w-sm'>
+                  <CardFactory.aaa.Header>
+                    <CardFactory.aaa.Title>AAA Compliance</CardFactory.aaa.Title>
+                    <CardFactory.aaa.Description>
+                      Maximum accessibility assurance
+                    </CardFactory.aaa.Description>
+                  </CardFactory.aaa.Header>
+                  <CardFactory.aaa.Content>
+                    <p className='text-sm text-muted-foreground'>
+                      WCAG AAA compliant with enhanced contrast and focus management.
+                    </p>
+                  </CardFactory.aaa.Content>
+                </CardFactory.aaa.Card>
+              </div>
+            </div>
+
+            {/* Complex Card Example */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Complex Example</h3>
+              <div className='mx-auto max-w-md'>
+                <EnhancedCard variant='floating' className='overflow-hidden'>
+                  <div className='aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 p-6 flex items-center justify-center'>
+                    <Play className='h-12 w-12 text-primary' />
+                  </div>
+                  <EnhancedCardHeader>
+                    <EnhancedCardTitle>Media Card Example</EnhancedCardTitle>
+                    <EnhancedCardDescription>
+                      Sophisticated card with media content and rich interactions
+                    </EnhancedCardDescription>
+                  </EnhancedCardHeader>
+                  <EnhancedCardContent>
+                    <div className='space-y-3'>
+                      <div className='flex items-center space-x-2'>
+                        <User className='h-4 w-4 text-muted-foreground' />
+                        <span className='text-sm text-muted-foreground'>John Doe</span>
+                      </div>
+                      <p className='text-sm text-muted-foreground'>
+                        Demonstration of advanced card layouts with media, metadata, and action areas.
+                      </p>
+                    </div>
+                  </EnhancedCardContent>
+                  <EnhancedCardFooter justify='between' className='bg-muted/20'>
+                    <div className='flex space-x-2'>
+                      <EnhancedButton variant='ghost' size='sm'>
+                        <Heart className='h-4 w-4' />
+                      </EnhancedButton>
+                      <EnhancedButton variant='ghost' size='sm'>
+                        <MessageSquare className='h-4 w-4' />
+                      </EnhancedButton>
+                    </div>
+                    <EnhancedButton variant='primary' size='sm'>
+                      <Play className='mr-2 h-4 w-4' />
+                      Watch Now
+                    </EnhancedButton>
+                  </EnhancedCardFooter>
+                </EnhancedCard>
+              </div>
+            </div>
+
+            {/* Accessibility Features */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Accessibility Features</h3>
+              <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>Keyboard Navigation</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Interactive cards are focusable with Tab</li>
+                    <li>• Enter and Space activate interactive cards</li>
+                    <li>• Proper focus indicators and outlines</li>
+                    <li>• Focus management for complex layouts</li>
+                  </ul>
+                </div>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>Screen Reader Support</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Semantic HTML structure with proper roles</li>
+                    <li>• ARIA attributes for interactive states</li>
+                    <li>• Clear content hierarchy and relationships</li>
+                    <li>• AAA compliance mode available</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced Badge Showcase - MAPS v2.2 Foundation */}
+          <section className='space-y-6'>
+            <h2 className='text-2xl font-semibold text-foreground'>
+              Enhanced Badge - Dark-First Status Indicators
+            </h2>
+            <p className='text-muted-foreground'>
+              Sophisticated status indicators with Apple HIG philosophy, semantic color patterns, 
+              and comprehensive accessibility patterns following MAPS v2.2 architecture.
+            </p>
+
+            {/* Core Badge Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Semantic Variants</h3>
+              <div className='flex flex-wrap gap-3'>
+                <EnhancedBadge variant='default'>Default</EnhancedBadge>
+                <EnhancedBadge variant='secondary'>Secondary</EnhancedBadge>
+                <EnhancedBadge variant='muted'>Muted</EnhancedBadge>
+                <EnhancedBadge variant='accent'>Accent</EnhancedBadge>
+                <EnhancedBadge variant='outline'>Outline</EnhancedBadge>
+                <EnhancedBadge variant='ghost'>Ghost</EnhancedBadge>
+              </div>
+            </div>
+
+            {/* Status Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Status Variants</h3>
+              <div className='flex flex-wrap gap-3'>
+                <EnhancedBadge variant='success'>Success</EnhancedBadge>
+                <EnhancedBadge variant='warning'>Warning</EnhancedBadge>
+                <EnhancedBadge variant='error'>Error</EnhancedBadge>
+                <EnhancedBadge variant='info'>Info</EnhancedBadge>
+              </div>
+            </div>
+
+            {/* Glass Material Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Liquid Glass Materials</h3>
+              <div className='flex flex-wrap gap-3'>
+                <EnhancedBadge variant='glass'>Glass Effect</EnhancedBadge>
+                <EnhancedBadge variant='floating'>Floating Glass</EnhancedBadge>
+                <EnhancedBadge variant='glass' enforceAAA>AAA Glass</EnhancedBadge>
+                <EnhancedBadge variant='floating' enforceAAA>AAA Floating</EnhancedBadge>
+              </div>
+            </div>
+
+            {/* Size System */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Size Variants</h3>
+              <div className='flex flex-wrap items-center gap-3'>
+                <EnhancedBadge size='sm'>Small</EnhancedBadge>
+                <EnhancedBadge size='md'>Medium</EnhancedBadge>
+                <EnhancedBadge size='lg'>Large</EnhancedBadge>
+                <EnhancedBadge size='xl'>Extra Large</EnhancedBadge>
+              </div>
+            </div>
+
+            {/* Count Badges */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Count Badges</h3>
+              <div className='flex flex-wrap gap-4'>
+                <div className='flex items-center gap-2'>
+                  <span className='text-sm text-muted-foreground'>Messages</span>
+                  <EnhancedBadge count={3} variant='default' size='sm' />
+                </div>
+                <div className='flex items-center gap-2'>
+                  <span className='text-sm text-muted-foreground'>Notifications</span>
+                  <EnhancedBadge count={12} variant='error' size='sm' />
+                </div>
+                <div className='flex items-center gap-2'>
+                  <span className='text-sm text-muted-foreground'>Updates</span>
+                  <EnhancedBadge count={150} max={99} variant='info' size='sm' />
+                </div>
+                <div className='flex items-center gap-2'>
+                  <span className='text-sm text-muted-foreground'>Inbox</span>
+                  <EnhancedBadge count={1247} showOverflow={false} variant='success' size='sm' />
+                </div>
+              </div>
+            </div>
+
+            {/* Icon Badges */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Icon Integration</h3>
+              <div className='flex flex-wrap gap-3'>
+                <EnhancedBadge 
+                  icon={<Mail className='h-3 w-3' />} 
+                  variant='default'
+                >
+                  Mail
+                </EnhancedBadge>
+                <EnhancedBadge 
+                  icon={<AlertTriangle className='h-3 w-3' />} 
+                  iconPosition='right'
+                  variant='warning'
+                >
+                  Warning
+                </EnhancedBadge>
+                <EnhancedBadge 
+                  icon={<Check className='h-3 w-3' />} 
+                  variant='success'
+                >
+                  Complete
+                </EnhancedBadge>
+                <EnhancedBadge 
+                  icon={<Settings className='h-3 w-3' />} 
+                  iconPosition='right'
+                  variant='ghost'
+                >
+                  Settings
+                </EnhancedBadge>
+              </div>
+            </div>
+
+            {/* Interactive Badges */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Interactive Features</h3>
+              <div className='flex flex-wrap gap-3'>
+                <EnhancedBadge 
+                  interactive 
+                  onClick={() => showToast('info', 'Badge Clicked', 'Interactive badge demonstration')}
+                  variant='outline'
+                >
+                  Clickable
+                </EnhancedBadge>
+                <EnhancedBadge 
+                  dismissible 
+                  onRemove={() => showToast('success', 'Badge Removed', 'Dismissible badge demonstration')}
+                  variant='secondary'
+                >
+                  Dismissible
+                </EnhancedBadge>
+                <EnhancedBadge 
+                  interactive
+                  dismissible
+                  onClick={() => showToast('info', 'Badge Clicked')}
+                  onRemove={() => showToast('success', 'Badge Removed')}
+                  variant='accent'
+                >
+                  Both Features
+                </EnhancedBadge>
+              </div>
+            </div>
+
+            {/* Dot Badges */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Status Dots</h3>
+              <div className='flex flex-wrap items-center gap-4'>
+                <div className='flex items-center gap-2'>
+                  <EnhancedBadge dot variant='success' />
+                  <span className='text-sm text-muted-foreground'>Online</span>
+                </div>
+                <div className='flex items-center gap-2'>
+                  <EnhancedBadge dot variant='warning' />
+                  <span className='text-sm text-muted-foreground'>Away</span>
+                </div>
+                <div className='flex items-center gap-2'>
+                  <EnhancedBadge dot variant='error' />
+                  <span className='text-sm text-muted-foreground'>Offline</span>
+                </div>
+                <div className='flex items-center gap-2'>
+                  <EnhancedBadge dot pulse variant='success' />
+                  <span className='text-sm text-muted-foreground'>Live</span>
+                </div>
+                <div className='flex items-center gap-2'>
+                  <EnhancedBadge dot pulse variant='info' />
+                  <span className='text-sm text-muted-foreground'>Processing</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Factory Functions */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Factory Functions</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                {/* Semantic Factories */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Semantic Patterns</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    <BadgeFactory.default.Badge>Default</BadgeFactory.default.Badge>
+                    <BadgeFactory.secondary.Badge>Secondary</BadgeFactory.secondary.Badge>
+                    <BadgeFactory.accent.Badge>Accent</BadgeFactory.accent.Badge>
+                  </div>
+                </div>
+
+                {/* Status Factories */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Status Patterns</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    <BadgeFactory.success.Badge>Success</BadgeFactory.success.Badge>
+                    <BadgeFactory.warning.Badge>Warning</BadgeFactory.warning.Badge>
+                    <BadgeFactory.error.Badge>Error</BadgeFactory.error.Badge>
+                  </div>
+                </div>
+
+                {/* Feature Factories */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Feature Patterns</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    <BadgeFactory.interactive.Badge onClick={() => showToast('info', 'Factory Click')}>
+                      Interactive
+                    </BadgeFactory.interactive.Badge>
+                    <BadgeFactory.pulse.Badge>Pulsing</BadgeFactory.pulse.Badge>
+                    <BadgeFactory.dot.Badge />
+                  </div>
+                </div>
+
+                {/* Compound Patterns */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Compound Patterns</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    <BadgeFactory.notification.Badge />
+                    <BadgeFactory.status.Badge />
+                    <BadgeFactory.count.Badge count={42} />
+                  </div>
+                </div>
+
+                {/* Glass Factories */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Glass Materials</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    <BadgeFactory.glass.Badge>Glass</BadgeFactory.glass.Badge>
+                    <BadgeFactory.floating.Badge>Floating</BadgeFactory.floating.Badge>
+                    <BadgeFactory.aaa.Badge variant='glass'>AAA Glass</BadgeFactory.aaa.Badge>
+                  </div>
+                </div>
+
+                {/* Size Factories */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Size Presets</h4>
+                  <div className='flex flex-wrap items-center gap-2'>
+                    <BadgeFactory.small.Badge>Small</BadgeFactory.small.Badge>
+                    <EnhancedBadge>Default</EnhancedBadge>
+                    <BadgeFactory.large.Badge>Large</BadgeFactory.large.Badge>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Utility Functions */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Utility Functions</h3>
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Count Badges</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    {createCountBadge(5)}
+                    {createCountBadge(23, { variant: 'success' })}
+                    {createCountBadge(156, { variant: 'info', max: 99 })}
+                  </div>
+                </div>
+
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Status Dots</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    {createStatusDot('success')}
+                    {createStatusDot('warning')}
+                    {createStatusDot('error')}
+                    {createStatusDot('info')}
+                  </div>
+                </div>
+
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Notification Badges</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    {createNotificationBadge()} {/* Dot when no count */}
+                    {createNotificationBadge(3)} {/* Count when provided */}
+                    {createNotificationBadge(99, { max: 50 })} {/* Overflow */}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Real-world Examples */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Real-world Examples</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                {/* Navigation Example */}
+                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                  <h4 className='font-medium text-foreground'>Navigation Menu</h4>
+                  <div className='space-y-3'>
+                    <div className='flex items-center justify-between'>
+                      <span className='text-sm text-muted-foreground'>Messages</span>
+                      <EnhancedBadge count={12} variant='default' size='sm' />
+                    </div>
+                    <div className='flex items-center justify-between'>
+                      <span className='text-sm text-muted-foreground'>Notifications</span>
+                      <EnhancedBadge count={3} variant='error' size='sm' />
+                    </div>
+                    <div className='flex items-center justify-between'>
+                      <span className='text-sm text-muted-foreground'>Updates</span>
+                      <EnhancedBadge dot pulse variant='info' />
+                    </div>
+                  </div>
+                </div>
+
+                {/* User Status Example */}
+                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                  <h4 className='font-medium text-foreground'>User Status</h4>
+                  <div className='space-y-3'>
+                    <div className='flex items-center gap-3'>
+                      <div className='w-8 h-8 rounded-full bg-muted flex items-center justify-center'>
+                        <User className='h-4 w-4' />
+                      </div>
+                      <div className='flex-1'>
+                        <div className='text-sm font-medium'>John Doe</div>
+                        <div className='text-xs text-muted-foreground flex items-center gap-2'>
+                          <EnhancedBadge dot variant='success' />
+                          Online
+                        </div>
+                      </div>
+                    </div>
+                    <div className='flex items-center gap-3'>
+                      <div className='w-8 h-8 rounded-full bg-muted flex items-center justify-center'>
+                        <User className='h-4 w-4' />
+                      </div>
+                      <div className='flex-1'>
+                        <div className='text-sm font-medium'>Jane Smith</div>
+                        <div className='text-xs text-muted-foreground flex items-center gap-2'>
+                          <EnhancedBadge dot variant='warning' />
+                          Away
+                        </div>
+                      </div>
+                    </div>
+                    <div className='flex items-center gap-3'>
+                      <div className='w-8 h-8 rounded-full bg-muted flex items-center justify-center'>
+                        <User className='h-4 w-4' />
+                      </div>
+                      <div className='flex-1'>
+                        <div className='text-sm font-medium'>Bob Wilson</div>
+                        <div className='text-xs text-muted-foreground flex items-center gap-2'>
+                          <EnhancedBadge dot variant='error' />
+                          Offline
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Feature Tags Example */}
+                <div className='rounded-lg border border-border bg-card p-6 space-y-4 md:col-span-2'>
+                  <h4 className='font-medium text-foreground'>Feature Tags & Labels</h4>
+                  <div className='flex flex-wrap gap-2'>
+                    <EnhancedBadge variant='success'>New</EnhancedBadge>
+                    <EnhancedBadge variant='info'>Updated</EnhancedBadge>
+                    <EnhancedBadge variant='warning'>Beta</EnhancedBadge>
+                    <EnhancedBadge variant='error'>Deprecated</EnhancedBadge>
+                    <EnhancedBadge variant='outline'>Free</EnhancedBadge>
+                    <EnhancedBadge variant='accent'>Premium</EnhancedBadge>
+                    <EnhancedBadge variant='ghost'>Draft</EnhancedBadge>
+                    <EnhancedBadge variant='glass'>Glass</EnhancedBadge>
+                    <EnhancedBadge 
+                      dismissible 
+                      onRemove={() => showToast('success', 'Tag Removed')}
+                      variant='secondary'
+                    >
+                      Removable
+                    </EnhancedBadge>
+                    <EnhancedBadge 
+                      interactive
+                      onClick={() => showToast('info', 'Tag Clicked')}
+                      variant='outline'
+                    >
+                      Interactive
+                    </EnhancedBadge>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Accessibility Features */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Accessibility Features</h3>
+              <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>Keyboard Navigation</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Interactive badges are focusable with Tab</li>
+                    <li>• Enter and Space activate interactive badges</li>
+                    <li>• Proper focus indicators and outlines</li>
+                    <li>• Dismissible close buttons are keyboard accessible</li>
+                  </ul>
+                </div>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>Screen Reader Support</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Semantic HTML with proper roles and ARIA</li>
+                    <li>• Count announcements for dynamic content</li>
+                    <li>• Status indicators with meaningful labels</li>
+                    <li>• AAA compliance mode for enhanced contrast</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced Breadcrumb Showcase - MAPS v2.2 Foundation */}
+          <section className='space-y-6'>
+            <h2 className='text-2xl font-semibold text-foreground'>
+              Enhanced Breadcrumb - Dark-First Navigation Hierarchy
+            </h2>
+            <p className='text-muted-foreground'>
+              Sophisticated navigation breadcrumbs with Apple HIG compliance, 
+              liquid glass materials, and comprehensive accessibility patterns.
+            </p>
+
+            {/* Basic Breadcrumb Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Breadcrumb Variants</h3>
+              <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
+                
+                {/* Default Breadcrumb */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Default Navigation</h4>
+                  <EnhancedBreadcrumb>
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/">
+                          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clipRule="evenodd" />
+                          </svg>
+                          Home
+                        </EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/products">Products</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/products/electronics">Electronics</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>Smartphones</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+
+                {/* Compact Breadcrumb */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Compact Navigation</h4>
+                  <EnhancedBreadcrumb variant="compact" size="sm">
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="slash" />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/docs">Docs</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="slash" />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>API Reference</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+
+                {/* Pills Breadcrumb */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Pills Navigation</h4>
+                  <EnhancedBreadcrumb variant="pills">
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/dashboard">Dashboard</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/projects">Projects</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/projects/web-app">Web App</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>Settings</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+
+                {/* Glass Breadcrumb */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Glass Navigation</h4>
+                  <EnhancedBreadcrumb variant="glass" surface="glass">
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/workspace">Workspace</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/workspace/files">Files</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/workspace/files/documents">Documents</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>Report.pdf</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+              </div>
+            </div>
+
+            {/* Separator Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Separator Styles</h3>
+              <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
+                
+                {/* Chevron Separators */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Chevron Separators</h4>
+                  <EnhancedBreadcrumb>
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="chevron" />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/category">Category</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="chevron" />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>Current</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+
+                {/* Slash Separators */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Slash Separators</h4>
+                  <EnhancedBreadcrumb>
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="slash" />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/category">Category</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="slash" />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>Current</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+
+                {/* Dot Separators */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Dot Separators</h4>
+                  <EnhancedBreadcrumb>
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/category">Category</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>Current</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+
+                {/* Custom Separator */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Custom Separators</h4>
+                  <EnhancedBreadcrumb>
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator>
+                        <span className="text-muted-foreground">→</span>
+                      </EnhancedBreadcrumbSeparator>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/category">Category</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator>
+                        <span className="text-muted-foreground">→</span>
+                      </EnhancedBreadcrumbSeparator>
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>Current</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+              </div>
+            </div>
+
+            {/* Truncated Navigation */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Truncated Navigation</h3>
+              <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
+                
+                {/* Long breadcrumb with ellipsis */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Ellipsis Truncation</h4>
+                  <EnhancedBreadcrumb>
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator />
+                      <EnhancedBreadcrumbEllipsis />
+                      <EnhancedBreadcrumbSeparator />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/category/subcategory/product">Product</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>Current Item</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                </div>
+
+                {/* Demonstration with factory utility */}
+                <div className='space-y-2'>
+                  <h4 className='text-sm font-medium text-foreground'>Factory Pattern</h4>
+                  <div className='space-y-2'>
+                    <EnhancedBreadcrumb {...BreadcrumbFactory.navigation()}>
+                      <EnhancedBreadcrumbList>
+                        <EnhancedBreadcrumbItem>
+                          <EnhancedBreadcrumbLink href="/">Dashboard</EnhancedBreadcrumbLink>
+                        </EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbSeparator />
+                        <EnhancedBreadcrumbItem isCurrentPage>
+                          <EnhancedBreadcrumbPage>Analytics</EnhancedBreadcrumbPage>
+                        </EnhancedBreadcrumbItem>
+                      </EnhancedBreadcrumbList>
+                    </EnhancedBreadcrumb>
+                    
+                    <EnhancedBreadcrumb {...BreadcrumbFactory.compact()}>
+                      <EnhancedBreadcrumbList>
+                        <EnhancedBreadcrumbItem>
+                          <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                        </EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbSeparator variant="slash" />
+                        <EnhancedBreadcrumbItem isCurrentPage>
+                          <EnhancedBreadcrumbPage>Settings</EnhancedBreadcrumbPage>
+                        </EnhancedBreadcrumbItem>
+                      </EnhancedBreadcrumbList>
+                    </EnhancedBreadcrumb>
+                    
+                    <EnhancedBreadcrumb {...BreadcrumbFactory.glass()}>
+                      <EnhancedBreadcrumbList>
+                        <EnhancedBreadcrumbItem>
+                          <EnhancedBreadcrumbLink href="/">Workspace</EnhancedBreadcrumbLink>
+                        </EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbSeparator variant="dot" />
+                        <EnhancedBreadcrumbItem isCurrentPage>
+                          <EnhancedBreadcrumbPage>Files</EnhancedBreadcrumbPage>
+                        </EnhancedBreadcrumbItem>
+                      </EnhancedBreadcrumbList>
+                    </EnhancedBreadcrumb>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* AAA Compliance */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Accessibility Features</h3>
+              <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>AAA Compliance Mode</h4>
+                  <EnhancedBreadcrumb {...BreadcrumbFactory.accessible()}>
+                    <EnhancedBreadcrumbList>
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator />
+                      <EnhancedBreadcrumbItem>
+                        <EnhancedBreadcrumbLink href="/accessible">Accessibility</EnhancedBreadcrumbLink>
+                      </EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbSeparator />
+                      <EnhancedBreadcrumbItem isCurrentPage>
+                        <EnhancedBreadcrumbPage>AAA Standards</EnhancedBreadcrumbPage>
+                      </EnhancedBreadcrumbItem>
+                    </EnhancedBreadcrumbList>
+                  </EnhancedBreadcrumb>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Enhanced contrast ratios for low vision</li>
+                    <li>• Screen reader optimized structure</li>
+                    <li>• Keyboard navigation support</li>
+                    <li>• ARIA landmark compliance</li>
+                  </ul>
+                </div>
+
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>Keyboard Navigation</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Tab to navigate between links</li>
+                    <li>• Enter and Space to activate links</li>
+                    <li>• Skip to current page with aria-current</li>
+                    <li>• Semantic landmark navigation</li>
+                    <li>• Screen reader announcements</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Interactive Demo */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Interactive Navigation</h3>
+              <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                <p className='text-sm text-muted-foreground'>
+                  Click breadcrumb links to navigate (demo handlers show toast notifications)
+                </p>
+                <EnhancedBreadcrumb>
+                  <EnhancedBreadcrumbList>
+                    <EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbLink 
+                        href="/"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          showToast('info', 'Navigation', 'Navigated to Home');
+                        }}
+                      >
+                        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clipRule="evenodd" />
+                        </svg>
+                        Home
+                      </EnhancedBreadcrumbLink>
+                    </EnhancedBreadcrumbItem>
+                    <EnhancedBreadcrumbSeparator />
+                    <EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbLink 
+                        href="/products"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          showToast('info', 'Navigation', 'Navigated to Products');
+                        }}
+                      >
+                        Products
+                      </EnhancedBreadcrumbLink>
+                    </EnhancedBreadcrumbItem>
+                    <EnhancedBreadcrumbSeparator />
+                    <EnhancedBreadcrumbItem>
+                      <EnhancedBreadcrumbLink 
+                        href="/products/electronics"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          showToast('info', 'Navigation', 'Navigated to Electronics');
+                        }}
+                      >
+                        Electronics
+                      </EnhancedBreadcrumbLink>
+                    </EnhancedBreadcrumbItem>
+                    <EnhancedBreadcrumbSeparator />
+                    <EnhancedBreadcrumbItem isCurrentPage>
+                      <EnhancedBreadcrumbPage>iPhone 15 Pro</EnhancedBreadcrumbPage>
+                    </EnhancedBreadcrumbItem>
+                  </EnhancedBreadcrumbList>
+                </EnhancedBreadcrumb>
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced Calendar Showcase - MAPS v2.2 Compliance */}
+          <section className='space-y-6'>
+            <h2 className='text-2xl font-semibold text-foreground'>
+              Enhanced Calendar - MAPS v2.2 Date Selection System
+            </h2>
+            <p className='text-muted-foreground'>
+              Comprehensive calendar component with Apple HIG philosophy, dark-first design,
+              and multiple selection modes for optimal user experience.
+            </p>
+
+            {/* Calendar Variants */}
+            <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+              {/* Basic Calendar */}
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>Basic Calendar</h3>
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <EnhancedCalendar
+                    selected={selectedDate}
+                    onSelect={(date) => {
+                      if (date instanceof Date) {
+                        setSelectedDate(date);
+                        showToast('success', 'Date Selected', formatCalendarDate(date, 'long'));
+                      }
+                    }}
+                    mode="single"
+                  />
+                  {selectedDate && (
+                    <div className='mt-4 p-3 rounded-md bg-muted text-sm'>
+                      <p className='font-medium text-foreground'>Selected Date:</p>
+                      <p className='text-muted-foreground'>{formatCalendarDate(selectedDate, 'long')}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Glass Variant */}
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>Glass Variant</h3>
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <EnhancedCalendar
+                    {...CalendarFactory.glass()}
+                    selected={selectedDate}
+                    onSelect={(date) => {
+                      if (date instanceof Date) {
+                        setSelectedDate(date);
+                        showToast('info', 'Glass Calendar', `Selected ${formatCalendarDate(date, 'short')}`);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Multi-Select Calendar */}
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>Multi-Select Mode</h3>
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <EnhancedCalendar
+                    {...CalendarFactory.multiSelect()}
+                    selected={multiSelectedDates}
+                    onSelect={(dates) => {
+                      if (Array.isArray(dates)) {
+                        setMultiSelectedDates(dates);
+                        showToast('success', 'Multiple Dates', `Selected ${dates.length} dates`);
+                      } else {
+                        setMultiSelectedDates([]);
+                      }
+                    }}
+                  />
+                  {multiSelectedDates.length > 0 && (
+                    <div className='mt-4 p-3 rounded-md bg-muted text-sm'>
+                      <p className='font-medium text-foreground'>Selected Dates ({multiSelectedDates.length}):</p>
+                      <div className='mt-2 flex flex-wrap gap-1'>
+                        {multiSelectedDates.map((date, index) => (
+                          <span 
+                            key={index}
+                            className='px-2 py-1 rounded bg-accent text-accent-foreground text-xs'
+                          >
+                            {formatCalendarDate(date, 'short')}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Accessible Calendar */}
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>AAA Accessible</h3>
+                <div className='rounded-lg border border-border bg-card p-6'>
+                  <EnhancedCalendar
+                    {...CalendarFactory.accessible()}
+                    selected={selectedDate}
+                    onSelect={(date) => {
+                      if (date instanceof Date) {
+                        setSelectedDate(date);
+                        showToast('success', 'Accessible Calendar', 'Date selection announced');
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Disabled Dates Demo */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Date Restrictions</h3>
+              <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+                {/* No Weekends */}
+                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                  <h4 className='font-medium text-foreground'>No Weekends</h4>
+                  <p className='text-sm text-muted-foreground'>
+                    Weekends are disabled for business date selection
+                  </p>
+                  <EnhancedCalendar
+                    selected={selectedDate}
+                    onSelect={(date) => {
+                      if (date instanceof Date) {
+                        setSelectedDate(date);
+                        showToast('info', 'Business Date', 'Business day selected');
+                      }
+                    }}
+                    disabled={createDateDisabled({ weekends: true })}
+                  />
+                </div>
+
+                {/* Future Dates Only */}
+                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                  <h4 className='font-medium text-foreground'>Future Dates Only</h4>
+                  <p className='text-sm text-muted-foreground'>
+                    Past dates are disabled for scheduling
+                  </p>
+                  <EnhancedCalendar
+                    selected={selectedDate}
+                    onSelect={(date) => {
+                      if (date instanceof Date) {
+                        setSelectedDate(date);
+                        showToast('success', 'Future Date', 'Future date selected');
+                      }
+                    }}
+                    disabled={createDateDisabled({ 
+                      before: new Date() 
+                    })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Calendar Features */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Calendar Features</h3>
+              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                <div className='space-y-4'>
+                  <h4 className='font-medium text-foreground'>Design Features</h4>
+                  <ul className='space-y-2 text-sm text-muted-foreground'>
+                    <li>• Dark-first design philosophy</li>
+                    <li>• Apple HIG color harmonies</li>
+                    <li>• Liquid glass material effects</li>
+                    <li>• Systematic 8pt spacing grid</li>
+                    <li>• Ethereal accent highlights</li>
+                  </ul>
+                </div>
+                <div className='space-y-4'>
+                  <h4 className='font-medium text-foreground'>Interaction Features</h4>
+                  <ul className='space-y-2 text-sm text-muted-foreground'>
+                    <li>• Single and multiple selection modes</li>
+                    <li>• Keyboard navigation support</li>
+                    <li>• Customizable date restrictions</li>
+                    <li>• Month navigation controls</li>
+                    <li>• Today highlight and selection</li>
+                  </ul>
+                </div>
+                <div className='space-y-4'>
+                  <h4 className='font-medium text-foreground'>Accessibility Features</h4>
+                  <ul className='space-y-2 text-sm text-muted-foreground'>
+                    <li>• ARIA labels and roles</li>
+                    <li>• Screen reader announcements</li>
+                    <li>• Focus management and visible indicators</li>
+                    <li>• AAA compliance mode</li>
+                    <li>• High contrast support</li>
+                  </ul>
+                </div>
+                <div className='space-y-4'>
+                  <h4 className='font-medium text-foreground'>Technical Features</h4>
+                  <ul className='space-y-2 text-sm text-muted-foreground'>
+                    <li>• CVA variant system</li>
+                    <li>• Polymorphic component support</li>
+                    <li>• Factory pattern configurations</li>
+                    <li>• Date utility functions</li>
+                    <li>• Anti-drift enforcement</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Interactive Calendar Demo */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Interactive Features Demo</h3>
+              <div className='rounded-lg border border-border bg-card p-6 space-y-6'>
+                <p className='text-sm text-muted-foreground'>
+                  Try different calendar configurations and interactions
+                </p>
+                
+                {/* Compact Calendar */}
+                <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                  <div className='space-y-3'>
+                    <h4 className='font-medium text-foreground'>Compact Size</h4>
+                    <EnhancedCalendar
+                      {...CalendarFactory.compact()}
+                      selected={selectedDate}
+                      onSelect={(date) => {
+                        if (date instanceof Date) {
+                          setSelectedDate(date);
+                          showToast('info', 'Compact Calendar', formatCalendarDate(date));
+                        }
+                      }}
+                    />
+                  </div>
+                  
+                  <div className='space-y-3'>
+                    <h4 className='font-medium text-foreground'>Floating Glass</h4>
+                    <EnhancedCalendar
+                      variant="floating"
+                      surface="glass"
+                      selected={selectedDate}
+                      onSelect={(date) => {
+                        if (date instanceof Date) {
+                          setSelectedDate(date);
+                          showToast('success', 'Floating Calendar', 'Ethereal selection');
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Calendar with custom styling */}
+                <div className='space-y-3'>
+                  <h4 className='font-medium text-foreground'>Standard with Elevated Surface</h4>
+                  <div className='max-w-sm'>
+                    <EnhancedCalendar
+                      variant="elevated"
+                      surface="elevated"
+                      size="lg"
+                      selected={selectedDate}
+                      onSelect={(date) => {
+                        if (date instanceof Date) {
+                          setSelectedDate(date);
+                          showToast('success', 'Elevated Calendar', 'Professional selection');
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced Alert Showcase - MAPS v2.2 Compliance */}
+          <section className='space-y-6'>
+            <h2 className='text-2xl font-semibold text-foreground'>
+              Enhanced Alert - Dark-First Notification System
+            </h2>
+            <p className='text-muted-foreground'>
+              Apple HIG-inspired notification system with sophisticated visual hierarchy,
+              liquid glass materials, auto-close functionality, and comprehensive 
+              accessibility patterns following MAPS v2.2 architecture.
+            </p>
+
+            {/* Basic Alert Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Semantic Variants</h3>
+              <div className='space-y-4'>
+                <EnhancedAlert variant='default' title='Default Alert' description='This is a default alert with standard styling and neutral colors.' />
+                <EnhancedAlert variant='destructive' title='Error Alert' description='Something went wrong! Please check your input and try again.' />
+                <EnhancedAlert variant='warning' title='Warning Alert' description='This action cannot be undone. Please proceed with caution.' />
+                <EnhancedAlert variant='success' title='Success Alert' description='Your changes have been saved successfully.' />
+                <EnhancedAlert variant='info' title='Information Alert' description='Here is some important information you should know.' />
+              </div>
+            </div>
+
+            {/* Glass Material Variants */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Liquid Glass Materials</h3>
+              <div className='space-y-4'>
+                <EnhancedAlert variant='glass' title='Glass Alert' description='Sophisticated liquid glass material with subtle transparency and backdrop blur.' />
+                <EnhancedAlert variant='glass-destructive' title='Glass Error' description='Error alert with glass material styling and enhanced visual depth.' />
+                <EnhancedAlert variant='glass-warning' title='Glass Warning' description='Warning with advanced glass material and liquid aesthetics.' />
+                <EnhancedAlert variant='glass-success' title='Glass Success' description='Success notification with premium glass material finish.' />
+                <EnhancedAlert variant='glass-info' title='Glass Information' description='Information alert featuring the sophisticated glass material system.' />
+              </div>
+            </div>
+
+            {/* Size and Elevation System */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Size & Elevation System</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                <div className='space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Size Variants</h4>
+                  <EnhancedAlert size='sm' variant='info' title='Small Alert' description='Compact alert for tight spaces.' />
+                  <EnhancedAlert size='md' variant='info' title='Medium Alert' description='Standard sized alert for most use cases.' />
+                  <EnhancedAlert size='lg' variant='info' title='Large Alert' description='Larger alert for important information.' />
+                  <EnhancedAlert size='xl' variant='info' title='Extra Large Alert' description='Maximum size alert for critical notifications.' />
+                </div>
+                <div className='space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Elevation Levels</h4>
+                  <EnhancedAlert elevation='subtle' variant='default' title='Subtle Shadow' description='Minimal elevation for subtle presence.' />
+                  <EnhancedAlert elevation='medium' variant='default' title='Medium Shadow' description='Standard elevation for clear definition.' />
+                  <EnhancedAlert elevation='high' variant='default' title='High Shadow' description='Strong elevation for prominent display.' />
+                  <EnhancedAlert elevation='dramatic' variant='default' title='Dramatic Shadow' description='Maximum elevation for critical attention.' />
+                </div>
+              </div>
+            </div>
+
+            {/* Interactive Features */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Interactive Features</h3>
+              <div className='space-y-4'>
+                <EnhancedAlert 
+                  variant='default' 
+                  title='Dismissible Alert' 
+                  description='This alert can be manually dismissed by clicking the close button.'
+                  dismissible
+                  onDismiss={() => showToast('success', 'Alert Dismissed', 'The alert was successfully dismissed')}
+                />
+                <EnhancedAlert 
+                  variant='info' 
+                  title='Auto-close Alert' 
+                  description='This alert will automatically close after 5 seconds.'
+                  autoClose={5000}
+                  showProgress
+                  onDismiss={() => showToast('info', 'Alert Auto-closed', 'The alert closed automatically')}
+                />
+                <EnhancedAlert 
+                  variant='warning' 
+                  title='Dismissible with Auto-close' 
+                  description='This alert has both manual dismiss and auto-close features.'
+                  dismissible
+                  autoClose={8000}
+                  showProgress
+                  onDismiss={() => showToast('info', 'Alert Closed', 'Alert was closed either manually or automatically')}
+                />
+              </div>
+            </div>
+
+            {/* Custom Icons and Actions */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Custom Icons & Actions</h3>
+              <div className='space-y-4'>
+                <EnhancedAlert
+                  variant='info'
+                  title='Custom Icon Alert'
+                  description='This alert uses a custom icon instead of the default variant icon.'
+                  icon={<Settings className='h-4 w-4' />}
+                />
+                <EnhancedAlert
+                  variant='warning'
+                  title='Alert with Actions'
+                  description='This alert includes action buttons for user interaction.'
+                  actions={
+                    <div className='flex gap-2'>
+                      <EnhancedButton 
+                        size='sm' 
+                        variant='outline'
+                        onClick={() => showToast('info', 'Action Clicked', 'Secondary action was clicked')}
+                      >
+                        Cancel
+                      </EnhancedButton>
+                      <EnhancedButton 
+                        size='sm'
+                        onClick={() => showToast('success', 'Action Confirmed', 'Primary action was confirmed')}
+                      >
+                        Confirm
+                      </EnhancedButton>
+                    </div>
+                  }
+                />
+                <EnhancedAlert
+                  variant='success'
+                  title='Custom Close Icon'
+                  description='This alert features a custom close icon.'
+                  dismissible
+                  closeIcon={<X className='h-4 w-4' />}
+                  onDismiss={() => showToast('success', 'Custom Close', 'Alert closed with custom icon')}
+                />
+              </div>
+            </div>
+
+            {/* Factory Functions */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Factory Functions</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                {/* Semantic Factories */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Semantic Patterns</h4>
+                  <div className='space-y-2'>
+                    <AlertFactory.default.Alert title='Default Factory' description='Factory-created default alert.' />
+                    <AlertFactory.success.Alert title='Success Factory' description='Factory-created success alert.' />
+                    <AlertFactory.warning.Alert title='Warning Factory' description='Factory-created warning alert.' />
+                  </div>
+                </div>
+
+                {/* Glass Factories */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Glass Materials</h4>
+                  <div className='space-y-2'>
+                    <AlertFactory.glass.Alert title='Glass Factory' description='Factory-created glass alert.' />
+                    {React.createElement(AlertFactory['glass-success'].Alert, { 
+                      title: 'Glass Success', 
+                      description: 'Factory-created glass success alert.' 
+                    })}
+                    {React.createElement(AlertFactory['glass-destructive'].Alert, { 
+                      title: 'Glass Error', 
+                      description: 'Factory-created glass error alert.' 
+                    })}
+                  </div>
+                </div>
+
+                {/* Feature Factories */}
+                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Feature Patterns</h4>
+                  <div className='space-y-2'>
+                    <AlertFactory.dismissible.Alert 
+                      title='Dismissible Factory' 
+                      description='Factory-created dismissible alert.'
+                      onDismiss={() => showToast('success', 'Factory Alert Dismissed')}
+                    />
+                    <AlertFactory.aaa.Alert 
+                      title='AAA Factory' 
+                      description='Factory-created AAA compliant alert.'
+                      variant='glass'
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Utility Functions */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Utility Functions</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                <div className='space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Basic Utilities</h4>
+                  <div className='space-y-2'>
+                    {createSuccessAlert('Utility Success', 'Created with createSuccessAlert utility')}
+                    {createErrorAlert('Utility Error', 'Created with createErrorAlert utility')}
+                    {createWarningAlert('Utility Warning', 'Created with createWarningAlert utility')}
+                    {createInfoAlert('Utility Info', 'Created with createInfoAlert utility')}
+                  </div>
+                </div>
+                <div className='space-y-3'>
+                  <h4 className='font-medium text-sm text-foreground'>Notification Utility</h4>
+                  <div className='space-y-2'>
+                    {createNotificationAlert('Notification 1', 'Auto-closing notification with progress', 6000)}
+                    {createNotificationAlert('Notification 2', 'Another notification example', 4000, { variant: 'success' })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Real-world Examples */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Real-world Examples</h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                {/* Form Validation */}
+                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                  <h4 className='font-medium text-foreground'>Form Validation</h4>
+                  <div className='space-y-3'>
+                    <EnhancedAlert
+                      variant='destructive'
+                      title='Validation Error'
+                      description='Please correct the following errors before submitting:'
+                      actions={
+                        <EnhancedButton size='sm' variant='outline'>
+                          Review Form
+                        </EnhancedButton>
+                      }
+                    />
+                    <EnhancedAlert
+                      variant='success'
+                      title='Form Submitted'
+                      description='Your form has been successfully submitted.'
+                      dismissible
+                      autoClose={5000}
+                      showProgress
+                    />
+                  </div>
+                </div>
+
+                {/* System Status */}
+                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                  <h4 className='font-medium text-foreground'>System Status</h4>
+                  <div className='space-y-3'>
+                    <EnhancedAlert
+                      variant='warning'
+                      title='Maintenance Scheduled'
+                      description='System maintenance is scheduled for tonight at 2:00 AM.'
+                      icon={<AlertTriangle className='h-4 w-4' />}
+                      actions={
+                        <EnhancedButton size='sm' variant='outline'>
+                          Learn More
+                        </EnhancedButton>
+                      }
+                    />
+                    <EnhancedAlert
+                      variant='info'
+                      title='New Feature Available'
+                      description='Check out our latest feature update!'
+                      icon={<Info className='h-4 w-4' />}
+                      dismissible
+                    />
+                  </div>
+                </div>
+
+                {/* E-commerce Example */}
+                <div className='rounded-lg border border-border bg-card p-6 space-y-4 md:col-span-2'>
+                  <h4 className='font-medium text-foreground'>E-commerce Notifications</h4>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                    <EnhancedAlert
+                      variant='success'
+                      title='Item Added to Cart'
+                      description='Product successfully added to your shopping cart.'
+                      size='sm'
+                      dismissible
+                      autoClose={3000}
+                      showProgress
+                    />
+                    <EnhancedAlert
+                      variant='warning'
+                      title='Limited Stock'
+                      description='Only 3 items left in stock!'
+                      size='sm'
+                      actions={
+                        <EnhancedButton size='sm'>
+                          Buy Now
+                        </EnhancedButton>
+                      }
+                    />
+                    <EnhancedAlert
+                      variant='info'
+                      title='Free Shipping'
+                      description='Add $25 more to qualify for free shipping.'
+                      size='sm'
+                      dismissible
+                    />
+                    <EnhancedAlert
+                      variant='success'
+                      title='Order Confirmed'
+                      description='Your order #12345 has been confirmed.'
+                      size='sm'
+                      actions={
+                        <EnhancedButton size='sm' variant='outline'>
+                          Track Order
+                        </EnhancedButton>
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Accessibility Features */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>Accessibility Features</h3>
+              <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>ARIA Support</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• role=&quot;alert&quot; for immediate announcements</li>
+                    <li>• aria-live=&quot;polite&quot; for non-disruptive updates</li>
+                    <li>• aria-atomic=&quot;true&quot; for complete content reading</li>
+                    <li>• Proper progress bar ARIA attributes</li>
+                  </ul>
+                </div>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>Keyboard Navigation</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Dismiss buttons are keyboard accessible</li>
+                    <li>• Tab navigation to interactive elements</li>
+                    <li>• Enter/Space to activate actions</li>
+                    <li>• Proper focus management and indicators</li>
+                  </ul>
+                </div>
+                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                  <h4 className='font-medium text-foreground'>AAA Compliance</h4>
+                  <ul className='space-y-1 text-sm text-muted-foreground'>
+                    <li>• Enhanced contrast ratios for glass variants</li>
+                    <li>• Automatic AAA mode for glass materials</li>
+                    <li>• enforceAAA prop for critical alerts</li>
+                    <li>• Accessible color combinations</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Enhanced Separator Showcase - MAPS v2.2 Compliance */}
           <section className='space-y-6'>
             <h2 className='text-2xl font-semibold text-foreground'>
@@ -2447,6 +4172,461 @@ export const ComponentsDemo: React.FC = () => {
                     </span>
                   </li>
                 </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced Sheet Showcase - MAPS v2.2 Compliance */}
+          <section className='space-y-6'>
+            <h2 className='text-2xl font-semibold text-foreground'>
+              Enhanced Sheet - Dark-First Overlay Panels
+            </h2>
+            <p className='text-muted-foreground'>
+              Professional side panels and overlays with Apple HIG harmony, liquid
+              glass materials, and comprehensive accessibility support.
+            </p>
+
+            {/* Basic Sheet Variants */}
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Side Panels
+                </h3>
+                <div className='space-y-3'>
+                  <EnhancedSheet>
+                    <EnhancedSheetTrigger asChild>
+                      <EnhancedButton variant='outline' className='w-full'>
+                        Right Panel
+                      </EnhancedButton>
+                    </EnhancedSheetTrigger>
+                    <EnhancedSheetContent {...SheetFactory.sidePanel()}>
+                      <EnhancedSheetHeader>
+                        <EnhancedSheetTitle>Settings Panel</EnhancedSheetTitle>
+                        <EnhancedSheetDescription>
+                          Configure your preferences and account settings.
+                        </EnhancedSheetDescription>
+                      </EnhancedSheetHeader>
+                      <div className='space-y-4 py-4'>
+                        <div className='space-y-2'>
+                          <label className='text-sm font-medium text-foreground'>
+                            Theme
+                          </label>
+                          <Select>
+                            <SelectTrigger>
+                              <SelectValue placeholder='Select theme' />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value='dark'>Dark</SelectItem>
+                              <SelectItem value='light'>Light</SelectItem>
+                              <SelectItem value='system'>System</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className='space-y-2'>
+                          <label className='text-sm font-medium text-foreground'>
+                            Notifications
+                          </label>
+                          <EnhancedSwitch />
+                        </div>
+                      </div>
+                      <EnhancedSheetFooter>
+                        <EnhancedSheetClose asChild>
+                          <EnhancedButton variant='outline'>Cancel</EnhancedButton>
+                        </EnhancedSheetClose>
+                        <EnhancedSheetClose asChild>
+                          <EnhancedButton variant='primary'>Save Changes</EnhancedButton>
+                        </EnhancedSheetClose>
+                      </EnhancedSheetFooter>
+                    </EnhancedSheetContent>
+                  </EnhancedSheet>
+
+                  <EnhancedSheet>
+                    <EnhancedSheetTrigger asChild>
+                      <EnhancedButton variant='secondary' className='w-full'>
+                        Left Navigation
+                      </EnhancedButton>
+                    </EnhancedSheetTrigger>
+                    <EnhancedSheetContent {...SheetFactory.navigationDrawer()}>
+                      <EnhancedSheetHeader>
+                        <EnhancedSheetTitle>Navigation</EnhancedSheetTitle>
+                        <EnhancedSheetDescription>
+                          Quick access to all sections
+                        </EnhancedSheetDescription>
+                      </EnhancedSheetHeader>
+                      <div className='space-y-2 py-4'>
+                        <button className='w-full p-2 text-left text-sm rounded hover:bg-muted'>
+                          Dashboard
+                        </button>
+                        <button className='w-full p-2 text-left text-sm rounded hover:bg-muted'>
+                          Projects
+                        </button>
+                        <button className='w-full p-2 text-left text-sm rounded hover:bg-muted'>
+                          Settings
+                        </button>
+                        <button className='w-full p-2 text-left text-sm rounded hover:bg-muted'>
+                          Help
+                        </button>
+                      </div>
+                    </EnhancedSheetContent>
+                  </EnhancedSheet>
+                </div>
+                <p className='text-sm text-muted-foreground'>
+                  Standard side panel configurations
+                </p>
+              </div>
+
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Mobile Drawers
+                </h3>
+                <div className='space-y-3'>
+                  <EnhancedSheet>
+                    <EnhancedSheetTrigger asChild>
+                      <EnhancedButton variant='outline' className='w-full'>
+                        Bottom Drawer
+                      </EnhancedButton>
+                    </EnhancedSheetTrigger>
+                    <EnhancedSheetContent {...SheetFactory.mobileDrawer()}>
+                      <EnhancedSheetHeader>
+                        <EnhancedSheetTitle>Mobile Actions</EnhancedSheetTitle>
+                        <EnhancedSheetDescription>
+                          Quick actions for mobile interface
+                        </EnhancedSheetDescription>
+                      </EnhancedSheetHeader>
+                      <div className='grid grid-cols-2 gap-3 py-4'>
+                        <EnhancedButton variant='outline' className='h-20 flex-col'>
+                          <Settings className='h-6 w-6 mb-2' />
+                          Settings
+                        </EnhancedButton>
+                        <EnhancedButton variant='outline' className='h-20 flex-col'>
+                          <User className='h-6 w-6 mb-2' />
+                          Profile
+                        </EnhancedButton>
+                        <EnhancedButton variant='outline' className='h-20 flex-col'>
+                          <Mail className='h-6 w-6 mb-2' />
+                          Messages
+                        </EnhancedButton>
+                        <EnhancedButton variant='outline' className='h-20 flex-col'>
+                          <Search className='h-6 w-6 mb-2' />
+                          Search
+                        </EnhancedButton>
+                      </div>
+                    </EnhancedSheetContent>
+                  </EnhancedSheet>
+
+                  <EnhancedSheet>
+                    <EnhancedSheetTrigger asChild>
+                      <EnhancedButton variant='secondary' className='w-full'>
+                        Top Notification
+                      </EnhancedButton>
+                    </EnhancedSheetTrigger>
+                    <EnhancedSheetContent side='top' size='sm'>
+                      <EnhancedSheetHeader>
+                        <EnhancedSheetTitle>New Updates</EnhancedSheetTitle>
+                        <EnhancedSheetDescription>
+                          You have 3 new notifications
+                        </EnhancedSheetDescription>
+                      </EnhancedSheetHeader>
+                      <div className='space-y-3 py-4'>
+                        <div className='flex items-center gap-3 p-2 rounded bg-muted/50'>
+                          <div className='h-2 w-2 rounded-full bg-blue-500'></div>
+                          <div className='flex-1'>
+                            <p className='text-sm font-medium'>System Update</p>
+                            <p className='text-xs text-muted-foreground'>
+                              New features available
+                            </p>
+                          </div>
+                        </div>
+                        <div className='flex items-center gap-3 p-2 rounded bg-muted/50'>
+                          <div className='h-2 w-2 rounded-full bg-green-500'></div>
+                          <div className='flex-1'>
+                            <p className='text-sm font-medium'>Task Complete</p>
+                            <p className='text-xs text-muted-foreground'>
+                              Project milestone reached
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </EnhancedSheetContent>
+                  </EnhancedSheet>
+                </div>
+                <p className='text-sm text-muted-foreground'>
+                  Mobile-optimized drawer layouts
+                </p>
+              </div>
+
+              <div className='space-y-4'>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Surface Materials
+                </h3>
+                <div className='space-y-3'>
+                  <EnhancedSheet>
+                    <EnhancedSheetTrigger asChild>
+                      <EnhancedButton variant='outline' className='w-full'>
+                        Glass Surface
+                      </EnhancedButton>
+                    </EnhancedSheetTrigger>
+                    <EnhancedSheetContent {...SheetFactory.glass()}>
+                      <EnhancedSheetHeader>
+                        <EnhancedSheetTitle>Glass Material</EnhancedSheetTitle>
+                        <EnhancedSheetDescription>
+                          Liquid glass with backdrop blur effects
+                        </EnhancedSheetDescription>
+                      </EnhancedSheetHeader>
+                      <div className='space-y-4 py-4'>
+                        <div className='p-4 rounded border border-border/50 bg-background/30'>
+                          <h4 className='font-medium mb-2'>Glass Effect</h4>
+                          <p className='text-sm text-muted-foreground'>
+                            This panel demonstrates the liquid glass material system
+                            with proper backdrop blur and transparency effects.
+                          </p>
+                        </div>
+                        <div className='grid grid-cols-2 gap-2'>
+                          <div className='p-2 rounded bg-background/20 text-center text-xs'>
+                            Blur: md
+                          </div>
+                          <div className='p-2 rounded bg-background/20 text-center text-xs'>
+                            Opacity: 95%
+                          </div>
+                        </div>
+                      </div>
+                    </EnhancedSheetContent>
+                  </EnhancedSheet>
+
+                  <EnhancedSheet>
+                    <EnhancedSheetTrigger asChild>
+                      <EnhancedButton variant='secondary' className='w-full'>
+                        Floating Panel
+                      </EnhancedButton>
+                    </EnhancedSheetTrigger>
+                    <EnhancedSheetContent surface='floating' size='lg'>
+                      <EnhancedSheetHeader>
+                        <EnhancedSheetTitle>Floating Surface</EnhancedSheetTitle>
+                        <EnhancedSheetDescription>
+                          Elevated floating panel with enhanced shadows
+                        </EnhancedSheetDescription>
+                      </EnhancedSheetHeader>
+                      <div className='space-y-4 py-4'>
+                        <div className='p-4 rounded border border-border/30 bg-card'>
+                          <h4 className='font-medium mb-2'>Elevation System</h4>
+                          <p className='text-sm text-muted-foreground'>
+                            Floating surfaces provide enhanced depth perception
+                            with sophisticated shadow systems.
+                          </p>
+                        </div>
+                      </div>
+                    </EnhancedSheetContent>
+                  </EnhancedSheet>
+                </div>
+                <p className='text-sm text-muted-foreground'>
+                  Advanced material surface options
+                </p>
+              </div>
+            </div>
+
+            {/* Enhanced Sheet Features */}
+            <div className='space-y-6'>
+              <h3 className='text-2xl font-semibold text-foreground'>
+                Enhanced Sheet Features
+              </h3>
+
+              {/* Accessibility & Size Variants */}
+              <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+                <div className='space-y-4'>
+                  <h4 className='text-lg font-medium text-foreground'>
+                    Size Variants & Accessibility
+                  </h4>
+                  <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+                    <EnhancedSheet>
+                      <EnhancedSheetTrigger asChild>
+                        <EnhancedButton variant='outline' size='sm'>
+                          Small Sheet
+                        </EnhancedButton>
+                      </EnhancedSheetTrigger>
+                      <EnhancedSheetContent side='right' size='sm'>
+                        <EnhancedSheetHeader>
+                          <EnhancedSheetTitle>Small Panel</EnhancedSheetTitle>
+                          <EnhancedSheetDescription>
+                            Compact side panel for quick actions
+                          </EnhancedSheetDescription>
+                        </EnhancedSheetHeader>
+                        <div className='py-4'>
+                          <p className='text-sm text-muted-foreground'>
+                            This is a small-sized sheet perfect for simple forms
+                            or quick information display.
+                          </p>
+                        </div>
+                      </EnhancedSheetContent>
+                    </EnhancedSheet>
+
+                    <EnhancedSheet>
+                      <EnhancedSheetTrigger asChild>
+                        <EnhancedButton variant='outline' size='sm'>
+                          Large Sheet
+                        </EnhancedButton>
+                      </EnhancedSheetTrigger>
+                      <EnhancedSheetContent side='right' size='xl'>
+                        <EnhancedSheetHeader>
+                          <EnhancedSheetTitle>Large Panel</EnhancedSheetTitle>
+                          <EnhancedSheetDescription>
+                            Spacious panel for complex content
+                          </EnhancedSheetDescription>
+                        </EnhancedSheetHeader>
+                        <div className='space-y-4 py-4'>
+                          <div className='grid grid-cols-2 gap-4'>
+                            <div className='space-y-2'>
+                              <label className='text-sm font-medium'>Name</label>
+                              <EnhancedInput placeholder='Enter name' />
+                            </div>
+                            <div className='space-y-2'>
+                              <label className='text-sm font-medium'>Email</label>
+                              <EnhancedInput placeholder='Enter email' />
+                            </div>
+                          </div>
+                          <div className='space-y-2'>
+                            <label className='text-sm font-medium'>Description</label>
+                            <textarea 
+                              className='w-full p-3 rounded border border-border bg-background'
+                              rows={4}
+                              placeholder='Enter description...'
+                            />
+                          </div>
+                        </div>
+                        <EnhancedSheetFooter>
+                          <EnhancedSheetClose asChild>
+                            <EnhancedButton variant='outline'>Cancel</EnhancedButton>
+                          </EnhancedSheetClose>
+                          <EnhancedSheetClose asChild>
+                            <EnhancedButton variant='primary'>Save</EnhancedButton>
+                          </EnhancedSheetClose>
+                        </EnhancedSheetFooter>
+                      </EnhancedSheetContent>
+                    </EnhancedSheet>
+
+                    <EnhancedSheet>
+                      <EnhancedSheetTrigger asChild>
+                        <EnhancedButton variant='primary' size='sm'>
+                          AAA Compliant
+                        </EnhancedButton>
+                      </EnhancedSheetTrigger>
+                      <EnhancedSheetContent {...SheetFactory.accessible()}>
+                        <EnhancedSheetHeader>
+                          <EnhancedSheetTitle>Accessible Sheet</EnhancedSheetTitle>
+                          <EnhancedSheetDescription>
+                            Enhanced accessibility with AAA compliance
+                          </EnhancedSheetDescription>
+                        </EnhancedSheetHeader>
+                        <div className='space-y-4 py-4'>
+                          <div className='p-4 rounded border border-border bg-card'>
+                            <h4 className='font-medium mb-2 text-foreground'>
+                              AAA Features
+                            </h4>
+                            <ul className='space-y-1 text-sm text-muted-foreground'>
+                              <li>• Enhanced contrast ratios</li>
+                              <li>• Improved focus indicators</li>
+                              <li>• Screen reader optimized</li>
+                              <li>• Keyboard navigation support</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </EnhancedSheetContent>
+                    </EnhancedSheet>
+
+                    <EnhancedSheet>
+                      <EnhancedSheetTrigger asChild>
+                        <EnhancedButton variant='secondary' size='sm'>
+                          Full Overlay
+                        </EnhancedButton>
+                      </EnhancedSheetTrigger>
+                      <EnhancedSheetContent {...SheetFactory.fullOverlay()}>
+                        <EnhancedSheetHeader>
+                          <EnhancedSheetTitle>Full Screen Overlay</EnhancedSheetTitle>
+                          <EnhancedSheetDescription>
+                            Complete screen overlay for immersive experiences
+                          </EnhancedSheetDescription>
+                        </EnhancedSheetHeader>
+                        <div className='flex-1 py-4'>
+                          <div className='h-full min-h-[400px] rounded border border-border/50 bg-muted/20 flex items-center justify-center'>
+                            <div className='text-center space-y-2'>
+                              <div className='text-4xl'>🎨</div>
+                              <p className='text-lg font-medium'>Full Screen Content</p>
+                              <p className='text-sm text-muted-foreground'>
+                                Perfect for detailed views and immersive experiences
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </EnhancedSheetContent>
+                    </EnhancedSheet>
+                  </div>
+                  <p className='text-sm text-muted-foreground'>
+                    Size variants from compact to full-screen with accessibility options
+                  </p>
+                </div>
+
+                <div className='space-y-4'>
+                  <h4 className='text-lg font-medium text-foreground'>
+                    Technical Features
+                  </h4>
+                  <div className='rounded-lg border border-border bg-card p-6'>
+                    <ul className='space-y-3'>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          Apple HIG motion system
+                        </span>
+                      </li>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          Focus trap management
+                        </span>
+                      </li>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          Polymorphic pattern support
+                        </span>
+                      </li>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          Liquid glass materials
+                        </span>
+                      </li>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          Factory pattern configurations
+                        </span>
+                      </li>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          Responsive design system
+                        </span>
+                      </li>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          Anti-drift enforcement
+                        </span>
+                      </li>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          Motion preference respect
+                        </span>
+                      </li>
+                      <li className='flex items-center gap-2'>
+                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <span className='text-foreground'>
+                          CVA variant system
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -7279,6 +9459,371 @@ export const ComponentsDemo: React.FC = () => {
             <ProgressDemo />
           </section>
 
+          {/* Enhanced Skeleton Showcase */}
+          <section className='space-y-6'>
+            <div className='text-center'>
+              <h2 className='text-3xl font-bold text-foreground'>
+                Enhanced Skeleton Components
+              </h2>
+              <p className='mt-2 text-lg text-muted-foreground'>
+                Sophisticated loading placeholders with MAPS v2.2 dark-first
+                philosophy, smooth animations, comprehensive variant support,
+                and AAA accessibility compliance
+              </p>
+            </div>
+
+            {/* Basic Skeleton Variants */}
+            <div className='space-y-8'>
+              <div className='space-y-6'>
+                <h3 className='text-xl font-medium text-foreground'>
+                  Basic Skeleton Variants
+                </h3>
+                <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
+                  {/* Text Skeleton */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Text Lines</h4>
+                    <div className='space-y-2 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="text" size="lg" width="100%" />
+                      <EnhancedSkeleton variant="text" size="md" width="90%" />
+                      <EnhancedSkeleton variant="text" size="md" width="75%" />
+                      <EnhancedSkeleton variant="text" size="sm" width="85%" />
+                    </div>
+                  </div>
+
+                  {/* Avatar Skeleton */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Avatars</h4>
+                    <div className='space-y-4 rounded-lg border border-border bg-card p-4'>
+                      <div className='flex items-center space-x-3'>
+                        <EnhancedSkeleton variant="avatar" size="sm" />
+                        <div className='space-y-1 flex-1'>
+                          <EnhancedSkeleton variant="text" size="sm" width="60%" />
+                          <EnhancedSkeleton variant="text" size="sm" width="40%" />
+                        </div>
+                      </div>
+                      <div className='flex items-center space-x-3'>
+                        <EnhancedSkeleton variant="avatar" size="md" />
+                        <div className='space-y-2 flex-1'>
+                          <EnhancedSkeleton variant="text" size="md" width="70%" />
+                          <EnhancedSkeleton variant="text" size="sm" width="45%" />
+                        </div>
+                      </div>
+                      <div className='flex items-center space-x-3'>
+                        <EnhancedSkeleton variant="avatar" size="lg" />
+                        <div className='space-y-2 flex-1'>
+                          <EnhancedSkeleton variant="text" size="lg" width="80%" />
+                          <EnhancedSkeleton variant="text" size="md" width="55%" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Button Skeleton */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Buttons</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="button" size="sm" width="80px" />
+                      <EnhancedSkeleton variant="button" size="md" width="120px" />
+                      <EnhancedSkeleton variant="button" size="lg" width="140px" />
+                      <EnhancedSkeleton variant="button" size="xl" width="160px" />
+                    </div>
+                  </div>
+
+                  {/* Badge Skeleton */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Badges</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <div className='flex items-center space-x-2'>
+                        <EnhancedSkeleton variant="text" size="md" width="100px" />
+                        <EnhancedSkeleton variant="badge" size="sm" />
+                      </div>
+                      <div className='flex items-center space-x-2'>
+                        <EnhancedSkeleton variant="text" size="md" width="120px" />
+                        <EnhancedSkeleton variant="badge" size="md" />
+                      </div>
+                      <div className='flex items-center space-x-2'>
+                        <EnhancedSkeleton variant="text" size="md" width="80px" />
+                        <EnhancedSkeleton variant="badge" size="lg" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Animation Variants */}
+              <div className='space-y-6'>
+                <h3 className='text-xl font-medium text-foreground'>
+                  Animation Variants
+                </h3>
+                <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+                  {/* Pulse Animation */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Pulse Animation</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="text" animation="pulse" width="100%" />
+                      <EnhancedSkeleton variant="text" animation="pulse" width="85%" />
+                      <EnhancedSkeleton variant="text" animation="pulse" width="70%" />
+                      <div className='flex items-center space-x-3 pt-2'>
+                        <EnhancedSkeleton variant="avatar" size="md" animation="pulse" />
+                        <EnhancedSkeleton variant="button" size="sm" animation="pulse" width="80px" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Wave Animation */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Wave Animation</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="text" animation="wave" width="100%" />
+                      <EnhancedSkeleton variant="text" animation="wave" width="85%" />
+                      <EnhancedSkeleton variant="text" animation="wave" width="70%" />
+                      <div className='flex items-center space-x-3 pt-2'>
+                        <EnhancedSkeleton variant="avatar" size="md" animation="wave" />
+                        <EnhancedSkeleton variant="button" size="sm" animation="wave" width="80px" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* No Animation */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>No Animation</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="text" animation="none" width="100%" />
+                      <EnhancedSkeleton variant="text" animation="none" width="85%" />
+                      <EnhancedSkeleton variant="text" animation="none" width="70%" />
+                      <div className='flex items-center space-x-3 pt-2'>
+                        <EnhancedSkeleton variant="avatar" size="md" animation="none" />
+                        <EnhancedSkeleton variant="button" size="sm" animation="none" width="80px" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Surface Materials */}
+              <div className='space-y-6'>
+                <h3 className='text-xl font-medium text-foreground'>
+                  Liquid Glass Materials
+                </h3>
+                <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
+                  {/* Elevated Surface */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Elevated</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="text" surface="elevated" width="100%" />
+                      <EnhancedSkeleton variant="text" surface="elevated" width="75%" />
+                      <div className='flex items-center space-x-3 pt-2'>
+                        <EnhancedSkeleton variant="avatar" size="md" surface="elevated" />
+                        <EnhancedSkeleton variant="badge" size="md" surface="elevated" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Panel Surface */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Panel</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="text" surface="panel" width="100%" />
+                      <EnhancedSkeleton variant="text" surface="panel" width="75%" />
+                      <div className='flex items-center space-x-3 pt-2'>
+                        <EnhancedSkeleton variant="avatar" size="md" surface="panel" />
+                        <EnhancedSkeleton variant="badge" size="md" surface="panel" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Glass Surface */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Glass</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="text" surface="glass" width="100%" />
+                      <EnhancedSkeleton variant="text" surface="glass" width="75%" />
+                      <div className='flex items-center space-x-3 pt-2'>
+                        <EnhancedSkeleton variant="avatar" size="md" surface="glass" />
+                        <EnhancedSkeleton variant="badge" size="md" surface="glass" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Floating Surface */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Floating</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton variant="text" surface="floating" width="100%" />
+                      <EnhancedSkeleton variant="text" surface="floating" width="75%" />
+                      <div className='flex items-center space-x-3 pt-2'>
+                        <EnhancedSkeleton variant="avatar" size="md" surface="floating" />
+                        <EnhancedSkeleton variant="badge" size="md" surface="floating" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Compound Components */}
+              <div className='space-y-6'>
+                <h3 className='text-xl font-medium text-foreground'>
+                  Compound Components
+                </h3>
+                <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+                  {/* Text Lines */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Text Lines</h4>
+                    <div className='rounded-lg border border-border bg-card p-4'>
+                      <SkeletonTextLines lines={4} lastLineWidth="60%" />
+                    </div>
+                  </div>
+
+                  {/* Card Skeleton */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Card</h4>
+                    <div className='rounded-lg border border-border bg-card'>
+                      <SkeletonCard showAvatar={true} showFooter={true} />
+                    </div>
+                  </div>
+
+                  {/* Table Skeleton */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Table</h4>
+                    <div className='rounded-lg border border-border bg-card p-4'>
+                      <SkeletonTable rows={4} columns={3} showHeader={true} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Factory Patterns */}
+              <div className='space-y-6'>
+                <h3 className='text-xl font-medium text-foreground'>
+                  Factory Pattern Examples
+                </h3>
+                <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+                  {/* Text Line Factory */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Text Line Factory</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton {...SkeletonFactory.textLine()} />
+                      <EnhancedSkeleton {...SkeletonFactory.textLine({ width: '85%' })} />
+                      <EnhancedSkeleton {...SkeletonFactory.textLine({ width: '70%' })} />
+                    </div>
+                  </div>
+
+                  {/* Avatar Factory */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>Avatar Factory</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <div className='flex items-center space-x-3'>
+                        <EnhancedSkeleton {...SkeletonFactory.avatar()} />
+                        <div className='space-y-2 flex-1'>
+                          <EnhancedSkeleton {...SkeletonFactory.textLine({ width: '70%' })} />
+                          <EnhancedSkeleton {...SkeletonFactory.textLine({ width: '45%', size: 'sm' })} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Accessible Factory */}
+                  <div className='space-y-4'>
+                    <h4 className='text-lg font-medium text-foreground'>AAA Compliance</h4>
+                    <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                      <EnhancedSkeleton {...SkeletonFactory.accessible({ variant: 'text', width: '100%' })} />
+                      <EnhancedSkeleton {...SkeletonFactory.accessible({ variant: 'text', width: '80%' })} />
+                      <div className='flex items-center space-x-3 pt-2'>
+                        <EnhancedSkeleton {...SkeletonFactory.accessible({ variant: 'avatar', size: 'md' })} />
+                        <EnhancedSkeleton {...SkeletonFactory.accessible({ variant: 'button', size: 'sm', width: '100px' })} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Enhanced Skeleton Features */}
+            <div className='rounded-lg border border-border bg-card p-6'>
+              <h3 className='mb-4 text-lg font-medium text-foreground'>
+                Enhanced Skeleton Features
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                <ul className='space-y-2 text-sm'>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      7 semantic variants for different content types
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      Multiple size options with responsive scaling
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      3 animation types including shimmer wave
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      Liquid glass materials and surface variants
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      Factory patterns for consistent construction
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      Compound components for complex layouts
+                    </span>
+                  </li>
+                </ul>
+                <ul className='space-y-2 text-sm'>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      AAA accessibility compliance mode
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      Motion-reduced animation support
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      Screen reader optimized ARIA attributes
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      Polymorphic rendering with asChild support
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      Custom width and height configuration
+                    </span>
+                  </li>
+                  <li className='flex items-center gap-2'>
+                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <span className='text-foreground'>
+                      MAPS v2.2 design token compliance
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
           {/* Enhanced Radio Group Showcase */}
           <section className='space-y-6'>
             <div className='text-center'>
@@ -7299,7 +9844,7 @@ export const ComponentsDemo: React.FC = () => {
             <p className='text-muted-foreground'>
               MAPS v2.2 Enhanced Component System • Enhanced Button, Dialog,
               Input, Label, Select, Checkbox, Popover, Switch, Toggle, Tabs,
-              Collapsible & AlertDialog • Built with Apple HIG Philosophy •
+              Collapsible, AlertDialog, Skeleton & More • Built with Apple HIG Philosophy •
               Accessible by Design • Liquid Glass Materials • ~9.6/10 AAA
               Compliance Score
             </p>

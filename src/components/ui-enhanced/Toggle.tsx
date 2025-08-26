@@ -32,7 +32,7 @@ import * as TogglePrimitives from '@radix-ui/react-toggle';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import { AccessibleIcon, VisuallyHidden } from '@/components/primitives';
+import { AccessibleIcon, VisuallyHidden, Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED TOGGLE VARIANTS =====
@@ -199,6 +199,11 @@ export interface EnhancedToggleProps
   'aria-label'?: string;
 
   /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
+
+  /**
    * Description for additional context
    * @description Provides additional context for screen readers
    */
@@ -245,6 +250,7 @@ const EnhancedToggle = React.forwardRef<
       liquidGlass = false,
       icon,
       loading = false,
+      asChild = false,
       children,
       pressedLabel = 'On',
       unpressedLabel = 'Off',
@@ -308,8 +314,10 @@ const EnhancedToggle = React.forwardRef<
         ? 'min-h-[36px] py-1 @media (hover: hover) { min-h-[28px] py-0.5 }'
         : '';
 
+    const Comp = asChild ? Slot : TogglePrimitives.Root;
+
     return (
-      <TogglePrimitives.Root
+      <Comp
         ref={ref}
         className={cn(
           enhancedToggleVariants({
@@ -354,7 +362,7 @@ const EnhancedToggle = React.forwardRef<
         <VisuallyHidden aria-live='polite'>
           {isPressed ? pressedLabel : unpressedLabel}
         </VisuallyHidden>
-      </TogglePrimitives.Root>
+      </Comp>
     );
   }
 );

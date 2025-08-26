@@ -31,6 +31,7 @@ import * as RadixAspectRatio from '@radix-ui/react-aspect-ratio';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED ASPECT RATIO VARIANTS =====
@@ -188,6 +189,10 @@ interface EnhancedAspectRatioOwnProps
    * Content styling options
    */
   content?: AspectRatioContentVariantProps;
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 type AspectRatioVariantProps = VariantProps<typeof enhancedAspectRatioVariants>;
@@ -243,6 +248,7 @@ const EnhancedAspectRatio = React.forwardRef<
       preset,
       enforceAAA,
       content,
+      asChild = false,
       children,
       ...props
     },
@@ -254,8 +260,10 @@ const EnhancedAspectRatio = React.forwardRef<
     // Apply AAA enforcement
     const finalVariant = enforceAAA ? 'aaa' : variant;
 
+    const Comp = asChild ? Slot : RadixAspectRatio.Root;
+
     return (
-      <RadixAspectRatio.Root
+      <Comp
         ref={ref}
         ratio={finalRatio}
         className={cn(
@@ -282,7 +290,7 @@ const EnhancedAspectRatio = React.forwardRef<
         >
           {children}
         </div>
-      </RadixAspectRatio.Root>
+      </Comp>
     );
   }
 );

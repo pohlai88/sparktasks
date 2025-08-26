@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/test-fixtures';
 import { PageUtils } from '../utils/page-utils';
-import { injectAxe, checkA11y } from 'axe-playwright';
+import { injectAxe, checkA11y, getViolations } from 'axe-playwright';
 
 /**
  * @a11y
@@ -201,13 +201,15 @@ test.describe('Accessibility Tests', () => {
     await authenticatedPage.goto('/');
     await authenticatedPage.waitForLoadState('networkidle');
 
-    const accessibilityScanResults = await new AxeBuilder({
-      page: authenticatedPage,
-    })
-      .withRules(['color-contrast'])
-      .analyze();
+    // Inject axe-core into the page
+    await injectAxe(authenticatedPage);
 
-    expect(accessibilityScanResults.violations).toEqual([]);
+    // Check color contrast compliance
+    await checkA11y(authenticatedPage, null, {
+      rules: {
+        'color-contrast': { enabled: true }
+      }
+    });
   });
 
   test('should have accessible images @a11y @media', async ({

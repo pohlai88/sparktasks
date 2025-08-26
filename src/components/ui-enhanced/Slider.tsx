@@ -32,6 +32,7 @@ import * as SliderPrimitives from '@radix-ui/react-slider';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
+import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED SLIDER VARIANTS =====
@@ -297,6 +298,11 @@ export interface EnhancedSliderProps
    * Density variant for different layout contexts
    */
   density?: 'comfortable' | 'compact';
+
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 // ===== ENHANCED SLIDER COMPONENT =====
@@ -316,6 +322,7 @@ const EnhancedSlider = React.forwardRef<
       showValue = false,
       formatValue = (value: number) => value.toString(),
       density = 'comfortable',
+      asChild = false,
       ...props
     },
     ref
@@ -346,9 +353,11 @@ const EnhancedSlider = React.forwardRef<
         ? 'min-h-[36px] py-1 @media (hover: hover) { min-h-[28px] py-0.5 }'
         : '';
 
+    const Comp = asChild ? Slot : SliderPrimitives.Root;
+
     return (
       <div className={cn('relative', densityClasses)}>
-        <SliderPrimitives.Root
+        <Comp
           ref={ref}
           className={cn(
             enhancedSliderVariants({ size, orientation, variant }),
@@ -356,7 +365,7 @@ const EnhancedSlider = React.forwardRef<
             className
           )}
           orientation={orientation || undefined}
-          {...props}
+          {...(props as any)}
         >
           <SliderPrimitives.Track
             className={cn(
@@ -423,7 +432,7 @@ const EnhancedSlider = React.forwardRef<
               )}
             </SliderPrimitives.Thumb>
           ))}
-        </SliderPrimitives.Root>
+        </Comp>
       </div>
     );
   }

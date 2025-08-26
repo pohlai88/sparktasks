@@ -32,6 +32,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import React from 'react';
 
+import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED MENU BAR VARIANTS =====
@@ -361,17 +362,23 @@ const enhancedMenuBarItemVariants = cva(
 const MenuBar = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Root> &
-    VariantProps<typeof enhancedMenuBarVariants>
->(({ className, variant, size, density, enforceAAA, ...props }, ref) => (
-  <MenubarPrimitive.Root
-    ref={ref}
-    className={cn(
-      enhancedMenuBarVariants({ variant, size, density, enforceAAA }),
-      className
-    )}
-    {...props}
-  />
-));
+    VariantProps<typeof enhancedMenuBarVariants> & {
+      asChild?: boolean;
+    }
+>(({ className, variant, size, density, enforceAAA, asChild = false, ...props }, ref) => {
+  const Comp = asChild ? Slot : MenubarPrimitive.Root;
+  
+  return (
+    <Comp
+      ref={ref}
+      className={cn(
+        enhancedMenuBarVariants({ variant, size, density, enforceAAA }),
+        className
+      )}
+      {...props}
+    />
+  );
+});
 MenuBar.displayName = 'MenuBar';
 
 /**
@@ -385,17 +392,23 @@ const MenuBarMenu = MenubarPrimitive.Menu;
 const MenuBarTrigger = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Trigger> &
-    VariantProps<typeof enhancedMenuBarTriggerVariants>
->(({ className, variant, size, enforceAAA, ...props }, ref) => (
-  <MenubarPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      enhancedMenuBarTriggerVariants({ variant, size, enforceAAA }),
-      className
-    )}
-    {...props}
-  />
-));
+    VariantProps<typeof enhancedMenuBarTriggerVariants> & {
+      asChild?: boolean;
+    }
+>(({ className, variant, size, enforceAAA, asChild = false, ...props }, ref) => {
+  const Comp = asChild ? Slot : MenubarPrimitive.Trigger;
+  
+  return (
+    <Comp
+      ref={ref}
+      className={cn(
+        enhancedMenuBarTriggerVariants({ variant, size, enforceAAA }),
+        className
+      )}
+      {...props}
+    />
+  );
+});
 MenuBarTrigger.displayName = 'MenuBarTrigger';
 
 /**
@@ -444,18 +457,35 @@ const MenuBarItem = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Item> &
     VariantProps<typeof enhancedMenuBarItemVariants> & {
       inset?: boolean;
+      asChild?: boolean;
     }
->(({ className, variant, size, enforceAAA, inset, ...props }, ref) => (
-  <MenubarPrimitive.Item
-    ref={ref}
-    className={cn(
-      enhancedMenuBarItemVariants({ variant, size, enforceAAA }),
-      inset && 'pl-8',
-      className
-    )}
-    {...props}
-  />
-));
+>(({ className, variant, size, enforceAAA, inset, asChild = false, ...props }, ref) => {
+  if (asChild) {
+    return (
+      <Slot
+        ref={ref}
+        className={cn(
+          enhancedMenuBarItemVariants({ variant, size, enforceAAA }),
+          inset && 'pl-8',
+          className
+        )}
+        {...(props as any)}
+      />
+    );
+  }
+  
+  return (
+    <MenubarPrimitive.Item
+      ref={ref}
+      className={cn(
+        enhancedMenuBarItemVariants({ variant, size, enforceAAA }),
+        inset && 'pl-8',
+        className
+      )}
+      {...props}
+    />
+  );
+});
 MenuBarItem.displayName = 'MenuBarItem';
 
 /**

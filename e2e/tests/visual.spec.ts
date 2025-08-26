@@ -149,10 +149,9 @@ test.describe('Visual Regression Tests', () => {
 
   test('should match responsive layouts @visual @mobile', async ({
     authenticatedPage,
-    context,
   }) => {
     // Test mobile viewport
-    await context.setViewportSize({ width: 375, height: 667 }); // iPhone SE
+    await authenticatedPage.setViewportSize({ width: 375, height: 667 }); // iPhone SE
     await authenticatedPage.goto('/');
     await authenticatedPage.waitForLoadState('networkidle');
 
@@ -162,7 +161,7 @@ test.describe('Visual Regression Tests', () => {
     });
 
     // Test tablet viewport
-    await context.setViewportSize({ width: 768, height: 1024 }); // iPad
+    await authenticatedPage.setViewportSize({ width: 768, height: 1024 }); // iPad
     await authenticatedPage.reload();
     await authenticatedPage.waitForLoadState('networkidle');
 

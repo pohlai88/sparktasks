@@ -31,6 +31,7 @@ import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED POPOVER VARIANTS =====
@@ -224,6 +225,10 @@ export interface PopoverTriggerProps
    * Custom class name for additional styling
    */
   className?: string;
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 export interface PopoverWithTriggerProps
@@ -301,13 +306,17 @@ const Popover = PopoverPrimitive.Root;
 const PopoverTrigger = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Trigger>,
   PopoverTriggerProps
->(({ className, variant, size, ...props }, ref) => (
-  <PopoverPrimitive.Trigger
-    ref={ref}
-    className={cn(enhancedPopoverTriggerVariants({ variant, size }), className)}
-    {...props}
-  />
-));
+>(({ className, variant, size, asChild = false, ...props }, ref) => {
+  const Comp = asChild ? Slot : PopoverPrimitive.Trigger;
+  
+  return (
+    <Comp
+      ref={ref}
+      className={cn(enhancedPopoverTriggerVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
+});
 PopoverTrigger.displayName = PopoverPrimitive.Trigger.displayName;
 
 /**

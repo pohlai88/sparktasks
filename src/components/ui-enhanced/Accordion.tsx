@@ -30,6 +30,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
+import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED ACCORDION VARIANTS =====
@@ -356,6 +357,11 @@ interface EnhancedAccordionRootProps
    * Test identifier
    */
   'data-testid'?: string;
+
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 interface EnhancedAccordionItemProps
@@ -365,6 +371,11 @@ interface EnhancedAccordionItemProps
    * Item content
    */
   children: React.ReactNode;
+
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 interface EnhancedAccordionTriggerProps
@@ -384,6 +395,11 @@ interface EnhancedAccordionTriggerProps
    * Custom chevron icon
    */
   chevronIcon?: React.ReactNode;
+
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 interface EnhancedAccordionContentProps
@@ -398,6 +414,11 @@ interface EnhancedAccordionContentProps
    * Size for inner content spacing
    */
   size?: 'sm' | 'default' | 'lg';
+
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 // ===== ROOT COMPONENT =====
@@ -421,6 +442,7 @@ const EnhancedAccordionRoot = React.forwardRef<
       defaultValue,
       value,
       onValueChange,
+      asChild = false,
       ...props
     },
     ref
@@ -437,8 +459,10 @@ const EnhancedAccordionRoot = React.forwardRef<
           } as const)
         : ({ type: 'multiple' as const } as const);
 
+    const Comp = asChild ? Slot : AccordionPrimitive.Root;
+
     return (
-      <AccordionPrimitive.Root
+      <Comp
         ref={ref}
         className={cn(
           enhancedAccordionRootVariants({
@@ -452,7 +476,7 @@ const EnhancedAccordionRoot = React.forwardRef<
         {...props}
       >
         {children}
-      </AccordionPrimitive.Root>
+      </Comp>
     );
   }
 );
@@ -467,21 +491,25 @@ EnhancedAccordionRoot.displayName = 'EnhancedAccordionRoot';
 const EnhancedAccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   EnhancedAccordionItemProps
->(({ className, variant, density, children, ...props }, ref) => (
-  <AccordionPrimitive.Item
-    ref={ref}
-    className={cn(
-      enhancedAccordionItemVariants({
-        variant,
-        density,
-        className,
-      })
-    )}
-    {...props}
-  >
-    {children}
-  </AccordionPrimitive.Item>
-));
+>(({ className, variant, density, asChild = false, children, ...props }, ref) => {
+  const Comp = asChild ? Slot : AccordionPrimitive.Item;
+  
+  return (
+    <Comp
+      ref={ref}
+      className={cn(
+        enhancedAccordionItemVariants({
+          variant,
+          density,
+          className,
+        })
+      )}
+      {...props}
+    >
+      {children}
+    </Comp>
+  );
+});
 
 EnhancedAccordionItem.displayName = 'EnhancedAccordionItem';
 
@@ -503,41 +531,46 @@ const EnhancedAccordionTrigger = React.forwardRef<
       density,
       showChevron = true,
       chevronIcon,
+      asChild = false,
       children,
       ...props
     },
     ref
-  ) => (
-    <AccordionPrimitive.Header className='flex'>
-      <AccordionPrimitive.Trigger
-        ref={ref}
-        className={cn(
-          enhancedAccordionTriggerVariants({
-            variant,
-            size,
-            aaaMode,
-            density,
-            className,
-          })
-        )}
-        {...props}
-      >
-        {children}
-        {showChevron && (
-          <div className='ml-2 flex-shrink-0'>
-            {chevronIcon || (
-              <ChevronDown
-                className={cn(
-                  'h-4 w-4 transition-transform duration-200',
-                  'group-data-[state=open]:rotate-180'
-                )}
-              />
-            )}
-          </div>
-        )}
-      </AccordionPrimitive.Trigger>
-    </AccordionPrimitive.Header>
-  )
+  ) => {
+    const Comp = asChild ? Slot : AccordionPrimitive.Trigger;
+    
+    return (
+      <AccordionPrimitive.Header className='flex'>
+        <Comp
+          ref={ref}
+          className={cn(
+            enhancedAccordionTriggerVariants({
+              variant,
+              size,
+              aaaMode,
+              density,
+              className,
+            })
+          )}
+          {...props}
+        >
+          {children}
+          {showChevron && (
+            <div className='ml-2 flex-shrink-0'>
+              {chevronIcon || (
+                <ChevronDown
+                  className={cn(
+                    'h-4 w-4 transition-transform duration-200',
+                    'group-data-[state=open]:rotate-180'
+                  )}
+                />
+              )}
+            </div>
+          )}
+        </Comp>
+      </AccordionPrimitive.Header>
+    );
+  }
 );
 
 EnhancedAccordionTrigger.displayName = 'EnhancedAccordionTrigger';
@@ -558,35 +591,40 @@ const EnhancedAccordionContent = React.forwardRef<
       aaaMode,
       density,
       size = 'default',
+      asChild = false,
       children,
       ...props
     },
     ref
-  ) => (
-    <AccordionPrimitive.Content
-      ref={ref}
-      className={cn(
-        enhancedAccordionContentVariants({
-          variant,
-          aaaMode,
-          density,
-          className,
-        })
-      )}
-      {...props}
-    >
-      <div
+  ) => {
+    const Comp = asChild ? Slot : AccordionPrimitive.Content;
+    
+    return (
+      <Comp
+        ref={ref}
         className={cn(
-          enhancedAccordionContentInnerVariants({
-            size,
+          enhancedAccordionContentVariants({
+            variant,
+            aaaMode,
             density,
+            className,
           })
         )}
+        {...props}
       >
-        {children}
-      </div>
-    </AccordionPrimitive.Content>
-  )
+        <div
+          className={cn(
+            enhancedAccordionContentInnerVariants({
+              size,
+              density,
+            })
+          )}
+        >
+          {children}
+        </div>
+      </Comp>
+    );
+  }
 );
 
 EnhancedAccordionContent.displayName = 'EnhancedAccordionContent';
