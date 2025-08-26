@@ -30,7 +30,7 @@ import {
   findByRole,
   getAllByRole,
   queryAllByRole,
-  findAllByRole
+  findAllByRole,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -60,7 +60,7 @@ export const QUERY_PRIORITY = {
   byTitle: 'screen.getByTitle("Tooltip text")',
 
   // 4. Last resort (implementation details)
-  byTestId: 'screen.getByTestId("submit-button")'
+  byTestId: 'screen.getByTestId("submit-button")',
 };
 
 /**
@@ -69,7 +69,6 @@ export const QUERY_PRIORITY = {
 
 // Pattern 1: User-Centric Dialog Testing
 export const dialogTestPatterns = {
-
   // ✅ Test dialog opening (user perspective)
   async openDialog() {
     const user = userEvent.setup();
@@ -136,7 +135,7 @@ export const dialogTestPatterns = {
     await waitFor(() => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
-  }
+  },
 };
 
 /**
@@ -144,7 +143,6 @@ export const dialogTestPatterns = {
  */
 
 export const userEventPatterns = {
-
   // ✅ Setup user event instance
   setupUser() {
     return userEvent.setup({
@@ -199,7 +197,7 @@ export const userEventPatterns = {
 
     // Verify focus state
     expect(input).toHaveFocus();
-  }
+  },
 };
 
 /**
@@ -207,7 +205,6 @@ export const userEventPatterns = {
  */
 
 export const accessibilityPatterns = {
-
   // ✅ Jest-DOM custom matchers
   testSemanticHTML() {
     const dialog = screen.getByRole('dialog');
@@ -216,7 +213,9 @@ export const accessibilityPatterns = {
     expect(dialog).toBeInTheDocument();
     expect(dialog).toBeVisible();
     expect(dialog).toHaveAccessibleName('User Settings');
-    expect(dialog).toHaveAccessibleDescription('Configure your account settings');
+    expect(dialog).toHaveAccessibleDescription(
+      'Configure your account settings'
+    );
     expect(dialog).not.toHaveAttribute('aria-hidden', 'true');
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
@@ -234,7 +233,7 @@ export const accessibilityPatterns = {
 
     // Test specific WCAG criteria
     const results_wcag21aa = await axe(container, {
-      tags: ['wcag21aa']
+      tags: ['wcag21aa'],
     });
     expect(results_wcag21aa).toHaveNoViolations();
   },
@@ -258,7 +257,7 @@ export const accessibilityPatterns = {
     await waitFor(() => {
       expect(trigger).toHaveFocus(); // Focus returns to trigger
     });
-  }
+  },
 };
 
 /**
@@ -266,7 +265,6 @@ export const accessibilityPatterns = {
  */
 
 export const asyncPatterns = {
-
   // ✅ waitFor - Wait for async state changes
   async waitForElementToAppear() {
     const user = userEvent.setup();
@@ -289,7 +287,9 @@ export const asyncPatterns = {
     await user.click(screen.getByRole('button', { name: 'Submit' }));
 
     // findBy automatically waits (up to 1000ms by default)
-    const successMessage = await screen.findByText('Form submitted successfully');
+    const successMessage = await screen.findByText(
+      'Form submitted successfully'
+    );
     expect(successMessage).toBeInTheDocument();
   },
 
@@ -305,7 +305,7 @@ export const asyncPatterns = {
     await waitForElementToBeRemoved(dialog);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-  }
+  },
 };
 
 /**
@@ -313,12 +313,11 @@ export const asyncPatterns = {
  */
 
 export const enhancedDialogUtils = {
-
   // ✅ Custom render with providers
   renderWithProviders(ui: React.ReactElement, options = {}) {
     const AllProviders = ({ children }: { children: React.ReactNode }) => {
       return (
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme='dark'>
           <AccessibilityProvider enforceAAA={true}>
             {children}
           </AccessibilityProvider>
@@ -344,7 +343,10 @@ export const enhancedDialogUtils = {
   },
 
   // ✅ Variant testing helper
-  testAllVariants(Component: React.ComponentType, variants: Record<string, any[]>) {
+  testAllVariants(
+    Component: React.ComponentType,
+    variants: Record<string, any[]>
+  ) {
     Object.entries(variants).forEach(([prop, values]) => {
       values.forEach(value => {
         it(`renders with ${prop}="${value}"`, () => {
@@ -356,7 +358,7 @@ export const enhancedDialogUtils = {
         });
       });
     });
-  }
+  },
 };
 
 /**
@@ -364,7 +366,6 @@ export const enhancedDialogUtils = {
  */
 
 export const performancePatterns = {
-
   // ✅ Render time testing
   testRenderPerformance() {
     const startTime = performance.now();
@@ -391,7 +392,7 @@ export const performancePatterns = {
 
     const interactionTime = performance.now() - startTime;
     expect(interactionTime).toBeLessThan(100); // 100ms budget
-  }
+  },
 };
 
 /**
@@ -399,10 +400,9 @@ export const performancePatterns = {
  */
 
 export const mapsTestingPatterns = {
-
   // ✅ Token integration testing
   testTokenIntegration() {
-    render(<EnhancedDialog surface="elevated1" size="lg" />);
+    render(<EnhancedDialog surface='elevated1' size='lg' />);
 
     const user = userEvent.setup();
     const trigger = screen.getByRole('button');
@@ -417,7 +417,7 @@ export const mapsTestingPatterns = {
 
   // ✅ Accessibility enforcement testing
   testAAEnforcement() {
-    render(<EnhancedDialog enforceAAA={true} vibrancy="glass" />);
+    render(<EnhancedDialog enforceAAA={true} vibrancy='glass' />);
 
     const user = userEvent.setup();
     await user.click(screen.getByRole('button'));
@@ -452,7 +452,7 @@ export const mapsTestingPatterns = {
 
     // Should have high contrast classes
     expect(dialog).toHaveClass('forced-colors:bg-[CanvasText]');
-  }
+  },
 };
 
 export default {
