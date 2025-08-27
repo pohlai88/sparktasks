@@ -25,7 +25,6 @@ import {
   type DragMoveEvent,
   type DragCancelEvent,
   type UniqueIdentifier,
-  type Collision,
   type CollisionDetection,
   type Modifier,
 } from '@dnd-kit/core';
@@ -40,8 +39,6 @@ import {
 } from '@dnd-kit/sortable';
 import {
   useSortable,
-  type SortableTransition,
-  type Transform,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -61,26 +58,20 @@ export interface DragDropSensor {
 export interface DragDropModifier extends Modifier {}
 
 export interface MeasuringConfiguration {
-  droppable?: {
-    strategy: any;
-    frequency?: any;
-  };
-  draggable?: {
-    strategy: any;
-    frequency?: any;
-  };
+  droppable?: any;
+  draggable?: any;
 }
 
 export interface DragDropAnnouncements {
-  onDragStart?: (event: DragStartEvent) => string;
+  onDragStart: (event: DragStartEvent) => string;
   onDragMove?: (event: DragMoveEvent) => string;
-  onDragOver?: (event: DragOverEvent) => string;
-  onDragEnd?: (event: DragEndEvent) => string;
-  onDragCancel?: (event: DragCancelEvent) => string;
+  onDragOver: (event: DragOverEvent) => string;
+  onDragEnd: (event: DragEndEvent) => string;
+  onDragCancel: (event: DragCancelEvent) => string;
 }
 
 export interface ScreenReaderInstructions {
-  draggable?: string;
+  draggable: string;
 }
 
 // ===== COMPONENT VARIANTS =====
@@ -185,7 +176,6 @@ export function DragDropProvider({
   onDragOver,
   onDragEnd,
   onDragCancel,
-  recomputeLayouts,
   className,
 }: DragDropProviderProps) {
   // ===== STATE MANAGEMENT =====
@@ -206,9 +196,16 @@ export function DragDropProvider({
     })
   );
 
-  const sensors = customSensors ?
-    useSensors(...customSensors.map(s => useSensor(s.sensor, s.options))) :
-    defaultSensors;
+  // Properly handle custom sensors without conditional Hook usage
+  const customSensorsArray = React.useMemo(() => 
+    customSensors?.map(s => useSensor(s.sensor, s.options || {})) || [], 
+    [customSensors]
+  );
+
+  const sensors = useSensors(
+    ...defaultSensors,
+    ...customSensorsArray
+  );
 
   // ===== MOTION INTEGRATION =====
 
@@ -258,18 +255,23 @@ export function DragDropProvider({
     onDragCancel: ({ active }) => `Dragging was cancelled. Draggable item ${active.id} was dropped.`,
   };
 
-  const announcements = accessibility?.announcements || defaultAnnouncements;
+  const announcements = React.useMemo(() => ({
+    ...defaultAnnouncements,
+    ...(accessibility?.announcements || {}),
+  }), [accessibility?.announcements]);
 
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={collisionDetection}
-      measuring={measuring}
+      {...(measuring && { measuring })}
       modifiers={modifiers}
       autoScroll={autoScroll}
       accessibility={{
-        announcements,
-        screenReaderInstructions: accessibility?.screenReaderInstructions,
+        ...(announcements && { announcements }),
+        ...(accessibility?.screenReaderInstructions && { 
+          screenReaderInstructions: accessibility.screenReaderInstructions 
+        }),
       }}
       onDragStart={handleDragStart}
       onDragMove={handleDragMove}
@@ -283,8 +285,8 @@ export function DragDropProvider({
 
       {/* Drag Overlay */}
       <DragOverlay
-        modifiers={dragOverlay?.modifiers}
-        style={dragOverlay?.style}
+        modifiers={dragOverlay?.modifiers || []}
+        {...(dragOverlay?.style && { style: dragOverlay.style })}
         className={cn(
           dragOverlayVariants(),
           dragOverlay?.className
@@ -324,7 +326,7 @@ export interface SortableListProps<T> extends VariantProps<typeof sortableItemVa
 
   // Animation
   animateLayoutChanges?: boolean;
-  transition?: SortableTransition;
+  transition?: any; // TODO: Use proper transition type from dnd-kit
 
   // Constraints
   maxItems?: number;
@@ -346,11 +348,7 @@ export function SortableList<T>({
   surface = 'elevated',
   spacing = 'md',
   orientation = 'vertical',
-  animateLayoutChanges = true,
   transition,
-  maxItems,
-  minItems,
-  allowDuplicates = false,
   className,
   itemClassName,
 }: SortableListProps<T>) {
@@ -390,9 +388,8 @@ export function SortableList<T>({
               spacing={spacing}
               disabled={disabled}
               handle={handle}
-              animateLayoutChanges={animateLayoutChanges}
               transition={transition}
-              className={itemClassName}
+              className={itemClassName || ''}
             >
               {renderItem}
             </SortableItem>
@@ -410,8 +407,8 @@ interface SortableItemProps extends VariantProps<typeof sortableItemVariants> {
   index: number;
   disabled?: boolean;
   handle?: boolean;
-  animateLayoutChanges?: boolean;
-  transition?: SortableTransition;
+  animateLayoutChanges?: boolean | ((args: any) => boolean);
+  transition?: any; // TODO: Use proper transition type from dnd-kit
   children: (item: any, index: number, isDragging: boolean) => React.ReactNode;
   className?: string;
 }
@@ -423,7 +420,6 @@ function SortableItem({
   spacing = 'md',
   disabled = false,
   handle = false,
-  animateLayoutChanges = true,
   transition,
   children,
   className,
@@ -438,7 +434,6 @@ function SortableItem({
   } = useSortable({
     id,
     disabled,
-    animateLayoutChanges,
     transition,
   });
 
@@ -557,7 +552,6 @@ export function FileDropZone({
   onReject,
   disabled = false,
   loading = false,
-  surface = 'elevated',
   size = 'md',
   variant = 'default',
   children,

@@ -284,9 +284,6 @@ export const ENHANCED_DESIGN_TOKENS = {
         all: 'transition-all duration-normal ease-standard',
         none: 'transition-none',
       },
-
-      // Reduced motion compliance
-      respect: 'motion-reduce:transition-none motion-reduce:animate-none',
     },
   },
 
@@ -548,8 +545,32 @@ export const DesignTokensSchema = z.object({
     lastUpdated: z.string(),
   }),
   foundation: z.object({
-    color: z.record(z.record(z.string())),
-    typography: z.record(z.string()),
+    color: z.object({
+      surface: z.record(z.string()),
+      content: z.record(z.string()),
+      brand: z.object({
+        primary: z.record(z.string()),
+        secondary: z.record(z.string()),
+        accent: z.record(z.string()),
+      }),
+      feedback: z.object({
+        success: z.record(z.string()),
+        warning: z.record(z.string()),
+        error: z.record(z.string()),
+        info: z.record(z.string()),
+      }),
+      border: z.record(z.string()),
+    }),
+    typography: z.object({
+      display: z.record(z.string()),
+      heading: z.record(z.string()),
+      body: z.record(z.string()),
+      label: z.string(),
+      caption: z.string(),
+      overline: z.string(),
+      link: z.string(),
+      button: z.string(),
+    }),
     spacing: z.record(z.string()),
     radius: z.record(z.string()),
     elevation: z.record(z.union([z.string(), z.record(z.string())])),
@@ -557,7 +578,7 @@ export const DesignTokensSchema = z.object({
     motion: z.record(z.union([z.record(z.string()), z.string()])),
   }),
   recipes: z.record(
-    z.record(z.union([z.array(z.string()), z.record(z.array(z.string()))]))
+    z.record(z.union([z.array(z.string()), z.record(z.union([z.array(z.string()), z.string()]))]))
   ),
   accessibility: z.record(z.record(z.string())),
 });

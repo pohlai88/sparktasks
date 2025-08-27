@@ -50,6 +50,8 @@
   },
   "include": [
     "src",
+    "app",
+    "pages",
     "test",
     "vitest",
     "vite.config.ts",

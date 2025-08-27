@@ -1,8 +1,7 @@
 /**
  * SimpleEditor - Rich Text Editor
  *
- * Lightweight rich text editor with TipTap integration, MAPS theming,
- * and content management features.
+ * Extensible rich text editor built on TipTap with MAPS theming and common formatting tools.
  *
  * MAPS v3.0 Integration:
  * - ENHANCED_DESIGN_TOKENS for all styling
@@ -11,70 +10,95 @@
  * - Keyboard navigation
  */
 
+import { useEditor, EditorContent, type Editor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Placeholder from '@tiptap/extension-placeholder';
+import CharacterCount from '@tiptap/extension-character-count';
 import { cva, type VariantProps } from 'class-variance-authority';
 import {
   Bold,
   Italic,
-  Underline,
   Strikethrough,
   Code,
-  Link,
   List,
   ListOrdered,
   Quote,
   Heading1,
   Heading2,
   Heading3,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
   Undo,
   Redo,
-  Image,
-  Table
 } from 'lucide-react';
 import React from 'react';
 
 import { getAdaptiveMotionClasses } from '@/components/primitives/motion-utils';
 import { cn } from '@/utils/cn';
 
-// ===== EDITOR INTERFACES =====
+// ===== INTERFACES =====
 
-export interface EditorContent {
-  type: 'html' | 'markdown' | 'json' | 'text';
-  data: string | object;
-  metadata?: {
-    wordCount?: number;
-    characterCount?: number;
-    lastModified?: Date;
-    version?: string;
+export interface SimpleEditorProps extends VariantProps<typeof simpleEditorVariants> {
+  // Content
+  content?: string;
+  defaultContent?: string;
+  onContentChange?: (content: string) => void;
+
+  // Configuration
+  placeholder?: string;
+  autofocus?: boolean | 'start' | 'end';
+  editable?: boolean;
+
+  // Features
+  toolbar?: ToolbarConfig | boolean;
+  characterLimit?: number;
+  showCharacterCount?: boolean;
+
+  // Appearance
+  surface?: 'elevated' | 'glass';
+  size?: 'sm' | 'md' | 'lg';
+  minHeight?: number;
+  maxHeight?: number;
+
+  // Auto-save
+  autosave?: {
+    enabled: boolean;
+    delay?: number;
+    key?: string;
+    onSave?: (content: string) => void;
   };
+
+  // Callbacks
+  onCreate?: (editor: Editor) => void;
+  onUpdate?: (editor: Editor) => void;
+  onFocus?: (editor: Editor) => void;
+  onBlur?: (editor: Editor) => void;
+
+  className?: string;
+  editorClassName?: string;
+  toolbarClassName?: string;
 }
 
-export interface EditorCommand {
-  name: string;
-  description: string;
-  shortcut?: string;
-  icon?: React.ReactNode;
-  action: () => void;
-  isActive?: () => boolean;
-  isDisabled?: () => boolean;
+export interface ToolbarConfig {
+  // Format Groups
+  basic?: boolean; // Bold, italic, strikethrough
+  formatting?: boolean; // Headers, paragraph styles
+  lists?: boolean; // Ordered/unordered lists
+  history?: boolean; // Undo/redo
+
+  // Custom Tools
+  customTools?: ToolbarTool[];
+
+  // Layout
+  position?: 'top' | 'bottom';
+  sticky?: boolean;
 }
 
-export interface EditorExtension {
-  name: string;
-  configure?: object;
-  commands?: EditorCommand[];
-  menuItems?: EditorCommand[];
-}
-
-export interface EditorTheme {
-  toolbar: string;
-  editor: string;
-  content: string;
-  menuButton: string;
-  activeButton: string;
-  disabledButton: string;
+export interface ToolbarTool {
+  id: string;
+  icon: React.ReactNode;
+  label: string;
+  action: (editor: Editor) => void;
+  isActive?: (editor: Editor) => boolean;
+  isDisabled?: (editor: Editor) => boolean;
 }
 
 // ===== COMPONENT VARIANTS =====
@@ -96,688 +120,513 @@ const simpleEditorVariants = cva([
       sm: 'min-h-[200px]',
       md: 'min-h-[300px]',
       lg: 'min-h-[400px]',
-      xl: 'min-h-[500px]',
-    },
-    variant: {
-      standard: '',
-      minimal: 'border-none shadow-none',
-      compact: '',
     },
     disabled: {
-      true: 'opacity-50 pointer-events-none',
+      true: 'opacity-60 cursor-not-allowed',
       false: '',
     },
   },
   defaultVariants: {
     surface: 'elevated',
     size: 'md',
-    variant: 'standard',
     disabled: false,
   }
 });
 
 const toolbarVariants = cva([
-  'flex items-center gap-1 p-2 border-b bg-surface-subtle',
-  'sticky top-0 z-10',
+  'flex items-center gap-1 p-2 border-b border-border-subtle bg-surface-panel',
 ], {
   variants: {
-    surface: {
-      elevated: 'border-border-elevated bg-surface-elevated',
-      glass: 'border-border-glass bg-surface-panel/90 backdrop-blur-sm',
+    position: {
+      top: '',
+      bottom: 'border-t border-b-0 order-last',
     },
-    layout: {
-      horizontal: 'flex-row',
-      vertical: 'flex-col items-start',
-      floating: 'absolute top-2 left-2 right-2 rounded-lg shadow-lg',
+    sticky: {
+      true: 'sticky top-0 z-10',
+      false: '',
     },
   },
   defaultVariants: {
-    surface: 'elevated',
-    layout: 'horizontal',
+    position: 'top',
+    sticky: false,
   }
 });
 
 const toolbarButtonVariants = cva([
-  'inline-flex items-center justify-center w-8 h-8 rounded transition-colors',
-  'hover:bg-surface-hover focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
+  'inline-flex items-center justify-center',
+  'h-8 w-8 p-0',
+  'text-foreground-muted hover:text-foreground',
+  'border border-transparent',
+  'rounded transition-colors',
+  'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'disabled:opacity-50 disabled:cursor-not-allowed',
 ], {
   variants: {
     variant: {
-      default: 'text-foreground-muted hover:text-foreground',
-      active: 'bg-accent text-accent-foreground hover:bg-accent-hover',
-      disabled: 'text-foreground-disabled cursor-not-allowed',
-    },
-    size: {
-      sm: 'w-6 h-6',
-      md: 'w-8 h-8',
-      lg: 'w-10 h-10',
+      default: 'hover:bg-surface-accent',
+      active: 'bg-surface-accent text-foreground border-border-accent',
     },
   },
   defaultVariants: {
     variant: 'default',
-    size: 'md',
   }
 });
 
-const editorContentVariants = cva([
-  'prose prose-sm max-w-none focus:outline-none',
-  'p-4 min-h-[inherit]',
-], {
-  variants: {
-    theme: {
-      light: 'prose-gray',
-      dark: 'prose-invert',
-      auto: '',
-    },
-  },
-  defaultVariants: {
-    theme: 'auto',
-  }
-});
+// ===== TOOLBAR COMPONENT =====
 
-// ===== TOOLBAR CONFIGURATION =====
-
-interface ToolbarGroup {
-  name: string;
-  items: EditorCommand[];
-}
-
-const defaultToolbarGroups: ToolbarGroup[] = [
-  {
-    name: 'history',
-    items: [
-      {
-        name: 'undo',
-        description: 'Undo',
-        shortcut: 'Ctrl+Z',
-        icon: <Undo className="w-4 h-4" />,
-        action: () => console.log('undo'),
-      },
-      {
-        name: 'redo',
-        description: 'Redo',
-        shortcut: 'Ctrl+Y',
-        icon: <Redo className="w-4 h-4" />,
-        action: () => console.log('redo'),
-      },
-    ],
-  },
-  {
-    name: 'formatting',
-    items: [
-      {
-        name: 'bold',
-        description: 'Bold',
-        shortcut: 'Ctrl+B',
-        icon: <Bold className="w-4 h-4" />,
-        action: () => console.log('bold'),
-      },
-      {
-        name: 'italic',
-        description: 'Italic',
-        shortcut: 'Ctrl+I',
-        icon: <Italic className="w-4 h-4" />,
-        action: () => console.log('italic'),
-      },
-      {
-        name: 'underline',
-        description: 'Underline',
-        shortcut: 'Ctrl+U',
-        icon: <Underline className="w-4 h-4" />,
-        action: () => console.log('underline'),
-      },
-      {
-        name: 'strikethrough',
-        description: 'Strikethrough',
-        icon: <Strikethrough className="w-4 h-4" />,
-        action: () => console.log('strikethrough'),
-      },
-      {
-        name: 'code',
-        description: 'Inline Code',
-        shortcut: 'Ctrl+`',
-        icon: <Code className="w-4 h-4" />,
-        action: () => console.log('code'),
-      },
-    ],
-  },
-  {
-    name: 'headings',
-    items: [
-      {
-        name: 'heading1',
-        description: 'Heading 1',
-        shortcut: 'Ctrl+Alt+1',
-        icon: <Heading1 className="w-4 h-4" />,
-        action: () => console.log('heading1'),
-      },
-      {
-        name: 'heading2',
-        description: 'Heading 2',
-        shortcut: 'Ctrl+Alt+2',
-        icon: <Heading2 className="w-4 h-4" />,
-        action: () => console.log('heading2'),
-      },
-      {
-        name: 'heading3',
-        description: 'Heading 3',
-        shortcut: 'Ctrl+Alt+3',
-        icon: <Heading3 className="w-4 h-4" />,
-        action: () => console.log('heading3'),
-      },
-    ],
-  },
-  {
-    name: 'lists',
-    items: [
-      {
-        name: 'bulletList',
-        description: 'Bullet List',
-        shortcut: 'Ctrl+Shift+8',
-        icon: <List className="w-4 h-4" />,
-        action: () => console.log('bulletList'),
-      },
-      {
-        name: 'orderedList',
-        description: 'Numbered List',
-        shortcut: 'Ctrl+Shift+7',
-        icon: <ListOrdered className="w-4 h-4" />,
-        action: () => console.log('orderedList'),
-      },
-      {
-        name: 'blockquote',
-        description: 'Quote',
-        shortcut: 'Ctrl+Shift+>',
-        icon: <Quote className="w-4 h-4" />,
-        action: () => console.log('blockquote'),
-      },
-    ],
-  },
-  {
-    name: 'alignment',
-    items: [
-      {
-        name: 'alignLeft',
-        description: 'Align Left',
-        icon: <AlignLeft className="w-4 h-4" />,
-        action: () => console.log('alignLeft'),
-      },
-      {
-        name: 'alignCenter',
-        description: 'Align Center',
-        icon: <AlignCenter className="w-4 h-4" />,
-        action: () => console.log('alignCenter'),
-      },
-      {
-        name: 'alignRight',
-        description: 'Align Right',
-        icon: <AlignRight className="w-4 h-4" />,
-        action: () => console.log('alignRight'),
-      },
-    ],
-  },
-  {
-    name: 'insert',
-    items: [
-      {
-        name: 'link',
-        description: 'Insert Link',
-        shortcut: 'Ctrl+K',
-        icon: <Link className="w-4 h-4" />,
-        action: () => console.log('link'),
-      },
-      {
-        name: 'image',
-        description: 'Insert Image',
-        icon: <Image className="w-4 h-4" />,
-        action: () => console.log('image'),
-      },
-      {
-        name: 'table',
-        description: 'Insert Table',
-        icon: <Table className="w-4 h-4" />,
-        action: () => console.log('table'),
-      },
-    ],
-  },
-];
-
-// ===== MAIN COMPONENT =====
-
-export interface SimpleEditorProps extends VariantProps<typeof simpleEditorVariants> {
-  // Content
-  content?: EditorContent;
-  defaultContent?: string;
-  placeholder?: string;
-
-  // Configuration
-  extensions?: EditorExtension[];
-  toolbarGroups?: ToolbarGroup[];
-  showToolbar?: boolean;
-  showStatusBar?: boolean;
-  showWordCount?: boolean;
-  showCharCount?: boolean;
-
-  // Behavior
-  autofocus?: boolean;
-  autoSave?: boolean;
-  autoSaveDelay?: number;
-  readOnly?: boolean;
-  spellCheck?: boolean;
-
-  // Validation
-  maxLength?: number;
-  minLength?: number;
-  required?: boolean;
-
-  // Theme & Layout
-  toolbarLayout?: 'horizontal' | 'vertical' | 'floating';
-  contentTheme?: 'light' | 'dark' | 'auto';
-
-  // Callbacks
-  onChange?: (content: EditorContent) => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onSelectionChange?: (selection: { from: number; to: number }) => void;
-  onError?: (error: Error) => void;
-
-  // Advanced Features
-  collaborative?: {
-    enabled: boolean;
-    userId?: string;
-    documentId?: string;
-    websocketUrl?: string;
-  };
-
-  // Custom Commands
-  customCommands?: EditorCommand[];
-
+interface EditorToolbarProps {
+  editor: Editor;
+  config: ToolbarConfig;
   className?: string;
 }
 
-export function SimpleEditor({
-  content,
-  defaultContent = '',
-  placeholder = 'Start writing...',
-  toolbarGroups = defaultToolbarGroups,
-  showToolbar = true,
-  showStatusBar = true,
-  showWordCount = true,
-  showCharCount = true,
-  surface = 'elevated',
-  size = 'md',
-  variant = 'standard',
-  autoSave = false,
-  autoSaveDelay = 1000,
-  readOnly = false,
-  spellCheck = true,
-  maxLength,
-  minLength,
-  toolbarLayout = 'horizontal',
-  contentTheme = 'auto',
-  onChange,
-  onFocus,
-  onBlur,
-  onError,
-  collaborative,
-  customCommands = [],
-  className,
-  ...props
-}: Omit<SimpleEditorProps, 'extensions' | 'autofocus' | 'required' | 'onSelectionChange'>) {
-  // ===== STATE MANAGEMENT =====
+function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
+  const defaultTools = React.useMemo(() => {
+    const tools: ToolbarTool[] = [];
 
-  const [editorContent, setEditorContent] = React.useState<string>(defaultContent);
-  const [_isFocused, setIsFocused] = React.useState(false);
-  const [wordCount, setWordCount] = React.useState(0);
-  const [charCount, setCharCount] = React.useState(0);
-  const [error, setError] = React.useState<string | null>(null);
-
-  // ===== REFS =====
-
-  const editorRef = React.useRef<HTMLDivElement>(null);
-  const autoSaveTimeoutRef = React.useRef<NodeJS.Timeout>();
-
-  // ===== MOTION INTEGRATION =====
-
-  const motionClasses = getAdaptiveMotionClasses('all');
-
-  // ===== CONTENT MANAGEMENT =====
-
-  // ===== EVENT HANDLERS =====
-
-  const handleContentChange = React.useCallback((newContent: string) => {
-    // Validation
-    if (maxLength && newContent.length > maxLength) {
-      setError(`Content exceeds maximum length of ${maxLength} characters`);
-      return;
-    }
-
-    if (minLength && newContent.length < minLength) {
-      setError(`Content must be at least ${minLength} characters`);
-    } else {
-      setError(null);
-    }
-
-    const contentData: EditorContent = {
-      type: 'html',
-      data: newContent,
-      metadata: {
-        wordCount,
-        characterCount: charCount,
-        lastModified: new Date(),
-        version: '1.0',
-      },
-    };
-
-    onChange?.(contentData);
-  }, [maxLength, minLength, wordCount, charCount, onChange]);
-
-  React.useEffect(() => {
-    if (content?.data && typeof content.data === 'string') {
-      setEditorContent(content.data);
-    }
-  }, [content]);
-
-  React.useEffect(() => {
-    // Update statistics
-    const words = editorContent.trim().split(/\s+/).filter(word => word.length > 0);
-    setWordCount(words.length);
-    setCharCount(editorContent.length);
-
-    // Auto-save
-    if (autoSave && onChange) {
-      if (autoSaveTimeoutRef.current) {
-        clearTimeout(autoSaveTimeoutRef.current);
-      }
-      autoSaveTimeoutRef.current = setTimeout(() => {
-        handleContentChange(editorContent);
-      }, autoSaveDelay);
-    }
-  }, [editorContent, autoSave, autoSaveDelay, onChange, handleContentChange]);
-
-  const handleInput = React.useCallback((e: React.FormEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    const newContent = target.innerHTML;
-    setEditorContent(newContent);
-
-    if (!autoSave) {
-      handleContentChange(newContent);
-    }
-  }, [autoSave, handleContentChange]);
-
-  const handleFocus = React.useCallback(() => {
-    setIsFocused(true);
-    onFocus?.();
-  }, [onFocus]);
-
-  const handleBlur = React.useCallback(() => {
-    setIsFocused(false);
-    onBlur?.();
-  }, [onBlur]);
-
-  const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
-    // Handle keyboard shortcuts
-    const isCtrl = e.ctrlKey || e.metaKey;
-
-    // Find matching command
-    const allCommands = [
-      ...toolbarGroups.flatMap(group => group.items),
-      ...customCommands,
-    ];
-
-    for (const command of allCommands) {
-      if (command.shortcut && matchesShortcut(e, command.shortcut)) {
-        e.preventDefault();
-        command.action();
-        return;
-      }
-    }
-
-    // Handle special keys
-    if (isCtrl && e.key === 'a') {
-      // Allow Ctrl+A for select all
-      return;
-    }
-
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      document.execCommand('insertHTML', false, '&nbsp;&nbsp;&nbsp;&nbsp;');
-    }
-  }, [toolbarGroups, customCommands]);
-
-  // ===== TOOLBAR COMMANDS =====
-
-  const executeCommand = React.useCallback((commandName: string) => {
-    try {
-      const commands: Record<string, () => void> = {
-        undo: () => document.execCommand('undo'),
-        redo: () => document.execCommand('redo'),
-        bold: () => document.execCommand('bold'),
-        italic: () => document.execCommand('italic'),
-        underline: () => document.execCommand('underline'),
-        strikethrough: () => document.execCommand('strikeThrough'),
-        code: () => {
-          const selection = globalThis.getSelection();
-          if (selection && selection.toString()) {
-            document.execCommand('insertHTML', false, `<code>${selection.toString()}</code>`);
-          }
+    // History tools
+    if (config.history !== false) {
+      tools.push(
+        {
+          id: 'undo',
+          icon: <Undo size={16} />,
+          label: 'Undo',
+          action: (editor) => editor.chain().focus().undo().run(),
+          isDisabled: (editor) => !editor.can().undo(),
         },
-        heading1: () => document.execCommand('formatBlock', false, '<h1>'),
-        heading2: () => document.execCommand('formatBlock', false, '<h2>'),
-        heading3: () => document.execCommand('formatBlock', false, '<h3>'),
-        bulletList: () => document.execCommand('insertUnorderedList'),
-        orderedList: () => document.execCommand('insertOrderedList'),
-        blockquote: () => document.execCommand('formatBlock', false, '<blockquote>'),
-        alignLeft: () => document.execCommand('justifyLeft'),
-        alignCenter: () => document.execCommand('justifyCenter'),
-        alignRight: () => document.execCommand('justifyRight'),
-        link: () => {
-          const url = prompt('Enter URL:');
-          if (url) {
-            document.execCommand('createLink', false, url);
-          }
-        },
-        image: () => {
-          const url = prompt('Enter image URL:');
-          if (url) {
-            document.execCommand('insertImage', false, url);
-          }
-        },
-      };
-
-      const command = commands[commandName];
-      if (command) {
-        command();
-        // Update content after command execution
-        const newContent = editorRef.current?.innerHTML || '';
-        setEditorContent(newContent);
-        handleContentChange(newContent);
-      }
-    } catch (error_) {
-      const error = error_ instanceof Error ? error_ : new Error('Command execution failed');
-      setError(error.message);
-      onError?.(error);
+        {
+          id: 'redo',
+          icon: <Redo size={16} />,
+          label: 'Redo',
+          action: (editor) => editor.chain().focus().redo().run(),
+          isDisabled: (editor) => !editor.can().redo(),
+        }
+      );
     }
-  }, [handleContentChange, onError]);
 
-  const isCommandActive = React.useCallback((commandName: string): boolean => {
-    try {
-      const activeStates: Record<string, () => boolean> = {
-        bold: () => document.queryCommandState('bold'),
-        italic: () => document.queryCommandState('italic'),
-        underline: () => document.queryCommandState('underline'),
-        strikethrough: () => document.queryCommandState('strikeThrough'),
-      };
-
-      const checker = activeStates[commandName];
-      return checker ? checker() : false;
-    } catch {
-      return false;
+    // Basic formatting tools
+    if (config.basic !== false) {
+      tools.push(
+        {
+          id: 'bold',
+          icon: <Bold size={16} />,
+          label: 'Bold',
+          action: (editor) => editor.chain().focus().toggleBold().run(),
+          isActive: (editor) => editor.isActive('bold'),
+        },
+        {
+          id: 'italic',
+          icon: <Italic size={16} />,
+          label: 'Italic',
+          action: (editor) => editor.chain().focus().toggleItalic().run(),
+          isActive: (editor) => editor.isActive('italic'),
+        },
+        {
+          id: 'strike',
+          icon: <Strikethrough size={16} />,
+          label: 'Strikethrough',
+          action: (editor) => editor.chain().focus().toggleStrike().run(),
+          isActive: (editor) => editor.isActive('strike'),
+        },
+        {
+          id: 'code',
+          icon: <Code size={16} />,
+          label: 'Code',
+          action: (editor) => editor.chain().focus().toggleCode().run(),
+          isActive: (editor) => editor.isActive('code'),
+        }
+      );
     }
-  }, []);
 
-  // ===== RENDER HELPERS =====
+    // Formatting tools
+    if (config.formatting !== false) {
+      tools.push(
+        {
+          id: 'h1',
+          icon: <Heading1 size={16} />,
+          label: 'Heading 1',
+          action: (editor) => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+          isActive: (editor) => editor.isActive('heading', { level: 1 }),
+        },
+        {
+          id: 'h2',
+          icon: <Heading2 size={16} />,
+          label: 'Heading 2',
+          action: (editor) => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+          isActive: (editor) => editor.isActive('heading', { level: 2 }),
+        },
+        {
+          id: 'h3',
+          icon: <Heading3 size={16} />,
+          label: 'Heading 3',
+          action: (editor) => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+          isActive: (editor) => editor.isActive('heading', { level: 3 }),
+        },
+        {
+          id: 'blockquote',
+          icon: <Quote size={16} />,
+          label: 'Blockquote',
+          action: (editor) => editor.chain().focus().toggleBlockquote().run(),
+          isActive: (editor) => editor.isActive('blockquote'),
+        }
+      );
+    }
 
-  const renderToolbarButton = (command: EditorCommand) => (
-    <button
-      key={command.name}
-      onClick={() => executeCommand(command.name)}
-      className={toolbarButtonVariants({
-        variant: isCommandActive(command.name) ? 'active' : 'default',
-      })}
-      title={`${command.description}${command.shortcut ? ` (${command.shortcut})` : ''}`}
-      disabled={command.isDisabled?.() || readOnly}
-    >
-      {command.icon}
-    </button>
+    // List tools
+    if (config.lists !== false) {
+      tools.push(
+        {
+          id: 'bulletList',
+          icon: <List size={16} />,
+          label: 'Bullet List',
+          action: (editor) => editor.chain().focus().toggleBulletList().run(),
+          isActive: (editor) => editor.isActive('bulletList'),
+        },
+        {
+          id: 'orderedList',
+          icon: <ListOrdered size={16} />,
+          label: 'Ordered List',
+          action: (editor) => editor.chain().focus().toggleOrderedList().run(),
+          isActive: (editor) => editor.isActive('orderedList'),
+        }
+      );
+    }
+
+    return tools;
+  }, [config]);
+
+  const allTools = [...defaultTools, ...(config.customTools || [])];
+
+  const createToolGroup = (tools: ToolbarTool[], startIndex: number, endIndex: number) => (
+    <div key={`group-${startIndex}`} className="flex items-center gap-0.5">
+      {tools.slice(startIndex, endIndex).map((tool) => (
+        <button
+          key={tool.id}
+          onClick={() => tool.action(editor)}
+          className={cn(
+            toolbarButtonVariants({
+              variant: tool.isActive?.(editor) ? 'active' : 'default',
+            })
+          )}
+          disabled={tool.isDisabled?.(editor)}
+          title={tool.label}
+          aria-label={tool.label}
+          type="button"
+        >
+          {tool.icon}
+        </button>
+      ))}
+    </div>
   );
 
-  const renderToolbar = () => (
-    <div className={toolbarVariants({ surface, layout: toolbarLayout })}>
-      {toolbarGroups.map((group, index) => (
-        <React.Fragment key={group.name}>
-          {index > 0 && (
-            <div className="w-px h-6 bg-border-subtle mx-1" />
-          )}
-          <div className="flex items-center gap-0.5">
-            {group.items.map(renderToolbarButton)}
-          </div>
-        </React.Fragment>
-      ))}
-
-      {customCommands.length > 0 && (
+  return (
+    <div className={cn(
+      toolbarVariants({
+        position: config.position,
+        sticky: config.sticky,
+      }),
+      className
+    )}>
+      {/* History group */}
+      {config.history !== false && createToolGroup(allTools, 0, 2)}
+      
+      {/* Separator */}
+      {config.history !== false && config.basic !== false && (
+        <div className="w-px h-6 bg-border-subtle mx-1" />
+      )}
+      
+      {/* Basic formatting group */}
+      {config.basic !== false && createToolGroup(allTools, 2, 6)}
+      
+      {/* Separator */}
+      {config.basic !== false && config.formatting !== false && (
+        <div className="w-px h-6 bg-border-subtle mx-1" />
+      )}
+      
+      {/* Formatting group */}
+      {config.formatting !== false && createToolGroup(allTools, 6, 10)}
+      
+      {/* Separator */}
+      {config.formatting !== false && config.lists !== false && (
+        <div className="w-px h-6 bg-border-subtle mx-1" />
+      )}
+      
+      {/* Lists group */}
+      {config.lists !== false && createToolGroup(allTools, 10, 12)}
+      
+      {/* Custom tools */}
+      {config.customTools && config.customTools.length > 0 && (
         <>
           <div className="w-px h-6 bg-border-subtle mx-1" />
           <div className="flex items-center gap-0.5">
-            {customCommands.map(renderToolbarButton)}
+            {config.customTools.map((tool) => (
+              <button
+                key={tool.id}
+                onClick={() => tool.action(editor)}
+                className={cn(
+                  toolbarButtonVariants({
+                    variant: tool.isActive?.(editor) ? 'active' : 'default',
+                  })
+                )}
+                disabled={tool.isDisabled?.(editor)}
+                title={tool.label}
+                aria-label={tool.label}
+                type="button"
+              >
+                {tool.icon}
+              </button>
+            ))}
           </div>
         </>
       )}
     </div>
   );
+}
 
-  const renderStatusBar = () => (
-    <div className="flex items-center justify-between px-4 py-2 text-xs text-foreground-muted border-t border-border-subtle bg-surface-subtle">
-      <div className="flex items-center gap-4">
-        {showWordCount && (
-          <span>{wordCount} word{wordCount !== 1 ? 's' : ''}</span>
-        )}
-        {showCharCount && (
-          <span>{charCount} character{charCount !== 1 ? 's' : ''}</span>
-        )}
-        {maxLength && (
-          <span className={charCount > maxLength ? 'text-error' : ''}>
-            {charCount}/{maxLength}
-          </span>
-        )}
-      </div>
+// ===== MAIN COMPONENT =====
 
-      <div className="flex items-center gap-4">
-        {collaborative?.enabled && (
-          <span className="flex items-center gap-1">
-            <div className="w-2 h-2 bg-success rounded-full" />
-            Connected
-          </span>
-        )}
-        {error && (
-          <span className="text-error">{error}</span>
-        )}
-      </div>
-    </div>
-  );
+export function SimpleEditor({
+  content,
+  defaultContent = '',
+  onContentChange,
+  placeholder = 'Start writing...',
+  autofocus = false,
+  editable = true,
+  toolbar = true,
+  characterLimit,
+  showCharacterCount = false,
+  surface = 'elevated',
+  size = 'md',
+  minHeight,
+  maxHeight,
+  autosave,
+  onCreate,
+  onUpdate,
+  onFocus,
+  onBlur,
+  className,
+  editorClassName,
+  toolbarClassName,
+}: SimpleEditorProps) {
+  // ===== STATE =====
+  
+  const autoSaveTimeoutRef = React.useRef<NodeJS.Timeout>();
+
+  // ===== EDITOR SETUP =====
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder,
+      }),
+      ...(characterLimit ? [CharacterCount.configure({ limit: characterLimit })] : [CharacterCount]),
+    ],
+    content: content || defaultContent,
+    editable,
+    autofocus,
+    onUpdate: ({ editor: editorInstance }) => {
+      const html = editorInstance.getHTML();
+      
+      // Handle content change
+      onContentChange?.(html);
+      onUpdate?.(editorInstance);
+
+      // Auto-save with debouncing
+      if (autosave?.enabled && autosave.onSave) {
+        if (autoSaveTimeoutRef.current) {
+          clearTimeout(autoSaveTimeoutRef.current);
+        }
+        autoSaveTimeoutRef.current = setTimeout(() => {
+          autosave.onSave!(html);
+        }, autosave.delay || 1000);
+      }
+
+      // Persist to localStorage if key provided
+      if (autosave?.key) {
+        localStorage.setItem(autosave.key, html);
+      }
+    },
+    onCreate: ({ editor: editorInstance }) => {
+      onCreate?.(editorInstance);
+    },
+    onFocus: ({ editor: editorInstance }) => {
+      onFocus?.(editorInstance);
+    },
+    onBlur: ({ editor: editorInstance }) => {
+      onBlur?.(editorInstance);
+    },
+  });
+
+  // ===== EFFECTS =====
+
+  // Update content when prop changes
+  React.useEffect(() => {
+    if (editor && content !== undefined && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
+
+  // Update editable state
+  React.useEffect(() => {
+    if (editor) {
+      editor.setEditable(editable);
+    }
+  }, [editor, editable]);
+
+  // Cleanup auto-save timeout
+  React.useEffect(() => {
+    return () => {
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // ===== MOTION INTEGRATION =====
+
+  const motionClasses = getAdaptiveMotionClasses('all');
+
+  // ===== TOOLBAR CONFIG =====
+
+  const toolbarConfig: ToolbarConfig = React.useMemo(() => {
+    if (toolbar === false) {
+      return { basic: false, formatting: false, lists: false, history: false };
+    }
+    if (toolbar === true) {
+      return { basic: true, formatting: true, lists: true, history: true };
+    }
+    return toolbar;
+  }, [toolbar]);
 
   // ===== RENDER =====
+
+  if (!editor) {
+    return (
+      <div className={cn(
+        simpleEditorVariants({ surface, size, disabled: !editable }),
+        'animate-pulse',
+        className
+      )}>
+        <div className="h-8 bg-surface-panel border-b border-border-subtle" />
+        <div className="p-4 space-y-2">
+          <div className="h-4 bg-surface-accent rounded w-3/4" />
+          <div className="h-4 bg-surface-accent rounded w-1/2" />
+          <div className="h-4 bg-surface-accent rounded w-2/3" />
+        </div>
+      </div>
+    );
+  }
+
+  const characterCount = editor.storage.characterCount?.characters?.() || 0;
+  const wordCount = editor.storage.characterCount?.words?.() || 0;
 
   return (
     <div
       className={cn(
-        simpleEditorVariants({ surface, size, variant, disabled: readOnly }),
+        simpleEditorVariants({ surface, size, disabled: !editable }),
         motionClasses,
         className
       )}
-      {...props}
+      style={{
+        minHeight,
+        maxHeight,
+      }}
     >
       {/* Toolbar */}
-      {showToolbar && renderToolbar()}
+      {toolbar !== false && (
+        <EditorToolbar
+          editor={editor}
+          config={toolbarConfig}
+          className={toolbarClassName || ''}
+        />
+      )}
 
       {/* Editor Content */}
       <div
-        ref={editorRef}
-        contentEditable={!readOnly}
-        className={editorContentVariants({ theme: contentTheme })}
-        dangerouslySetInnerHTML={{ __html: editorContent }}
-        onInput={handleInput}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-        spellCheck={spellCheck}
-        data-placeholder={placeholder}
-        role="textbox"
-        aria-multiline="true"
-        aria-label="Rich text editor"
-        tabIndex={0}
+        className={cn(
+          'prose prose-sm max-w-none p-4',
+          'focus-within:outline-none',
+          '[&_.ProseMirror]:outline-none',
+          '[&_.ProseMirror]:min-h-[100px]',
+          '[&_.ProseMirror-placeholder]:text-foreground-muted',
+          editorClassName
+        )}
         style={{
-          minHeight: 'inherit',
+          minHeight: minHeight ? minHeight - (toolbar !== false ? 48 : 0) : undefined,
+          maxHeight: maxHeight ? maxHeight - (toolbar !== false ? 48 : 0) : undefined,
+          overflowY: maxHeight ? 'auto' : undefined,
         }}
-      />
+      >
+        <EditorContent editor={editor} />
+      </div>
 
       {/* Status Bar */}
-      {showStatusBar && renderStatusBar()}
+      {(showCharacterCount || characterLimit || autosave?.enabled) && (
+        <div className="flex items-center justify-between px-4 py-2 border-t border-border-subtle text-sm text-foreground-muted bg-surface-panel">
+          <div className="flex items-center gap-4">
+            {showCharacterCount && (
+              <span>{wordCount} words, {characterCount} characters</span>
+            )}
+            {characterLimit && (
+              <span className={characterCount > characterLimit ? 'text-error' : ''}>
+                {characterCount}/{characterLimit}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {autosave?.enabled && (
+              <span className="text-xs text-foreground-muted">
+                Auto-save enabled
+              </span>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-// ===== UTILITY FUNCTIONS =====
-
-function matchesShortcut(e: React.KeyboardEvent, shortcut: string): boolean {
-  const parts = shortcut.toLowerCase().split('+');
-  const key = parts.at(-1) || '';
-
-  const needsCtrl = parts.includes('ctrl');
-  const needsAlt = parts.includes('alt');
-  const needsShift = parts.includes('shift');
-
-  return (
-    e.key.toLowerCase() === key &&
-    (needsCtrl ? (e.ctrlKey || e.metaKey) : !e.ctrlKey && !e.metaKey) &&
-    (needsAlt ? e.altKey : !e.altKey) &&
-    (needsShift ? e.shiftKey : !e.shiftKey)
-  );
-}
-
-// ===== EXTENSIONS & PRESETS =====
+// ===== PRE-CONFIGURED VARIANTS =====
 
 export const EditorPresets = {
+  // Minimal editor for comments/notes
   minimal: {
-    showToolbar: true,
-    toolbarGroups: [
-      {
-        name: 'basic',
-        items: defaultToolbarGroups[1]?.items.slice(0, 3) || [], // Bold, Italic, Underline
-      },
-    ],
-    showStatusBar: false,
+    toolbar: {
+      basic: true,
+      formatting: false,
+      lists: true,
+      history: true,
+    },
+    placeholder: 'Write a comment...',
     size: 'sm' as const,
+    characterLimit: 500,
+    showCharacterCount: true,
   },
-  standard: {
-    showToolbar: true,
-    toolbarGroups: defaultToolbarGroups.slice(0, 4), // History, Formatting, Headings, Lists
-    showStatusBar: true,
-    size: 'md' as const,
-  },
-  advanced: {
-    showToolbar: true,
-    toolbarGroups: defaultToolbarGroups,
-    showStatusBar: true,
-    showWordCount: true,
-    showCharCount: true,
+
+  // Full-featured editor for articles
+  full: {
+    toolbar: {
+      basic: true,
+      formatting: true,
+      lists: true,
+      history: true,
+    },
+    showCharacterCount: true,
+    autosave: { enabled: true, delay: 2000 },
     size: 'lg' as const,
   },
-  readonly: {
-    readOnly: true,
-    showToolbar: false,
-    showStatusBar: false,
-    variant: 'minimal' as const,
+
+  // Simple editor for forms
+  form: {
+    toolbar: {
+      basic: true,
+      formatting: false,
+      lists: false,
+      history: true,
+    },
+    placeholder: 'Enter your text...',
+    size: 'md' as const,
   },
 } as const;
 

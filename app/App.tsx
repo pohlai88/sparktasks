@@ -14,9 +14,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-// Use the working src/railway implementation
-import { Layout } from './railway/Layout';
-import { AppProviders } from './railway/providers/AppProviders';
+import { Layout } from './Layout';
+import { AppProviders } from './providers/AppProviders';
 
 // Utility function for class names (simplified version)
 const cn = (...classes: (string | undefined)[]) => {

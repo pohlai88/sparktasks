@@ -14,11 +14,9 @@
 
 export { default as SimpleEditor } from './SimpleEditor';
 export type {
-  EditorContent,
-  EditorCommand,
-  EditorExtension,
-  EditorTheme,
   SimpleEditorProps,
+  ToolbarConfig,
+  ToolbarTool,
 } from './SimpleEditor';
 export { EditorPresets } from './SimpleEditor';
 

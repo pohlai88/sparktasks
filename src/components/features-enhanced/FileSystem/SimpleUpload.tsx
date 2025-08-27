@@ -278,10 +278,14 @@ export function SimpleUpload({
     isDragReject,
     open: openFileDialog,
   } = useDropzone({
-    accept: accept ? (Array.isArray(accept) ? accept.reduce((acc, type) => ({ ...acc, [type]: [] }), {}) : { [accept]: [] }) : undefined,
+    ...(accept && {
+      accept: Array.isArray(accept) 
+        ? accept.reduce((acc, type) => ({ ...acc, [type]: [] }), {})
+        : { [accept]: [] }
+    }),
     multiple,
-    maxSize,
-    maxFiles,
+    ...(maxSize && { maxSize }),
+    ...(maxFiles && { maxFiles }),
     disabled: uploading,
     onDrop: handleFileDrop,
     onDropRejected: handleDropRejected,
@@ -310,7 +314,8 @@ export function SimpleUpload({
     // Handle validation errors
     if (allErrors.length > 0) {
       onValidationError?.(allErrors);
-      setError(allErrors[0].message);
+      const firstError = allErrors[0];
+      setError(firstError?.message || 'Validation error');
       return;
     }
 
@@ -392,7 +397,11 @@ export function SimpleUpload({
       } else {
         // Use the provided onUpload function
         const results = await onUpload([item.file]);
-        result = results[0];
+        const uploadResult = results[0];
+        if (!uploadResult) {
+          throw new Error('Upload function returned no result');
+        }
+        result = uploadResult;
       }
 
       updateQueueItem(item.id, {
@@ -434,7 +443,7 @@ export function SimpleUpload({
 
     const response = await fetch(uploadEndpoint, {
       method: 'POST',
-      headers: uploadHeaders,
+      ...(uploadHeaders && { headers: uploadHeaders }),
       body: formData,
     });
 
@@ -474,7 +483,7 @@ export function SimpleUpload({
   const retryUpload = React.useCallback((id: string) => {
     const item = uploadQueue.find(item => item.id === id);
     if (item) {
-      updateQueueItem(id, { status: 'pending', error: undefined });
+      updateQueueItem(id, { status: 'pending' });
       void uploadFile(item);
     }
   }, [uploadQueue]);

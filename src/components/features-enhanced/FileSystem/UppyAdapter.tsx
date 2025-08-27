@@ -357,25 +357,6 @@ export function UppyAdapter({
 
   const motionClasses = getAdaptiveMotionClasses('all');
 
-  // ===== UPPY CONFIGURATION =====
-
-  const uppyConfig = React.useMemo(() => ({
-    id: options.id || 'uppy-adapter',
-    autoProceed: options.autoProceed || false,
-    allowMultipleUploads,
-    debug: options.debug || false,
-    restrictions: {
-      maxFileSize: maxFileSize || options.restrictions?.maxFileSize,
-      maxNumberOfFiles: maxFiles || options.restrictions?.maxNumberOfFiles,
-      allowedFileTypes: allowedFileTypes || options.restrictions?.allowedFileTypes,
-      ...options.restrictions,
-    },
-    meta: {
-      ...options.meta,
-      ...(audit?.metadata || {}),
-    },
-  }), [options, allowMultipleUploads, maxFileSize, maxFiles, allowedFileTypes, audit]);
-
   // ===== FILE MANAGEMENT =====
 
   const addFile = React.useCallback((file: File) => {
@@ -459,11 +440,6 @@ export function UppyAdapter({
     console.log('Pausing upload...');
   }, []);
 
-  const resumeUpload = React.useCallback(() => {
-    // Implementation for resuming upload
-    console.log('Resuming upload...');
-  }, []);
-
   const cancelUpload = React.useCallback(() => {
     setState(prev => ({
       ...prev,
@@ -490,12 +466,13 @@ export function UppyAdapter({
               [file.id]: {
                 ...prev.files[file.id],
                 progress: {
+                  ...prev.files[file.id]?.progress,
                   percentage: progress,
                   bytesUploaded: e.loaded,
                   bytesTotal: e.total,
                   uploadComplete: progress === 100,
                 },
-              },
+              } as UppyFile,
             },
           }));
 

@@ -3,14 +3,29 @@ import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({
+      // Explicitly include files from all directories
+      include: [
+        '**/*.{js,jsx,ts,tsx}', // All JS/TS files anywhere
+        'src/**/*.{js,jsx,ts,tsx}',
+        'app/**/*.{js,jsx,ts,tsx}',
+        'pages/**/*.{js,jsx,ts,tsx}',
+        'components/**/*.{js,jsx,ts,tsx}'
+      ],
+      exclude: ['node_modules', 'dist']
+    })
+  ],
   resolve: {
     alias: {
       '@shared': resolve(__dirname, 'src/shared'),
       '@': resolve(__dirname, 'src'),
       '@components': resolve(__dirname, 'src/components'),
       '@utils': resolve(__dirname, 'src/utils'),
-      '@stores': resolve(__dirname, 'src/stores')
+      '@stores': resolve(__dirname, 'src/stores'),
+      // Add aliases for app and pages folders
+      '@app': resolve(__dirname, 'app'),
+      '@pages': resolve(__dirname, 'pages')
     }
   },
   build: {
@@ -150,6 +165,9 @@ export default defineConfig({
     host: true, // Allow LAN access for mobile testing
     hmr: {
       host: 'localhost' // Fix HMR WebSocket connection issues
+    },
+    fs: {
+      allow: ['..'] // Allow accessing parent directories
     }
   },
   preview: {
