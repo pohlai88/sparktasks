@@ -1,0 +1,56 @@
+{
+  "name": "@sparktasks/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SparkTask Railway - Fortune 500 Demo Application",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.7.0",
+    "@sparktasks/ui": "workspace:*",
+    "@tanstack/react-query": "^5.85.5",
+    "@tanstack/react-query-devtools": "^5.85.5",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.0.0",
+    "framer-motion": "^11.18.2",
+    "next": "^14.2.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.48.0",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.16",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^13.4.0",
+    "@types/node": "^20.19.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.13",
+    "jsdom": "^23.2.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.0.0",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=22.18.0",
+    "pnpm": ">=8.0.0"
+  }
+}

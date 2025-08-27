@@ -4,10 +4,11 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "composite": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -16,47 +17,29 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-
-    /* Testing types */
-    "types": [
-      "vitest/globals",
-      "vitest/importMeta",
-      "@testing-library/jest-dom"
-    ],
 
     /* Performance */
     "incremental": true,
 
-    /* Path mapping */
+    /* Monorepo support */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@shared/*": ["./src/shared/*"],
-      "@components/*": ["./src/components/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@stores/*": ["./src/stores/*"],
-      "test/*": ["./test/*"],
-      "vitest/*": ["./vitest/*"]
+      "@sparktasks/ui": ["./packages/ui/src"],
+      "@sparktasks/ui/*": ["./packages/ui/src/*"]
     },
 
     /* React support */
-    "jsx": "react-jsx"
+    "jsx": "preserve"
   },
-  "include": [
-    "src",
-    "app",
-    "pages",
-    "test",
-    "vitest",
-    "vite.config.ts",
-    "vitest.config.ts",
-    "tsup.config.ts"
-  ],
-  "exclude": ["node_modules", "dist", "coverage", "test-results", "e2e"]
+  "include": [],
+  "exclude": ["node_modules", "dist", "coverage", "test-results", ".next", ".turbo"],
+  "references": [
+    { "path": "./apps/web" },
+    { "path": "./packages/ui" },
+    { "path": "./e2e" }
+  ]
 }

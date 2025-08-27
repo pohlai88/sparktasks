@@ -16,13 +16,15 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json'],
+    project: ['./tsconfig.json', './apps/*/tsconfig.json', './packages/*/tsconfig.json'],
     tsconfigRootDir: __dirname,
   },
   settings: {
     react: { version: 'detect' },
     'import/resolver': {
-      typescript: { project: ['./tsconfig.json'] },
+      typescript: {
+        project: ['./tsconfig.json', './apps/*/tsconfig.json', './packages/*/tsconfig.json']
+      },
     },
   },
   plugins: [
@@ -208,6 +210,14 @@ module.exports = {
       files: ['src/components/primitives/**/*.{ts,tsx}'],
       rules: {
         // Allow primitives to import directly from Radix UI
+        'no-restricted-imports': 'off',
+      },
+    },
+    {
+      // UI Package: allow direct Radix imports for component library
+      files: ['packages/ui/src/**/*.{ts,tsx}'],
+      rules: {
+        // Allow UI package to import directly from Radix UI
         'no-restricted-imports': 'off',
       },
     },
