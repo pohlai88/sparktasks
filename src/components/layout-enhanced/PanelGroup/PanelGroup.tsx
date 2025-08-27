@@ -1,16 +1,16 @@
 /**
  * PanelGroup Component
- * 
+ *
  * Resizable panel system using react-resizable-panels for creating
  * sophisticated layouts with user-controlled sizing.
- * 
+ *
  * Architectural Features:
  * - Integration with react-resizable-panels
  * - Persistent layout state
  * - Touch and keyboard accessibility
  * - Minimum and maximum size constraints
  * - Smooth transitions and feedback
- * 
+ *
  * Part of the MAPS v3.0 layout enhanced component system.
  */
 
@@ -19,14 +19,14 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../../utils/cn';
 
 // Import react-resizable-panels components
-import { 
+import {
   PanelGroup as RPPanelGroup,
   Panel as RPPanel,
   PanelResizeHandle as RPPanelResizeHandle,
   type ImperativePanelHandle,
   type PanelGroupProps as RPPanelGroupProps,
   type PanelProps as RPPanelProps,
-  type PanelResizeHandleProps as RPPanelResizeHandleProps
+  type PanelResizeHandleProps as RPPanelResizeHandleProps,
 } from 'react-resizable-panels';
 
 // PanelGroup Variants
@@ -124,7 +124,7 @@ const resizeHandleVariants = cva(
   {
     variants: {
       direction: {
-        horizontal: 'w-2 h-full cursor-col-resize',
+        horizontal: 'h-full w-2 cursor-col-resize',
         vertical: 'h-2 w-full cursor-row-resize',
       },
       handleStyle: {
@@ -147,7 +147,7 @@ const resizeHandleVariants = cva(
 );
 
 // Component Prop Types
-export interface PanelGroupProps 
+export interface PanelGroupProps
   extends Omit<RPPanelGroupProps, 'className' | 'direction'>,
     VariantProps<typeof panelGroupVariants> {
   className?: string;
@@ -155,7 +155,7 @@ export interface PanelGroupProps
   onLayoutChange?: (layout: number[]) => void;
 }
 
-export interface PanelProps 
+export interface PanelProps
   extends Omit<RPPanelProps, 'className'>,
     VariantProps<typeof panelVariants> {
   className?: string;
@@ -166,7 +166,7 @@ export interface PanelProps
   defaultSize?: number;
 }
 
-export interface PanelResizeHandleProps 
+export interface PanelResizeHandleProps
   extends Omit<RPPanelResizeHandleProps, 'className'>,
     Omit<VariantProps<typeof resizeHandleVariants>, 'handleStyle'> {
   className?: string;
@@ -176,142 +176,146 @@ export interface PanelResizeHandleProps
 }
 
 // Handle Icons Component
-const HandleIcon: React.FC<{ direction: 'horizontal' | 'vertical' }> = ({ direction }) => {
+const HandleIcon: React.FC<{ direction: 'horizontal' | 'vertical' }> = ({
+  direction,
+}) => {
   if (direction === 'horizontal') {
     return (
       <svg
-        width="4"
-        height="16"
-        viewBox="0 0 4 16"
-        fill="currentColor"
-        className="text-gray-400 dark:text-gray-500"
+        width='4'
+        height='16'
+        viewBox='0 0 4 16'
+        fill='currentColor'
+        className='text-gray-400 dark:text-gray-500'
       >
-        <circle cx="1" cy="2" r="1" />
-        <circle cx="1" cy="6" r="1" />
-        <circle cx="1" cy="10" r="1" />
-        <circle cx="1" cy="14" r="1" />
-        <circle cx="3" cy="2" r="1" />
-        <circle cx="3" cy="6" r="1" />
-        <circle cx="3" cy="10" r="1" />
-        <circle cx="3" cy="14" r="1" />
+        <circle cx='1' cy='2' r='1' />
+        <circle cx='1' cy='6' r='1' />
+        <circle cx='1' cy='10' r='1' />
+        <circle cx='1' cy='14' r='1' />
+        <circle cx='3' cy='2' r='1' />
+        <circle cx='3' cy='6' r='1' />
+        <circle cx='3' cy='10' r='1' />
+        <circle cx='3' cy='14' r='1' />
       </svg>
     );
   }
 
   return (
     <svg
-      width="16"
-      height="4"
-      viewBox="0 0 16 4"
-      fill="currentColor"
-      className="text-gray-400 dark:text-gray-500"
+      width='16'
+      height='4'
+      viewBox='0 0 16 4'
+      fill='currentColor'
+      className='text-gray-400 dark:text-gray-500'
     >
-      <circle cx="2" cy="1" r="1" />
-      <circle cx="6" cy="1" r="1" />
-      <circle cx="10" cy="1" r="1" />
-      <circle cx="14" cy="1" r="1" />
-      <circle cx="2" cy="3" r="1" />
-      <circle cx="6" cy="3" r="1" />
-      <circle cx="10" cy="3" r="1" />
-      <circle cx="14" cy="3" r="1" />
+      <circle cx='2' cy='1' r='1' />
+      <circle cx='6' cy='1' r='1' />
+      <circle cx='10' cy='1' r='1' />
+      <circle cx='14' cy='1' r='1' />
+      <circle cx='2' cy='3' r='1' />
+      <circle cx='6' cy='3' r='1' />
+      <circle cx='10' cy='3' r='1' />
+      <circle cx='14' cy='3' r='1' />
     </svg>
   );
 };
 
 // PanelGroup Component
-export const PanelGroup = forwardRef<
-  any,
-  PanelGroupProps
->(({ 
-  className,
-  direction = 'horizontal',
-  spacing,
-  borderStyle,
-  surface,
-  persistId,
-  onLayoutChange,
-  children,
-  ...props 
-}, ref) => {
-  const groupClassName = cn(
-    panelGroupVariants({ 
-      direction,
+export const PanelGroup = forwardRef<any, PanelGroupProps>(
+  (
+    {
+      className,
+      direction = 'horizontal',
       spacing,
       borderStyle,
       surface,
-    }),
-    className
-  );
+      persistId,
+      onLayoutChange,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const groupClassName = cn(
+      panelGroupVariants({
+        direction,
+        spacing,
+        borderStyle,
+        surface,
+      }),
+      className
+    );
 
-  return (
-    <RPPanelGroup
-      ref={ref}
-      direction={direction || 'horizontal'}
-      className={groupClassName}
-      id={persistId}
-      onLayout={onLayoutChange}
-      {...props}
-    >
-      {children}
-    </RPPanelGroup>
-  );
-});
+    return (
+      <RPPanelGroup
+        ref={ref}
+        direction={direction || 'horizontal'}
+        className={groupClassName}
+        id={persistId}
+        onLayout={onLayoutChange}
+        {...props}
+      >
+        {children}
+      </RPPanelGroup>
+    );
+  }
+);
 
 PanelGroup.displayName = 'PanelGroup';
 
 // Panel Component
-export const Panel = forwardRef<
-  any,
-  PanelProps
->(({ 
-  className,
-  padding,
-  scrollable,
-  surface,
-  title,
-  minSize,
-  maxSize,
-  defaultSize,
-  children,
-  ...props 
-}, ref) => {
-  const panelClassName = cn(
-    panelVariants({ 
+export const Panel = forwardRef<any, PanelProps>(
+  (
+    {
+      className,
       padding,
       scrollable,
       surface,
-    }),
-    className
-  );
+      title,
+      minSize,
+      maxSize,
+      defaultSize,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const panelClassName = cn(
+      panelVariants({
+        padding,
+        scrollable,
+        surface,
+      }),
+      className
+    );
 
-  const panelContent = (
-    <>
-      {title && (
-        <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-700 pb-3 mb-4">
-          <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-            {title}
-          </h3>
-        </div>
-      )}
-      <div className="flex-1 min-h-0">
-        {children}
-      </div>
-    </>
-  );
+    const panelContent = (
+      <>
+        {title && (
+          <div className='mb-4 flex-shrink-0 border-b border-gray-200 pb-3 dark:border-gray-700'>
+            <h3 className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+              {title}
+            </h3>
+          </div>
+        )}
+        <div className='min-h-0 flex-1'>{children}</div>
+      </>
+    );
 
-  return (
-    <RPPanel
-      ref={ref}
-      className={panelClassName}
-      minSize={minSize}
-      maxSize={maxSize}
-      defaultSize={defaultSize}
-      {...props}
-    >
-      {panelContent}
-    </RPPanel>
-  );
-});
+    return (
+      <RPPanel
+        ref={ref}
+        className={panelClassName}
+        minSize={minSize}
+        maxSize={maxSize}
+        defaultSize={defaultSize}
+        {...props}
+      >
+        {panelContent}
+      </RPPanel>
+    );
+  }
+);
 
 Panel.displayName = 'Panel';
 
@@ -319,37 +323,36 @@ Panel.displayName = 'Panel';
 export const PanelResizeHandle = forwardRef<
   HTMLDivElement,
   PanelResizeHandleProps
->(({ 
-  className,
-  direction = 'horizontal',
-  handleStyle,
-  withHandle,
-  withIcon = true,
-  customIcon,
-  ...props 
-}) => {
-  const handleClassName = cn(
-    resizeHandleVariants({ 
-      direction,
-      handleStyle,
-      withHandle,
-    }),
-    className
-  );
+>(
+  ({
+    className,
+    direction = 'horizontal',
+    handleStyle,
+    withHandle,
+    withIcon = true,
+    customIcon,
+    ...props
+  }) => {
+    const handleClassName = cn(
+      resizeHandleVariants({
+        direction,
+        handleStyle,
+        withHandle,
+      }),
+      className
+    );
 
-  const iconContent = withIcon && (
-    customIcon || <HandleIcon direction={direction || 'horizontal'} />
-  );
+    const iconContent =
+      withIcon &&
+      (customIcon || <HandleIcon direction={direction || 'horizontal'} />);
 
-  return (
-    <RPPanelResizeHandle
-      className={handleClassName}
-      {...props}
-    >
-      {iconContent}
-    </RPPanelResizeHandle>
-  );
-});
+    return (
+      <RPPanelResizeHandle className={handleClassName} {...props}>
+        {iconContent}
+      </RPPanelResizeHandle>
+    );
+  }
+);
 
 PanelResizeHandle.displayName = 'PanelResizeHandle';
 

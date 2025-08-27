@@ -578,7 +578,12 @@ export const DesignTokensSchema = z.object({
     motion: z.record(z.union([z.record(z.string()), z.string()])),
   }),
   recipes: z.record(
-    z.record(z.union([z.array(z.string()), z.record(z.union([z.array(z.string()), z.string()]))]))
+    z.record(
+      z.union([
+        z.array(z.string()),
+        z.record(z.union([z.array(z.string()), z.string()])),
+      ])
+    )
   ),
   accessibility: z.record(z.record(z.string())),
 });

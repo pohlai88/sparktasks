@@ -22,9 +22,9 @@ import { cn } from '../../../utils/cn';
 const GridPatterns = {
   'auto-fit': 'repeat(auto-fit, minmax(var(--min-item-width, 250px), 1fr))',
   'auto-fill': 'repeat(auto-fill, minmax(var(--min-item-width, 250px), 1fr))',
-  'sidebar': 'minmax(250px, 1fr) 3fr',
+  sidebar: 'minmax(250px, 1fr) 3fr',
   'holy-grail': '1fr 3fr 1fr',
-  'masonry': 'repeat(auto-fill, minmax(250px, 1fr))',
+  masonry: 'repeat(auto-fill, minmax(250px, 1fr))',
 } as const;
 
 // ===== VARIANTS =====
@@ -49,7 +49,7 @@ const gridVariants = cva(['grid'], {
       'min-content': 'grid-cols-min',
       'max-content': 'grid-cols-max',
     },
-    
+
     rows: {
       1: 'grid-rows-1',
       2: 'grid-rows-2',
@@ -61,7 +61,7 @@ const gridVariants = cva(['grid'], {
       'min-content': 'grid-rows-min',
       'max-content': 'grid-rows-max',
     },
-    
+
     // Gap Control
     gap: {
       none: 'gap-0',
@@ -72,7 +72,7 @@ const gridVariants = cva(['grid'], {
       xl: 'gap-8',
       '2xl': 'gap-12',
     },
-    
+
     gapX: {
       none: 'gap-x-0',
       xs: 'gap-x-1',
@@ -82,7 +82,7 @@ const gridVariants = cva(['grid'], {
       xl: 'gap-x-8',
       '2xl': 'gap-x-12',
     },
-    
+
     gapY: {
       none: 'gap-y-0',
       xs: 'gap-y-1',
@@ -92,7 +92,7 @@ const gridVariants = cva(['grid'], {
       xl: 'gap-y-8',
       '2xl': 'gap-y-12',
     },
-    
+
     // Alignment
     alignItems: {
       start: 'items-start',
@@ -100,14 +100,14 @@ const gridVariants = cva(['grid'], {
       end: 'items-end',
       stretch: 'items-stretch',
     },
-    
+
     justifyItems: {
       start: 'justify-items-start',
       center: 'justify-items-center',
       end: 'justify-items-end',
       stretch: 'justify-items-stretch',
     },
-    
+
     alignContent: {
       start: 'content-start',
       center: 'content-center',
@@ -117,7 +117,7 @@ const gridVariants = cva(['grid'], {
       around: 'content-around',
       evenly: 'content-evenly',
     },
-    
+
     justifyContent: {
       start: 'justify-start',
       center: 'justify-center',
@@ -127,7 +127,7 @@ const gridVariants = cva(['grid'], {
       around: 'justify-around',
       evenly: 'justify-evenly',
     },
-    
+
     // Auto-placement
     autoFlow: {
       row: 'grid-flow-row',
@@ -136,13 +136,13 @@ const gridVariants = cva(['grid'], {
       'row-dense': 'grid-flow-row-dense',
       'column-dense': 'grid-flow-col-dense',
     },
-    
+
     autoColumns: {
       min: 'auto-cols-min',
       max: 'auto-cols-max',
       fr: 'auto-cols-fr',
     },
-    
+
     autoRows: {
       min: 'auto-rows-min',
       max: 'auto-rows-max',
@@ -159,28 +159,28 @@ const gridVariants = cva(['grid'], {
 
 // ===== TYPES =====
 
-export interface GridProps 
+export interface GridProps
   extends React.HTMLAttributes<HTMLDivElement>,
     Omit<VariantProps<typeof gridVariants>, 'columns' | 'rows'> {
   // Grid Structure - additional string support for custom values
   columns?: number | 'auto' | 'min-content' | 'max-content' | string;
   rows?: number | 'auto' | 'min-content' | 'max-content' | string;
-  
+
   // Semantic HTML
   as?: 'div' | 'section' | 'article' | 'ul' | 'ol';
   asChild?: boolean;
-  
+
   // Responsive Grid
   responsive?: {
     sm?: Partial<Omit<GridProps, 'responsive'>>;
     md?: Partial<Omit<GridProps, 'responsive'>>;
     lg?: Partial<Omit<GridProps, 'responsive'>>;
   };
-  
+
   // Container Queries
   containerQueries?: boolean;
   minItemWidth?: string; // For auto-responsive grids
-  
+
   children: React.ReactNode;
 }
 
@@ -190,71 +190,103 @@ export const Grid = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & GridProps
 >(
-  ({ 
-    className, 
-    columns,
-    rows,
-    gap,
-    gapX, 
-    gapY,
-    alignItems,
-    justifyItems,
-    alignContent,
-    justifyContent,
-    autoFlow,
-    autoColumns,
-    autoRows,
-    as = 'div',
-    asChild = false,
-    responsive,
-    containerQueries = false,
-    minItemWidth,
-    children,
-    style,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      columns,
+      rows,
+      gap,
+      gapX,
+      gapY,
+      alignItems,
+      justifyItems,
+      alignContent,
+      justifyContent,
+      autoFlow,
+      autoColumns,
+      autoRows,
+      as = 'div',
+      asChild = false,
+      responsive,
+      containerQueries = false,
+      minItemWidth,
+      children,
+      style,
+      ...props
+    },
+    ref
+  ) => {
     // Handle custom grid template columns/rows
     const customStyle: React.CSSProperties = {
       ...style,
     };
-    
+
     // Handle string patterns for columns
-    if (typeof columns === 'string' && GridPatterns[columns as keyof typeof GridPatterns]) {
-      customStyle.gridTemplateColumns = GridPatterns[columns as keyof typeof GridPatterns];
-    } else if (typeof columns === 'string' && !['auto', 'min-content', 'max-content'].includes(columns) && isNaN(Number(columns))) {
+    if (
+      typeof columns === 'string' &&
+      GridPatterns[columns as keyof typeof GridPatterns]
+    ) {
+      customStyle.gridTemplateColumns =
+        GridPatterns[columns as keyof typeof GridPatterns];
+    } else if (
+      typeof columns === 'string' &&
+      !['auto', 'min-content', 'max-content'].includes(columns) &&
+      isNaN(Number(columns))
+    ) {
       customStyle.gridTemplateColumns = columns;
     }
-    
+
     // Handle string patterns for rows
-    if (typeof rows === 'string' && !['auto', 'min-content', 'max-content'].includes(rows) && isNaN(Number(rows))) {
+    if (
+      typeof rows === 'string' &&
+      !['auto', 'min-content', 'max-content'].includes(rows) &&
+      isNaN(Number(rows))
+    ) {
       customStyle.gridTemplateRows = rows;
     }
-    
+
     // Handle min item width for auto-responsive grids
     if (minItemWidth) {
       (customStyle as any)['--min-item-width'] = minItemWidth;
     }
-    
+
     // Build responsive classes
-    const responsiveClasses = responsive ? Object.entries(responsive).map(([breakpoint, config]) => {
-      const prefix = breakpoint === 'sm' ? 'sm:' : breakpoint === 'md' ? 'md:' : 'lg:';
-      const classes = [];
-      
-      if (config.columns && typeof config.columns === 'number') {
-        classes.push(`${prefix}grid-cols-${config.columns}`);
-      }
-      if (config.rows && typeof config.rows === 'number') {
-        classes.push(`${prefix}grid-rows-${config.rows}`);
-      }
-      if (config.gap) classes.push(`${prefix}gap-${config.gap === 'none' ? '0' : config.gap === 'xs' ? '1' : config.gap === 'sm' ? '2' : config.gap === 'md' ? '4' : config.gap === 'lg' ? '6' : config.gap === 'xl' ? '8' : '12'}`);
-      
-      return classes.join(' ');
-    }).join(' ') : '';
-    
+    const responsiveClasses = responsive
+      ? Object.entries(responsive)
+          .map(([breakpoint, config]) => {
+            const prefix =
+              breakpoint === 'sm' ? 'sm:' : breakpoint === 'md' ? 'md:' : 'lg:';
+            const classes = [];
+
+            if (config.columns && typeof config.columns === 'number') {
+              classes.push(`${prefix}grid-cols-${config.columns}`);
+            }
+            if (config.rows && typeof config.rows === 'number') {
+              classes.push(`${prefix}grid-rows-${config.rows}`);
+            }
+            if (config.gap)
+              classes.push(
+                `${prefix}gap-${config.gap === 'none' ? '0' : config.gap === 'xs' ? '1' : config.gap === 'sm' ? '2' : config.gap === 'md' ? '4' : config.gap === 'lg' ? '6' : config.gap === 'xl' ? '8' : '12'}`
+              );
+
+            return classes.join(' ');
+          })
+          .join(' ')
+      : '';
+
     const combinedClassName = cn(
-      gridVariants({ 
-        columns: typeof columns === 'string' && GridPatterns[columns as keyof typeof GridPatterns] ? undefined : columns as any,
-        rows: typeof rows === 'string' && !['auto', 'min-content', 'max-content'].includes(rows) && isNaN(Number(rows)) ? undefined : rows as any,
+      gridVariants({
+        columns:
+          typeof columns === 'string' &&
+          GridPatterns[columns as keyof typeof GridPatterns]
+            ? undefined
+            : (columns as any),
+        rows:
+          typeof rows === 'string' &&
+          !['auto', 'min-content', 'max-content'].includes(rows) &&
+          isNaN(Number(rows))
+            ? undefined
+            : (rows as any),
         gap: gapX || gapY ? undefined : gap,
         gapX,
         gapY,
@@ -270,21 +302,17 @@ export const Grid = forwardRef<
       responsiveClasses,
       className
     );
-    
+
     if (asChild) {
       return (
-        <Slot
-          className={combinedClassName}
-          style={customStyle}
-          {...props}
-        >
+        <Slot className={combinedClassName} style={customStyle} {...props}>
           {children}
         </Slot>
       );
     }
-    
+
     const Comp = as as React.ElementType;
-    
+
     return (
       <Comp
         ref={ref}

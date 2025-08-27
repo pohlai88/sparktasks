@@ -12,7 +12,19 @@
  */
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Cloud, HardDrive, Camera, Globe, Settings, Info, AlertCircle, CheckCircle, Upload, Pause, X } from 'lucide-react';
+import {
+  Cloud,
+  HardDrive,
+  Camera,
+  Globe,
+  Settings,
+  Info,
+  AlertCircle,
+  CheckCircle,
+  Upload,
+  Pause,
+  X,
+} from 'lucide-react';
 import React from 'react';
 
 import { getAdaptiveMotionClasses } from '@/components/primitives/motion-utils';
@@ -109,11 +121,14 @@ export interface UppyOptions {
 
 export interface UppyState {
   files: Record<string, UppyFile>;
-  currentUploads: Record<string, {
-    fileIDs: string[];
-    step: number;
-    result?: unknown;
-  }>;
+  currentUploads: Record<
+    string,
+    {
+      fileIDs: string[];
+      step: number;
+      result?: unknown;
+    }
+  >;
   allowNewUpload: boolean;
   capabilities: {
     uploadProgress?: boolean;
@@ -131,74 +146,82 @@ export interface UppyState {
 
 // ===== COMPONENT VARIANTS =====
 
-const uppyAdapterVariants = cva([
-  'uppy-adapter relative rounded-lg overflow-hidden',
-  'border bg-surface-elevated',
-], {
-  variants: {
-    surface: {
-      elevated: 'border-border-elevated',
-      glass: 'border-border-glass backdrop-blur-sm bg-surface-panel/80',
+const uppyAdapterVariants = cva(
+  [
+    'uppy-adapter relative overflow-hidden rounded-lg',
+    'bg-surface-elevated border',
+  ],
+  {
+    variants: {
+      surface: {
+        elevated: 'border-border-elevated',
+        glass: 'border-border-glass bg-surface-panel/80 backdrop-blur-sm',
+      },
+      size: {
+        sm: 'min-h-[300px]',
+        md: 'min-h-[400px]',
+        lg: 'min-h-[500px]',
+        xl: 'min-h-[600px]',
+      },
+      layout: {
+        dashboard: '',
+        modal:
+          'bg-overlay/50 fixed inset-0 z-50 flex items-center justify-center',
+        inline: 'w-full',
+        dropzone: 'border-2 border-dashed',
+      },
+      disabled: {
+        true: 'pointer-events-none opacity-50',
+        false: '',
+      },
     },
-    size: {
-      sm: 'min-h-[300px]',
-      md: 'min-h-[400px]',
-      lg: 'min-h-[500px]',
-      xl: 'min-h-[600px]',
+    defaultVariants: {
+      surface: 'elevated',
+      size: 'md',
+      layout: 'dashboard',
+      disabled: false,
     },
-    layout: {
-      dashboard: '',
-      modal: 'fixed inset-0 z-50 flex items-center justify-center bg-overlay/50',
-      inline: 'w-full',
-      dropzone: 'border-dashed border-2',
-    },
-    disabled: {
-      true: 'opacity-50 pointer-events-none',
-      false: '',
-    },
-  },
-  defaultVariants: {
-    surface: 'elevated',
-    size: 'md',
-    layout: 'dashboard',
-    disabled: false,
   }
-});
+);
 
-const uppyStatusBarVariants = cva([
-  'flex items-center justify-between p-4 border-t bg-surface-subtle',
-], {
-  variants: {
-    surface: {
-      elevated: 'border-border-elevated',
-      glass: 'border-border-glass',
+const uppyStatusBarVariants = cva(
+  ['bg-surface-subtle flex items-center justify-between border-t p-4'],
+  {
+    variants: {
+      surface: {
+        elevated: 'border-border-elevated',
+        glass: 'border-border-glass',
+      },
     },
-  },
-  defaultVariants: {
-    surface: 'elevated',
+    defaultVariants: {
+      surface: 'elevated',
+    },
   }
-});
+);
 
-const uppyProviderVariants = cva([
-  'flex items-center gap-3 p-4 rounded-lg border transition-colors',
-  'hover:bg-surface-hover cursor-pointer',
-], {
-  variants: {
-    surface: {
-      elevated: 'border-border-elevated',
-      glass: 'border-border-glass',
+const uppyProviderVariants = cva(
+  [
+    'flex items-center gap-3 rounded-lg border p-4 transition-colors',
+    'hover:bg-surface-hover cursor-pointer',
+  ],
+  {
+    variants: {
+      surface: {
+        elevated: 'border-border-elevated',
+        glass: 'border-border-glass',
+      },
+      state: {
+        default: '',
+        connected: 'border-success bg-success/5',
+        error: 'border-error bg-error/5',
+      },
     },
-    state: {
-      default: '',
-      connected: 'border-success bg-success/5',
-      error: 'border-error bg-error/5',
+    defaultVariants: {
+      surface: 'elevated',
+      state: 'default',
     },
-  },
-  defaultVariants: {
-    surface: 'elevated',
-    state: 'default',
   }
-});
+);
 
 // ===== BUILT-IN PROVIDERS =====
 
@@ -206,36 +229,36 @@ const builtinProviders: UppyProvider[] = [
   {
     name: 'local',
     displayName: 'My Device',
-    icon: <HardDrive className="w-5 h-5" />,
+    icon: <HardDrive className='h-5 w-5' />,
   },
   {
     name: 'webcam',
     displayName: 'Camera',
-    icon: <Camera className="w-5 h-5" />,
+    icon: <Camera className='h-5 w-5' />,
   },
   {
     name: 'url',
     displayName: 'Link',
-    icon: <Globe className="w-5 h-5" />,
+    icon: <Globe className='h-5 w-5' />,
   },
   {
     name: 'googledrive',
     displayName: 'Google Drive',
-    icon: <Cloud className="w-5 h-5" />,
+    icon: <Cloud className='h-5 w-5' />,
     authUrl: '/uppy/googledrive/auth',
     serverUrl: '/uppy/googledrive',
   },
   {
     name: 'dropbox',
     displayName: 'Dropbox',
-    icon: <Cloud className="w-5 h-5" />,
+    icon: <Cloud className='h-5 w-5' />,
     authUrl: '/uppy/dropbox/auth',
     serverUrl: '/uppy/dropbox',
   },
   {
     name: 'onedrive',
     displayName: 'OneDrive',
-    icon: <Cloud className="w-5 h-5" />,
+    icon: <Cloud className='h-5 w-5' />,
     authUrl: '/uppy/onedrive/auth',
     serverUrl: '/uppy/onedrive',
   },
@@ -243,7 +266,8 @@ const builtinProviders: UppyProvider[] = [
 
 // ===== MAIN COMPONENT =====
 
-export interface UppyAdapterProps extends VariantProps<typeof uppyAdapterVariants> {
+export interface UppyAdapterProps
+  extends VariantProps<typeof uppyAdapterVariants> {
   // Core Configuration
   options?: UppyOptions;
   providers?: UppyProvider[];
@@ -347,7 +371,9 @@ export function UppyAdapter({
   });
 
   const [activeProvider, setActiveProvider] = React.useState<string>('local');
-  const [providerConnections, setProviderConnections] = React.useState<Record<string, boolean>>({});
+  const [providerConnections, setProviderConnections] = React.useState<
+    Record<string, boolean>
+  >({});
 
   // ===== REFS =====
 
@@ -359,43 +385,49 @@ export function UppyAdapter({
 
   // ===== FILE MANAGEMENT =====
 
-  const addFile = React.useCallback((file: File) => {
-    const uppyFile: UppyFile = {
-      id: generateFileId(file),
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      data: file,
-      source: activeProvider,
-      isRemote: activeProvider !== 'local',
-      meta: {},
-    };
-
-    setState(prev => ({
-      ...prev,
-      files: {
-        ...prev.files,
-        [uppyFile.id]: uppyFile,
-      },
-    }));
-
-    onFileAdded?.(uppyFile);
-  }, [activeProvider, onFileAdded]);
-
-  const removeFile = React.useCallback((fileId: string) => {
-    setState(prev => {
-      const file = prev.files[fileId];
-      if (file) {
-        onFileRemoved?.(file);
-      }
-
-      const { [fileId]: removed, ...remainingFiles } = prev.files;
-      return {
-        ...prev,
-        files: remainingFiles,
+  const addFile = React.useCallback(
+    (file: File) => {
+      const uppyFile: UppyFile = {
+        id: generateFileId(file),
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        data: file,
+        source: activeProvider,
+        isRemote: activeProvider !== 'local',
+        meta: {},
       };
-    });
-  }, [onFileRemoved]);
+
+      setState(prev => ({
+        ...prev,
+        files: {
+          ...prev.files,
+          [uppyFile.id]: uppyFile,
+        },
+      }));
+
+      onFileAdded?.(uppyFile);
+    },
+    [activeProvider, onFileAdded]
+  );
+
+  const removeFile = React.useCallback(
+    (fileId: string) => {
+      setState(prev => {
+        const file = prev.files[fileId];
+        if (file) {
+          onFileRemoved?.(file);
+        }
+
+        const { [fileId]: removed, ...remainingFiles } = prev.files;
+        return {
+          ...prev,
+          files: remainingFiles,
+        };
+      });
+    },
+    [onFileRemoved]
+  );
 
   // ===== UPLOAD MANAGEMENT =====
 
@@ -424,7 +456,8 @@ export function UppyAdapter({
         await uploadFile(file);
         onUploadSuccess?.(file, { status: 200, body: 'Success' });
       } catch (error) {
-        const uploadError = error instanceof Error ? error : new Error('Upload failed');
+        const uploadError =
+          error instanceof Error ? error : new Error('Upload failed');
         onUploadError?.(file, uploadError);
       }
     }
@@ -455,7 +488,7 @@ export function UppyAdapter({
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 
-      xhr.upload.addEventListener('progress', (e) => {
+      xhr.upload.addEventListener('progress', e => {
         if (e.lengthComputable) {
           const progress = (e.loaded / e.total) * 100;
 
@@ -509,46 +542,56 @@ export function UppyAdapter({
 
   // ===== PROVIDER MANAGEMENT =====
 
-  const connectProvider = React.useCallback(async (providerName: string) => {
-    const provider = providers.find(p => p.name === providerName);
-    if (!provider) return;
+  const connectProvider = React.useCallback(
+    async (providerName: string) => {
+      const provider = providers.find(p => p.name === providerName);
+      if (!provider) return;
 
-    if (provider.authUrl && provider.name !== 'local') {
-      // Open authentication window
-      const authWindow = window.open(provider.authUrl, '_blank', 'width=600,height=400');
+      if (provider.authUrl && provider.name !== 'local') {
+        // Open authentication window
+        const authWindow = window.open(
+          provider.authUrl,
+          '_blank',
+          'width=600,height=400'
+        );
 
-      // Wait for authentication
-      return new Promise<void>((resolve, reject) => {
-        const checkClosed = setInterval(() => {
-          if (authWindow?.closed) {
+        // Wait for authentication
+        return new Promise<void>((resolve, reject) => {
+          const checkClosed = setInterval(() => {
+            if (authWindow?.closed) {
+              clearInterval(checkClosed);
+              setProviderConnections(prev => ({
+                ...prev,
+                [providerName]: true,
+              }));
+              resolve();
+            }
+          }, 1000);
+
+          setTimeout(() => {
             clearInterval(checkClosed);
-            setProviderConnections(prev => ({
-              ...prev,
-              [providerName]: true,
-            }));
-            resolve();
-          }
-        }, 1000);
-
-        setTimeout(() => {
-          clearInterval(checkClosed);
-          reject(new Error('Authentication timeout'));
-        }, 30000);
-      });
-    } else {
-      setProviderConnections(prev => ({
-        ...prev,
-        [providerName]: true,
-      }));
-    }
-  }, [providers]);
+            reject(new Error('Authentication timeout'));
+          }, 30000);
+        });
+      } else {
+        setProviderConnections(prev => ({
+          ...prev,
+          [providerName]: true,
+        }));
+      }
+    },
+    [providers]
+  );
 
   // ===== FILE INPUT HANDLING =====
 
-  const handleFileSelect = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    files.forEach(addFile);
-  }, [addFile]);
+  const handleFileSelect = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = Array.from(e.target.files || []);
+      files.forEach(addFile);
+    },
+    [addFile]
+  );
 
   const openFileDialog = React.useCallback(() => {
     fileInputRef.current?.click();
@@ -557,9 +600,9 @@ export function UppyAdapter({
   // ===== PROVIDER RENDERING =====
 
   const renderProviders = () => (
-    <div className="p-4 space-y-3">
-      <h3 className="font-medium text-foreground mb-4">Choose Source</h3>
-      {providers.map((provider) => (
+    <div className='space-y-3 p-4'>
+      <h3 className='mb-4 font-medium text-foreground'>Choose Source</h3>
+      {providers.map(provider => (
         <div
           key={provider.name}
           className={uppyProviderVariants({
@@ -575,17 +618,17 @@ export function UppyAdapter({
             }
           }}
         >
-          <div className="text-foreground-muted">
-            {provider.icon}
-          </div>
-          <div className="flex-1">
-            <p className="font-medium text-foreground">{provider.displayName}</p>
+          <div className='text-foreground-muted'>{provider.icon}</div>
+          <div className='flex-1'>
+            <p className='font-medium text-foreground'>
+              {provider.displayName}
+            </p>
             {providerConnections[provider.name] && (
-              <p className="text-xs text-success">Connected</p>
+              <p className='text-xs text-success'>Connected</p>
             )}
           </div>
           {providerConnections[provider.name] && (
-            <CheckCircle className="w-5 h-5 text-success" />
+            <CheckCircle className='h-5 w-5 text-success' />
           )}
         </div>
       ))}
@@ -599,11 +642,13 @@ export function UppyAdapter({
 
     if (files.length === 0) {
       return (
-        <div className="flex-1 flex items-center justify-center text-center p-8">
+        <div className='flex flex-1 items-center justify-center p-8 text-center'>
           <div>
-            <Upload className="w-12 h-12 text-foreground-muted mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-foreground mb-2">No files selected</h3>
-            <p className="text-sm text-foreground-muted">
+            <Upload className='mx-auto mb-4 h-12 w-12 text-foreground-muted' />
+            <h3 className='mb-2 text-lg font-medium text-foreground'>
+              No files selected
+            </h3>
+            <p className='text-sm text-foreground-muted'>
               Choose a source to add files
             </p>
           </div>
@@ -612,46 +657,55 @@ export function UppyAdapter({
     }
 
     return (
-      <div className="flex-1 p-4">
-        <div className="space-y-3">
-          {files.map((file) => (
-            <div key={file.id} className="flex items-center gap-3 p-3 rounded-lg border border-border-subtle">
-              <div className="w-10 h-10 rounded bg-surface-subtle flex items-center justify-center">
+      <div className='flex-1 p-4'>
+        <div className='space-y-3'>
+          {files.map(file => (
+            <div
+              key={file.id}
+              className='flex items-center gap-3 rounded-lg border border-border-subtle p-3'
+            >
+              <div className='bg-surface-subtle flex h-10 w-10 items-center justify-center rounded'>
                 {file.type.startsWith('image/') ? (
                   <img
                     src={URL.createObjectURL(file.data as File)}
                     alt={file.name}
-                    className="w-full h-full object-cover rounded"
-                    onLoad={(e) => URL.revokeObjectURL((e.target as HTMLImageElement).src)}
+                    className='h-full w-full rounded object-cover'
+                    onLoad={e =>
+                      URL.revokeObjectURL((e.target as HTMLImageElement).src)
+                    }
                   />
                 ) : (
-                  <div className="text-foreground-muted text-xs">
+                  <div className='text-xs text-foreground-muted'>
                     {file.type.split('/')[0]?.toUpperCase() || 'FILE'}
                   </div>
                 )}
               </div>
 
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-foreground truncate">{file.name}</p>
-                <p className="text-xs text-foreground-muted">
+              <div className='min-w-0 flex-1'>
+                <p className='truncate font-medium text-foreground'>
+                  {file.name}
+                </p>
+                <p className='text-xs text-foreground-muted'>
                   {formatFileSize(file.size)} • {file.source}
                 </p>
 
                 {file.progress && (
-                  <div className="mt-2">
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="text-foreground-muted">
+                  <div className='mt-2'>
+                    <div className='mb-1 flex items-center justify-between text-xs'>
+                      <span className='text-foreground-muted'>
                         {file.progress.percentage?.toFixed(0)}%
                       </span>
-                      {file.progress.bytesUploaded && file.progress.bytesTotal && (
-                        <span className="text-foreground-muted">
-                          {formatFileSize(file.progress.bytesUploaded)} / {formatFileSize(file.progress.bytesTotal)}
-                        </span>
-                      )}
+                      {file.progress.bytesUploaded &&
+                        file.progress.bytesTotal && (
+                          <span className='text-foreground-muted'>
+                            {formatFileSize(file.progress.bytesUploaded)} /{' '}
+                            {formatFileSize(file.progress.bytesTotal)}
+                          </span>
+                        )}
                     </div>
-                    <div className="w-full bg-surface-subtle rounded-full h-1.5">
+                    <div className='bg-surface-subtle h-1.5 w-full rounded-full'>
                       <div
-                        className="bg-accent h-full rounded-full transition-all duration-300"
+                        className='h-full rounded-full bg-accent transition-all duration-300'
                         style={{ width: `${file.progress.percentage || 0}%` }}
                       />
                     </div>
@@ -661,9 +715,9 @@ export function UppyAdapter({
 
               <button
                 onClick={() => removeFile(file.id)}
-                className="p-1 text-foreground-muted hover:text-foreground transition-colors"
+                className='p-1 text-foreground-muted transition-colors hover:text-foreground'
               >
-                <X className="w-4 h-4" />
+                <X className='h-4 w-4' />
               </button>
             </div>
           ))}
@@ -682,12 +736,13 @@ export function UppyAdapter({
 
     return (
       <div className={uppyStatusBarVariants({ surface })}>
-        <div className="flex items-center gap-4">
-          <div className="text-sm text-foreground-muted">
+        <div className='flex items-center gap-4'>
+          <div className='text-sm text-foreground-muted'>
             {totalFiles > 0 ? (
               <>
                 {completedFiles} of {totalFiles} files uploaded
-                {state.totalProgress > 0 && ` • ${state.totalProgress}% complete`}
+                {state.totalProgress > 0 &&
+                  ` • ${state.totalProgress}% complete`}
               </>
             ) : (
               'No files selected'
@@ -695,28 +750,28 @@ export function UppyAdapter({
           </div>
 
           {state.error && (
-            <div className="flex items-center gap-2 text-error text-sm">
-              <AlertCircle className="w-4 h-4" />
+            <div className='flex items-center gap-2 text-sm text-error'>
+              <AlertCircle className='h-4 w-4' />
               {state.error}
             </div>
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className='flex items-center gap-2'>
           {isUploading ? (
             <>
               <button
                 onClick={pauseUpload}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-warning text-warning-foreground rounded hover:bg-warning-hover transition-colors"
+                className='hover:bg-warning-hover flex items-center gap-2 rounded bg-warning px-3 py-1.5 text-sm text-warning-foreground transition-colors'
               >
-                <Pause className="w-4 h-4" />
+                <Pause className='h-4 w-4' />
                 Pause
               </button>
               <button
                 onClick={cancelUpload}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-error text-error-foreground rounded hover:bg-error-hover transition-colors"
+                className='hover:bg-error-hover flex items-center gap-2 rounded bg-error px-3 py-1.5 text-sm text-error-foreground transition-colors'
               >
-                <X className="w-4 h-4" />
+                <X className='h-4 w-4' />
                 Cancel
               </button>
             </>
@@ -724,10 +779,13 @@ export function UppyAdapter({
             <button
               onClick={startUpload}
               disabled={totalFiles === 0}
-              className="flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded font-medium hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className='flex items-center gap-2 rounded bg-accent px-4 py-2 font-medium text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50'
             >
-              <Upload className="w-4 h-4" />
-              Upload {totalFiles > 0 ? `${totalFiles} file${totalFiles > 1 ? 's' : ''}` : ''}
+              <Upload className='h-4 w-4' />
+              Upload{' '}
+              {totalFiles > 0
+                ? `${totalFiles} file${totalFiles > 1 ? 's' : ''}`
+                : ''}
             </button>
           )}
         </div>
@@ -755,37 +813,35 @@ export function UppyAdapter({
       {/* Hidden File Input */}
       <input
         ref={fileInputRef}
-        type="file"
+        type='file'
         multiple={allowMultipleUploads}
         accept={allowedFileTypes?.join(',')}
         onChange={handleFileSelect}
-        className="hidden"
+        className='hidden'
       />
 
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border-subtle">
-        <h2 className="text-lg font-semibold text-foreground">Upload Files</h2>
-        <div className="flex items-center gap-2">
-          <button className="p-2 text-foreground-muted hover:text-foreground transition-colors">
-            <Info className="w-4 h-4" />
+      <div className='flex items-center justify-between border-b border-border-subtle p-4'>
+        <h2 className='text-lg font-semibold text-foreground'>Upload Files</h2>
+        <div className='flex items-center gap-2'>
+          <button className='p-2 text-foreground-muted transition-colors hover:text-foreground'>
+            <Info className='h-4 w-4' />
           </button>
-          <button className="p-2 text-foreground-muted hover:text-foreground transition-colors">
-            <Settings className="w-4 h-4" />
+          <button className='p-2 text-foreground-muted transition-colors hover:text-foreground'>
+            <Settings className='h-4 w-4' />
           </button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-1 min-h-0">
+      <div className='flex min-h-0 flex-1'>
         {/* Providers Sidebar */}
-        <div className="w-64 border-r border-border-subtle bg-surface-subtle">
+        <div className='bg-surface-subtle w-64 border-r border-border-subtle'>
           {renderProviders()}
         </div>
 
         {/* Files Area */}
-        <div className="flex-1 flex flex-col">
-          {renderFiles()}
-        </div>
+        <div className='flex flex-1 flex-col'>{renderFiles()}</div>
       </div>
 
       {/* Status Bar */}
@@ -793,8 +849,8 @@ export function UppyAdapter({
 
       {/* Compliance Footer */}
       {(compliance?.gdpr || compliance?.hipaa || compliance?.soc2) && (
-        <div className="px-4 py-2 text-xs text-foreground-muted bg-surface-subtle border-t border-border-subtle">
-          <div className="flex items-center gap-4">
+        <div className='bg-surface-subtle border-t border-border-subtle px-4 py-2 text-xs text-foreground-muted'>
+          <div className='flex items-center gap-4'>
             {compliance.gdpr && <span>GDPR Compliant</span>}
             {compliance.hipaa && <span>HIPAA Compliant</span>}
             {compliance.soc2 && <span>SOC 2 Compliant</span>}
@@ -843,7 +899,9 @@ export const UppyPresets = {
   },
 
   media: {
-    providers: builtinProviders.filter(p => ['local', 'webcam'].includes(p.name)),
+    providers: builtinProviders.filter(p =>
+      ['local', 'webcam'].includes(p.name)
+    ),
     allowedFileTypes: ['image/*', 'video/*', 'audio/*'],
     maxFileSize: 500 * 1024 * 1024, // 500MB
     chunked: true,
@@ -851,8 +909,19 @@ export const UppyPresets = {
   },
 
   documents: {
-    providers: builtinProviders.filter(p => ['local', 'googledrive', 'dropbox', 'onedrive'].includes(p.name)),
-    allowedFileTypes: ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt'],
+    providers: builtinProviders.filter(p =>
+      ['local', 'googledrive', 'dropbox', 'onedrive'].includes(p.name)
+    ),
+    allowedFileTypes: [
+      '.pdf',
+      '.doc',
+      '.docx',
+      '.xls',
+      '.xlsx',
+      '.ppt',
+      '.pptx',
+      '.txt',
+    ],
     maxFileSize: 50 * 1024 * 1024, // 50MB
     compliance: { gdpr: true },
   },

@@ -5,6 +5,7 @@ A next‑gen **Project Railway System** where governance, sovereignty, and usabi
 ---
 
 ## 1. **Core Metaphor** — The Railway System
+
 - **Engine (Policy Kernel):** Manifest‑driven rules that power approvals, storage, and capsule threads.
 - **Rails (Event Bus):** Standardized track connecting approvals, notifications, storage events.
 - **Carriage (Conductor Layer):** The narrative UI/UX — guiding, narrating, and orchestrating.
@@ -19,6 +20,7 @@ A next‑gen **Project Railway System** where governance, sovereignty, and usabi
 ---
 
 ## 2. **Design Principles**
+
 1. **Progressive Disclosure**
    - 5‑minute start: pick a template → fill essentials → auto‑populate → approve.
    - Advanced policy settings stay one layer deeper.
@@ -40,21 +42,25 @@ A next‑gen **Project Railway System** where governance, sovereignty, and usabi
 ## 3. **System Architecture**
 
 ### Engine (Policy Kernel)
+
 - Reads manifest (approvals, storage, threads, risks)
 - Exposes policies as APIs
 - Ensures zero‑trust, cryptographic logs
 
 ### Rails (Event Bus)
+
 - Event types: Approval, Storage, Thread, Risk, Closure
 - Pluggable architecture (new wagons = new event handlers)
 - Guarantees auditability
 
 ### Carriage (Conductor Layer)
+
 - UI Narrator: visual phases, progress map
 - Control Dashboard: governance for leadership
 - Capsule View: action items for ground staff
 
 ### Wagons (Modules)
+
 - **Approval Wagon** → Cryptographic flow + export audit trail
 - **Storage Wagon** → BYOS + sovereignty dashboard
 - **Thread Wagon** → Capsule lanes for risks/next steps
@@ -62,6 +68,7 @@ A next‑gen **Project Railway System** where governance, sovereignty, and usabi
 - **Supplier Wagon** → Handover + continuous evaluation
 
 ### Hat (Universal Capture)
+
 - Modalities: Email forward, WhatsApp, Slack, mobile widget
 - Parsing Engine: extract deadlines, tags, projects
 - Policy Triage: route to correct wagon + project train
@@ -70,6 +77,7 @@ A next‑gen **Project Railway System** where governance, sovereignty, and usabi
 ---
 
 ## 4. **UX Flow**
+
 1. User whispers to Hat → "Design review Friday".
 2. NLP extracts: Task = Design Review, Deadline = Friday.
 3. Policy Kernel triages: attach to Project Alpha, Execution Wagon.
@@ -80,34 +88,38 @@ A next‑gen **Project Railway System** where governance, sovereignty, and usabi
 
 ## 5. **Competitive Edge**
 
-| Feature | ClickUp / Asana / Trello | Jira | SparkTask |
-|---------|--------------------------|------|-----------|
-| Capture | ✅ Strong | ⚠️ Weak | ✅ Hat + Policy Triage |
-| Governance | ⚠️ Limited | ✅ Workflow heavy | ✅ Cryptographic + Policy Engine |
-| Sovereignty | ❌ None | ❌ None | ✅ BYOS native |
-| Lifecycle Continuity | ⚠️ Partial | ⚠️ Heavy | ✅ Continuous loop |
-| UX Narrative | ❌ None | ❌ None | ✅ Conductor storytelling |
+| Feature              | ClickUp / Asana / Trello | Jira              | SparkTask                        |
+| -------------------- | ------------------------ | ----------------- | -------------------------------- |
+| Capture              | ✅ Strong                | ⚠️ Weak           | ✅ Hat + Policy Triage           |
+| Governance           | ⚠️ Limited               | ✅ Workflow heavy | ✅ Cryptographic + Policy Engine |
+| Sovereignty          | ❌ None                  | ❌ None           | ✅ BYOS native                   |
+| Lifecycle Continuity | ⚠️ Partial               | ⚠️ Heavy          | ✅ Continuous loop               |
+| UX Narrative         | ❌ None                  | ❌ None           | ✅ Conductor storytelling        |
 
 ---
 
 ## 6. **Launch Roadmap**
 
 **Phase 1: Carriage + Hat (MVP)**
+
 - Manifest Kernel
 - Event Bus
 - Universal Capture (Hat)
 - Carriage UI (Narrator + Map)
 
 **Phase 2: Wagons Integration**
+
 - Cryptographic Approval Flow
 - BYOS Storage
 - Capsule Threads
 
 **Phase 3: Advanced Modules**
+
 - Risk Heatmap Automation
 - Supplier Evaluation Lifecycle
 
 **Phase 4: Marketplace**
+
 - Third‑party Wagons (industry packs)
 - AI Co‑Pilot for triage & risk prediction
 
@@ -115,5 +127,4 @@ A next‑gen **Project Railway System** where governance, sovereignty, and usabi
 
 ## 7. **Elevated Story Pitch**
 
-> *“SparkTask is the world’s first **Project Railway System**. Every project becomes a journey: wagons like cryptographic approvals, sovereign storage, and capsule threads carry your work. But unlike other tools, SparkTask has a **Carriage and Conductor** — a policy‑driven engine that ensures the journey is safe, governed, and continuous. With the **Conductor’s Hat**, tasks can be captured from anywhere — WhatsApp, email, Slack — and instantly routed to the right wagon. It’s the simplicity of Todoist, fused with the governance of an enterprise PMO. SparkTask isn’t just a tool — it’s the railway that keeps your projects on track.”*
-
+> _“SparkTask is the world’s first **Project Railway System**. Every project becomes a journey: wagons like cryptographic approvals, sovereign storage, and capsule threads carry your work. But unlike other tools, SparkTask has a **Carriage and Conductor** — a policy‑driven engine that ensures the journey is safe, governed, and continuous. With the **Conductor’s Hat**, tasks can be captured from anywhere — WhatsApp, email, Slack — and instantly routed to the right wagon. It’s the simplicity of Todoist, fused with the governance of an enterprise PMO. SparkTask isn’t just a tool — it’s the railway that keeps your projects on track.”_

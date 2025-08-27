@@ -24,14 +24,14 @@ import {
 
 describe('EnhancedBreadcrumb', () => {
   // ===== BASIC RENDERING TESTS =====
-  
+
   describe('Basic Rendering', () => {
     it('renders correctly with default props', () => {
       render(
-        <EnhancedBreadcrumb data-testid="breadcrumb">
+        <EnhancedBreadcrumb data-testid='breadcrumb'>
           <EnhancedBreadcrumbList>
             <EnhancedBreadcrumbItem>
-              <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+              <EnhancedBreadcrumbLink href='/'>Home</EnhancedBreadcrumbLink>
             </EnhancedBreadcrumbItem>
             <EnhancedBreadcrumbSeparator />
             <EnhancedBreadcrumbItem>
@@ -42,7 +42,10 @@ describe('EnhancedBreadcrumb', () => {
       );
 
       expect(screen.getByTestId('breadcrumb')).toBeInTheDocument();
-      expect(screen.getByRole('navigation')).toHaveAttribute('aria-label', 'Breadcrumb navigation');
+      expect(screen.getByRole('navigation')).toHaveAttribute(
+        'aria-label',
+        'Breadcrumb navigation'
+      );
       expect(screen.getByText('Home')).toBeInTheDocument();
       expect(screen.getByText('Current')).toBeInTheDocument();
     });
@@ -50,7 +53,7 @@ describe('EnhancedBreadcrumb', () => {
     it('renders as child component when asChild is true', () => {
       render(
         <EnhancedBreadcrumb asChild>
-          <div data-testid="custom-breadcrumb">Custom breadcrumb</div>
+          <div data-testid='custom-breadcrumb'>Custom breadcrumb</div>
         </EnhancedBreadcrumb>
       );
 
@@ -60,35 +63,39 @@ describe('EnhancedBreadcrumb', () => {
     });
 
     it('applies correct CSS classes for default variant', () => {
-      render(<EnhancedBreadcrumb data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('flex', 'items-center', 'space-x-1');
       expect(breadcrumb).toHaveClass('text-sm', 'text-muted-foreground');
-      expect(breadcrumb).toHaveClass('transition-all', 'duration-200', 'ease-out');
+      expect(breadcrumb).toHaveClass(
+        'transition-all',
+        'duration-200',
+        'ease-out'
+      );
     });
   });
 
   // ===== VARIANT TESTS =====
-  
+
   describe('Variants', () => {
     it('applies compact variant styles correctly', () => {
-      render(<EnhancedBreadcrumb variant="compact" data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb variant='compact' data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('py-1', 'space-x-0.5');
     });
 
     it('applies pills variant styles correctly', () => {
-      render(<EnhancedBreadcrumb variant="pills" data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb variant='pills' data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('py-1', 'space-x-2');
     });
 
     it('applies glass variant styles correctly', () => {
-      render(<EnhancedBreadcrumb variant="glass" data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb variant='glass' data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('py-2', 'px-3', 'rounded-lg');
       expect(breadcrumb).toHaveClass('backdrop-blur-sm');
@@ -97,68 +104,70 @@ describe('EnhancedBreadcrumb', () => {
   });
 
   // ===== SIZE VARIANTS =====
-  
+
   describe('Size Variants', () => {
     it('applies small size correctly', () => {
-      render(<EnhancedBreadcrumb size="sm" data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb size='sm' data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('text-xs', 'gap-1');
     });
 
     it('applies medium size correctly', () => {
-      render(<EnhancedBreadcrumb size="md" data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb size='md' data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('text-sm', 'gap-2');
     });
 
     it('applies large size correctly', () => {
-      render(<EnhancedBreadcrumb size="lg" data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb size='lg' data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('text-base', 'gap-3');
     });
   });
 
   // ===== SURFACE VARIANTS =====
-  
+
   describe('Surface Variants', () => {
     it('applies elevated surface correctly', () => {
-      render(<EnhancedBreadcrumb surface="elevated" data-testid="breadcrumb" />);
-      
+      render(
+        <EnhancedBreadcrumb surface='elevated' data-testid='breadcrumb' />
+      );
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('bg-background-elevated');
     });
 
     it('applies panel surface correctly', () => {
-      render(<EnhancedBreadcrumb surface="panel" data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb surface='panel' data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('bg-background-panel');
     });
 
     it('applies glass surface correctly', () => {
-      render(<EnhancedBreadcrumb surface="glass" data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb surface='glass' data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveClass('bg-background/80', 'backdrop-blur-sm');
     });
   });
 
   // ===== AAA COMPLIANCE TESTS =====
-  
+
   describe('AAA Compliance', () => {
     it('applies AAA mode when enforceAAA is true', () => {
-      render(<EnhancedBreadcrumb enforceAAA data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb enforceAAA data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveAttribute('data-aaa', 'true');
     });
 
     it('does not apply AAA mode by default', () => {
-      render(<EnhancedBreadcrumb data-testid="breadcrumb" />);
-      
+      render(<EnhancedBreadcrumb data-testid='breadcrumb' />);
+
       const breadcrumb = screen.getByTestId('breadcrumb');
       expect(breadcrumb).toHaveAttribute('data-aaa', 'false');
     });
@@ -170,7 +179,7 @@ describe('EnhancedBreadcrumb', () => {
 describe('EnhancedBreadcrumbList', () => {
   it('renders as ordered list by default', () => {
     render(
-      <EnhancedBreadcrumbList data-testid="breadcrumb-list">
+      <EnhancedBreadcrumbList data-testid='breadcrumb-list'>
         <li>Item</li>
       </EnhancedBreadcrumbList>
     );
@@ -183,7 +192,7 @@ describe('EnhancedBreadcrumbList', () => {
   it('renders as child component when asChild is true', () => {
     render(
       <EnhancedBreadcrumbList asChild>
-        <ul data-testid="custom-list">Custom list</ul>
+        <ul data-testid='custom-list'>Custom list</ul>
       </EnhancedBreadcrumbList>
     );
 
@@ -197,7 +206,7 @@ describe('EnhancedBreadcrumbList', () => {
 describe('EnhancedBreadcrumbItem', () => {
   it('renders as list item by default', () => {
     render(
-      <EnhancedBreadcrumbItem data-testid="breadcrumb-item">
+      <EnhancedBreadcrumbItem data-testid='breadcrumb-item'>
         Item content
       </EnhancedBreadcrumbItem>
     );
@@ -209,19 +218,23 @@ describe('EnhancedBreadcrumbItem', () => {
 
   it('applies current page styles when isCurrentPage is true', () => {
     render(
-      <EnhancedBreadcrumbItem isCurrentPage data-testid="breadcrumb-item">
+      <EnhancedBreadcrumbItem isCurrentPage data-testid='breadcrumb-item'>
         Current page
       </EnhancedBreadcrumbItem>
     );
 
     const item = screen.getByTestId('breadcrumb-item');
-    expect(item).toHaveClass('text-foreground', 'font-medium', 'cursor-default');
+    expect(item).toHaveClass(
+      'text-foreground',
+      'font-medium',
+      'cursor-default'
+    );
     expect(item).toHaveAttribute('aria-current', 'page');
   });
 
   it('applies interactive styles when not current page', () => {
     render(
-      <EnhancedBreadcrumbItem data-testid="breadcrumb-item">
+      <EnhancedBreadcrumbItem data-testid='breadcrumb-item'>
         Link page
       </EnhancedBreadcrumbItem>
     );
@@ -233,7 +246,7 @@ describe('EnhancedBreadcrumbItem', () => {
 
   it('applies AAA compliance styles when enforceAAA is true', () => {
     render(
-      <EnhancedBreadcrumbItem enforceAAA data-testid="breadcrumb-item">
+      <EnhancedBreadcrumbItem enforceAAA data-testid='breadcrumb-item'>
         AAA item
       </EnhancedBreadcrumbItem>
     );
@@ -248,7 +261,7 @@ describe('EnhancedBreadcrumbItem', () => {
 describe('EnhancedBreadcrumbLink', () => {
   it('renders as anchor link by default', () => {
     render(
-      <EnhancedBreadcrumbLink href="/test" data-testid="breadcrumb-link">
+      <EnhancedBreadcrumbLink href='/test' data-testid='breadcrumb-link'>
         Test Link
       </EnhancedBreadcrumbLink>
     );
@@ -261,7 +274,7 @@ describe('EnhancedBreadcrumbLink', () => {
 
   it('renders as span when isCurrentPage is true', () => {
     render(
-      <EnhancedBreadcrumbLink isCurrentPage data-testid="breadcrumb-link">
+      <EnhancedBreadcrumbLink isCurrentPage data-testid='breadcrumb-link'>
         Current Page
       </EnhancedBreadcrumbLink>
     );
@@ -269,24 +282,35 @@ describe('EnhancedBreadcrumbLink', () => {
     const link = screen.getByText('Current Page');
     expect(link.tagName).toBe('SPAN');
     expect(link).toHaveAttribute('aria-current', 'page');
-    expect(link).toHaveClass('font-medium', 'text-foreground', 'cursor-default');
+    expect(link).toHaveClass(
+      'font-medium',
+      'text-foreground',
+      'cursor-default'
+    );
   });
 
   it('applies hover and focus styles for interactive links', () => {
     render(
-      <EnhancedBreadcrumbLink href="/test" data-testid="breadcrumb-link">
+      <EnhancedBreadcrumbLink href='/test' data-testid='breadcrumb-link'>
         Interactive Link
       </EnhancedBreadcrumbLink>
     );
 
     const link = screen.getByTestId('breadcrumb-link');
     expect(link).toHaveClass('text-muted-foreground', 'hover:text-foreground');
-    expect(link).toHaveClass('focus-visible:outline-none', 'focus-visible:ring-2');
+    expect(link).toHaveClass(
+      'focus-visible:outline-none',
+      'focus-visible:ring-2'
+    );
   });
 
   it('applies AAA compliance when enforceAAA is true', () => {
     render(
-      <EnhancedBreadcrumbLink enforceAAA href="/test" data-testid="breadcrumb-link">
+      <EnhancedBreadcrumbLink
+        enforceAAA
+        href='/test'
+        data-testid='breadcrumb-link'
+      >
         AAA Link
       </EnhancedBreadcrumbLink>
     );
@@ -302,7 +326,7 @@ describe('EnhancedBreadcrumbLink', () => {
 describe('EnhancedBreadcrumbPage', () => {
   it('renders as span with current page attributes', () => {
     render(
-      <EnhancedBreadcrumbPage data-testid="breadcrumb-page">
+      <EnhancedBreadcrumbPage data-testid='breadcrumb-page'>
         Current Page
       </EnhancedBreadcrumbPage>
     );
@@ -320,7 +344,7 @@ describe('EnhancedBreadcrumbPage', () => {
 
 describe('EnhancedBreadcrumbSeparator', () => {
   it('renders chevron separator by default', () => {
-    render(<EnhancedBreadcrumbSeparator data-testid="separator" />);
+    render(<EnhancedBreadcrumbSeparator data-testid='separator' />);
 
     const separator = screen.getByTestId('separator');
     expect(separator).toHaveAttribute('role', 'presentation');
@@ -328,14 +352,18 @@ describe('EnhancedBreadcrumbSeparator', () => {
   });
 
   it('renders slash separator when variant is slash', () => {
-    render(<EnhancedBreadcrumbSeparator variant="slash" data-testid="separator" />);
+    render(
+      <EnhancedBreadcrumbSeparator variant='slash' data-testid='separator' />
+    );
 
     const separator = screen.getByTestId('separator');
     expect(separator).toHaveTextContent('/');
   });
 
   it('renders dot separator when variant is dot', () => {
-    render(<EnhancedBreadcrumbSeparator variant="dot" data-testid="separator" />);
+    render(
+      <EnhancedBreadcrumbSeparator variant='dot' data-testid='separator' />
+    );
 
     const separator = screen.getByTestId('separator');
     const dot = separator.querySelector('.size-1.rounded-full');
@@ -344,7 +372,7 @@ describe('EnhancedBreadcrumbSeparator', () => {
 
   it('renders custom separator content', () => {
     render(
-      <EnhancedBreadcrumbSeparator data-testid="separator">
+      <EnhancedBreadcrumbSeparator data-testid='separator'>
         <span>|</span>
       </EnhancedBreadcrumbSeparator>
     );
@@ -358,7 +386,7 @@ describe('EnhancedBreadcrumbSeparator', () => {
 
 describe('EnhancedBreadcrumbEllipsis', () => {
   it('renders ellipsis with correct attributes', () => {
-    render(<EnhancedBreadcrumbEllipsis data-testid="ellipsis" />);
+    render(<EnhancedBreadcrumbEllipsis data-testid='ellipsis' />);
 
     const ellipsis = screen.getByTestId('ellipsis');
     expect(ellipsis).toHaveAttribute('role', 'presentation');
@@ -372,7 +400,7 @@ describe('EnhancedBreadcrumbEllipsis', () => {
 describe('BreadcrumbFactory', () => {
   it('creates navigation breadcrumb configuration', () => {
     const config = BreadcrumbFactory.navigation();
-    
+
     expect(config).toEqual({
       variant: 'default',
       size: 'md',
@@ -382,7 +410,7 @@ describe('BreadcrumbFactory', () => {
 
   it('creates compact breadcrumb configuration', () => {
     const config = BreadcrumbFactory.compact();
-    
+
     expect(config).toEqual({
       variant: 'compact',
       size: 'sm',
@@ -393,7 +421,7 @@ describe('BreadcrumbFactory', () => {
 
   it('creates glass breadcrumb configuration', () => {
     const config = BreadcrumbFactory.glass();
-    
+
     expect(config).toEqual({
       variant: 'glass',
       surface: 'glass',
@@ -403,7 +431,7 @@ describe('BreadcrumbFactory', () => {
 
   it('creates accessible breadcrumb configuration', () => {
     const config = BreadcrumbFactory.accessible();
-    
+
     expect(config).toEqual({
       variant: 'default',
       enforceAAA: true,
@@ -412,8 +440,11 @@ describe('BreadcrumbFactory', () => {
   });
 
   it('allows custom props to override defaults', () => {
-    const config = BreadcrumbFactory.navigation({ variant: 'pills', size: 'lg' });
-    
+    const config = BreadcrumbFactory.navigation({
+      variant: 'pills',
+      size: 'lg',
+    });
+
     expect(config).toEqual({
       variant: 'pills',
       size: 'lg',
@@ -428,7 +459,7 @@ describe('Utility Functions', () => {
   describe('createHomeBreadcrumb', () => {
     it('creates home breadcrumb with defaults', () => {
       const home = createHomeBreadcrumb();
-      
+
       expect(home).toEqual({
         href: '/',
         label: 'Home',
@@ -440,7 +471,7 @@ describe('Utility Functions', () => {
     it('creates home breadcrumb with custom values', () => {
       const customIcon = <span>🏠</span>;
       const home = createHomeBreadcrumb('/dashboard', 'Dashboard', customIcon);
-      
+
       expect(home).toEqual({
         href: '/dashboard',
         label: 'Dashboard',
@@ -459,11 +490,15 @@ describe('Utility Functions', () => {
       ];
 
       const path = createBreadcrumbPath(items);
-      
+
       expect(path).toEqual([
         { href: '/', label: 'Home', isCurrentPage: false },
         { href: '/products', label: 'Products', isCurrentPage: false },
-        { href: '/products/123', label: 'Product Details', isCurrentPage: true },
+        {
+          href: '/products/123',
+          label: 'Product Details',
+          isCurrentPage: true,
+        },
       ]);
     });
   });
@@ -480,13 +515,13 @@ describe('Utility Functions', () => {
     it('returns items unchanged when count is within limit', () => {
       const shortItems = longItems.slice(0, 3);
       const result = truncateBreadcrumb(shortItems, 3);
-      
+
       expect(result).toEqual(shortItems);
     });
 
     it('truncates items with ellipsis when exceeding limit', () => {
       const result = truncateBreadcrumb(longItems, 3);
-      
+
       expect(result).toEqual([
         { href: '/', label: 'Home' },
         { href: '#', label: '...', isEllipsis: true },
@@ -496,7 +531,7 @@ describe('Utility Functions', () => {
 
     it('truncates with custom maxItems limit', () => {
       const result = truncateBreadcrumb(longItems, 4);
-      
+
       expect(result).toEqual([
         { href: '/', label: 'Home' },
         { href: '#', label: '...', isEllipsis: true },
@@ -516,13 +551,16 @@ describe('Accessibility', () => {
       <EnhancedBreadcrumb>
         <EnhancedBreadcrumbList>
           <EnhancedBreadcrumbItem>
-            <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+            <EnhancedBreadcrumbLink href='/'>Home</EnhancedBreadcrumbLink>
           </EnhancedBreadcrumbItem>
         </EnhancedBreadcrumbList>
       </EnhancedBreadcrumb>
     );
 
-    expect(screen.getByRole('navigation')).toHaveAttribute('aria-label', 'Breadcrumb navigation');
+    expect(screen.getByRole('navigation')).toHaveAttribute(
+      'aria-label',
+      'Breadcrumb navigation'
+    );
   });
 
   it('marks current page correctly', () => {
@@ -537,7 +575,7 @@ describe('Accessibility', () => {
   });
 
   it('hides separators from screen readers', () => {
-    render(<EnhancedBreadcrumbSeparator data-testid="separator" />);
+    render(<EnhancedBreadcrumbSeparator data-testid='separator' />);
 
     const separator = screen.getByTestId('separator');
     expect(separator).toHaveAttribute('role', 'presentation');
@@ -555,9 +593,9 @@ describe('Accessibility', () => {
 describe('Interactions', () => {
   it('handles click events on breadcrumb links', () => {
     const handleClick = vi.fn();
-    
+
     render(
-      <EnhancedBreadcrumbLink href="/test" onClick={handleClick}>
+      <EnhancedBreadcrumbLink href='/test' onClick={handleClick}>
         Test Link
       </EnhancedBreadcrumbLink>
     );
@@ -568,7 +606,7 @@ describe('Interactions', () => {
 
   it('does not handle clicks on current page', () => {
     const handleClick = vi.fn();
-    
+
     render(
       <EnhancedBreadcrumbLink isCurrentPage onClick={handleClick}>
         Current Page
@@ -581,7 +619,7 @@ describe('Interactions', () => {
 
   it('handles keyboard navigation', () => {
     render(
-      <EnhancedBreadcrumbLink href="/test" data-testid="link">
+      <EnhancedBreadcrumbLink href='/test' data-testid='link'>
         Test Link
       </EnhancedBreadcrumbLink>
     );
@@ -589,7 +627,7 @@ describe('Interactions', () => {
     const link = screen.getByTestId('link');
     fireEvent.keyDown(link, { key: 'Enter' });
     fireEvent.keyDown(link, { key: ' ' });
-    
+
     // Link should remain focusable
     expect(link).toHaveClass('focus-visible:ring-2');
   });
@@ -599,8 +637,8 @@ describe('Interactions', () => {
 
 describe('Edge Cases', () => {
   it('handles empty breadcrumb gracefully', () => {
-    render(<EnhancedBreadcrumb data-testid="breadcrumb" />);
-    
+    render(<EnhancedBreadcrumb data-testid='breadcrumb' />);
+
     const breadcrumb = screen.getByTestId('breadcrumb');
     expect(breadcrumb).toBeInTheDocument();
     expect(breadcrumb).toBeEmptyDOMElement();
@@ -608,9 +646,9 @@ describe('Edge Cases', () => {
 
   it('handles custom className merging', () => {
     render(
-      <EnhancedBreadcrumb className="custom-class" data-testid="breadcrumb" />
+      <EnhancedBreadcrumb className='custom-class' data-testid='breadcrumb' />
     );
-    
+
     const breadcrumb = screen.getByTestId('breadcrumb');
     expect(breadcrumb).toHaveClass('custom-class');
     expect(breadcrumb).toHaveClass('flex', 'items-center'); // Default classes preserved
@@ -621,14 +659,14 @@ describe('Edge Cases', () => {
       <EnhancedBreadcrumb>
         <EnhancedBreadcrumbList>
           <EnhancedBreadcrumbItem>
-            <EnhancedBreadcrumbLink href="/">
+            <EnhancedBreadcrumbLink href='/'>
               <span>🏠</span>
               Home
             </EnhancedBreadcrumbLink>
           </EnhancedBreadcrumbItem>
           <EnhancedBreadcrumbSeparator />
           <EnhancedBreadcrumbItem>
-            <EnhancedBreadcrumbLink href="/products">
+            <EnhancedBreadcrumbLink href='/products'>
               Products
             </EnhancedBreadcrumbLink>
           </EnhancedBreadcrumbItem>
@@ -643,7 +681,7 @@ describe('Edge Cases', () => {
     expect(screen.getByText('Home')).toBeInTheDocument();
     expect(screen.getByText('Products')).toBeInTheDocument();
     expect(screen.getByText('Current Product')).toBeInTheDocument();
-    
+
     // Check for separators using more specific query
     const separators = document.querySelectorAll('[role="presentation"]');
     expect(separators).toHaveLength(2); // Two separators

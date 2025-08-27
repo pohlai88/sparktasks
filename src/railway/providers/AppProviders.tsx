@@ -18,13 +18,9 @@ interface AppProvidersProps {
 
 /**
  * Simplified App Providers Component
- * 
+ *
  * Provides a basic wrapper for the Railway Foundation while we resolve bundler issues
  */
 export const AppProviders: React.FC<AppProvidersProps> = ({ children }) => {
-  return (
-    <div data-testid="app-providers">
-      {children}
-    </div>
-  );
+  return <div data-testid='app-providers'>{children}</div>;
 };

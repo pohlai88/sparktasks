@@ -308,11 +308,14 @@ const PopoverTrigger = React.forwardRef<
   PopoverTriggerProps
 >(({ className, variant, size, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : PopoverPrimitive.Trigger;
-  
+
   return (
     <Comp
       ref={ref}
-      className={cn(enhancedPopoverTriggerVariants({ variant, size }), className)}
+      className={cn(
+        enhancedPopoverTriggerVariants({ variant, size }),
+        className
+      )}
       {...props}
     />
   );

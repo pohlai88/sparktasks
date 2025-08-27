@@ -42,9 +42,7 @@ function Modal() {
   return (
     <div className={`fixed inset-0 ${zIndexClass}`}>
       {/* modal: z-modal → z-index: 1300 */}
-      <div className="modal-content">
-        Modal content here
-      </div>
+      <div className='modal-content'>Modal content here</div>
     </div>
   );
 }
@@ -55,9 +53,7 @@ function Popover() {
   return (
     <div className={`absolute ${zIndexClass}`}>
       {/* popover: z-popover → z-index: 1100 */}
-      <div className="popover-content">
-        Popover content here
-      </div>
+      <div className='popover-content'>Popover content here</div>
     </div>
   );
 }
@@ -66,11 +62,9 @@ function Toast() {
   const { zIndexClass } = useZIndex('success-notification', 'toast');
 
   return (
-    <div className={`fixed top-4 right-4 ${zIndexClass}`}>
+    <div className={`fixed right-4 top-4 ${zIndexClass}`}>
       {/* toast: z-toast → z-index: 1400 */}
-      <div className="toast-content">
-        Toast notification
-      </div>
+      <div className='toast-content'>Toast notification</div>
     </div>
   );
 }
@@ -81,9 +75,7 @@ function Tooltip() {
   return (
     <div className={`absolute ${zIndexClass}`}>
       {/* tooltip: z-tooltip → z-index: 1500 */}
-      <div className="tooltip-content">
-        Helpful information
-      </div>
+      <div className='tooltip-content'>Helpful information</div>
     </div>
   );
 }
@@ -134,7 +126,7 @@ function ZIndexDebugger() {
   const report = useZIndexMonitor();
 
   return (
-    <div className="debug-panel">
+    <div className='debug-panel'>
       <h3>Z-Index Usage Report</h3>
       <p>Total Layers: {report.totalLayers}</p>
       <p>Performance: {report.performance.recommendation}</p>
@@ -142,15 +134,19 @@ function ZIndexDebugger() {
       <h4>Layer Distribution:</h4>
       <ul>
         {Object.entries(report.layerDistribution).map(([layer, count]) => (
-          <li key={layer}>{layer}: {String(count)} components</li>
+          <li key={layer}>
+            {layer}: {String(count)} components
+          </li>
         ))}
       </ul>
 
       {report.conflicts.length > 0 && (
-        <div className="conflicts">
+        <div className='conflicts'>
           <h4>Conflicts Detected:</h4>
           {report.conflicts.map((conflict: ZIndexViolation, i: number) => (
-            <p key={i} className="text-error">{conflict.resolution}</p>
+            <p key={i} className='text-error'>
+              {conflict.resolution}
+            </p>
           ))}
         </div>
       )}

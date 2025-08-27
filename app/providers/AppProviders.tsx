@@ -12,8 +12,8 @@
 
 import React from 'react';
 
-import { RailwayProvider } from './RailwayProvider';
 import { PolicyProvider } from './PolicyProvider';
+import { RailwayProvider } from './RailwayProvider';
 
 /**
  * App Providers Component Props
@@ -24,7 +24,7 @@ interface AppProvidersProps {
 
 /**
  * App Providers Component
- * 
+ *
  * Composes all application contexts in the correct hierarchy:
  * 1. PolicyProvider (governance layer)
  * 2. RailwayProvider (station orchestration)
@@ -33,9 +33,7 @@ interface AppProvidersProps {
 export const AppProviders: React.FC<AppProvidersProps> = ({ children }) => {
   return (
     <PolicyProvider>
-      <RailwayProvider>
-        {children}
-      </RailwayProvider>
+      <RailwayProvider>{children}</RailwayProvider>
     </PolicyProvider>
   );
 };

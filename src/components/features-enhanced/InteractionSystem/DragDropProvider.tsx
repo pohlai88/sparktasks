@@ -37,14 +37,15 @@ import {
   rectSortingStrategy,
   type SortingStrategy,
 } from '@dnd-kit/sortable';
-import {
-  useSortable,
-} from '@dnd-kit/sortable';
+import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
-import { getAdaptiveMotionClasses, prefersReducedMotion } from '@/components/primitives/motion-utils';
+import {
+  getAdaptiveMotionClasses,
+  prefersReducedMotion,
+} from '@/components/primitives/motion-utils';
 import { cn } from '@/utils/cn';
 
 // ===== DRAG & DROP INTERFACES =====
@@ -76,45 +77,44 @@ export interface ScreenReaderInstructions {
 
 // ===== COMPONENT VARIANTS =====
 
-const dragOverlayVariants = cva([
-  'opacity-80 shadow-lg transform-gpu',
-], {
+const dragOverlayVariants = cva(['transform-gpu opacity-80 shadow-lg'], {
   variants: {
     surface: {
-      elevated: 'bg-surface-elevated border border-border-elevated rounded-lg',
-      glass: 'backdrop-blur-lg bg-surface-panel/90 border border-border-glass rounded-lg',
+      elevated: 'bg-surface-elevated border-border-elevated rounded-lg border',
+      glass:
+        'bg-surface-panel/90 border-border-glass rounded-lg border backdrop-blur-lg',
     },
   },
   defaultVariants: {
     surface: 'elevated',
-  }
+  },
 });
 
-const sortableItemVariants = cva([
-  'transition-transform',
-  'touch-manipulation',
-], {
-  variants: {
-    isDragging: {
-      true: 'opacity-50 z-10',
-      false: 'opacity-100',
+const sortableItemVariants = cva(
+  ['transition-transform', 'touch-manipulation'],
+  {
+    variants: {
+      isDragging: {
+        true: 'z-10 opacity-50',
+        false: 'opacity-100',
+      },
+      surface: {
+        elevated: 'bg-surface-elevated',
+        glass: 'bg-surface-panel/80 backdrop-blur-sm',
+      },
+      spacing: {
+        sm: 'mb-2',
+        md: 'mb-4',
+        lg: 'mb-6',
+      },
     },
-    surface: {
-      elevated: 'bg-surface-elevated',
-      glass: 'backdrop-blur-sm bg-surface-panel/80',
+    defaultVariants: {
+      isDragging: false,
+      surface: 'elevated',
+      spacing: 'md',
     },
-    spacing: {
-      sm: 'mb-2',
-      md: 'mb-4',
-      lg: 'mb-6',
-    },
-  },
-  defaultVariants: {
-    isDragging: false,
-    surface: 'elevated',
-    spacing: 'md',
   }
-});
+);
 
 // ===== MAIN PROVIDER COMPONENT =====
 
@@ -136,11 +136,13 @@ export interface DragDropProviderProps {
   };
 
   // Auto-scroll
-  autoScroll?: boolean | {
-    enabled: boolean;
-    threshold?: { x: number; y: number };
-    speed?: number;
-  };
+  autoScroll?:
+    | boolean
+    | {
+        enabled: boolean;
+        threshold?: { x: number; y: number };
+        speed?: number;
+      };
 
   // Visual Feedback
   dragOverlay?: {
@@ -197,15 +199,12 @@ export function DragDropProvider({
   );
 
   // Properly handle custom sensors without conditional Hook usage
-  const customSensorsArray = React.useMemo(() => 
-    customSensors?.map(s => useSensor(s.sensor, s.options || {})) || [], 
+  const customSensorsArray = React.useMemo(
+    () => customSensors?.map(s => useSensor(s.sensor, s.options || {})) || [],
     [customSensors]
   );
 
-  const sensors = useSensors(
-    ...defaultSensors,
-    ...customSensorsArray
-  );
+  const sensors = useSensors(...defaultSensors, ...customSensorsArray);
 
   // ===== MOTION INTEGRATION =====
 
@@ -213,28 +212,43 @@ export function DragDropProvider({
 
   // ===== EVENT HANDLERS =====
 
-  const handleDragStart = React.useCallback((event: DragStartEvent) => {
-    setActiveId(event.active.id);
-    onDragStart?.(event);
-  }, [onDragStart]);
+  const handleDragStart = React.useCallback(
+    (event: DragStartEvent) => {
+      setActiveId(event.active.id);
+      onDragStart?.(event);
+    },
+    [onDragStart]
+  );
 
-  const handleDragMove = React.useCallback((event: DragMoveEvent) => {
-    onDragMove?.(event);
-  }, [onDragMove]);
+  const handleDragMove = React.useCallback(
+    (event: DragMoveEvent) => {
+      onDragMove?.(event);
+    },
+    [onDragMove]
+  );
 
-  const handleDragOver = React.useCallback((event: DragOverEvent) => {
-    onDragOver?.(event);
-  }, [onDragOver]);
+  const handleDragOver = React.useCallback(
+    (event: DragOverEvent) => {
+      onDragOver?.(event);
+    },
+    [onDragOver]
+  );
 
-  const handleDragEnd = React.useCallback((event: DragEndEvent) => {
-    setActiveId(null);
-    onDragEnd(event);
-  }, [onDragEnd]);
+  const handleDragEnd = React.useCallback(
+    (event: DragEndEvent) => {
+      setActiveId(null);
+      onDragEnd(event);
+    },
+    [onDragEnd]
+  );
 
-  const handleDragCancel = React.useCallback((event: DragCancelEvent) => {
-    setActiveId(null);
-    onDragCancel?.(event);
-  }, [onDragCancel]);
+  const handleDragCancel = React.useCallback(
+    (event: DragCancelEvent) => {
+      setActiveId(null);
+      onDragCancel?.(event);
+    },
+    [onDragCancel]
+  );
 
   // ===== ACCESSIBILITY CONFIGURATION =====
 
@@ -252,13 +266,17 @@ export function DragDropProvider({
       }
       return `Draggable item ${active.id} was dropped.`;
     },
-    onDragCancel: ({ active }) => `Dragging was cancelled. Draggable item ${active.id} was dropped.`,
+    onDragCancel: ({ active }) =>
+      `Dragging was cancelled. Draggable item ${active.id} was dropped.`,
   };
 
-  const announcements = React.useMemo(() => ({
-    ...defaultAnnouncements,
-    ...(accessibility?.announcements || {}),
-  }), [accessibility?.announcements]);
+  const announcements = React.useMemo(
+    () => ({
+      ...defaultAnnouncements,
+      ...(accessibility?.announcements || {}),
+    }),
+    [accessibility?.announcements]
+  );
 
   return (
     <DndContext
@@ -269,8 +287,8 @@ export function DragDropProvider({
       autoScroll={autoScroll}
       accessibility={{
         ...(announcements && { announcements }),
-        ...(accessibility?.screenReaderInstructions && { 
-          screenReaderInstructions: accessibility.screenReaderInstructions 
+        ...(accessibility?.screenReaderInstructions && {
+          screenReaderInstructions: accessibility.screenReaderInstructions,
         }),
       }}
       onDragStart={handleDragStart}
@@ -287,19 +305,14 @@ export function DragDropProvider({
       <DragOverlay
         modifiers={dragOverlay?.modifiers || []}
         {...(dragOverlay?.style && { style: dragOverlay.style })}
-        className={cn(
-          dragOverlayVariants(),
-          dragOverlay?.className
-        )}
+        className={cn(dragOverlayVariants(), dragOverlay?.className)}
         dropAnimation={{
           duration: isReducedMotion ? 0 : 250,
           easing: 'cubic-bezier(0.2, 0, 0.2, 1)',
         }}
       >
         {activeId ? (
-          <div className="drag-overlay-item">
-            Dragging {activeId}
-          </div>
+          <div className='drag-overlay-item'>Dragging {activeId}</div>
         ) : null}
       </DragOverlay>
     </DndContext>
@@ -308,7 +321,8 @@ export function DragDropProvider({
 
 // ===== SORTABLE LIST COMPONENT =====
 
-export interface SortableListProps<T> extends VariantProps<typeof sortableItemVariants> {
+export interface SortableListProps<T>
+  extends VariantProps<typeof sortableItemVariants> {
   items: T[];
   onReorder: (items: T[]) => void;
 
@@ -354,31 +368,39 @@ export function SortableList<T>({
 }: SortableListProps<T>) {
   const itemIds = items.map(keyExtractor);
 
-  const sortingStrategy = strategy ||
-    (orientation === 'horizontal' ? horizontalListSortingStrategy : verticalListSortingStrategy);
+  const sortingStrategy =
+    strategy ||
+    (orientation === 'horizontal'
+      ? horizontalListSortingStrategy
+      : verticalListSortingStrategy);
 
-  const handleDragEnd = React.useCallback((event: DragEndEvent) => {
-    const { active, over } = event;
+  const handleDragEnd = React.useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
 
-    if (active.id !== over?.id) {
-      const oldIndex = itemIds.indexOf(String(active.id));
-      const newIndex = itemIds.indexOf(String(over?.id || ''));
+      if (active.id !== over?.id) {
+        const oldIndex = itemIds.indexOf(String(active.id));
+        const newIndex = itemIds.indexOf(String(over?.id || ''));
 
-      if (oldIndex !== -1 && newIndex !== -1) {
-        const newItems = arrayMove(items, oldIndex, newIndex);
-        onReorder(newItems);
+        if (oldIndex !== -1 && newIndex !== -1) {
+          const newItems = arrayMove(items, oldIndex, newIndex);
+          onReorder(newItems);
+        }
       }
-    }
-  }, [items, itemIds, onReorder]);
+    },
+    [items, itemIds, onReorder]
+  );
 
   return (
     <DragDropProvider onDragEnd={handleDragEnd}>
       <SortableContext items={itemIds} strategy={sortingStrategy}>
-        <div className={cn(
-          'sortable-list',
-          orientation === 'horizontal' && 'flex gap-4',
-          className
-        )}>
+        <div
+          className={cn(
+            'sortable-list',
+            orientation === 'horizontal' && 'flex gap-4',
+            className
+          )}
+        >
           {items.map((item, index) => (
             <SortableItem
               key={keyExtractor(item)}
@@ -469,7 +491,8 @@ export interface FileRejection {
   }>;
 }
 
-export interface FileDropZoneProps extends VariantProps<typeof dragOverlayVariants> {
+export interface FileDropZoneProps
+  extends VariantProps<typeof dragOverlayVariants> {
   // File Handling
   onFileDrop: (files: File[]) => void;
   accept?: string | string[];
@@ -506,41 +529,44 @@ export interface FileDropZoneProps extends VariantProps<typeof dragOverlayVarian
   className?: string;
 }
 
-const fileDropZoneVariants = cva([
-  'border-2 border-dashed rounded-lg transition-colors',
-  'flex flex-col items-center justify-center',
-  'cursor-pointer',
-], {
-  variants: {
-    size: {
-      sm: 'h-32 p-4',
-      md: 'h-48 p-6',
-      lg: 'h-64 p-8',
-      xl: 'h-80 p-12',
+const fileDropZoneVariants = cva(
+  [
+    'rounded-lg border-2 border-dashed transition-colors',
+    'flex flex-col items-center justify-center',
+    'cursor-pointer',
+  ],
+  {
+    variants: {
+      size: {
+        sm: 'h-32 p-4',
+        md: 'h-48 p-6',
+        lg: 'h-64 p-8',
+        xl: 'h-80 p-12',
+      },
+      variant: {
+        default: 'border-border-subtle hover:border-border-accent',
+        compact: 'rounded-md border-border-subtle hover:border-border-accent',
+        minimal: 'rounded-sm border-border-subtle hover:border-border-accent',
+      },
+      state: {
+        default: '',
+        active: 'border-accent-border bg-accent-bg/5',
+        accept: 'border-success bg-success/5',
+        reject: 'border-error bg-error/5',
+      },
+      disabled: {
+        true: 'cursor-not-allowed opacity-50',
+        false: '',
+      },
     },
-    variant: {
-      default: 'border-border-subtle hover:border-border-accent',
-      compact: 'border-border-subtle hover:border-border-accent rounded-md',
-      minimal: 'border-border-subtle hover:border-border-accent rounded-sm',
+    defaultVariants: {
+      size: 'md',
+      variant: 'default',
+      state: 'default',
+      disabled: false,
     },
-    state: {
-      default: '',
-      active: 'border-accent-border bg-accent-bg/5',
-      accept: 'border-success bg-success/5',
-      reject: 'border-error bg-error/5',
-    },
-    disabled: {
-      true: 'opacity-50 cursor-not-allowed',
-      false: '',
-    },
-  },
-  defaultVariants: {
-    size: 'md',
-    variant: 'default',
-    state: 'default',
-    disabled: false,
   }
-});
+);
 
 export function FileDropZone({
   onFileDrop,
@@ -561,77 +587,85 @@ export function FileDropZone({
   rejectClassName,
   className,
 }: FileDropZoneProps) {
-  const [dragState, setDragState] = React.useState<'default' | 'active' | 'accept' | 'reject'>('default');
+  const [dragState, setDragState] = React.useState<
+    'default' | 'active' | 'accept' | 'reject'
+  >('default');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  const validateFile = React.useCallback((file: File): FileRejection | null => {
-    const errors: Array<{ code: string; message: string }> = [];
+  const validateFile = React.useCallback(
+    (file: File): FileRejection | null => {
+      const errors: Array<{ code: string; message: string }> = [];
 
-    // Size validation
-    if (maxSize && file.size > maxSize) {
-      errors.push({
-        code: 'file-too-large',
-        message: `File is larger than ${maxSize} bytes`,
-      });
-    }
-
-    // Type validation
-    if (accept) {
-      const acceptedTypes = Array.isArray(accept) ? accept : [accept];
-      const isAccepted = acceptedTypes.some(type => {
-        if (type.startsWith('.')) {
-          return file.name.toLowerCase().endsWith(type.toLowerCase());
-        }
-        return file.type.match(type);
-      });
-
-      if (!isAccepted) {
+      // Size validation
+      if (maxSize && file.size > maxSize) {
         errors.push({
-          code: 'file-invalid-type',
-          message: `File type ${file.type} is not accepted`,
+          code: 'file-too-large',
+          message: `File is larger than ${maxSize} bytes`,
         });
       }
-    }
 
-    // Custom validation
-    if (validator) {
-      const customResult = validator(file);
-      if (customResult) {
-        errors.push(...customResult.errors);
+      // Type validation
+      if (accept) {
+        const acceptedTypes = Array.isArray(accept) ? accept : [accept];
+        const isAccepted = acceptedTypes.some(type => {
+          if (type.startsWith('.')) {
+            return file.name.toLowerCase().endsWith(type.toLowerCase());
+          }
+          return file.type.match(type);
+        });
+
+        if (!isAccepted) {
+          errors.push({
+            code: 'file-invalid-type',
+            message: `File type ${file.type} is not accepted`,
+          });
+        }
       }
-    }
 
-    return errors.length > 0 ? { file, errors } : null;
-  }, [accept, maxSize, validator]);
-
-  const handleFiles = React.useCallback((files: FileList | File[]) => {
-    const fileArray = Array.from(files);
-
-    // Limit number of files
-    const limitedFiles = maxFiles ? fileArray.slice(0, maxFiles) : fileArray;
-
-    // Validate files
-    const validFiles: File[] = [];
-    const rejectedFiles: FileRejection[] = [];
-
-    for (const file of limitedFiles) {
-      const rejection = validateFile(file);
-      if (rejection) {
-        rejectedFiles.push(rejection);
-      } else {
-        validFiles.push(file);
+      // Custom validation
+      if (validator) {
+        const customResult = validator(file);
+        if (customResult) {
+          errors.push(...customResult.errors);
+        }
       }
-    }
 
-    // Handle results
-    if (validFiles.length > 0) {
-      onFileDrop(validFiles);
-    }
+      return errors.length > 0 ? { file, errors } : null;
+    },
+    [accept, maxSize, validator]
+  );
 
-    if (rejectedFiles.length > 0) {
-      onReject?.(rejectedFiles);
-    }
-  }, [maxFiles, validateFile, onFileDrop, onReject]);
+  const handleFiles = React.useCallback(
+    (files: FileList | File[]) => {
+      const fileArray = Array.from(files);
+
+      // Limit number of files
+      const limitedFiles = maxFiles ? fileArray.slice(0, maxFiles) : fileArray;
+
+      // Validate files
+      const validFiles: File[] = [];
+      const rejectedFiles: FileRejection[] = [];
+
+      for (const file of limitedFiles) {
+        const rejection = validateFile(file);
+        if (rejection) {
+          rejectedFiles.push(rejection);
+        } else {
+          validFiles.push(file);
+        }
+      }
+
+      // Handle results
+      if (validFiles.length > 0) {
+        onFileDrop(validFiles);
+      }
+
+      if (rejectedFiles.length > 0) {
+        onReject?.(rejectedFiles);
+      }
+    },
+    [maxFiles, validateFile, onFileDrop, onReject]
+  );
 
   const handleDragOver = React.useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -643,31 +677,37 @@ export function FileDropZone({
     setDragState('default');
   }, []);
 
-  const handleDrop = React.useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setDragState('default');
+  const handleDrop = React.useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setDragState('default');
 
-    if (disabled || loading) return;
+      if (disabled || loading) return;
 
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      handleFiles(files);
-    }
-  }, [disabled, loading, handleFiles]);
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleFiles(files);
+      }
+    },
+    [disabled, loading, handleFiles]
+  );
 
   const handleClick = React.useCallback(() => {
     if (disabled || loading) return;
     fileInputRef.current?.click();
   }, [disabled, loading]);
 
-  const handleFileInputChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      handleFiles(files);
-    }
-    // Reset input
-    e.target.value = '';
-  }, [handleFiles]);
+  const handleFileInputChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        handleFiles(files);
+      }
+      // Reset input
+      e.target.value = '';
+    },
+    [handleFiles]
+  );
 
   const currentClassName = cn(
     fileDropZoneVariants({ size, variant, state: dragState, disabled }),
@@ -684,40 +724,38 @@ export function FileDropZone({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onClick={handleClick}
-      role="button"
+      role='button'
       tabIndex={disabled ? -1 : 0}
       aria-disabled={disabled}
-      aria-label="File drop zone"
+      aria-label='File drop zone'
     >
       <input
         ref={fileInputRef}
-        type="file"
+        type='file'
         accept={Array.isArray(accept) ? accept.join(',') : accept}
         multiple={multiple}
         onChange={handleFileInputChange}
-        className="sr-only"
+        className='sr-only'
         disabled={disabled}
       />
 
       {children || (
-        <div className="text-center">
+        <div className='text-center'>
           {placeholder?.icon && (
-            <div className="mb-4 text-foreground-muted">
-              {placeholder.icon}
-            </div>
+            <div className='mb-4 text-foreground-muted'>{placeholder.icon}</div>
           )}
           {placeholder?.title && (
-            <h3 className="text-lg font-medium text-foreground mb-2">
+            <h3 className='mb-2 text-lg font-medium text-foreground'>
               {placeholder.title}
             </h3>
           )}
           {placeholder?.description && (
-            <p className="text-foreground-muted mb-4">
+            <p className='mb-4 text-foreground-muted'>
               {placeholder.description}
             </p>
           )}
           {placeholder?.actionText && (
-            <span className="text-accent font-medium">
+            <span className='font-medium text-accent'>
               {placeholder.actionText}
             </span>
           )}
@@ -725,8 +763,8 @@ export function FileDropZone({
       )}
 
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-surface-overlay/50">
-          <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+        <div className='bg-surface-overlay/50 absolute inset-0 flex items-center justify-center'>
+          <div className='h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent' />
         </div>
       )}
     </div>

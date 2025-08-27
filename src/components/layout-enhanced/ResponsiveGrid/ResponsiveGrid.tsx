@@ -37,13 +37,13 @@ const responsiveGridVariants = cva(['grid', '@container'], {
       'inline-size': '@container/inline-size',
       'block-size': '@container/block-size',
     },
-    
+
     // Auto-sizing options
     maintainAspectRatio: {
       true: '',
       false: '',
     },
-    
+
     // Performance
     virtualized: {
       true: 'overflow-hidden',
@@ -59,18 +59,18 @@ const responsiveGridVariants = cva(['grid', '@container'], {
 
 // ===== TYPES =====
 
-export interface ResponsiveGridProps 
+export interface ResponsiveGridProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof responsiveGridVariants> {
   // Container-based Breakpoints
   breakpoints?: {
-    xs?: string;   // 320px
-    sm?: string;   // 480px
-    md?: string;   // 768px
-    lg?: string;   // 1024px
-    xl?: string;   // 1280px
+    xs?: string; // 320px
+    sm?: string; // 480px
+    md?: string; // 768px
+    lg?: string; // 1024px
+    xl?: string; // 1280px
   };
-  
+
   // Grid Configuration per Breakpoint
   gridConfig?: {
     xs?: GridConfig;
@@ -79,7 +79,7 @@ export interface ResponsiveGridProps
     lg?: GridConfig;
     xl?: GridConfig;
   };
-  
+
   // Auto-sizing Options
   autoSizing?: {
     minItemWidth?: string;
@@ -87,19 +87,19 @@ export interface ResponsiveGridProps
     aspectRatio?: string;
     maintainAspectRatio?: boolean;
   };
-  
+
   // Performance
   virtualized?: boolean;
   virtualizedHeight?: number;
   overscan?: number;
-  
+
   // Container Query Features
   containerName?: string;
-  
+
   // Semantic HTML
   as?: 'div' | 'section' | 'article' | 'ul' | 'ol';
   asChild?: boolean;
-  
+
   children: React.ReactNode;
 }
 
@@ -109,39 +109,42 @@ export const ResponsiveGrid = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & ResponsiveGridProps
 >(
-  ({ 
-    className, 
-    breakpoints = {
-      xs: '320px',
-      sm: '480px',
-      md: '768px',
-      lg: '1024px',
-      xl: '1280px',
+  (
+    {
+      className,
+      breakpoints = {
+        xs: '320px',
+        sm: '480px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+      },
+      gridConfig,
+      autoSizing,
+      virtualized = false,
+      virtualizedHeight,
+      overscan = 5,
+      containerName,
+      containerType,
+      maintainAspectRatio,
+      as = 'div',
+      asChild = false,
+      children,
+      style,
+      ...props
     },
-    gridConfig,
-    autoSizing,
-    virtualized = false,
-    virtualizedHeight,
-    overscan = 5,
-    containerName,
-    containerType,
-    maintainAspectRatio,
-    as = 'div',
-    asChild = false,
-    children,
-    style,
-    ...props 
-  }, ref) => {
+    ref
+  ) => {
     // Build custom styles for container queries and grid configs
     const customStyle: React.CSSProperties = {
       ...style,
     };
-    
+
     // Set container name if provided
     if (containerName) {
       (customStyle as any).containerName = containerName;
     }
-    
+
     // Auto-sizing styles
     if (autoSizing) {
       if (autoSizing.minItemWidth) {
@@ -154,15 +157,15 @@ export const ResponsiveGrid = forwardRef<
         customStyle.aspectRatio = autoSizing.aspectRatio;
       }
     }
-    
+
     // Virtualized height
     if (virtualized && virtualizedHeight) {
       customStyle.height = `${virtualizedHeight}px`;
     }
-    
+
     // Build container query classes for grid configurations
     const containerQueryClasses: string[] = [];
-    
+
     if (gridConfig) {
       Object.entries(gridConfig).forEach(([breakpoint, config]) => {
         const bp = breakpoints[breakpoint as keyof typeof breakpoints];
@@ -171,40 +174,49 @@ export const ResponsiveGrid = forwardRef<
           if (typeof config.columns === 'number') {
             containerQueryClasses.push(`@[${bp}]:grid-cols-${config.columns}`);
           }
-          
+
           // Convert rows to grid class
           if (typeof config.rows === 'number') {
             containerQueryClasses.push(`@[${bp}]:grid-rows-${config.rows}`);
           }
-          
+
           // Handle gap
           if (config.gap) {
-            const gapClass = config.gap === 'xs' ? '1' : 
-                           config.gap === 'sm' ? '2' :
-                           config.gap === 'md' ? '4' :
-                           config.gap === 'lg' ? '6' :
-                           config.gap === 'xl' ? '8' : config.gap;
+            const gapClass =
+              config.gap === 'xs'
+                ? '1'
+                : config.gap === 'sm'
+                  ? '2'
+                  : config.gap === 'md'
+                    ? '4'
+                    : config.gap === 'lg'
+                      ? '6'
+                      : config.gap === 'xl'
+                        ? '8'
+                        : config.gap;
             containerQueryClasses.push(`@[${bp}]:gap-${gapClass}`);
           }
-          
+
           // Handle alignment
           if (config.alignItems) {
             containerQueryClasses.push(`@[${bp}]:items-${config.alignItems}`);
           }
           if (config.justifyItems) {
-            containerQueryClasses.push(`@[${bp}]:justify-items-${config.justifyItems}`);
+            containerQueryClasses.push(
+              `@[${bp}]:justify-items-${config.justifyItems}`
+            );
           }
         }
       });
     }
-    
+
     // Default auto-responsive grid if no specific config provided
     if (!gridConfig && autoSizing?.minItemWidth) {
       customStyle.gridTemplateColumns = `repeat(auto-fit, minmax(${autoSizing.minItemWidth}, 1fr))`;
     }
-    
+
     const combinedClassName = cn(
-      responsiveGridVariants({ 
+      responsiveGridVariants({
         containerType,
         maintainAspectRatio,
         virtualized,
@@ -212,21 +224,17 @@ export const ResponsiveGrid = forwardRef<
       containerQueryClasses,
       className
     );
-    
+
     if (asChild) {
       return (
-        <Slot
-          className={combinedClassName}
-          style={customStyle}
-          {...props}
-        >
+        <Slot className={combinedClassName} style={customStyle} {...props}>
           {children}
         </Slot>
       );
     }
-    
+
     const Comp = as as React.ElementType;
-    
+
     return (
       <Comp
         ref={ref}

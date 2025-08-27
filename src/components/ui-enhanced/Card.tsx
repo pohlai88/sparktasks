@@ -54,39 +54,27 @@ const enhancedCardVariants = cva(
     variants: {
       variant: {
         // Default: Clean card with subtle elevation
-        default: [
-          'bg-card border-border',
-          'shadow-sm',
-        ],
+        default: ['border-border bg-card', 'shadow-sm'],
 
         // Elevated: Enhanced depth with stronger shadow
-        elevated: [
-          'bg-background-elevated border-border',
-          'shadow-md',
-        ],
+        elevated: ['border-border bg-background-elevated', 'shadow-md'],
 
         // Outlined: Emphasis on borders
-        outlined: [
-          'bg-card border-2 border-border',
-          'shadow-none',
-        ],
+        outlined: ['border-2 border-border bg-card', 'shadow-none'],
 
         // Ghost: Minimal styling
-        ghost: [
-          'bg-transparent border-transparent',
-          'shadow-none',
-        ],
+        ghost: ['border-transparent bg-transparent', 'shadow-none'],
 
         // Glass: Liquid glass materials
         glass: [
-          'bg-card/80 border-border/30',
+          'border-border/30 bg-card/80',
           'backdrop-blur-md backdrop-saturate-[135%]',
           'shadow-elevation-md',
         ],
 
         // Floating: Enhanced glass with stronger shadow
         floating: [
-          'bg-card/75 border-border/40',
+          'border-border/40 bg-card/75',
           'backdrop-blur-lg backdrop-saturate-[135%]',
           'shadow-elevation-lg',
         ],
@@ -104,7 +92,7 @@ const enhancedCardVariants = cva(
         false: '',
         true: [
           'cursor-pointer',
-          'hover:shadow-md hover:border-border-strong',
+          'hover:border-border-strong hover:shadow-md',
           'active:scale-[0.98]',
           'focus-visible:ring-2',
         ],
@@ -115,7 +103,7 @@ const enhancedCardVariants = cva(
         false: '',
         true: [
           // Use AAA-compliant alternatives
-          'aaa:bg-background aaa:border-foreground/20',
+          'aaa:border-foreground/20 aaa:bg-background',
           'aaa:shadow-lg',
           'aaa:text-foreground',
         ],
@@ -302,7 +290,13 @@ const enhancedCardFooterVariants = cva(
 
 interface EnhancedCardOwnProps {
   asChild?: boolean;
-  variant?: 'default' | 'elevated' | 'outlined' | 'ghost' | 'glass' | 'floating';
+  variant?:
+    | 'default'
+    | 'elevated'
+    | 'outlined'
+    | 'ghost'
+    | 'glass'
+    | 'floating';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   interactive?: boolean;
   enforceAAA?: boolean;
@@ -496,10 +490,7 @@ const EnhancedCardFooter = React.forwardRef<
     return (
       <Comp
         ref={ref}
-        className={cn(
-          enhancedCardFooterVariants({ size, justify }),
-          className
-        )}
+        className={cn(enhancedCardFooterVariants({ size, justify }), className)}
         {...props}
       />
     );
@@ -519,9 +510,12 @@ export const CardFactory = {
    * Default card with clean styling
    */
   default: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'variant'>) => (
-      <EnhancedCard variant='default' {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'variant'
+      >
+    ) => <EnhancedCard variant='default' {...props} />,
     Header: EnhancedCardHeader,
     Title: EnhancedCardTitle,
     Description: EnhancedCardDescription,
@@ -533,9 +527,12 @@ export const CardFactory = {
    * Elevated card with enhanced depth
    */
   elevated: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'variant'>) => (
-      <EnhancedCard variant='elevated' {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'variant'
+      >
+    ) => <EnhancedCard variant='elevated' {...props} />,
     Header: EnhancedCardHeader,
     Title: EnhancedCardTitle,
     Description: EnhancedCardDescription,
@@ -547,9 +544,12 @@ export const CardFactory = {
    * Outlined card with border emphasis
    */
   outlined: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'variant'>) => (
-      <EnhancedCard variant='outlined' {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'variant'
+      >
+    ) => <EnhancedCard variant='outlined' {...props} />,
     Header: EnhancedCardHeader,
     Title: EnhancedCardTitle,
     Description: EnhancedCardDescription,
@@ -561,9 +561,12 @@ export const CardFactory = {
    * Glass card with liquid materials
    */
   glass: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'variant'>) => (
-      <EnhancedCard variant='glass' {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'variant'
+      >
+    ) => <EnhancedCard variant='glass' {...props} />,
     Header: EnhancedCardHeader,
     Title: EnhancedCardTitle,
     Description: EnhancedCardDescription,
@@ -575,9 +578,12 @@ export const CardFactory = {
    * Floating card with enhanced glass
    */
   floating: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'variant'>) => (
-      <EnhancedCard variant='floating' {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'variant'
+      >
+    ) => <EnhancedCard variant='floating' {...props} />,
     Header: EnhancedCardHeader,
     Title: EnhancedCardTitle,
     Description: EnhancedCardDescription,
@@ -589,9 +595,12 @@ export const CardFactory = {
    * Interactive card with hover states
    */
   interactive: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'interactive'>) => (
-      <EnhancedCard interactive={true} {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'interactive'
+      >
+    ) => <EnhancedCard interactive={true} {...props} />,
     Header: EnhancedCardHeader,
     Title: EnhancedCardTitle,
     Description: EnhancedCardDescription,
@@ -603,9 +612,12 @@ export const CardFactory = {
    * AAA compliant card with enhanced accessibility
    */
   aaa: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'enforceAAA'>) => (
-      <EnhancedCard enforceAAA={true} {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'enforceAAA'
+      >
+    ) => <EnhancedCard enforceAAA={true} {...props} />,
     Header: EnhancedCardHeader,
     Title: EnhancedCardTitle,
     Description: EnhancedCardDescription,
@@ -617,48 +629,86 @@ export const CardFactory = {
    * Small card for compact layouts
    */
   small: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'size'>) => (
-      <EnhancedCard size='sm' {...props} />
-    ),
-    Header: (props: Omit<EnhancedCardHeaderProps & React.HTMLAttributes<HTMLDivElement>, 'size'>) => (
-      <EnhancedCardHeader size='sm' {...props} />
-    ),
-    Title: (props: Omit<EnhancedCardTitleProps & React.HTMLAttributes<HTMLHeadingElement>, 'size'>) => (
-      <EnhancedCardTitle size='sm' {...props} />
-    ),
-    Description: (props: Omit<EnhancedCardDescriptionProps & React.HTMLAttributes<HTMLParagraphElement>, 'size'>) => (
-      <EnhancedCardDescription size='sm' {...props} />
-    ),
-    Content: (props: Omit<EnhancedCardContentProps & React.HTMLAttributes<HTMLDivElement>, 'size'>) => (
-      <EnhancedCardContent size='sm' {...props} />
-    ),
-    Footer: (props: Omit<EnhancedCardFooterProps & React.HTMLAttributes<HTMLDivElement>, 'size'>) => (
-      <EnhancedCardFooter size='sm' {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'size'
+      >
+    ) => <EnhancedCard size='sm' {...props} />,
+    Header: (
+      props: Omit<
+        EnhancedCardHeaderProps & React.HTMLAttributes<HTMLDivElement>,
+        'size'
+      >
+    ) => <EnhancedCardHeader size='sm' {...props} />,
+    Title: (
+      props: Omit<
+        EnhancedCardTitleProps & React.HTMLAttributes<HTMLHeadingElement>,
+        'size'
+      >
+    ) => <EnhancedCardTitle size='sm' {...props} />,
+    Description: (
+      props: Omit<
+        EnhancedCardDescriptionProps &
+          React.HTMLAttributes<HTMLParagraphElement>,
+        'size'
+      >
+    ) => <EnhancedCardDescription size='sm' {...props} />,
+    Content: (
+      props: Omit<
+        EnhancedCardContentProps & React.HTMLAttributes<HTMLDivElement>,
+        'size'
+      >
+    ) => <EnhancedCardContent size='sm' {...props} />,
+    Footer: (
+      props: Omit<
+        EnhancedCardFooterProps & React.HTMLAttributes<HTMLDivElement>,
+        'size'
+      >
+    ) => <EnhancedCardFooter size='sm' {...props} />,
   },
 
   /**
    * Large card for prominent display
    */
   large: {
-    Card: (props: Omit<EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>, 'size'>) => (
-      <EnhancedCard size='lg' {...props} />
-    ),
-    Header: (props: Omit<EnhancedCardHeaderProps & React.HTMLAttributes<HTMLDivElement>, 'size'>) => (
-      <EnhancedCardHeader size='lg' {...props} />
-    ),
-    Title: (props: Omit<EnhancedCardTitleProps & React.HTMLAttributes<HTMLHeadingElement>, 'size'>) => (
-      <EnhancedCardTitle size='lg' {...props} />
-    ),
-    Description: (props: Omit<EnhancedCardDescriptionProps & React.HTMLAttributes<HTMLParagraphElement>, 'size'>) => (
-      <EnhancedCardDescription size='lg' {...props} />
-    ),
-    Content: (props: Omit<EnhancedCardContentProps & React.HTMLAttributes<HTMLDivElement>, 'size'>) => (
-      <EnhancedCardContent size='lg' {...props} />
-    ),
-    Footer: (props: Omit<EnhancedCardFooterProps & React.HTMLAttributes<HTMLDivElement>, 'size'>) => (
-      <EnhancedCardFooter size='lg' {...props} />
-    ),
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'size'
+      >
+    ) => <EnhancedCard size='lg' {...props} />,
+    Header: (
+      props: Omit<
+        EnhancedCardHeaderProps & React.HTMLAttributes<HTMLDivElement>,
+        'size'
+      >
+    ) => <EnhancedCardHeader size='lg' {...props} />,
+    Title: (
+      props: Omit<
+        EnhancedCardTitleProps & React.HTMLAttributes<HTMLHeadingElement>,
+        'size'
+      >
+    ) => <EnhancedCardTitle size='lg' {...props} />,
+    Description: (
+      props: Omit<
+        EnhancedCardDescriptionProps &
+          React.HTMLAttributes<HTMLParagraphElement>,
+        'size'
+      >
+    ) => <EnhancedCardDescription size='lg' {...props} />,
+    Content: (
+      props: Omit<
+        EnhancedCardContentProps & React.HTMLAttributes<HTMLDivElement>,
+        'size'
+      >
+    ) => <EnhancedCardContent size='lg' {...props} />,
+    Footer: (
+      props: Omit<
+        EnhancedCardFooterProps & React.HTMLAttributes<HTMLDivElement>,
+        'size'
+      >
+    ) => <EnhancedCardFooter size='lg' {...props} />,
   },
 } as const;
 

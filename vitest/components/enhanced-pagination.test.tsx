@@ -40,7 +40,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
 
   it('meets WCAG AAA baseline requirements', () => {
     render(
-      <EnhancedPaginationRoot aria-label="Product pagination">
+      <EnhancedPaginationRoot aria-label='Product pagination'>
         <EnhancedPaginationItem page={1} isCurrent>
           1
         </EnhancedPaginationItem>
@@ -58,7 +58,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
   it('enforces dark-first foundation with ethereal accents', () => {
     const { container } = render(
       <EnhancedPaginationRoot>
-        <EnhancedPaginationItem variant="default">1</EnhancedPaginationItem>
+        <EnhancedPaginationItem variant='default'>1</EnhancedPaginationItem>
       </EnhancedPaginationRoot>
     );
 
@@ -72,7 +72,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
   it('applies Apple HIG interaction patterns with systematic spacing', () => {
     render(
       <EnhancedPaginationRoot>
-        <EnhancedPaginationItem size="touch">1</EnhancedPaginationItem>
+        <EnhancedPaginationItem size='touch'>1</EnhancedPaginationItem>
       </EnhancedPaginationRoot>
     );
 
@@ -82,9 +82,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
   });
 
   it('renders with liquid glass materials when specified', () => {
-    render(
-      <EnhancedPaginationItem vibrancy="glass">1</EnhancedPaginationItem>
-    );
+    render(<EnhancedPaginationItem vibrancy='glass'>1</EnhancedPaginationItem>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('bg-background/80', 'backdrop-blur-md');
@@ -109,7 +107,13 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
   });
 
   it('renders all item variants correctly', () => {
-    const variants = ['default', 'ghost', 'outline', 'pills', 'minimal'] as const;
+    const variants = [
+      'default',
+      'ghost',
+      'outline',
+      'pills',
+      'minimal',
+    ] as const;
 
     for (const variant of variants) {
       render(
@@ -304,7 +308,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
 
     render(
       <Root>
-        <Item data-testid="pills-item">1</Item>
+        <Item data-testid='pills-item'>1</Item>
       </Root>
     );
 
@@ -333,7 +337,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
   it('supports asChild pattern for root', () => {
     render(
       <EnhancedPaginationRoot asChild>
-        <section data-testid="custom-section">
+        <section data-testid='custom-section'>
           <EnhancedPaginationItem>1</EnhancedPaginationItem>
         </section>
       </EnhancedPaginationRoot>
@@ -347,7 +351,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
   it('supports asChild pattern for items', () => {
     render(
       <EnhancedPaginationItem asChild>
-        <a href="/page/1" data-testid="custom-link">
+        <a href='/page/1' data-testid='custom-link'>
           1
         </a>
       </EnhancedPaginationItem>
@@ -427,7 +431,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
       value: mockMatchMedia,
     });
 
-    render(<EnhancedPaginationItem size="md">1</EnhancedPaginationItem>);
+    render(<EnhancedPaginationItem size='md'>1</EnhancedPaginationItem>);
 
     const button = screen.getByRole('button');
     // Should be adjusted to touch size automatically
@@ -459,7 +463,7 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
   it('uses only design token classes', () => {
     const { container } = render(
       <EnhancedPaginationRoot>
-        <EnhancedPaginationItem variant="default">1</EnhancedPaginationItem>
+        <EnhancedPaginationItem variant='default'>1</EnhancedPaginationItem>
       </EnhancedPaginationRoot>
     );
 
@@ -475,7 +479,9 @@ describe('EnhancedPagination - MAPS v2.2 Compliance', () => {
   });
 
   it('maintains semantic class naming', () => {
-    render(<EnhancedPaginationItem variant="default">1</EnhancedPaginationItem>);
+    render(
+      <EnhancedPaginationItem variant='default'>1</EnhancedPaginationItem>
+    );
 
     const button = screen.getByRole('button');
     const classes = button.className;
@@ -519,7 +525,7 @@ describe('EnhancedPagination - Integration Tests', () => {
     const TestRouter = () => (
       <EnhancedPaginationRoot>
         <EnhancedPaginationItem asChild>
-          <a href="/page/1">1</a>
+          <a href='/page/1'>1</a>
         </EnhancedPaginationItem>
       </EnhancedPaginationRoot>
     );

@@ -122,16 +122,18 @@ module.exports = {
       'error',
       {
         selector: "JSXAttribute[name.name='aria-hidden'][value.value=true]",
-        message: '🚫 Use <AccessibleIcon> wrapper instead of manual aria-hidden'
+        message:
+          '🚫 Use <AccessibleIcon> wrapper instead of manual aria-hidden',
       },
       {
         selector: "Literal[value='sr-only']",
-        message: '🚫 Use <VisuallyHidden> component instead of sr-only class'
+        message: '🚫 Use <VisuallyHidden> component instead of sr-only class',
       },
       {
         selector: "Property[key.name='aria-hidden'][value.value=true]",
-        message: '🚫 Use <AccessibleIcon> wrapper instead of object aria-hidden'
-      }
+        message:
+          '🚫 Use <AccessibleIcon> wrapper instead of object aria-hidden',
+      },
     ],
 
     // Block primitive bypassing
@@ -141,22 +143,22 @@ module.exports = {
         paths: [
           {
             name: '@radix-ui/react-visually-hidden',
-            message: '🚫 Import from @/components/primitives instead'
+            message: '🚫 Import from @/components/primitives instead',
           },
           {
             name: '@radix-ui/react-slot',
-            message: '🚫 Import from @/components/primitives instead'
+            message: '🚫 Import from @/components/primitives instead',
           },
           {
             name: '@radix-ui/react-accessible-icon',
-            message: '🚫 Import from @/components/primitives instead'
+            message: '🚫 Import from @/components/primitives instead',
           },
           {
             name: '@radix-ui/react-direction',
-            message: '🚫 Import from @/components/primitives instead'
-          }
-        ]
-      }
+            message: '🚫 Import from @/components/primitives instead',
+          },
+        ],
+      },
     ],
 
     // ===== MAPS GOVERNANCE RULES =====

@@ -1,204 +1,504 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>SparkTasks — Project‑Native Everything</title>
-<style>
-  :root{
-    --bg:#0b0f17; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb; --brand:#7c3aed;
-    --brand2:#22d3ee; --ok:#10b981; --warn:#f59e0b; --bad:#ef4444; --chip:#1f2937;
-    --glass: rgba(255,255,255,0.06); --stroke: rgba(255,255,255,0.08);
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:radial-gradient(1200px 600px at 15% -10%,#13213a 0%,#0b0f17 45%),linear-gradient(180deg,#0b0f17,#0b0f17);
-       color:var(--text);font:14px/1.45 ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial}
-  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:16px;padding:12px 16px;border-bottom:1px solid var(--stroke);
-    background:linear-gradient(180deg,rgba(11,15,23,0.9),rgba(11,15,23,0.7));backdrop-filter: blur(8px)}
-  .logo{font-weight:800;letter-spacing:.2px}
-  .crumbs{color:var(--muted)}
-  .badges{display:flex;gap:8px;margin-left:auto}
-  .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--stroke);border-radius:999px;background:var(--glass)}
-  .badge.ok{border-color:rgba(16,185,129,.25);color:#c7f9e8}
-  .badge.verify{border-color:rgba(34,211,238,.25);color:#bff5fb}
-  .btn{padding:6px 10px;border-radius:8px;border:1px solid var(--stroke);background:var(--glass);color:var(--text);cursor:pointer}
-  .grid{display:grid;grid-template-columns: 1fr 1fr 1fr 360px;gap:16px;padding:16px}
-  .col{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;display:flex;flex-direction:column;min-height:60vh}
-  .col h3{margin:10px 12px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-  .card{margin:8px 8px 0;padding:10px;border:1px solid var(--stroke);border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));cursor:pointer;transition:transform .12s ease}
-  .card:hover{transform:translateY(-2px)}
-  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-  .chip{background:var(--chip);color:#cbd5e1;border:1px solid var(--stroke);padding:2px 8px;border-radius:999px;font-size:12px}
-  .drawer{grid-column:4;position:sticky;top:64px;align-self:start}
-  .panel{border:1px solid var(--stroke);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));overflow:hidden}
-  .panel header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--stroke)}
-  .preview{aspect-ratio:16/9;background:
-    linear-gradient(120deg, rgba(124,58,237,.18), rgba(34,211,238,.12)),
-    radial-gradient(600px 300px at 70% 20%, rgba(124,58,237,.22), transparent 60%),
-    #0f172a;border-bottom:1px solid var(--stroke);display:flex;align-items:center;justify-content:center;color:#e9d5ff}
-  .preview .tag{position:absolute;margin-top:-180px;margin-left:-260px;background:rgba(2,6,23,.7);padding:4px 8px;border-radius:6px;border:1px solid var(--stroke);font-size:12px}
-  .row{display:flex;gap:8px;align-items:center}
-  .group{padding:10px 12px;border-bottom:1px solid var(--stroke)}
-  .btn.primary{background:linear-gradient(90deg,var(--brand),var(--brand2));border:0}
-  .kbar{position:fixed;inset:0;display:none;place-items:center;background:rgba(2,6,23,.6);backdrop-filter: blur(6px);z-index:100}
-  .kbar .box{width:min(900px,92vw);border:1px solid var(--stroke);border-radius:12px;overflow:hidden;background:#0f172a}
-  .kbar header{padding:10px 12px;border-bottom:1px solid var(--stroke);display:flex;gap:8px;flex-wrap:wrap}
-  .token{padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);background:#0b1220;color:#cbd5e1}
-  .results{max-height:48vh;overflow:auto}
-  .res{padding:12px;border-bottom:1px solid var(--stroke);display:flex;justify-content:space-between}
-  .hud{position:fixed;right:16px;bottom:16px;display:flex;gap:8px}
-  .hud .tile{padding:8px 12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);color:#cbd5e1}
-  .switch{display:inline-flex;align-items:center;gap:8px}
-  .switch input{appearance:none;width:38px;height:22px;border-radius:999px;background:#1f2937;position:relative;outline:none;border:1px solid var(--stroke)}
-  .switch input::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:999px;background:#9ca3af;transition:left .18s ease, background .18s}
-  .switch input:checked{background:#065f46;border-color:rgba(16,185,129,.3)}
-  .switch input:checked::after{left:18px;background:#34d399}
-  .toolbar{display:flex;gap:8px}
-  .link{color:#93c5fd;text-decoration:none}
-</style>
-</head>
-<body>
-  <div class="topbar">
-    <div class="logo">SparkTasks</div>
-    <div class="crumbs">Portfolio ▸ Project Alpha</div>
-    <div class="badges">
-      <div class="badge">Residency: EU‑West</div>
-      <div class="badge verify">Verified: Ed25519 ✓</div>
-      <button class="badge ok" id="export">Export .sparkpack</button>
-      <label class="badge switch"><input id="offline" type="checkbox"/><span>Offline</span></label>
-      <button class="btn" id="k">⌘K</button>
-    </div>
-  </div>
-
-  <div class="grid">
-    <div class="col">
-      <h3>Backlog</h3>
-      <div class="card">
-        <div><strong>TASK‑124</strong> · Design review checklist</div>
-        <div class="chips"><span class="chip">PDF • UX_Checklist.pdf</span><span class="chip">owner:@alice</span></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SparkTasks — Project‑Native Everything</title>
+    <style>
+      :root {
+        --bg: #0b0f17;
+        --panel: #111827;
+        --muted: #94a3b8;
+        --text: #e5e7eb;
+        --brand: #7c3aed;
+        --brand2: #22d3ee;
+        --ok: #10b981;
+        --warn: #f59e0b;
+        --bad: #ef4444;
+        --chip: #1f2937;
+        --glass: rgba(255, 255, 255, 0.06);
+        --stroke: rgba(255, 255, 255, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(1200px 600px at 15% -10%, #13213a 0%, #0b0f17 45%),
+          linear-gradient(180deg, #0b0f17, #0b0f17);
+        color: var(--text);
+        font:
+          14px/1.45 ui-sans-serif,
+          system-ui,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--stroke);
+        background: linear-gradient(
+          180deg,
+          rgba(11, 15, 23, 0.9),
+          rgba(11, 15, 23, 0.7)
+        );
+        backdrop-filter: blur(8px);
+      }
+      .logo {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      .crumbs {
+        color: var(--muted);
+      }
+      .badges {
+        display: flex;
+        gap: 8px;
+        margin-left: auto;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border: 1px solid var(--stroke);
+        border-radius: 999px;
+        background: var(--glass);
+      }
+      .badge.ok {
+        border-color: rgba(16, 185, 129, 0.25);
+        color: #c7f9e8;
+      }
+      .badge.verify {
+        border-color: rgba(34, 211, 238, 0.25);
+        color: #bff5fb;
+      }
+      .btn {
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--stroke);
+        background: var(--glass);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 360px;
+        gap: 16px;
+        padding: 16px;
+      }
+      .col {
+        background: var(--glass);
+        border: 1px solid var(--stroke);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        min-height: 60vh;
+      }
+      .col h3 {
+        margin: 10px 12px;
+        font-size: 13px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .card {
+        margin: 8px 8px 0;
+        padding: 10px;
+        border: 1px solid var(--stroke);
+        border-radius: 10px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.02)
+        );
+        cursor: pointer;
+        transition: transform 0.12s ease;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+      }
+      .chips {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+      .chip {
+        background: var(--chip);
+        color: #cbd5e1;
+        border: 1px solid var(--stroke);
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+      .drawer {
+        grid-column: 4;
+        position: sticky;
+        top: 64px;
+        align-self: start;
+      }
+      .panel {
+        border: 1px solid var(--stroke);
+        border-radius: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
+        overflow: hidden;
+      }
+      .panel header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--stroke);
+      }
+      .preview {
+        aspect-ratio: 16/9;
+        background:
+          linear-gradient(
+            120deg,
+            rgba(124, 58, 237, 0.18),
+            rgba(34, 211, 238, 0.12)
+          ),
+          radial-gradient(
+            600px 300px at 70% 20%,
+            rgba(124, 58, 237, 0.22),
+            transparent 60%
+          ),
+          #0f172a;
+        border-bottom: 1px solid var(--stroke);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e9d5ff;
+      }
+      .preview .tag {
+        position: absolute;
+        margin-top: -180px;
+        margin-left: -260px;
+        background: rgba(2, 6, 23, 0.7);
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid var(--stroke);
+        font-size: 12px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .group {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--stroke);
+      }
+      .btn.primary {
+        background: linear-gradient(90deg, var(--brand), var(--brand2));
+        border: 0;
+      }
+      .kbar {
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        background: rgba(2, 6, 23, 0.6);
+        backdrop-filter: blur(6px);
+        z-index: 100;
+      }
+      .kbar .box {
+        width: min(900px, 92vw);
+        border: 1px solid var(--stroke);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #0f172a;
+      }
+      .kbar header {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--stroke);
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .token {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--stroke);
+        background: #0b1220;
+        color: #cbd5e1;
+      }
+      .results {
+        max-height: 48vh;
+        overflow: auto;
+      }
+      .res {
+        padding: 12px;
+        border-bottom: 1px solid var(--stroke);
+        display: flex;
+        justify-content: space-between;
+      }
+      .hud {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        display: flex;
+        gap: 8px;
+      }
+      .hud .tile {
+        padding: 8px 12px;
+        border: 1px solid var(--stroke);
+        border-radius: 10px;
+        background: var(--glass);
+        color: #cbd5e1;
+      }
+      .switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .switch input {
+        appearance: none;
+        width: 38px;
+        height: 22px;
+        border-radius: 999px;
+        background: #1f2937;
+        position: relative;
+        outline: none;
+        border: 1px solid var(--stroke);
+      }
+      .switch input::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: #9ca3af;
+        transition:
+          left 0.18s ease,
+          background 0.18s;
+      }
+      .switch input:checked {
+        background: #065f46;
+        border-color: rgba(16, 185, 129, 0.3);
+      }
+      .switch input:checked::after {
+        left: 18px;
+        background: #34d399;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+      }
+      .link {
+        color: #93c5fd;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="logo">SparkTasks</div>
+      <div class="crumbs">Portfolio ▸ Project Alpha</div>
+      <div class="badges">
+        <div class="badge">Residency: EU‑West</div>
+        <div class="badge verify">Verified: Ed25519 ✓</div>
+        <button class="badge ok" id="export">Export .sparkpack</button>
+        <label class="badge switch"
+          ><input id="offline" type="checkbox" /><span>Offline</span></label
+        >
+        <button class="btn" id="k">⌘K</button>
       </div>
-      <div class="card">
-        <div><strong>TASK‑131</strong> · MSA redlines</div>
-        <div class="chips"><span class="chip">DOCX • MSA_2025_v2.docx</span><span class="chip">legal</span></div>
-      </div>
     </div>
 
-    <div class="col">
-      <h3>In Progress</h3>
-      <div class="card" id="openDrawer">
-        <div><strong>TASK‑139</strong> · Upload hero video</div>
-        <div class="chips"><span class="chip">MP4 • 02_Intro.mp4</span><span class="chip">annot</span><span class="chip">owner:@bob</span></div>
+    <div class="grid">
+      <div class="col">
+        <h3>Backlog</h3>
+        <div class="card">
+          <div><strong>TASK‑124</strong> · Design review checklist</div>
+          <div class="chips">
+            <span class="chip">PDF • UX_Checklist.pdf</span
+            ><span class="chip">owner:@alice</span>
+          </div>
+        </div>
+        <div class="card">
+          <div><strong>TASK‑131</strong> · MSA redlines</div>
+          <div class="chips">
+            <span class="chip">DOCX • MSA_2025_v2.docx</span
+            ><span class="chip">legal</span>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="col">
-      <h3>Review</h3>
-      <div class="card">
-        <div><strong>TASK‑142</strong> · Approve launch video</div>
-        <div class="chips"><span class="chip">MP4</span><span class="chip">approvals: 2/3</span><span class="chip">signed:true</span></div>
+      <div class="col">
+        <h3>In Progress</h3>
+        <div class="card" id="openDrawer">
+          <div><strong>TASK‑139</strong> · Upload hero video</div>
+          <div class="chips">
+            <span class="chip">MP4 • 02_Intro.mp4</span
+            ><span class="chip">annot</span><span class="chip">owner:@bob</span>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="drawer">
-      <div class="panel" id="drawerPanel">
-        <header>
+      <div class="col">
+        <h3>Review</h3>
+        <div class="card">
           <div><strong>TASK‑142</strong> · Approve launch video</div>
-          <div class="toolbar">
-            <a href="#" class="link">Transparency Log</a>
-            <button class="btn">Versions ▾</button>
-            <button class="btn">Annotate</button>
+          <div class="chips">
+            <span class="chip">MP4</span><span class="chip">approvals: 2/3</span
+            ><span class="chip">signed:true</span>
           </div>
+        </div>
+      </div>
+
+      <div class="drawer">
+        <div class="panel" id="drawerPanel">
+          <header>
+            <div><strong>TASK‑142</strong> · Approve launch video</div>
+            <div class="toolbar">
+              <a href="#" class="link">Transparency Log</a>
+              <button class="btn">Versions ▾</button>
+              <button class="btn">Annotate</button>
+            </div>
+          </header>
+          <div class="preview">
+            <div class="tag">60fps Preview • MP4</div>
+            <div>▶ 02_Intro.mp4</div>
+          </div>
+          <div class="group">
+            <div class="row" style="justify-content: space-between">
+              <div><strong>Approvals</strong> · Quorum 2/3</div>
+              <div class="badge verify">Chain verified ✓</div>
+            </div>
+            <div
+              class="row"
+              style="justify-content: space-between; margin-top: 8px"
+            >
+              <div>Alice — <span style="color: var(--ok)">Signed</span></div>
+              <div class="chip">Ed25519 7a9c…</div>
+            </div>
+            <div
+              class="row"
+              style="justify-content: space-between; margin-top: 6px"
+            >
+              <div>Bob — <span style="color: #fef08a">Pending</span></div>
+              <div class="chip">Required</div>
+            </div>
+            <div
+              class="row"
+              style="justify-content: space-between; margin-top: 6px"
+            >
+              <div>Legal — <span style="color: #fef08a">Pending</span></div>
+              <div class="chip">Quorum</div>
+            </div>
+            <div class="row" style="gap: 8px; margin-top: 10px">
+              <button class="btn primary" id="sign">Sign & Approve</button>
+              <button class="btn" id="viewSig">View signature</button>
+            </div>
+          </div>
+          <div class="group">
+            <div class="row" style="justify-content: space-between">
+              <div><strong>File</strong> · Google Drive (EU‑West)</div>
+              <div class="badge">Zero‑GB Pricing</div>
+            </div>
+            <div class="chips" style="margin-top: 8px">
+              <span class="chip">residency:eu</span
+              ><span class="chip">owner:@bob</span
+              ><span class="chip">type:mp4</span>
+            </div>
+          </div>
+          <div class="group">
+            <div><strong>Audit Trail</strong></div>
+            <div class="chips" style="margin-top: 8px">
+              <span class="chip">Alice signed 14:02</span>
+              <span class="chip">Merkle root published (w:5)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kbar" id="kbar">
+      <div class="box">
+        <header>
+          <span class="token">type:pdf</span>
+          <span class="token">owner:@alice</span>
+          <span class="token">signed:true</span>
+          <span class="token">residency:eu</span>
+          <span class="token">“contract”</span>
         </header>
-        <div class="preview">
-          <div class="tag">60fps Preview • MP4</div>
-          <div>▶ 02_Intro.mp4</div>
-        </div>
-        <div class="group">
-          <div class="row" style="justify-content:space-between;">
-            <div><strong>Approvals</strong> · Quorum 2/3</div>
-            <div class="badge verify">Chain verified ✓</div>
+        <div class="results">
+          <div class="res">
+            <span>PDF ▸ MSA_2025_v2.pdf</span
+            ><span class="chip">signed:true</span>
           </div>
-          <div class="row" style="justify-content:space-between;margin-top:8px;">
-            <div>Alice — <span style="color:var(--ok)">Signed</span></div><div class="chip">Ed25519 7a9c…</div>
+          <div class="res">
+            <span>TASK ▸ Approve MSA for ACME</span
+            ><span class="chip">owner:@alice</span>
           </div>
-          <div class="row" style="justify-content:space-between;margin-top:6px;">
-            <div>Bob — <span style="color:#fef08a">Pending</span></div><div class="chip">Required</div>
-          </div>
-          <div class="row" style="justify-content:space-between;margin-top:6px;">
-            <div>Legal — <span style="color:#fef08a">Pending</span></div><div class="chip">Quorum</div>
-          </div>
-          <div class="row" style="gap:8px;margin-top:10px;">
-            <button class="btn primary" id="sign">Sign & Approve</button>
-            <button class="btn" id="viewSig">View signature</button>
-          </div>
-        </div>
-        <div class="group">
-          <div class="row" style="justify-content:space-between;">
-            <div><strong>File</strong> · Google Drive (EU‑West)</div>
-            <div class="badge">Zero‑GB Pricing</div>
-          </div>
-          <div class="chips" style="margin-top:8px;">
-            <span class="chip">residency:eu</span><span class="chip">owner:@bob</span><span class="chip">type:mp4</span>
-          </div>
-        </div>
-        <div class="group">
-          <div><strong>Audit Trail</strong></div>
-          <div class="chips" style="margin-top:8px;">
-            <span class="chip">Alice signed 14:02</span>
-            <span class="chip">Merkle root published (w:5)</span>
+          <div class="res">
+            <span>PDF ▸ SoW_ACME_v1.pdf</span
+            ><span class="chip">residency:eu</span>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="kbar" id="kbar">
-    <div class="box">
-      <header>
-        <span class="token">type:pdf</span>
-        <span class="token">owner:@alice</span>
-        <span class="token">signed:true</span>
-        <span class="token">residency:eu</span>
-        <span class="token">“contract”</span>
-      </header>
-      <div class="results">
-        <div class="res"><span>PDF ▸ MSA_2025_v2.pdf</span><span class="chip">signed:true</span></div>
-        <div class="res"><span>TASK ▸ Approve MSA for ACME</span><span class="chip">owner:@alice</span></div>
-        <div class="res"><span>PDF ▸ SoW_ACME_v1.pdf</span><span class="chip">residency:eu</span></div>
-      </div>
+    <div class="hud">
+      <div class="tile">Search <strong>180ms</strong></div>
+      <div class="tile">Preview <strong>60fps</strong></div>
+      <div class="tile">Fidelity <strong>99%+</strong></div>
     </div>
-  </div>
 
-  <div class="hud">
-    <div class="tile">Search <strong>180ms</strong></div>
-    <div class="tile">Preview <strong>60fps</strong></div>
-    <div class="tile">Fidelity <strong>99%+</strong></div>
-  </div>
+    <script>
+      const k = document.getElementById('k');
+      const kbar = document.getElementById('kbar');
+      const offline = document.getElementById('offline');
+      const exportBtn = document.getElementById('export');
+      const sign = document.getElementById('sign');
+      const viewSig = document.getElementById('viewSig');
+      const openDrawer = document.getElementById('openDrawer');
+      const drawer = document.getElementById('drawerPanel');
 
-<script>
-  const k = document.getElementById('k'); const kbar = document.getElementById('kbar');
-  const offline = document.getElementById('offline'); const exportBtn = document.getElementById('export');
-  const sign = document.getElementById('sign'); const viewSig = document.getElementById('viewSig');
-  const openDrawer = document.getElementById('openDrawer'); const drawer = document.getElementById('drawerPanel');
+      k.onclick = () => (kbar.style.display = 'grid');
+      kbar.onclick = e => {
+        if (e.target === kbar) kbar.style.display = 'none';
+      };
+      document.addEventListener('keydown', e => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          kbar.style.display = 'grid';
+        }
+      });
 
-  k.onclick = () => kbar.style.display = 'grid';
-  kbar.onclick = (e) => { if(e.target === kbar) kbar.style.display = 'none'; };
-  document.addEventListener('keydown', (e) => { if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); kbar.style.display='grid'; } });
+      offline.onchange = () => {
+        const on = offline.checked;
+        document.body.style.outline = on ? '2px solid #34d399' : 'none';
+      };
 
-  offline.onchange = () => {
-    const on = offline.checked;
-    document.body.style.outline = on ? '2px solid #34d399' : 'none';
-  };
+      exportBtn.onclick = () =>
+        alert('.sparkpack export: tasks + files + approvals (full fidelity)');
+      viewSig.onclick = () =>
+        alert('Signature: Ed25519 7a9c…\nMerkle root: 3fe2…\nWitnesses: 5');
+      sign.onclick = e => {
+        e.target.textContent = 'Signed ✓';
+        e.target.disabled = true;
+        e.target.style.opacity = 0.8;
+      };
 
-  exportBtn.onclick = () => alert('.sparkpack export: tasks + files + approvals (full fidelity)');
-  viewSig.onclick = () => alert('Signature: Ed25519 7a9c…\nMerkle root: 3fe2…\nWitnesses: 5');
-  sign.onclick = (e) => {
-    e.target.textContent = 'Signed ✓';
-    e.target.disabled = true;
-    e.target.style.opacity = .8;
-  };
-
-  openDrawer.onclick = () => drawer.scrollIntoView({behavior:'smooth', block:'start'});
-</script>
-</body>
+      openDrawer.onclick = () =>
+        drawer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    </script>
+  </body>
 </html>

@@ -207,8 +207,8 @@ test.describe('Accessibility Tests', () => {
     // Check color contrast compliance
     await checkA11y(authenticatedPage, null, {
       rules: {
-        'color-contrast': { enabled: true }
-      }
+        'color-contrast': { enabled: true },
+      },
     });
   });
 

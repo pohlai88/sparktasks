@@ -144,36 +144,36 @@ className="rtl:space-x-reverse"
 
 ```typescript
 // ❌ FORBIDDEN: Bypassing primitives
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import { Slot } from '@radix-ui/react-slot'
-import { DirectionProvider } from '@radix-ui/react-direction'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { AccessibleIcon } from '@radix-ui/react-accessible-icon';
+import { Slot } from '@radix-ui/react-slot';
+import { DirectionProvider } from '@radix-ui/react-direction';
 
 // ✅ REQUIRED: Use standardized wrapper path
 import {
   VisuallyHidden,
   AccessibleIcon,
   Slot,
-  DirectionProvider
-} from '@/components/primitives'
+  DirectionProvider,
+} from '@/components/primitives';
 ```
 
 ##### **🚨 NAMING CONVENTION VIOLATIONS**
 
 ```typescript
 // ❌ FORBIDDEN: Alternative primitive names
-import { A11yIcon, HiddenIcon } from '@/components/primitives'
-import { SROnly, ScreenReaderOnly } from '@/components/primitives'
-import { AsChild, Polymorphic } from '@/components/primitives'
-import { RTLProvider, DirProvider } from '@/components/primitives'
+import { A11yIcon, HiddenIcon } from '@/components/primitives';
+import { SROnly, ScreenReaderOnly } from '@/components/primitives';
+import { AsChild, Polymorphic } from '@/components/primitives';
+import { RTLProvider, DirProvider } from '@/components/primitives';
 
 // ✅ REQUIRED: Standardized names only
 import {
-  AccessibleIcon,    // Only acceptable name for icon accessibility
-  VisuallyHidden,    // Only acceptable name for hidden content
-  Slot,              // Only acceptable name for polymorphism
-  DirectionProvider  // Only acceptable name for direction context
-} from '@/components/primitives'
+  AccessibleIcon, // Only acceptable name for icon accessibility
+  VisuallyHidden, // Only acceptable name for hidden content
+  Slot, // Only acceptable name for polymorphism
+  DirectionProvider, // Only acceptable name for direction context
+} from '@/components/primitives';
 ```
 
 ---
@@ -288,8 +288,8 @@ export default defineConfig({
   test: {
     setupFiles: ['./vitest/setup/accessibility.ts'],
     // Fail build on accessibility test failures
-    bail: true
-  }
+    bail: true,
+  },
 });
 ```
 
@@ -350,38 +350,38 @@ import {
   AccessibleIcon,
   VisuallyHidden,
   Slot,
-  DirectionProvider
-} from '@/components/primitives'
+  DirectionProvider,
+} from '@/components/primitives';
 
 // ✅ REQUIRED: Type imports from same path
 import type {
   AccessibleIconProps,
   VisuallyHiddenProps,
   SlotProps,
-  DirectionProviderProps
-} from '@/components/primitives'
+  DirectionProviderProps,
+} from '@/components/primitives';
 
 // ❌ FORBIDDEN: Direct Radix imports
-import { AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-import { Slot } from '@radix-ui/react-slot'
-import { DirectionProvider } from '@radix-ui/react-direction'
+import { AccessibleIcon } from '@radix-ui/react-accessible-icon';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { Slot } from '@radix-ui/react-slot';
+import { DirectionProvider } from '@radix-ui/react-direction';
 ```
 
 #### **Component Naming Standards**
 
 ```typescript
 // ✅ CORRECT: Standardized primitive names
-AccessibleIcon    // For icon accessibility
-VisuallyHidden   // For screen reader only content
-Slot             // For polymorphic composition
-DirectionProvider // For RTL/LTR context
+AccessibleIcon; // For icon accessibility
+VisuallyHidden; // For screen reader only content
+Slot; // For polymorphic composition
+DirectionProvider; // For RTL/LTR context
 
 // ❌ INCORRECT: Alternative names or variations
-A11yIcon, AccessibilityIcon, HiddenIcon
-SROnly, ScreenReaderOnly, HiddenText
-AsChild, Polymorphic, SlotComponent
-RTLProvider, Direction, DirProvider
+(A11yIcon, AccessibilityIcon, HiddenIcon);
+(SROnly, ScreenReaderOnly, HiddenText);
+(AsChild, Polymorphic, SlotComponent);
+(RTLProvider, Direction, DirProvider);
 ```
 
 #### **File Organization Standards**
@@ -479,7 +479,11 @@ const Button = ({ asChild = false, ...props }) => {
 1. ✅ **Use primitives consistently**:
 
    ```typescript
-   import { AccessibleIcon, VisuallyHidden, Slot } from '@/components/primitives'
+   import {
+     AccessibleIcon,
+     VisuallyHidden,
+     Slot,
+   } from '@/components/primitives';
    ```
 
 2. ✅ **Add asChild support** to new components:

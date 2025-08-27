@@ -1,9 +1,9 @@
 /**
  * Layout Enhanced Components - MAPS v3.0
- * 
+ *
  * Complete collection of layout-enhanced components implementing
  * advanced layout primitives with modern CSS and animation features.
- * 
+ *
  * Components:
  * - Container: Foundation layout primitive with semantic HTML
  * - Stack: Vertical spacing primitive with consistent gaps

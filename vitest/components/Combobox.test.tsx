@@ -1,6 +1,6 @@
 /**
  * Enhanced Combobox Component Tests - MAPS v2.2
- * 
+ *
  * Comprehensive test suite ensuring component quality and accessibility
  */
 
@@ -31,29 +31,29 @@ describe('EnhancedCombobox', () => {
   describe('Basic Functionality', () => {
     it('renders with default props', () => {
       render(<EnhancedCombobox options={mockOptions} />);
-      
+
       expect(screen.getByRole('button')).toBeInTheDocument();
       expect(screen.getByText('Select an option...')).toBeInTheDocument();
     });
 
     it('displays custom placeholder', () => {
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          placeholder="Choose a fruit..." 
+        <EnhancedCombobox
+          options={mockOptions}
+          placeholder='Choose a fruit...'
         />
       );
-      
+
       expect(screen.getByText('Choose a fruit...')).toBeInTheDocument();
     });
 
     it('opens dropdown when clicked', async () => {
       const user = userEvent.setup();
       render(<EnhancedCombobox options={mockOptions} />);
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(() => {
         expect(screen.getByText('Apple')).toBeInTheDocument();
         expect(screen.getByText('Banana')).toBeInTheDocument();
@@ -63,30 +63,27 @@ describe('EnhancedCombobox', () => {
     it('selects option when clicked', async () => {
       const user = userEvent.setup();
       const onValueChange = vi.fn();
-      
+
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          onValueChange={onValueChange}
-        />
+        <EnhancedCombobox options={mockOptions} onValueChange={onValueChange} />
       );
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(() => {
         const option = screen.getByText('Apple');
         user.click(option);
       });
-      
+
       await waitFor(() => {
         expect(onValueChange).toHaveBeenCalledWith('apple');
       });
     });
 
     it('displays selected value', () => {
-      render(<EnhancedCombobox options={mockOptions} value="apple" />);
-      
+      render(<EnhancedCombobox options={mockOptions} value='apple' />);
+
       expect(screen.getByText('Apple')).toBeInTheDocument();
     });
   });
@@ -95,10 +92,10 @@ describe('EnhancedCombobox', () => {
     it('shows search input when searchable is true', async () => {
       const user = userEvent.setup();
       render(<EnhancedCombobox options={mockOptions} searchable />);
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(() => {
         expect(screen.getByPlaceholderText('Search...')).toBeInTheDocument();
       });
@@ -107,15 +104,15 @@ describe('EnhancedCombobox', () => {
     it('filters options based on search input', async () => {
       const user = userEvent.setup();
       render(<EnhancedCombobox options={mockOptions} searchable />);
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(async () => {
         const searchInput = screen.getByPlaceholderText('Search...');
         await user.type(searchInput, 'app');
       });
-      
+
       await waitFor(() => {
         expect(screen.getByText('Apple')).toBeInTheDocument();
         expect(screen.queryByText('Banana')).not.toBeInTheDocument();
@@ -125,15 +122,15 @@ describe('EnhancedCombobox', () => {
     it('shows empty message when no options match search', async () => {
       const user = userEvent.setup();
       render(<EnhancedCombobox options={mockOptions} searchable />);
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(async () => {
         const searchInput = screen.getByPlaceholderText('Search...');
         await user.type(searchInput, 'nonexistent');
       });
-      
+
       await waitFor(() => {
         expect(screen.getByText('No options found.')).toBeInTheDocument();
       });
@@ -142,18 +139,20 @@ describe('EnhancedCombobox', () => {
     it('uses custom search placeholder', async () => {
       const user = userEvent.setup();
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          searchable 
-          searchPlaceholder="Find fruit..."
+        <EnhancedCombobox
+          options={mockOptions}
+          searchable
+          searchPlaceholder='Find fruit...'
         />
       );
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(() => {
-        expect(screen.getByPlaceholderText('Find fruit...')).toBeInTheDocument();
+        expect(
+          screen.getByPlaceholderText('Find fruit...')
+        ).toBeInTheDocument();
       });
     });
   });
@@ -161,13 +160,9 @@ describe('EnhancedCombobox', () => {
   describe('Clearable Functionality', () => {
     it('shows clear button when clearable and value is selected', () => {
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          value="apple" 
-          clearable 
-        />
+        <EnhancedCombobox options={mockOptions} value='apple' clearable />
       );
-      
+
       const clearButton = screen.getByRole('button', { name: /clear/i });
       expect(clearButton).toBeInTheDocument();
     });
@@ -175,30 +170,25 @@ describe('EnhancedCombobox', () => {
     it('clears selection when clear button is clicked', async () => {
       const user = userEvent.setup();
       const onValueChange = vi.fn();
-      
+
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          value="apple" 
-          clearable 
+        <EnhancedCombobox
+          options={mockOptions}
+          value='apple'
+          clearable
           onValueChange={onValueChange}
         />
       );
-      
+
       const clearButton = screen.getByRole('button', { name: /clear/i });
       await user.click(clearButton);
-      
+
       expect(onValueChange).toHaveBeenCalledWith('');
     });
 
     it('does not show clear button when no value is selected', () => {
-      render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          clearable 
-        />
-      );
-      
+      render(<EnhancedCombobox options={mockOptions} clearable />);
+
       const clearButton = screen.queryByRole('button', { name: /clear/i });
       expect(clearButton).not.toBeInTheDocument();
     });
@@ -207,7 +197,7 @@ describe('EnhancedCombobox', () => {
   describe('Disabled State', () => {
     it('disables trigger when disabled prop is true', () => {
       render(<EnhancedCombobox options={mockOptions} disabled />);
-      
+
       const trigger = screen.getByRole('button');
       expect(trigger).toBeDisabled();
     });
@@ -215,23 +205,25 @@ describe('EnhancedCombobox', () => {
     it('does not open dropdown when disabled', async () => {
       const user = userEvent.setup();
       render(<EnhancedCombobox options={mockOptions} disabled />);
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       expect(screen.queryByText('Apple')).not.toBeInTheDocument();
     });
 
     it('disables specific options when option.disabled is true', async () => {
       const user = userEvent.setup();
       render(<EnhancedCombobox options={mockOptions} />);
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(() => {
         const disabledOption = screen.getByText('Disabled Option');
-        expect(disabledOption.closest('div')).toHaveClass('pointer-events-none');
+        expect(disabledOption.closest('div')).toHaveClass(
+          'pointer-events-none'
+        );
       });
     });
   });
@@ -239,13 +231,9 @@ describe('EnhancedCombobox', () => {
   describe('Form Integration', () => {
     it('creates hidden input with name and value for form submission', () => {
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          name="fruit" 
-          value="apple" 
-        />
+        <EnhancedCombobox options={mockOptions} name='fruit' value='apple' />
       );
-      
+
       const hiddenInput = document.querySelector('input[type="hidden"]');
       expect(hiddenInput).toBeInTheDocument();
       expect(hiddenInput).toHaveAttribute('name', 'fruit');
@@ -253,14 +241,8 @@ describe('EnhancedCombobox', () => {
     });
 
     it('marks hidden input as required when required prop is true', () => {
-      render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          name="fruit" 
-          required 
-        />
-      );
-      
+      render(<EnhancedCombobox options={mockOptions} name='fruit' required />);
+
       const hiddenInput = document.querySelector('input[type="hidden"]');
       expect(hiddenInput).toHaveAttribute('required');
     });
@@ -269,39 +251,36 @@ describe('EnhancedCombobox', () => {
   describe('Custom Filter Function', () => {
     it('uses custom filter function when provided', async () => {
       const user = userEvent.setup();
-      const customFilter = vi.fn((options: ComboboxOption[], search: string) => 
-        options.filter((option: ComboboxOption) => option.value.includes(search))
+      const customFilter = vi.fn((options: ComboboxOption[], search: string) =>
+        options.filter((option: ComboboxOption) =>
+          option.value.includes(search)
+        )
       );
-      
+
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          searchable 
+        <EnhancedCombobox
+          options={mockOptions}
+          searchable
           filterFunction={customFilter}
         />
       );
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(async () => {
         const searchInput = screen.getByPlaceholderText('Search...');
         await user.type(searchInput, 'app');
       });
-      
+
       expect(customFilter).toHaveBeenCalledWith(mockOptions, 'app');
     });
   });
 
   describe('Controlled vs Uncontrolled', () => {
     it('works in uncontrolled mode with defaultValue', () => {
-      render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          defaultValue="banana" 
-        />
-      );
-      
+      render(<EnhancedCombobox options={mockOptions} defaultValue='banana' />);
+
       expect(screen.getByText('Banana')).toBeInTheDocument();
     });
 
@@ -309,28 +288,28 @@ describe('EnhancedCombobox', () => {
       const user = userEvent.setup();
       const TestComponent = () => {
         const [value, setValue] = React.useState('apple');
-        
+
         return (
-          <EnhancedCombobox 
-            options={mockOptions} 
+          <EnhancedCombobox
+            options={mockOptions}
             value={value}
             onValueChange={setValue}
           />
         );
       };
-      
+
       render(<TestComponent />);
-      
+
       expect(screen.getByText('Apple')).toBeInTheDocument();
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(async () => {
         const option = screen.getByText('Banana');
         await user.click(option);
       });
-      
+
       await waitFor(() => {
         expect(screen.getByText('Banana')).toBeInTheDocument();
       });
@@ -339,23 +318,23 @@ describe('EnhancedCombobox', () => {
     it('manages search value independently', async () => {
       const user = userEvent.setup();
       const onSearchValueChange = vi.fn();
-      
+
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
+        <EnhancedCombobox
+          options={mockOptions}
           searchable
           onSearchValueChange={onSearchValueChange}
         />
       );
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(async () => {
         const searchInput = screen.getByPlaceholderText('Search...');
         await user.type(searchInput, 'test');
       });
-      
+
       expect(onSearchValueChange).toHaveBeenCalledWith('test');
     });
   });
@@ -363,14 +342,14 @@ describe('EnhancedCombobox', () => {
   describe('Variant Classes', () => {
     it('applies variant classes correctly', () => {
       render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          variant="outline"
-          size="lg"
-          state="success"
+        <EnhancedCombobox
+          options={mockOptions}
+          variant='outline'
+          size='lg'
+          state='success'
         />
       );
-      
+
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveClass('bg-transparent'); // outline variant
       expect(trigger).toHaveClass('min-h-12'); // lg size
@@ -378,25 +357,15 @@ describe('EnhancedCombobox', () => {
     });
 
     it('applies AAA enforcement classes when enforceAAA is true', () => {
-      render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          enforceAAA 
-        />
-      );
-      
+      render(<EnhancedCombobox options={mockOptions} enforceAAA />);
+
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveClass('aaa:border-border-strong');
     });
 
     it('applies vibrancy classes when vibrancy prop is set', () => {
-      render(
-        <EnhancedCombobox 
-          options={mockOptions} 
-          vibrancy="glass" 
-        />
-      );
-      
+      render(<EnhancedCombobox options={mockOptions} vibrancy='glass' />);
+
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveClass('bg-input/80');
     });
@@ -405,7 +374,7 @@ describe('EnhancedCombobox', () => {
   describe('Factory Functions', () => {
     it('creates standard combobox configuration', () => {
       const config = ComboboxFactory.standard();
-      
+
       expect(config).toEqual({
         variant: 'default',
         size: 'md',
@@ -417,7 +386,7 @@ describe('EnhancedCombobox', () => {
 
     it('creates compact combobox configuration', () => {
       const config = ComboboxFactory.compact();
-      
+
       expect(config).toEqual({
         variant: 'default',
         size: 'sm',
@@ -429,7 +398,7 @@ describe('EnhancedCombobox', () => {
 
     it('creates glass combobox configuration', () => {
       const config = ComboboxFactory.glass();
-      
+
       expect(config).toEqual({
         variant: 'floating',
         size: 'md',
@@ -442,7 +411,7 @@ describe('EnhancedCombobox', () => {
 
     it('creates accessible combobox configuration', () => {
       const config = ComboboxFactory.accessible();
-      
+
       expect(config).toEqual({
         variant: 'outline',
         size: 'lg',
@@ -455,7 +424,7 @@ describe('EnhancedCombobox', () => {
 
     it('creates touch combobox configuration', () => {
       const config = ComboboxFactory.touch();
-      
+
       expect(config).toEqual({
         variant: 'filled',
         size: 'touch',
@@ -467,7 +436,7 @@ describe('EnhancedCombobox', () => {
 
     it('allows overriding factory configurations', () => {
       const config = ComboboxFactory.standard({ clearable: true, size: 'lg' });
-      
+
       expect(config).toEqual({
         variant: 'default',
         size: 'lg',
@@ -481,16 +450,16 @@ describe('EnhancedCombobox', () => {
   describe('Sub-components', () => {
     describe('EnhancedComboboxInput', () => {
       it('renders input with correct classes', () => {
-        render(<EnhancedComboboxInput placeholder="Test input" />);
-        
+        render(<EnhancedComboboxInput placeholder='Test input' />);
+
         const input = screen.getByPlaceholderText('Test input');
         expect(input).toHaveClass('flex-1');
         expect(input).toHaveClass('bg-transparent');
       });
 
       it('applies density variant classes', () => {
-        render(<EnhancedComboboxInput density="compact" />);
-        
+        render(<EnhancedComboboxInput density='compact' />);
+
         const input = screen.getByRole('textbox');
         expect(input).toHaveClass('py-0.5');
       });
@@ -503,7 +472,7 @@ describe('EnhancedCombobox', () => {
             <div>Content</div>
           </EnhancedComboboxContent>
         );
-        
+
         const content = screen.getByText('Content').parentElement;
         expect(content).toHaveClass('rounded-md');
         expect(content).toHaveClass('border');
@@ -511,11 +480,11 @@ describe('EnhancedCombobox', () => {
 
       it('applies vibrancy classes', () => {
         render(
-          <EnhancedComboboxContent vibrancy="glass">
+          <EnhancedComboboxContent vibrancy='glass'>
             <div>Content</div>
           </EnhancedComboboxContent>
         );
-        
+
         const content = screen.getByText('Content').parentElement;
         expect(content).toHaveClass('backdrop-blur-md');
       });
@@ -524,11 +493,9 @@ describe('EnhancedCombobox', () => {
     describe('EnhancedComboboxItem', () => {
       it('renders item with correct classes', () => {
         render(
-          <EnhancedComboboxItem value="test">
-            Test Item
-          </EnhancedComboboxItem>
+          <EnhancedComboboxItem value='test'>Test Item</EnhancedComboboxItem>
         );
-        
+
         const item = screen.getByText('Test Item');
         expect(item).toHaveClass('relative');
         expect(item).toHaveClass('flex');
@@ -537,11 +504,11 @@ describe('EnhancedCombobox', () => {
 
       it('applies disabled classes when disabled', () => {
         render(
-          <EnhancedComboboxItem value="test" disabled>
+          <EnhancedComboboxItem value='test' disabled>
             Test Item
           </EnhancedComboboxItem>
         );
-        
+
         const item = screen.getByText('Test Item');
         expect(item).toHaveClass('pointer-events-none');
         expect(item).toHaveAttribute('data-disabled', 'true');
@@ -552,7 +519,7 @@ describe('EnhancedCombobox', () => {
   describe('Accessibility', () => {
     it('has proper ARIA attributes', () => {
       render(<EnhancedCombobox options={mockOptions} />);
-      
+
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
@@ -560,10 +527,10 @@ describe('EnhancedCombobox', () => {
     it('updates aria-expanded when dropdown opens', async () => {
       const user = userEvent.setup();
       render(<EnhancedCombobox options={mockOptions} />);
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(() => {
         expect(trigger).toHaveAttribute('aria-expanded', 'true');
       });
@@ -572,13 +539,13 @@ describe('EnhancedCombobox', () => {
     it('supports keyboard navigation', async () => {
       const user = userEvent.setup();
       render(<EnhancedCombobox options={mockOptions} />);
-      
+
       const trigger = screen.getByRole('button');
       await user.tab();
       expect(trigger).toHaveFocus();
-      
+
       await user.keyboard('{Enter}');
-      
+
       await waitFor(() => {
         expect(screen.getByText('Apple')).toBeInTheDocument();
       });
@@ -588,7 +555,7 @@ describe('EnhancedCombobox', () => {
   describe('Edge Cases', () => {
     it('handles empty options array', () => {
       render(<EnhancedCombobox options={[]} />);
-      
+
       const trigger = screen.getByRole('button');
       expect(trigger).toBeInTheDocument();
       expect(screen.getByText('Select an option...')).toBeInTheDocument();
@@ -597,22 +564,19 @@ describe('EnhancedCombobox', () => {
     it('handles undefined value gracefully', () => {
       // Test with no value prop instead of undefined value
       render(<EnhancedCombobox options={mockOptions} />);
-      
+
       expect(screen.getByText('Select an option...')).toBeInTheDocument();
     });
 
     it('handles custom empty message', async () => {
       const user = userEvent.setup();
       render(
-        <EnhancedCombobox 
-          options={[]} 
-          emptyMessage="No fruits available"
-        />
+        <EnhancedCombobox options={[]} emptyMessage='No fruits available' />
       );
-      
+
       const trigger = screen.getByRole('button');
       await user.click(trigger);
-      
+
       await waitFor(() => {
         expect(screen.getByText('No fruits available')).toBeInTheDocument();
       });

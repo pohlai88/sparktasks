@@ -24,7 +24,7 @@ const cn = (...classes: (string | undefined)[]) => {
 
 /**
  * Main Railway Application Component
- * 
+ *
  * Implements Phase 1.1.1 from SUPREME_DEV_PLAN_V6_1_FORTUNE_500.md:
  * - React Router foundation
  * - Railway routing structure
@@ -34,17 +34,17 @@ const cn = (...classes: (string | undefined)[]) => {
  */
 const App: React.FC = () => {
   return (
-    <div dir="ltr">
+    <div dir='ltr'>
       <BrowserRouter>
         <AppProviders>
-          <div 
+          <div
             className={cn(
-              // Dark-theme first background 
+              // Dark-theme first background
               'bg-slate-950 text-white',
               // Full viewport coverage
               'min-h-screen w-full',
               // Enterprise-grade foundation
-              'antialiased font-sans',
+              'font-sans antialiased',
               // Motion respect compliance
               'motion-reduce:transition-none'
             )}

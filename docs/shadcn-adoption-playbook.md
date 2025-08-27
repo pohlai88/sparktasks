@@ -92,7 +92,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary-600 text-white hover:bg-primary-700', // SparkTasks primary
+        default: 'bg-primary-600 hover:bg-primary-700 text-white', // SparkTasks primary
         secondary: 'bg-secondary-100 text-secondary-700 hover:bg-secondary-200',
         ghost: 'text-gray-700 hover:bg-gray-100',
         // Keep shadcn's destructive, outline variants

@@ -117,28 +117,11 @@ const enhancedPaginationItemVariants = cva(
   {
     variants: {
       variant: {
-        default: [
-          'border border-border',
-          'hover:border-border-strong',
-        ],
-        ghost: [
-          'border-transparent',
-          'hover:bg-muted',
-        ],
-        outline: [
-          'border border-border',
-          'bg-transparent',
-          'hover:bg-muted',
-        ],
-        pills: [
-          'rounded-full',
-          'border border-border',
-          'hover:border-accent',
-        ],
-        minimal: [
-          'border-transparent',
-          'bg-transparent',
-        ],
+        default: ['border border-border', 'hover:border-border-strong'],
+        ghost: ['border-transparent', 'hover:bg-muted'],
+        outline: ['border border-border', 'bg-transparent', 'hover:bg-muted'],
+        pills: ['rounded-full', 'border border-border', 'hover:border-accent'],
+        minimal: ['border-transparent', 'bg-transparent'],
       },
       state: {
         default: '',
@@ -148,11 +131,7 @@ const enhancedPaginationItemVariants = cva(
           'hover:bg-accent-hover',
           'shadow-sm',
         ],
-        disabled: [
-          'cursor-not-allowed',
-          'opacity-50',
-          'pointer-events-none',
-        ],
+        disabled: ['cursor-not-allowed', 'opacity-50', 'pointer-events-none'],
       },
       size: {
         sm: ['h-8 min-w-[32px] px-2 text-xs'],
@@ -201,7 +180,8 @@ const enhancedPaginationItemVariants = cva(
       {
         variant: 'pills',
         state: 'current',
-        class: 'bg-accent text-accent-foreground border-accent shadow-accent/20',
+        class:
+          'border-accent bg-accent text-accent-foreground shadow-accent/20',
       },
       // Ghost + current state
       {
@@ -213,13 +193,14 @@ const enhancedPaginationItemVariants = cva(
       {
         variant: 'minimal',
         state: 'current',
-        class: 'text-accent font-semibold',
+        class: 'font-semibold text-accent',
       },
       // AAA enforcement combinations
       {
         state: 'current',
         enforceAAA: true,
-        class: 'aaa:bg-accent-solid-aaa aaa:text-white aaa:border-accent-solid-aaa',
+        class:
+          'aaa:border-accent-solid-aaa aaa:bg-accent-solid-aaa aaa:text-white',
       },
     ],
     defaultVariants: {
@@ -417,7 +398,7 @@ const EnhancedPaginationRoot = React.forwardRef<
     return (
       <Comp
         ref={ref}
-        role="navigation"
+        role='navigation'
         aria-label={ariaLabel}
         className={cn(
           enhancedPaginationRootVariants({ variant, size, density }),
@@ -623,7 +604,13 @@ export function usePaginationRange({
         { length: rightSiblingIndex - leftSiblingIndex + 1 },
         (_, i) => leftSiblingIndex + i
       );
-      return [firstPageIndex, ELLIPSIS, ...middleRange, ELLIPSIS, lastPageIndex];
+      return [
+        firstPageIndex,
+        ELLIPSIS,
+        ...middleRange,
+        ELLIPSIS,
+        lastPageIndex,
+      ];
     }
 
     return [];
@@ -642,10 +629,10 @@ export const PaginationFactory = {
    */
   default: {
     Root: (props: Omit<EnhancedPaginationRootProps, 'variant'>) => (
-      <EnhancedPaginationRoot variant="default" {...props} />
+      <EnhancedPaginationRoot variant='default' {...props} />
     ),
     Item: (props: Omit<EnhancedPaginationItemProps, 'variant'>) => (
-      <EnhancedPaginationItem variant="default" {...props} />
+      <EnhancedPaginationItem variant='default' {...props} />
     ),
     Ellipsis: EnhancedPaginationEllipsis,
   },
@@ -655,10 +642,10 @@ export const PaginationFactory = {
    */
   pills: {
     Root: (props: Omit<EnhancedPaginationRootProps, 'variant'>) => (
-      <EnhancedPaginationRoot variant="pills" {...props} />
+      <EnhancedPaginationRoot variant='pills' {...props} />
     ),
     Item: (props: Omit<EnhancedPaginationItemProps, 'variant'>) => (
-      <EnhancedPaginationItem variant="pills" {...props} />
+      <EnhancedPaginationItem variant='pills' {...props} />
     ),
     Ellipsis: EnhancedPaginationEllipsis,
   },
@@ -668,10 +655,10 @@ export const PaginationFactory = {
    */
   ghost: {
     Root: (props: Omit<EnhancedPaginationRootProps, 'variant'>) => (
-      <EnhancedPaginationRoot variant="default" {...props} />
+      <EnhancedPaginationRoot variant='default' {...props} />
     ),
     Item: (props: Omit<EnhancedPaginationItemProps, 'variant'>) => (
-      <EnhancedPaginationItem variant="ghost" {...props} />
+      <EnhancedPaginationItem variant='ghost' {...props} />
     ),
     Ellipsis: EnhancedPaginationEllipsis,
   },
@@ -681,10 +668,10 @@ export const PaginationFactory = {
    */
   minimal: {
     Root: (props: Omit<EnhancedPaginationRootProps, 'variant'>) => (
-      <EnhancedPaginationRoot variant="compact" {...props} />
+      <EnhancedPaginationRoot variant='compact' {...props} />
     ),
     Item: (props: Omit<EnhancedPaginationItemProps, 'variant'>) => (
-      <EnhancedPaginationItem variant="minimal" {...props} />
+      <EnhancedPaginationItem variant='minimal' {...props} />
     ),
     Ellipsis: EnhancedPaginationEllipsis,
   },
@@ -707,13 +694,13 @@ export const PaginationFactory = {
    */
   compact: {
     Root: (props: Omit<EnhancedPaginationRootProps, 'density'>) => (
-      <EnhancedPaginationRoot density="compact" {...props} />
+      <EnhancedPaginationRoot density='compact' {...props} />
     ),
     Item: (props: Omit<EnhancedPaginationItemProps, 'size'>) => (
-      <EnhancedPaginationItem size="sm" {...props} />
+      <EnhancedPaginationItem size='sm' {...props} />
     ),
     Ellipsis: (props: Omit<EnhancedPaginationEllipsisProps, 'size'>) => (
-      <EnhancedPaginationEllipsis size="sm" {...props} />
+      <EnhancedPaginationEllipsis size='sm' {...props} />
     ),
   },
 
@@ -722,13 +709,13 @@ export const PaginationFactory = {
    */
   large: {
     Root: (props: Omit<EnhancedPaginationRootProps, 'size'>) => (
-      <EnhancedPaginationRoot size="lg" {...props} />
+      <EnhancedPaginationRoot size='lg' {...props} />
     ),
     Item: (props: Omit<EnhancedPaginationItemProps, 'size'>) => (
-      <EnhancedPaginationItem size="lg" {...props} />
+      <EnhancedPaginationItem size='lg' {...props} />
     ),
     Ellipsis: (props: Omit<EnhancedPaginationEllipsisProps, 'size'>) => (
-      <EnhancedPaginationEllipsis size="lg" {...props} />
+      <EnhancedPaginationEllipsis size='lg' {...props} />
     ),
   },
 } as const;
@@ -816,7 +803,7 @@ const EnhancedPaginationComplete = React.forwardRef<
             isNavigation
             disabled={!canGoPrevious}
             onClick={() => handlePageChange(1)}
-            aria-label="Go to first page"
+            aria-label='Go to first page'
           >
             {first}
           </EnhancedPaginationItem>
@@ -827,7 +814,7 @@ const EnhancedPaginationComplete = React.forwardRef<
           <EnhancedPaginationItem
             variant={itemVariant}
             isNavigation
-            navigationDirection="previous"
+            navigationDirection='previous'
             disabled={!canGoPrevious}
             onClick={() => handlePageChange(currentPage - 1)}
           >
@@ -871,7 +858,7 @@ const EnhancedPaginationComplete = React.forwardRef<
           <EnhancedPaginationItem
             variant={itemVariant}
             isNavigation
-            navigationDirection="next"
+            navigationDirection='next'
             disabled={!canGoNext}
             onClick={() => handlePageChange(currentPage + 1)}
           >
@@ -886,7 +873,7 @@ const EnhancedPaginationComplete = React.forwardRef<
             isNavigation
             disabled={!canGoNext}
             onClick={() => handlePageChange(totalPages)}
-            aria-label="Go to last page"
+            aria-label='Go to last page'
           >
             {last}
           </EnhancedPaginationItem>

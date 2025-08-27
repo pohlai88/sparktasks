@@ -1,624 +1,1286 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SparkTasks v5ext3 — Interactive HTML Preview</title>
-  <style>
-    /* =====================
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SparkTasks v5ext3 — Interactive HTML Preview</title>
+    <style>
+      /* =====================
        DESIGN TOKENS (lightweight)
        ===================== */
-    :root{
-      /* palette */
-      --bg:#0b0d12; --surface0:#10141b; --surface1:#131925; --surface2:#192235; --ink:#e7ebf3; --muted:#a4afc2;
-      --primary:#5aa1ff; --primary-strong:#2f7dff; --success:#3ddc97; --warn:#ffb454; --info:#74b0ff; --danger:#ff6666;
-      /* borders & shadows */
-      --line:#2a3242; --ring:#2f7dff; --sh-sm:0 1px 2px rgba(0,0,0,.25); --sh-md:0 10px 30px rgba(0,0,0,.35);
-      /* radii & spacing */
-      --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --pad-xs:6px; --pad-sm:10px; --pad-md:14px; --pad-lg:20px; --gap:12px;
-      /* motion */
-      --t-fast:140ms; --t-med:220ms; --e:ease;
-      /* typography */
-      --font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      --h1:28px; --h2:20px; --h3:16px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%; background:var(--bg); color:var(--ink); font:var(--font)}
-    a{color:var(--primary)}
-    .muted{color:var(--muted)}
-    .container{max-width:1200px; margin:0 auto; padding:20px}
-    .row{display:flex; gap:var(--gap); align-items:center}
-    .between{display:flex; justify-content:space-between; align-items:center; gap:var(--gap)}
-    .col{display:flex; flex-direction:column; gap:var(--gap)}
-    .card{background:var(--surface1); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--sh-sm)}
-    .pad-md{padding:var(--pad-md)}.pad-lg{padding:var(--pad-lg)}.pad-sm{padding:var(--pad-sm)}
-    .badge{display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border-radius:999px; border:1px solid var(--line); font-size:12px}
-    .badge.info{background:#0e2136; color:#bcd8ff; border-color:#10345e}
-    .badge.success{background:#0f2a1f; color:#bff5e1; border-color:#1f6b50}
-    .badge.warn{background:#2c2315; color:#ffd9a3; border-color:#6f5427}
-    .btn{border:1px solid var(--line); background:linear-gradient(180deg,#1f2838,#161d2b); color:var(--ink); padding:8px 12px; border-radius:var(--r-md); cursor:pointer; transition:transform var(--t-fast) var(--e), background var(--t-fast) var(--e)}
-    .btn:hover{transform:translateY(-1px)}
-    .btn.primary{background:linear-gradient(180deg,var(--primary),var(--primary-strong)); color:white; border:none}
-    .btn.ghost{background:transparent}
-    .input{background:var(--surface0); border:1px solid var(--line); color:var(--ink); padding:10px 12px; border-radius:var(--r-md); outline:none}
-    .input:focus{box-shadow:0 0 0 2px var(--ring)}
-    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:var(--surface0); border:1px solid var(--line); padding:2px 6px; border-radius:6px}
-    .sep{height:1px; background:var(--line); margin:10px 0}
+      :root {
+        /* palette */
+        --bg: #0b0d12;
+        --surface0: #10141b;
+        --surface1: #131925;
+        --surface2: #192235;
+        --ink: #e7ebf3;
+        --muted: #a4afc2;
+        --primary: #5aa1ff;
+        --primary-strong: #2f7dff;
+        --success: #3ddc97;
+        --warn: #ffb454;
+        --info: #74b0ff;
+        --danger: #ff6666;
+        /* borders & shadows */
+        --line: #2a3242;
+        --ring: #2f7dff;
+        --sh-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+        --sh-md: 0 10px 30px rgba(0, 0, 0, 0.35);
+        /* radii & spacing */
+        --r-sm: 8px;
+        --r-md: 12px;
+        --r-lg: 16px;
+        --r-xl: 20px;
+        --pad-xs: 6px;
+        --pad-sm: 10px;
+        --pad-md: 14px;
+        --pad-lg: 20px;
+        --gap: 12px;
+        /* motion */
+        --t-fast: 140ms;
+        --t-med: 220ms;
+        --e: ease;
+        /* typography */
+        --font:
+          14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, 'Helvetica Neue', Arial, 'Apple Color Emoji',
+          'Segoe UI Emoji';
+        --h1: 28px;
+        --h2: 20px;
+        --h3: 16px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--ink);
+        font: var(--font);
+      }
+      a {
+        color: var(--primary);
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .row {
+        display: flex;
+        gap: var(--gap);
+        align-items: center;
+      }
+      .between {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--gap);
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+      .card {
+        background: var(--surface1);
+        border: 1px solid var(--line);
+        border-radius: var(--r-lg);
+        box-shadow: var(--sh-sm);
+      }
+      .pad-md {
+        padding: var(--pad-md);
+      }
+      .pad-lg {
+        padding: var(--pad-lg);
+      }
+      .pad-sm {
+        padding: var(--pad-sm);
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        font-size: 12px;
+      }
+      .badge.info {
+        background: #0e2136;
+        color: #bcd8ff;
+        border-color: #10345e;
+      }
+      .badge.success {
+        background: #0f2a1f;
+        color: #bff5e1;
+        border-color: #1f6b50;
+      }
+      .badge.warn {
+        background: #2c2315;
+        color: #ffd9a3;
+        border-color: #6f5427;
+      }
+      .btn {
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, #1f2838, #161d2b);
+        color: var(--ink);
+        padding: 8px 12px;
+        border-radius: var(--r-md);
+        cursor: pointer;
+        transition:
+          transform var(--t-fast) var(--e),
+          background var(--t-fast) var(--e);
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn.primary {
+        background: linear-gradient(
+          180deg,
+          var(--primary),
+          var(--primary-strong)
+        );
+        color: white;
+        border: none;
+      }
+      .btn.ghost {
+        background: transparent;
+      }
+      .input {
+        background: var(--surface0);
+        border: 1px solid var(--line);
+        color: var(--ink);
+        padding: 10px 12px;
+        border-radius: var(--r-md);
+        outline: none;
+      }
+      .input:focus {
+        box-shadow: 0 0 0 2px var(--ring);
+      }
+      .kbd {
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          'Liberation Mono', 'Courier New', monospace;
+        background: var(--surface0);
+        border: 1px solid var(--line);
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+      .sep {
+        height: 1px;
+        background: var(--line);
+        margin: 10px 0;
+      }
 
-    /* =====================
+      /* =====================
        APP CHROME
        ===================== */
-    header.app{position:sticky; top:0; z-index:10; background:linear-gradient(180deg,var(--surface2),var(--surface1)); border-bottom:1px solid var(--line)}
-    header.app .logo{font-size:var(--h2); letter-spacing:.3px}
-    .top-actions{gap:8px}
+      header.app {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: linear-gradient(180deg, var(--surface2), var(--surface1));
+        border-bottom: 1px solid var(--line);
+      }
+      header.app .logo {
+        font-size: var(--h2);
+        letter-spacing: 0.3px;
+      }
+      .top-actions {
+        gap: 8px;
+      }
 
-    .layout{display:grid; grid-template-columns:260px 1fr; gap:var(--gap); margin-top:14px}
-    nav.sidebar{background:var(--surface1); border:1px solid var(--line); border-radius:var(--r-lg); padding:var(--pad-md); position:sticky; top:72px; height:calc(100vh - 90px); overflow:auto}
-    nav h3{font-size:var(--h3); margin:0 0 6px}
-    nav .navlink{display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; cursor:pointer}
-    nav .navlink:hover{background:var(--surface0)}
+      .layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: var(--gap);
+        margin-top: 14px;
+      }
+      nav.sidebar {
+        background: var(--surface1);
+        border: 1px solid var(--line);
+        border-radius: var(--r-lg);
+        padding: var(--pad-md);
+        position: sticky;
+        top: 72px;
+        height: calc(100vh - 90px);
+        overflow: auto;
+      }
+      nav h3 {
+        font-size: var(--h3);
+        margin: 0 0 6px;
+      }
+      nav .navlink {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      nav .navlink:hover {
+        background: var(--surface0);
+      }
 
-    /* =====================
+      /* =====================
        BOARD
        ===================== */
-    .board{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap)}
-    .column{background:var(--surface1); border:1px solid var(--line); border-radius:var(--r-lg); padding:var(--pad-md)}
-    .column h4{margin:0 0 6px}
-    .wip{font-size:12px}
-    .card-task{background:var(--surface0); border:1px solid var(--line); border-radius:var(--r-md); padding:10px; display:grid; gap:8px}
-    .chips{display:flex; gap:6px; flex-wrap:wrap}
-    .chip{font-size:12px; padding:2px 6px; border:1px solid var(--line); border-radius:999px; background:#0f1320}
-    .filechip{display:inline-flex; align-items:center; gap:6px}
-    .drag{cursor:grab}
+      .board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--gap);
+      }
+      .column {
+        background: var(--surface1);
+        border: 1px solid var(--line);
+        border-radius: var(--r-lg);
+        padding: var(--pad-md);
+      }
+      .column h4 {
+        margin: 0 0 6px;
+      }
+      .wip {
+        font-size: 12px;
+      }
+      .card-task {
+        background: var(--surface0);
+        border: 1px solid var(--line);
+        border-radius: var(--r-md);
+        padding: 10px;
+        display: grid;
+        gap: 8px;
+      }
+      .chips {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        font-size: 12px;
+        padding: 2px 6px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #0f1320;
+      }
+      .filechip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .drag {
+        cursor: grab;
+      }
 
-    /* Drawer */
-    .drawer{position:fixed; right:0; top:0; height:100%; width:400px; transform:translateX(100%); transition:transform var(--t-med) var(--e); background:var(--surface2); border-left:1px solid var(--line); box-shadow:var(--sh-md)}
-    .drawer.open{transform:translateX(0)}
-    .drawer .section{padding:var(--pad-md)}
+      /* Drawer */
+      .drawer {
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 400px;
+        transform: translateX(100%);
+        transition: transform var(--t-med) var(--e);
+        background: var(--surface2);
+        border-left: 1px solid var(--line);
+        box-shadow: var(--sh-md);
+      }
+      .drawer.open {
+        transform: translateX(0);
+      }
+      .drawer .section {
+        padding: var(--pad-md);
+      }
 
-    /* Approval banner */
-    .approval{background:#0d2442; border:1px solid #1e4d8f; color:#cde2ff; border-radius:var(--r-lg); padding:var(--pad-sm); display:grid; gap:8px}
+      /* Approval banner */
+      .approval {
+        background: #0d2442;
+        border: 1px solid #1e4d8f;
+        color: #cde2ff;
+        border-radius: var(--r-lg);
+        padding: var(--pad-sm);
+        display: grid;
+        gap: 8px;
+      }
 
-    /* Library */
-    .library{display:grid; gap:var(--gap)}
-    .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--gap)}
-    .asset{background:var(--surface0); border:1px solid var(--line); border-radius:var(--r-md); padding:8px}
-    .thumb{height:100px; border-radius:10px; background:linear-gradient(180deg,#1e2a40,#142035); border:1px solid var(--line)}
+      /* Library */
+      .library {
+        display: grid;
+        gap: var(--gap);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--gap);
+      }
+      .asset {
+        background: var(--surface0);
+        border: 1px solid var(--line);
+        border-radius: var(--r-md);
+        padding: 8px;
+      }
+      .thumb {
+        height: 100px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #1e2a40, #142035);
+        border: 1px solid var(--line);
+      }
 
-    /* Spotlight (Cmd/Ctrl+K) */
-    .spotlight{position:fixed; inset:0; display:none; align-items:flex-start; justify-content:center; background:rgba(0,0,0,.5)}
-    .spotlight.open{display:flex}
-    .spot-panel{margin-top:10vh; width:720px; background:var(--surface2); border:1px solid var(--line); border-radius:var(--r-xl); box-shadow:var(--sh-md)}
-    .spot-input{width:100%; font-size:16px}
-    .spot-results{max-height:320px; overflow:auto}
+      /* Spotlight (Cmd/Ctrl+K) */
+      .spotlight {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: flex-start;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.5);
+      }
+      .spotlight.open {
+        display: flex;
+      }
+      .spot-panel {
+        margin-top: 10vh;
+        width: 720px;
+        background: var(--surface2);
+        border: 1px solid var(--line);
+        border-radius: var(--r-xl);
+        box-shadow: var(--sh-md);
+      }
+      .spot-input {
+        width: 100%;
+        font-size: 16px;
+      }
+      .spot-results {
+        max-height: 320px;
+        overflow: auto;
+      }
 
-    /* Popover */
-    .popover{position:absolute; background:var(--surface1); border:1px solid var(--line); border-radius:var(--r-lg); padding:var(--pad-sm); box-shadow:var(--sh-sm); z-index:20}
+      /* Popover */
+      .popover {
+        position: absolute;
+        background: var(--surface1);
+        border: 1px solid var(--line);
+        border-radius: var(--r-lg);
+        padding: var(--pad-sm);
+        box-shadow: var(--sh-sm);
+        z-index: 20;
+      }
 
-    /* Stage ribbon */
-    .ribbon{display:flex; gap:8px; align-items:center}
-    .ribbon .btn{padding:6px 10px}
+      /* Stage ribbon */
+      .ribbon {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .ribbon .btn {
+        padding: 6px 10px;
+      }
 
-    /* Tables */
-    table{width:100%; border-collapse:separate; border-spacing:0}
-    th,td{padding:10px; border-bottom:1px solid var(--line); text-align:left}
-    th{color:#c8d7f2}
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+      }
+      th {
+        color: #c8d7f2;
+      }
 
-    /* Focus (Zen) */
-    .zen .sidebar, .zen .top-right, .zen .stage-switch{display:none}
-    .zen .board{grid-template-columns:1fr}
+      /* Focus (Zen) */
+      .zen .sidebar,
+      .zen .top-right,
+      .zen .stage-switch {
+        display: none;
+      }
+      .zen .board {
+        grid-template-columns: 1fr;
+      }
 
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-in { animation: fadeIn 0.3s ease-out; }
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-in {
+        animation: fadeIn 0.3s ease-out;
+      }
 
-    /* Toast notifications */
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      padding: 10px 16px;
-      border-radius: var(--r-md);
-      background: var(--surface2);
-      border: 1px solid var(--line);
-      box-shadow: var(--sh-md);
-      animation: fadeIn 0.3s ease-out;
-    }
+      /* Toast notifications */
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        padding: 10px 16px;
+        border-radius: var(--r-md);
+        background: var(--surface2);
+        border: 1px solid var(--line);
+        box-shadow: var(--sh-md);
+        animation: fadeIn 0.3s ease-out;
+      }
 
-    /* Utility */
-    .hide{display:none}
+      /* Utility */
+      .hide {
+        display: none;
+      }
 
-    /* Responsive adjustments */
-    @media (max-width: 1024px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .board { grid-template-columns: 1fr; }
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      .drawer { width: 80%; }
-      .spot-panel { width: 90%; }
-    }
+      /* Responsive adjustments */
+      @media (max-width: 1024px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+        .board {
+          grid-template-columns: 1fr;
+        }
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .drawer {
+          width: 80%;
+        }
+        .spot-panel {
+          width: 90%;
+        }
+      }
 
-    @media (max-width: 640px) {
-      .container { padding: 10px; }
-      .top-actions { flex-wrap: wrap; }
-      .grid { grid-template-columns: 1fr; }
-      .drawer { width: 100%; }
-    }
-  </style>
-</head>
-<body>
-  <header class="app">
-    <div class="container between pad-sm">
-      <div class="row">
-        <div class="logo">⚡ SparkTasks <span class="muted">v5ext3 SSOT</span></div>
-        <span class="badge info" data-testid="residency-badge" id="residencyBadge">Google Drive • US</span>
-        <span class="badge success" title="All ops signed" data-testid="approval-activity-verified">Verified</span>
-      </div>
-      <div class="row top-actions">
-        <span class="badge" title="P95 search latency">Search &lt;200ms</span>
-        <span class="badge" title="TTI drawer">Drawer &lt;120ms</span>
-        <button class="btn ghost" id="btnFocus" title="Toggle Focus (Zen)" data-testid="zen-toggle">⌘J Focus</button>
-        <button class="btn primary" id="btnSpot" title="Command Palette" aria-haspopup="dialog">⌘K Command</button>
-        <button class="btn" id="btnDemo">Demo Mode</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="container">
-
-    <!-- STAGE SWITCH -->
-    <section class="between card pad-md">
-      <div class="col">
-        <h2 style="margin:0;font-size:var(--h2)">Market‑Winning Development Plan <span class="muted">(Interactive Preview)</span></h2>
-        <div class="muted">Trello familiarity • Linear speed • BYOS sovereignty • Cryptographic trust</div>
-      </div>
-      <div class="ribbon stage-switch">
-        <span class="muted">Stage:</span>
-        <button class="btn" data-stage="individual">Individual</button>
-        <button class="btn" data-stage="team">Team</button>
-        <button class="btn" data-stage="org">Organization</button>
-      </div>
-    </section>
-
-    <div class="layout">
-      <!-- SIDEBAR NAV -->
-      <nav class="sidebar card" aria-label="Sidebar Navigation">
-        <h3>Navigate</h3>
-        <div class="navlink" data-testid="nav-tasks">🗂️ Tasks</div>
-        <div class="navlink" data-testid="nav-library" id="navLibrary">📎 Library</div>
-        <div class="navlink" data-testid="nav-sidebar">🧭 Overview</div>
-        <div class="sep"></div>
-        <h3>Hierarchy</h3>
-        <div class="col" data-testid="hierarchy-tree">
-          <div>Portfolio ▸ <b>Q4 Growth</b></div>
-          <div class="muted">Program ▸ Ads Refresh</div>
-          <div class="muted">Project ▸ Launch Campaign</div>
-          <div class="muted">Epic ▸ Landing Rework</div>
+      @media (max-width: 640px) {
+        .container {
+          padding: 10px;
+        }
+        .top-actions {
+          flex-wrap: wrap;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .drawer {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app">
+      <div class="between pad-sm container">
+        <div class="row">
+          <div class="logo">
+            ⚡ SparkTasks <span class="muted">v5ext3 SSOT</span>
+          </div>
+          <span
+            class="badge info"
+            data-testid="residency-badge"
+            id="residencyBadge"
+            >Google Drive • US</span
+          >
+          <span
+            class="badge success"
+            title="All ops signed"
+            data-testid="approval-activity-verified"
+            >Verified</span
+          >
         </div>
-        <div class="sep"></div>
-        <h3>Shortcuts</h3>
-        <div class="navlink"><span class="kbd">⌘K</span> Command</div>
-        <div class="navlink"><span class="kbd">⌘J</span> Focus Mode</div>
-      </nav>
+        <div class="row top-actions">
+          <span class="badge" title="P95 search latency">Search &lt;200ms</span>
+          <span class="badge" title="TTI drawer">Drawer &lt;120ms</span>
+          <button
+            class="btn ghost"
+            id="btnFocus"
+            title="Toggle Focus (Zen)"
+            data-testid="zen-toggle"
+          >
+            ⌘J Focus
+          </button>
+          <button
+            class="btn primary"
+            id="btnSpot"
+            title="Command Palette"
+            aria-haspopup="dialog"
+          >
+            ⌘K Command
+          </button>
+          <button class="btn" id="btnDemo">Demo Mode</button>
+        </div>
+      </div>
+    </header>
 
-      <!-- MAIN WORK AREA -->
-      <section class="col">
-        <!-- BOARD -->
-        <section class="board" data-testid="board-container" id="board">
-          <div class="column">
-            <div class="between">
-              <h4>To Do</h4>
-              <span class="wip muted" title="Work in progress">WIP 2/3</span>
-            </div>
-            <input class="input" placeholder="Quick Add • @assignee #label !priority ^due +checklist" data-testid="quick-add-input" id="quickAdd" />
-            <div class="col" id="col-todo"></div>
+    <main class="container">
+      <!-- STAGE SWITCH -->
+      <section class="between card pad-md">
+        <div class="col">
+          <h2 style="margin: 0; font-size: var(--h2)">
+            Market‑Winning Development Plan
+            <span class="muted">(Interactive Preview)</span>
+          </h2>
+          <div class="muted">
+            Trello familiarity • Linear speed • BYOS sovereignty • Cryptographic
+            trust
           </div>
-          <div class="column">
-            <div class="between"><h4>Doing</h4><span class="wip muted">WIP 1/3</span></div>
-            <div class="col" id="col-doing"></div>
-          </div>
-          <div class="column">
-            <div class="between"><h4>Done</h4><span class="wip muted">Past 7d: 12</span></div>
-            <div class="col" id="col-done"></div>
-          </div>
-        </section>
-
-        <!-- LIBRARY (grid) -->
-        <section class="card pad-md library" id="library" style="display:none">
-          <div class="between">
-            <h3 style="margin:0">Docs & Media Library</h3>
-            <label class="btn">
-              <input type="file" id="fileInput" data-testid="asset-upload" multiple hidden />
-              Upload
-            </label>
-          </div>
-          <div class="grid" id="assetGrid"></div>
-        </section>
-
-        <!-- COMPETITIVE TABLE (snapshot) -->
-        <section class="card pad-lg">
-          <h3 style="margin-top:0">F500 Competitive Snapshot</h3>
-          <table>
-            <thead>
-              <tr><th>Capability</th><th>Trello</th><th>Linear</th><th>Asana</th><th>Notion</th><th>SparkTasks Target</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Board Feel</td><td>Familiar</td><td>—</td><td>OK</td><td>DB boards</td><td><b>Familiar + 60fps + keyboard</b></td></tr>
-              <tr><td>Speed</td><td>Mid</td><td><b>Elite</b></td><td>Mid</td><td>Mid</td><td><b>Elite</b> (&lt;50ms / &lt;200ms)</td></tr>
-              <tr><td>Files</td><td>Attachments</td><td>Links</td><td>Basic</td><td>Blocks</td><td><b>Project‑native + BYOS + local search</b></td></tr>
-              <tr><td>Approvals</td><td>No</td><td>No</td><td>Basic</td><td>Limited</td><td><b>Unified task/asset + crypto</b></td></tr>
-              <tr><td>Offline</td><td>Limited</td><td>Limited</td><td>Limited</td><td>Improving</td><td><b>Full CRUD + conflict cards</b></td></tr>
-            </tbody>
-          </table>
-        </section>
-
-        <!-- CRYPTOGRAPHIC TRUST DEMO -->
-        <section class="card pad-md hide" id="cryptoDemo">
-          <h3 style="margin-top:0">Cryptographic Trust Layer</h3>
-          <div class="col">
-            <div class="row">
-              <span class="badge success">Ed25519 Signatures</span>
-              <span class="muted">All operations are cryptographically signed</span>
-            </div>
-            <div class="sep"></div>
-            <div class="row">
-              <div class="col">
-                <div class="muted">Task Creation Signature</div>
-                <div class="text-sm">0x8a3d...c7f2</div>
-              </div>
-              <div class="col">
-                <div class="muted">Approval Signature</div>
-                <div class="text-sm">0x4e21...9a3d</div>
-              </div>
-              <button class="btn" id="btnVerify">Verify All Signatures</button>
-            </div>
-          </div>
-        </section>
+        </div>
+        <div class="ribbon stage-switch">
+          <span class="muted">Stage:</span>
+          <button class="btn" data-stage="individual">Individual</button>
+          <button class="btn" data-stage="team">Team</button>
+          <button class="btn" data-stage="org">Organization</button>
+        </div>
       </section>
-    </div>
-  </main>
 
-  <!-- TASK DRAWER -->
-  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Task details" data-testid="task-detail-drawer">
-    <div class="section between">
-      <div>
-        <div class="muted">Portfolio ▸ Program ▸ Project ▸ Epic</div>
-        <input class="input" id="drawerTitle" data-testid="task-title" value="Draft landing hero" />
-      </div>
-      <button class="btn ghost" id="btnCloseDrawer" data-testid="drawer-close">✕</button>
-    </div>
-    <div class="section">
-      <div class="approval" data-testid="approval-banner">
-        <div class="between">
-          <div class="row" style="gap:8px">
-            <span class="badge info">In Review</span>
-            <span class="muted">• task #EP-12</span>
+      <div class="layout">
+        <!-- SIDEBAR NAV -->
+        <nav class="sidebar card" aria-label="Sidebar Navigation">
+          <h3>Navigate</h3>
+          <div class="navlink" data-testid="nav-tasks">🗂️ Tasks</div>
+          <div class="navlink" data-testid="nav-library" id="navLibrary">
+            📎 Library
           </div>
-          <div class="row" style="gap:8px">
-            <button class="btn primary" data-testid="approve-button" id="btnApprove">Approve</button>
-            <button class="btn" data-testid="request-changes-button" id="btnChanges">Request changes</button>
+          <div class="navlink" data-testid="nav-sidebar">🧭 Overview</div>
+          <div class="sep"></div>
+          <h3>Hierarchy</h3>
+          <div class="col" data-testid="hierarchy-tree">
+            <div>Portfolio ▸ <b>Q4 Growth</b></div>
+            <div class="muted">Program ▸ Ads Refresh</div>
+            <div class="muted">Project ▸ Launch Campaign</div>
+            <div class="muted">Epic ▸ Landing Rework</div>
+          </div>
+          <div class="sep"></div>
+          <h3>Shortcuts</h3>
+          <div class="navlink"><span class="kbd">⌘K</span> Command</div>
+          <div class="navlink"><span class="kbd">⌘J</span> Focus Mode</div>
+        </nav>
+
+        <!-- MAIN WORK AREA -->
+        <section class="col">
+          <!-- BOARD -->
+          <section class="board" data-testid="board-container" id="board">
+            <div class="column">
+              <div class="between">
+                <h4>To Do</h4>
+                <span class="wip muted" title="Work in progress">WIP 2/3</span>
+              </div>
+              <input
+                class="input"
+                placeholder="Quick Add • @assignee #label !priority ^due +checklist"
+                data-testid="quick-add-input"
+                id="quickAdd"
+              />
+              <div class="col" id="col-todo"></div>
+            </div>
+            <div class="column">
+              <div class="between">
+                <h4>Doing</h4>
+                <span class="wip muted">WIP 1/3</span>
+              </div>
+              <div class="col" id="col-doing"></div>
+            </div>
+            <div class="column">
+              <div class="between">
+                <h4>Done</h4>
+                <span class="wip muted">Past 7d: 12</span>
+              </div>
+              <div class="col" id="col-done"></div>
+            </div>
+          </section>
+
+          <!-- LIBRARY (grid) -->
+          <section
+            class="card pad-md library"
+            id="library"
+            style="display: none"
+          >
+            <div class="between">
+              <h3 style="margin: 0">Docs & Media Library</h3>
+              <label class="btn">
+                <input
+                  type="file"
+                  id="fileInput"
+                  data-testid="asset-upload"
+                  multiple
+                  hidden
+                />
+                Upload
+              </label>
+            </div>
+            <div class="grid" id="assetGrid"></div>
+          </section>
+
+          <!-- COMPETITIVE TABLE (snapshot) -->
+          <section class="card pad-lg">
+            <h3 style="margin-top: 0">F500 Competitive Snapshot</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Capability</th>
+                  <th>Trello</th>
+                  <th>Linear</th>
+                  <th>Asana</th>
+                  <th>Notion</th>
+                  <th>SparkTasks Target</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Board Feel</td>
+                  <td>Familiar</td>
+                  <td>—</td>
+                  <td>OK</td>
+                  <td>DB boards</td>
+                  <td><b>Familiar + 60fps + keyboard</b></td>
+                </tr>
+                <tr>
+                  <td>Speed</td>
+                  <td>Mid</td>
+                  <td><b>Elite</b></td>
+                  <td>Mid</td>
+                  <td>Mid</td>
+                  <td><b>Elite</b> (&lt;50ms / &lt;200ms)</td>
+                </tr>
+                <tr>
+                  <td>Files</td>
+                  <td>Attachments</td>
+                  <td>Links</td>
+                  <td>Basic</td>
+                  <td>Blocks</td>
+                  <td><b>Project‑native + BYOS + local search</b></td>
+                </tr>
+                <tr>
+                  <td>Approvals</td>
+                  <td>No</td>
+                  <td>No</td>
+                  <td>Basic</td>
+                  <td>Limited</td>
+                  <td><b>Unified task/asset + crypto</b></td>
+                </tr>
+                <tr>
+                  <td>Offline</td>
+                  <td>Limited</td>
+                  <td>Limited</td>
+                  <td>Limited</td>
+                  <td>Improving</td>
+                  <td><b>Full CRUD + conflict cards</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- CRYPTOGRAPHIC TRUST DEMO -->
+          <section class="card pad-md hide" id="cryptoDemo">
+            <h3 style="margin-top: 0">Cryptographic Trust Layer</h3>
+            <div class="col">
+              <div class="row">
+                <span class="badge success">Ed25519 Signatures</span>
+                <span class="muted"
+                  >All operations are cryptographically signed</span
+                >
+              </div>
+              <div class="sep"></div>
+              <div class="row">
+                <div class="col">
+                  <div class="muted">Task Creation Signature</div>
+                  <div class="text-sm">0x8a3d...c7f2</div>
+                </div>
+                <div class="col">
+                  <div class="muted">Approval Signature</div>
+                  <div class="text-sm">0x4e21...9a3d</div>
+                </div>
+                <button class="btn" id="btnVerify">
+                  Verify All Signatures
+                </button>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <!-- TASK DRAWER -->
+    <aside
+      class="drawer"
+      id="drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Task details"
+      data-testid="task-detail-drawer"
+    >
+      <div class="section between">
+        <div>
+          <div class="muted">Portfolio ▸ Program ▸ Project ▸ Epic</div>
+          <input
+            class="input"
+            id="drawerTitle"
+            data-testid="task-title"
+            value="Draft landing hero"
+          />
+        </div>
+        <button
+          class="btn ghost"
+          id="btnCloseDrawer"
+          data-testid="drawer-close"
+        >
+          ✕
+        </button>
+      </div>
+      <div class="section">
+        <div class="approval" data-testid="approval-banner">
+          <div class="between">
+            <div class="row" style="gap: 8px">
+              <span class="badge info">In Review</span>
+              <span class="muted">• task #EP-12</span>
+            </div>
+            <div class="row" style="gap: 8px">
+              <button
+                class="btn primary"
+                data-testid="approve-button"
+                id="btnApprove"
+              >
+                Approve
+              </button>
+              <button
+                class="btn"
+                data-testid="request-changes-button"
+                id="btnChanges"
+              >
+                Request changes
+              </button>
+            </div>
+          </div>
+          <div class="muted">
+            Quorum: <span id="quorum">1</span> /
+            <span id="approverCount">1</span> •
+            <span id="queued" class="hide">Queued (offline)</span>
           </div>
         </div>
-        <div class="muted">Quorum: <span id="quorum">1</span> / <span id="approverCount">1</span> • <span id="queued" class="hide">Queued (offline)</span></div>
+      </div>
+      <div class="section">
+        <h4 style="margin: 6px 0">Attachments</h4>
+        <div
+          id="attachmentZone"
+          data-testid="attachment-zone"
+          class="col"
+        ></div>
+      </div>
+      <div class="section">
+        <h4 style="margin: 6px 0">Comments</h4>
+        <textarea
+          class="input"
+          rows="3"
+          placeholder="@mention teammates…"
+          data-testid="comment-editor"
+        ></textarea>
+      </div>
+      <div class="section">
+        <div class="muted">
+          Activity — <span class="badge success">cryptographic-signature</span>
+        </div>
+        <div class="col" id="activityFeed"></div>
+      </div>
+    </aside>
+
+    <!-- SPOTLIGHT OVERLAY -->
+    <div class="spotlight" id="spot">
+      <div class="spot-panel">
+        <div class="pad-sm">
+          <input
+            class="input spot-input"
+            id="spotInput"
+            placeholder="Search • type:pdf ext:docx owner:@alex in:project:Billing"
+            data-testid="search-results"
+          />
+        </div>
+        <div class="sep"></div>
+        <div class="pad-sm spot-results" id="spotResults"></div>
       </div>
     </div>
-    <div class="section">
-      <h4 style="margin:6px 0">Attachments</h4>
-      <div id="attachmentZone" data-testid="attachment-zone" class="col"></div>
-    </div>
-    <div class="section">
-      <h4 style="margin:6px 0">Comments</h4>
-      <textarea class="input" rows="3" placeholder="@mention teammates…" data-testid="comment-editor"></textarea>
-    </div>
-    <div class="section">
-      <div class="muted">Activity — <span class="badge success">cryptographic-signature</span></div>
-      <div class="col" id="activityFeed"></div>
-    </div>
-  </aside>
 
-  <!-- SPOTLIGHT OVERLAY -->
-  <div class="spotlight" id="spot">
-    <div class="spot-panel">
-      <div class="pad-sm">
-        <input class="input spot-input" id="spotInput" placeholder="Search • type:pdf ext:docx owner:@alex in:project:Billing" data-testid="search-results" />
+    <!-- RESIDENCY POPOVER -->
+    <div
+      class="popover hide"
+      id="residencyPopover"
+      role="dialog"
+      aria-modal="false"
+      data-testid="storage-health"
+    >
+      <div><b>Storage Provider</b></div>
+      <div class="muted">Google Drive: Connected</div>
+      <div style="height: 8px"></div>
+      <button class="btn" id="btnSwitch">Switch Provider</button>
+      <div
+        class="muted"
+        id="sovereigntyMsg"
+        style="margin-top: 6px; display: none"
+        data-testid="sovereignty-warning"
+      >
+        Data residency will change
       </div>
-      <div class="sep"></div>
-      <div class="pad-sm spot-results" id="spotResults"></div>
     </div>
-  </div>
 
-  <!-- RESIDENCY POPOVER -->
-  <div class="popover hide" id="residencyPopover" role="dialog" aria-modal="false" data-testid="storage-health">
-    <div><b>Storage Provider</b></div>
-    <div class="muted">Google Drive: Connected</div>
-    <div style="height:8px"></div>
-    <button class="btn" id="btnSwitch">Switch Provider</button>
-    <div class="muted" id="sovereigntyMsg" style="margin-top:6px; display:none" data-testid="sovereignty-warning">Data residency will change</div>
-  </div>
+    <script>
+      // =====================
+      // DATA & UTILITIES
+      // =====================
+      const state = {
+        stage: 'individual',
+        offline: false,
+        demoMode: false,
+        tasks: [
+          {
+            id: 't1',
+            col: 'todo',
+            title: 'Draft landing hero',
+            priority: 'high',
+            labels: ['marketing'],
+            files: 1,
+          },
+          {
+            id: 't2',
+            col: 'todo',
+            title: 'Pricing page copy',
+            priority: 'medium',
+            labels: ['content'],
+            files: 0,
+          },
+          {
+            id: 't3',
+            col: 'doing',
+            title: 'Campaign assets review',
+            priority: 'high',
+            labels: ['design'],
+            files: 2,
+          },
+          {
+            id: 't4',
+            col: 'done',
+            title: 'Email sequence v2',
+            priority: 'low',
+            labels: ['growth'],
+            files: 1,
+          },
+        ],
+        assets: [
+          { id: 'a1', name: 'Contract_Q4.pdf', type: 'pdf' },
+          { id: 'a2', name: 'Hero_1200x628.png', type: 'image' },
+          { id: 'a3', name: 'Promo_cut_v3.mp4', type: 'video' },
+        ],
+        activities: [
+          {
+            user: 'You',
+            action: 'created this task',
+            time: '2 hours ago',
+            signature: '0x8a3d...c7f2',
+          },
+          {
+            user: 'Sarah K.',
+            action: 'requested review',
+            time: '1 hour ago',
+            signature: '0x4e21...9a3d',
+          },
+        ],
+      };
 
-  <script>
-    // =====================
-    // DATA & UTILITIES
-    // =====================
-    const state = {
-      stage:'individual',
-      offline:false,
-      demoMode: false,
-      tasks:[
-        {id:'t1', col:'todo', title:'Draft landing hero', priority:'high', labels:['marketing'], files:1},
-        {id:'t2', col:'todo', title:'Pricing page copy', priority:'medium', labels:['content'], files:0},
-        {id:'t3', col:'doing', title:'Campaign assets review', priority:'high', labels:['design'], files:2},
-        {id:'t4', col:'done', title:'Email sequence v2', priority:'low', labels:['growth'], files:1}
-      ],
-      assets:[
-        {id:'a1', name:'Contract_Q4.pdf', type:'pdf'},
-        {id:'a2', name:'Hero_1200x628.png', type:'image'},
-        {id:'a3', name:'Promo_cut_v3.mp4', type:'video'}
-      ],
-      activities: [
-        {user: 'You', action: 'created this task', time: '2 hours ago', signature: '0x8a3d...c7f2'},
-        {user: 'Sarah K.', action: 'requested review', time: '1 hour ago', signature: '0x4e21...9a3d'}
-      ]
-    };
+      function el(html) {
+        const t = document.createElement('template');
+        t.innerHTML = html.trim();
+        return t.content.firstChild;
+      }
 
-    function el(html){const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild}
+      function showToast(message, type = 'info') {
+        const toast = el(`<div class="toast badge ${type}">${message}</div>`);
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
 
-    function showToast(message, type = 'info') {
-      const toast = el(`<div class="toast badge ${type}">${message}</div>`);
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
-    }
-
-    // =====================
-    // RENDER BOARD
-    // =====================
-    const cols={todo:document.getElementById('col-todo'), doing:document.getElementById('col-doing'), done:document.getElementById('col-done')};
-    function renderBoard(){ Object.values(cols).forEach(c=>c.innerHTML='');
-      state.tasks.forEach(task=>{
-        const card=el(`<div class="card-task drag" draggable="true" data-id="${task.id}" data-testid="task-card">
+      // =====================
+      // RENDER BOARD
+      // =====================
+      const cols = {
+        todo: document.getElementById('col-todo'),
+        doing: document.getElementById('col-doing'),
+        done: document.getElementById('col-done'),
+      };
+      function renderBoard() {
+        Object.values(cols).forEach(c => (c.innerHTML = ''));
+        state.tasks.forEach(task => {
+          const card =
+            el(`<div class="card-task drag" draggable="true" data-id="${task.id}" data-testid="task-card">
             <div class="between"><div>${task.title}</div><span class="chip">!${task.priority}</span></div>
             <div class="chips">
-              ${task.labels.map(l=>`<span class="chip" data-testid="label-${l}">#${l}</span>`).join('')}
+              ${task.labels.map(l => `<span class="chip" data-testid="label-${l}">#${l}</span>`).join('')}
               <span class="chip filechip" data-testid="file-chip">📎 ${task.files}</span>
             </div>
           </div>`);
-        card.addEventListener('dblclick',()=>openDrawer(task));
-        card.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', task.id); });
-        cols[task.col].appendChild(card);
-      })
-    }
-
-    // Drag targets
-    Object.entries(cols).forEach(([k,container])=>{
-      container.addEventListener('dragover',e=>e.preventDefault());
-      container.addEventListener('drop',e=>{ e.preventDefault(); const id=e.dataTransfer.getData('text/plain'); const t=state.tasks.find(x=>x.id===id); if(t){ t.col=k; renderBoard(); }});
-    });
-
-    // Quick Add grammar parsing
-    const quickAdd=document.getElementById('quickAdd');
-    quickAdd.addEventListener('keydown',e=>{
-      if(e.key==='Enter'){
-        const v=quickAdd.value.trim(); if(!v) return;
-        const m={ assignee:(v.match(/@([\w-]+)/)||[])[1], label:(v.match(/#([\w-]+)/)||[])[1], pr:(v.match(/!([\w-]+)/)||[])[1]||'medium' };
-        const title=v.replace(/[@#!^+].*/,'').trim()||'New task';
-        state.tasks.unshift({id:'t'+(Math.random()*1e4|0), col:'todo', title, priority:m.pr, labels:m.label?[m.label]:[], files:0});
-        quickAdd.value=''; renderBoard();
-        showToast('Task created ✓', 'success');
+          card.addEventListener('dblclick', () => openDrawer(task));
+          card.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', task.id);
+          });
+          cols[task.col].appendChild(card);
+        });
       }
-    });
 
-    // =====================
-    // DRAWER
-    // =====================
-    const drawer=document.getElementById('drawer');
-    const drawerTitle=document.getElementById('drawerTitle');
-    const activityFeed = document.getElementById('activityFeed');
-    document.getElementById('btnCloseDrawer').onclick=()=>drawer.classList.remove('open');
+      // Drag targets
+      Object.entries(cols).forEach(([k, container]) => {
+        container.addEventListener('dragover', e => e.preventDefault());
+        container.addEventListener('drop', e => {
+          e.preventDefault();
+          const id = e.dataTransfer.getData('text/plain');
+          const t = state.tasks.find(x => x.id === id);
+          if (t) {
+            t.col = k;
+            renderBoard();
+          }
+        });
+      });
 
-    function openDrawer(task){
-      drawer.classList.add('open');
-      drawerTitle.value=task.title;
+      // Quick Add grammar parsing
+      const quickAdd = document.getElementById('quickAdd');
+      quickAdd.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const v = quickAdd.value.trim();
+          if (!v) return;
+          const m = {
+            assignee: (v.match(/@([\w-]+)/) || [])[1],
+            label: (v.match(/#([\w-]+)/) || [])[1],
+            pr: (v.match(/!([\w-]+)/) || [])[1] || 'medium',
+          };
+          const title = v.replace(/[@#!^+].*/, '').trim() || 'New task';
+          state.tasks.unshift({
+            id: 't' + ((Math.random() * 1e4) | 0),
+            col: 'todo',
+            title,
+            priority: m.pr,
+            labels: m.label ? [m.label] : [],
+            files: 0,
+          });
+          quickAdd.value = '';
+          renderBoard();
+          showToast('Task created ✓', 'success');
+        }
+      });
 
-      // Render activity feed
-      activityFeed.innerHTML = state.activities.map(a => `
+      // =====================
+      // DRAWER
+      // =====================
+      const drawer = document.getElementById('drawer');
+      const drawerTitle = document.getElementById('drawerTitle');
+      const activityFeed = document.getElementById('activityFeed');
+      document.getElementById('btnCloseDrawer').onclick = () =>
+        drawer.classList.remove('open');
+
+      function openDrawer(task) {
+        drawer.classList.add('open');
+        drawerTitle.value = task.title;
+
+        // Render activity feed
+        activityFeed.innerHTML = state.activities
+          .map(
+            a => `
         <div class="between">
           <div>
             <b>${a.user}</b> ${a.action}
             <div class="muted">${a.time} • <span class="badge info">${a.signature}</span></div>
           </div>
         </div>
-      `).join('');
-    }
+      `
+          )
+          .join('');
+      }
 
-    // Approvals
-    document.getElementById('btnApprove').onclick=function(){
-      showToast('Approved ✓ (cryptographically signed)', 'success');
-      // Add to activity feed
-      state.activities.unshift({
-        user: 'You',
-        action: 'approved this task',
-        time: 'Just now',
-        signature: '0x' + Math.random().toString(16).slice(2, 10) + '...' + Math.random().toString(16).slice(2, 6)
-      });
-      openDrawer(state.tasks[0]); // Refresh drawer
-    }
+      // Approvals
+      document.getElementById('btnApprove').onclick = function () {
+        showToast('Approved ✓ (cryptographically signed)', 'success');
+        // Add to activity feed
+        state.activities.unshift({
+          user: 'You',
+          action: 'approved this task',
+          time: 'Just now',
+          signature:
+            '0x' +
+            Math.random().toString(16).slice(2, 10) +
+            '...' +
+            Math.random().toString(16).slice(2, 6),
+        });
+        openDrawer(state.tasks[0]); // Refresh drawer
+      };
 
-    document.getElementById('btnChanges').onclick=function(){
-      showToast('Changes requested', 'warn');
-    }
+      document.getElementById('btnChanges').onclick = function () {
+        showToast('Changes requested', 'warn');
+      };
 
-    // Attachments zone demo
-    const attachmentZone=document.getElementById('attachmentZone');
-    function addAttachmentPreview(file){
-      const node=el(`<div class="card pad-sm" data-testid="asset-preview">
-        <div class="thumb" style="display:flex;align-items:center;justify-content:center">${file.type.includes('pdf')?'📄 PDF':file.type.includes('image')?'🖼️ Image':'📎 File'}</div>
+      // Attachments zone demo
+      const attachmentZone = document.getElementById('attachmentZone');
+      function addAttachmentPreview(file) {
+        const node = el(`<div class="card pad-sm" data-testid="asset-preview">
+        <div class="thumb" style="display:flex;align-items:center;justify-content:center">${file.type.includes('pdf') ? '📄 PDF' : file.type.includes('image') ? '🖼️ Image' : '📎 File'}</div>
         <div class="row"><span>${file.name}</span><span class="badge info" data-testid="residency-file-badge">Google Drive</span></div>
       </div>`);
-      attachmentZone.prepend(node);
-    }
+        attachmentZone.prepend(node);
+      }
 
-    // =====================
-    // LIBRARY
-    // =====================
-    const library=document.getElementById('library');
-    const navLibrary=document.getElementById('navLibrary');
-    const assetGrid=document.getElementById('assetGrid');
-    const fileInput=document.getElementById('fileInput');
-    navLibrary.onclick=()=>{ library.style.display= library.style.display==='none'? 'block':'none'; };
+      // =====================
+      // LIBRARY
+      // =====================
+      const library = document.getElementById('library');
+      const navLibrary = document.getElementById('navLibrary');
+      const assetGrid = document.getElementById('assetGrid');
+      const fileInput = document.getElementById('fileInput');
+      navLibrary.onclick = () => {
+        library.style.display =
+          library.style.display === 'none' ? 'block' : 'none';
+      };
 
-    function renderAssets(){ assetGrid.innerHTML=''; state.assets.forEach(a=>{
-      const node=el(`<div class="asset" data-testid="asset-card">
+      function renderAssets() {
+        assetGrid.innerHTML = '';
+        state.assets.forEach(a => {
+          const node = el(`<div class="asset" data-testid="asset-card">
         <div class="thumb"></div>
         <div class="between" style="margin-top:8px"><div>${a.name}</div><span class="badge">${a.type}</span></div>
         <button class="btn" data-testid="file-approve-banner">Attach & Approve</button>
       </div>`);
-      node.querySelector('[data-testid="file-approve-banner"]').onclick=()=>{
-        drawer.classList.add('open');
-        addAttachmentPreview({name:a.name, type:a.type});
-        showToast('File attached to task', 'success');
-      };
-      assetGrid.appendChild(node);
-    }); }
-
-    fileInput.onchange=(e)=>{
-      const files=[...e.target.files];
-      files.forEach(f=>{ state.assets.unshift({id:'a'+(Math.random()*1e4|0), name:f.name, type:f.type.includes('pdf')?'pdf':(f.type.includes('image')?'image':'other')}); addAttachmentPreview(f); });
-      renderAssets(); drawer.classList.add('open');
-      showToast(`Uploaded ${files.length} file(s)`, 'success');
-    }
-
-    // =====================
-    // SPOTLIGHT (⌘K)
-    // =====================
-    const spot=document.getElementById('spot');
-    const spotInput=document.getElementById('spotInput');
-    const spotResults=document.getElementById('spotResults');
-    function openSpot(){ spot.classList.add('open'); spotInput.focus(); renderSpot(''); }
-    function closeSpot(){ spot.classList.remove('open'); }
-    document.getElementById('btnSpot').onclick=openSpot;
-    document.addEventListener('keydown',e=>{
-      if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openSpot(); }
-      if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='j'){ e.preventDefault(); toggleZen(); }
-      if(e.key==='Escape') closeSpot();
-    });
-    spot.addEventListener('click',e=>{ if(e.target===spot) closeSpot(); });
-    function renderSpot(q){
-      const parts=q.trim().split(/\s+/).filter(Boolean);
-      const filters={ type:null, ext:null, owner:null, text:[] };
-      parts.forEach(p=>{ if(p.startsWith('type:')) filters.type=p.slice(5); else if(p.startsWith('ext:')) filters.ext=p.slice(4); else if(p.startsWith('owner:@')) filters.owner=p.slice(7); else filters.text.push(p); });
-      const text=filters.text.join(' ').toLowerCase();
-      const items=[...state.tasks.map(t=>({kind:'task',title:t.title})), ...state.assets.map(a=>({kind:'file',title:a.name,type:a.type}))];
-      const res=items.filter(it=>{
-        if(filters.type && it.kind==='file' && it.type!==filters.type) return false;
-        if(text && !it.title.toLowerCase().includes(text)) return false; return true;
-      });
-      spotResults.innerHTML=res.map(it=>`<div class="pad-sm" data-testid="search-result-item">${it.kind==='file'?'📄':'✅'} ${it.title}</div>`).join('') || '<div class="pad-sm muted">No results</div>';
-    }
-    spotInput.addEventListener('input', e=>renderSpot(e.target.value));
-
-    // =====================
-    // RESIDENCY
-    // =====================
-    const residencyBadge=document.getElementById('residencyBadge');
-    const residencyPopover=document.getElementById('residencyPopover');
-    residencyBadge.addEventListener('click', e=>{
-      const r = residencyBadge.getBoundingClientRect();
-      residencyPopover.style.left = (r.left) + 'px';
-      residencyPopover.style.top = (r.bottom + 8) + 'px';
-      residencyPopover.classList.toggle('hide');
-    });
-    document.getElementById('btnSwitch').onclick=()=>{
-      document.getElementById('sovereigntyMsg').style.display='block';
-      residencyBadge.textContent='Dropbox • EU';
-      showToast('Storage provider changed', 'info');
-    }
-
-    // =====================
-    // ZEN MODE
-    // =====================
-    const btnFocus=document.getElementById('btnFocus');
-    function toggleZen(){ document.body.classList.toggle('zen'); }
-    btnFocus.onclick=toggleZen;
-
-    // =====================
-    // STAGE SWITCHER
-    // =====================
-    document.querySelectorAll('[data-stage]').forEach(b=> b.addEventListener('click',()=>{
-      state.stage=b.getAttribute('data-stage');
-      // show/hide small differences
-      document.querySelector('.wip').textContent = state.stage==='team' ? 'WIP 1/5' : 'WIP 2/3';
-      document.getElementById('quorum').textContent = state.stage==='org' ? '2' : '1';
-      document.getElementById('approverCount').textContent = state.stage==='team' ? '2' : '1';
-
-      showToast(`Switched to ${state.stage} mode`, 'info');
-    }));
-
-    // =====================
-    // DEMO MODE
-    // =====================
-    document.getElementById('btnDemo').addEventListener('click', () => {
-      state.demoMode = !state.demoMode;
-
-      if (state.demoMode) {
-        // Add demo content
-        state.tasks.push(
-          {id:'t10', col:'todo', title:'Review customer feedback', priority:'high', labels:['research'], files:3},
-          {id:'t11', col:'doing', title:'Update API documentation', priority:'medium', labels:['engineering'], files:1},
-          {id:'t12', col:'done', title:'Social media campaign', priority:'medium', labels:['marketing'], files:2}
-        );
-
-        state.assets.push(
-          {id:'a10', name:'Customer_Feedback.pdf', type:'pdf'},
-          {id:'a11', name:'API_Spec_v2.docx', type:'other'},
-          {id:'a12', name:'Social_Calendar.xlsx', type:'other'}
-        );
-
-        document.getElementById('cryptoDemo').classList.remove('hide');
-        showToast('Demo mode activated', 'success');
-      } else {
-        // Reset to original state
-        state.tasks = state.tasks.slice(0, 4);
-        state.assets = state.assets.slice(0, 3);
-        document.getElementById('cryptoDemo').classList.add('hide');
-        showToast('Demo mode deactivated', 'info');
+          node.querySelector('[data-testid="file-approve-banner"]').onclick =
+            () => {
+              drawer.classList.add('open');
+              addAttachmentPreview({ name: a.name, type: a.type });
+              showToast('File attached to task', 'success');
+            };
+          assetGrid.appendChild(node);
+        });
       }
 
+      fileInput.onchange = e => {
+        const files = [...e.target.files];
+        files.forEach(f => {
+          state.assets.unshift({
+            id: 'a' + ((Math.random() * 1e4) | 0),
+            name: f.name,
+            type: f.type.includes('pdf')
+              ? 'pdf'
+              : f.type.includes('image')
+                ? 'image'
+                : 'other',
+          });
+          addAttachmentPreview(f);
+        });
+        renderAssets();
+        drawer.classList.add('open');
+        showToast(`Uploaded ${files.length} file(s)`, 'success');
+      };
+
+      // =====================
+      // SPOTLIGHT (⌘K)
+      // =====================
+      const spot = document.getElementById('spot');
+      const spotInput = document.getElementById('spotInput');
+      const spotResults = document.getElementById('spotResults');
+      function openSpot() {
+        spot.classList.add('open');
+        spotInput.focus();
+        renderSpot('');
+      }
+      function closeSpot() {
+        spot.classList.remove('open');
+      }
+      document.getElementById('btnSpot').onclick = openSpot;
+      document.addEventListener('keydown', e => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          openSpot();
+        }
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
+          e.preventDefault();
+          toggleZen();
+        }
+        if (e.key === 'Escape') closeSpot();
+      });
+      spot.addEventListener('click', e => {
+        if (e.target === spot) closeSpot();
+      });
+      function renderSpot(q) {
+        const parts = q.trim().split(/\s+/).filter(Boolean);
+        const filters = { type: null, ext: null, owner: null, text: [] };
+        parts.forEach(p => {
+          if (p.startsWith('type:')) filters.type = p.slice(5);
+          else if (p.startsWith('ext:')) filters.ext = p.slice(4);
+          else if (p.startsWith('owner:@')) filters.owner = p.slice(7);
+          else filters.text.push(p);
+        });
+        const text = filters.text.join(' ').toLowerCase();
+        const items = [
+          ...state.tasks.map(t => ({ kind: 'task', title: t.title })),
+          ...state.assets.map(a => ({
+            kind: 'file',
+            title: a.name,
+            type: a.type,
+          })),
+        ];
+        const res = items.filter(it => {
+          if (filters.type && it.kind === 'file' && it.type !== filters.type)
+            return false;
+          if (text && !it.title.toLowerCase().includes(text)) return false;
+          return true;
+        });
+        spotResults.innerHTML =
+          res
+            .map(
+              it =>
+                `<div class="pad-sm" data-testid="search-result-item">${it.kind === 'file' ? '📄' : '✅'} ${it.title}</div>`
+            )
+            .join('') || '<div class="pad-sm muted">No results</div>';
+      }
+      spotInput.addEventListener('input', e => renderSpot(e.target.value));
+
+      // =====================
+      // RESIDENCY
+      // =====================
+      const residencyBadge = document.getElementById('residencyBadge');
+      const residencyPopover = document.getElementById('residencyPopover');
+      residencyBadge.addEventListener('click', e => {
+        const r = residencyBadge.getBoundingClientRect();
+        residencyPopover.style.left = r.left + 'px';
+        residencyPopover.style.top = r.bottom + 8 + 'px';
+        residencyPopover.classList.toggle('hide');
+      });
+      document.getElementById('btnSwitch').onclick = () => {
+        document.getElementById('sovereigntyMsg').style.display = 'block';
+        residencyBadge.textContent = 'Dropbox • EU';
+        showToast('Storage provider changed', 'info');
+      };
+
+      // =====================
+      // ZEN MODE
+      // =====================
+      const btnFocus = document.getElementById('btnFocus');
+      function toggleZen() {
+        document.body.classList.toggle('zen');
+      }
+      btnFocus.onclick = toggleZen;
+
+      // =====================
+      // STAGE SWITCHER
+      // =====================
+      document.querySelectorAll('[data-stage]').forEach(b =>
+        b.addEventListener('click', () => {
+          state.stage = b.getAttribute('data-stage');
+          // show/hide small differences
+          document.querySelector('.wip').textContent =
+            state.stage === 'team' ? 'WIP 1/5' : 'WIP 2/3';
+          document.getElementById('quorum').textContent =
+            state.stage === 'org' ? '2' : '1';
+          document.getElementById('approverCount').textContent =
+            state.stage === 'team' ? '2' : '1';
+
+          showToast(`Switched to ${state.stage} mode`, 'info');
+        })
+      );
+
+      // =====================
+      // DEMO MODE
+      // =====================
+      document.getElementById('btnDemo').addEventListener('click', () => {
+        state.demoMode = !state.demoMode;
+
+        if (state.demoMode) {
+          // Add demo content
+          state.tasks.push(
+            {
+              id: 't10',
+              col: 'todo',
+              title: 'Review customer feedback',
+              priority: 'high',
+              labels: ['research'],
+              files: 3,
+            },
+            {
+              id: 't11',
+              col: 'doing',
+              title: 'Update API documentation',
+              priority: 'medium',
+              labels: ['engineering'],
+              files: 1,
+            },
+            {
+              id: 't12',
+              col: 'done',
+              title: 'Social media campaign',
+              priority: 'medium',
+              labels: ['marketing'],
+              files: 2,
+            }
+          );
+
+          state.assets.push(
+            { id: 'a10', name: 'Customer_Feedback.pdf', type: 'pdf' },
+            { id: 'a11', name: 'API_Spec_v2.docx', type: 'other' },
+            { id: 'a12', name: 'Social_Calendar.xlsx', type: 'other' }
+          );
+
+          document.getElementById('cryptoDemo').classList.remove('hide');
+          showToast('Demo mode activated', 'success');
+        } else {
+          // Reset to original state
+          state.tasks = state.tasks.slice(0, 4);
+          state.assets = state.assets.slice(0, 3);
+          document.getElementById('cryptoDemo').classList.add('hide');
+          showToast('Demo mode deactivated', 'info');
+        }
+
+        renderBoard();
+        renderAssets();
+      });
+
+      // Verify signatures
+      document.getElementById('btnVerify').addEventListener('click', () => {
+        showToast('All signatures verified successfully', 'success');
+      });
+
+      // =====================
+      // INITIAL RENDER
+      // =====================
       renderBoard();
       renderAssets();
-    });
 
-    // Verify signatures
-    document.getElementById('btnVerify').addEventListener('click', () => {
-      showToast('All signatures verified successfully', 'success');
-    });
-
-    // =====================
-    // INITIAL RENDER
-    // =====================
-    renderBoard();
-    renderAssets();
-
-    // =====================
-    // SMOKE TESTS (log-only to console; do not alter UI)
-    // =====================
-    (function tests(){
-      function expect(ok,msg){ if(!ok) console.error('[TEST FAIL]', msg); }
-      // Board has 3 columns
-      expect(Object.keys(cols).length===3,'board has 3 columns');
-      // Quick add parses priority
-      const sample='New card !high #urgent';
-      const pr=(sample.match(/!([\w-]+)/)||[])[1]; expect(pr==='high','grammar parses !priority');
-      // Spotlight token parse
-      const q='type:pdf ext:docx owner:@alex contract';
-      expect(q.includes('type:pdf') && q.includes('owner:@alex'),'spotlight tokens present');
-      // Residency popover exists
-      expect(!!document.getElementById('residencyPopover'),'residency popover exists');
-    })();
-  </script>
-</body>
+      // =====================
+      // SMOKE TESTS (log-only to console; do not alter UI)
+      // =====================
+      (function tests() {
+        function expect(ok, msg) {
+          if (!ok) console.error('[TEST FAIL]', msg);
+        }
+        // Board has 3 columns
+        expect(Object.keys(cols).length === 3, 'board has 3 columns');
+        // Quick add parses priority
+        const sample = 'New card !high #urgent';
+        const pr = (sample.match(/!([\w-]+)/) || [])[1];
+        expect(pr === 'high', 'grammar parses !priority');
+        // Spotlight token parse
+        const q = 'type:pdf ext:docx owner:@alex contract';
+        expect(
+          q.includes('type:pdf') && q.includes('owner:@alex'),
+          'spotlight tokens present'
+        );
+        // Residency popover exists
+        expect(
+          !!document.getElementById('residencyPopover'),
+          'residency popover exists'
+        );
+      })();
+    </script>
+  </body>
 </html>

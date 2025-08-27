@@ -44,13 +44,9 @@ npm run test:e2e:report    # View HTML test report
 ```typescript
 // e2e/data/seed.base.ts - Base deterministic data
 export const GOLDEN_SNAPSHOT = {
-  users: [
-    { id: 'user-001', email: 'test@sparktasks.com', role: 'admin' }
-  ],
-  tasks: [
-    { id: 'task-001', title: 'Sample Task', status: 'pending' }
-  ],
-  timestamp: '2024-01-01T00:00:00.000Z'
+  users: [{ id: 'user-001', email: 'test@sparktasks.com', role: 'admin' }],
+  tasks: [{ id: 'task-001', title: 'Sample Task', status: 'pending' }],
+  timestamp: '2024-01-01T00:00:00.000Z',
 };
 ```
 
@@ -94,7 +90,7 @@ import { injectAxe, checkA11y } from 'axe-playwright';
 test('accessibility compliance', async ({ page }) => {
   await injectAxe(page);
   await checkA11y(page, null, {
-    tags: ['wcag2a', 'wcag2aa', 'wcag21aa']
+    tags: ['wcag2a', 'wcag2aa', 'wcag21aa'],
   });
 });
 ```
@@ -116,9 +112,9 @@ test('performance benchmarks', async ({ page }) => {
   // Measures LCP, FID, CLS automatically
   const metrics = await page.evaluate(() => window.webVitals);
 
-  expect(metrics.lcp).toBeLessThan(2500);     // LCP < 2.5s
-  expect(metrics.cls).toBeLessThan(0.1);      // CLS < 0.1
-  expect(metrics.fid).toBeLessThan(100);      // FID < 100ms
+  expect(metrics.lcp).toBeLessThan(2500); // LCP < 2.5s
+  expect(metrics.cls).toBeLessThan(0.1); // CLS < 0.1
+  expect(metrics.fid).toBeLessThan(100); // FID < 100ms
 });
 ```
 
@@ -140,12 +136,14 @@ test('with mocked APIs', async ({ page }) => {
   const apiMocker = await createAPIMocker(page);
 
   // Mock successful responses
-  await apiMocker.mockEndpoint('/api/tasks',
+  await apiMocker.mockEndpoint(
+    '/api/tasks',
     MockResponses.success([{ id: '1', title: 'Mock Task' }])
   );
 
   // Mock error scenarios
-  await apiMocker.mockEndpoint('/api/error',
+  await apiMocker.mockEndpoint(
+    '/api/error',
     MockResponses.error('Server Error', 500)
   );
 });
@@ -315,7 +313,10 @@ await page.waitForTimeout(5000);
 ```typescript
 test('graceful error handling', async ({ page }) => {
   // Test error scenarios with mocked APIs
-  await apiMocker.mockEndpoint('/api/error', MockResponses.error('Server Error'));
+  await apiMocker.mockEndpoint(
+    '/api/error',
+    MockResponses.error('Server Error')
+  );
 
   await page.goto('/');
   await expect(page.locator('[data-testid="error-message"]')).toBeVisible();

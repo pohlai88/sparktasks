@@ -6,18 +6,18 @@ This is your **actionable playbook** to roll out **GPT Dev Plan v5ext2**. It tur
 
 ## 0) Pre‑Flight (Do these first)
 
-* **Freeze SSOT files**: link the following in your PR template sidebar for quick access:
+- **Freeze SSOT files**: link the following in your PR template sidebar for quick access:
+  - `docs/plans/gpt-dev-plan-v5ext2.md`
+  - `tests/ssot/selectors.ts` (canonical)
+  - `src/config/modes.ts` (FEATURE_MATRIX)
+  - `design/tokens.ts` (+ `design/tokens.css` once added)
 
-  * `docs/plans/gpt-dev-plan-v5ext2.md`
-  * `tests/ssot/selectors.ts` (canonical)
-  * `src/config/modes.ts` (FEATURE\_MATRIX)
-  * `design/tokens.ts` (+ `design/tokens.css` once added)
-* **CI gates** (no code changes): reviewers must reject if a PR:
+- **CI gates** (no code changes): reviewers must reject if a PR:
+  - lacks unified diff only patches, or tries to add deps/lockfile changes
+  - touches CI/security/billing, or adds hardcoded Tailwind classes
+  - changes public APIs/flags/error codes/schema/budgets
 
-  * lacks unified diff only patches, or tries to add deps/lockfile changes
-  * touches CI/security/billing, or adds hardcoded Tailwind classes
-  * changes public APIs/flags/error codes/schema/budgets
-* **Dataset scale**: benchmarks and E2E must run at **10k items** baseline.
+- **Dataset scale**: benchmarks and E2E must run at **10k items** baseline.
 
 ---
 
@@ -84,12 +84,12 @@ Each task uses the **Universal Anti‑Drift header**. Output: **unified git diff
 
 ## 2) Reviewer Checklist (paste into PR template)
 
-* [ ] Patch ≤\~220 diff lines, unified diff only
-* [ ] Paths are allowed; no deps/lockfile churn; no CI/security/billing edits
-* [ ] Tokens‑only styling; no hardcoded Tailwind classes
-* [ ] `data-testid` keys imported from `tests/ssot/selectors.ts`
-* [ ] a11y validated (focus/ARIA/keyboard)
-* [ ] Performance budgets respected (drawer <120ms; search p95 <200ms @10k)
+- [ ] Patch ≤\~220 diff lines, unified diff only
+- [ ] Paths are allowed; no deps/lockfile churn; no CI/security/billing edits
+- [ ] Tokens‑only styling; no hardcoded Tailwind classes
+- [ ] `data-testid` keys imported from `tests/ssot/selectors.ts`
+- [ ] a11y validated (focus/ARIA/keyboard)
+- [ ] Performance budgets respected (drawer <120ms; search p95 <200ms @10k)
 
 ---
 
@@ -106,16 +106,16 @@ Each task uses the **Universal Anti‑Drift header**. Output: **unified git diff
 
 ## 4) Success Scoreboard (exec‑visible)
 
-* Wow‑index ≥9.0 • ZCS workflows >95% • Approval reuse 100% • Residency visible 100%
-* p95 <200ms @10k • Preview <120ms • DnD 60fps • `.sparkpack` fidelity ≥99%
+- Wow‑index ≥9.0 • ZCS workflows >95% • Approval reuse 100% • Residency visible 100%
+- p95 <200ms @10k • Preview <120ms • DnD 60fps • `.sparkpack` fidelity ≥99%
 
 ---
 
 ## 5) Risk Watch & Mitigations
 
-* **Hidden feature cost**: lazy‑load gated surfaces; check bundle diff.
-* **Selector drift**: Patch 8 guard; reviewers grep for non‑SSOT IDs.
-* **M0 perf regressions**: keep perf HUD visible; fail PR if thresholds missed.
+- **Hidden feature cost**: lazy‑load gated surfaces; check bundle diff.
+- **Selector drift**: Patch 8 guard; reviewers grep for non‑SSOT IDs.
+- **M0 perf regressions**: keep perf HUD visible; fail PR if thresholds missed.
 
 ---
 

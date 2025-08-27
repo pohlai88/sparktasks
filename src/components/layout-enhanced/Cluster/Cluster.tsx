@@ -23,14 +23,14 @@ const clusterVariants = cva(['flex'], {
     // Spacing Control - using Tailwind's gap utilities
     gap: {
       none: 'gap-0',
-      xs: 'gap-1',       // 4px
-      sm: 'gap-2',       // 8px
-      md: 'gap-4',       // 16px
-      lg: 'gap-6',       // 24px
-      xl: 'gap-8',       // 32px
-      '2xl': 'gap-12',   // 48px
+      xs: 'gap-1', // 4px
+      sm: 'gap-2', // 8px
+      md: 'gap-4', // 16px
+      lg: 'gap-6', // 24px
+      xl: 'gap-8', // 32px
+      '2xl': 'gap-12', // 48px
     },
-    
+
     gapX: {
       none: 'gap-x-0',
       xs: 'gap-x-1',
@@ -40,7 +40,7 @@ const clusterVariants = cva(['flex'], {
       xl: 'gap-x-8',
       '2xl': 'gap-x-12',
     },
-    
+
     gapY: {
       none: 'gap-y-0',
       xs: 'gap-y-1',
@@ -50,14 +50,14 @@ const clusterVariants = cva(['flex'], {
       xl: 'gap-y-8',
       '2xl': 'gap-y-12',
     },
-    
+
     // Flex Behavior
     wrap: {
       wrap: 'flex-wrap',
       nowrap: 'flex-nowrap',
       'wrap-reverse': 'flex-wrap-reverse',
     },
-    
+
     align: {
       start: 'items-start',
       center: 'items-center',
@@ -65,7 +65,7 @@ const clusterVariants = cva(['flex'], {
       baseline: 'items-baseline',
       stretch: 'items-stretch',
     },
-    
+
     justify: {
       start: 'justify-start',
       center: 'justify-center',
@@ -74,7 +74,7 @@ const clusterVariants = cva(['flex'], {
       around: 'justify-around',
       evenly: 'justify-evenly',
     },
-    
+
     // Direction Control
     direction: {
       row: 'flex-row',
@@ -92,20 +92,35 @@ const clusterVariants = cva(['flex'], {
 
 // ===== TYPES =====
 
-export interface ClusterProps 
+export interface ClusterProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof clusterVariants> {
   // Semantic HTML
   as?: 'div' | 'nav' | 'ul' | 'ol' | 'span';
   asChild?: boolean;
-  
+
   // Responsive Behavior
   responsive?: {
-    sm?: Partial<Pick<ClusterProps, 'gap' | 'gapX' | 'gapY' | 'align' | 'justify' | 'direction' | 'wrap'>>;
-    md?: Partial<Pick<ClusterProps, 'gap' | 'gapX' | 'gapY' | 'align' | 'justify' | 'direction' | 'wrap'>>;
-    lg?: Partial<Pick<ClusterProps, 'gap' | 'gapX' | 'gapY' | 'align' | 'justify' | 'direction' | 'wrap'>>;
+    sm?: Partial<
+      Pick<
+        ClusterProps,
+        'gap' | 'gapX' | 'gapY' | 'align' | 'justify' | 'direction' | 'wrap'
+      >
+    >;
+    md?: Partial<
+      Pick<
+        ClusterProps,
+        'gap' | 'gapX' | 'gapY' | 'align' | 'justify' | 'direction' | 'wrap'
+      >
+    >;
+    lg?: Partial<
+      Pick<
+        ClusterProps,
+        'gap' | 'gapX' | 'gapY' | 'align' | 'justify' | 'direction' | 'wrap'
+      >
+    >;
   };
-  
+
   children: React.ReactNode;
 }
 
@@ -115,70 +130,82 @@ export const Cluster = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & ClusterProps
 >(
-  ({ 
-    className, 
-    gap,
-    gapX, 
-    gapY,
-    wrap,
-    align, 
-    justify, 
-    direction,
-    as = 'div',
-    asChild = false,
-    responsive,
-    children,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      gap,
+      gapX,
+      gapY,
+      wrap,
+      align,
+      justify,
+      direction,
+      as = 'div',
+      asChild = false,
+      responsive,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     // Build responsive classes
-    const responsiveClasses = responsive ? Object.entries(responsive).map(([breakpoint, config]) => {
-      const prefix = breakpoint === 'sm' ? 'sm:' : breakpoint === 'md' ? 'md:' : 'lg:';
-      const classes = [];
-      
-      if (config.gap) classes.push(`${prefix}gap-${config.gap === 'none' ? '0' : config.gap === 'xs' ? '1' : config.gap === 'sm' ? '2' : config.gap === 'md' ? '4' : config.gap === 'lg' ? '6' : config.gap === 'xl' ? '8' : '12'}`);
-      if (config.gapX) classes.push(`${prefix}gap-x-${config.gapX === 'none' ? '0' : config.gapX === 'xs' ? '1' : config.gapX === 'sm' ? '2' : config.gapX === 'md' ? '4' : config.gapX === 'lg' ? '6' : config.gapX === 'xl' ? '8' : '12'}`);
-      if (config.gapY) classes.push(`${prefix}gap-y-${config.gapY === 'none' ? '0' : config.gapY === 'xs' ? '1' : config.gapY === 'sm' ? '2' : config.gapY === 'md' ? '4' : config.gapY === 'lg' ? '6' : config.gapY === 'xl' ? '8' : '12'}`);
-      if (config.align) classes.push(`${prefix}items-${config.align}`);
-      if (config.justify) classes.push(`${prefix}justify-${config.justify}`);
-      if (config.direction) classes.push(`${prefix}flex-${config.direction}`);
-      if (config.wrap) classes.push(`${prefix}flex-${config.wrap}`);
-      
-      return classes.join(' ');
-    }).join(' ') : '';
-    
+    const responsiveClasses = responsive
+      ? Object.entries(responsive)
+          .map(([breakpoint, config]) => {
+            const prefix =
+              breakpoint === 'sm' ? 'sm:' : breakpoint === 'md' ? 'md:' : 'lg:';
+            const classes = [];
+
+            if (config.gap)
+              classes.push(
+                `${prefix}gap-${config.gap === 'none' ? '0' : config.gap === 'xs' ? '1' : config.gap === 'sm' ? '2' : config.gap === 'md' ? '4' : config.gap === 'lg' ? '6' : config.gap === 'xl' ? '8' : '12'}`
+              );
+            if (config.gapX)
+              classes.push(
+                `${prefix}gap-x-${config.gapX === 'none' ? '0' : config.gapX === 'xs' ? '1' : config.gapX === 'sm' ? '2' : config.gapX === 'md' ? '4' : config.gapX === 'lg' ? '6' : config.gapX === 'xl' ? '8' : '12'}`
+              );
+            if (config.gapY)
+              classes.push(
+                `${prefix}gap-y-${config.gapY === 'none' ? '0' : config.gapY === 'xs' ? '1' : config.gapY === 'sm' ? '2' : config.gapY === 'md' ? '4' : config.gapY === 'lg' ? '6' : config.gapY === 'xl' ? '8' : '12'}`
+              );
+            if (config.align) classes.push(`${prefix}items-${config.align}`);
+            if (config.justify)
+              classes.push(`${prefix}justify-${config.justify}`);
+            if (config.direction)
+              classes.push(`${prefix}flex-${config.direction}`);
+            if (config.wrap) classes.push(`${prefix}flex-${config.wrap}`);
+
+            return classes.join(' ');
+          })
+          .join(' ')
+      : '';
+
     const combinedClassName = cn(
-      clusterVariants({ 
+      clusterVariants({
         gap: gapX || gapY ? undefined : gap,
         gapX,
         gapY,
         wrap,
-        align, 
-        justify, 
+        align,
+        justify,
         direction,
       }),
       responsiveClasses,
       className
     );
-    
+
     if (asChild) {
       return (
-        <Slot
-          className={combinedClassName}
-          {...props}
-        >
+        <Slot className={combinedClassName} {...props}>
           {children}
         </Slot>
       );
     }
-    
+
     const Comp = as as React.ElementType;
-    
+
     return (
-      <Comp
-        ref={ref}
-        className={combinedClassName}
-        {...props}
-      >
+      <Comp ref={ref} className={combinedClassName} {...props}>
         {children}
       </Comp>
     );

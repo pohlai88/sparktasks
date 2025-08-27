@@ -48,8 +48,17 @@ Semantic layout containers with MAPS-governed max-width constraints, spacing, an
 ```typescript
 interface ContainerProps extends VariantProps<typeof containerVariants> {
   // Size Constraints
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | 'content' | 'prose';
-  
+  size?:
+    | 'xs'
+    | 'sm'
+    | 'md'
+    | 'lg'
+    | 'xl'
+    | '2xl'
+    | 'full'
+    | 'content'
+    | 'prose';
+
   // Spacing Control
   spacing?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   spacingX?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -66,25 +75,25 @@ interface ContainerProps extends VariantProps<typeof containerVariants> {
   // Responsive Behavior
   breakout?: boolean; // Allow content to break out of container
   fluid?: boolean; // Fluid width below breakpoint
-  
+
   // MAPS Integration
   surface?: 'canvas' | 'elevated' | 'glass' | 'panel';
-  
+
   className?: string;
   children: React.ReactNode;
 }
 
 // Pre-defined container sizes based on MAPS design tokens
 const ContainerSizes = {
-  xs: '20rem',     // 320px - Mobile small
-  sm: '24rem',     // 384px - Mobile large
-  md: '28rem',     // 448px - Tablet small
-  lg: '32rem',     // 512px - Tablet large
-  xl: '36rem',     // 576px - Desktop small
-  '2xl': '42rem',  // 672px - Desktop large
-  full: '100%',    // Full width
+  xs: '20rem', // 320px - Mobile small
+  sm: '24rem', // 384px - Mobile large
+  md: '28rem', // 448px - Tablet small
+  lg: '32rem', // 512px - Tablet large
+  xl: '36rem', // 576px - Desktop small
+  '2xl': '42rem', // 672px - Desktop large
+  full: '100%', // Full width
   content: '65ch', // Optimal content width
-  prose: '75ch',   // Reading width
+  prose: '75ch', // Reading width
 } as const;
 ```
 
@@ -139,29 +148,29 @@ Universal vertical spacing component that provides consistent gaps between child
 interface StackProps extends VariantProps<typeof stackVariants> {
   // Spacing Control
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
-  
+
   // Alignment Options
   align?: 'start' | 'center' | 'end' | 'stretch';
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-  
+
   // Direction Control
   direction?: 'column' | 'column-reverse';
-  
+
   // Responsive Behavior
   responsive?: {
     sm?: Partial<StackProps>;
     md?: Partial<StackProps>;
     lg?: Partial<StackProps>;
   };
-  
+
   // Semantic HTML
   as?: 'div' | 'section' | 'article' | 'nav' | 'ul' | 'ol';
   asChild?: boolean;
-  
+
   // Dividers
   divider?: boolean | React.ReactNode;
   dividerColor?: 'subtle' | 'muted' | 'accent';
-  
+
   className?: string;
   children: React.ReactNode;
 }
@@ -169,13 +178,13 @@ interface StackProps extends VariantProps<typeof stackVariants> {
 // Stack gap mapping to MAPS spacing tokens
 const StackGaps = {
   none: '0',
-  xs: '0.25rem',   // 4px
-  sm: '0.5rem',    // 8px
-  md: '1rem',      // 16px
-  lg: '1.5rem',    // 24px
-  xl: '2rem',      // 32px
-  '2xl': '3rem',   // 48px
-  '3xl': '4rem',   // 64px
+  xs: '0.25rem', // 4px
+  sm: '0.5rem', // 8px
+  md: '1rem', // 16px
+  lg: '1.5rem', // 24px
+  xl: '2rem', // 32px
+  '2xl': '3rem', // 48px
+  '3xl': '4rem', // 64px
 } as const;
 ```
 
@@ -191,7 +200,7 @@ const StackGaps = {
 </Stack>
 
 // Responsive spacing
-<Stack 
+<Stack
   gap="sm"
   responsive={{
     md: { gap: 'lg' },
@@ -233,26 +242,26 @@ interface ClusterProps extends VariantProps<typeof clusterVariants> {
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   gapX?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   gapY?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  
+
   // Flex Behavior
   wrap?: 'wrap' | 'nowrap' | 'wrap-reverse';
   align?: 'start' | 'center' | 'end' | 'baseline' | 'stretch';
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-  
+
   // Direction Control
   direction?: 'row' | 'row-reverse';
-  
+
   // Responsive Behavior
   responsive?: {
     sm?: Partial<ClusterProps>;
     md?: Partial<ClusterProps>;
     lg?: Partial<ClusterProps>;
   };
-  
+
   // Semantic HTML
   as?: 'div' | 'nav' | 'ul' | 'ol' | 'span';
   asChild?: boolean;
-  
+
   className?: string;
   children: React.ReactNode;
 }
@@ -284,7 +293,7 @@ interface ClusterProps extends VariantProps<typeof clusterVariants> {
 </Cluster>
 
 // Responsive behavior
-<Cluster 
+<Cluster
   gap="sm"
   responsive={{
     sm: { direction: 'column', gap: 'md' },
@@ -311,38 +320,52 @@ interface GridProps extends VariantProps<typeof gridVariants> {
   // Grid Structure
   columns?: number | 'auto' | 'min-content' | 'max-content' | string;
   rows?: number | 'auto' | 'min-content' | 'max-content' | string;
-  
+
   // Responsive Grid
   responsive?: {
     sm?: Partial<GridProps>;
     md?: Partial<GridProps>;
     lg?: Partial<GridProps>;
   };
-  
+
   // Gap Control
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   gapX?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   gapY?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  
+
   // Alignment
   alignItems?: 'start' | 'center' | 'end' | 'stretch';
   justifyItems?: 'start' | 'center' | 'end' | 'stretch';
-  alignContent?: 'start' | 'center' | 'end' | 'stretch' | 'between' | 'around' | 'evenly';
-  justifyContent?: 'start' | 'center' | 'end' | 'stretch' | 'between' | 'around' | 'evenly';
-  
+  alignContent?:
+    | 'start'
+    | 'center'
+    | 'end'
+    | 'stretch'
+    | 'between'
+    | 'around'
+    | 'evenly';
+  justifyContent?:
+    | 'start'
+    | 'center'
+    | 'end'
+    | 'stretch'
+    | 'between'
+    | 'around'
+    | 'evenly';
+
   // Auto-placement
   autoFlow?: 'row' | 'column' | 'dense' | 'row-dense' | 'column-dense';
   autoColumns?: 'min' | 'max' | 'fr' | string;
   autoRows?: 'min' | 'max' | 'fr' | string;
-  
+
   // Container Queries
   containerQueries?: boolean;
   minItemWidth?: string; // For auto-responsive grids
-  
+
   // Semantic HTML
   as?: 'div' | 'section' | 'article' | 'ul' | 'ol';
   asChild?: boolean;
-  
+
   className?: string;
   children: React.ReactNode;
 }
@@ -351,9 +374,9 @@ interface GridProps extends VariantProps<typeof gridVariants> {
 const GridPatterns = {
   'auto-fit': 'repeat(auto-fit, minmax(var(--min-item-width, 250px), 1fr))',
   'auto-fill': 'repeat(auto-fill, minmax(var(--min-item-width, 250px), 1fr))',
-  'sidebar': 'minmax(250px, 1fr) 3fr',
+  sidebar: 'minmax(250px, 1fr) 3fr',
   'holy-grail': '1fr 3fr 1fr',
-  'masonry': 'repeat(auto-fill, minmax(250px, 1fr))',
+  masonry: 'repeat(auto-fill, minmax(250px, 1fr))',
 } as const;
 ```
 
@@ -361,9 +384,9 @@ const GridPatterns = {
 
 ```typescript
 // Auto-responsive grid
-<Grid 
-  columns="auto-fit" 
-  minItemWidth="300px" 
+<Grid
+  columns="auto-fit"
+  minItemWidth="300px"
   gap="lg"
   containerQueries
 >
@@ -373,7 +396,7 @@ const GridPatterns = {
 </Grid>
 
 // Explicit responsive grid
-<Grid 
+<Grid
   columns={1}
   gap="md"
   responsive={{
@@ -394,7 +417,7 @@ const GridPatterns = {
 </Grid>
 
 // Complex grid with custom areas
-<Grid 
+<Grid
   columns="1fr 3fr 1fr"
   rows="auto 1fr auto"
   gap="md"
@@ -419,16 +442,17 @@ Advanced grid system that uses container queries for true component-level respon
 ### **Core Specifications**
 
 ```typescript
-interface ResponsiveGridProps extends VariantProps<typeof responsiveGridVariants> {
+interface ResponsiveGridProps
+  extends VariantProps<typeof responsiveGridVariants> {
   // Container-based Breakpoints
   breakpoints?: {
-    xs?: string;   // 320px
-    sm?: string;   // 480px
-    md?: string;   // 768px
-    lg?: string;   // 1024px
-    xl?: string;   // 1280px
+    xs?: string; // 320px
+    sm?: string; // 480px
+    md?: string; // 768px
+    lg?: string; // 1024px
+    xl?: string; // 1280px
   };
-  
+
   // Grid Configuration per Breakpoint
   gridConfig?: {
     xs?: GridConfig;
@@ -437,7 +461,7 @@ interface ResponsiveGridProps extends VariantProps<typeof responsiveGridVariants
     lg?: GridConfig;
     xl?: GridConfig;
   };
-  
+
   // Auto-sizing Options
   autoSizing?: {
     minItemWidth?: string;
@@ -445,16 +469,16 @@ interface ResponsiveGridProps extends VariantProps<typeof responsiveGridVariants
     aspectRatio?: string;
     maintainAspectRatio?: boolean;
   };
-  
+
   // Performance
   virtualized?: boolean;
   virtualizedHeight?: number;
   overscan?: number;
-  
+
   // Container Query Features
   containerName?: string;
   containerType?: 'size' | 'inline-size' | 'block-size';
-  
+
   className?: string;
   children: React.ReactNode;
 }
@@ -520,32 +544,32 @@ Sophisticated resizable panel layout system with persistence, keyboard navigatio
 interface PanelGroupProps extends VariantProps<typeof panelGroupVariants> {
   // Layout Direction
   direction: 'horizontal' | 'vertical';
-  
+
   // Behavior
   autoSaveId?: string; // Persistence key
   storage?: Storage; // Custom storage implementation
-  
+
   // Constraints
   minSize?: number; // Global minimum panel size (%)
   maxSize?: number; // Global maximum panel size (%)
-  
+
   // Interaction
   disabled?: boolean;
   keyboardResizeBy?: number; // Pixels to resize on keyboard input
-  
+
   // Touch Support
   touchResizeBy?: number;
-  
+
   // Callbacks
   onLayout?: (sizes: number[]) => void;
   onResize?: (sizes: number[]) => void;
   onResizeStart?: () => void;
   onResizeEnd?: () => void;
-  
+
   // Styling
   surface?: 'elevated' | 'glass' | 'panel';
   handleVariant?: 'line' | 'bar' | 'invisible';
-  
+
   className?: string;
   children: React.ReactNode;
 }
@@ -556,20 +580,20 @@ interface PanelProps extends VariantProps<typeof panelVariants> {
   defaultSize?: number; // Default size as percentage
   minSize?: number; // Minimum size as percentage
   maxSize?: number; // Maximum size as percentage
-  
+
   // Behavior
   collapsible?: boolean;
   collapsedSize?: number;
-  
+
   // Callbacks
   onCollapse?: () => void;
   onExpand?: () => void;
   onResize?: (size: number) => void;
-  
+
   // Content
   id?: string; // For persistence
   order?: number; // Panel order
-  
+
   className?: string;
   children: React.ReactNode;
 }
@@ -578,14 +602,14 @@ interface PanelProps extends VariantProps<typeof panelVariants> {
 interface PanelHandleProps extends VariantProps<typeof panelHandleVariants> {
   // Interaction
   disabled?: boolean;
-  
+
   // Styling
   variant?: 'line' | 'bar' | 'grip' | 'invisible';
   size?: 'sm' | 'md' | 'lg';
-  
+
   // Accessibility
   ariaLabel?: string;
-  
+
   className?: string;
   children?: React.ReactNode;
 }
@@ -629,8 +653,8 @@ interface PanelHandleProps extends VariantProps<typeof panelHandleVariants> {
 </PanelGroup>
 
 // Mobile-friendly vertical layout
-<PanelGroup 
-  direction="vertical" 
+<PanelGroup
+  direction="vertical"
   autoSaveId="mobile-layout"
   touchResizeBy={10}
 >
@@ -660,32 +684,32 @@ interface MotionLayoutProps extends VariantProps<typeof motionLayoutVariants> {
   // Motion Configuration
   layoutId?: string; // For shared layout animations
   layout?: boolean | 'position' | 'size'; // Enable layout animations
-  
+
   // Transition Presets
   preset?: 'spring' | 'ease' | 'linear' | 'bounce';
   duration?: number; // Override preset duration
-  
+
   // Layout Shift Prevention
   measureBeforeMount?: boolean;
   preserveAspectRatio?: boolean;
-  
+
   // Advanced Animations
   layoutRoot?: boolean; // Root for layout animation context
   layoutScroll?: boolean; // Animate on scroll
-  
+
   // Interaction States
   whileHover?: MotionValue;
   whileTap?: MotionValue;
   whileFocus?: MotionValue;
   whileInView?: MotionValue;
-  
+
   // Accessibility
   respectReducedMotion?: boolean;
-  
+
   // Callbacks
   onLayoutAnimationStart?: () => void;
   onLayoutAnimationComplete?: () => void;
-  
+
   className?: string;
   children: React.ReactNode;
 }
@@ -800,12 +824,8 @@ const LayoutTransitions = {
     "framer-motion@^11.11.9",
     "@container-query-polyfill/react@^1.0.0"
   ],
-  "panel-system": [
-    "react-resizable-panels@^2.1.4"
-  ],
-  "container-queries": [
-    "@container-query-polyfill/postcss@^1.0.0"
-  ]
+  "panel-system": ["react-resizable-panels@^2.1.4"],
+  "container-queries": ["@container-query-polyfill/postcss@^1.0.0"]
 }
 ```
 
@@ -851,7 +871,7 @@ This specification ensures seamless integration with the MAPS design system whil
 
 1. **Container** - Foundation layout primitive with semantic HTML and MAPS governance
 2. **Stack** - Vertical spacing primitive with consistent gaps
-3. **Cluster** - Horizontal spacing primitive with flex behavior  
+3. **Cluster** - Horizontal spacing primitive with flex behavior
 4. **Grid** - Modern CSS Grid system with responsive patterns
 5. **ResponsiveGrid** - Container query grid for component-level responsiveness
 6. **PanelGroup** - Sophisticated resizable panel system with persistence
@@ -859,12 +879,12 @@ This specification ensures seamless integration with the MAPS design system whil
 8. **PanelHandle** - Drag handle component with MAPS styling
 9. **MotionLayout** - Layout-aware motion system with MAPS integration
 
-*Note: Panel system components (PanelGroup + Panel + PanelHandle) work together as one logical system*
+_Note: Panel system components (PanelGroup + Panel + PanelHandle) work together as one logical system_
 
 ### **Implementation Priority Summary:**
 
 - **Phase 1 (Days 1-3)**: Container, Stack, Cluster primitives
-- **Phase 2 (Days 4-6)**: Grid and ResponsiveGrid systems  
+- **Phase 2 (Days 4-6)**: Grid and ResponsiveGrid systems
 - **Phase 3 (Days 7-9)**: PanelGroup system and MotionLayout
 
 The specifications are perfectly synchronized with MAPS v3.0 design system architecture and ready for immediate development.
@@ -985,7 +1005,7 @@ export function Container({ spacing = 'md', size = 'lg', ...props }) {
 
   // TokenGuard available for development-time validation
   // const { validateProps } = useTokenGuard({ enforceLayoutTokens: true })
-  
+
   return (
     <div
       className={cn(

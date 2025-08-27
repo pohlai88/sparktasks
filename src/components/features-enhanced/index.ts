@@ -38,7 +38,11 @@ export * from './ContentSystem';
 // ===== SYSTEM EXPORTS =====
 
 // Command System
-export { CommandPalette, CommandRegistry, useCommandRegistry } from './CommandSystem';
+export {
+  CommandPalette,
+  CommandRegistry,
+  useCommandRegistry,
+} from './CommandSystem';
 
 // Interaction System
 export { DragDropProvider } from './InteractionSystem';

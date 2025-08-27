@@ -1,541 +1,1140 @@
-# Create a single-file HTML prototype for the Conversational Project OS
-# The file demonstrates: Federated Thread, Inline Approval Ribbon, Unified Drawer,
-# File Rail, Verify Panel, Approval Stepper with "Executable Approvals", Mirror Ledger,
-# .sparkpack export, Command Palette-like slash commands, and a Perf overlay.
-#
-# All assets are inline (CSS/JS/SVG). No external dependencies.
-
-html = r"""<!doctype html>
+# Create a single-file HTML prototype for the Conversational Project OS # The
+file demonstrates: Federated Thread, Inline Approval Ribbon, Unified Drawer, #
+File Rail, Verify Panel, Approval Stepper with "Executable Approvals", Mirror
+Ledger, # .sparkpack export, Command Palette-like slash commands, and a Perf
+overlay. # # All assets are inline (CSS/JS/SVG). No external dependencies. html
+= r"""<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SparkTasks — Conversational Project OS (Prototype)</title>
-<style>
-  /* ===============================
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SparkTasks — Conversational Project OS (Prototype)</title>
+    <style>
+      /* ===============================
      SSOT-like Design Tokens (demo)
      =============================== */
-  :root{
-    /* Brand & surfaces */
-    --bg: #0b0e13;
-    --bg-elev: #121722;
-    --bg-panel: #0f141d;
-    --text: #e7eefc;
-    --muted: #9fb0d6;
-    --accent: #7cc4ff;
-    --accent-2:#7cffcc;
-    --danger:#ff6b6b;
-    --warning:#ffd166;
-    --success:#5bd39a;
-    --border:#1b2433;
-    --chip:#182033;
-    --chip-2:#152b1f;
-    --focus:#2f80ff;
+      :root {
+        /* Brand & surfaces */
+        --bg: #0b0e13;
+        --bg-elev: #121722;
+        --bg-panel: #0f141d;
+        --text: #e7eefc;
+        --muted: #9fb0d6;
+        --accent: #7cc4ff;
+        --accent-2: #7cffcc;
+        --danger: #ff6b6b;
+        --warning: #ffd166;
+        --success: #5bd39a;
+        --border: #1b2433;
+        --chip: #182033;
+        --chip-2: #152b1f;
+        --focus: #2f80ff;
 
-    /* Typography */
-    --f1: 28px;
-    --f2: 18px;
-    --f3: 15px;
-    --f4: 13px;
-    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+        /* Typography */
+        --f1: 28px;
+        --f2: 18px;
+        --f3: 15px;
+        --f4: 13px;
+        --mono:
+          ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
+          monospace;
+        --sans:
+          ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji',
+          'Segoe UI Emoji';
 
-    /* Radii & shadows */
-    --r-lg: 14px;
-    --r-md: 10px;
-    --r-sm: 8px;
-    --shadow-1: 0 6px 30px rgba(0,0,0,.35);
-    --shadow-2: 0 2px 12px rgba(0,0,0,.35);
+        /* Radii & shadows */
+        --r-lg: 14px;
+        --r-md: 10px;
+        --r-sm: 8px;
+        --shadow-1: 0 6px 30px rgba(0, 0, 0, 0.35);
+        --shadow-2: 0 2px 12px rgba(0, 0, 0, 0.35);
 
-    /* Metrics */
-    --panel-w: 360px;
-    --rail-w: 280px;
-    --file-rail-h: 112px;
+        /* Metrics */
+        --panel-w: 360px;
+        --rail-w: 280px;
+        --file-rail-h: 112px;
 
-    /* Status */
-    --badge-verified: #20e3b2;
-  }
+        /* Status */
+        --badge-verified: #20e3b2;
+      }
 
-  *{ box-sizing: border-box }
-  html,body{ height:100% }
-  body{
-    margin:0; background: radial-gradient(1200px 900px at 75% -20%, #112136, transparent),
-    linear-gradient(180deg, #080b10, #0a0e14 40%, #0a0e14 100%);
-    color:var(--text); font-family:var(--sans); line-height:1.35;
-  }
-  a{ color:var(--accent) }
-  button{ cursor:pointer }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(1200px 900px at 75% -20%, #112136, transparent),
+          linear-gradient(180deg, #080b10, #0a0e14 40%, #0a0e14 100%);
+        color: var(--text);
+        font-family: var(--sans);
+        line-height: 1.35;
+      }
+      a {
+        color: var(--accent);
+      }
+      button {
+        cursor: pointer;
+      }
 
-  /* Layout */
-  .app{ display:grid; grid-template-rows: 60px 1fr var(--file-rail-h); height:100vh }
-  .topbar{
-    display:grid; grid-template-columns: 1fr auto 1fr; align-items:center;
-    gap:16px; padding:0 16px; border-bottom:1px solid var(--border); background:rgba(18,23,34,.85); backdrop-filter:saturate(180%) blur(12px);
-  }
-  .brand{ display:flex; align-items:center; gap:12px }
-  .brand .dot{ width:10px; height:10px; border-radius:50%; background:var(--accent-2) }
-  .brand h1{ font-size:var(--f2); margin:0 }
-  .org-chip{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:var(--chip); border:1px solid var(--border); font-size:var(--f4) }
-  .org-chip svg{ width:14px; height:14px }
-  .center-actions{ display:flex; justify-content:center; gap:8px }
-  .mode-btn{ padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:var(--bg-panel); color:var(--muted); font-size:var(--f4) }
-  .mode-btn.active{ color:var(--text); outline:1px solid #244a7a; background:#0e1726 }
-  .right-actions{ display:flex; justify-content:flex-end; align-items:center; gap:10px }
-  .search{ position:relative }
-  .search input{
-    width:280px; background:#0f1827; border:1px solid var(--border); color:var(--text);
-    padding:8px 12px 8px 32px; border-radius:10px; font-size:var(--f3);
-  }
-  .search svg{ position:absolute; top:9px; left:10px; width:16px; height:16px; opacity:.6 }
-  .verify-btn{
-    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; background:#0e1b2c; border:1px solid #163457;
-    color:#9ad3ff; font-size:var(--f3)
-  }
-  .verify-dot{ width:8px; height:8px; border-radius:50%; background:var(--badge-verified); box-shadow:0 0 0 3px rgba(32,227,178,.15) }
+      /* Layout */
+      .app {
+        display: grid;
+        grid-template-rows: 60px 1fr var(--file-rail-h);
+        height: 100vh;
+      }
+      .topbar {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 16px;
+        padding: 0 16px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(18, 23, 34, 0.85);
+        backdrop-filter: saturate(180%) blur(12px);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent-2);
+      }
+      .brand h1 {
+        font-size: var(--f2);
+        margin: 0;
+      }
+      .org-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--chip);
+        border: 1px solid var(--border);
+        font-size: var(--f4);
+      }
+      .org-chip svg {
+        width: 14px;
+        height: 14px;
+      }
+      .center-actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+      }
+      .mode-btn {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--bg-panel);
+        color: var(--muted);
+        font-size: var(--f4);
+      }
+      .mode-btn.active {
+        color: var(--text);
+        outline: 1px solid #244a7a;
+        background: #0e1726;
+      }
+      .right-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+      }
+      .search {
+        position: relative;
+      }
+      .search input {
+        width: 280px;
+        background: #0f1827;
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 8px 12px 8px 32px;
+        border-radius: 10px;
+        font-size: var(--f3);
+      }
+      .search svg {
+        position: absolute;
+        top: 9px;
+        left: 10px;
+        width: 16px;
+        height: 16px;
+        opacity: 0.6;
+      }
+      .verify-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: #0e1b2c;
+        border: 1px solid #163457;
+        color: #9ad3ff;
+        font-size: var(--f3);
+      }
+      .verify-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--badge-verified);
+        box-shadow: 0 0 0 3px rgba(32, 227, 178, 0.15);
+      }
 
-  .main{ display:grid; grid-template-columns: var(--rail-w) 1fr var(--panel-w); gap:12px; padding:12px }
-  .panel{ background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--shadow-1) }
-  .left-rail{ padding:10px }
-  .left-rail h3{ margin:6px 0 12px; font-size:var(--f3); color:var(--muted); letter-spacing:.3px; text-transform:uppercase }
-  .tree{ font-size:var(--f3) }
-  .tree .node{ padding:8px 10px; border-radius:8px; display:flex; align-items:center; gap:8px }
-  .tree .node:hover{ background:#0f1829 }
-  .tree .node .b{ width:8px; height:8px; border-radius:3px; background:#2d5b94 }
-  .tree .saved{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); color:var(--muted) }
+      .main {
+        display: grid;
+        grid-template-columns: var(--rail-w) 1fr var(--panel-w);
+        gap: 12px;
+        padding: 12px;
+      }
+      .panel {
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        box-shadow: var(--shadow-1);
+      }
+      .left-rail {
+        padding: 10px;
+      }
+      .left-rail h3 {
+        margin: 6px 0 12px;
+        font-size: var(--f3);
+        color: var(--muted);
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+      .tree {
+        font-size: var(--f3);
+      }
+      .tree .node {
+        padding: 8px 10px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .tree .node:hover {
+        background: #0f1829;
+      }
+      .tree .node .b {
+        width: 8px;
+        height: 8px;
+        border-radius: 3px;
+        background: #2d5b94;
+      }
+      .tree .saved {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px dashed var(--border);
+        color: var(--muted);
+      }
 
-  .thread{ display:flex; flex-direction:column; height:100%; padding:8px }
-  .msg{
-    display:grid; grid-template-columns: 38px 1fr; gap:10px; padding:10px; margin:6px 0;
-    border-radius:var(--r-md); background:linear-gradient(180deg, rgba(18,23,35,.7), rgba(12,18,27,.7));
-    border:1px solid var(--border);
-  }
-  .avatar{ width:38px; height:38px; border-radius:50%; background:#1d2a3d; display:grid; place-items:center; color:#91b5ff; font-weight:700 }
-  .bubble h4{ margin:2px 0 6px; font-size:var(--f3) }
-  .bubble p{ margin:0 0 8px }
-  .chips{ display:flex; gap:6px; flex-wrap:wrap }
-  .chip{ display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; border:1px solid var(--border); background:var(--chip); font-size:var(--f4); color:#b8c7e8 }
-  .chip .flag{ width:8px; height:8px; border-radius:2px }
-  .flag.us{ background:#2b78ff } .flag.eu{ background:#8b5dff } .flag.ap{ background:#40c089 }
+      .thread {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 8px;
+      }
+      .msg {
+        display: grid;
+        grid-template-columns: 38px 1fr;
+        gap: 10px;
+        padding: 10px;
+        margin: 6px 0;
+        border-radius: var(--r-md);
+        background: linear-gradient(
+          180deg,
+          rgba(18, 23, 35, 0.7),
+          rgba(12, 18, 27, 0.7)
+        );
+        border: 1px solid var(--border);
+      }
+      .avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #1d2a3d;
+        display: grid;
+        place-items: center;
+        color: #91b5ff;
+        font-weight: 700;
+      }
+      .bubble h4 {
+        margin: 2px 0 6px;
+        font-size: var(--f3);
+      }
+      .bubble p {
+        margin: 0 0 8px;
+      }
+      .chips {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--chip);
+        font-size: var(--f4);
+        color: #b8c7e8;
+      }
+      .chip .flag {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+      }
+      .flag.us {
+        background: #2b78ff;
+      }
+      .flag.eu {
+        background: #8b5dff;
+      }
+      .flag.ap {
+        background: #40c089;
+      }
 
-  .approval-ribbon{
-    display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:8px; padding:10px;
-    background:#0d1522; border:1px solid #15243d; border-radius:10px
-  }
-  .approval-ribbon select, .approval-ribbon input{
-    background:#0f1827; border:1px solid var(--border); color:var(--text); padding:6px 8px; border-radius:8px; font-size:var(--f4)
-  }
-  .signers{ display:flex; gap:6px; flex-wrap:wrap }
-  .signer{ padding:4px 8px; border-radius:999px; background:#142034; border:1px solid var(--border); font-size:var(--f4) }
-  .btn{ padding:8px 10px; border-radius:10px; border:1px solid #1d3b62; background:#0f1c2e; color:#9ad3ff; font-size:var(--f4) }
-  .btn.primary{ background:#0f2a4a; border-color:#295a90; color:#c9e7ff }
-  .btn.danger{ border-color:#5b1f2e; background:#251019; color:#ffb0b0 }
-  .btn.success{ border-color:#1e5a43; background:#0b241a; color:#baf2d5 }
+      .approval-ribbon {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 8px;
+        padding: 10px;
+        background: #0d1522;
+        border: 1px solid #15243d;
+        border-radius: 10px;
+      }
+      .approval-ribbon select,
+      .approval-ribbon input {
+        background: #0f1827;
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 6px 8px;
+        border-radius: 8px;
+        font-size: var(--f4);
+      }
+      .signers {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .signer {
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #142034;
+        border: 1px solid var(--border);
+        font-size: var(--f4);
+      }
+      .btn {
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid #1d3b62;
+        background: #0f1c2e;
+        color: #9ad3ff;
+        font-size: var(--f4);
+      }
+      .btn.primary {
+        background: #0f2a4a;
+        border-color: #295a90;
+        color: #c9e7ff;
+      }
+      .btn.danger {
+        border-color: #5b1f2e;
+        background: #251019;
+        color: #ffb0b0;
+      }
+      .btn.success {
+        border-color: #1e5a43;
+        background: #0b241a;
+        color: #baf2d5;
+      }
 
-  .composer{ margin-top:auto; display:flex; gap:8px; padding:8px }
-  .composer input{
-    flex:1; background:#0f1827; border:1px solid var(--border); color:var(--text);
-    padding:10px 12px; border-radius:10px; font-size:var(--f3)
-  }
+      .composer {
+        margin-top: auto;
+        display: flex;
+        gap: 8px;
+        padding: 8px;
+      }
+      .composer input {
+        flex: 1;
+        background: #0f1827;
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: var(--f3);
+      }
 
-  .drawer{ display:flex; flex-direction:column; height:100% }
-  .tabs{ display:flex; gap:8px; padding:8px; border-bottom:1px solid var(--border) }
-  .tabs button{ background:transparent; border:0; color:var(--muted); padding:8px 10px; border-radius:8px }
-  .tabs button.active{ color:var(--text); background:#0f1829 }
-  .drawer-content{ padding:10px; overflow:auto; height:100% }
-  .kv{ display:grid; grid-template-columns: 120px 1fr; gap:8px; font-size:var(--f4); padding:6px 0; border-bottom:1px dashed var(--border) }
-  .list{ display:grid; gap:8px }
-  .log{ font-family:var(--mono); font-size:12px; background:#0a121d; padding:10px; border-radius:8px; border:1px solid var(--border) }
+      .drawer {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .tabs {
+        display: flex;
+        gap: 8px;
+        padding: 8px;
+        border-bottom: 1px solid var(--border);
+      }
+      .tabs button {
+        background: transparent;
+        border: 0;
+        color: var(--muted);
+        padding: 8px 10px;
+        border-radius: 8px;
+      }
+      .tabs button.active {
+        color: var(--text);
+        background: #0f1829;
+      }
+      .drawer-content {
+        padding: 10px;
+        overflow: auto;
+        height: 100%;
+      }
+      .kv {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 8px;
+        font-size: var(--f4);
+        padding: 6px 0;
+        border-bottom: 1px dashed var(--border);
+      }
+      .list {
+        display: grid;
+        gap: 8px;
+      }
+      .log {
+        font-family: var(--mono);
+        font-size: 12px;
+        background: #0a121d;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
 
-  .file-rail{ display:flex; gap:10px; align-items:center; padding:10px 12px; border-top:1px solid var(--border); background:rgba(12,18,27,.8); backdrop-filter:blur(10px) }
-  .thumb{ min-width:120px; max-width:120px; height:88px; padding:8px; border-radius:12px; border:1px solid var(--border); background:#0e1624; display:grid; grid-template-rows:1fr auto; gap:6px }
-  .thumb .meta{ display:flex; align-items:center; justify-content:space-between; font-size:11px; color:#9fb0d6 }
-  .pill{ padding:3px 7px; border:1px solid var(--border); border-radius:999px; background:var(--chip); font-size:11px; color:#b8c7e8 }
+      .file-rail {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 12px;
+        border-top: 1px solid var(--border);
+        background: rgba(12, 18, 27, 0.8);
+        backdrop-filter: blur(10px);
+      }
+      .thumb {
+        min-width: 120px;
+        max-width: 120px;
+        height: 88px;
+        padding: 8px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #0e1624;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        gap: 6px;
+      }
+      .thumb .meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #9fb0d6;
+      }
+      .pill {
+        padding: 3px 7px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--chip);
+        font-size: 11px;
+        color: #b8c7e8;
+      }
 
-  /* Modals */
-  .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.5); z-index:40 }
-  .modal.open{ display:flex }
-  .sheet{ width:min(720px, 92vw); background:var(--bg-elev); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow-2) }
-  .sheet .hd{ padding:14px 16px; border-bottom:1px solid var(--border); font-weight:700 }
-  .sheet .bd{ padding:16px; display:grid; gap:12px }
-  .sheet .ft{ padding:12px 16px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px }
+      /* Modals */
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+      }
+      .modal.open {
+        display: flex;
+      }
+      .sheet {
+        width: min(720px, 92vw);
+        background: var(--bg-elev);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow-2);
+      }
+      .sheet .hd {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        font-weight: 700;
+      }
+      .sheet .bd {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+      .sheet .ft {
+        padding: 12px 16px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
 
-  /* Perf overlay */
-  .perf{ position:fixed; right:14px; bottom:calc(var(--file-rail-h) + 14px); background:#0c1522; border:1px solid var(--border); border-radius:10px; padding:8px 10px; font-size:12px; color:#9fb0d6 }
-  .kbd{ position:fixed; left:14px; bottom:calc(var(--file-rail-h) + 14px); background:#0c1522; border:1px solid var(--border); border-radius:10px; padding:8px 10px; font-size:12px; color:#9fb0d6 }
+      /* Perf overlay */
+      .perf {
+        position: fixed;
+        right: 14px;
+        bottom: calc(var(--file-rail-h) + 14px);
+        background: #0c1522;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        color: #9fb0d6;
+      }
+      .kbd {
+        position: fixed;
+        left: 14px;
+        bottom: calc(var(--file-rail-h) + 14px);
+        background: #0c1522;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        color: #9fb0d6;
+      }
 
-  /* Focus states */
-  :focus{ outline:2px solid var(--focus); outline-offset:2px }
-</style>
-</head>
-<body>
-<div class="app" role="application" aria-label="SparkTasks Conversational Project OS">
-  <!-- Top Bar -->
-  <header class="topbar" role="banner">
-    <div class="brand" aria-label="Project Context">
-      <div class="dot" aria-hidden="true"></div>
-      <h1>ACME Rollout</h1>
-      <span class="org-chip" title="Linked Organization">
-        <!-- link icon -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-          <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 1 0-7.07-7.07L10 5" stroke-width="1.5"/>
-          <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 1 0 7.07 7.07L14 19" stroke-width="1.5"/>
-        </svg>
-        Linked Org: <strong>ACME (Supplier)</strong>
-      </span>
-    </div>
-    <div class="center-actions" role="tablist" aria-label="Modes">
-      <button class="mode-btn active" role="tab" aria-selected="true">Individual</button>
-      <button class="mode-btn" role="tab" aria-selected="false">Team</button>
-      <button class="mode-btn" role="tab" aria-selected="false">Organization</button>
-    </div>
-    <div class="right-actions">
-      <div class="search" role="search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7" stroke-width="1.5"/><path d="M20 20l-3.5-3.5" stroke-width="1.5"/></svg>
-        <label class="sr-only" for="gsearch">Search</label>
-        <input id="gsearch" placeholder="⌘K Search tasks & files…" aria-label="Search tasks and files" />
-      </div>
-      <button class="verify-btn" id="openVerify" aria-haspopup="dialog">
-        <span class="verify-dot" aria-hidden="true"></span> Verify
-      </button>
-    </div>
-  </header>
-
-  <!-- Main -->
-  <main class="main" role="main">
-    <!-- Left rail -->
-    <aside class="panel left-rail" aria-label="Navigation">
-      <h3>Tree</h3>
-      <nav class="tree" aria-label="Project Tree">
-        <div class="node"><span class="b"></span> Portfolio</div>
-        <div class="node"><span class="b"></span> Project — ACME Rollout</div>
-        <div class="node"><span class="b"></span> Epics</div>
-        <div class="node"><span class="b"></span> Tasks</div>
-      </nav>
-      <div class="saved">
-        <h3>Saved Views</h3>
-        <div class="node">• Approvals Pending</div>
-        <div class="node">• Invoices This Week</div>
-        <div class="node">• PO in Flight</div>
-      </div>
-    </aside>
-
-    <!-- Thread (center) -->
-    <section class="panel thread" aria-label="Federated Thread">
-      <!-- Message 1 -->
-      <article class="msg" aria-live="polite">
-        <div class="avatar" aria-hidden="true">JW</div>
-        <div class="bubble">
-          <h4>Jack (Spark)</h4>
-          <p>Kicking off with the latest brand guide. Dragged from Drive. Let’s request approval to send to marketing.</p>
-          <div class="chips">
-            <span class="chip" title="Google Drive • US Residency"><span class="flag us"></span> Drive • US</span>
-            <span class="chip">brand-guide-v7.pdf</span>
+      /* Focus states */
+      :focus {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="app"
+      role="application"
+      aria-label="SparkTasks Conversational Project OS"
+    >
+      <!-- Top Bar -->
+      <header class="topbar" role="banner">
+        <div class="brand" aria-label="Project Context">
+          <div class="dot" aria-hidden="true"></div>
+          <h1>ACME Rollout</h1>
+          <span class="org-chip" title="Linked Organization">
+            <!-- link icon -->
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 1 0-7.07-7.07L10 5"
+                stroke-width="1.5"
+              />
+              <path
+                d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 1 0 7.07 7.07L14 19"
+                stroke-width="1.5"
+              />
+            </svg>
+            Linked Org: <strong>ACME (Supplier)</strong>
+          </span>
+        </div>
+        <div class="center-actions" role="tablist" aria-label="Modes">
+          <button class="mode-btn active" role="tab" aria-selected="true">
+            Individual
+          </button>
+          <button class="mode-btn" role="tab" aria-selected="false">
+            Team
+          </button>
+          <button class="mode-btn" role="tab" aria-selected="false">
+            Organization
+          </button>
+        </div>
+        <div class="right-actions">
+          <div class="search" role="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="11" cy="11" r="7" stroke-width="1.5" />
+              <path d="M20 20l-3.5-3.5" stroke-width="1.5" />
+            </svg>
+            <label class="sr-only" for="gsearch">Search</label>
+            <input
+              id="gsearch"
+              placeholder="⌘K Search tasks & files…"
+              aria-label="Search tasks and files"
+            />
           </div>
+          <button class="verify-btn" id="openVerify" aria-haspopup="dialog">
+            <span class="verify-dot" aria-hidden="true"></span> Verify
+          </button>
+        </div>
+      </header>
 
-          <!-- Inline Approval Ribbon -->
-          <div class="approval-ribbon" aria-label="Inline Approval">
-            <div class="signers" aria-label="Signers">
-              <span class="signer">Alice (Req)</span>
-              <span class="signer">Bob (Req)</span>
-              <span class="signer">Carol (Opt)</span>
+      <!-- Main -->
+      <main class="main" role="main">
+        <!-- Left rail -->
+        <aside class="panel left-rail" aria-label="Navigation">
+          <h3>Tree</h3>
+          <nav class="tree" aria-label="Project Tree">
+            <div class="node"><span class="b"></span> Portfolio</div>
+            <div class="node">
+              <span class="b"></span> Project — ACME Rollout
             </div>
-            <label>Mode
-              <select id="mode">
+            <div class="node"><span class="b"></span> Epics</div>
+            <div class="node"><span class="b"></span> Tasks</div>
+          </nav>
+          <div class="saved">
+            <h3>Saved Views</h3>
+            <div class="node">• Approvals Pending</div>
+            <div class="node">• Invoices This Week</div>
+            <div class="node">• PO in Flight</div>
+          </div>
+        </aside>
+
+        <!-- Thread (center) -->
+        <section class="panel thread" aria-label="Federated Thread">
+          <!-- Message 1 -->
+          <article class="msg" aria-live="polite">
+            <div class="avatar" aria-hidden="true">JW</div>
+            <div class="bubble">
+              <h4>Jack (Spark)</h4>
+              <p>
+                Kicking off with the latest brand guide. Dragged from Drive.
+                Let’s request approval to send to marketing.
+              </p>
+              <div class="chips">
+                <span class="chip" title="Google Drive • US Residency"
+                  ><span class="flag us"></span> Drive • US</span
+                >
+                <span class="chip">brand-guide-v7.pdf</span>
+              </div>
+
+              <!-- Inline Approval Ribbon -->
+              <div class="approval-ribbon" aria-label="Inline Approval">
+                <div class="signers" aria-label="Signers">
+                  <span class="signer">Alice (Req)</span>
+                  <span class="signer">Bob (Req)</span>
+                  <span class="signer">Carol (Opt)</span>
+                </div>
+                <label
+                  >Mode
+                  <select id="mode">
+                    <option>Sequential</option>
+                    <option>Parallel</option>
+                    <option selected>Quorum</option>
+                  </select>
+                </label>
+                <label
+                  >Quorum
+                  <input
+                    id="quorum"
+                    type="number"
+                    min="1"
+                    value="2"
+                    style="width: 64px"
+                  />
+                </label>
+                <label
+                  >Due
+                  <input id="due" type="date" />
+                </label>
+                <label
+                  >After approval
+                  <select id="postAction">
+                    <option selected>Generate PO</option>
+                    <option>Post to ERP</option>
+                    <option>Redline Contract</option>
+                    <option>PII Scrub</option>
+                  </select>
+                </label>
+                <button class="btn primary" id="requestApproval">
+                  Request
+                </button>
+                <button class="btn success" id="signNow">Sign</button>
+                <button class="btn" id="openLog">Log</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Message 2 -->
+          <article class="msg">
+            <div class="avatar" aria-hidden="true">AL</div>
+            <div class="bubble">
+              <h4>Alice (Spark)</h4>
+              <p>
+                I’ll sign if ACME confirms residency EU for the contract
+                appendix.
+              </p>
+              <div class="chips">
+                <span class="chip" title="OneDrive • EU Residency"
+                  ><span class="flag eu"></span> OneDrive • EU</span
+                >
+                <span class="chip">contract-appendix.docx</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Message 3 (Partner) -->
+          <article class="msg">
+            <div class="avatar" aria-hidden="true">AC</div>
+            <div class="bubble">
+              <h4>Carol (ACME)</h4>
+              <p>
+                Confirmed. Appendix stored in our EU tenant. Ready for quorum.
+              </p>
+              <div class="chips">
+                <span class="chip" title="S3 • EU Residency"
+                  ><span class="flag eu"></span> S3 • EU</span
+                >
+                <span class="chip">appendix-eu.pdf</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Composer -->
+          <div class="composer" role="group" aria-label="Message Composer">
+            <input
+              id="composerInput"
+              placeholder="Type a message or /approve /po /invoice /pay …"
+              aria-label="Compose message"
+            />
+            <button class="btn" id="sendMsg">Send</button>
+          </div>
+        </section>
+
+        <!-- Drawer (right) -->
+        <aside class="panel drawer" aria-label="Unified Drawer">
+          <div class="tabs" role="tablist">
+            <button class="active" data-tab="overview">Overview</button>
+            <button data-tab="files">Files</button>
+            <button data-tab="approvals">Approvals</button>
+            <button data-tab="log">Log</button>
+            <button data-tab="versions">Versions</button>
+            <button data-tab="finance">Finance</button>
+          </div>
+          <div class="drawer-content" id="drawer">
+            <!-- Overview -->
+            <section data-panel="overview">
+              <div class="kv">
+                <div>Status</div>
+                <div><span class="pill">In Review</span></div>
+              </div>
+              <div class="kv">
+                <div>Assignees</div>
+                <div>Alice, Bob, Carol</div>
+              </div>
+              <div class="kv">
+                <div>Residency</div>
+                <div>Files: US / EU • Partners: ACME</div>
+              </div>
+              <div class="kv">
+                <div>Next step</div>
+                <div>Quorum 2/3; due Friday</div>
+              </div>
+            </section>
+            <!-- Files -->
+            <section data-panel="files" hidden>
+              <div class="list">
+                <div class="kv">
+                  <div>brand-guide-v7.pdf</div>
+                  <div><span class="pill">Drive • US</span></div>
+                </div>
+                <div class="kv">
+                  <div>contract-appendix.docx</div>
+                  <div><span class="pill">OneDrive • EU</span></div>
+                </div>
+                <div class="kv">
+                  <div>appendix-eu.pdf</div>
+                  <div><span class="pill">S3 • EU</span></div>
+                </div>
+              </div>
+            </section>
+            <!-- Approvals -->
+            <section data-panel="approvals" hidden>
+              <div class="list">
+                <div class="kv">
+                  <div>Mode</div>
+                  <div>Quorum (2 of 3)</div>
+                </div>
+                <div class="kv">
+                  <div>Signers</div>
+                  <div>Alice ✓ • Bob — • Carol ✓</div>
+                </div>
+                <div class="kv">
+                  <div>Due</div>
+                  <div>Friday</div>
+                </div>
+                <div class="kv">
+                  <div>Post Action</div>
+                  <div>Generate PO → ERP</div>
+                </div>
+              </div>
+            </section>
+            <!-- Log -->
+            <section data-panel="log" hidden>
+              <div class="log" id="logBox">
+                13:02 INIT — Approval requested by Jack (hash 0x4f…a2)\n 13:05
+                SIGN — Carol (ACME) signed (hash 0x8a…91)\n
+              </div>
+            </section>
+            <!-- Versions -->
+            <section data-panel="versions" hidden>
+              <div class="list">
+                <div class="kv">
+                  <div>v7</div>
+                  <div>brand-guide-v7.pdf • Proof: ✓ (capsule #224)</div>
+                </div>
+                <div class="kv">
+                  <div>v6</div>
+                  <div>brand-guide-v6.pdf • Proof: ✓</div>
+                </div>
+              </div>
+            </section>
+            <!-- Finance (Mirror Ledger) -->
+            <section data-panel="finance" hidden>
+              <div class="kv">
+                <div>Invoice</div>
+                <div>#551 • Amount 10,000</div>
+              </div>
+              <div class="kv">
+                <div>Preview</div>
+                <div>Customer: AP Dr 10,000 • Supplier: AR Cr 10,000</div>
+              </div>
+              <p>
+                <button class="btn success" id="approveAndPost">
+                  Approve & Post
+                </button>
+              </p>
+            </section>
+          </div>
+        </aside>
+      </main>
+
+      <!-- File Rail -->
+      <footer class="file-rail" aria-label="File Rail">
+        <div class="thumb" tabindex="0">
+          <div
+            style="
+              display: grid;
+              place-items: center;
+              font-size: 12px;
+              color: #9fb0d6;
+            "
+          >
+            brand-guide-v7.pdf
+          </div>
+          <div class="meta"><span>Drive</span><span class="pill">US</span></div>
+        </div>
+        <div class="thumb" tabindex="0">
+          <div
+            style="
+              display: grid;
+              place-items: center;
+              font-size: 12px;
+              color: #9fb0d6;
+            "
+          >
+            contract-appendix.docx
+          </div>
+          <div class="meta">
+            <span>OneDrive</span><span class="pill">EU</span>
+          </div>
+        </div>
+        <div class="thumb" tabindex="0">
+          <div
+            style="
+              display: grid;
+              place-items: center;
+              font-size: 12px;
+              color: #9fb0d6;
+            "
+          >
+            appendix-eu.pdf
+          </div>
+          <div class="meta"><span>S3</span><span class="pill">EU</span></div>
+        </div>
+        <div style="margin-left: auto; display: flex; gap: 8px">
+          <button class="btn" id="exportPack">Export .sparkpack</button>
+          <button class="btn" id="importPack">Import .sparkpack</button>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Verify Modal -->
+    <div
+      class="modal"
+      id="verifyModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="verifyTitle"
+    >
+      <div class="sheet">
+        <div class="hd" id="verifyTitle">
+          Verification — cryptographic record
+        </div>
+        <div class="bd">
+          <div class="kv">
+            <div>Status</div>
+            <div><span class="pill">Verified ✓</span></div>
+          </div>
+          <div class="kv">
+            <div>Signers</div>
+            <div>Alice • Bob • Carol</div>
+          </div>
+          <div class="kv">
+            <div>Hash</div>
+            <div><code>0x8a1b…91cd</code></div>
+          </div>
+          <div class="kv">
+            <div>Merkle</div>
+            <div><code>root 0x22ff…ab44</code></div>
+          </div>
+          <div class="kv">
+            <div>Timeline</div>
+            <div>
+              <div>13:02 Request (Jack)</div>
+              <div>13:05 Signed (Carol, ACME)</div>
+              <div>13:07 Signed (Alice)</div>
+            </div>
+          </div>
+        </div>
+        <div class="ft">
+          <button class="btn" id="closeVerify">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Approval Stepper Modal -->
+    <div
+      class="modal"
+      id="approvalModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="approvalTitle"
+    >
+      <div class="sheet">
+        <div class="hd" id="approvalTitle">Request Approval</div>
+        <div class="bd">
+          <div class="kv">
+            <div>Mode</div>
+            <div>
+              <select id="m2">
                 <option>Sequential</option>
                 <option>Parallel</option>
                 <option selected>Quorum</option>
               </select>
-            </label>
-            <label>Quorum
-              <input id="quorum" type="number" min="1" value="2" style="width:64px">
-            </label>
-            <label>Due
-              <input id="due" type="date">
-            </label>
-            <label>After approval
-              <select id="postAction">
+            </div>
+          </div>
+          <div class="kv">
+            <div>Quorum</div>
+            <div>
+              <input
+                id="q2"
+                type="number"
+                min="1"
+                value="2"
+                style="width: 80px"
+              />
+            </div>
+          </div>
+          <div class="kv">
+            <div>Due</div>
+            <div><input id="d2" type="date" /></div>
+          </div>
+          <div class="kv">
+            <div>After approval</div>
+            <div>
+              <select id="a2">
                 <option selected>Generate PO</option>
                 <option>Post to ERP</option>
                 <option>Redline Contract</option>
-                <option>PII Scrub</option>
               </select>
-            </label>
-            <button class="btn primary" id="requestApproval">Request</button>
-            <button class="btn success" id="signNow">Sign</button>
-            <button class="btn" id="openLog">Log</button>
+            </div>
+          </div>
+          <div class="kv">
+            <div>Preview</div>
+            <div class="log">
+              Action capsule: generate-po.wasm • policy: residency US/EU honored
+              • outputs: PO-3129.pdf, metadata.json
+            </div>
           </div>
         </div>
-      </article>
-
-      <!-- Message 2 -->
-      <article class="msg">
-        <div class="avatar" aria-hidden="true">AL</div>
-        <div class="bubble">
-          <h4>Alice (Spark)</h4>
-          <p>I’ll sign if ACME confirms residency EU for the contract appendix.</p>
-          <div class="chips">
-            <span class="chip" title="OneDrive • EU Residency"><span class="flag eu"></span> OneDrive • EU</span>
-            <span class="chip">contract-appendix.docx</span>
-          </div>
+        <div class="ft">
+          <button class="btn" id="cancelApproval">Cancel</button>
+          <button class="btn primary" id="confirmApproval">Request</button>
         </div>
-      </article>
-
-      <!-- Message 3 (Partner) -->
-      <article class="msg">
-        <div class="avatar" aria-hidden="true">AC</div>
-        <div class="bubble">
-          <h4>Carol (ACME)</h4>
-          <p>Confirmed. Appendix stored in our EU tenant. Ready for quorum.</p>
-          <div class="chips">
-            <span class="chip" title="S3 • EU Residency"><span class="flag eu"></span> S3 • EU</span>
-            <span class="chip">appendix-eu.pdf</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Composer -->
-      <div class="composer" role="group" aria-label="Message Composer">
-        <input id="composerInput" placeholder="Type a message or /approve /po /invoice /pay …" aria-label="Compose message" />
-        <button class="btn" id="sendMsg">Send</button>
       </div>
-    </section>
-
-    <!-- Drawer (right) -->
-    <aside class="panel drawer" aria-label="Unified Drawer">
-      <div class="tabs" role="tablist">
-        <button class="active" data-tab="overview">Overview</button>
-        <button data-tab="files">Files</button>
-        <button data-tab="approvals">Approvals</button>
-        <button data-tab="log">Log</button>
-        <button data-tab="versions">Versions</button>
-        <button data-tab="finance">Finance</button>
-      </div>
-      <div class="drawer-content" id="drawer">
-        <!-- Overview -->
-        <section data-panel="overview">
-          <div class="kv"><div>Status</div><div><span class="pill">In Review</span></div></div>
-          <div class="kv"><div>Assignees</div><div>Alice, Bob, Carol</div></div>
-          <div class="kv"><div>Residency</div><div>Files: US / EU • Partners: ACME</div></div>
-          <div class="kv"><div>Next step</div><div>Quorum 2/3; due Friday</div></div>
-        </section>
-        <!-- Files -->
-        <section data-panel="files" hidden>
-          <div class="list">
-            <div class="kv"><div>brand-guide-v7.pdf</div><div><span class="pill">Drive • US</span></div></div>
-            <div class="kv"><div>contract-appendix.docx</div><div><span class="pill">OneDrive • EU</span></div></div>
-            <div class="kv"><div>appendix-eu.pdf</div><div><span class="pill">S3 • EU</span></div></div>
-          </div>
-        </section>
-        <!-- Approvals -->
-        <section data-panel="approvals" hidden>
-          <div class="list">
-            <div class="kv"><div>Mode</div><div>Quorum (2 of 3)</div></div>
-            <div class="kv"><div>Signers</div><div>Alice ✓ • Bob — • Carol ✓</div></div>
-            <div class="kv"><div>Due</div><div>Friday</div></div>
-            <div class="kv"><div>Post Action</div><div>Generate PO → ERP</div></div>
-          </div>
-        </section>
-        <!-- Log -->
-        <section data-panel="log" hidden>
-          <div class="log" id="logBox">
-            13:02 INIT  — Approval requested by Jack (hash 0x4f…a2)\n
-            13:05 SIGN  — Carol (ACME) signed (hash 0x8a…91)\n
-          </div>
-        </section>
-        <!-- Versions -->
-        <section data-panel="versions" hidden>
-          <div class="list">
-            <div class="kv"><div>v7</div><div>brand-guide-v7.pdf • Proof: ✓ (capsule #224)</div></div>
-            <div class="kv"><div>v6</div><div>brand-guide-v6.pdf • Proof: ✓</div></div>
-          </div>
-        </section>
-        <!-- Finance (Mirror Ledger) -->
-        <section data-panel="finance" hidden>
-          <div class="kv"><div>Invoice</div><div>#551  •  Amount 10,000</div></div>
-          <div class="kv"><div>Preview</div><div>Customer: AP Dr 10,000  •  Supplier: AR Cr 10,000</div></div>
-          <p><button class="btn success" id="approveAndPost">Approve & Post</button></p>
-        </section>
-      </div>
-    </aside>
-  </main>
-
-  <!-- File Rail -->
-  <footer class="file-rail" aria-label="File Rail">
-    <div class="thumb" tabindex="0">
-      <div style="display:grid; place-items:center; font-size:12px; color:#9fb0d6">brand-guide-v7.pdf</div>
-      <div class="meta"><span>Drive</span><span class="pill">US</span></div>
     </div>
-    <div class="thumb" tabindex="0">
-      <div style="display:grid; place-items:center; font-size:12px; color:#9fb0d6">contract-appendix.docx</div>
-      <div class="meta"><span>OneDrive</span><span class="pill">EU</span></div>
+
+    <!-- Perf & KBD overlays -->
+    <div class="perf" id="perfBox">P95 search: 123ms • FPS: 60</div>
+    <div class="kbd">
+      Shortcuts: ⌘K search • /approve • /po • /invoice • /pay • Verify (V)
     </div>
-    <div class="thumb" tabindex="0">
-      <div style="display:grid; place-items:center; font-size:12px; color:#9fb0d6">appendix-eu.pdf</div>
-      <div class="meta"><span>S3</span><span class="pill">EU</span></div>
-    </div>
-    <div style="margin-left:auto; display:flex; gap:8px">
-      <button class="btn" id="exportPack">Export .sparkpack</button>
-      <button class="btn" id="importPack">Import .sparkpack</button>
-    </div>
-  </footer>
-</div>
 
-<!-- Verify Modal -->
-<div class="modal" id="verifyModal" role="dialog" aria-modal="true" aria-labelledby="verifyTitle">
-  <div class="sheet">
-    <div class="hd" id="verifyTitle">Verification — cryptographic record</div>
-    <div class="bd">
-      <div class="kv"><div>Status</div><div><span class="pill">Verified ✓</span></div></div>
-      <div class="kv"><div>Signers</div><div>Alice • Bob • Carol</div></div>
-      <div class="kv"><div>Hash</div><div><code>0x8a1b…91cd</code></div></div>
-      <div class="kv"><div>Merkle</div><div><code>root 0x22ff…ab44</code></div></div>
-      <div class="kv"><div>Timeline</div><div>
-        <div>13:02 Request (Jack)</div>
-        <div>13:05 Signed (Carol, ACME)</div>
-        <div>13:07 Signed (Alice)</div>
-      </div></div>
-    </div>
-    <div class="ft">
-      <button class="btn" id="closeVerify">Close</button>
-    </div>
-  </div>
-</div>
+    <script>
+      // Utility
+      const $ = (sel, ctx = document) => ctx.querySelector(sel);
+      const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+      const logBox = $('#logBox');
+      function addLog(line) {
+        logBox.textContent += '\\n' + line;
+        logBox.scrollTop = logBox.scrollHeight;
+      }
 
-<!-- Approval Stepper Modal -->
-<div class="modal" id="approvalModal" role="dialog" aria-modal="true" aria-labelledby="approvalTitle">
-  <div class="sheet">
-    <div class="hd" id="approvalTitle">Request Approval</div>
-    <div class="bd">
-      <div class="kv"><div>Mode</div><div><select id="m2"><option>Sequential</option><option>Parallel</option><option selected>Quorum</option></select></div></div>
-      <div class="kv"><div>Quorum</div><div><input id="q2" type="number" min="1" value="2" style="width:80px"></div></div>
-      <div class="kv"><div>Due</div><div><input id="d2" type="date"></div></div>
-      <div class="kv"><div>After approval</div><div><select id="a2"><option selected>Generate PO</option><option>Post to ERP</option><option>Redline Contract</option></select></div></div>
-      <div class="kv"><div>Preview</div><div class="log">Action capsule: generate-po.wasm • policy: residency US/EU honored • outputs: PO-3129.pdf, metadata.json</div></div>
-    </div>
-    <div class="ft">
-      <button class="btn" id="cancelApproval">Cancel</button>
-      <button class="btn primary" id="confirmApproval">Request</button>
-    </div>
-  </div>
-</div>
+      // Tabs
+      $$('.tabs button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $$('.tabs button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const tab = btn.dataset.tab;
+          $$('#drawer > section').forEach(
+            sec => (sec.hidden = sec.dataset.panel !== tab)
+          );
+        });
+      });
 
-<!-- Perf & KBD overlays -->
-<div class="perf" id="perfBox">P95 search: 123ms • FPS: 60</div>
-<div class="kbd">Shortcuts: ⌘K search • /approve • /po • /invoice • /pay • Verify (V)</div>
+      // Verify modal
+      $('#openVerify').addEventListener('click', () =>
+        $('#verifyModal').classList.add('open')
+      );
+      $('#closeVerify').addEventListener('click', () =>
+        $('#verifyModal').classList.remove('open')
+      );
 
-<script>
-// Utility
-const $ = (sel, ctx=document) => ctx.querySelector(sel);
-const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
-const logBox = $("#logBox");
-function addLog(line){ logBox.textContent += "\\n" + line; logBox.scrollTop = logBox.scrollHeight; }
+      // Approval Stepper modal
+      $('#requestApproval').addEventListener('click', () =>
+        $('#approvalModal').classList.add('open')
+      );
+      $('#cancelApproval').addEventListener('click', () =>
+        $('#approvalModal').classList.remove('open')
+      );
+      $('#confirmApproval').addEventListener('click', () => {
+        $('#approvalModal').classList.remove('open');
+        addLog(
+          new Date().toLocaleTimeString() +
+            ' REQUEST — Approval created (hash 0x4f…a2)'
+        );
+        alert('Approval requested. Post-action capsule will run on sign.');
+      });
 
-// Tabs
-$$(".tabs button").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    $$(".tabs button").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    const tab = btn.dataset.tab;
-    $$("#drawer > section").forEach(sec=>sec.hidden = sec.dataset.panel !== tab);
-  });
-});
+      // Sign now (simulate quorum)
+      $('#signNow').addEventListener('click', () => {
+        addLog(
+          new Date().toLocaleTimeString() + ' SIGN — Jack signed (hash 0x7e…3c)'
+        );
+        alert('Signed ✓  • Transparency log updated.');
+      });
 
-// Verify modal
-$("#openVerify").addEventListener("click", ()=> $("#verifyModal").classList.add("open"));
-$("#closeVerify").addEventListener("click", ()=> $("#verifyModal").classList.remove("open"));
+      // Open Log tab
+      $('#openLog').addEventListener('click', () => {
+        $$('.tabs button').forEach(b => b.classList.remove('active'));
+        $$('[data-panel]').forEach(sec => (sec.hidden = true));
+        $$(`.tabs button[data-tab='log']`)[0].classList.add('active');
+        $$(`[data-panel='log']`)[0].hidden = false;
+      });
 
-// Approval Stepper modal
-$("#requestApproval").addEventListener("click", ()=> $("#approvalModal").classList.add("open"));
-$("#cancelApproval").addEventListener("click", ()=> $("#approvalModal").classList.remove("open"));
-$("#confirmApproval").addEventListener("click", ()=>{
-  $("#approvalModal").classList.remove("open");
-  addLog(new Date().toLocaleTimeString() + " REQUEST — Approval created (hash 0x4f…a2)");
-  alert("Approval requested. Post-action capsule will run on sign.");
-});
+      // Finance approve & post (Mirror Ledger)
+      $('#approveAndPost').addEventListener('click', () => {
+        addLog(
+          new Date().toLocaleTimeString() +
+            ' FIN — Dual-post AR/AP (event 0x91…dd)'
+        );
+        alert('Mirror Ledger posted: Customer AP & Supplier AR.');
+      });
 
-// Sign now (simulate quorum)
-$("#signNow").addEventListener("click", ()=>{
-  addLog(new Date().toLocaleTimeString() + " SIGN — Jack signed (hash 0x7e…3c)");
-  alert("Signed ✓  • Transparency log updated.");
-});
+      // Composer with slash commands
+      $('#sendMsg').addEventListener('click', send);
+      $('#composerInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          send();
+        }
+      });
+      function send() {
+        const v = $('#composerInput').value.trim();
+        if (!v) return;
+        if (v.startsWith('/')) {
+          handleSlash(v);
+        } else {
+          addLog(new Date().toLocaleTimeString() + ' MSG — ' + v);
+        }
+        $('#composerInput').value = '';
+      }
+      function handleSlash(cmd) {
+        const now = new Date().toLocaleTimeString();
+        if (cmd.startsWith('/approve')) {
+          addLog(now + ' CMD — /approve → opened modal');
+          $('#approvalModal').classList.add('open');
+        } else if (cmd.startsWith('/po')) {
+          addLog(now + ' CMD — /po create → will run capsule after sign');
+          alert('PO macro queued; will execute on approval.');
+        } else if (cmd.startsWith('/invoice')) {
+          addLog(now + ' CMD — /invoice submit → waiting for signers');
+        } else if (cmd.startsWith('/pay')) {
+          addLog(now + ' CMD — /pay release → escrow rules check');
+        } else if (cmd.startsWith('/sparkpack')) {
+          addLog(now + ' CMD — /sparkpack export → bundle building');
+          alert('.sparkpack created (demo).');
+        } else {
+          addLog(now + ' CMD — Unknown command');
+        }
+      }
 
-// Open Log tab
-$("#openLog").addEventListener("click", ()=>{
-  $$(".tabs button").forEach(b=>b.classList.remove("active"));
-  $$("[data-panel]").forEach(sec=>sec.hidden=true);
-  $$(`.tabs button[data-tab='log']`)[0].classList.add("active");
-  $$(`[data-panel='log']`)[0].hidden=false;
-});
+      // Export/Import buttons
+      $('#exportPack').addEventListener('click', () => {
+        addLog(
+          new Date().toLocaleTimeString() +
+            ' EXP — .sparkpack exported (verified)'
+        );
+        alert('.sparkpack exported (demo).');
+      });
+      $('#importPack').addEventListener('click', () => {
+        addLog(
+          new Date().toLocaleTimeString() +
+            ' IMP — .sparkpack import verified ✓'
+        );
+        alert('.sparkpack import verified (demo).');
+      });
 
-// Finance approve & post (Mirror Ledger)
-$("#approveAndPost").addEventListener("click", ()=>{
-  addLog(new Date().toLocaleTimeString() + " FIN — Dual-post AR/AP (event 0x91…dd)");
-  alert("Mirror Ledger posted: Customer AP & Supplier AR.");
-});
+      // Keyboard: V opens Verify
+      document.addEventListener('keydown', e => {
+        if ((e.key === 'v' || e.key === 'V') && !e.metaKey && !e.ctrlKey) {
+          $('#verifyModal').classList.add('open');
+        }
+      });
 
-// Composer with slash commands
-$("#sendMsg").addEventListener("click", send);
-$("#composerInput").addEventListener("keydown", (e)=>{
-  if(e.key==="Enter"){ send(); }
-});
-function send(){
-  const v = $("#composerInput").value.trim();
-  if(!v) return;
-  if(v.startsWith("/")){
-    handleSlash(v);
-  }else{
-    addLog(new Date().toLocaleTimeString() + " MSG — " + v);
-  }
-  $("#composerInput").value="";
-}
-function handleSlash(cmd){
-  const now = new Date().toLocaleTimeString();
-  if(cmd.startsWith("/approve")){
-    addLog(now + " CMD — /approve → opened modal");
-    $("#approvalModal").classList.add("open");
-  }else if(cmd.startsWith("/po")){
-    addLog(now + " CMD — /po create → will run capsule after sign");
-    alert("PO macro queued; will execute on approval.");
-  }else if(cmd.startsWith("/invoice")){
-    addLog(now + " CMD — /invoice submit → waiting for signers");
-  }else if(cmd.startsWith("/pay")){
-    addLog(now + " CMD — /pay release → escrow rules check");
-  }else if(cmd.startsWith("/sparkpack")){
-    addLog(now + " CMD — /sparkpack export → bundle building");
-    alert(".sparkpack created (demo).");
-  }else{
-    addLog(now + " CMD — Unknown command");
-  }
-}
-
-// Export/Import buttons
-$("#exportPack").addEventListener("click", ()=>{
-  addLog(new Date().toLocaleTimeString() + " EXP — .sparkpack exported (verified)");
-  alert(".sparkpack exported (demo).");
-});
-$("#importPack").addEventListener("click", ()=>{
-  addLog(new Date().toLocaleTimeString() + " IMP — .sparkpack import verified ✓");
-  alert(".sparkpack import verified (demo).");
-});
-
-// Keyboard: V opens Verify
-document.addEventListener("keydown", (e)=>{
-  if((e.key==="v" || e.key==="V") && !e.metaKey && !e.ctrlKey){
-    $("#verifyModal").classList.add("open");
-  }
-});
-
-// Perf overlay simulation
-setInterval(()=>{
-  const p95 = Math.floor(110 + Math.random()*60);
-  const fps = 60;
-  $("#perfBox").textContent = `P95 search: ${p95}ms • FPS: ${fps}`;
-}, 1200);
-</script>
-</body>
+      // Perf overlay simulation
+      setInterval(() => {
+        const p95 = Math.floor(110 + Math.random() * 60);
+        const fps = 60;
+        $('#perfBox').textContent = `P95 search: ${p95}ms • FPS: ${fps}`;
+      }, 1200);
+    </script>
+  </body>
 </html>
-"""
-with open("/mnt/data/sparktasks_conversational_os_demo.html","w",encoding="utf-8") as f:
-    f.write(html)
-
-"/mnt/data/sparktasks_conversational_os_demo.html"
+""" with
+open("/mnt/data/sparktasks_conversational_os_demo.html","w",encoding="utf-8") as
+f: f.write(html) "/mnt/data/sparktasks_conversational_os_demo.html"

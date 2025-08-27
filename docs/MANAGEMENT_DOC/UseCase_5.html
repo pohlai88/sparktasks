@@ -1,850 +1,1373 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NexusPM - Enterprise Project Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                        surface: {
-                            0: '#f8fafc',
-                            1: '#f1f5f9',
-                            2: '#e2e8f0',
-                            3: '#cbd5e1'
-                        },
-                        success: '#3ddc97',
-                        warning: '#ffb454',
-                        danger: '#ff6666',
-                        info: '#74b0ff'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace']
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                200: '#bae6fd',
+                300: '#7dd3fc',
+                400: '#38bdf8',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+                800: '#075985',
+                900: '#0c4a6e',
+              },
+              surface: {
+                0: '#f8fafc',
+                1: '#f1f5f9',
+                2: '#e2e8f0',
+                3: '#cbd5e1',
+              },
+              success: '#3ddc97',
+              warning: '#ffb454',
+              danger: '#ff6666',
+              info: '#74b0ff',
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
+            },
+          },
+        },
+      };
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        :root {
-            --sidebar-width: 280px;
-            --header-height: 64px;
-        }
+      :root {
+        --sidebar-width: 280px;
+        --header-height: 64px;
+      }
 
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+      body {
+        font-family: 'Inter', sans-serif;
+      }
 
-        .board-column {
-            min-height: 600px;
-        }
+      .board-column {
+        min-height: 600px;
+      }
 
-        .task-card {
-            transition: all 0.2s ease;
-        }
+      .task-card {
+        transition: all 0.2s ease;
+      }
 
-        .task-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+      .task-card:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
 
+      .sidebar {
+        transition: all 0.3s ease;
+        width: var(--sidebar-width);
+      }
+
+      .main-content {
+        margin-left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+      }
+
+      .header {
+        height: var(--header-height);
+      }
+
+      @media (max-width: 1024px) {
         .sidebar {
-            transition: all 0.3s ease;
-            width: var(--sidebar-width);
+          transform: translateX(-100%);
+          position: fixed;
+          z-index: 40;
+          height: 100vh;
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
         }
 
         .main-content {
-            margin-left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width));
+          margin-left: 0;
+          width: 100%;
         }
+      }
 
-        .header {
-            height: var(--header-height);
+      /* Dark mode support */
+      .dark {
+        --bg: #0f172a;
+        --surface-0: #1e293b;
+        --surface-1: #334155;
+        --surface-2: #475569;
+        --ink: #f1f5f9;
+        --muted: #94a3b8;
+      }
+
+      /* Animation for task movement */
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4);
         }
-
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-                position: fixed;
-                z-index: 40;
-                height: 100vh;
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-            }
+        70% {
+          box-shadow: 0 0 0 10px rgba(14, 165, 233, 0);
         }
-
-        /* Dark mode support */
-        .dark {
-            --bg: #0f172a;
-            --surface-0: #1e293b;
-            --surface-1: #334155;
-            --surface-2: #475569;
-            --ink: #f1f5f9;
-            --muted: #94a3b8;
+        100% {
+          box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
         }
+      }
 
-        /* Animation for task movement */
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(14, 165, 233, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
-        }
+      .pulse {
+        animation: pulse 2s infinite;
+      }
 
-        .pulse {
-            animation: pulse 2s infinite;
-        }
+      /* Custom scrollbar */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
 
-        /* Custom scrollbar */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 3px;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
-        }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+      .dark .custom-scrollbar::-webkit-scrollbar-track {
+        background: #1e293b;
+      }
 
-        .dark .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
+      .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #475569;
+      }
 
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #475569;
-        }
-
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-        }
+      .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+      }
     </style>
-</head>
-<body class="bg-surface-0 text-gray-800 dark:bg-slate-900 dark:text-slate-100">
+  </head>
+  <body
+    class="bg-surface-0 text-gray-800 dark:bg-slate-900 dark:text-slate-100"
+  >
     <!-- Header -->
-    <header class="header bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-4 py-3 flex items-center justify-between fixed top-0 left-0 right-0 z-30">
+    <header
+      class="header fixed left-0 right-0 top-0 z-30 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-800"
+    >
+      <div class="flex items-center">
+        <button
+          class="mr-3 text-gray-600 dark:text-slate-300 lg:hidden"
+          id="sidebarToggle"
+        >
+          <i class="fas fa-bars text-xl"></i>
+        </button>
         <div class="flex items-center">
-            <button class="lg:hidden mr-3 text-gray-600 dark:text-slate-300" id="sidebarToggle">
-                <i class="fas fa-bars text-xl"></i>
+          <div
+            class="from-primary-600 mr-3 flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-r to-blue-600"
+          >
+            <span class="text-lg font-bold text-white">N</span>
+          </div>
+          <h1 class="text-xl font-bold text-gray-900 dark:text-white">
+            Nexus<span class="text-primary-600">PM</span>
+          </h1>
+        </div>
+
+        <div class="ml-10 hidden space-x-1 md:flex">
+          <a
+            href="#"
+            class="text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 rounded-md px-4 py-2 text-sm font-medium"
+            >Dashboard</a
+          >
+          <a
+            href="#"
+            class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white"
+            >Projects</a
+          >
+          <a
+            href="#"
+            class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white"
+            >Calendar</a
+          >
+          <a
+            href="#"
+            class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white"
+            >Reports</a
+          >
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div class="relative hidden md:block">
+          <div
+            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+          >
+            <i class="fas fa-search text-gray-400"></i>
+          </div>
+          <input
+            type="text"
+            class="focus:ring-primary-500 w-64 rounded-lg border-0 bg-gray-100 py-2 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 dark:bg-slate-700 dark:focus:bg-slate-600"
+            placeholder="Search tasks..."
+          />
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <button
+            class="hidden text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200 md:block"
+          >
+            <i class="far fa-bell text-lg"></i>
+          </button>
+          <button
+            class="hidden text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200 md:block"
+          >
+            <i class="far fa-comment text-lg"></i>
+          </button>
+
+          <div class="flex space-x-2">
+            <button
+              class="bg-primary-600 hover:bg-primary-700 flex items-center rounded-lg px-4 py-2 text-sm font-medium text-white"
+            >
+              <i class="fas fa-plus mr-1.5 text-xs"></i> New Task
             </button>
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-md bg-gradient-to-r from-primary-600 to-blue-600 flex items-center justify-center mr-3">
-                    <span class="text-white font-bold text-lg">N</span>
-                </div>
-                <h1 class="text-xl font-bold text-gray-900 dark:text-white">Nexus<span class="text-primary-600">PM</span></h1>
-            </div>
+            <button
+              class="flex items-center rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 dark:border-slate-600 dark:text-slate-300"
+            >
+              <i class="fas fa-bolt mr-1.5 text-xs text-amber-500"></i> Focus
+            </button>
+          </div>
 
-            <div class="hidden md:flex ml-10 space-x-1">
-                <a href="#" class="px-4 py-2 text-sm font-medium rounded-md text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">Dashboard</a>
-                <a href="#" class="px-4 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-700">Projects</a>
-                <a href="#" class="px-4 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-700">Calendar</a>
-                <a href="#" class="px-4 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-700">Reports</a>
-            </div>
+          <div
+            class="relative ml-3 border-l border-gray-200 pl-3 dark:border-slate-700"
+          >
+            <button class="flex items-center space-x-2">
+              <div
+                class="from-primary-600 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r to-blue-600 text-xs font-bold text-white"
+              >
+                JD
+              </div>
+              <span class="hidden text-sm font-medium md:block">John Doe</span>
+              <i
+                class="fas fa-chevron-down hidden text-xs text-gray-500 dark:text-slate-400 md:block"
+              ></i>
+            </button>
+          </div>
         </div>
-
-        <div class="flex items-center space-x-4">
-            <div class="relative hidden md:block">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="fas fa-search text-gray-400"></i>
-                </div>
-                <input type="text" class="bg-gray-100 dark:bg-slate-700 border-0 rounded-lg pl-10 pr-4 py-2 focus:ring-2 focus:ring-primary-500 focus:bg-white dark:focus:bg-slate-600 w-64 text-sm" placeholder="Search tasks...">
-            </div>
-
-            <div class="flex items-center space-x-3">
-                <button class="hidden md:block text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200">
-                    <i class="far fa-bell text-lg"></i>
-                </button>
-                <button class="hidden md:block text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200">
-                    <i class="far fa-comment text-lg"></i>
-                </button>
-
-                <div class="flex space-x-2">
-                    <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-plus mr-1.5 text-xs"></i> New Task
-                    </button>
-                    <button class="px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium flex items-center text-gray-700 dark:text-slate-300">
-                        <i class="fas fa-bolt mr-1.5 text-xs text-amber-500"></i> Focus
-                    </button>
-                </div>
-
-                <div class="relative pl-3 border-l border-gray-200 dark:border-slate-700 ml-3">
-                    <button class="flex items-center space-x-2">
-                        <div class="h-8 w-8 rounded-full bg-gradient-to-r from-primary-600 to-blue-600 flex items-center justify-center text-white text-xs font-bold">JD</div>
-                        <span class="hidden md:block text-sm font-medium">John Doe</span>
-                        <i class="fas fa-chevron-down text-xs text-gray-500 dark:text-slate-400 hidden md:block"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+      </div>
     </header>
 
     <div class="flex pt-14">
-        <!-- Sidebar -->
-        <aside class="sidebar bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 pt-6 pb-10 px-4 overflow-y-auto h-screen">
-            <div class="mb-8 px-2">
-                <h2 class="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-4">Workspace</h2>
-                <div class="flex items-center mb-4 p-2 rounded-lg bg-primary-50 dark:bg-primary-900/20">
-                    <div class="w-8 h-8 rounded-md bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 flex items-center justify-center mr-3">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-primary-900 dark:text-primary-100">Product Launch</h3>
-                        <p class="text-xs text-primary-600 dark:text-primary-300">3 projects</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center mb-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700">
-                    <div class="w-8 h-8 rounded-md bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 flex items-center justify-center mr-3">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-900 dark:text-white">Development</h3>
-                        <p class="text-xs text-gray-600 dark:text-slate-400">8 projects</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center mb-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700">
-                    <div class="w-8 h-8 rounded-md bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 flex items-center justify-center mr-3">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-900 dark:text-white">Design</h3>
-                        <p class="text-xs text-gray-600 dark:text-slate-400">5 projects</p>
-                    </div>
-                </div>
+      <!-- Sidebar -->
+      <aside
+        class="sidebar h-screen overflow-y-auto border-r border-gray-200 bg-white px-4 pb-10 pt-6 dark:border-slate-700 dark:bg-slate-800"
+      >
+        <div class="mb-8 px-2">
+          <h2
+            class="mb-4 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400"
+          >
+            Workspace
+          </h2>
+          <div
+            class="bg-primary-50 dark:bg-primary-900/20 mb-4 flex items-center rounded-lg p-2"
+          >
+            <div
+              class="bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 mr-3 flex h-8 w-8 items-center justify-center rounded-md"
+            >
+              <i class="fas fa-project-diagram"></i>
             </div>
-
-            <div class="mb-8 px-2">
-                <h2 class="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-4">Favorites</h2>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <i class="fas fa-star text-yellow-500 mr-3 w-5 text-center"></i>
-                    <span>Website Redesign</span>
-                </a>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <i class="fas fa-star text-yellow-500 mr-3 w-5 text-center"></i>
-                    <span>Mobile App</span>
-                </a>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <i class="fas fa-star text-yellow-500 mr-3 w-5 text-center"></i>
-                    <span>Marketing Campaign</span>
-                </a>
+            <div>
+              <h3 class="text-primary-900 dark:text-primary-100 font-medium">
+                Product Launch
+              </h3>
+              <p class="text-primary-600 dark:text-primary-300 text-xs">
+                3 projects
+              </p>
             </div>
+          </div>
 
-            <div class="mb-8 px-2">
-                <h2 class="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-4">My Projects</h2>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <i class="fas fa-circle text-primary-500 mr-3 w-5 text-center"></i>
-                    <span>Q3 Planning</span>
-                </a>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <i class="fas fa-circle text-green-500 mr-3 w-5 text-center"></i>
-                    <span>Customer Portal</span>
-                </a>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <i class="fas fa-circle text-purple-500 mr-3 w-5 text-center"></i>
-                    <span>UI Revamp</span>
-                </a>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <i class="fas fa-circle text-yellow-500 mr-3 w-5 text-center"></i>
-                    <span>Documentation</span>
-                </a>
+          <div
+            class="mb-4 flex items-center rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-slate-700"
+          >
+            <div
+              class="mr-3 flex h-8 w-8 items-center justify-center rounded-md bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200"
+            >
+              <i class="fas fa-code"></i>
             </div>
-
-            <div class="px-2">
-                <h2 class="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-4">Teams</h2>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <div class="w-6 h-6 rounded-full bg-blue-500 mr-3 flex-shrink-0"></div>
-                    <span>Frontend Developers</span>
-                </a>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <div class="w-6 h-6 rounded-full bg-green-500 mr-3 flex-shrink-0"></div>
-                    <span>Backend Team</span>
-                </a>
-                <a href="#" class="flex items-center text-gray-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 mb-3 py-1.5">
-                    <div class="w-6 h-6 rounded-full bg-purple-500 mr-3 flex-shrink-0"></div>
-                    <span>Design Team</span>
-                </a>
+            <div>
+              <h3 class="font-medium text-gray-900 dark:text-white">
+                Development
+              </h3>
+              <p class="text-xs text-gray-600 dark:text-slate-400">
+                8 projects
+              </p>
             </div>
+          </div>
 
-            <div class="mt-8 px-2 pt-4 border-t border-gray-200 dark:border-slate-700">
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400">
-                    <span>Storage: Google Drive • US</span>
-                    <span class="flex items-center text-green-600 dark:text-green-400">
-                        <i class="fas fa-shield-alt mr-1"></i> Verified
-                    </span>
-                </div>
-                <div class="mt-2 text-xs text-gray-500 dark:text-slate-400 flex items-center justify-between">
-                    <span>Performance: < 200ms</span>
-                    <span>Status: Online</span>
-                </div>
+          <div
+            class="mb-4 flex items-center rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-slate-700"
+          >
+            <div
+              class="mr-3 flex h-8 w-8 items-center justify-center rounded-md bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200"
+            >
+              <i class="fas fa-palette"></i>
             </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content overflow-auto h-screen pt-6 px-6 custom-scrollbar">
-            <div class="mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Website Redesign Project</h1>
-                        <p class="text-gray-600 dark:text-slate-400">You have 12 tasks remaining in 4 lists</p>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium flex items-center">
-                            <i class="fas fa-filter mr-2 text-gray-500 dark:text-slate-400"></i> Filter
-                        </button>
-                        <button class="px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium flex items-center">
-                            <i class="fas fa-sort mr-2 text-gray-500 dark:text-slate-400"></i> Sort
-                        </button>
-                        <button class="px-4 py-2 bg-gray-100 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium flex items-center">
-                            <i class="fas fa-table-cells mr-2 text-gray-700 dark:text-slate-300"></i> View
-                        </button>
-                    </div>
-                </div>
-
-                <div class="flex items-center text-sm text-gray-600 dark:text-slate-400 mb-6">
-                    <div class="flex items-center mr-6">
-                        <div class="h-3 w-3 rounded-full bg-primary-600 mr-2"></div>
-                        <span>On track</span>
-                    </div>
-                    <div class="flex items-center mr-6">
-                        <i class="far fa-user mr-2"></i>
-                        <span>5 members</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="far fa-calendar mr-2"></i>
-                        <span>Due Aug 30, 2023</span>
-                    </div>
-                </div>
+            <div>
+              <h3 class="font-medium text-gray-900 dark:text-white">Design</h3>
+              <p class="text-xs text-gray-600 dark:text-slate-400">
+                5 projects
+              </p>
             </div>
+          </div>
+        </div>
 
-            <!-- Kanban Board -->
-            <div class="flex overflow-x-auto pb-6 -mx-2 px-2 custom-scrollbar" id="kanban-board">
-                <!-- To Do Column -->
-                <div class="w-72 flex-shrink-0 mr-4">
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                        <div class="p-3 border-b border-gray-200 dark:border-slate-700">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-700 dark:text-slate-300">To Do</h3>
-                                <span class="bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 text-xs font-medium rounded-full px-2 py-0.5">4</span>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-gray-50 dark:bg-slate-700/30 board-column">
-                            <!-- Quick Add Input -->
-                            <div class="mb-3">
-                                <input class="w-full bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Quick add: @assignee #label !priority">
-                            </div>
+        <div class="mb-8 px-2">
+          <h2
+            class="mb-4 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400"
+          >
+            Favorites
+          </h2>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <i class="fas fa-star mr-3 w-5 text-center text-yellow-500"></i>
+            <span>Website Redesign</span>
+          </a>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <i class="fas fa-star mr-3 w-5 text-center text-yellow-500"></i>
+            <span>Mobile App</span>
+          </a>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <i class="fas fa-star mr-3 w-5 text-center text-yellow-500"></i>
+            <span>Marketing Campaign</span>
+          </a>
+        </div>
 
-                            <!-- Task Cards -->
-                            <div class="bg-white dark:bg-slate-700 rounded-lg shadow-xs task-card p-3 mb-3 border border-gray-200 dark:border-slate-600">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">Design</span>
-                                    <button class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-400">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                </div>
-                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Create wireframes for homepage</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Design modern wireframes that follow our new design system</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex">
-                                        <div class="h-6 w-6 rounded-full bg-red-200 dark:bg-red-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                        <div class="h-6 w-6 rounded-full bg-blue-200 dark:bg-blue-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                    </div>
-                                    <div class="flex items-center text-xs text-gray-500 dark:text-slate-500">
-                                        <i class="far fa-comment mr-1"></i> 3
-                                        <i class="far fa-paperclip ml-2 mr-1"></i> 2
-                                    </div>
-                                </div>
-                            </div>
+        <div class="mb-8 px-2">
+          <h2
+            class="mb-4 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400"
+          >
+            My Projects
+          </h2>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <i class="fas fa-circle text-primary-500 mr-3 w-5 text-center"></i>
+            <span>Q3 Planning</span>
+          </a>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <i class="fas fa-circle mr-3 w-5 text-center text-green-500"></i>
+            <span>Customer Portal</span>
+          </a>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <i class="fas fa-circle mr-3 w-5 text-center text-purple-500"></i>
+            <span>UI Revamp</span>
+          </a>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <i class="fas fa-circle mr-3 w-5 text-center text-yellow-500"></i>
+            <span>Documentation</span>
+          </a>
+        </div>
 
-                            <div class="bg-white dark:bg-slate-700 rounded-lg shadow-xs task-card p-3 mb-3 border border-gray-200 dark:border-slate-600">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200">Research</span>
-                                    <button class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-400">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                </div>
-                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Competitor analysis</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Analyze top 5 competitor websites for inspiration</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex">
-                                        <div class="h-6 w-6 rounded-full bg-green-200 dark:bg-green-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                    </div>
-                                    <div class="flex items-center text-xs text-gray-500 dark:text-slate-500">
-                                        <i class="far fa-paperclip mr-1"></i> 7
-                                    </div>
-                                </div>
-                            </div>
+        <div class="px-2">
+          <h2
+            class="mb-4 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400"
+          >
+            Teams
+          </h2>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <div
+              class="mr-3 h-6 w-6 flex-shrink-0 rounded-full bg-blue-500"
+            ></div>
+            <span>Frontend Developers</span>
+          </a>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <div
+              class="mr-3 h-6 w-6 flex-shrink-0 rounded-full bg-green-500"
+            ></div>
+            <span>Backend Team</span>
+          </a>
+          <a
+            href="#"
+            class="hover:text-primary-600 dark:hover:text-primary-400 mb-3 flex items-center py-1.5 text-gray-700 dark:text-slate-300"
+          >
+            <div
+              class="mr-3 h-6 w-6 flex-shrink-0 rounded-full bg-purple-500"
+            ></div>
+            <span>Design Team</span>
+          </a>
+        </div>
 
-                            <div class="bg-white dark:bg-slate-700 rounded-lg shadow-xs task-card p-3 mb-3 border border-gray-200 dark:border-slate-600">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200">Content</span>
-                                    <button class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-400">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                </div>
-                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Write product descriptions</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Create compelling product descriptions for all categories</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex">
-                                        <div class="h-6 w-6 rounded-full bg-purple-200 dark:bg-purple-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                        <div class="h-6 w-6 rounded-full bg-yellow-200 dark:bg-yellow-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                    </div>
-                                    <div class="flex items-center text-xs text-gray-500 dark:text-slate-500">
-                                        <i class="far fa-clock mr-1"></i> 2d
-                                    </div>
-                                </div>
-                            </div>
+        <div
+          class="mt-8 border-t border-gray-200 px-2 pt-4 dark:border-slate-700"
+        >
+          <div
+            class="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400"
+          >
+            <span>Storage: Google Drive • US</span>
+            <span class="flex items-center text-green-600 dark:text-green-400">
+              <i class="fas fa-shield-alt mr-1"></i> Verified
+            </span>
+          </div>
+          <div
+            class="mt-2 flex items-center justify-between text-xs text-gray-500 dark:text-slate-400"
+          >
+            <span>Performance: < 200ms</span>
+            <span>Status: Online</span>
+          </div>
+        </div>
+      </aside>
 
-                            <button class="w-full py-2.5 text-sm text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-600 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-plus mr-2"></i> Add Task
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- In Progress Column -->
-                <div class="w-72 flex-shrink-0 mr-4">
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                        <div class="p-3 border-b border-gray-200 dark:border-slate-700">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-700 dark:text-slate-300">In Progress</h3>
-                                <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full px-2 py-0.5">3</span>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-gray-50 dark:bg-slate-700/30 board-column">
-                            <div class="bg-white dark:bg-slate-700 rounded-lg shadow-xs task-card p-3 mb-3 border border-blue-200 dark:border-blue-700 border-l-4">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">Development</span>
-                                    <button class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-400">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                </div>
-                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Implement user authentication</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Create login/signup flows with social media options</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex">
-                                        <div class="h-6 w-6 rounded-full bg-blue-200 dark:bg-blue-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                        <div class="h-6 w-6 rounded-full bg-green-200 dark:bg-green-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                    </div>
-                                    <div class="flex items-center text-xs text-blue-600 dark:text-blue-400">
-                                        <i class="far fa-clock mr-1"></i> Due tomorrow
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-slate-700 rounded-lg shadow-xs task-card p-3 mb-3 border border-gray-200 dark:border-slate-600">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-pink-100 dark:bg-pink-900/30 text-pink-800 dark:text-pink-200">SEO</span>
-                                    <button class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-400">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                </div>
-                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Optimize page metadata</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Update title tags and meta descriptions for all pages</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex">
-                                        <div class="h-6 w-6 rounded-full bg-red-200 dark:bg-red-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                    </div>
-                                    <div class="flex items-center text-xs text-gray-500 dark:text-slate-500">
-                                        <i class="far fa-check-square mr-1"></i> 2/5
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="w-full py-2.5 text-sm text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-600 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-plus mr-2"></i> Add Task
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Review Column -->
-                <div class="w-72 flex-shrink-0 mr-4">
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                        <div class="p-3 border-b border-gray-200 dark:border-slate-700">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-700 dark:text-slate-300">Review</h3>
-                                <span class="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 text-xs font-medium rounded-full px-2 py-0.5">2</span>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-gray-50 dark:bg-slate-700/30 board-column">
-                            <div class="bg-white dark:bg-slate-700 rounded-lg shadow-xs task-card p-3 mb-3 border border-gray-200 dark:border-slate-600">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">Design</span>
-                                    <button class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-400">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                </div>
-                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Review homepage mockups</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Provide feedback on the latest design iteration</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex">
-                                        <div class="h-6 w-6 rounded-full bg-purple-200 dark:bg-purple-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                        <div class="h-6 w-6 rounded-full bg-yellow-200 dark:bg-yellow-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                    </div>
-                                    <div class="flex items-center text-xs text-gray-500 dark:text-slate-500">
-                                        <i class="far fa-comment mr-1"></i> 12
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="w-full py-2.5 text-sm text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-600 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-plus mr-2"></i> Add Task
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Done Column -->
-                <div class="w-72 flex-shrink-0">
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-                        <div class="p-3 border-b border-gray-200 dark:border-slate-700">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-medium text-gray-700 dark:text-slate-300">Done</h3>
-                                <span class="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs font-medium rounded-full px-2 py-0.5">3</span>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-gray-50 dark:bg-slate-700/30 board-column">
-                            <div class="bg-white dark:bg-slate-700 rounded-lg shadow-xs task-card p-3 mb-3 border border-gray-200 dark:border-slate-600 opacity-90">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">Development</span>
-                                    <button class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-400">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                </div>
-                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Setup development environment</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Configure all team members with the proper dev setup</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex">
-                                        <div class="h-6 w-6 rounded-full bg-green-200 dark:bg-green-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                    </div>
-                                    <div class="flex items-center text-xs text-gray-500 dark:text-slate-500">
-                                        <i class="far fa-check-circle text-green-500 mr-1"></i> Done
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-slate-700 rounded-lg shadow-xs task-card p-3 mb-3 border border-gray-200 dark:border-slate-600 opacity-90">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200">Planning</span>
-                                    <button class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-400">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                </div>
-                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Create project roadmap</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Outline all milestones and deliverables for the project</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex">
-                                        <div class="h-6 w-6 rounded-full bg-blue-200 dark:bg-blue-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                        <div class="h-6 w-6 rounded-full bg-red-200 dark:bg-red-900/30 border border-white dark:border-slate-800 -ml-2 first:ml-0"></div>
-                                    </div>
-                                    <div class="flex items-center text-xs text-gray-500 dark:text-slate-500">
-                                        <i class="far fa-check-circle text-green-500 mr-1"></i> Done
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="w-full py-2.5 text-sm text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-600 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-plus mr-2"></i> Add Task
-                            </button>
-                        </div>
-                    </div>
-                </div>
+      <!-- Main Content -->
+      <main
+        class="main-content custom-scrollbar h-screen overflow-auto px-6 pt-6"
+      >
+        <div class="mb-6">
+          <div class="mb-4 flex items-center justify-between">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                Website Redesign Project
+              </h1>
+              <p class="text-gray-600 dark:text-slate-400">
+                You have 12 tasks remaining in 4 lists
+              </p>
             </div>
+            <div class="flex space-x-2">
+              <button
+                class="flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium dark:border-slate-600"
+              >
+                <i
+                  class="fas fa-filter mr-2 text-gray-500 dark:text-slate-400"
+                ></i>
+                Filter
+              </button>
+              <button
+                class="flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium dark:border-slate-600"
+              >
+                <i
+                  class="fas fa-sort mr-2 text-gray-500 dark:text-slate-400"
+                ></i>
+                Sort
+              </button>
+              <button
+                class="flex items-center rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-700"
+              >
+                <i
+                  class="fas fa-table-cells mr-2 text-gray-700 dark:text-slate-300"
+                ></i>
+                View
+              </button>
+            </div>
+          </div>
 
-            <!-- Library Section -->
-            <section class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6 mt-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Docs & Media Library</h2>
-                    <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-upload mr-2"></i> Upload Files
+          <div
+            class="mb-6 flex items-center text-sm text-gray-600 dark:text-slate-400"
+          >
+            <div class="mr-6 flex items-center">
+              <div class="bg-primary-600 mr-2 h-3 w-3 rounded-full"></div>
+              <span>On track</span>
+            </div>
+            <div class="mr-6 flex items-center">
+              <i class="far fa-user mr-2"></i>
+              <span>5 members</span>
+            </div>
+            <div class="flex items-center">
+              <i class="far fa-calendar mr-2"></i>
+              <span>Due Aug 30, 2023</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kanban Board -->
+        <div
+          class="custom-scrollbar -mx-2 flex overflow-x-auto px-2 pb-6"
+          id="kanban-board"
+        >
+          <!-- To Do Column -->
+          <div class="mr-4 w-72 flex-shrink-0">
+            <div
+              class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+            >
+              <div class="border-b border-gray-200 p-3 dark:border-slate-700">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-medium text-gray-700 dark:text-slate-300">
+                    To Do
+                  </h3>
+                  <span
+                    class="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-700 dark:bg-slate-700 dark:text-slate-300"
+                    >4</span
+                  >
+                </div>
+              </div>
+              <div class="board-column bg-gray-50 p-3 dark:bg-slate-700/30">
+                <!-- Quick Add Input -->
+                <div class="mb-3">
+                  <input
+                    class="focus:ring-primary-500 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-transparent focus:ring-2 dark:border-slate-600 dark:bg-slate-700"
+                    placeholder="Quick add: @assignee #label !priority"
+                  />
+                </div>
+
+                <!-- Task Cards -->
+                <div
+                  class="shadow-xs task-card mb-3 rounded-lg border border-gray-200 bg-white p-3 dark:border-slate-600 dark:bg-slate-700"
+                >
+                  <div class="mb-2 flex items-start justify-between">
+                    <span
+                      class="rounded bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
+                      >Design</span
+                    >
+                    <button
+                      class="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-400"
+                    >
+                      <i class="fas fa-ellipsis-h"></i>
                     </button>
+                  </div>
+                  <h4 class="mb-2 font-medium text-gray-900 dark:text-white">
+                    Create wireframes for homepage
+                  </h4>
+                  <p class="mb-3 text-sm text-gray-600 dark:text-slate-400">
+                    Design modern wireframes that follow our new design system
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex">
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-red-200 first:ml-0 dark:border-slate-800 dark:bg-red-900/30"
+                      ></div>
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-blue-200 first:ml-0 dark:border-slate-800 dark:bg-blue-900/30"
+                      ></div>
+                    </div>
+                    <div
+                      class="flex items-center text-xs text-gray-500 dark:text-slate-500"
+                    >
+                      <i class="far fa-comment mr-1"></i> 3
+                      <i class="far fa-paperclip ml-2 mr-1"></i> 2
+                    </div>
+                  </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3 border border-gray-200 dark:border-slate-600">
-                        <div class="h-32 rounded-md bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 flex items-center justify-center mb-3">
-                            <i class="far fa-file-pdf text-3xl text-blue-500"></i>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium text-gray-900 dark:text-white">Project_Brief.pdf</span>
-                            <span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">PDF</span>
-                        </div>
+                <div
+                  class="shadow-xs task-card mb-3 rounded-lg border border-gray-200 bg-white p-3 dark:border-slate-600 dark:bg-slate-700"
+                >
+                  <div class="mb-2 flex items-start justify-between">
+                    <span
+                      class="rounded bg-purple-100 px-1.5 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-200"
+                      >Research</span
+                    >
+                    <button
+                      class="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-400"
+                    >
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <h4 class="mb-2 font-medium text-gray-900 dark:text-white">
+                    Competitor analysis
+                  </h4>
+                  <p class="mb-3 text-sm text-gray-600 dark:text-slate-400">
+                    Analyze top 5 competitor websites for inspiration
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex">
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-green-200 first:ml-0 dark:border-slate-800 dark:bg-green-900/30"
+                      ></div>
                     </div>
-
-                    <div class="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3 border border-gray-200 dark:border-slate-600">
-                        <div class="h-32 rounded-md bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 flex items-center justify-center mb-3">
-                            <i class="far fa-file-image text-3xl text-green-500"></i>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium text-gray-900 dark:text-white">Hero_Image.png</span>
-                            <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-2 py-1 rounded">Image</span>
-                        </div>
+                    <div
+                      class="flex items-center text-xs text-gray-500 dark:text-slate-500"
+                    >
+                      <i class="far fa-paperclip mr-1"></i> 7
                     </div>
-
-                    <div class="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3 border border-gray-200 dark:border-slate-600">
-                        <div class="h-32 rounded-md bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 flex items-center justify-center mb-3">
-                            <i class="far fa-file-video text-3xl text-purple-500"></i>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium text-gray-900 dark:text-white">Demo_Video.mp4</span>
-                            <span class="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">Video</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3 border border-gray-200 dark:border-slate-600">
-                        <div class="h-32 rounded-md bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/30 dark:to-yellow-800/30 flex items-center justify-center mb-3">
-                            <i class="far fa-file-word text-3xl text-yellow-500"></i>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium text-gray-900 dark:text-white">Specs.docx</span>
-                            <span class="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded">DOCX</span>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-            </section>
 
-            <!-- Competitive Analysis Section -->
-            <section class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6 mt-6">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Competitive Analysis</h2>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-700 dark:text-slate-300">
-                            <tr>
-                                <th class="px-4 py-3">Capability</th>
-                                <th class="px-4 py-3">Trello</th>
-                                <th class="px-4 py-3">Linear</th>
-                                <th class="px-4 py-3">Asana</th>
-                                <th class="px-4 py-3">Notion</th>
-                                <th class="px-4 py-3 text-primary-600">NexusPM</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700">
-                                <td class="px-4 py-3 font-medium">Board Feel</td>
-                                <td class="px-4 py-3">Familiar</td>
-                                <td class="px-4 py-3">—</td>
-                                <td class="px-4 py-3">OK</td>
-                                <td class="px-4 py-3">DB boards</td>
-                                <td class="px-4 py-3 font-medium text-primary-600">Familiar + 60fps + keyboard</td>
-                            </tr>
-                            <tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700">
-                                <td class="px-4 py-3 font-medium">Speed</td>
-                                <td class="px-4 py-3">Mid</td>
-                                <td class="px-4 py-3"><span class="text-green-600">Elite</span></td>
-                                <td class="px-4 py-3">Mid</td>
-                                <td class="px-4 py-3">Mid</td>
-                                <td class="px-4 py-3 font-medium text-primary-600">Elite (&lt;50ms / &lt;200ms)</td>
-                            </tr>
-                            <tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700">
-                                <td class="px-4 py-3 font-medium">Files</td>
-                                <td class="px-4 py-3">Attachments</td>
-                                <td class="px-4 py-3">Links</td>
-                                <td class="px-4 py-3">Basic</td>
-                                <td class="px-4 py-3">Blocks</td>
-                                <td class="px-4 py-3 font-medium text-primary-600">Project-native + BYOS + local search</td>
-                            </tr>
-                            <tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700">
-                                <td class="px-4 py-3 font-medium">Approvals</td>
-                                <td class="px-4 py-3">No</td>
-                                <td class="px-4 py-3">No</td>
-                                <td class="px-4 py-3">Basic</td>
-                                <td class="px-4 py-3">Limited</td>
-                                <td class="px-4 py-3 font-medium text-primary-600">Unified task/asset + crypto</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-slate-800">
-                                <td class="px-4 py-3 font-medium">Offline</td>
-                                <td class="px-4 py-3">Limited</td>
-                                <td class="px-4 py-3">Limited</td>
-                                <td class="px-4 py-3">Limited</td>
-                                <td class="px-4 py-3">Improving</td>
-                                <td class="px-4 py-3 font-medium text-primary-600">Full CRUD + conflict cards</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div
+                  class="shadow-xs task-card mb-3 rounded-lg border border-gray-200 bg-white p-3 dark:border-slate-600 dark:bg-slate-700"
+                >
+                  <div class="mb-2 flex items-start justify-between">
+                    <span
+                      class="rounded bg-yellow-100 px-1.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200"
+                      >Content</span
+                    >
+                    <button
+                      class="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-400"
+                    >
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <h4 class="mb-2 font-medium text-gray-900 dark:text-white">
+                    Write product descriptions
+                  </h4>
+                  <p class="mb-3 text-sm text-gray-600 dark:text-slate-400">
+                    Create compelling product descriptions for all categories
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex">
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-purple-200 first:ml-0 dark:border-slate-800 dark:bg-purple-900/30"
+                      ></div>
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-yellow-200 first:ml-0 dark:border-slate-800 dark:bg-yellow-900/30"
+                      ></div>
+                    </div>
+                    <div
+                      class="flex items-center text-xs text-gray-500 dark:text-slate-500"
+                    >
+                      <i class="far fa-clock mr-1"></i> 2d
+                    </div>
+                  </div>
                 </div>
-            </section>
-        </main>
+
+                <button
+                  class="flex w-full items-center justify-center rounded-lg py-2.5 text-sm text-gray-600 hover:bg-gray-100 dark:text-slate-400 dark:hover:bg-slate-600"
+                >
+                  <i class="fas fa-plus mr-2"></i> Add Task
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- In Progress Column -->
+          <div class="mr-4 w-72 flex-shrink-0">
+            <div
+              class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+            >
+              <div class="border-b border-gray-200 p-3 dark:border-slate-700">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-medium text-gray-700 dark:text-slate-300">
+                    In Progress
+                  </h3>
+                  <span
+                    class="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
+                    >3</span
+                  >
+                </div>
+              </div>
+              <div class="board-column bg-gray-50 p-3 dark:bg-slate-700/30">
+                <div
+                  class="shadow-xs task-card mb-3 rounded-lg border border-l-4 border-blue-200 bg-white p-3 dark:border-blue-700 dark:bg-slate-700"
+                >
+                  <div class="mb-2 flex items-start justify-between">
+                    <span
+                      class="rounded bg-green-100 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-200"
+                      >Development</span
+                    >
+                    <button
+                      class="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-400"
+                    >
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <h4 class="mb-2 font-medium text-gray-900 dark:text-white">
+                    Implement user authentication
+                  </h4>
+                  <p class="mb-3 text-sm text-gray-600 dark:text-slate-400">
+                    Create login/signup flows with social media options
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex">
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-blue-200 first:ml-0 dark:border-slate-800 dark:bg-blue-900/30"
+                      ></div>
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-green-200 first:ml-0 dark:border-slate-800 dark:bg-green-900/30"
+                      ></div>
+                    </div>
+                    <div
+                      class="flex items-center text-xs text-blue-600 dark:text-blue-400"
+                    >
+                      <i class="far fa-clock mr-1"></i> Due tomorrow
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="shadow-xs task-card mb-3 rounded-lg border border-gray-200 bg-white p-3 dark:border-slate-600 dark:bg-slate-700"
+                >
+                  <div class="mb-2 flex items-start justify-between">
+                    <span
+                      class="rounded bg-pink-100 px-1.5 py-0.5 text-xs font-medium text-pink-800 dark:bg-pink-900/30 dark:text-pink-200"
+                      >SEO</span
+                    >
+                    <button
+                      class="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-400"
+                    >
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <h4 class="mb-2 font-medium text-gray-900 dark:text-white">
+                    Optimize page metadata
+                  </h4>
+                  <p class="mb-3 text-sm text-gray-600 dark:text-slate-400">
+                    Update title tags and meta descriptions for all pages
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex">
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-red-200 first:ml-0 dark:border-slate-800 dark:bg-red-900/30"
+                      ></div>
+                    </div>
+                    <div
+                      class="flex items-center text-xs text-gray-500 dark:text-slate-500"
+                    >
+                      <i class="far fa-check-square mr-1"></i> 2/5
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  class="flex w-full items-center justify-center rounded-lg py-2.5 text-sm text-gray-600 hover:bg-gray-100 dark:text-slate-400 dark:hover:bg-slate-600"
+                >
+                  <i class="fas fa-plus mr-2"></i> Add Task
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review Column -->
+          <div class="mr-4 w-72 flex-shrink-0">
+            <div
+              class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+            >
+              <div class="border-b border-gray-200 p-3 dark:border-slate-700">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-medium text-gray-700 dark:text-slate-300">
+                    Review
+                  </h3>
+                  <span
+                    class="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200"
+                    >2</span
+                  >
+                </div>
+              </div>
+              <div class="board-column bg-gray-50 p-3 dark:bg-slate-700/30">
+                <div
+                  class="shadow-xs task-card mb-3 rounded-lg border border-gray-200 bg-white p-3 dark:border-slate-600 dark:bg-slate-700"
+                >
+                  <div class="mb-2 flex items-start justify-between">
+                    <span
+                      class="rounded bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
+                      >Design</span
+                    >
+                    <button
+                      class="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-400"
+                    >
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <h4 class="mb-2 font-medium text-gray-900 dark:text-white">
+                    Review homepage mockups
+                  </h4>
+                  <p class="mb-3 text-sm text-gray-600 dark:text-slate-400">
+                    Provide feedback on the latest design iteration
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex">
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-purple-200 first:ml-0 dark:border-slate-800 dark:bg-purple-900/30"
+                      ></div>
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-yellow-200 first:ml-0 dark:border-slate-800 dark:bg-yellow-900/30"
+                      ></div>
+                    </div>
+                    <div
+                      class="flex items-center text-xs text-gray-500 dark:text-slate-500"
+                    >
+                      <i class="far fa-comment mr-1"></i> 12
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  class="flex w-full items-center justify-center rounded-lg py-2.5 text-sm text-gray-600 hover:bg-gray-100 dark:text-slate-400 dark:hover:bg-slate-600"
+                >
+                  <i class="fas fa-plus mr-2"></i> Add Task
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Done Column -->
+          <div class="w-72 flex-shrink-0">
+            <div
+              class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+            >
+              <div class="border-b border-gray-200 p-3 dark:border-slate-700">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-medium text-gray-700 dark:text-slate-300">
+                    Done
+                  </h3>
+                  <span
+                    class="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-200"
+                    >3</span
+                  >
+                </div>
+              </div>
+              <div class="board-column bg-gray-50 p-3 dark:bg-slate-700/30">
+                <div
+                  class="shadow-xs task-card mb-3 rounded-lg border border-gray-200 bg-white p-3 opacity-90 dark:border-slate-600 dark:bg-slate-700"
+                >
+                  <div class="mb-2 flex items-start justify-between">
+                    <span
+                      class="rounded bg-green-100 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-200"
+                      >Development</span
+                    >
+                    <button
+                      class="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-400"
+                    >
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <h4 class="mb-2 font-medium text-gray-900 dark:text-white">
+                    Setup development environment
+                  </h4>
+                  <p class="mb-3 text-sm text-gray-600 dark:text-slate-400">
+                    Configure all team members with the proper dev setup
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex">
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-green-200 first:ml-0 dark:border-slate-800 dark:bg-green-900/30"
+                      ></div>
+                    </div>
+                    <div
+                      class="flex items-center text-xs text-gray-500 dark:text-slate-500"
+                    >
+                      <i class="far fa-check-circle mr-1 text-green-500"></i>
+                      Done
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="shadow-xs task-card mb-3 rounded-lg border border-gray-200 bg-white p-3 opacity-90 dark:border-slate-600 dark:bg-slate-700"
+                >
+                  <div class="mb-2 flex items-start justify-between">
+                    <span
+                      class="rounded bg-purple-100 px-1.5 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-200"
+                      >Planning</span
+                    >
+                    <button
+                      class="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-400"
+                    >
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <h4 class="mb-2 font-medium text-gray-900 dark:text-white">
+                    Create project roadmap
+                  </h4>
+                  <p class="mb-3 text-sm text-gray-600 dark:text-slate-400">
+                    Outline all milestones and deliverables for the project
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex">
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-blue-200 first:ml-0 dark:border-slate-800 dark:bg-blue-900/30"
+                      ></div>
+                      <div
+                        class="-ml-2 h-6 w-6 rounded-full border border-white bg-red-200 first:ml-0 dark:border-slate-800 dark:bg-red-900/30"
+                      ></div>
+                    </div>
+                    <div
+                      class="flex items-center text-xs text-gray-500 dark:text-slate-500"
+                    >
+                      <i class="far fa-check-circle mr-1 text-green-500"></i>
+                      Done
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  class="flex w-full items-center justify-center rounded-lg py-2.5 text-sm text-gray-600 hover:bg-gray-100 dark:text-slate-400 dark:hover:bg-slate-600"
+                >
+                  <i class="fas fa-plus mr-2"></i> Add Task
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Library Section -->
+        <section
+          class="mt-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+        >
+          <div class="mb-6 flex items-center justify-between">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+              Docs & Media Library
+            </h2>
+            <button
+              class="bg-primary-600 hover:bg-primary-700 flex items-center rounded-lg px-4 py-2 text-sm font-medium text-white"
+            >
+              <i class="fas fa-upload mr-2"></i> Upload Files
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div
+              class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-slate-600 dark:bg-slate-700/50"
+            >
+              <div
+                class="mb-3 flex h-32 items-center justify-center rounded-md bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30"
+              >
+                <i class="far fa-file-pdf text-3xl text-blue-500"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-900 dark:text-white"
+                  >Project_Brief.pdf</span
+                >
+                <span
+                  class="rounded bg-blue-100 px-2 py-1 text-xs text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
+                  >PDF</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-slate-600 dark:bg-slate-700/50"
+            >
+              <div
+                class="mb-3 flex h-32 items-center justify-center rounded-md bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30"
+              >
+                <i class="far fa-file-image text-3xl text-green-500"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-900 dark:text-white"
+                  >Hero_Image.png</span
+                >
+                <span
+                  class="rounded bg-green-100 px-2 py-1 text-xs text-green-800 dark:bg-green-900/30 dark:text-green-200"
+                  >Image</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-slate-600 dark:bg-slate-700/50"
+            >
+              <div
+                class="mb-3 flex h-32 items-center justify-center rounded-md bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30"
+              >
+                <i class="far fa-file-video text-3xl text-purple-500"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-900 dark:text-white"
+                  >Demo_Video.mp4</span
+                >
+                <span
+                  class="rounded bg-purple-100 px-2 py-1 text-xs text-purple-800 dark:bg-purple-900/30 dark:text-purple-200"
+                  >Video</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-slate-600 dark:bg-slate-700/50"
+            >
+              <div
+                class="mb-3 flex h-32 items-center justify-center rounded-md bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/30 dark:to-yellow-800/30"
+              >
+                <i class="far fa-file-word text-3xl text-yellow-500"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-900 dark:text-white"
+                  >Specs.docx</span
+                >
+                <span
+                  class="rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200"
+                  >DOCX</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Competitive Analysis Section -->
+        <section
+          class="mt-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+        >
+          <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+            Competitive Analysis
+          </h2>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead
+                class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-slate-700 dark:text-slate-300"
+              >
+                <tr>
+                  <th class="px-4 py-3">Capability</th>
+                  <th class="px-4 py-3">Trello</th>
+                  <th class="px-4 py-3">Linear</th>
+                  <th class="px-4 py-3">Asana</th>
+                  <th class="px-4 py-3">Notion</th>
+                  <th class="text-primary-600 px-4 py-3">NexusPM</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="border-b bg-white dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <td class="px-4 py-3 font-medium">Board Feel</td>
+                  <td class="px-4 py-3">Familiar</td>
+                  <td class="px-4 py-3">—</td>
+                  <td class="px-4 py-3">OK</td>
+                  <td class="px-4 py-3">DB boards</td>
+                  <td class="text-primary-600 px-4 py-3 font-medium">
+                    Familiar + 60fps + keyboard
+                  </td>
+                </tr>
+                <tr
+                  class="border-b bg-white dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <td class="px-4 py-3 font-medium">Speed</td>
+                  <td class="px-4 py-3">Mid</td>
+                  <td class="px-4 py-3">
+                    <span class="text-green-600">Elite</span>
+                  </td>
+                  <td class="px-4 py-3">Mid</td>
+                  <td class="px-4 py-3">Mid</td>
+                  <td class="text-primary-600 px-4 py-3 font-medium">
+                    Elite (&lt;50ms / &lt;200ms)
+                  </td>
+                </tr>
+                <tr
+                  class="border-b bg-white dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <td class="px-4 py-3 font-medium">Files</td>
+                  <td class="px-4 py-3">Attachments</td>
+                  <td class="px-4 py-3">Links</td>
+                  <td class="px-4 py-3">Basic</td>
+                  <td class="px-4 py-3">Blocks</td>
+                  <td class="text-primary-600 px-4 py-3 font-medium">
+                    Project-native + BYOS + local search
+                  </td>
+                </tr>
+                <tr
+                  class="border-b bg-white dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <td class="px-4 py-3 font-medium">Approvals</td>
+                  <td class="px-4 py-3">No</td>
+                  <td class="px-4 py-3">No</td>
+                  <td class="px-4 py-3">Basic</td>
+                  <td class="px-4 py-3">Limited</td>
+                  <td class="text-primary-600 px-4 py-3 font-medium">
+                    Unified task/asset + crypto
+                  </td>
+                </tr>
+                <tr class="bg-white dark:bg-slate-800">
+                  <td class="px-4 py-3 font-medium">Offline</td>
+                  <td class="px-4 py-3">Limited</td>
+                  <td class="px-4 py-3">Limited</td>
+                  <td class="px-4 py-3">Limited</td>
+                  <td class="px-4 py-3">Improving</td>
+                  <td class="text-primary-600 px-4 py-3 font-medium">
+                    Full CRUD + conflict cards
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
     </div>
 
     <!-- Task Detail Drawer -->
-    <div class="fixed inset-0 overflow-hidden z-50 hidden" id="task-drawer">
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
-                <div class="w-screen max-w-md">
-                    <div class="h-full flex flex-col bg-white dark:bg-slate-800 shadow-xl overflow-y-auto">
-                        <div class="px-4 py-6 sm:px-6 bg-gray-50 dark:bg-slate-700">
-                            <div class="flex items-start justify-between">
-                                <h2 class="text-lg font-medium text-gray-900 dark:text-white">Task Details</h2>
-                                <div class="ml-3 h-7 flex items-center">
-                                    <button type="button" class="bg-white dark:bg-slate-700 rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                                        <span class="sr-only">Close panel</span>
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mt-1">
-                                <p class="text-sm text-gray-500 dark:text-slate-400">Task #TASK-123 • Created 2 days ago</p>
-                            </div>
-                        </div>
-                        <div class="flex-1 py-6 px-4 sm:px-6">
-                            <div class="mb-6">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-2">Create wireframes for homepage</h3>
-                                <p class="text-sm text-gray-500 dark:text-slate-400">Design modern wireframes that follow our new design system and include all required components.</p>
-                            </div>
-
-                            <div class="mb-6">
-                                <h4 class="text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Details</h4>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Status</p>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">In Progress</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Priority</p>
-                                        <p class="text-sm font-medium text-red-600">High</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Due Date</p>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Aug 25, 2023</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Assignee</p>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">You</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-6">
-                                <h4 class="text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Description</h4>
-                                <p class="text-sm text-gray-600 dark:text-slate-400">Create comprehensive wireframes for the homepage redesign. Focus on user experience and ensure all required components from the design system are properly implemented. Collaborate with the design team for feedback.</p>
-                            </div>
-
-                            <div class="mb-6">
-                                <h4 class="text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Attachments</h4>
-                                <div class="space-y-2">
-                                    <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded-lg">
-                                        <div class="flex items-center">
-                                            <i class="far fa-file-pdf text-red-500 mr-2"></i>
-                                            <span class="text-sm text-gray-700 dark:text-slate-300">Design_Requirements.pdf</span>
-                                        </div>
-                                        <span class="text-xs text-gray-500 dark:text-slate-400">2.4 MB</span>
-                                    </div>
-                                    <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded-lg">
-                                        <div class="flex items-center">
-                                            <i class="far fa-image text-blue-500 mr-2"></i>
-                                            <span class="text-sm text-gray-700 dark:text-slate-300">Reference_Design.png</span>
-                                        </div>
-                                        <span class="text-xs text-gray-500 dark:text-slate-400">1.2 MB</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Activity</h4>
-                                <div class="space-y-3">
-                                    <div class="flex">
-                                        <div class="mr-3">
-                                            <div class="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                                <span class="text-xs font-medium text-blue-800 dark:text-blue-200">JD</span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">John Doe</p>
-                                            <p class="text-sm text-gray-500 dark:text-slate-400">Created this task</p>
-                                            <p class="text-xs text-gray-400 dark:text-slate-500">2 days ago</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex">
-                                        <div class="mr-3">
-                                            <div class="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                                <span class="text-xs font-medium text-green-800 dark:text-green-200">SK</span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">Sarah Kim</p>
-                                            <p class="text-sm text-gray-500 dark:text-slate-400">Added attachments</p>
-                                            <p class="text-xs text-gray-400 dark:text-slate-500">1 day ago</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border-t border-gray-200 dark:border-slate-700 px-4 py-4 sm:px-6">
-                            <div class="flex space-x-3">
-                                <button type="button" class="flex-1 bg-primary-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">Save</button>
-                                <button type="button" class="flex-1 bg-white py-2 px-4 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
+    <div class="fixed inset-0 z-50 hidden overflow-hidden" id="task-drawer">
+      <div class="absolute inset-0 overflow-hidden">
+        <div
+          class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          aria-hidden="true"
+        ></div>
+        <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
+          <div class="w-screen max-w-md">
+            <div
+              class="flex h-full flex-col overflow-y-auto bg-white shadow-xl dark:bg-slate-800"
+            >
+              <div class="bg-gray-50 px-4 py-6 dark:bg-slate-700 sm:px-6">
+                <div class="flex items-start justify-between">
+                  <h2 class="text-lg font-medium text-gray-900 dark:text-white">
+                    Task Details
+                  </h2>
+                  <div class="ml-3 flex h-7 items-center">
+                    <button
+                      type="button"
+                      class="rounded-md bg-white text-gray-400 hover:text-gray-500 dark:bg-slate-700 dark:hover:text-gray-300"
+                    >
+                      <span class="sr-only">Close panel</span>
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
                 </div>
+                <div class="mt-1">
+                  <p class="text-sm text-gray-500 dark:text-slate-400">
+                    Task #TASK-123 • Created 2 days ago
+                  </p>
+                </div>
+              </div>
+              <div class="flex-1 px-4 py-6 sm:px-6">
+                <div class="mb-6">
+                  <h3
+                    class="mb-2 text-lg font-medium leading-6 text-gray-900 dark:text-white"
+                  >
+                    Create wireframes for homepage
+                  </h3>
+                  <p class="text-sm text-gray-500 dark:text-slate-400">
+                    Design modern wireframes that follow our new design system
+                    and include all required components.
+                  </p>
+                </div>
+
+                <div class="mb-6">
+                  <h4
+                    class="mb-3 text-sm font-medium text-gray-700 dark:text-slate-300"
+                  >
+                    Details
+                  </h4>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <p class="text-xs text-gray-500 dark:text-slate-400">
+                        Status
+                      </p>
+                      <p
+                        class="text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        In Progress
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500 dark:text-slate-400">
+                        Priority
+                      </p>
+                      <p class="text-sm font-medium text-red-600">High</p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500 dark:text-slate-400">
+                        Due Date
+                      </p>
+                      <p
+                        class="text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Aug 25, 2023
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500 dark:text-slate-400">
+                        Assignee
+                      </p>
+                      <p
+                        class="text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        You
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h4
+                    class="mb-3 text-sm font-medium text-gray-700 dark:text-slate-300"
+                  >
+                    Description
+                  </h4>
+                  <p class="text-sm text-gray-600 dark:text-slate-400">
+                    Create comprehensive wireframes for the homepage redesign.
+                    Focus on user experience and ensure all required components
+                    from the design system are properly implemented. Collaborate
+                    with the design team for feedback.
+                  </p>
+                </div>
+
+                <div class="mb-6">
+                  <h4
+                    class="mb-3 text-sm font-medium text-gray-700 dark:text-slate-300"
+                  >
+                    Attachments
+                  </h4>
+                  <div class="space-y-2">
+                    <div
+                      class="flex items-center justify-between rounded-lg bg-gray-50 p-2 dark:bg-slate-700"
+                    >
+                      <div class="flex items-center">
+                        <i class="far fa-file-pdf mr-2 text-red-500"></i>
+                        <span class="text-sm text-gray-700 dark:text-slate-300"
+                          >Design_Requirements.pdf</span
+                        >
+                      </div>
+                      <span class="text-xs text-gray-500 dark:text-slate-400"
+                        >2.4 MB</span
+                      >
+                    </div>
+                    <div
+                      class="flex items-center justify-between rounded-lg bg-gray-50 p-2 dark:bg-slate-700"
+                    >
+                      <div class="flex items-center">
+                        <i class="far fa-image mr-2 text-blue-500"></i>
+                        <span class="text-sm text-gray-700 dark:text-slate-300"
+                          >Reference_Design.png</span
+                        >
+                      </div>
+                      <span class="text-xs text-gray-500 dark:text-slate-400"
+                        >1.2 MB</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4
+                    class="mb-3 text-sm font-medium text-gray-700 dark:text-slate-300"
+                  >
+                    Activity
+                  </h4>
+                  <div class="space-y-3">
+                    <div class="flex">
+                      <div class="mr-3">
+                        <div
+                          class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30"
+                        >
+                          <span
+                            class="text-xs font-medium text-blue-800 dark:text-blue-200"
+                            >JD</span
+                          >
+                        </div>
+                      </div>
+                      <div class="flex-1">
+                        <p
+                          class="text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          John Doe
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-slate-400">
+                          Created this task
+                        </p>
+                        <p class="text-xs text-gray-400 dark:text-slate-500">
+                          2 days ago
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex">
+                      <div class="mr-3">
+                        <div
+                          class="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30"
+                        >
+                          <span
+                            class="text-xs font-medium text-green-800 dark:text-green-200"
+                            >SK</span
+                          >
+                        </div>
+                      </div>
+                      <div class="flex-1">
+                        <p
+                          class="text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Sarah Kim
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-slate-400">
+                          Added attachments
+                        </p>
+                        <p class="text-xs text-gray-400 dark:text-slate-500">
+                          1 day ago
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="border-t border-gray-200 px-4 py-4 dark:border-slate-700 sm:px-6"
+              >
+                <div class="flex space-x-3">
+                  <button
+                    type="button"
+                    class="bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 flex-1 rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    class="focus:ring-primary-500 flex-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <script>
-        // Simple sidebar toggle for mobile
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.querySelector('.sidebar').classList.toggle('open');
+      // Simple sidebar toggle for mobile
+      document
+        .getElementById('sidebarToggle')
+        .addEventListener('click', function () {
+          document.querySelector('.sidebar').classList.toggle('open');
         });
 
-        // Task card click to open drawer
-        document.querySelectorAll('.task-card').forEach(card => {
-            card.addEventListener('click', function() {
-                document.getElementById('task-drawer').classList.remove('hidden');
-            });
+      // Task card click to open drawer
+      document.querySelectorAll('.task-card').forEach(card => {
+        card.addEventListener('click', function () {
+          document.getElementById('task-drawer').classList.remove('hidden');
+        });
+      });
+
+      // Close drawer when clicking on overlay
+      document
+        .querySelector('.bg-opacity-75')
+        .addEventListener('click', function () {
+          document.getElementById('task-drawer').classList.add('hidden');
         });
 
-        // Close drawer when clicking on overlay
-        document.querySelector('.bg-opacity-75').addEventListener('click', function() {
-            document.getElementById('task-drawer').classList.add('hidden');
-        });
-
-        // Dark mode toggle (for demonstration)
-        const darkModeToggle = document.createElement('button');
-        darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        darkModeToggle.className = 'fixed bottom-4 right-4 w-12 h-12 rounded-full bg-gray-800 text-white shadow-lg flex items-center justify-center z-40';
-        darkModeToggle.addEventListener('click', function() {
-            document.documentElement.classList.toggle('dark');
-            this.innerHTML = document.documentElement.classList.contains('dark') ?
-                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        });
-        document.body.appendChild(darkModeToggle);
+      // Dark mode toggle (for demonstration)
+      const darkModeToggle = document.createElement('button');
+      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      darkModeToggle.className =
+        'fixed bottom-4 right-4 w-12 h-12 rounded-full bg-gray-800 text-white shadow-lg flex items-center justify-center z-40';
+      darkModeToggle.addEventListener('click', function () {
+        document.documentElement.classList.toggle('dark');
+        this.innerHTML = document.documentElement.classList.contains('dark')
+          ? '<i class="fas fa-sun"></i>'
+          : '<i class="fas fa-moon"></i>';
+      });
+      document.body.appendChild(darkModeToggle);
     </script>
-</body>
+  </body>
 </html>

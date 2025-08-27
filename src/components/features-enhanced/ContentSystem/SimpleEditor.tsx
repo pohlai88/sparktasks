@@ -36,7 +36,8 @@ import { cn } from '@/utils/cn';
 
 // ===== INTERFACES =====
 
-export interface SimpleEditorProps extends VariantProps<typeof simpleEditorVariants> {
+export interface SimpleEditorProps
+  extends VariantProps<typeof simpleEditorVariants> {
   // Content
   content?: string;
   defaultContent?: string;
@@ -103,74 +104,79 @@ export interface ToolbarTool {
 
 // ===== COMPONENT VARIANTS =====
 
-const simpleEditorVariants = cva([
-  'simple-editor relative border rounded-lg overflow-hidden',
-  'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-], {
-  variants: {
-    surface: {
-      elevated: [
-        'bg-surface-elevated border-border-elevated',
-      ],
-      glass: [
-        'backdrop-blur-sm bg-surface-panel/80 border-border-glass',
-      ],
+const simpleEditorVariants = cva(
+  [
+    'simple-editor relative overflow-hidden rounded-lg border',
+    'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+  ],
+  {
+    variants: {
+      surface: {
+        elevated: ['bg-surface-elevated border-border-elevated'],
+        glass: ['bg-surface-panel/80 border-border-glass backdrop-blur-sm'],
+      },
+      size: {
+        sm: 'min-h-[200px]',
+        md: 'min-h-[300px]',
+        lg: 'min-h-[400px]',
+      },
+      disabled: {
+        true: 'cursor-not-allowed opacity-60',
+        false: '',
+      },
     },
-    size: {
-      sm: 'min-h-[200px]',
-      md: 'min-h-[300px]',
-      lg: 'min-h-[400px]',
+    defaultVariants: {
+      surface: 'elevated',
+      size: 'md',
+      disabled: false,
     },
-    disabled: {
-      true: 'opacity-60 cursor-not-allowed',
-      false: '',
-    },
-  },
-  defaultVariants: {
-    surface: 'elevated',
-    size: 'md',
-    disabled: false,
   }
-});
+);
 
-const toolbarVariants = cva([
-  'flex items-center gap-1 p-2 border-b border-border-subtle bg-surface-panel',
-], {
-  variants: {
-    position: {
-      top: '',
-      bottom: 'border-t border-b-0 order-last',
+const toolbarVariants = cva(
+  [
+    'bg-surface-panel flex items-center gap-1 border-b border-border-subtle p-2',
+  ],
+  {
+    variants: {
+      position: {
+        top: '',
+        bottom: 'order-last border-b-0 border-t',
+      },
+      sticky: {
+        true: 'sticky top-0 z-10',
+        false: '',
+      },
     },
-    sticky: {
-      true: 'sticky top-0 z-10',
-      false: '',
+    defaultVariants: {
+      position: 'top',
+      sticky: false,
     },
-  },
-  defaultVariants: {
-    position: 'top',
-    sticky: false,
   }
-});
+);
 
-const toolbarButtonVariants = cva([
-  'inline-flex items-center justify-center',
-  'h-8 w-8 p-0',
-  'text-foreground-muted hover:text-foreground',
-  'border border-transparent',
-  'rounded transition-colors',
-  'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  'disabled:opacity-50 disabled:cursor-not-allowed',
-], {
-  variants: {
-    variant: {
-      default: 'hover:bg-surface-accent',
-      active: 'bg-surface-accent text-foreground border-border-accent',
+const toolbarButtonVariants = cva(
+  [
+    'inline-flex items-center justify-center',
+    'h-8 w-8 p-0',
+    'text-foreground-muted hover:text-foreground',
+    'border border-transparent',
+    'rounded transition-colors',
+    'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+    'disabled:cursor-not-allowed disabled:opacity-50',
+  ],
+  {
+    variants: {
+      variant: {
+        default: 'hover:bg-surface-accent',
+        active: 'bg-surface-accent border-border-accent text-foreground',
+      },
     },
-  },
-  defaultVariants: {
-    variant: 'default',
+    defaultVariants: {
+      variant: 'default',
+    },
   }
-});
+);
 
 // ===== TOOLBAR COMPONENT =====
 
@@ -191,15 +197,15 @@ function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
           id: 'undo',
           icon: <Undo size={16} />,
           label: 'Undo',
-          action: (editor) => editor.chain().focus().undo().run(),
-          isDisabled: (editor) => !editor.can().undo(),
+          action: editor => editor.chain().focus().undo().run(),
+          isDisabled: editor => !editor.can().undo(),
         },
         {
           id: 'redo',
           icon: <Redo size={16} />,
           label: 'Redo',
-          action: (editor) => editor.chain().focus().redo().run(),
-          isDisabled: (editor) => !editor.can().redo(),
+          action: editor => editor.chain().focus().redo().run(),
+          isDisabled: editor => !editor.can().redo(),
         }
       );
     }
@@ -211,29 +217,29 @@ function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
           id: 'bold',
           icon: <Bold size={16} />,
           label: 'Bold',
-          action: (editor) => editor.chain().focus().toggleBold().run(),
-          isActive: (editor) => editor.isActive('bold'),
+          action: editor => editor.chain().focus().toggleBold().run(),
+          isActive: editor => editor.isActive('bold'),
         },
         {
           id: 'italic',
           icon: <Italic size={16} />,
           label: 'Italic',
-          action: (editor) => editor.chain().focus().toggleItalic().run(),
-          isActive: (editor) => editor.isActive('italic'),
+          action: editor => editor.chain().focus().toggleItalic().run(),
+          isActive: editor => editor.isActive('italic'),
         },
         {
           id: 'strike',
           icon: <Strikethrough size={16} />,
           label: 'Strikethrough',
-          action: (editor) => editor.chain().focus().toggleStrike().run(),
-          isActive: (editor) => editor.isActive('strike'),
+          action: editor => editor.chain().focus().toggleStrike().run(),
+          isActive: editor => editor.isActive('strike'),
         },
         {
           id: 'code',
           icon: <Code size={16} />,
           label: 'Code',
-          action: (editor) => editor.chain().focus().toggleCode().run(),
-          isActive: (editor) => editor.isActive('code'),
+          action: editor => editor.chain().focus().toggleCode().run(),
+          isActive: editor => editor.isActive('code'),
         }
       );
     }
@@ -245,29 +251,32 @@ function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
           id: 'h1',
           icon: <Heading1 size={16} />,
           label: 'Heading 1',
-          action: (editor) => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-          isActive: (editor) => editor.isActive('heading', { level: 1 }),
+          action: editor =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run(),
+          isActive: editor => editor.isActive('heading', { level: 1 }),
         },
         {
           id: 'h2',
           icon: <Heading2 size={16} />,
           label: 'Heading 2',
-          action: (editor) => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-          isActive: (editor) => editor.isActive('heading', { level: 2 }),
+          action: editor =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run(),
+          isActive: editor => editor.isActive('heading', { level: 2 }),
         },
         {
           id: 'h3',
           icon: <Heading3 size={16} />,
           label: 'Heading 3',
-          action: (editor) => editor.chain().focus().toggleHeading({ level: 3 }).run(),
-          isActive: (editor) => editor.isActive('heading', { level: 3 }),
+          action: editor =>
+            editor.chain().focus().toggleHeading({ level: 3 }).run(),
+          isActive: editor => editor.isActive('heading', { level: 3 }),
         },
         {
           id: 'blockquote',
           icon: <Quote size={16} />,
           label: 'Blockquote',
-          action: (editor) => editor.chain().focus().toggleBlockquote().run(),
-          isActive: (editor) => editor.isActive('blockquote'),
+          action: editor => editor.chain().focus().toggleBlockquote().run(),
+          isActive: editor => editor.isActive('blockquote'),
         }
       );
     }
@@ -279,15 +288,15 @@ function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
           id: 'bulletList',
           icon: <List size={16} />,
           label: 'Bullet List',
-          action: (editor) => editor.chain().focus().toggleBulletList().run(),
-          isActive: (editor) => editor.isActive('bulletList'),
+          action: editor => editor.chain().focus().toggleBulletList().run(),
+          isActive: editor => editor.isActive('bulletList'),
         },
         {
           id: 'orderedList',
           icon: <ListOrdered size={16} />,
           label: 'Ordered List',
-          action: (editor) => editor.chain().focus().toggleOrderedList().run(),
-          isActive: (editor) => editor.isActive('orderedList'),
+          action: editor => editor.chain().focus().toggleOrderedList().run(),
+          isActive: editor => editor.isActive('orderedList'),
         }
       );
     }
@@ -297,9 +306,13 @@ function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
 
   const allTools = [...defaultTools, ...(config.customTools || [])];
 
-  const createToolGroup = (tools: ToolbarTool[], startIndex: number, endIndex: number) => (
-    <div key={`group-${startIndex}`} className="flex items-center gap-0.5">
-      {tools.slice(startIndex, endIndex).map((tool) => (
+  const createToolGroup = (
+    tools: ToolbarTool[],
+    startIndex: number,
+    endIndex: number
+  ) => (
+    <div key={`group-${startIndex}`} className='flex items-center gap-0.5'>
+      {tools.slice(startIndex, endIndex).map(tool => (
         <button
           key={tool.id}
           onClick={() => tool.action(editor)}
@@ -311,7 +324,7 @@ function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
           disabled={tool.isDisabled?.(editor)}
           title={tool.label}
           aria-label={tool.label}
-          type="button"
+          type='button'
         >
           {tool.icon}
         </button>
@@ -320,46 +333,48 @@ function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
   );
 
   return (
-    <div className={cn(
-      toolbarVariants({
-        position: config.position,
-        sticky: config.sticky,
-      }),
-      className
-    )}>
+    <div
+      className={cn(
+        toolbarVariants({
+          position: config.position,
+          sticky: config.sticky,
+        }),
+        className
+      )}
+    >
       {/* History group */}
       {config.history !== false && createToolGroup(allTools, 0, 2)}
-      
+
       {/* Separator */}
       {config.history !== false && config.basic !== false && (
-        <div className="w-px h-6 bg-border-subtle mx-1" />
+        <div className='mx-1 h-6 w-px bg-border-subtle' />
       )}
-      
+
       {/* Basic formatting group */}
       {config.basic !== false && createToolGroup(allTools, 2, 6)}
-      
+
       {/* Separator */}
       {config.basic !== false && config.formatting !== false && (
-        <div className="w-px h-6 bg-border-subtle mx-1" />
+        <div className='mx-1 h-6 w-px bg-border-subtle' />
       )}
-      
+
       {/* Formatting group */}
       {config.formatting !== false && createToolGroup(allTools, 6, 10)}
-      
+
       {/* Separator */}
       {config.formatting !== false && config.lists !== false && (
-        <div className="w-px h-6 bg-border-subtle mx-1" />
+        <div className='mx-1 h-6 w-px bg-border-subtle' />
       )}
-      
+
       {/* Lists group */}
       {config.lists !== false && createToolGroup(allTools, 10, 12)}
-      
+
       {/* Custom tools */}
       {config.customTools && config.customTools.length > 0 && (
         <>
-          <div className="w-px h-6 bg-border-subtle mx-1" />
-          <div className="flex items-center gap-0.5">
-            {config.customTools.map((tool) => (
+          <div className='mx-1 h-6 w-px bg-border-subtle' />
+          <div className='flex items-center gap-0.5'>
+            {config.customTools.map(tool => (
               <button
                 key={tool.id}
                 onClick={() => tool.action(editor)}
@@ -371,7 +386,7 @@ function EditorToolbar({ editor, config, className }: EditorToolbarProps) {
                 disabled={tool.isDisabled?.(editor)}
                 title={tool.label}
                 aria-label={tool.label}
-                type="button"
+                type='button'
               >
                 {tool.icon}
               </button>
@@ -409,7 +424,7 @@ export function SimpleEditor({
   toolbarClassName,
 }: SimpleEditorProps) {
   // ===== STATE =====
-  
+
   const autoSaveTimeoutRef = React.useRef<NodeJS.Timeout>();
 
   // ===== EDITOR SETUP =====
@@ -420,14 +435,16 @@ export function SimpleEditor({
       Placeholder.configure({
         placeholder,
       }),
-      ...(characterLimit ? [CharacterCount.configure({ limit: characterLimit })] : [CharacterCount]),
+      ...(characterLimit
+        ? [CharacterCount.configure({ limit: characterLimit })]
+        : [CharacterCount]),
     ],
     content: content || defaultContent,
     editable,
     autofocus,
     onUpdate: ({ editor: editorInstance }) => {
       const html = editorInstance.getHTML();
-      
+
       // Handle content change
       onContentChange?.(html);
       onUpdate?.(editorInstance);
@@ -503,16 +520,18 @@ export function SimpleEditor({
 
   if (!editor) {
     return (
-      <div className={cn(
-        simpleEditorVariants({ surface, size, disabled: !editable }),
-        'animate-pulse',
-        className
-      )}>
-        <div className="h-8 bg-surface-panel border-b border-border-subtle" />
-        <div className="p-4 space-y-2">
-          <div className="h-4 bg-surface-accent rounded w-3/4" />
-          <div className="h-4 bg-surface-accent rounded w-1/2" />
-          <div className="h-4 bg-surface-accent rounded w-2/3" />
+      <div
+        className={cn(
+          simpleEditorVariants({ surface, size, disabled: !editable }),
+          'animate-pulse',
+          className
+        )}
+      >
+        <div className='bg-surface-panel h-8 border-b border-border-subtle' />
+        <div className='space-y-2 p-4'>
+          <div className='bg-surface-accent h-4 w-3/4 rounded' />
+          <div className='bg-surface-accent h-4 w-1/2 rounded' />
+          <div className='bg-surface-accent h-4 w-2/3 rounded' />
         </div>
       </div>
     );
@@ -553,8 +572,12 @@ export function SimpleEditor({
           editorClassName
         )}
         style={{
-          minHeight: minHeight ? minHeight - (toolbar !== false ? 48 : 0) : undefined,
-          maxHeight: maxHeight ? maxHeight - (toolbar !== false ? 48 : 0) : undefined,
+          minHeight: minHeight
+            ? minHeight - (toolbar !== false ? 48 : 0)
+            : undefined,
+          maxHeight: maxHeight
+            ? maxHeight - (toolbar !== false ? 48 : 0)
+            : undefined,
           overflowY: maxHeight ? 'auto' : undefined,
         }}
       >
@@ -563,20 +586,24 @@ export function SimpleEditor({
 
       {/* Status Bar */}
       {(showCharacterCount || characterLimit || autosave?.enabled) && (
-        <div className="flex items-center justify-between px-4 py-2 border-t border-border-subtle text-sm text-foreground-muted bg-surface-panel">
-          <div className="flex items-center gap-4">
+        <div className='bg-surface-panel flex items-center justify-between border-t border-border-subtle px-4 py-2 text-sm text-foreground-muted'>
+          <div className='flex items-center gap-4'>
             {showCharacterCount && (
-              <span>{wordCount} words, {characterCount} characters</span>
+              <span>
+                {wordCount} words, {characterCount} characters
+              </span>
             )}
             {characterLimit && (
-              <span className={characterCount > characterLimit ? 'text-error' : ''}>
+              <span
+                className={characterCount > characterLimit ? 'text-error' : ''}
+              >
                 {characterCount}/{characterLimit}
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className='flex items-center gap-2'>
             {autosave?.enabled && (
-              <span className="text-xs text-foreground-muted">
+              <span className='text-xs text-foreground-muted'>
                 Auto-save enabled
               </span>
             )}

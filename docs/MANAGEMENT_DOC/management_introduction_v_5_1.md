@@ -49,28 +49,30 @@
    - Explainable narration: communicates why actions triggered
 10. **Zero-Trust Wagon** → RBAC, RLS, anomaly detection, compliance guardrails
 11. **Frictionless Mobile Hat (New)** →
-   - Voice-to-task capture
-   - Instant share-target from any app
-   - Offline-ready capture for global teams
+
+- Voice-to-task capture
+- Instant share-target from any app
+- Offline-ready capture for global teams
 
 ---
 
 ## 4) Competitive Scoring
 
-| Capability | Trello | Asana | ClickUp | Jira | SparkTask v5.1 |
-|------------|--------|-------|---------|------|----------------|
-| Capture & Triage | 6 | 7 | 8 | 5 | **10 (Mobile Hat + AI Orchestrator)** |
-| Approvals | 2 | 6 | 6 | 8 | **9** |
-| Sovereignty | 2 | 2 | 3 | 2 | **10** |
-| Lifecycle Continuity | 5 | 7 | 7 | 6 | **10** |
-| Performance | 8 | 7 | 8 | 7 | **9.5 (<200ms with local-first indexing)** |
-| Risk Mgmt | 2 | 5 | 5 | 7 | **9 (Predictive AI Heatmap)** |
-| AI Integration | 4 | 6 | 8 | 5 | **9.5 (System-Orchestrated AI)** |
-| Marketplace | 7 | 8 | 8 | 9 | **8 (Day-1 seed + Developer Sandbox)** |
-| Zero-Trust Security | 4 | 6 | 7 | 9 | **10** |
-| Narrative Differentiation | 4 | 5 | 6 | 5 | **10 (Railway + Hat)** |
+| Capability                | Trello | Asana | ClickUp | Jira | SparkTask v5.1                             |
+| ------------------------- | ------ | ----- | ------- | ---- | ------------------------------------------ |
+| Capture & Triage          | 6      | 7     | 8       | 5    | **10 (Mobile Hat + AI Orchestrator)**      |
+| Approvals                 | 2      | 6     | 6       | 8    | **9**                                      |
+| Sovereignty               | 2      | 2     | 3       | 2    | **10**                                     |
+| Lifecycle Continuity      | 5      | 7     | 7       | 6    | **10**                                     |
+| Performance               | 8      | 7     | 8       | 7    | **9.5 (<200ms with local-first indexing)** |
+| Risk Mgmt                 | 2      | 5     | 5       | 7    | **9 (Predictive AI Heatmap)**              |
+| AI Integration            | 4      | 6     | 8       | 5    | **9.5 (System-Orchestrated AI)**           |
+| Marketplace               | 7      | 8     | 8       | 9    | **8 (Day-1 seed + Developer Sandbox)**     |
+| Zero-Trust Security       | 4      | 6     | 7       | 9    | **10**                                     |
+| Narrative Differentiation | 4      | 5     | 6       | 5    | **10 (Railway + Hat)**                     |
 
 **Weighted Score:**
+
 - Trello → 49
 - Asana → 59
 - ClickUp → 66
@@ -80,6 +82,7 @@
 ---
 
 ## 5) KPIs
+
 - **<90s onboarding** via guided storage adapters + interactive Conductor tutorials
 - **60% faster workflows** file→task→approval
 - **70% TCO reduction** via storage neutrality
@@ -91,6 +94,7 @@
 ---
 
 ## 6) Roadmap
+
 - **Phase 1**: Carriage + Hat + AI triage (mobile-first MVP)
 - **Phase 2**: Wagons (Approvals, Storage, Threads)
 - **Phase 2.5 (New)**: **Developer Wagon (API Sandbox)** → early partner flywheel
@@ -101,5 +105,4 @@
 
 ## 7) Elevated Story Pitch
 
-> *“SparkTask is the world’s first **AI-Orchestrated Project Railway System**. Every project is a journey: wagons carry approvals, storage, and risks; rails connect them; the engine enforces governance; and the carriage narrates progress. With the **Frictionless Mobile Hat**, you capture tasks instantly — by voice, Slack, email, or offline. The **AI Conductor** doesn’t just parse text, it orchestrates the system: routing work by context, predicting risks, and explaining decisions. The **Zero-Trust Wagon** ensures enterprise security at all times. SparkTask isn’t just another PM tool — it’s the railway that keeps your projects moving safely, continuously, and predictably.”*
-
+> _“SparkTask is the world’s first **AI-Orchestrated Project Railway System**. Every project is a journey: wagons carry approvals, storage, and risks; rails connect them; the engine enforces governance; and the carriage narrates progress. With the **Frictionless Mobile Hat**, you capture tasks instantly — by voice, Slack, email, or offline. The **AI Conductor** doesn’t just parse text, it orchestrates the system: routing work by context, predicting risks, and explaining decisions. The **Zero-Trust Wagon** ensures enterprise security at all times. SparkTask isn’t just another PM tool — it’s the railway that keeps your projects moving safely, continuously, and predictably.”_

@@ -334,7 +334,7 @@ const EnhancedSeparator = React.forwardRef<
         };
 
     const Comp = asChild ? Slot : SeparatorPrimitive.Root;
-    
+
     const separatorContent = (
       <Comp
         ref={ref}
@@ -363,9 +363,7 @@ const EnhancedSeparator = React.forwardRef<
     );
 
     return decorative ? (
-      <AccessibleIcon>
-        {separatorContent}
-      </AccessibleIcon>
+      <AccessibleIcon>{separatorContent}</AccessibleIcon>
     ) : (
       separatorContent
     );

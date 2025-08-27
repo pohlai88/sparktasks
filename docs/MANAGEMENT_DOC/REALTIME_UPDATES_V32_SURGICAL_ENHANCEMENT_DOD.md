@@ -94,8 +94,11 @@
 // Before: Hardcoded styling
 const getConnectionStyles = (status: ConnectionStatus) => {
   return `relative rounded-lg border p-4 transition-colors duration-200 ${
-    status === 'connected' ? 'border-green-200 bg-green-50' :
-    status === 'error' ? 'border-red-200 bg-red-50' : 'border-yellow-200 bg-yellow-50'
+    status === 'connected'
+      ? 'border-green-200 bg-green-50'
+      : status === 'error'
+        ? 'border-red-200 bg-red-50'
+        : 'border-yellow-200 bg-yellow-50'
   }`;
 };
 

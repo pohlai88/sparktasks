@@ -5,12 +5,16 @@
  */
 
 export { CommandPalette, DefaultCommandCategories } from './CommandPalette';
-export { CommandRegistry, useCommandRegistry, AutomaticCommands } from './CommandRegistry';
+export {
+  CommandRegistry,
+  useCommandRegistry,
+  AutomaticCommands,
+} from './CommandRegistry';
 
 export type {
   Command,
   CommandGroup,
-  CommandPaletteProps
+  CommandPaletteProps,
 } from './CommandPalette';
 
 export type {
@@ -18,5 +22,5 @@ export type {
   CommandFilter,
   CommandRegistryConfig,
   CommandRegistryProps,
-  UseCommandRegistryReturn
+  UseCommandRegistryReturn,
 } from './CommandRegistry';

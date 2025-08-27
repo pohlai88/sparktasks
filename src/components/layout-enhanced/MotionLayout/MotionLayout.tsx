@@ -1,16 +1,16 @@
 /**
  * MotionLayout Component
- * 
+ *
  * Animation-enhanced layout system using framer-motion for sophisticated
  * layout transitions and interactive animations.
- * 
+ *
  * Architectural Features:
  * - Framer Motion integration for layout animations
  * - Layout transitions and orchestration
  * - Gesture support and touch interactions
  * - Advanced timing and easing functions
  * - Shared layout animations between components
- * 
+ *
  * Part of the MAPS v3.0 layout enhanced component system.
  */
 
@@ -20,11 +20,11 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../../utils/cn';
 
 // Import framer-motion components
-import { 
+import {
   motion,
   AnimatePresence,
   type Variants,
-  type Transition
+  type Transition,
 } from 'framer-motion';
 
 // Motion Layout Variants
@@ -101,7 +101,7 @@ const animationVariants: Record<string, Variants> = {
 // Predefined transitions
 const motionTransitions: Record<string, Transition> = {
   instant: { duration: 0 },
-  fast: { 
+  fast: {
     type: 'spring',
     stiffness: 400,
     damping: 30,
@@ -128,25 +128,25 @@ export interface MotionLayoutProps {
   className?: string;
   asChild?: boolean;
   children?: React.ReactNode;
-  
+
   // Animation props
   animationKey?: string;
   variants?: Variants;
   initial?: string | boolean;
   animate?: string;
   exit?: string;
-  
+
   // Transition props
   transitionType?: keyof typeof motionTransitions;
   customTransition?: Transition;
-  
+
   // Layout props
   layoutId?: string;
   enableLayout?: boolean;
-  
+
   // Gesture props
   drag?: boolean | 'x' | 'y';
-  
+
   // Advanced props
   onAnimationStart?: () => void;
   onAnimationComplete?: () => void;
@@ -163,82 +163,86 @@ export interface AnimatePresenceWrapperProps {
 export const MotionLayout = forwardRef<
   HTMLDivElement,
   MotionLayoutProps & VariantProps<typeof motionLayoutVariants>
->(({ 
-  className,
-  transition: transitionVariant,
-  overflow,
-  asChild = false,
-  
-  // Animation props
-  animationKey,
-  variants,
-  initial = 'hidden',
-  animate = 'visible',
-  exit = 'exit',
-  
-  // Transition props
-  transitionType = 'normal',
-  customTransition,
-  
-  // Layout props
-  layoutId,
-  enableLayout,
-  
-  // Gesture props
-  drag,
-  
-  // Advanced props
-  onAnimationStart,
-  onAnimationComplete,
-  
-  children,
-  ...props 
-}, ref) => {
-  const motionClassName = cn(
-    motionLayoutVariants({ 
+>(
+  (
+    {
+      className,
       transition: transitionVariant,
       overflow,
-    }),
-    className
-  );
+      asChild = false,
 
-  // Determine transition configuration
-  const transitionConfig = customTransition || motionTransitions[transitionType];
+      // Animation props
+      animationKey,
+      variants,
+      initial = 'hidden',
+      animate = 'visible',
+      exit = 'exit',
 
-  if (asChild) {
+      // Transition props
+      transitionType = 'normal',
+      customTransition,
+
+      // Layout props
+      layoutId,
+      enableLayout,
+
+      // Gesture props
+      drag,
+
+      // Advanced props
+      onAnimationStart,
+      onAnimationComplete,
+
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const motionClassName = cn(
+      motionLayoutVariants({
+        transition: transitionVariant,
+        overflow,
+      }),
+      className
+    );
+
+    // Determine transition configuration
+    const transitionConfig =
+      customTransition || motionTransitions[transitionType];
+
+    if (asChild) {
+      return (
+        <Slot className={motionClassName} {...props}>
+          {children}
+        </Slot>
+      );
+    }
+
+    const finalVariants: Variants = (variants ??
+      animationVariants.fadeIn) as Variants;
+
     return (
-      <Slot
+      <motion.div
+        ref={ref}
+        key={animationKey}
         className={motionClassName}
+        variants={finalVariants}
+        initial={initial}
+        animate={animate}
+        exit={exit}
+        {...(transitionConfig && { transition: transitionConfig })}
+        {...(enableLayout && { layout: true })}
+        {...(layoutId && { layoutId })}
+        {...(drag && { drag })}
+        {...(onAnimationStart && { onAnimationStart })}
+        {...(onAnimationComplete && { onAnimationComplete })}
         {...props}
       >
         {children}
-      </Slot>
+      </motion.div>
     );
   }
-
-  const finalVariants: Variants = (variants ?? animationVariants.fadeIn) as Variants;
-
-  return (
-    <motion.div
-      ref={ref}
-      key={animationKey}
-      className={motionClassName}
-      variants={finalVariants}
-      initial={initial}
-      animate={animate}
-      exit={exit}
-      {...(transitionConfig && { transition: transitionConfig })}
-      {...(enableLayout && { layout: true })}
-      {...(layoutId && { layoutId })}
-      {...(drag && { drag })}
-      {...(onAnimationStart && { onAnimationStart })}
-      {...(onAnimationComplete && { onAnimationComplete })}
-      {...props}
-    >
-      {children}
-    </motion.div>
-  );
-});
+);
 
 MotionLayout.displayName = 'MotionLayout';
 
@@ -264,12 +268,7 @@ export const AnimatePresenceWrapper: React.FC<AnimatePresenceWrapperProps> = ({
 export const StaggerContainer = forwardRef<
   HTMLDivElement,
   MotionLayoutProps & { staggerDelay?: number; delayChildren?: number }
->(({ 
-  children,
-  staggerDelay = 0.1,
-  delayChildren = 0,
-  ...props 
-}) => {
+>(({ children, staggerDelay = 0.1, delayChildren = 0, ...props }) => {
   const staggerVariants: Variants = {
     hidden: {},
     visible: {
@@ -283,8 +282,8 @@ export const StaggerContainer = forwardRef<
   return (
     <MotionLayout
       variants={staggerVariants as Variants}
-      initial="hidden"
-      animate="visible"
+      initial='hidden'
+      animate='visible'
       {...props}
     >
       {children}
@@ -299,13 +298,11 @@ export const StaggerItem = forwardRef<
   HTMLDivElement,
   MotionLayoutProps & { animationType?: string }
 >(({ children, animationType = 'slideUp', ...props }) => {
-  const itemVariants = animationVariants[animationType] || animationVariants.slideUp;
+  const itemVariants =
+    animationVariants[animationType] || animationVariants.slideUp;
 
   return (
-    <MotionLayout
-      variants={itemVariants as Variants}
-      {...props}
-    >
+    <MotionLayout variants={itemVariants as Variants} {...props}>
       {children}
     </MotionLayout>
   );
@@ -318,15 +315,14 @@ export const SharedLayoutGroup: React.FC<{
   children: React.ReactNode;
   type?: 'switch' | 'crossfade';
 }> = ({ children, type = 'crossfade' }) => {
-  return (
-    <motion.div layout={type === 'switch'}>
-      {children}
-    </motion.div>
-  );
+  return <motion.div layout={type === 'switch'}>{children}</motion.div>;
 };
 
 // Export utility functions and constants
-export { animationVariants as layoutAnimationVariants, motionTransitions as layoutTransitions };
+export {
+  animationVariants as layoutAnimationVariants,
+  motionTransitions as layoutTransitions,
+};
 
 // Export types
 export type { Variants, Transition };

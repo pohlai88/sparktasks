@@ -20,22 +20,27 @@
 ## 2) The $85B Problem We're Solving
 
 **🔴 Tool Fragmentation Crisis**
+
 - 12+ tools per enterprise team for file workflows
 - 41% of knowledge worker time wasted on coordination
 
 **🔴 Storage Economics Explosion**
+
 - Paying multiple times for the same storage
 - 70% TCO waste due to storage markups
 
 **🔴 Data Sovereignty Emergency**
+
 - GDPR Article 20 + SOC2 Type II compliance impossible with lossy exports
 - Cryptographic proof missing in 89% of enterprise data exports
 
 **🔴 Approval Workflow Fragmentation**
+
 - Task approvals in PM tools, file approvals in DAM tools
 - No unified audit trail → major security gaps
 
 **Market Timing Drivers**
+
 - Economic pressure on SaaS consolidation
 - EU Digital Services Act & US privacy laws
 - Modern browsers enable offline-first scale
@@ -63,18 +68,19 @@
 
 ## 4) Competitive Landscape — Unified Win Analysis
 
-| Capability | Trello | Linear | Asana | Notion | SparkTask |
-|------------|--------|--------|-------|--------|-----------|
-| Project UX | 9.0 | 9.5 | 8.0 | 7.0 | **9.5** |
-| File Mgmt | 2.0 | 3.0 | 4.0 | 6.0 | **8.5** |
-| Approvals | 1.0 | 2.0 | 6.0 | 3.0 | **8.5** |
-| Sovereignty | 2.0 | 2.0 | 2.0 | 2.0 | **9.5** |
-| Performance | 7.0 | 9.0 | 6.0 | 6.0 | **9.5** |
-| Search | 5.0 | 8.0 | 6.0 | 7.0 | **9.5** |
-| Extensibility | 6.0 | 7.0 | 7.0 | 8.0 | **9.0** |
-| **Weighted Score** | 58 | 69 | 59 | 58 | **91** |
+| Capability         | Trello | Linear | Asana | Notion | SparkTask |
+| ------------------ | ------ | ------ | ----- | ------ | --------- |
+| Project UX         | 9.0    | 9.5    | 8.0   | 7.0    | **9.5**   |
+| File Mgmt          | 2.0    | 3.0    | 4.0   | 6.0    | **8.5**   |
+| Approvals          | 1.0    | 2.0    | 6.0   | 3.0    | **8.5**   |
+| Sovereignty        | 2.0    | 2.0    | 2.0   | 2.0    | **9.5**   |
+| Performance        | 7.0    | 9.0    | 6.0   | 6.0    | **9.5**   |
+| Search             | 5.0    | 8.0    | 6.0   | 7.0    | **9.5**   |
+| Extensibility      | 6.0    | 7.0    | 7.0   | 8.0    | **9.0**   |
+| **Weighted Score** | 58     | 69     | 59    | 58     | **91**    |
 
 Now with **Railway Advantage**:
+
 - ✅ Ubiquitous Capture (Hat) → **10/10**
 - ✅ Governance Narration (Carriage) → **10/10**
 - ✅ Lifecycle Continuity (Wagons + Rails) → **10/10**
@@ -137,26 +143,25 @@ flowchart LR
 
 ## 8) Elevated Story Pitch
 
-> *“SparkTask is the world’s first **Project Railway System**. Every project is a journey: wagons carry your approvals, storage, and threads; the rails connect them; the engine enforces governance; and the carriage narrates your progress. With the **Conductor’s Hat**, you capture work from anywhere — Slack, email, WhatsApp — and it’s instantly routed to the right place. It’s the simplicity of Todoist fused with the sovereignty and governance of an enterprise PMO. SparkTask isn’t just another PM tool — it’s the railway that keeps your projects on track.”*
+> _“SparkTask is the world’s first **Project Railway System**. Every project is a journey: wagons carry your approvals, storage, and threads; the rails connect them; the engine enforces governance; and the carriage narrates your progress. With the **Conductor’s Hat**, you capture work from anywhere — Slack, email, WhatsApp — and it’s instantly routed to the right place. It’s the simplicity of Todoist fused with the sovereignty and governance of an enterprise PMO. SparkTask isn’t just another PM tool — it’s the railway that keeps your projects on track.”_
 
 ---
 
 # 📊 Diff Table — v3 vs Railway Blueprint vs v4
 
-| Section | v3 (Exec Intro)【24†source】 | Railway Blueprint【25†source】 | v4 (Unified) |
-|---------|-----------------------------|-------------------------------|---------------|
-| **Core Positioning** | Project-native everything platform, file + task mgmt | Railway system metaphor (Engine, Rails, Carriage, Wagons, Hat) | Unified: project-native + railway metaphor |
-| **Market Problem** | Context switching, storage economics, sovereignty, approvals | Not emphasized | Retained v3 full analysis |
-| **Unique Advantage** | 8 gaps incumbents can’t fill (file mgmt, approvals, sovereignty, offline-first) | 5 design principles + sovereignty first | Combined: 8 gaps + railway design principles |
-| **Architecture** | Project-native file platform (Mermaid diagram) | Railway system (Engine, Rails, Carriage, Wagons, Hat) | Merged: both architectures shown as one system |
-| **UX Flow** | Focused on file workflows, approvals, search | Hat capture → triage → carriage narration | Unified: UX flow covers files + Hat + Carriage narration |
-| **Competitive Analysis** | Full scoring vs Trello/Asana/Linear/Drive | Quick edge table vs Jira/ClickUp | Unified: full tables + added Hat/Carriage advantages |
-| **Story Pitch** | SaaS consolidation, file + task sovereignty | Railway conductor metaphor | Unified: SaaS + Railway story (projects as journeys) |
-| **Launch Roadmap** | Stage 1–3 (file intelligence, approvals, enterprise) | Phase 1–4 (Carriage, Wagons, Marketplace) | Unified: 4 phases, covering both tracks |
-| **Sovereignty** | Cryptographic data ownership, BYOS adapters | Sovereignty-first principle | Unified: sovereignty core + one-click BYOS |
-| **Capture Feature** | Not present | Hat (Universal Capture) | Added: Conductor’s Hat as major differentiator |
+| Section                  | v3 (Exec Intro)【24†source】                                                    | Railway Blueprint【25†source】                                 | v4 (Unified)                                             |
+| ------------------------ | ------------------------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------- |
+| **Core Positioning**     | Project-native everything platform, file + task mgmt                            | Railway system metaphor (Engine, Rails, Carriage, Wagons, Hat) | Unified: project-native + railway metaphor               |
+| **Market Problem**       | Context switching, storage economics, sovereignty, approvals                    | Not emphasized                                                 | Retained v3 full analysis                                |
+| **Unique Advantage**     | 8 gaps incumbents can’t fill (file mgmt, approvals, sovereignty, offline-first) | 5 design principles + sovereignty first                        | Combined: 8 gaps + railway design principles             |
+| **Architecture**         | Project-native file platform (Mermaid diagram)                                  | Railway system (Engine, Rails, Carriage, Wagons, Hat)          | Merged: both architectures shown as one system           |
+| **UX Flow**              | Focused on file workflows, approvals, search                                    | Hat capture → triage → carriage narration                      | Unified: UX flow covers files + Hat + Carriage narration |
+| **Competitive Analysis** | Full scoring vs Trello/Asana/Linear/Drive                                       | Quick edge table vs Jira/ClickUp                               | Unified: full tables + added Hat/Carriage advantages     |
+| **Story Pitch**          | SaaS consolidation, file + task sovereignty                                     | Railway conductor metaphor                                     | Unified: SaaS + Railway story (projects as journeys)     |
+| **Launch Roadmap**       | Stage 1–3 (file intelligence, approvals, enterprise)                            | Phase 1–4 (Carriage, Wagons, Marketplace)                      | Unified: 4 phases, covering both tracks                  |
+| **Sovereignty**          | Cryptographic data ownership, BYOS adapters                                     | Sovereignty-first principle                                    | Unified: sovereignty core + one-click BYOS               |
+| **Capture Feature**      | Not present                                                                     | Hat (Universal Capture)                                        | Added: Conductor’s Hat as major differentiator           |
 
 ---
 
 **Conclusion:** v4 merges the **rigor of v3’s enterprise market analysis** with the **clarity of the railway metaphor from the blueprint**, ensuring nothing is lost but new differentiators (Carriage, Hat, Wagons) are added.
-

@@ -39,7 +39,7 @@ import {
   EnhancedEmptyState,
   EmptyStateFactory,
   HUMANIZED_MESSAGES,
-  type MessageType
+  type MessageType,
 } from '@/components/ui-enhanced/EmptyState';
 
 // Extend Jest matchers
@@ -49,7 +49,7 @@ expect.extend(toHaveNoViolations);
 
 // Mock animation frame for consistent testing
 beforeEach(() => {
-  vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((cb) => {
+  vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation(cb => {
     cb(0);
     return 0;
   });
@@ -65,13 +65,21 @@ describe('EnhancedEmptyState - Basic Rendering', () => {
   it('renders with default props', () => {
     render(<EnhancedEmptyState />);
 
-    expect(screen.getByRole('region', { name: 'Empty state' })).toBeInTheDocument();
-    expect(screen.getByText("Let's find what you're looking for")).toBeInTheDocument();
-    expect(screen.getByText(/Every great discovery starts with a simple search/)).toBeInTheDocument();
+    expect(
+      screen.getByRole('region', { name: 'Empty state' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Let's find what you're looking for")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Every great discovery starts with a simple search/)
+    ).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
-    render(<EnhancedEmptyState className="custom-class" data-testid="empty-state" />);
+    render(
+      <EnhancedEmptyState className='custom-class' data-testid='empty-state' />
+    );
 
     const container = screen.getByTestId('empty-state');
     expect(container).toHaveClass('custom-class');
@@ -85,7 +93,7 @@ describe('EnhancedEmptyState - Basic Rendering', () => {
   });
 
   it('includes data attributes for testing', () => {
-    render(<EnhancedEmptyState data-testid="test-empty" />);
+    render(<EnhancedEmptyState data-testid='test-empty' />);
 
     const container = screen.getByTestId('test-empty');
     expect(container).toHaveAttribute('data-aaa', 'false');
@@ -98,14 +106,30 @@ describe('EnhancedEmptyState - Basic Rendering', () => {
 describe('EnhancedEmptyState - Steve Jobs Philosophy', () => {
   it('displays humanized messaging for all message types', () => {
     const messageTypes: MessageType[] = [
-      'search', 'documents', 'team', 'favorites', 'achievements',
-      'ideas', 'projects', 'photos', 'music', 'creative',
-      'learning', 'gifts', 'exploration', 'goals', 'community',
-      'peaceful', 'magical', 'journey'
+      'search',
+      'documents',
+      'team',
+      'favorites',
+      'achievements',
+      'ideas',
+      'projects',
+      'photos',
+      'music',
+      'creative',
+      'learning',
+      'gifts',
+      'exploration',
+      'goals',
+      'community',
+      'peaceful',
+      'magical',
+      'journey',
     ];
 
     for (const messageType of messageTypes) {
-      const { unmount } = render(<EnhancedEmptyState messageType={messageType} />);
+      const { unmount } = render(
+        <EnhancedEmptyState messageType={messageType} />
+      );
 
       const messageData = HUMANIZED_MESSAGES[messageType];
       expect(screen.getByText(messageData.title)).toBeInTheDocument();
@@ -116,28 +140,39 @@ describe('EnhancedEmptyState - Steve Jobs Philosophy', () => {
   });
 
   it('applies correct emotional tone for each message type', () => {
-    render(<EnhancedEmptyState messageType="ideas" data-testid="inspiring" />);
-    expect(screen.getByTestId('inspiring')).toHaveAttribute('data-emotion', 'inspiration');
+    render(<EnhancedEmptyState messageType='ideas' data-testid='inspiring' />);
+    expect(screen.getByTestId('inspiring')).toHaveAttribute(
+      'data-emotion',
+      'inspiration'
+    );
 
-    render(<EnhancedEmptyState messageType="peaceful" data-testid="peaceful" />);
-    expect(screen.getByTestId('peaceful')).toHaveAttribute('data-emotion', 'serenity');
+    render(
+      <EnhancedEmptyState messageType='peaceful' data-testid='peaceful' />
+    );
+    expect(screen.getByTestId('peaceful')).toHaveAttribute(
+      'data-emotion',
+      'serenity'
+    );
   });
 
   it('includes action hints for user guidance', () => {
-    render(<EnhancedEmptyState messageType="projects" />);
+    render(<EnhancedEmptyState messageType='projects' />);
 
-    expect(screen.getByText(/Start your first project and see where it takes you/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Start your first project and see where it takes you/)
+    ).toBeInTheDocument();
   });
 
   it('allows custom content override while maintaining philosophy', () => {
-    const customTitle = "Your creative journey begins here";
-    const customDescription = "Every masterpiece starts with a single brushstroke.";
+    const customTitle = 'Your creative journey begins here';
+    const customDescription =
+      'Every masterpiece starts with a single brushstroke.';
 
     render(
       <EnhancedEmptyState
         title={customTitle}
         description={customDescription}
-        messageType="creative"
+        messageType='creative'
       />
     );
 
@@ -150,11 +185,20 @@ describe('EnhancedEmptyState - Steve Jobs Philosophy', () => {
 
 describe('EnhancedEmptyState - Variants', () => {
   it('applies variant styles correctly', () => {
-    const variants = ['default', 'gentle', 'inspiring', 'peaceful', 'magical'] as const;
+    const variants = [
+      'default',
+      'gentle',
+      'inspiring',
+      'peaceful',
+      'magical',
+    ] as const;
 
     for (const variant of variants) {
       const { unmount } = render(
-        <EnhancedEmptyState variant={variant} data-testid={`variant-${variant}`} />
+        <EnhancedEmptyState
+          variant={variant}
+          data-testid={`variant-${variant}`}
+        />
       );
 
       const container = screen.getByTestId(`variant-${variant}`);
@@ -184,7 +228,10 @@ describe('EnhancedEmptyState - Variants', () => {
 
     for (const vibrancy of vibrancyLevels) {
       const { unmount } = render(
-        <EnhancedEmptyState vibrancy={vibrancy} data-testid={`vibrancy-${vibrancy}`} />
+        <EnhancedEmptyState
+          vibrancy={vibrancy}
+          data-testid={`vibrancy-${vibrancy}`}
+        />
       );
 
       const container = screen.getByTestId(`vibrancy-${vibrancy}`);
@@ -195,7 +242,9 @@ describe('EnhancedEmptyState - Variants', () => {
   });
 
   it('enforces AAA compliance when enabled', () => {
-    render(<EnhancedEmptyState enforceAAA={true} data-testid="aaa-compliant" />);
+    render(
+      <EnhancedEmptyState enforceAAA={true} data-testid='aaa-compliant' />
+    );
 
     const container = screen.getByTestId('aaa-compliant');
     expect(container).toHaveAttribute('data-aaa', 'true');
@@ -213,7 +262,7 @@ describe('EnhancedEmptyState - Actions', () => {
         primaryAction={{
           label: 'Get Started',
           onClick: mockAction,
-          variant: 'primary'
+          variant: 'primary',
         }}
       />
     );
@@ -230,7 +279,7 @@ describe('EnhancedEmptyState - Actions', () => {
       <EnhancedEmptyState
         primaryAction={{
           label: 'Create Project',
-          onClick: mockAction
+          onClick: mockAction,
         }}
       />
     );
@@ -249,18 +298,22 @@ describe('EnhancedEmptyState - Actions', () => {
       <EnhancedEmptyState
         primaryAction={{
           label: 'Primary Action',
-          onClick: mockPrimary
+          onClick: mockPrimary,
         }}
         secondaryAction={{
           label: 'Secondary Action',
           onClick: mockSecondary,
-          variant: 'outline'
+          variant: 'outline',
         }}
       />
     );
 
-    expect(screen.getByRole('button', { name: 'Primary Action' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Secondary Action' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Primary Action' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Secondary Action' })
+    ).toBeInTheDocument();
   });
 
   it('shows loading state for primary action', () => {
@@ -269,7 +322,7 @@ describe('EnhancedEmptyState - Actions', () => {
         primaryAction={{
           label: 'Creating...',
           onClick: vi.fn(),
-          loading: true
+          loading: true,
         }}
       />
     );
@@ -284,7 +337,7 @@ describe('EnhancedEmptyState - Actions', () => {
         primaryAction={{
           label: 'Start Journey',
           onClick: vi.fn(),
-          icon: <span data-testid="custom-icon">🚀</span>
+          icon: <span data-testid='custom-icon'>🚀</span>,
         }}
       />
     );
@@ -307,11 +360,11 @@ describe('EnhancedEmptyState - Accessibility', () => {
       <EnhancedEmptyState
         primaryAction={{
           label: 'Get Started',
-          onClick: vi.fn()
+          onClick: vi.fn(),
         }}
         secondaryAction={{
           label: 'Learn More',
-          onClick: vi.fn()
+          onClick: vi.fn(),
         }}
       />
     );
@@ -327,7 +380,7 @@ describe('EnhancedEmptyState - Accessibility', () => {
   });
 
   it('has proper ARIA labels and roles', () => {
-    render(<EnhancedEmptyState data-testid="empty-state" />);
+    render(<EnhancedEmptyState data-testid='empty-state' />);
 
     const container = screen.getByTestId('empty-state');
     expect(container).toHaveAttribute('role', 'region');
@@ -335,10 +388,12 @@ describe('EnhancedEmptyState - Accessibility', () => {
   });
 
   it('provides accessible icon labels', () => {
-    render(<EnhancedEmptyState messageType="search" />);
+    render(<EnhancedEmptyState messageType='search' />);
 
     // AccessibleIcon renders as a visually hidden span for screen readers
-    const accessibleText = screen.getByText('Empty state icon for Let\'s find what you\'re looking for');
+    const accessibleText = screen.getByText(
+      "Empty state icon for Let's find what you're looking for"
+    );
     expect(accessibleText).toBeInTheDocument();
 
     // Verify it's visually hidden
@@ -346,9 +401,10 @@ describe('EnhancedEmptyState - Accessibility', () => {
       position: 'absolute',
       border: '0px',
       width: '1px',
-      height: '1px'
+      height: '1px',
     });
-  });  it('supports keyboard navigation for actions', async () => {
+  });
+  it('supports keyboard navigation for actions', async () => {
     const user = userEvent.setup();
     const mockAction = vi.fn();
 
@@ -356,7 +412,7 @@ describe('EnhancedEmptyState - Accessibility', () => {
       <EnhancedEmptyState
         primaryAction={{
           label: 'Navigate Me',
-          onClick: mockAction
+          onClick: mockAction,
         }}
       />
     );
@@ -381,10 +437,15 @@ describe('EmptyStateFactory - Predefined Patterns', () => {
     const mockRetry = vi.fn();
     const searchTerm = 'test query';
 
-    const SearchEmptyState = EmptyStateFactory.searchResults(searchTerm, mockRetry);
+    const SearchEmptyState = EmptyStateFactory.searchResults(
+      searchTerm,
+      mockRetry
+    );
     render(SearchEmptyState);
 
-    expect(screen.getByText(`No results for "${searchTerm}"`)).toBeInTheDocument();
+    expect(
+      screen.getByText(`No results for "${searchTerm}"`)
+    ).toBeInTheDocument();
     expect(screen.getByText(/Try adjusting your search/)).toBeInTheDocument();
 
     const retryButton = screen.getByRole('button', { name: 'Try Again' });
@@ -397,18 +458,29 @@ describe('EmptyStateFactory - Predefined Patterns', () => {
     const WelcomeState = EmptyStateFactory.welcome(mockGetStarted);
     render(WelcomeState);
 
-    expect(screen.getByRole('heading', { name: /Every path leads somewhere beautiful/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: /Every path leads somewhere beautiful/,
+      })
+    ).toBeInTheDocument();
 
-    const getStartedButton = screen.getByRole('button', { name: 'Get Started' });
+    const getStartedButton = screen.getByRole('button', {
+      name: 'Get Started',
+    });
     expect(getStartedButton).toBeInTheDocument();
-  });  it('creates project creation state', async () => {
+  });
+  it('creates project creation state', async () => {
     const user = userEvent.setup();
     const mockCreate = vi.fn();
 
     const ProjectsState = EmptyStateFactory.projects(mockCreate);
     render(ProjectsState);
 
-    expect(screen.getByRole('heading', { name: /Ready to build something incredible/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: /Ready to build something incredible/,
+      })
+    ).toBeInTheDocument();
 
     const createButton = screen.getByRole('button', { name: 'Create Project' });
     await user.click(createButton);
@@ -422,15 +494,21 @@ describe('EmptyStateFactory - Predefined Patterns', () => {
     const TeamState = EmptyStateFactory.team(mockInvite);
     render(TeamState);
 
-    expect(screen.getByRole('heading', { name: /Great things happen together/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Invite Team Member' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Great things happen together/ })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Invite Team Member' })
+    ).toBeInTheDocument();
   });
 
   it('creates peaceful loading state', () => {
     const PeacefulState = EmptyStateFactory.peaceful();
     render(PeacefulState);
 
-    expect(screen.getByRole('heading', { name: /Take a moment to breathe/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Take a moment to breathe/ })
+    ).toBeInTheDocument();
   });
 
   it('creates creative work state', () => {
@@ -439,8 +517,12 @@ describe('EmptyStateFactory - Predefined Patterns', () => {
     const CreativeState = EmptyStateFactory.creative(mockCreate);
     render(CreativeState);
 
-    expect(screen.getByRole('heading', { name: /Unleash your creativity/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Start Creating' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Unleash your creativity/ })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Start Creating' })
+    ).toBeInTheDocument();
   });
 
   it('creates learning state with dual actions', () => {
@@ -449,9 +531,15 @@ describe('EmptyStateFactory - Predefined Patterns', () => {
     const LearningState = EmptyStateFactory.learning(mockStart);
     render(LearningState);
 
-    expect(screen.getByRole('heading', { name: /Knowledge is calling/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Start Learning' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Browse Topics' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Knowledge is calling/ })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Start Learning' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Browse Topics' })
+    ).toBeInTheDocument();
   });
 });
 
@@ -461,7 +549,7 @@ describe('EnhancedEmptyState - Custom Content', () => {
   it('renders custom children', () => {
     render(
       <EnhancedEmptyState>
-        <div data-testid="custom-content">
+        <div data-testid='custom-content'>
           <p>Custom content goes here</p>
           <button>Custom Action</button>
         </div>
@@ -470,7 +558,9 @@ describe('EnhancedEmptyState - Custom Content', () => {
 
     expect(screen.getByTestId('custom-content')).toBeInTheDocument();
     expect(screen.getByText('Custom content goes here')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Custom Action' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Custom Action' })
+    ).toBeInTheDocument();
   });
 
   it('combines built-in actions with custom children', () => {
@@ -478,16 +568,16 @@ describe('EnhancedEmptyState - Custom Content', () => {
       <EnhancedEmptyState
         primaryAction={{
           label: 'Built-in Action',
-          onClick: vi.fn()
+          onClick: vi.fn(),
         }}
       >
-        <div data-testid="additional-content">
-          Additional custom content
-        </div>
+        <div data-testid='additional-content'>Additional custom content</div>
       </EnhancedEmptyState>
     );
 
-    expect(screen.getByRole('button', { name: 'Built-in Action' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Built-in Action' })
+    ).toBeInTheDocument();
     expect(screen.getByTestId('additional-content')).toBeInTheDocument();
   });
 });
@@ -498,7 +588,7 @@ describe('EnhancedEmptyState - Responsive & Animations', () => {
   it('applies responsive classes correctly', () => {
     render(
       <EnhancedEmptyState
-        data-testid="responsive-empty"
+        data-testid='responsive-empty'
         primaryAction={{ label: 'Test', onClick: vi.fn() }}
         secondaryAction={{ label: 'Secondary', onClick: vi.fn() }}
       />
@@ -520,13 +610,15 @@ describe('EnhancedEmptyState - Responsive & Animations', () => {
   it('injects animation styles into document head', () => {
     render(<EnhancedEmptyState />);
 
-    const styleElement = document.getElementById('enhanced-empty-state-animations');
+    const styleElement = document.getElementById(
+      'enhanced-empty-state-animations'
+    );
     expect(styleElement).toBeInTheDocument();
     expect(styleElement?.textContent).toContain('animate-pulse-gentle');
   });
 
   it('respects reduced motion preferences', () => {
-    render(<EnhancedEmptyState data-testid="motion-test" />);
+    render(<EnhancedEmptyState data-testid='motion-test' />);
 
     const container = screen.getByTestId('motion-test');
     expect(container).toHaveClass('motion-reduce:transition-none');
@@ -537,11 +629,13 @@ describe('EnhancedEmptyState - Responsive & Animations', () => {
 
     for (const size of sizes) {
       const { unmount } = render(
-        <EnhancedEmptyState size={size} messageType="search" />
+        <EnhancedEmptyState size={size} messageType='search' />
       );
 
       // Icon should be present via accessible text
-      const accessibleText = screen.getByText('Empty state icon for Let\'s find what you\'re looking for');
+      const accessibleText = screen.getByText(
+        "Empty state icon for Let's find what you're looking for"
+      );
       expect(accessibleText).toBeInTheDocument();
 
       unmount();
@@ -554,10 +648,12 @@ describe('EnhancedEmptyState - Responsive & Animations', () => {
 describe('EnhancedEmptyState - Edge Cases', () => {
   it('handles missing message type gracefully', () => {
     // @ts-expect-error Testing invalid messageType
-    render(<EnhancedEmptyState messageType="invalid-type" />);
+    render(<EnhancedEmptyState messageType='invalid-type' />);
 
     // Should fall back to default search message
-    expect(screen.getByText("Let's find what you're looking for")).toBeInTheDocument();
+    expect(
+      screen.getByText("Let's find what you're looking for")
+    ).toBeInTheDocument();
   });
 
   it('handles empty action onClick', () => {
@@ -565,7 +661,7 @@ describe('EnhancedEmptyState - Edge Cases', () => {
       <EnhancedEmptyState
         primaryAction={{
           label: 'No Action',
-          onClick: vi.fn() // Use vi.fn() instead of undefined
+          onClick: vi.fn(), // Use vi.fn() instead of undefined
         }}
       />
     );
@@ -598,11 +694,11 @@ describe('EnhancedEmptyState - Edge Cases', () => {
     // Render multiple instances
     render(
       <div>
-        <EnhancedEmptyState messageType="search" />
-        <EnhancedEmptyState messageType="projects" />
-        <EnhancedEmptyState messageType="team" />
-        <EnhancedEmptyState messageType="creative" />
-        <EnhancedEmptyState messageType="learning" />
+        <EnhancedEmptyState messageType='search' />
+        <EnhancedEmptyState messageType='projects' />
+        <EnhancedEmptyState messageType='team' />
+        <EnhancedEmptyState messageType='creative' />
+        <EnhancedEmptyState messageType='learning' />
       </div>
     );
 
@@ -620,8 +716,8 @@ describe('EnhancedEmptyState - Integration', () => {
   it('works correctly in different theme contexts', () => {
     // Test that the component renders without theme-specific issues
     render(
-      <div data-theme="dark">
-        <EnhancedEmptyState variant="magical" vibrancy="floating" />
+      <div data-theme='dark'>
+        <EnhancedEmptyState variant='magical' vibrancy='floating' />
       </div>
     );
 
@@ -641,7 +737,7 @@ describe('EnhancedEmptyState - Integration', () => {
         <EnhancedEmptyState
           primaryAction={{
             label: 'Submit Form',
-            onClick: handleSubmit
+            onClick: handleSubmit,
           }}
         />
       </form>
@@ -669,20 +765,25 @@ describe('EnhancedEmptyState - Integration', () => {
 
 describe('EnhancedEmptyState - Performance', () => {
   it('memoizes expensive operations', () => {
-    const { rerender } = render(<EnhancedEmptyState messageType="search" />);
+    const { rerender } = render(<EnhancedEmptyState messageType='search' />);
 
     // Re-render with same props should be fast
     const startTime = performance.now();
-    rerender(<EnhancedEmptyState messageType="search" />);
+    rerender(<EnhancedEmptyState messageType='search' />);
     const endTime = performance.now();
 
     expect(endTime - startTime).toBeLessThan(10);
   });
 
   it('handles rapid prop changes efficiently', () => {
-    const { rerender } = render(<EnhancedEmptyState messageType="search" />);
+    const { rerender } = render(<EnhancedEmptyState messageType='search' />);
 
-    const messageTypes: MessageType[] = ['projects', 'team', 'creative', 'learning'];
+    const messageTypes: MessageType[] = [
+      'projects',
+      'team',
+      'creative',
+      'learning',
+    ];
 
     const startTime = performance.now();
 
@@ -702,17 +803,56 @@ describe('EnhancedEmptyState - Performance', () => {
 describe('EnhancedEmptyState - Steve Jobs Humanization', () => {
   it('uses encouraging language in all message types', () => {
     const encouragingWords = [
-      'great', 'amazing', 'beautiful', 'wonderful', 'incredible', 'brilliant',
-      'journey', 'discover', 'create', 'inspire', 'together', 'meaningful',
-      'calling', 'ready', 'brewing', 'find', 'leads', 'somewhere', 'awaits',
-      'starts', 'perfect', 'peaceful', 'unleash', 'knowledge', 'expert',
-      'adventure', 'extraordinary', 'belong', 'valid', 'best', 'masterpiece',
-      'breakthrough', 'capture', 'beautiful', 'power', 'brave', 'special',
-      'wonders', 'dreams', 'family'
+      'great',
+      'amazing',
+      'beautiful',
+      'wonderful',
+      'incredible',
+      'brilliant',
+      'journey',
+      'discover',
+      'create',
+      'inspire',
+      'together',
+      'meaningful',
+      'calling',
+      'ready',
+      'brewing',
+      'find',
+      'leads',
+      'somewhere',
+      'awaits',
+      'starts',
+      'perfect',
+      'peaceful',
+      'unleash',
+      'knowledge',
+      'expert',
+      'adventure',
+      'extraordinary',
+      'belong',
+      'valid',
+      'best',
+      'masterpiece',
+      'breakthrough',
+      'capture',
+      'beautiful',
+      'power',
+      'brave',
+      'special',
+      'wonders',
+      'dreams',
+      'family',
     ];
 
     for (const message of Object.values(HUMANIZED_MESSAGES)) {
-      const content = (message.title + ' ' + message.description + ' ' + message.actionHint).toLowerCase();
+      const content = (
+        message.title +
+        ' ' +
+        message.description +
+        ' ' +
+        message.actionHint
+      ).toLowerCase();
       const hasEncouragingLanguage = encouragingWords.some(word =>
         content.includes(word)
       );
@@ -729,14 +869,23 @@ describe('EnhancedEmptyState - Steve Jobs Humanization', () => {
 
   it('avoids negative or technical language', () => {
     const negativeWords = [
-      'error', 'failed', 'broken', 'missing', 'invalid',
-      'null', 'undefined', 'empty', 'void', 'nothing'
+      'error',
+      'failed',
+      'broken',
+      'missing',
+      'invalid',
+      'null',
+      'undefined',
+      'empty',
+      'void',
+      'nothing',
     ];
 
     for (const message of Object.values(HUMANIZED_MESSAGES)) {
-      const hasNegativeLanguage = negativeWords.some(word =>
-        message.title.toLowerCase().includes(word) ||
-        message.description.toLowerCase().includes(word)
+      const hasNegativeLanguage = negativeWords.some(
+        word =>
+          message.title.toLowerCase().includes(word) ||
+          message.description.toLowerCase().includes(word)
       );
 
       expect(hasNegativeLanguage).toBe(false);
@@ -754,11 +903,11 @@ describe('EnhancedEmptyState - Steve Jobs Humanization', () => {
 
   it('maps emotions to appropriate visual states', () => {
     const emotionalMappings = {
-      'curiosity': 'search',
-      'potential': 'documents',
-      'connection': 'team',
-      'inspiration': 'ideas',
-      'wonder': 'magical'
+      curiosity: 'search',
+      potential: 'documents',
+      connection: 'team',
+      inspiration: 'ideas',
+      wonder: 'magical',
     };
 
     for (const [emotion, messageType] of Object.entries(emotionalMappings)) {

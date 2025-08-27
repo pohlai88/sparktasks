@@ -3,7 +3,7 @@
  *
  * TEST COVERAGE MATRIX:
  * - ✅ Component Rendering & Structure
- * - ✅ Variant System Validation  
+ * - ✅ Variant System Validation
  * - ✅ Accessibility Compliance (AAA)
  * - ✅ Interaction Testing
  * - ✅ Motion & Animation Behavior
@@ -72,30 +72,30 @@ describe('EnhancedSheet - Basic Rendering', () => {
   it('renders sheet trigger correctly', () => {
     render(
       <EnhancedSheet>
-        <EnhancedSheetTrigger>
-          Open Sheet
-        </EnhancedSheetTrigger>
+        <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
       </EnhancedSheet>
     );
 
-    expect(screen.getByRole('button', { name: 'Open Sheet' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Open Sheet' })
+    ).toBeInTheDocument();
   });
 
   it('renders sheet content when triggered', async () => {
     render(
       <EnhancedSheet>
-        <EnhancedSheetTrigger>
-          Open Sheet
-        </EnhancedSheetTrigger>
+        <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
         <EnhancedSheetContent>
           <EnhancedSheetHeader>
             <EnhancedSheetTitle>Test Sheet</EnhancedSheetTitle>
-            <EnhancedSheetDescription>Sheet description</EnhancedSheetDescription>
+            <EnhancedSheetDescription>
+              Sheet description
+            </EnhancedSheetDescription>
           </EnhancedSheetHeader>
           <div>Sheet body content</div>
           <EnhancedSheetFooter>
             <EnhancedSheetClose asChild>
-              <EnhancedButton variant="outline">Close</EnhancedButton>
+              <EnhancedButton variant='outline'>Close</EnhancedButton>
             </EnhancedSheetClose>
           </EnhancedSheetFooter>
         </EnhancedSheetContent>
@@ -119,7 +119,9 @@ describe('EnhancedSheet - Basic Rendering', () => {
         <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
         <EnhancedSheetContent>
           <EnhancedSheetTitle>Test Sheet</EnhancedSheetTitle>
-          <EnhancedSheetDescription>Test description for accessibility</EnhancedSheetDescription>
+          <EnhancedSheetDescription>
+            Test description for accessibility
+          </EnhancedSheetDescription>
         </EnhancedSheetContent>
       </EnhancedSheet>
     );
@@ -140,7 +142,7 @@ describe('EnhancedSheet - Variant System', () => {
   it('applies correct side variants', () => {
     const { rerender } = render(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent side="left">
+        <EnhancedSheetContent side='left'>
           <EnhancedSheetTitle>Test</EnhancedSheetTitle>
           <EnhancedSheetDescription>Test description</EnhancedSheetDescription>
           Test content
@@ -153,9 +155,7 @@ describe('EnhancedSheet - Variant System', () => {
 
     rerender(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent side="right">
-          Test content
-        </EnhancedSheetContent>
+        <EnhancedSheetContent side='right'>Test content</EnhancedSheetContent>
       </EnhancedSheet>
     );
 
@@ -164,9 +164,7 @@ describe('EnhancedSheet - Variant System', () => {
 
     rerender(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent side="top">
-          Test content
-        </EnhancedSheetContent>
+        <EnhancedSheetContent side='top'>Test content</EnhancedSheetContent>
       </EnhancedSheet>
     );
 
@@ -175,9 +173,7 @@ describe('EnhancedSheet - Variant System', () => {
 
     rerender(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent side="bottom">
-          Test content
-        </EnhancedSheetContent>
+        <EnhancedSheetContent side='bottom'>Test content</EnhancedSheetContent>
       </EnhancedSheet>
     );
 
@@ -188,7 +184,7 @@ describe('EnhancedSheet - Variant System', () => {
   it('applies correct size variants', () => {
     const { rerender } = render(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent side="right" size="sm">
+        <EnhancedSheetContent side='right' size='sm'>
           Test content
         </EnhancedSheetContent>
       </EnhancedSheet>
@@ -199,7 +195,7 @@ describe('EnhancedSheet - Variant System', () => {
 
     rerender(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent side="right" size="lg">
+        <EnhancedSheetContent side='right' size='lg'>
           Test content
         </EnhancedSheetContent>
       </EnhancedSheet>
@@ -212,18 +208,21 @@ describe('EnhancedSheet - Variant System', () => {
   it('applies correct surface variants', () => {
     const { rerender } = render(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent surface="elevated">
+        <EnhancedSheetContent surface='elevated'>
           Test content
         </EnhancedSheetContent>
       </EnhancedSheet>
     );
 
     let dialog = screen.getByRole('dialog');
-    expect(dialog).toHaveClass('bg-background-elevated', 'border-border-elevated');
+    expect(dialog).toHaveClass(
+      'bg-background-elevated',
+      'border-border-elevated'
+    );
 
     rerender(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent surface="glass">
+        <EnhancedSheetContent surface='glass'>
           Test content
         </EnhancedSheetContent>
       </EnhancedSheet>
@@ -234,7 +233,7 @@ describe('EnhancedSheet - Variant System', () => {
 
     rerender(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent surface="floating">
+        <EnhancedSheetContent surface='floating'>
           Test content
         </EnhancedSheetContent>
       </EnhancedSheet>
@@ -247,7 +246,7 @@ describe('EnhancedSheet - Variant System', () => {
   it('applies correct density variants', () => {
     const { rerender } = render(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent density="comfortable">
+        <EnhancedSheetContent density='comfortable'>
           Test content
         </EnhancedSheetContent>
       </EnhancedSheet>
@@ -258,7 +257,7 @@ describe('EnhancedSheet - Variant System', () => {
 
     rerender(
       <EnhancedSheet open={true}>
-        <EnhancedSheetContent density="compact">
+        <EnhancedSheetContent density='compact'>
           Test content
         </EnhancedSheetContent>
       </EnhancedSheet>
@@ -278,7 +277,10 @@ describe('EnhancedSheet - Variant System', () => {
     );
 
     const dialog = screen.getByRole('dialog');
-    expect(dialog).toHaveClass('aaa:bg-background-aaa', 'aaa:border-border-aaa');
+    expect(dialog).toHaveClass(
+      'aaa:bg-background-aaa',
+      'aaa:border-border-aaa'
+    );
   });
 });
 
@@ -337,7 +339,9 @@ describe('EnhancedSheet - Accessibility', () => {
         <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
         <EnhancedSheetContent>
           <EnhancedSheetTitle>Accessible Sheet</EnhancedSheetTitle>
-          <EnhancedSheetDescription>This is an accessible sheet</EnhancedSheetDescription>
+          <EnhancedSheetDescription>
+            This is an accessible sheet
+          </EnhancedSheetDescription>
         </EnhancedSheetContent>
       </EnhancedSheet>
     );
@@ -347,10 +351,10 @@ describe('EnhancedSheet - Accessibility', () => {
     await waitFor(() => {
       const dialog = screen.getByRole('dialog');
       expect(dialog).toHaveAttribute('role', 'dialog');
-      
+
       const title = screen.getByText('Accessible Sheet');
       const description = screen.getByText('This is an accessible sheet');
-      
+
       expect(title).toBeInTheDocument();
       expect(description).toBeInTheDocument();
     });
@@ -362,7 +366,7 @@ describe('EnhancedSheet - Accessibility', () => {
         <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
         <EnhancedSheetContent>
           <EnhancedSheetTitle>Focus Test</EnhancedSheetTitle>
-          <input data-testid="sheet-input" placeholder="Test input" />
+          <input data-testid='sheet-input' placeholder='Test input' />
           <EnhancedSheetClose>Close</EnhancedSheetClose>
         </EnhancedSheetContent>
       </EnhancedSheet>
@@ -388,7 +392,7 @@ describe('EnhancedSheet - Accessibility', () => {
 
   it('supports keyboard navigation', async () => {
     const onOpenChange = vi.fn();
-    
+
     render(
       <EnhancedSheet onOpenChange={onOpenChange}>
         <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
@@ -400,7 +404,7 @@ describe('EnhancedSheet - Accessibility', () => {
 
     const trigger = screen.getByRole('button', { name: 'Open Sheet' });
     trigger.focus();
-    
+
     // Open with Enter
     await user.keyboard('{Enter}');
     expect(onOpenChange).toHaveBeenCalledWith(true);
@@ -417,12 +421,12 @@ describe('EnhancedSheet - Accessibility', () => {
   it('traps focus within sheet', async () => {
     render(
       <div>
-        <button data-testid="outside-button">Outside Button</button>
+        <button data-testid='outside-button'>Outside Button</button>
         <EnhancedSheet defaultOpen={true}>
           <EnhancedSheetContent>
             <EnhancedSheetTitle>Focus Trap Test</EnhancedSheetTitle>
-            <input data-testid="first-input" placeholder="First input" />
-            <input data-testid="second-input" placeholder="Second input" />
+            <input data-testid='first-input' placeholder='First input' />
+            <input data-testid='second-input' placeholder='Second input' />
             <EnhancedSheetClose>Close</EnhancedSheetClose>
           </EnhancedSheetContent>
         </EnhancedSheet>
@@ -459,7 +463,7 @@ describe('EnhancedSheet - Accessibility', () => {
 describe('EnhancedSheet - Interactions', () => {
   it('opens and closes correctly', async () => {
     const onOpenChange = vi.fn();
-    
+
     render(
       <EnhancedSheet onOpenChange={onOpenChange}>
         <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
@@ -488,7 +492,7 @@ describe('EnhancedSheet - Interactions', () => {
 
   it('closes on overlay click', async () => {
     const onOpenChange = vi.fn();
-    
+
     render(
       <EnhancedSheet onOpenChange={onOpenChange}>
         <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
@@ -514,7 +518,7 @@ describe('EnhancedSheet - Interactions', () => {
 
   it('closes on X button click', async () => {
     const onOpenChange = vi.fn();
-    
+
     render(
       <EnhancedSheet onOpenChange={onOpenChange}>
         <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
@@ -538,7 +542,7 @@ describe('EnhancedSheet - Interactions', () => {
 
   it('supports controlled state', () => {
     const onOpenChange = vi.fn();
-    
+
     const { rerender } = render(
       <EnhancedSheet open={false} onOpenChange={onOpenChange}>
         <EnhancedSheetTrigger>Open Sheet</EnhancedSheetTrigger>
@@ -571,7 +575,7 @@ describe('EnhancedSheet - Polymorphic Patterns', () => {
       HTMLDivElement,
       React.HTMLAttributes<HTMLDivElement>
     >(({ children, ...props }, ref) => (
-      <div ref={ref} {...props} data-testid="custom-content">
+      <div ref={ref} {...props} data-testid='custom-content'>
         {children}
       </div>
     ));
@@ -596,7 +600,7 @@ describe('EnhancedSheet - Polymorphic Patterns', () => {
       HTMLElement,
       React.HTMLAttributes<HTMLElement>
     >(({ children, ...props }, ref) => (
-      <header ref={ref} {...props} data-testid="custom-header">
+      <header ref={ref} {...props} data-testid='custom-header'>
         {children}
       </header>
     ));
@@ -624,7 +628,7 @@ describe('EnhancedSheet - Polymorphic Patterns', () => {
         <EnhancedSheetContent>
           <EnhancedSheetTitle>Close Test</EnhancedSheetTitle>
           <EnhancedSheetClose asChild>
-            <EnhancedButton variant="error" data-testid="custom-close">
+            <EnhancedButton variant='error' data-testid='custom-close'>
               Custom Close
             </EnhancedButton>
           </EnhancedSheetClose>
@@ -643,7 +647,7 @@ describe('EnhancedSheet - Polymorphic Patterns', () => {
 describe('EnhancedSheet - Factory Patterns', () => {
   it('creates side panel configuration correctly', () => {
     const config = SheetFactory.sidePanel();
-    
+
     expect(config).toEqual({
       side: 'right',
       size: 'md',
@@ -654,7 +658,7 @@ describe('EnhancedSheet - Factory Patterns', () => {
 
   it('creates mobile drawer configuration correctly', () => {
     const config = SheetFactory.mobileDrawer();
-    
+
     expect(config).toEqual({
       side: 'bottom',
       size: 'lg',
@@ -665,7 +669,7 @@ describe('EnhancedSheet - Factory Patterns', () => {
 
   it('creates navigation drawer configuration correctly', () => {
     const config = SheetFactory.navigationDrawer();
-    
+
     expect(config).toEqual({
       side: 'left',
       size: 'sm',
@@ -676,7 +680,7 @@ describe('EnhancedSheet - Factory Patterns', () => {
 
   it('creates full overlay configuration correctly', () => {
     const config = SheetFactory.fullOverlay();
-    
+
     expect(config).toEqual({
       side: 'bottom',
       size: 'full',
@@ -687,7 +691,7 @@ describe('EnhancedSheet - Factory Patterns', () => {
 
   it('creates accessible configuration correctly', () => {
     const config = SheetFactory.accessible();
-    
+
     expect(config).toEqual({
       side: 'right',
       size: 'lg',
@@ -699,7 +703,7 @@ describe('EnhancedSheet - Factory Patterns', () => {
 
   it('creates glass configuration correctly', () => {
     const config = SheetFactory.glass();
-    
+
     expect(config).toEqual({
       side: 'right',
       size: 'md',
@@ -714,7 +718,7 @@ describe('EnhancedSheet - Factory Patterns', () => {
       size: 'lg',
       enforceAAA: true,
     });
-    
+
     expect(config).toEqual({
       side: 'left',
       size: 'lg',
@@ -730,7 +734,7 @@ describe('EnhancedSheet - Factory Patterns', () => {
 describe('EnhancedSheet - Variant Functions', () => {
   it('generates overlay classes correctly', () => {
     const classes = enhancedSheetOverlayVariants();
-    
+
     expect(classes).toContain('fixed');
     expect(classes).toContain('inset-0');
     expect(classes).toContain('z-50');
@@ -740,7 +744,7 @@ describe('EnhancedSheet - Variant Functions', () => {
 
   it('generates header classes correctly', () => {
     const classes = enhancedSheetHeaderVariants();
-    
+
     expect(classes).toContain('flex');
     expect(classes).toContain('flex-col');
     expect(classes).toContain('space-y-1.5');
@@ -750,7 +754,7 @@ describe('EnhancedSheet - Variant Functions', () => {
 
   it('generates title classes correctly', () => {
     const classes = enhancedSheetTitleVariants();
-    
+
     expect(classes).toContain('text-lg');
     expect(classes).toContain('font-semibold');
     expect(classes).toContain('leading-none');
@@ -759,7 +763,7 @@ describe('EnhancedSheet - Variant Functions', () => {
 
   it('generates description classes correctly', () => {
     const classes = enhancedSheetDescriptionVariants();
-    
+
     expect(classes).toContain('text-sm');
     expect(classes).toContain('text-muted-foreground');
     expect(classes).toContain('leading-relaxed');
@@ -767,7 +771,7 @@ describe('EnhancedSheet - Variant Functions', () => {
 
   it('generates footer classes correctly', () => {
     const classes = enhancedSheetFooterVariants();
-    
+
     expect(classes).toContain('flex');
     expect(classes).toContain('flex-col-reverse');
     expect(classes).toContain('sm:flex-row');
@@ -777,7 +781,7 @@ describe('EnhancedSheet - Variant Functions', () => {
 
   it('generates close button classes correctly', () => {
     const classes = enhancedSheetCloseVariants();
-    
+
     expect(classes).toContain('absolute');
     expect(classes).toContain('right-4');
     expect(classes).toContain('top-4');
@@ -801,7 +805,7 @@ describe('EnhancedSheet - Anti-Drift Enforcement', () => {
     expect(classes).toContain('border-border-elevated');
     expect(classes).toContain('aaa:bg-background-aaa');
     expect(classes).toContain('shadow-elevation-high');
-    
+
     // Should not contain hardcoded colors
     expect(classes).not.toMatch(/#[0-9a-fA-F]{3,6}/);
     expect(classes).not.toMatch(/rgb\(/);
@@ -824,7 +828,7 @@ describe('EnhancedSheet - Anti-Drift Enforcement', () => {
 
   it('follows MAPS motion principles', () => {
     const classes = enhancedSheetContentVariants();
-    
+
     expect(classes).toContain('data-[state=open]:animate-in');
     expect(classes).toContain('data-[state=closed]:animate-out');
     expect(classes).toContain('motion-reduce:transition-none');
@@ -838,7 +842,7 @@ describe('EnhancedSheet - Integration', () => {
     render(
       <EnhancedSheet>
         <EnhancedSheetTrigger asChild>
-          <EnhancedButton variant="outline">Open Settings</EnhancedButton>
+          <EnhancedButton variant='outline'>Open Settings</EnhancedButton>
         </EnhancedSheetTrigger>
         <EnhancedSheetContent>
           <EnhancedSheetHeader>
@@ -846,10 +850,10 @@ describe('EnhancedSheet - Integration', () => {
           </EnhancedSheetHeader>
           <EnhancedSheetFooter>
             <EnhancedSheetClose asChild>
-              <EnhancedButton variant="primary">Save</EnhancedButton>
+              <EnhancedButton variant='primary'>Save</EnhancedButton>
             </EnhancedSheetClose>
             <EnhancedSheetClose asChild>
-              <EnhancedButton variant="outline">Cancel</EnhancedButton>
+              <EnhancedButton variant='outline'>Cancel</EnhancedButton>
             </EnhancedSheetClose>
           </EnhancedSheetFooter>
         </EnhancedSheetContent>
@@ -864,7 +868,9 @@ describe('EnhancedSheet - Integration', () => {
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Cancel' })
+      ).toBeInTheDocument();
     });
   });
 
@@ -872,15 +878,15 @@ describe('EnhancedSheet - Integration', () => {
     render(
       <EnhancedSheet>
         <EnhancedSheetTrigger>Open Complex Sheet</EnhancedSheetTrigger>
-        <EnhancedSheetContent size="lg" surface="glass">
+        <EnhancedSheetContent size='lg' surface='glass'>
           <EnhancedSheetHeader>
             <EnhancedSheetTitle>Complex Content</EnhancedSheetTitle>
             <EnhancedSheetDescription>
               Sheet with multiple sections
             </EnhancedSheetDescription>
           </EnhancedSheetHeader>
-          
-          <div className="space-y-4">
+
+          <div className='space-y-4'>
             <section>
               <h3>Section 1</h3>
               <p>Content 1</p>
@@ -900,11 +906,15 @@ describe('EnhancedSheet - Integration', () => {
       </EnhancedSheet>
     );
 
-    await user.click(screen.getByRole('button', { name: 'Open Complex Sheet' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Open Complex Sheet' })
+    );
 
     await waitFor(() => {
       expect(screen.getByText('Complex Content')).toBeInTheDocument();
-      expect(screen.getByText('Sheet with multiple sections')).toBeInTheDocument();
+      expect(
+        screen.getByText('Sheet with multiple sections')
+      ).toBeInTheDocument();
       expect(screen.getByText('Section 1')).toBeInTheDocument();
       expect(screen.getByText('Section 2')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Done' })).toBeInTheDocument();

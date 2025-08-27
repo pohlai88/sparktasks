@@ -491,25 +491,30 @@ EnhancedAccordionRoot.displayName = 'EnhancedAccordionRoot';
 const EnhancedAccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   EnhancedAccordionItemProps
->(({ className, variant, density, asChild = false, children, ...props }, ref) => {
-  const Comp = asChild ? Slot : AccordionPrimitive.Item;
-  
-  return (
-    <Comp
-      ref={ref}
-      className={cn(
-        enhancedAccordionItemVariants({
-          variant,
-          density,
-          className,
-        })
-      )}
-      {...props}
-    >
-      {children}
-    </Comp>
-  );
-});
+>(
+  (
+    { className, variant, density, asChild = false, children, ...props },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : AccordionPrimitive.Item;
+
+    return (
+      <Comp
+        ref={ref}
+        className={cn(
+          enhancedAccordionItemVariants({
+            variant,
+            density,
+            className,
+          })
+        )}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  }
+);
 
 EnhancedAccordionItem.displayName = 'EnhancedAccordionItem';
 
@@ -538,7 +543,7 @@ const EnhancedAccordionTrigger = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : AccordionPrimitive.Trigger;
-    
+
     return (
       <AccordionPrimitive.Header className='flex'>
         <Comp
@@ -598,7 +603,7 @@ const EnhancedAccordionContent = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : AccordionPrimitive.Content;
-    
+
     return (
       <Comp
         ref={ref}

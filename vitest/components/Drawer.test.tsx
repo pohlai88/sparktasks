@@ -95,7 +95,9 @@ describe('EnhancedDrawer', () => {
         </EnhancedDrawer>
       );
 
-      expect(screen.getByRole('button', { name: 'Open Drawer' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Open Drawer' })
+      ).toBeInTheDocument();
     });
 
     it('opens drawer when trigger is clicked', async () => {
@@ -171,18 +173,23 @@ describe('EnhancedDrawer', () => {
       ['lg', 'max-h-[80vh]'],
       ['xl', 'max-h-[90vh]'],
       ['auto', 'max-h-[90vh]'],
-    ])('applies correct styles for size variant "%s"', (size, expectedClass) => {
-      render(
-        <EnhancedDrawer defaultOpen>
-          <EnhancedDrawerContent size={size as 'sm' | 'md' | 'lg' | 'xl' | 'auto'}>
-            <EnhancedDrawerTitle>Test</EnhancedDrawerTitle>
-          </EnhancedDrawerContent>
-        </EnhancedDrawer>
-      );
+    ])(
+      'applies correct styles for size variant "%s"',
+      (size, expectedClass) => {
+        render(
+          <EnhancedDrawer defaultOpen>
+            <EnhancedDrawerContent
+              size={size as 'sm' | 'md' | 'lg' | 'xl' | 'auto'}
+            >
+              <EnhancedDrawerTitle>Test</EnhancedDrawerTitle>
+            </EnhancedDrawerContent>
+          </EnhancedDrawer>
+        );
 
-      const dialog = screen.getByRole('dialog');
-      expect(dialog).toHaveClass(expectedClass);
-    });
+        const dialog = screen.getByRole('dialog');
+        expect(dialog).toHaveClass(expectedClass);
+      }
+    );
   });
 
   describe('Surface Variants', () => {
@@ -191,20 +198,25 @@ describe('EnhancedDrawer', () => {
       ['panel', ['bg-background-panel', 'border-border-strong']],
       ['glass', ['bg-background/95', 'backdrop-blur-xl']],
       ['floating', ['bg-background/90', 'backdrop-blur-2xl']],
-    ])('applies correct styles for surface variant "%s"', (surface, expectedClasses) => {
-      render(
-        <EnhancedDrawer defaultOpen>
-          <EnhancedDrawerContent surface={surface as 'elevated' | 'panel' | 'glass' | 'floating'}>
-            <EnhancedDrawerTitle>Test</EnhancedDrawerTitle>
-          </EnhancedDrawerContent>
-        </EnhancedDrawer>
-      );
+    ])(
+      'applies correct styles for surface variant "%s"',
+      (surface, expectedClasses) => {
+        render(
+          <EnhancedDrawer defaultOpen>
+            <EnhancedDrawerContent
+              surface={surface as 'elevated' | 'panel' | 'glass' | 'floating'}
+            >
+              <EnhancedDrawerTitle>Test</EnhancedDrawerTitle>
+            </EnhancedDrawerContent>
+          </EnhancedDrawer>
+        );
 
-      const dialog = screen.getByRole('dialog');
-      for (const className of expectedClasses) {
-        expect(dialog).toHaveClass(className);
+        const dialog = screen.getByRole('dialog');
+        for (const className of expectedClasses) {
+          expect(dialog).toHaveClass(className);
+        }
       }
-    });
+    );
   });
 
   describe('Handle Visibility', () => {
@@ -225,7 +237,7 @@ describe('EnhancedDrawer', () => {
     it('hides handle when handle="hidden"', () => {
       render(
         <EnhancedDrawer defaultOpen>
-          <EnhancedDrawerContent handle="hidden">
+          <EnhancedDrawerContent handle='hidden'>
             <EnhancedDrawerTitle>Test</EnhancedDrawerTitle>
           </EnhancedDrawerContent>
         </EnhancedDrawer>
@@ -239,7 +251,9 @@ describe('EnhancedDrawer', () => {
     it('supports custom handle content', () => {
       render(
         <EnhancedDrawer defaultOpen>
-          <EnhancedDrawerContent handleContent={<div data-testid="custom-handle">Custom</div>}>
+          <EnhancedDrawerContent
+            handleContent={<div data-testid='custom-handle'>Custom</div>}
+          >
             <EnhancedDrawerTitle>Test</EnhancedDrawerTitle>
           </EnhancedDrawerContent>
         </EnhancedDrawer>
@@ -437,7 +451,7 @@ describe('EnhancedDrawer', () => {
     it('supports snap behavior variants', () => {
       render(
         <EnhancedDrawer defaultOpen>
-          <EnhancedDrawerContent snap="always">
+          <EnhancedDrawerContent snap='always'>
             <EnhancedDrawerTitle>Test</EnhancedDrawerTitle>
           </EnhancedDrawerContent>
         </EnhancedDrawer>
@@ -499,7 +513,9 @@ describe('EnhancedDrawer', () => {
         <EnhancedDrawer defaultOpen>
           <EnhancedDrawerContent>
             <EnhancedDrawerTitle>Test Title</EnhancedDrawerTitle>
-            <EnhancedDrawerDescription>Test description</EnhancedDrawerDescription>
+            <EnhancedDrawerDescription>
+              Test description
+            </EnhancedDrawerDescription>
           </EnhancedDrawerContent>
         </EnhancedDrawer>
       );
@@ -512,7 +528,7 @@ describe('EnhancedDrawer', () => {
     it('manages focus correctly on open/close', async () => {
       render(
         <div>
-          <button data-testid="external-button">External Button</button>
+          <button data-testid='external-button'>External Button</button>
           <EnhancedDrawer>
             <EnhancedDrawerTrigger>Open Drawer</EnhancedDrawerTrigger>
             <EnhancedDrawerContent>
@@ -550,7 +566,7 @@ describe('EnhancedDrawer', () => {
         <EnhancedDrawer defaultOpen>
           <EnhancedDrawerContent>
             <EnhancedDrawerHeader asChild>
-              <section data-testid="custom-header">
+              <section data-testid='custom-header'>
                 <EnhancedDrawerTitle>Test</EnhancedDrawerTitle>
               </section>
             </EnhancedDrawerHeader>
@@ -566,21 +582,21 @@ describe('EnhancedDrawer', () => {
       render(
         <EnhancedDrawer defaultOpen>
           <EnhancedDrawerContent asChild>
-            <article data-testid="custom-content">
+            <article data-testid='custom-content'>
               <EnhancedDrawerHeader asChild>
-                <header data-testid="custom-header">
+                <header data-testid='custom-header'>
                   <EnhancedDrawerTitle asChild>
-                    <h2 data-testid="custom-title">Title</h2>
+                    <h2 data-testid='custom-title'>Title</h2>
                   </EnhancedDrawerTitle>
                 </header>
               </EnhancedDrawerHeader>
               <EnhancedDrawerBody asChild>
-                <main data-testid="custom-body">Content</main>
+                <main data-testid='custom-body'>Content</main>
               </EnhancedDrawerBody>
               <EnhancedDrawerFooter asChild>
-                <footer data-testid="custom-footer">
+                <footer data-testid='custom-footer'>
                   <EnhancedDrawerClose asChild>
-                    <button data-testid="custom-close">Close</button>
+                    <button data-testid='custom-close'>Close</button>
                   </EnhancedDrawerClose>
                 </footer>
               </EnhancedDrawerFooter>

@@ -42,7 +42,9 @@ Visual regression tests capture screenshots of UI components and compare them ag
 #### 1. Layout Tests
 
 ```typescript
-test('should match homepage layout @visual @smoke', async ({ authenticatedPage }) => {
+test('should match homepage layout @visual @smoke', async ({
+  authenticatedPage,
+}) => {
   await authenticatedPage.goto('/');
   await expect(authenticatedPage).toHaveScreenshot('homepage-layout.png', {
     fullPage: true,
@@ -54,7 +56,9 @@ test('should match homepage layout @visual @smoke', async ({ authenticatedPage }
 #### 2. Component State Tests
 
 ```typescript
-test('should match accordion component states @visual @component', async ({ authenticatedPage }) => {
+test('should match accordion component states @visual @component', async ({
+  authenticatedPage,
+}) => {
   // Tests collapsed and expanded states
   await expect(accordion).toHaveScreenshot('accordion-collapsed.png');
   await firstTrigger.click();
@@ -65,7 +69,10 @@ test('should match accordion component states @visual @component', async ({ auth
 #### 3. Responsive Tests
 
 ```typescript
-test('should match responsive layouts @visual @mobile', async ({ authenticatedPage, context }) => {
+test('should match responsive layouts @visual @mobile', async ({
+  authenticatedPage,
+  context,
+}) => {
   await context.setViewportSize({ width: 375, height: 667 }); // iPhone SE
   await expect(authenticatedPage).toHaveScreenshot('homepage-mobile.png');
 });
@@ -82,7 +89,7 @@ test('should match responsive layouts @visual @mobile', async ({ authenticatedPa
        .timestamp {
          visibility: hidden !important;
        }
-     `
+     `,
    });
    ```
 
@@ -135,8 +142,12 @@ Accessibility tests use axe-core to automatically detect WCAG 2.1 Level AA compl
 #### 1. Page-Level Scans
 
 ```typescript
-test('should have no accessibility violations on homepage @a11y @smoke', async ({ authenticatedPage }) => {
-  const accessibilityScanResults = await new AxeBuilder({ page: authenticatedPage })
+test('should have no accessibility violations on homepage @a11y @smoke', async ({
+  authenticatedPage,
+}) => {
+  const accessibilityScanResults = await new AxeBuilder({
+    page: authenticatedPage,
+  })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
     .analyze();
 
@@ -147,9 +158,13 @@ test('should have no accessibility violations on homepage @a11y @smoke', async (
 #### 2. Navigation Testing
 
 ```typescript
-test('should have accessible navigation @a11y @navigation', async ({ authenticatedPage }) => {
+test('should have accessible navigation @a11y @navigation', async ({
+  authenticatedPage,
+}) => {
   // Scan navigation elements
-  const accessibilityScanResults = await new AxeBuilder({ page: authenticatedPage })
+  const accessibilityScanResults = await new AxeBuilder({
+    page: authenticatedPage,
+  })
     .include('[role="navigation"]')
     .withTags(['wcag2a', 'wcag2aa'])
     .analyze();
@@ -164,7 +179,9 @@ test('should have accessible navigation @a11y @navigation', async ({ authenticat
 #### 3. Form Accessibility
 
 ```typescript
-test('should have accessible forms @a11y @forms', async ({ authenticatedPage }) => {
+test('should have accessible forms @a11y @forms', async ({
+  authenticatedPage,
+}) => {
   // Test form labeling
   const inputs = modal.locator('input, textarea, select');
   for (let i = 0; i < inputCount; i++) {
@@ -178,7 +195,9 @@ test('should have accessible forms @a11y @forms', async ({ authenticatedPage }) 
 #### 4. Heading Structure
 
 ```typescript
-test('should have proper heading hierarchy @a11y @content', async ({ authenticatedPage }) => {
+test('should have proper heading hierarchy @a11y @content', async ({
+  authenticatedPage,
+}) => {
   // Check for exactly one h1
   const h1Count = headingLevels.filter(level => level === 1).length;
   expect(h1Count).toBe(1);
@@ -288,7 +307,7 @@ await authenticatedPage.waitForTimeout(300);
 
 // Hide dynamic content
 await authenticatedPage.addStyleTag({
-  content: `[data-testid="timestamp"] { visibility: hidden !important; }`
+  content: `[data-testid="timestamp"] { visibility: hidden !important; }`,
 });
 
 // Check element accessibility specifically

@@ -51,9 +51,7 @@ Add this to any component temporarily:
 ```tsx
 import { TOKENS } from '@/design/tokens';
 
-<button className={TOKENS.button.primary}>
-  Test Primary Button
-</button>
+<button className={TOKENS.button.primary}>Test Primary Button</button>;
 ```
 
 **Expected Behavior:**
@@ -100,25 +98,25 @@ import { TOKENS } from '@/design/tokens';
 
 export function TokenTest() {
   return (
-    <div className="p-6 space-y-4">
+    <div className='space-y-4 p-6'>
       <h2>Token Validation</h2>
 
       {/* Buttons */}
-      <div className="flex gap-2">
+      <div className='flex gap-2'>
         <button className={TOKENS.button.primary}>Primary</button>
         <button className={TOKENS.button.secondary}>Secondary</button>
         <button className={TOKENS.button.destructive}>Destructive</button>
       </div>
 
       {/* Backgrounds */}
-      <div className="flex gap-2">
+      <div className='flex gap-2'>
         <div className={`p-2 ${TOKENS.bg.success}`}>Success BG</div>
         <div className={`p-2 ${TOKENS.bg.warning}`}>Warning BG</div>
         <div className={`p-2 ${TOKENS.bg.error}`}>Error BG</div>
       </div>
 
       {/* Text Colors */}
-      <div className="space-y-1">
+      <div className='space-y-1'>
         <p className={TOKENS.text.primary}>Primary text</p>
         <p className={TOKENS.text.secondary}>Secondary text</p>
         <p className={TOKENS.text.success}>Success text</p>

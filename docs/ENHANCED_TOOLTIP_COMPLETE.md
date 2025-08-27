@@ -104,7 +104,7 @@ import {
       <p>Tooltip content</p>
     </EnhancedTooltipContent>
   </EnhancedTooltipRoot>
-</EnhancedTooltipProvider>
+</EnhancedTooltipProvider>;
 ```
 
 ### Compound Component Pattern
@@ -113,17 +113,15 @@ import {
 import { EnhancedTooltipWithTrigger } from '@/components/ui-enhanced/Tooltip';
 
 <EnhancedTooltipWithTrigger
-  trigger={<Button variant="primary">Action</Button>}
-  variant="floating"
-  size="lg"
+  trigger={<Button variant='primary'>Action</Button>}
+  variant='floating'
+  size='lg'
 >
-  <div className="space-y-2">
-    <p className="font-medium">Primary Action</p>
-    <p className="text-sm opacity-90">
-      This button performs the main action
-    </p>
+  <div className='space-y-2'>
+    <p className='font-medium'>Primary Action</p>
+    <p className='text-sm opacity-90'>This button performs the main action</p>
   </div>
-</EnhancedTooltipWithTrigger>
+</EnhancedTooltipWithTrigger>;
 ```
 
 ### Factory Pattern Usage
@@ -267,7 +265,15 @@ Enhanced Tooltip Implementation
 
 ```typescript
 interface EnhancedTooltipProps {
-  variant?: 'default' | 'glass' | 'floating' | 'inverse' | 'success' | 'warning' | 'error' | 'info';
+  variant?:
+    | 'default'
+    | 'glass'
+    | 'floating'
+    | 'inverse'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'info';
   size?: 'sm' | 'default' | 'lg' | 'xl';
   aaaMode?: boolean;
   density?: 'comfortable' | 'compact';

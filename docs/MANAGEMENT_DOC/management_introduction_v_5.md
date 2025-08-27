@@ -48,27 +48,29 @@
    - Predictive risk alerts (“72% chance of delay in procurement lane”)
    - AI Narration → explains why actions triggered
 10. **Zero-Trust Wagon (New)** →
-   - RBAC, RLS, anomaly detection
-   - Compliance guardrails (SOC2, HIPAA, GDPR, ISO)
+
+- RBAC, RLS, anomaly detection
+- Compliance guardrails (SOC2, HIPAA, GDPR, ISO)
 
 ---
 
 ## 4) Competitive Landscape
 
-| Capability | Trello | Asana | ClickUp | Jira | SparkTask v5 |
-|------------|--------|-------|---------|------|--------------|
-| Capture & Triage | 6 | 7 | 8 | 5 | **10 (Hat + AI)** |
-| Approvals | 2 | 6 | 6 | 8 | **9 (Unified + Crypto)** |
-| Sovereignty | 2 | 2 | 3 | 2 | **10 (BYOS + crypto)** |
-| Lifecycle Continuity | 5 | 7 | 7 | 6 | **10 (Railway loop)** |
-| Performance | 8 | 7 | 8 | 7 | **9.5** |
-| Risk Management | 2 | 5 | 5 | 7 | **9 (Heatmap + AI alerts)** |
-| AI Integration | 4 | 6 | 8 | 5 | **9 (AI Conductor)** |
-| Marketplace | 7 | 8 | 8 | 9 | **8 (Day-1 seed)** |
-| Zero-Trust Security | 4 | 6 | 7 | 9 | **10 (Dedicated Wagon)** |
-| Narrative Differentiation | 4 | 5 | 6 | 5 | **10 (Railway + Conductor)** |
+| Capability                | Trello | Asana | ClickUp | Jira | SparkTask v5                 |
+| ------------------------- | ------ | ----- | ------- | ---- | ---------------------------- |
+| Capture & Triage          | 6      | 7     | 8       | 5    | **10 (Hat + AI)**            |
+| Approvals                 | 2      | 6     | 6       | 8    | **9 (Unified + Crypto)**     |
+| Sovereignty               | 2      | 2     | 3       | 2    | **10 (BYOS + crypto)**       |
+| Lifecycle Continuity      | 5      | 7     | 7       | 6    | **10 (Railway loop)**        |
+| Performance               | 8      | 7     | 8       | 7    | **9.5**                      |
+| Risk Management           | 2      | 5     | 5       | 7    | **9 (Heatmap + AI alerts)**  |
+| AI Integration            | 4      | 6     | 8       | 5    | **9 (AI Conductor)**         |
+| Marketplace               | 7      | 8     | 8       | 9    | **8 (Day-1 seed)**           |
+| Zero-Trust Security       | 4      | 6     | 7       | 9    | **10 (Dedicated Wagon)**     |
+| Narrative Differentiation | 4      | 5     | 6       | 5    | **10 (Railway + Conductor)** |
 
 **Weighted Score:**
+
 - Trello → 49
 - Asana → 59
 - ClickUp → 66
@@ -116,6 +118,7 @@ flowchart LR
 ---
 
 ## 6) KPIs (Restored from v3 + New)
+
 - **60% faster file→task→approval workflows**
 - **70% TCO reduction** via storage neutrality
 - **95%+ compliance audit success**
@@ -127,6 +130,7 @@ flowchart LR
 ---
 
 ## 7) Launch Roadmap
+
 - **Phase 1**: Carriage + Hat + AI triage (MVP)
 - **Phase 2**: Wagons (Approvals, Storage, Threads)
 - **Phase 3**: Risk + Supplier + Zero-Trust Wagons
@@ -136,5 +140,4 @@ flowchart LR
 
 ## 8) Elevated Story Pitch
 
-> *“SparkTask is the world’s first **AI-powered Project Railway System**. Every project is a journey: wagons carry your approvals, storage, and risks; the rails connect them; the engine enforces governance; and the carriage narrates progress. With the **Conductor’s Hat**, you capture tasks from Slack, email, or WhatsApp — instantly triaged by AI. Our **AI Conductor** predicts risks before derailments and explains every decision. The **Zero-Trust Wagon** ensures enterprise security and compliance at all times. SparkTask isn’t just another PM tool — it’s the railway that keeps your projects moving safely, continuously, and predictably.”*
-
+> _“SparkTask is the world’s first **AI-powered Project Railway System**. Every project is a journey: wagons carry your approvals, storage, and risks; the rails connect them; the engine enforces governance; and the carriage narrates progress. With the **Conductor’s Hat**, you capture tasks from Slack, email, or WhatsApp — instantly triaged by AI. Our **AI Conductor** predicts risks before derailments and explains every decision. The **Zero-Trust Wagon** ensures enterprise security and compliance at all times. SparkTask isn’t just another PM tool — it’s the railway that keeps your projects moving safely, continuously, and predictably.”_

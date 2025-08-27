@@ -29,13 +29,18 @@ import {
 const mockCommandItems = [
   { id: '1', label: 'Create New Task', value: 'create-task', shortcut: '⌘+N' },
   { id: '2', label: 'Open Settings', value: 'settings', shortcut: '⌘+,' },
-  { id: '3', label: 'Search Projects', value: 'search-projects', shortcut: '⌘+P' },
+  {
+    id: '3',
+    label: 'Search Projects',
+    value: 'search-projects',
+    shortcut: '⌘+P',
+  },
 ];
 
 /**
  * Simple mock command for testing that avoids complex interactions
  */
-const SimpleMockCommand = ({ 
+const SimpleMockCommand = ({
   onSelect,
 }: {
   onSelect?: (value: string) => void;
@@ -53,32 +58,28 @@ const SimpleMockCommand = ({
   };
 
   return (
-    <div
-      data-testid="command"
-      role="dialog"
-      aria-label="Command palette"
-    >
-      <div data-testid="command-input-wrapper">
+    <div data-testid='command' role='dialog' aria-label='Command palette'>
+      <div data-testid='command-input-wrapper'>
         <input
-          data-testid="command-input"
-          placeholder="Type a command or search..."
+          data-testid='command-input'
+          placeholder='Type a command or search...'
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          aria-label="Command input"
+          onChange={e => setSearchValue(e.target.value)}
+          aria-label='Command input'
         />
       </div>
-      <div data-testid="command-list" role="listbox">
+      <div data-testid='command-list' role='listbox'>
         {filteredItems.length === 0 ? (
-          <div data-testid="command-empty">No results found.</div>
+          <div data-testid='command-empty'>No results found.</div>
         ) : (
           <>
-            <div data-testid="command-group">
-              <div data-testid="command-group-label">Actions</div>
+            <div data-testid='command-group'>
+              <div data-testid='command-group-label'>Actions</div>
               {filteredItems.map((item, index) => (
                 <div key={item.id}>
                   <button
                     data-testid={`command-item-${item.value}`}
-                    role="option"
+                    role='option'
                     aria-selected={selectedItem === item.value}
                     onClick={() => handleSelect(item.value)}
                   >
@@ -119,7 +120,7 @@ describe('Enhanced Command - MAPS v2.2 Simplified Tests', () => {
   describe('Component Functionality', () => {
     it('renders command with all sub-components', () => {
       render(<SimpleMockCommand />);
-      
+
       expect(screen.getByTestId('command')).toBeInTheDocument();
       expect(screen.getByTestId('command-input')).toBeInTheDocument();
       expect(screen.getByTestId('command-list')).toBeInTheDocument();
@@ -128,43 +129,47 @@ describe('Enhanced Command - MAPS v2.2 Simplified Tests', () => {
 
     it('filters items based on search input', () => {
       render(<SimpleMockCommand />);
-      
+
       const input = screen.getByTestId('command-input');
       fireEvent.change(input, { target: { value: 'task' } });
-      
-      expect(screen.getByTestId('command-item-create-task')).toBeInTheDocument();
-      expect(screen.queryByTestId('command-item-settings')).not.toBeInTheDocument();
+
+      expect(
+        screen.getByTestId('command-item-create-task')
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByTestId('command-item-settings')
+      ).not.toBeInTheDocument();
     });
 
     it('shows empty state when no results', () => {
       render(<SimpleMockCommand />);
-      
+
       const input = screen.getByTestId('command-input');
       fireEvent.change(input, { target: { value: 'nonexistent' } });
-      
+
       expect(screen.getByTestId('command-empty')).toBeInTheDocument();
     });
 
     it('handles item selection', () => {
       const onSelect = vi.fn();
       render(<SimpleMockCommand onSelect={onSelect} />);
-      
+
       const item = screen.getByTestId('command-item-create-task');
       fireEvent.click(item);
-      
+
       expect(onSelect).toHaveBeenCalledWith('create-task');
     });
 
     it('displays keyboard shortcuts', () => {
       render(<SimpleMockCommand />);
-      
+
       const shortcut = screen.getByTestId('command-shortcut-create-task');
       expect(shortcut).toHaveTextContent('⌘+N');
     });
 
     it('renders separators between items', () => {
       render(<SimpleMockCommand />);
-      
+
       // Should have separators between the 3 items (2 separators)
       const separators = screen.getAllByTestId(/command-separator-/);
       expect(separators.length).toBe(2);
@@ -227,7 +232,7 @@ describe('Enhanced Command - MAPS v2.2 Simplified Tests', () => {
         density: 'compact',
         enforceAAA: true,
       });
-      
+
       // Verify it returns a valid CSS class string
       expect(typeof classes).toBe('string');
       expect(classes.length).toBeGreaterThan(0);
@@ -237,7 +242,7 @@ describe('Enhanced Command - MAPS v2.2 Simplified Tests', () => {
       const classes = enhancedCommandInputVariants({
         variant: 'filled',
       });
-      
+
       expect(typeof classes).toBe('string');
       expect(classes.length).toBeGreaterThan(0);
     });
@@ -247,7 +252,7 @@ describe('Enhanced Command - MAPS v2.2 Simplified Tests', () => {
         variant: 'ghost',
         density: 'compact',
       });
-      
+
       expect(typeof classes).toBe('string');
       expect(classes.length).toBeGreaterThan(0);
     });
@@ -283,24 +288,24 @@ describe('Enhanced Command - MAPS v2.2 Simplified Tests', () => {
   describe('Accessibility', () => {
     it('has proper ARIA attributes', () => {
       render(<SimpleMockCommand />);
-      
+
       const command = screen.getByTestId('command');
       expect(command).toHaveAttribute('role', 'dialog');
       expect(command).toHaveAttribute('aria-label', 'Command palette');
-      
+
       const list = screen.getByTestId('command-list');
       expect(list).toHaveAttribute('role', 'listbox');
-      
+
       const items = screen.getAllByRole('option');
       expect(items.length).toBeGreaterThan(0);
     });
 
     it('supports keyboard navigation', () => {
       render(<SimpleMockCommand />);
-      
+
       const input = screen.getByTestId('command-input');
       fireEvent.keyDown(input, { key: 'ArrowDown' });
-      
+
       // Input should maintain focus for keyboard interaction
       expect(input).toBeInTheDocument();
     });

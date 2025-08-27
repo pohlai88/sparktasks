@@ -125,7 +125,7 @@ export const PERFORMANCE_BUDGETS = {
   COMPONENT_RENDER_TIME: 50, // ms
   INTERACTION_RESPONSE_TIME: 16, // ms (60fps)
   ACCESSIBILITY_AUDIT_TIME: 100, // ms
-} as const
+} as const;
 ```
 
 ## Test Examples Provided

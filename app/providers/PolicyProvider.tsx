@@ -11,11 +11,17 @@
  * - Academic anchor enforcement
  */
 
-import React, { createContext, useContext, useMemo, useCallback, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useCallback,
+  useState,
+} from 'react';
 
 /**
  * Policy Rule Definition
- * 
+ *
  * Based on PMBOK standards and enterprise governance requirements
  */
 export interface PolicyRule {
@@ -30,7 +36,7 @@ export interface PolicyRule {
 
 /**
  * Policy Violation Alert
- * 
+ *
  * Represents a governance violation that requires attention
  */
 export interface PolicyViolation {
@@ -50,12 +56,15 @@ interface PolicyContextState {
   // Policy Management
   rules: PolicyRule[];
   violations: PolicyViolation[];
-  
+
   // Policy Actions
-  validateAction: (action: string, context: Record<string, unknown>) => PolicyViolation[];
+  validateAction: (
+    action: string,
+    context: Record<string, unknown>
+  ) => PolicyViolation[];
   resolveViolation: (violationId: string) => void;
   addCustomRule: (rule: Omit<PolicyRule, 'id'>) => void;
-  
+
   // Compliance Status
   complianceScore: number; // 0-100 percentage
   isCompliant: boolean;
@@ -75,17 +84,19 @@ interface PolicyProviderProps {
 
 /**
  * Default PMBOK Policy Rules
- * 
+ *
  * Enterprise governance rules based on Project Management Body of Knowledge
  */
 const DEFAULT_POLICY_RULES: PolicyRule[] = [
   {
     id: 'pmbok-charter-required',
     name: 'Project Charter Required',
-    description: 'All projects must have a formal project charter before proceeding to planning',
+    description:
+      'All projects must have a formal project charter before proceeding to planning',
     anchor: 'PMBOK 7th Edition - Initiating Process Group',
     severity: 'error',
-    condition: 'Project must have charter with defined scope, objectives, and stakeholders',
+    condition:
+      'Project must have charter with defined scope, objectives, and stakeholders',
     isActive: true,
   },
   {
@@ -94,13 +105,15 @@ const DEFAULT_POLICY_RULES: PolicyRule[] = [
     description: 'Key stakeholders must approve major project decisions',
     anchor: 'PMBOK 7th Edition - Stakeholder Management',
     severity: 'warning',
-    condition: 'Decisions impacting scope, budget, or timeline require stakeholder approval',
+    condition:
+      'Decisions impacting scope, budget, or timeline require stakeholder approval',
     isActive: true,
   },
   {
     id: 'pmbok-risk-assessment',
     name: 'Risk Assessment Mandatory',
-    description: 'Projects must conduct formal risk assessment using ISO 31000 framework',
+    description:
+      'Projects must conduct formal risk assessment using ISO 31000 framework',
     anchor: 'ISO 31000:2018 - Risk Management Guidelines',
     severity: 'error',
     condition: 'Risk register must be maintained with mitigation strategies',
@@ -118,7 +131,8 @@ const DEFAULT_POLICY_RULES: PolicyRule[] = [
   {
     id: 'pmbok-lessons-learned',
     name: 'Lessons Learned Documentation',
-    description: 'Project closure requires comprehensive lessons learned documentation',
+    description:
+      'Project closure requires comprehensive lessons learned documentation',
     anchor: 'PMBOK 7th Edition - Closing Process Group',
     severity: 'warning',
     condition: 'Lessons learned must be documented for organizational learning',
@@ -128,7 +142,7 @@ const DEFAULT_POLICY_RULES: PolicyRule[] = [
 
 /**
  * Policy Provider Component
- * 
+ *
  * Provides enterprise governance with real-time policy enforcement
  */
 export const PolicyProvider: React.FC<PolicyProviderProps> = ({ children }) => {
@@ -139,47 +153,60 @@ export const PolicyProvider: React.FC<PolicyProviderProps> = ({ children }) => {
   // Compliance calculation
   const complianceScore = useMemo(() => {
     if (violations.length === 0) return 100;
-    
+
     const totalViolations = violations.length;
     const resolvedViolations = violations.filter(v => v.isResolved).length;
-    const errorViolations = violations.filter(v => v.severity === 'error' && !v.isResolved).length;
-    
+    const errorViolations = violations.filter(
+      v => v.severity === 'error' && !v.isResolved
+    ).length;
+
     // Severe penalty for unresolved errors
     const errorPenalty = errorViolations * 20;
     const baseScore = (resolvedViolations / totalViolations) * 100;
-    
+
     return Math.max(0, Math.min(100, baseScore - errorPenalty));
   }, [violations]);
 
   const isCompliant = useMemo(() => {
-    return complianceScore >= 90 && violations.filter(v => v.severity === 'error' && !v.isResolved).length === 0;
+    return (
+      complianceScore >= 90 &&
+      violations.filter(v => v.severity === 'error' && !v.isResolved).length ===
+        0
+    );
   }, [complianceScore, violations]);
 
   // Policy validation
-  const validateAction = useCallback((action: string, context: Record<string, unknown>) => {
-    const newViolations: PolicyViolation[] = [];
+  const validateAction = useCallback(
+    (action: string, context: Record<string, unknown>) => {
+      const newViolations: PolicyViolation[] = [];
 
-    // Example validation logic - in real implementation this would be more sophisticated
-    rules.forEach(rule => {
-      if (!rule.isActive) return;
+      // Example validation logic - in real implementation this would be more sophisticated
+      for (const rule of rules) {
+        if (!rule.isActive) continue;
 
-      // Simple validation examples based on common PMBOK requirements
-      if (rule.id === 'pmbok-charter-required' && action === 'start-planning') {
-        if (!context.hasCharter) {
+        // Simple validation examples based on common PMBOK requirements
+        if (
+          rule.id === 'pmbok-charter-required' &&
+          action === 'start-planning' &&
+          !context.hasCharter
+        ) {
           newViolations.push({
             id: `violation-${Date.now()}-${rule.id}`,
             ruleId: rule.id,
-            message: 'Cannot proceed to planning without an approved project charter',
+            message:
+              'Cannot proceed to planning without an approved project charter',
             severity: rule.severity,
             timestamp: new Date(),
             context,
             isResolved: false,
           });
         }
-      }
 
-      if (rule.id === 'pmbok-risk-assessment' && action === 'start-execution') {
-        if (!context.hasRiskAssessment) {
+        if (
+          rule.id === 'pmbok-risk-assessment' &&
+          action === 'start-execution' &&
+          !context.hasRiskAssessment
+        ) {
           newViolations.push({
             id: `violation-${Date.now()}-${rule.id}`,
             ruleId: rule.id,
@@ -191,15 +218,16 @@ export const PolicyProvider: React.FC<PolicyProviderProps> = ({ children }) => {
           });
         }
       }
-    });
 
-    // Add new violations to state
-    if (newViolations.length > 0) {
-      setViolations(prevViolations => [...prevViolations, ...newViolations]);
-    }
+      // Add new violations to state
+      if (newViolations.length > 0) {
+        setViolations(prevViolations => [...prevViolations, ...newViolations]);
+      }
 
-    return newViolations;
-  }, [rules]);
+      return newViolations;
+    },
+    [rules]
+  );
 
   // Violation resolution
   const resolveViolation = useCallback((violationId: string) => {
@@ -218,28 +246,31 @@ export const PolicyProvider: React.FC<PolicyProviderProps> = ({ children }) => {
       ...rule,
       id: `custom-${Date.now()}`,
     };
-    
+
     setRules(prevRules => [...prevRules, newRule]);
   }, []);
 
   // Context value with performance optimization
-  const contextValue = useMemo<PolicyContextState>(() => ({
-    rules,
-    violations,
-    validateAction,
-    resolveViolation,
-    addCustomRule,
-    complianceScore,
-    isCompliant,
-  }), [
-    rules,
-    violations,
-    validateAction,
-    resolveViolation,
-    addCustomRule,
-    complianceScore,
-    isCompliant,
-  ]);
+  const contextValue = useMemo<PolicyContextState>(
+    () => ({
+      rules,
+      violations,
+      validateAction,
+      resolveViolation,
+      addCustomRule,
+      complianceScore,
+      isCompliant,
+    }),
+    [
+      rules,
+      violations,
+      validateAction,
+      resolveViolation,
+      addCustomRule,
+      complianceScore,
+      isCompliant,
+    ]
+  );
 
   return (
     <PolicyContext.Provider value={contextValue}>
@@ -250,15 +281,15 @@ export const PolicyProvider: React.FC<PolicyProviderProps> = ({ children }) => {
 
 /**
  * Policy Hook
- * 
+ *
  * Custom hook for accessing policy context with error handling
  */
 export const usePolicy = (): PolicyContextState => {
   const context = useContext(PolicyContext);
-  
+
   if (!context) {
     throw new Error('usePolicy must be used within a PolicyProvider');
   }
-  
+
   return context;
 };

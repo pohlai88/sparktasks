@@ -14,15 +14,14 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+// Dashboard Pages
+import { OverviewDashboard } from '../pages/dashboard/OverviewDashboard';
+import { ProjectDashboard } from '../pages/dashboard/ProjectDashboard';
 // Railway Station Pages
+import { ClosureStation } from '../pages/stations/ClosureStation';
+import { ExecutionStation } from '../pages/stations/ExecutionStation';
 import { InitiationStation } from '../pages/stations/InitiationStation';
 import { PlanningStation } from '../pages/stations/PlanningStation';
-import { ExecutionStation } from '../pages/stations/ExecutionStation';
-import { ClosureStation } from '../pages/stations/ClosureStation';
-
-// Dashboard Pages
-import { ProjectDashboard } from '../pages/dashboard/ProjectDashboard';
-import { OverviewDashboard } from '../pages/dashboard/OverviewDashboard';
 
 // Utility function for class names (simplified version)
 const cn = (...classes: (string | undefined)[]) => {
@@ -31,15 +30,15 @@ const cn = (...classes: (string | undefined)[]) => {
 
 /**
  * Railway Navigation Header
- * 
+ *
  * Provides navigation between railway stations with academic anchors
  */
 const RailwayHeader: React.FC = () => {
   return (
-    <header 
+    <header
       className={cn(
         // Dark theme surface
-        'bg-slate-900/80 border-slate-700',
+        'border-slate-700 bg-slate-900/80',
         // Layout and spacing
         'border-b px-6 py-4',
         // Enterprise styling
@@ -48,8 +47,8 @@ const RailwayHeader: React.FC = () => {
         'sm:px-8'
       )}
     >
-      <div className="max-w-7xl mx-auto">
-        <h1 
+      <div className='mx-auto max-w-7xl'>
+        <h1
           className={cn(
             'text-3xl font-bold leading-tight tracking-tight',
             'text-white',
@@ -59,7 +58,7 @@ const RailwayHeader: React.FC = () => {
         >
           SparkTasks Railway System
         </h1>
-        <p 
+        <p
           className={cn(
             'text-sm font-normal leading-normal',
             'text-slate-400',
@@ -75,22 +74,22 @@ const RailwayHeader: React.FC = () => {
 
 /**
  * Main Layout Component
- * 
+ *
  * Provides the enterprise-grade app shell with routing for Railway stations
  */
 export const Layout: React.FC = () => {
   return (
-    <div 
+    <div
       className={cn(
         // Full height layout
-        'min-h-screen flex flex-col',
+        'flex min-h-screen flex-col',
         // Performance optimization
         'will-change-auto'
       )}
     >
       <RailwayHeader />
-      
-      <main 
+
+      <main
         className={cn(
           // Flex grow to fill remaining space
           'flex-1',
@@ -99,25 +98,25 @@ export const Layout: React.FC = () => {
           // Responsive design
           'sm:px-8',
           // Maximum content width for enterprise readability
-          'max-w-7xl mx-auto w-full'
+          'mx-auto w-full max-w-7xl'
         )}
       >
         <Routes>
           {/* Default dashboard route */}
-          <Route path="/" element={<OverviewDashboard />} />
-          
+          <Route path='/' element={<OverviewDashboard />} />
+
           {/* Railway Station Routes (PMBOK Process Groups) */}
-          <Route path="/stations/initiation" element={<InitiationStation />} />
-          <Route path="/stations/planning" element={<PlanningStation />} />
-          <Route path="/stations/execution" element={<ExecutionStation />} />
-          <Route path="/stations/closure" element={<ClosureStation />} />
-          
+          <Route path='/stations/initiation' element={<InitiationStation />} />
+          <Route path='/stations/planning' element={<PlanningStation />} />
+          <Route path='/stations/execution' element={<ExecutionStation />} />
+          <Route path='/stations/closure' element={<ClosureStation />} />
+
           {/* Dashboard Routes */}
-          <Route path="/dashboard/overview" element={<OverviewDashboard />} />
-          <Route path="/dashboard/project/:id" element={<ProjectDashboard />} />
-          
+          <Route path='/dashboard/overview' element={<OverviewDashboard />} />
+          <Route path='/dashboard/project/:id' element={<ProjectDashboard />} />
+
           {/* Fallback route */}
-          <Route path="*" element={<OverviewDashboard />} />
+          <Route path='*' element={<OverviewDashboard />} />
         </Routes>
       </main>
     </div>

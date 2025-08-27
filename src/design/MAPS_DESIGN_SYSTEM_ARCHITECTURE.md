@@ -202,77 +202,77 @@ typography.button                          // Callout weight + appropriate sizin
 
 ```typescript
 // Governed vibrancy system - surface-only application
-materials.vibrancy.glass.surface           // Standard glass - 12px blur
-materials.vibrancy.glass.elevated          // Elevated surface - 8px blur
-materials.vibrancy.glass.floating          // Floating elements - 16px blur
+materials.vibrancy.glass.surface; // Standard glass - 12px blur
+materials.vibrancy.glass.elevated; // Elevated surface - 8px blur
+materials.vibrancy.glass.floating; // Floating elements - 16px blur
 
 // AAA compliance scrims
-materials.vibrancy.scrim.text              // Text overlay protection
-materials.vibrancy.scrim.content           // Content gradient protection
+materials.vibrancy.scrim.text; // Text overlay protection
+materials.vibrancy.scrim.content; // Content gradient protection
 
 // Elevation system with ethereal glows
-materials.elevation.sm                     // Subtle shadow
-materials.elevation.md                     // Standard elevation
-materials.elevation.lg                     // Strong elevation
-materials.elevation.xl                     // Maximum elevation
-materials.elevation.glowAccent             // Ethereal accent glow
-materials.elevation.glowSecondary          // Secondary accent glow
+materials.elevation.sm; // Subtle shadow
+materials.elevation.md; // Standard elevation
+materials.elevation.lg; // Strong elevation
+materials.elevation.xl; // Maximum elevation
+materials.elevation.glowAccent; // Ethereal accent glow
+materials.elevation.glowSecondary; // Secondary accent glow
 ```
 
 #### **Enhanced Interaction System**
 
 ```typescript
 // Platform-aware hit targets
-interaction.hitTarget.base                 // 44px - Touch-friendly default
-interaction.hitTarget.compact              // 36px - Dense layouts
-interaction.hitTarget.large                // 48px - Prominent actions
+interaction.hitTarget.base; // 44px - Touch-friendly default
+interaction.hitTarget.compact; // 36px - Dense layouts
+interaction.hitTarget.large; // 48px - Prominent actions
 
 // AAA-compliant focus management
-interaction.focus.ring                     // 2px ethereal accent ring
-interaction.focus.visible                  // Outline-none + ring-visible
-interaction.focus.within                   // Container focus states
+interaction.focus.ring; // 2px ethereal accent ring
+interaction.focus.visible; // Outline-none + ring-visible
+interaction.focus.within; // Container focus states
 
 // Apple-quality interactions
-interaction.hover.surface                  // Elevated surface on hover
-interaction.hover.accent                   // Accent color hover
-interaction.hover.scale                    // 1.02 scale lift
-interaction.pressed.scale                  // 0.98 scale press
-interaction.pressed.dim                    // 90% opacity press
+interaction.hover.surface; // Elevated surface on hover
+interaction.hover.accent; // Accent color hover
+interaction.hover.scale; // 1.02 scale lift
+interaction.pressed.scale; // 0.98 scale press
+interaction.pressed.dim; // 90% opacity press
 
 // Motion system with respect
-interaction.motion.reduce                  // Motion-reduce compliance
-interaction.motion.safe                    // Standard transitions
+interaction.motion.reduce; // Motion-reduce compliance
+interaction.motion.safe; // Standard transitions
 ```
 
 #### **Systematic 8pt Grid Spacing**
 
 ```typescript
 // No arbitrary spacing allowed - 8pt grid with half-steps
-spacing.xs                                 // 4px  - Micro spacing
-spacing.sm                                 // 8px  - Base unit
-spacing.md                                 // 12px - Compact spacing
-spacing.lg                                 // 16px - Standard spacing
-spacing.xl                                 // 24px - Generous spacing
-spacing.xxl                                // 32px - Section spacing
-spacing.xxxl                               // 48px - Major spacing
-spacing.xxxxl                              // 64px - Hero spacing
+spacing.xs; // 4px  - Micro spacing
+spacing.sm; // 8px  - Base unit
+spacing.md; // 12px - Compact spacing
+spacing.lg; // 16px - Standard spacing
+spacing.xl; // 24px - Generous spacing
+spacing.xxl; // 32px - Section spacing
+spacing.xxxl; // 48px - Major spacing
+spacing.xxxxl; // 64px - Hero spacing
 ```
 
 #### **AAA Compliance System**
 
 ```typescript
 // Enforced compliance mode
-accessibility.aaaSolid.accent              // High-contrast accent
-accessibility.aaaSolid.success             // High-contrast success
-accessibility.aaaSolid.error               // High-contrast error
+accessibility.aaaSolid.accent; // High-contrast accent
+accessibility.aaaSolid.success; // High-contrast success
+accessibility.aaaSolid.error; // High-contrast error
 
 // Screen reader utilities
-accessibility.screenReader.only            // sr-only
-accessibility.screenReader.focusable       // sr-only + focus reveal
+accessibility.screenReader.only; // sr-only
+accessibility.screenReader.focusable; // sr-only + focus reveal
 
 // Motion accessibility
-accessibility.motionReduce.disable         // motion-reduce: disable all
-accessibility.motionReduce.safe            // motion-safe: allow subtle
+accessibility.motionReduce.disable; // motion-reduce: disable all
+accessibility.motionReduce.safe; // motion-safe: allow subtle
 ```
 
 ## Type-Safe Foundation Schema (v2.2 Enhanced)
@@ -284,25 +284,35 @@ accessibility.motionReduce.safe            // motion-safe: allow subtle
 import { z } from 'zod';
 
 // Enhanced validation for dark-first philosophy
-const DarkFirstMode = z.enum(['dark','light','hc']); // Dark first priority
-const state = z.enum(['rest','hover','pressed','focus','selected','disabled']);
-const InteractionState = z.enum(['rest','hover','pressed','focus']);
+const DarkFirstMode = z.enum(['dark', 'light', 'hc']); // Dark first priority
+const state = z.enum([
+  'rest',
+  'hover',
+  'pressed',
+  'focus',
+  'selected',
+  'disabled',
+]);
+const InteractionState = z.enum(['rest', 'hover', 'pressed', 'focus']);
 
 // Enhanced color system with AAA compliance
 const EtherealColorTriplet = z.object({
   bg: z.string().regex(/^(bg-\[#[0-9A-Fa-f]{6}\]|bg-\[.*\])$/), // Hex or CSS custom property
   fg: z.string().regex(/^(text-\[#[0-9A-Fa-f]{6}\]|text-\[.*\])$/),
-  border: z.string().regex(/^(border-\[#[0-9A-Fa-f]{6}\]|border-\[.*\])$/).optional()
+  border: z
+    .string()
+    .regex(/^(border-\[#[0-9A-Fa-f]{6}\]|border-\[.*\])$/)
+    .optional(),
 });
 
 const StatefulEthereal = z.record(InteractionState, EtherealColorTriplet);
 
 // Enhanced typography with Apple semantics
 const AppleTypographyRole = z.object({
-  size: z.string(),           // rem values for web scaling
-  lineHeight: z.string(),     // Optical line-height
-  weight: z.number(),         // 400, 500, 600, 700 only (Apple weights)
-  letterSpacing: z.string(),  // Precise tracking values
+  size: z.string(), // rem values for web scaling
+  lineHeight: z.string(), // Optical line-height
+  weight: z.number(), // 400, 500, 600, 700 only (Apple weights)
+  letterSpacing: z.string(), // Precise tracking values
   scale: z.enum(['dynamic', 'fixed']).default('dynamic'), // Respect user preferences
 });
 
@@ -310,13 +320,13 @@ const AppleTypographyRole = z.object({
 const LiquidGlassMaterials = z.object({
   vibrancy: z.object({
     glass: z.object({
-      surface: z.string().includes('backdrop-blur'),    // Must include backdrop blur
+      surface: z.string().includes('backdrop-blur'), // Must include backdrop blur
       elevated: z.string().includes('backdrop-blur'),
       floating: z.string().includes('backdrop-blur'),
     }),
     scrim: z.object({
-      text: z.string().includes('bg-'),                 // Must provide background
-      content: z.string().includes('gradient'),         // Must be gradient
+      text: z.string().includes('bg-'), // Must provide background
+      content: z.string().includes('gradient'), // Must be gradient
     }),
   }),
   elevation: z.object({
@@ -324,7 +334,7 @@ const LiquidGlassMaterials = z.object({
     md: z.string().includes('shadow'),
     lg: z.string().includes('shadow'),
     xl: z.string().includes('shadow'),
-    glowAccent: z.string().includes('shadow'),          // Ethereal glow effects
+    glowAccent: z.string().includes('shadow'), // Ethereal glow effects
     glowSecondary: z.string().includes('shadow'),
   }),
 });
@@ -332,9 +342,9 @@ const LiquidGlassMaterials = z.object({
 // AAA compliance validation
 const AAACompliance = z.object({
   aaaSolid: z.object({
-    accent: z.string(),     // Must be high-contrast alternative
-    success: z.string(),    // Must meet 7:1 contrast
-    error: z.string(),      // Must meet 7:1 contrast
+    accent: z.string(), // Must be high-contrast alternative
+    success: z.string(), // Must meet 7:1 contrast
+    error: z.string(), // Must meet 7:1 contrast
   }),
   screenReader: z.object({
     only: z.literal('sr-only'),
@@ -355,25 +365,25 @@ export const EnhancedFoundationSchema = z.object({
   }),
   foundation: z.object({
     color: z.object({
-      surface: z.record(z.string()),           // Deep space foundation
-      content: z.record(z.string()),           // Content hierarchy
-      border: z.record(z.string()),            // Border system
+      surface: z.record(z.string()), // Deep space foundation
+      content: z.record(z.string()), // Content hierarchy
+      border: z.record(z.string()), // Border system
       brand: z.object({
-        primary: StatefulEthereal,              // Ethereal accent system
-        secondary: StatefulEthereal,            // Secondary accent
+        primary: StatefulEthereal, // Ethereal accent system
+        secondary: StatefulEthereal, // Secondary accent
       }),
       feedback: z.record(EtherealColorTriplet), // Semantic feedback
     }),
-    typography: z.record(AppleTypographyRole),  // Apple text hierarchy
-    spacing: z.record(z.string()),              // 8pt grid system
+    typography: z.record(AppleTypographyRole), // Apple text hierarchy
+    spacing: z.record(z.string()), // 8pt grid system
     interaction: z.object({
-      hitTarget: z.record(z.string()),          // Platform-aware targets
-      focus: z.record(z.string()),              // AAA focus system
-      hover: z.record(z.string()),              // Hover interactions
-      pressed: z.record(z.string()),            // Press interactions
-      motion: z.record(z.string()),             // Motion system
+      hitTarget: z.record(z.string()), // Platform-aware targets
+      focus: z.record(z.string()), // AAA focus system
+      hover: z.record(z.string()), // Hover interactions
+      pressed: z.record(z.string()), // Press interactions
+      motion: z.record(z.string()), // Motion system
     }),
-    materials: LiquidGlassMaterials,            // Liquid glass system
+    materials: LiquidGlassMaterials, // Liquid glass system
     motion: z.object({
       duration: z.record(z.string()),
       easing: z.record(z.string()),
@@ -382,8 +392,8 @@ export const EnhancedFoundationSchema = z.object({
     }),
     zIndex: z.record(z.number()),
   }),
-  accessibility: AAACompliance,                 // AAA compliance system
-  raw: z.record(z.unknown()),                   // Raw values for JS access
+  accessibility: AAACompliance, // AAA compliance system
+  raw: z.record(z.unknown()), // Raw values for JS access
 });
 
 export type EnhancedFoundation = z.infer<typeof EnhancedFoundationSchema>;
@@ -817,17 +827,18 @@ npm install @radix-ui/react-* class-variance-authority clsx tailwind-merge
 // Install and configure proven tools
 const button = cva(
   // Base Apple HIG styles using our tokens
-  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors",
+  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors',
   {
     variants: {
       variant: {
-        primary: "bg-[var(--apple-blue)] text-white hover:bg-[var(--apple-blue-hover)]",
-        secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200",
+        primary:
+          'bg-[var(--apple-blue)] text-white hover:bg-[var(--apple-blue-hover)]',
+        secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
       },
       size: {
-        sm: "h-9 px-3",
-        md: "h-10 px-4",
-        lg: "h-11 px-8",
+        sm: 'h-9 px-3',
+        md: 'h-10 px-4',
+        lg: 'h-11 px-8',
       },
     },
   }
@@ -964,12 +975,20 @@ Based on competitive analysis and HIG alignment, these surgical enhancements pre
 // Enhanced typography schema - prevents hardcoded sizes
 const TypeRoleDynamic = z.object({
   style: z.enum([
-    'largeTitle','title1','title2','title3',
-    'headline','body','callout','subheadline',
-    'footnote','caption1','caption2'
+    'largeTitle',
+    'title1',
+    'title2',
+    'title3',
+    'headline',
+    'body',
+    'callout',
+    'subheadline',
+    'footnote',
+    'caption1',
+    'caption2',
   ]),
   scale: z.literal('dynamic'),
-  weight: z.number().optional() // Platform resolves exact metrics
+  weight: z.number().optional(), // Platform resolves exact metrics
 });
 
 const TypeRoleFixed = z.object({
@@ -977,7 +996,7 @@ const TypeRoleFixed = z.object({
   lineHeight: z.string(),
   weight: z.number(),
   letterSpacing: z.string().optional(),
-  scale: z.literal('fixed')
+  scale: z.literal('fixed'),
 });
 
 const TypeRole = z.union([TypeRoleDynamic, TypeRoleFixed]);
@@ -1299,14 +1318,18 @@ export const ENHANCED_TOKENS = {
   // ADD Apple semantics
   typography: {
     ...DESIGN_TOKENS.typography,
-    apple: { /* semantic roles */ }
+    apple: {
+      /* semantic roles */
+    },
   },
 
   // ADD platform awareness
   interaction: {
     ...DESIGN_TOKENS.interaction,
-    platform: { /* touch/pointer rules */ }
-  }
+    platform: {
+      /* touch/pointer rules */
+    },
+  },
 };
 ```
 
@@ -1455,16 +1478,19 @@ export const ENHANCED_DESIGN_TOKENS = {
     },
     spacing: {
       // 8pt grid system
-      xs: '0.5rem', sm: '1rem', md: '1.5rem', lg: '2rem'
+      xs: '0.5rem',
+      sm: '1rem',
+      md: '1.5rem',
+      lg: '2rem',
     },
     interaction: {
       // Platform-aware hit targets
       hitTarget: {
         base: 'min-h-[44px] min-w-[44px]',
-        desktop: '@media (hover: hover) { min-h-[32px] min-w-[32px] }'
-      }
-    }
-  }
+        desktop: '@media (hover: hover) { min-h-[32px] min-w-[32px] }',
+      },
+    },
+  },
 };
 ```
 
@@ -1627,37 +1653,37 @@ export const ENHANCED_DESIGN_TOKENS = {
     // Color system based on your superior dark palette
     color: {
       surface: {
-        canvas: 'bg-[#0a0f16]',        // Your --bg
-        elevated1: 'bg-[#0e1624]',     // Your --bg-2
-        elevated2: 'bg-[#0d1523]',     // Your --panel
-        overlay: 'bg-black/45',        // Sophisticated overlay
-        translucent: 'bg-[#0d1523]/80' // Vibrancy-ready
+        canvas: 'bg-[#0a0f16]', // Your --bg
+        elevated1: 'bg-[#0e1624]', // Your --bg-2
+        elevated2: 'bg-[#0d1523]', // Your --panel
+        overlay: 'bg-black/45', // Sophisticated overlay
+        translucent: 'bg-[#0d1523]/80', // Vibrancy-ready
       },
       content: {
-        primary: 'text-[#e9f1ff]',     // Your --ink (excellent contrast)
-        secondary: 'text-[#a6bbde]',   // Your --muted (perfect hierarchy)
-        tertiary: 'text-[#8899b8]',    // Derived from your palette
-        accent: 'text-[#7cc4ff]',      // Your primary accent
-        accent2: 'text-[#78ffd6]'      // Your secondary accent
+        primary: 'text-[#e9f1ff]', // Your --ink (excellent contrast)
+        secondary: 'text-[#a6bbde]', // Your --muted (perfect hierarchy)
+        tertiary: 'text-[#8899b8]', // Derived from your palette
+        accent: 'text-[#7cc4ff]', // Your primary accent
+        accent2: 'text-[#78ffd6]', // Your secondary accent
       },
       border: {
-        subtle: 'border-[#1a2436]',    // Your --border
-        strong: 'border-[#2a3441]',    // Slightly stronger
-        accent: 'border-[#7cc4ff]',    // Accent borders
-        focus: 'border-[#7cc4ff]'      // Focus states
+        subtle: 'border-[#1a2436]', // Your --border
+        strong: 'border-[#2a3441]', // Slightly stronger
+        accent: 'border-[#7cc4ff]', // Accent borders
+        focus: 'border-[#7cc4ff]', // Focus states
       },
       brand: {
         primary: {
           rest: { bg: 'bg-[#7cc4ff]', fg: 'text-[#0a0f16]' },
           hover: { bg: 'bg-[#6bb8ff]', fg: 'text-[#0a0f16]' },
-          pressed: { bg: 'bg-[#5aa4ff]', fg: 'text-[#0a0f16]' }
+          pressed: { bg: 'bg-[#5aa4ff]', fg: 'text-[#0a0f16]' },
         },
         secondary: {
           rest: { bg: 'bg-[#78ffd6]', fg: 'text-[#0a0f16]' },
           hover: { bg: 'bg-[#67ebc5]', fg: 'text-[#0a0f16]' },
-          pressed: { bg: 'bg-[#56d7b4]', fg: 'text-[#0a0f16]' }
-        }
-      }
+          pressed: { bg: 'bg-[#56d7b4]', fg: 'text-[#0a0f16]' },
+        },
+      },
     },
 
     // Apple typography semantics
@@ -1672,33 +1698,33 @@ export const ENHANCED_DESIGN_TOKENS = {
       subhead: 'text-xs/normal font-medium text-[#a6bbde]',
       footnote: 'text-xs/normal font-normal text-[#a6bbde]',
       caption1: 'text-xs/tight font-normal text-[#a6bbde]',
-      caption2: 'text-[11px]/tight font-normal text-[#8899b8]'
+      caption2: 'text-[11px]/tight font-normal text-[#8899b8]',
     },
 
     // 8pt grid spacing system (systematic, not arbitrary)
     spacing: {
-      xs: '0.25rem',    // 4px
-      sm: '0.5rem',     // 8px
-      md: '0.75rem',    // 12px
-      lg: '1rem',       // 16px
-      xl: '1.5rem',     // 24px
-      xxl: '2rem',      // 32px
-      xxxl: '3rem'      // 48px
+      xs: '0.25rem', // 4px
+      sm: '0.5rem', // 8px
+      md: '0.75rem', // 12px
+      lg: '1rem', // 16px
+      xl: '1.5rem', // 24px
+      xxl: '2rem', // 32px
+      xxxl: '3rem', // 48px
     },
 
     // Platform-aware interactions
     interaction: {
       hitTarget: {
-        base: 'min-h-[44px] min-w-[44px]',                    // Touch-friendly
-        desktop: '@media (hover: hover) { min-h-[32px] min-w-[32px] }' // Desktop-precise
+        base: 'min-h-[44px] min-w-[44px]', // Touch-friendly
+        desktop: '@media (hover: hover) { min-h-[32px] min-w-[32px] }', // Desktop-precise
       },
       focus: {
-        ring: 'ring-2 ring-[#7cc4ff] ring-offset-2 ring-offset-[#0a0f16]'
+        ring: 'ring-2 ring-[#7cc4ff] ring-offset-2 ring-offset-[#0a0f16]',
       },
       hover: {
-        surface: 'hover:bg-[#0f1a2c]',  // Derived from your prototype
-        accent: 'hover:bg-[#6bb8ff]'
-      }
+        surface: 'hover:bg-[#0f1a2c]', // Derived from your prototype
+        accent: 'hover:bg-[#6bb8ff]',
+      },
     },
 
     // Vibrancy system (Apple-inspired, web-adapted)
@@ -1707,18 +1733,18 @@ export const ENHANCED_DESIGN_TOKENS = {
         blur: {
           sm: 'backdrop-blur-sm',
           md: 'backdrop-blur-md',
-          lg: 'backdrop-blur-lg'
+          lg: 'backdrop-blur-lg',
         },
         opacity: {
           subtle: 'bg-opacity-80',
           medium: 'bg-opacity-60',
-          strong: 'bg-opacity-40'
+          strong: 'bg-opacity-40',
         },
         // Only on surfaces, never content (MAPS v2.2 governance)
-        usage: 'surface-only'
-      }
-    }
-  }
+        usage: 'surface-only',
+      },
+    },
+  },
 };
 ```
 

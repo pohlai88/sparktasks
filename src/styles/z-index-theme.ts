@@ -10,10 +10,10 @@ export const zIndexThemeExtension = {
     // Fortune-500 corrected hierarchy
     surface: '0',
     overlay: '100',
-    popover: '1100',    // Popover below modal (contextual only)
-    modal: '1300',      // Modal above popover (blocking interactions)
-    toast: '1400',      // Toast above modal (system notifications)
-    tooltip: '1500',    // Tooltip highest (informational overlay)
+    popover: '1100', // Popover below modal (contextual only)
+    modal: '1300', // Modal above popover (blocking interactions)
+    toast: '1400', // Toast above modal (system notifications)
+    tooltip: '1500', // Tooltip highest (informational overlay)
   },
 };
 

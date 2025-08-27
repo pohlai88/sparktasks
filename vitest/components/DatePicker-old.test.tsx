@@ -69,7 +69,7 @@ describe('EnhancedDatePicker', () => {
     });
 
     it('renders with placeholder text', () => {
-      render(<EnhancedDatePicker placeholder="Select date" />);
+      render(<EnhancedDatePicker placeholder='Select date' />);
 
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveTextContent('Select date');
@@ -84,7 +84,7 @@ describe('EnhancedDatePicker', () => {
     });
 
     it('applies custom className', () => {
-      render(<EnhancedDatePicker className="custom-class" />);
+      render(<EnhancedDatePicker className='custom-class' />);
 
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveClass('custom-class');
@@ -93,7 +93,7 @@ describe('EnhancedDatePicker', () => {
 
   describe('Variant Styling', () => {
     it('applies default surface variant', () => {
-      render(<EnhancedDatePicker surface="default" />);
+      render(<EnhancedDatePicker surface='default' />);
 
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveClass(
@@ -102,7 +102,7 @@ describe('EnhancedDatePicker', () => {
     });
 
     it('applies glass surface variant', () => {
-      render(<EnhancedDatePicker surface="glass" />);
+      render(<EnhancedDatePicker surface='glass' />);
 
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveClass(
@@ -111,29 +111,25 @@ describe('EnhancedDatePicker', () => {
     });
 
     it('applies different sizes', () => {
-      const { rerender } = render(<EnhancedDatePicker size="sm" />);
+      const { rerender } = render(<EnhancedDatePicker size='sm' />);
 
       let trigger = screen.getByRole('button');
-      expect(trigger).toHaveClass(
-        enhancedDatePickerVariants({ size: 'sm' })
-      );
+      expect(trigger).toHaveClass(enhancedDatePickerVariants({ size: 'sm' }));
 
-      rerender(<EnhancedDatePicker size="lg" />);
+      rerender(<EnhancedDatePicker size='lg' />);
       trigger = screen.getByRole('button');
-      expect(trigger).toHaveClass(
-        enhancedDatePickerVariants({ size: 'lg' })
-      );
+      expect(trigger).toHaveClass(enhancedDatePickerVariants({ size: 'lg' }));
     });
 
     it('applies validation states', () => {
-      const { rerender } = render(<EnhancedDatePicker validation="error" />);
+      const { rerender } = render(<EnhancedDatePicker validation='error' />);
 
       let trigger = screen.getByRole('button');
       expect(trigger).toHaveClass(
         enhancedDatePickerVariants({ validation: 'error' })
       );
 
-      rerender(<EnhancedDatePicker validation="success" />);
+      rerender(<EnhancedDatePicker validation='success' />);
       trigger = screen.getByRole('button');
       expect(trigger).toHaveClass(
         enhancedDatePickerVariants({ validation: 'success' })
@@ -147,10 +143,7 @@ describe('EnhancedDatePicker', () => {
       const selectedDate = new Date('2024-01-15');
 
       const { rerender } = render(
-        <EnhancedDatePicker
-          value={selectedDate}
-          onChange={mockOnChange}
-        />
+        <EnhancedDatePicker value={selectedDate} onChange={mockOnChange} />
       );
 
       const trigger = screen.getByRole('button');
@@ -158,12 +151,7 @@ describe('EnhancedDatePicker', () => {
 
       // Update prop manually
       const newDate = new Date('2024-01-20');
-      rerender(
-        <EnhancedDatePicker
-          value={newDate}
-          onChange={mockOnChange}
-        />
-      );
+      rerender(<EnhancedDatePicker value={newDate} onChange={mockOnChange} />);
 
       expect(trigger).toHaveTextContent('Jan 20, 2024');
     });
@@ -225,13 +213,13 @@ describe('DatePickerFactory', () => {
 
     it('applies factory props correctly', () => {
       const GlassPicker = DatePickerFactory.glass;
-      render(<GlassPicker size="lg" />);
+      render(<GlassPicker size='lg' />);
 
       const trigger = screen.getByRole('button');
       expect(trigger).toHaveClass(
         enhancedDatePickerVariants({
           surface: 'glass',
-          size: 'lg'
+          size: 'lg',
         })
       );
     });
@@ -241,9 +229,15 @@ describe('DatePickerFactory', () => {
 describe('CVA Variants', () => {
   describe('enhancedDatePickerVariants', () => {
     it('generates correct classes for surface variants', () => {
-      expect(enhancedDatePickerVariants({ surface: 'default' })).toContain('bg-background');
-      expect(enhancedDatePickerVariants({ surface: 'glass' })).toContain('backdrop-blur');
-      expect(enhancedDatePickerVariants({ surface: 'elevated' })).toContain('bg-card');
+      expect(enhancedDatePickerVariants({ surface: 'default' })).toContain(
+        'bg-background'
+      );
+      expect(enhancedDatePickerVariants({ surface: 'glass' })).toContain(
+        'backdrop-blur'
+      );
+      expect(enhancedDatePickerVariants({ surface: 'elevated' })).toContain(
+        'bg-card'
+      );
     });
 
     it('generates correct classes for size variants', () => {
@@ -253,15 +247,27 @@ describe('CVA Variants', () => {
     });
 
     it('generates correct classes for validation states', () => {
-      expect(enhancedDatePickerVariants({ validation: 'error' })).toContain('border-destructive');
-      expect(enhancedDatePickerVariants({ validation: 'success' })).toContain('border-success');
-      expect(enhancedDatePickerVariants({ validation: 'warning' })).toContain('border-warning');
+      expect(enhancedDatePickerVariants({ validation: 'error' })).toContain(
+        'border-destructive'
+      );
+      expect(enhancedDatePickerVariants({ validation: 'success' })).toContain(
+        'border-success'
+      );
+      expect(enhancedDatePickerVariants({ validation: 'warning' })).toContain(
+        'border-warning'
+      );
     });
 
     it('generates correct classes for density variants', () => {
-      expect(enhancedDatePickerVariants({ density: 'comfortable' })).toContain('px-3');
-      expect(enhancedDatePickerVariants({ density: 'compact' })).toContain('px-2');
-      expect(enhancedDatePickerVariants({ density: 'spacious' })).toContain('px-4');
+      expect(enhancedDatePickerVariants({ density: 'comfortable' })).toContain(
+        'px-3'
+      );
+      expect(enhancedDatePickerVariants({ density: 'compact' })).toContain(
+        'px-2'
+      );
+      expect(enhancedDatePickerVariants({ density: 'spacious' })).toContain(
+        'px-4'
+      );
     });
 
     it('combines variants correctly', () => {
@@ -317,9 +323,7 @@ describe('Performance', () => {
     const initialText = trigger.textContent;
 
     // Rerender with same date - should use memoized value
-    rerender(
-      <EnhancedDatePicker value={mockDate} onChange={mockOnChange} />
-    );
+    rerender(<EnhancedDatePicker value={mockDate} onChange={mockOnChange} />);
 
     expect(trigger.textContent).toBe(initialText);
   });
@@ -337,9 +341,7 @@ describe('Performance', () => {
     expect(trigger).toHaveTextContent('Jan 15, 2024');
 
     // Rerender with different date
-    rerender(
-      <EnhancedDatePicker value={newDate} onChange={mockOnChange} />
-    );
+    rerender(<EnhancedDatePicker value={newDate} onChange={mockOnChange} />);
 
     expect(trigger).toHaveTextContent('Jan 20, 2024');
   });

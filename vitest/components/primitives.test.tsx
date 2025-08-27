@@ -98,7 +98,7 @@ describe('🛡️ Primitive Governance Layer', () => {
 
     test('should manage layer conflicts', () => {
       const layer1 = orchestrator.requestLayer('modal-1', 'modal');
-      expect(layer1.value).toBe(1300);  // Fortune-500 corrected value
+      expect(layer1.value).toBe(1300); // Fortune-500 corrected value
 
       // Should detect conflict for multiple modals
       expect(() => {
@@ -137,9 +137,9 @@ describe('🛡️ Primitive Governance Layer', () => {
     test('should provide valid motion tokens', () => {
       const motions = getAvailableMotions();
 
-      expect(motions).toContain('standard');  // Updated token name
+      expect(motions).toContain('standard'); // Updated token name
       expect(motions).toContain('spring');
-      expect(motions).toContain('reduced');   // Updated token name
+      expect(motions).toContain('reduced'); // Updated token name
 
       for (const motion of motions) {
         expect(isValidMotion(motion)).toBe(true);
@@ -162,7 +162,10 @@ describe('🛡️ Primitive Governance Layer', () => {
 
     test('should generate proper CSS transitions', () => {
       const normalMotion = new MotionPresets({ respectReducedMotion: false });
-      const transition = normalMotion.getTransition('standard', ['opacity', 'transform']);  // Updated token
+      const transition = normalMotion.getTransition('standard', [
+        'opacity',
+        'transform',
+      ]); // Updated token
 
       expect(transition).toContain('opacity, transform');
       expect(transition).toContain('180ms');
@@ -170,7 +173,7 @@ describe('🛡️ Primitive Governance Layer', () => {
     });
 
     test('should provide motion classes', () => {
-      const classes = motionPresets.getMotionClasses('standard');  // Updated token
+      const classes = motionPresets.getMotionClasses('standard'); // Updated token
 
       expect(classes).toContain('motion-safe');
       expect(classes).toContain('motion-reduce');
@@ -179,7 +182,11 @@ describe('🛡️ Primitive Governance Layer', () => {
 
     test('should validate motion usage', () => {
       const mockElement = document.createElement('div');
-      const violations = motionPresets.validateMotion('spring', 'test', mockElement);
+      const violations = motionPresets.validateMotion(
+        'spring',
+        'test',
+        mockElement
+      );
 
       // Should not have violations for valid usage
       expect(violations).toBeInstanceOf(Array);
@@ -207,10 +214,10 @@ describe('🛡️ Primitive Governance Layer', () => {
 
       // ZIndex management
       const layer = orchestrator.requestLayer('test-comp', 'modal');
-      expect(layer.value).toBe(1300);  // Fortune-500 corrected value
+      expect(layer.value).toBe(1300); // Fortune-500 corrected value
 
       // Motion management
-      const motionClasses = motionPresets.getMotionClasses('standard');  // Updated token
+      const motionClasses = motionPresets.getMotionClasses('standard'); // Updated token
       expect(motionClasses).toContain('transition');
     });
 
@@ -284,7 +291,7 @@ describe('🔒 Anti-Drift Enforcement', () => {
   test('should block arbitrary values completely', () => {
     const tokenGuard = new TokenGuard({
       blockArbitraryValues: true,
-      enforceEnhancedTokens: true
+      enforceEnhancedTokens: true,
     });
 
     const driftCode = `

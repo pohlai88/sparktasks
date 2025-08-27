@@ -745,7 +745,6 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   },
 }));
 
-
 // Optional: small helper to wire the async storage once (used by E2EE bootstrap)
 export function configureAsyncEventlogStorage(driver: StorageDriver) {
   setAsyncEventlogStorage(driver);

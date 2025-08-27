@@ -12,9 +12,21 @@
  */
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Upload, X, FileText, Image, Video, Music, Archive, AlertCircle } from 'lucide-react';
+import {
+  Upload,
+  X,
+  FileText,
+  Image,
+  Video,
+  Music,
+  Archive,
+  AlertCircle,
+} from 'lucide-react';
 import React from 'react';
-import { useDropzone, type FileRejection as DropzoneFileRejection } from 'react-dropzone';
+import {
+  useDropzone,
+  type FileRejection as DropzoneFileRejection,
+} from 'react-dropzone';
 
 import { getAdaptiveMotionClasses } from '@/components/primitives/motion-utils';
 import { cn } from '@/utils/cn';
@@ -52,89 +64,92 @@ export interface FileValidationError {
 
 // ===== COMPONENT VARIANTS =====
 
-const simpleUploadVariants = cva([
-  'relative border-2 border-dashed rounded-lg transition-all duration-200',
-  'flex flex-col items-center justify-center',
-  'cursor-pointer hover:border-border-accent',
-  'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-], {
-  variants: {
-    surface: {
-      elevated: [
-        'bg-surface-elevated border-border-elevated',
-        'hover:bg-surface-hover',
-      ],
-      glass: [
-        'backdrop-blur-sm bg-surface-panel/80 border-border-glass',
-        'hover:bg-surface-panel/90',
-      ],
+const simpleUploadVariants = cva(
+  [
+    'relative rounded-lg border-2 border-dashed transition-all duration-200',
+    'flex flex-col items-center justify-center',
+    'cursor-pointer hover:border-border-accent',
+    'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  ],
+  {
+    variants: {
+      surface: {
+        elevated: [
+          'bg-surface-elevated border-border-elevated',
+          'hover:bg-surface-hover',
+        ],
+        glass: [
+          'bg-surface-panel/80 border-border-glass backdrop-blur-sm',
+          'hover:bg-surface-panel/90',
+        ],
+      },
+      size: {
+        sm: 'h-32 p-4',
+        md: 'h-48 p-6',
+        lg: 'h-64 p-8',
+      },
+      variant: {
+        dropzone: 'border-border-subtle',
+        button: 'border-solid border-border-accent bg-accent/5',
+        minimal: 'border-none bg-transparent p-2',
+      },
+      state: {
+        default: '',
+        dragActive: 'bg-accent-bg/10 scale-[1.02] border-accent',
+        dragAccept: 'border-success bg-success/10',
+        dragReject: 'border-error bg-error/10',
+        uploading: 'bg-accent-bg/5 border-accent',
+        error: 'border-error bg-error/5',
+      },
+      disabled: {
+        true: 'pointer-events-none cursor-not-allowed opacity-50',
+        false: '',
+      },
     },
-    size: {
-      sm: 'h-32 p-4',
-      md: 'h-48 p-6',
-      lg: 'h-64 p-8',
+    defaultVariants: {
+      surface: 'elevated',
+      size: 'md',
+      variant: 'dropzone',
+      state: 'default',
+      disabled: false,
     },
-    variant: {
-      dropzone: 'border-border-subtle',
-      button: 'border-solid border-border-accent bg-accent/5',
-      minimal: 'border-none bg-transparent p-2',
-    },
-    state: {
-      default: '',
-      dragActive: 'border-accent bg-accent-bg/10 scale-[1.02]',
-      dragAccept: 'border-success bg-success/10',
-      dragReject: 'border-error bg-error/10',
-      uploading: 'border-accent bg-accent-bg/5',
-      error: 'border-error bg-error/5',
-    },
-    disabled: {
-      true: 'opacity-50 cursor-not-allowed pointer-events-none',
-      false: '',
-    },
-  },
-  defaultVariants: {
-    surface: 'elevated',
-    size: 'md',
-    variant: 'dropzone',
-    state: 'default',
-    disabled: false,
   }
-});
+);
 
-const uploadQueueVariants = cva([
-  'mt-4 space-y-2 max-h-60 overflow-y-auto',
-], {
+const uploadQueueVariants = cva(['mt-4 max-h-60 space-y-2 overflow-y-auto'], {
   variants: {
     surface: {
       elevated: 'bg-surface-elevated rounded-lg p-4',
-      glass: 'backdrop-blur-sm bg-surface-panel/80 rounded-lg p-4',
+      glass: 'bg-surface-panel/80 rounded-lg p-4 backdrop-blur-sm',
     },
   },
   defaultVariants: {
     surface: 'elevated',
-  }
+  },
 });
 
-const queueItemVariants = cva([
-  'flex items-center gap-3 p-3 rounded-lg border transition-colors',
-], {
-  variants: {
-    status: {
-      pending: 'border-border-subtle bg-surface-canvas',
-      uploading: 'border-accent bg-accent-bg/5',
-      completed: 'border-success bg-success/5',
-      error: 'border-error bg-error/5',
-      paused: 'border-warning bg-warning/5',
+const queueItemVariants = cva(
+  ['flex items-center gap-3 rounded-lg border p-3 transition-colors'],
+  {
+    variants: {
+      status: {
+        pending: 'bg-surface-canvas border-border-subtle',
+        uploading: 'bg-accent-bg/5 border-accent',
+        completed: 'border-success bg-success/5',
+        error: 'border-error bg-error/5',
+        paused: 'border-warning bg-warning/5',
+      },
     },
-  },
-  defaultVariants: {
-    status: 'pending',
+    defaultVariants: {
+      status: 'pending',
+    },
   }
-});
+);
 
 // ===== MAIN COMPONENT =====
 
-export interface SimpleUploadProps extends VariantProps<typeof simpleUploadVariants> {
+export interface SimpleUploadProps
+  extends VariantProps<typeof simpleUploadVariants> {
   // Upload Configuration
   onUpload: (files: File[]) => Promise<UploadResult[]>;
   uploadEndpoint?: string;
@@ -245,28 +260,31 @@ export function SimpleUpload({
 
   // ===== FILE VALIDATION =====
 
-  const validateFile = React.useCallback((file: File): FileValidationError[] => {
-    const errors: FileValidationError[] = [];
+  const validateFile = React.useCallback(
+    (file: File): FileValidationError[] => {
+      const errors: FileValidationError[] = [];
 
-    // Size validation
-    if (maxSize && file.size > maxSize) {
-      errors.push({
-        code: 'file-too-large',
-        message: `File "${file.name}" is larger than ${formatFileSize(maxSize)}`,
-        field: 'size',
-      });
-    }
-
-    // Custom validation
-    if (validator) {
-      const result = validator(file);
-      if (!result.valid && result.errors) {
-        errors.push(...result.errors);
+      // Size validation
+      if (maxSize && file.size > maxSize) {
+        errors.push({
+          code: 'file-too-large',
+          message: `File "${file.name}" is larger than ${formatFileSize(maxSize)}`,
+          field: 'size',
+        });
       }
-    }
 
-    return errors;
-  }, [maxSize, validator]);
+      // Custom validation
+      if (validator) {
+        const result = validator(file);
+        if (!result.valid && result.errors) {
+          errors.push(...result.errors);
+        }
+      }
+
+      return errors;
+    },
+    [maxSize, validator]
+  );
 
   // ===== DROPZONE CONFIGURATION =====
 
@@ -279,9 +297,9 @@ export function SimpleUpload({
     open: openFileDialog,
   } = useDropzone({
     ...(accept && {
-      accept: Array.isArray(accept) 
+      accept: Array.isArray(accept)
         ? accept.reduce((acc, type) => ({ ...acc, [type]: [] }), {})
-        : { [accept]: [] }
+        : { [accept]: [] },
     }),
     multiple,
     ...(maxSize && { maxSize }),
@@ -336,7 +354,8 @@ export function SimpleUpload({
     }));
 
     setUploadQueue(prev => {
-      const updated = queueBehavior === 'replace' ? newItems : [...prev, ...newItems];
+      const updated =
+        queueBehavior === 'replace' ? newItems : [...prev, ...newItems];
       onQueueChange?.(updated);
       return updated;
     });
@@ -407,33 +426,39 @@ export function SimpleUpload({
       updateQueueItem(item.id, {
         status: 'completed',
         progress: 100,
-        result
+        result,
       });
 
       onUploadComplete?.(item.file, result);
     } catch (error) {
-      const uploadError = error instanceof Error ? error : new Error('Upload failed');
+      const uploadError =
+        error instanceof Error ? error : new Error('Upload failed');
 
       updateQueueItem(item.id, {
         status: 'error',
         progress: 0,
         error: uploadError,
-        retryCount: item.retryCount + 1
+        retryCount: item.retryCount + 1,
       });
 
       onUploadError?.(item.file, uploadError);
 
       // Auto-retry if enabled
       if (item.retryCount < retryAttempts) {
-        setTimeout(() => {
-          updateQueueItem(item.id, { status: 'pending' });
-          void uploadFile(item);
-        }, 1000 * Math.pow(2, item.retryCount)); // Exponential backoff
+        setTimeout(
+          () => {
+            updateQueueItem(item.id, { status: 'pending' });
+            void uploadFile(item);
+          },
+          1000 * Math.pow(2, item.retryCount)
+        ); // Exponential backoff
       }
     }
   }
 
-  async function uploadToEndpoint(item: UploadQueueItem): Promise<UploadResult> {
+  async function uploadToEndpoint(
+    item: UploadQueueItem
+  ): Promise<UploadResult> {
     if (!uploadEndpoint) {
       throw new Error('Upload endpoint not configured');
     }
@@ -472,21 +497,27 @@ export function SimpleUpload({
 
   // ===== QUEUE MANAGEMENT =====
 
-  const removeFromQueue = React.useCallback((id: string) => {
-    setUploadQueue(prev => {
-      const updated = prev.filter(item => item.id !== id);
-      onQueueChange?.(updated);
-      return updated;
-    });
-  }, [onQueueChange]);
+  const removeFromQueue = React.useCallback(
+    (id: string) => {
+      setUploadQueue(prev => {
+        const updated = prev.filter(item => item.id !== id);
+        onQueueChange?.(updated);
+        return updated;
+      });
+    },
+    [onQueueChange]
+  );
 
-  const retryUpload = React.useCallback((id: string) => {
-    const item = uploadQueue.find(item => item.id === id);
-    if (item) {
-      updateQueueItem(id, { status: 'pending' });
-      void uploadFile(item);
-    }
-  }, [uploadQueue]);
+  const retryUpload = React.useCallback(
+    (id: string) => {
+      const item = uploadQueue.find(item => item.id === id);
+      if (item) {
+        updateQueueItem(id, { status: 'pending' });
+        void uploadFile(item);
+      }
+    },
+    [uploadQueue]
+  );
 
   const clearQueue = React.useCallback(() => {
     setUploadQueue([]);
@@ -526,26 +557,24 @@ export function SimpleUpload({
       >
         <input {...getInputProps()} />
 
-        <div className="text-center">
+        <div className='text-center'>
           {/* Icon */}
-          <div className="mb-4 text-foreground-muted">
-            {placeholder?.icon || <Upload className="w-12 h-12 mx-auto" />}
+          <div className='mb-4 text-foreground-muted'>
+            {placeholder?.icon || <Upload className='mx-auto h-12 w-12' />}
           </div>
 
           {/* Title */}
-          <h3 className="text-lg font-medium text-foreground mb-2">
-            {placeholder?.title || (
-              isDragActive
-                ? 'Drop files here'
-                : 'Drag & drop files here'
-            )}
+          <h3 className='mb-2 text-lg font-medium text-foreground'>
+            {placeholder?.title ||
+              (isDragActive ? 'Drop files here' : 'Drag & drop files here')}
           </h3>
 
           {/* Description */}
-          <p className="text-sm text-foreground-muted mb-4">
+          <p className='mb-4 text-sm text-foreground-muted'>
             {placeholder?.description || (
               <>
-                {accept && `Accepts: ${Array.isArray(accept) ? accept.join(', ') : accept}`}
+                {accept &&
+                  `Accepts: ${Array.isArray(accept) ? accept.join(', ') : accept}`}
                 {maxSize && ` • Max size: ${formatFileSize(maxSize)}`}
                 {maxFiles && ` • Max files: ${maxFiles}`}
               </>
@@ -553,14 +582,14 @@ export function SimpleUpload({
           </p>
 
           {/* Action Button */}
-          <span className="inline-flex items-center px-4 py-2 bg-accent text-accent-foreground rounded-lg font-medium hover:bg-accent-hover transition-colors">
+          <span className='inline-flex items-center rounded-lg bg-accent px-4 py-2 font-medium text-accent-foreground transition-colors hover:bg-accent-hover'>
             {placeholder?.buttonText || 'Choose files'}
           </span>
 
           {/* Error Message */}
           {error && (
-            <div className="mt-4 flex items-center gap-2 text-error text-sm">
-              <AlertCircle className="w-4 h-4" />
+            <div className='mt-4 flex items-center gap-2 text-sm text-error'>
+              <AlertCircle className='h-4 w-4' />
               {error}
             </div>
           )}
@@ -568,10 +597,10 @@ export function SimpleUpload({
 
         {/* Upload Progress Overlay */}
         {uploading && (
-          <div className="absolute inset-0 bg-surface-overlay/50 backdrop-blur-sm flex items-center justify-center rounded-lg">
-            <div className="text-center">
-              <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-              <p className="text-sm text-foreground">Uploading...</p>
+          <div className='bg-surface-overlay/50 absolute inset-0 flex items-center justify-center rounded-lg backdrop-blur-sm'>
+            <div className='text-center'>
+              <div className='mx-auto mb-2 h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent' />
+              <p className='text-sm text-foreground'>Uploading...</p>
             </div>
           </div>
         )}
@@ -580,20 +609,20 @@ export function SimpleUpload({
       {/* Upload Queue */}
       {showQueue && uploadQueue.length > 0 && (
         <div className={cn(uploadQueueVariants({ surface }))}>
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="font-medium text-foreground">
+          <div className='mb-3 flex items-center justify-between'>
+            <h4 className='font-medium text-foreground'>
               Upload Queue ({uploadQueue.length})
             </h4>
             <button
               onClick={clearQueue}
-              className="text-sm text-foreground-muted hover:text-foreground transition-colors"
+              className='text-sm text-foreground-muted transition-colors hover:text-foreground'
             >
               Clear all
             </button>
           </div>
 
-          <div className="space-y-2">
-            {uploadQueue.map((item) => (
+          <div className='space-y-2'>
+            {uploadQueue.map(item => (
               <QueueItem
                 key={item.id}
                 item={item}
@@ -620,99 +649,119 @@ interface QueueItemProps {
   onRetry: (id: string) => void;
 }
 
-function QueueItem({ item, showProgress, showPreview, onRemove, onRetry }: QueueItemProps) {
+function QueueItem({
+  item,
+  showProgress,
+  showPreview,
+  onRemove,
+  onRetry,
+}: QueueItemProps) {
   const getFileIcon = (file: File) => {
-    if (file.type.startsWith('image/')) return <Image className="w-5 h-5" />;
-    if (file.type.startsWith('video/')) return <Video className="w-5 h-5" />;
-    if (file.type.startsWith('audio/')) return <Music className="w-5 h-5" />;
-    if (file.type.includes('zip') || file.type.includes('rar')) return <Archive className="w-5 h-5" />;
-    return <FileText className="w-5 h-5" />;
+    if (file.type.startsWith('image/')) return <Image className='h-5 w-5' />;
+    if (file.type.startsWith('video/')) return <Video className='h-5 w-5' />;
+    if (file.type.startsWith('audio/')) return <Music className='h-5 w-5' />;
+    if (file.type.includes('zip') || file.type.includes('rar'))
+      return <Archive className='h-5 w-5' />;
+    return <FileText className='h-5 w-5' />;
   };
 
   const getStatusText = (status: UploadQueueItem['status']) => {
     switch (status) {
-      case 'pending': return 'Pending';
-      case 'uploading': return 'Uploading';
-      case 'completed': return 'Completed';
-      case 'error': return 'Failed';
-      case 'paused': return 'Paused';
+      case 'pending':
+        return 'Pending';
+      case 'uploading':
+        return 'Uploading';
+      case 'completed':
+        return 'Completed';
+      case 'error':
+        return 'Failed';
+      case 'paused':
+        return 'Paused';
     }
   };
 
   return (
     <div className={queueItemVariants({ status: item.status })}>
       {/* File Icon & Preview */}
-      <div className="flex-shrink-0">
+      <div className='flex-shrink-0'>
         {showPreview && item.file.type.startsWith('image/') ? (
-          <div className="w-10 h-10 rounded bg-surface-subtle overflow-hidden">
+          <div className='bg-surface-subtle h-10 w-10 overflow-hidden rounded'>
             <img
               src={URL.createObjectURL(item.file)}
               alt={item.file.name}
-              className="w-full h-full object-cover"
-              onLoad={(e) => URL.revokeObjectURL((e.target as HTMLImageElement).src)}
+              className='h-full w-full object-cover'
+              onLoad={e =>
+                URL.revokeObjectURL((e.target as HTMLImageElement).src)
+              }
             />
           </div>
         ) : (
-          <div className="w-10 h-10 rounded bg-surface-subtle flex items-center justify-center text-foreground-muted">
+          <div className='bg-surface-subtle flex h-10 w-10 items-center justify-center rounded text-foreground-muted'>
             {getFileIcon(item.file)}
           </div>
         )}
       </div>
 
       {/* File Info */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <p className="font-medium text-foreground truncate">{item.file.name}</p>
-          <span className={cn(
-            'text-xs px-2 py-0.5 rounded-full',
-            item.status === 'completed' && 'bg-success/20 text-success',
-            item.status === 'error' && 'bg-error/20 text-error',
-            item.status === 'uploading' && 'bg-accent/20 text-accent',
-            item.status === 'pending' && 'bg-surface-subtle text-foreground-muted'
-          )}>
+      <div className='min-w-0 flex-1'>
+        <div className='flex items-center gap-2'>
+          <p className='truncate font-medium text-foreground'>
+            {item.file.name}
+          </p>
+          <span
+            className={cn(
+              'rounded-full px-2 py-0.5 text-xs',
+              item.status === 'completed' && 'bg-success/20 text-success',
+              item.status === 'error' && 'bg-error/20 text-error',
+              item.status === 'uploading' && 'bg-accent/20 text-accent',
+              item.status === 'pending' &&
+                'bg-surface-subtle text-foreground-muted'
+            )}
+          >
             {getStatusText(item.status)}
           </span>
         </div>
 
-        <div className="flex items-center gap-4 text-xs text-foreground-muted">
+        <div className='flex items-center gap-4 text-xs text-foreground-muted'>
           <span>{formatFileSize(item.file.size)}</span>
           {item.status === 'uploading' && showProgress && (
             <span>{item.progress}%</span>
           )}
           {item.error && (
-            <span className="text-error">{item.error.message}</span>
+            <span className='text-error'>{item.error.message}</span>
           )}
         </div>
 
         {/* Progress Bar */}
-        {showProgress && (item.status === 'uploading' || item.status === 'completed') && (
-          <div className="mt-2 w-full bg-surface-subtle rounded-full h-1.5">
-            <div
-              className={cn(
-                'h-full rounded-full transition-all duration-300',
-                item.status === 'completed' ? 'bg-success' : 'bg-accent'
-              )}
-              style={{ width: `${item.progress}%` }}
-            />
-          </div>
-        )}
+        {showProgress &&
+          (item.status === 'uploading' || item.status === 'completed') && (
+            <div className='bg-surface-subtle mt-2 h-1.5 w-full rounded-full'>
+              <div
+                className={cn(
+                  'h-full rounded-full transition-all duration-300',
+                  item.status === 'completed' ? 'bg-success' : 'bg-accent'
+                )}
+                style={{ width: `${item.progress}%` }}
+              />
+            </div>
+          )}
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2">
+      <div className='flex items-center gap-2'>
         {item.status === 'error' && (
           <button
             onClick={() => onRetry(item.id)}
-            className="text-xs text-accent hover:text-accent-hover transition-colors"
+            className='text-xs text-accent transition-colors hover:text-accent-hover'
           >
             Retry
           </button>
         )}
         <button
           onClick={() => onRemove(item.id)}
-          className="p-1 text-foreground-muted hover:text-foreground transition-colors"
+          className='p-1 text-foreground-muted transition-colors hover:text-foreground'
         >
-          <X className="w-4 h-4" />
+          <X className='h-4 w-4' />
         </button>
       </div>
     </div>

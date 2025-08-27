@@ -2,7 +2,7 @@
 
 **Purpose**: One master, drift‑safe playbook to govern vibe‑coding for SparkTasks. It merges **Dev Plan v5** with **Progressive Modes** into a single, enforceable SSOT: allowed/forbidden paths, phase gates, feature flags, DoD, tests, and wireframes.
 
-**Rule #1 (Anti‑Drift)**: If a change needs >\~220 diff lines *or* requires leaving allowed paths → **stop and ask ONE question**. Output unified git diff only (no prose).
+**Rule #1 (Anti‑Drift)**: If a change needs >\~220 diff lines _or_ requires leaving allowed paths → **stop and ask ONE question**. Output unified git diff only (no prose).
 
 ---
 
@@ -10,10 +10,10 @@
 
 **DRIFT‑SAFE CODING INSTRUCTION — SparkTasks**
 
-* Apply only the explicit change. If completion requires leaving allowed paths or >\~220 diff lines, stop and return ONE clarifying question.
-* **Output**: unified git diff only (no prose/logs).
-* **Rules**: surgical patch; preserve unaffected lines; don’t change public APIs/flags/error‑codes/schema/budgets/deps; never touch CI or security/E2EE without explicit approval; no new deps/lockfile churn; **tokens only** (no hardcoded Tailwind); keep `data-testid` selectors stable.
-* **DoD (ALL tasks)**: type‑check/test/build pass; eslint+prettier clean (touched files); perf budgets respected; UI validates focus/ARIA/keyboard; zero console errors; zero TODOs.
+- Apply only the explicit change. If completion requires leaving allowed paths or >\~220 diff lines, stop and return ONE clarifying question.
+- **Output**: unified git diff only (no prose/logs).
+- **Rules**: surgical patch; preserve unaffected lines; don’t change public APIs/flags/error‑codes/schema/budgets/deps; never touch CI or security/E2EE without explicit approval; no new deps/lockfile churn; **tokens only** (no hardcoded Tailwind); keep `data-testid` selectors stable.
+- **DoD (ALL tasks)**: type‑check/test/build pass; eslint+prettier clean (touched files); perf budgets respected; UI validates focus/ARIA/keyboard; zero console errors; zero TODOs.
 
 > **North Star / Gates**: BYOS adoption ≥60%, portability ≥99%; p95 search <200ms @10k; lists 60fps @10k; drawer TTI <120ms; bundle <250KB gz; zero server‑side content in BYOS; audit to user storage; rate limits on.
 
@@ -21,9 +21,9 @@
 
 ## 1) Ground‑Truth Snapshot
 
-* **Positioning**: storage‑neutral, local‑first task hub; win on TCO, portability, explainable speed.
-* **Critical Gap**: Functional UI is the priority (no placeholder shells). Backend/domain logic exists; build **usable task + file workflows** now.
-* **Competitive Promise**: Linear‑grade speed, Trello familiarity, unified approvals, project‑native files, visible sovereignty.
+- **Positioning**: storage‑neutral, local‑first task hub; win on TCO, portability, explainable speed.
+- **Critical Gap**: Functional UI is the priority (no placeholder shells). Backend/domain logic exists; build **usable task + file workflows** now.
+- **Competitive Promise**: Linear‑grade speed, Trello familiarity, unified approvals, project‑native files, visible sovereignty.
 
 ---
 
@@ -31,14 +31,14 @@
 
 ### 2.1 Allowed (patches permitted)
 
-* `src/components/**` (UI only — keep public props stable)
-* `src/modules/tasks/**` (wire to existing stores/services only; no API shape changes)
-* `src/modules/files/**` (Preview, Library; wire‑up only)
-* `src/stores/**` **read‑only contracts**; may add selectors/hooks without breaking shape
-* `src/app/(routes)/board/**`, `src/app/(routes)/library/**`, `src/App.tsx`
-* `src/config/modes.ts` (SSOT for feature flags)
-* `tests/**` (unit/integration/e2e + selector SSOT)
-* `docs/` (this file + wireframes)
+- `src/components/**` (UI only — keep public props stable)
+- `src/modules/tasks/**` (wire to existing stores/services only; no API shape changes)
+- `src/modules/files/**` (Preview, Library; wire‑up only)
+- `src/stores/**` **read‑only contracts**; may add selectors/hooks without breaking shape
+- `src/app/(routes)/board/**`, `src/app/(routes)/library/**`, `src/App.tsx`
+- `src/config/modes.ts` (SSOT for feature flags)
+- `tests/**` (unit/integration/e2e + selector SSOT)
+- `docs/` (this file + wireframes)
 
 ### 2.2 Keep / Create (scaffold)
 
@@ -71,11 +71,11 @@ docs/
 
 ### 2.3 Forbidden
 
-* **Hardcoded Tailwind classes** (must use `DESIGN_TOKENS` + `combineTokens()`)
-* New screens/shells outside **Board / List / Drawer / Spotlight** paradigms
-* Performance regressions; UI bloat; unstable public APIs
-* CI, security/E2EE, billing contracts — **do not modify** without explicit approval
-* Adding dependencies; changing build tooling; lockfile churn
+- **Hardcoded Tailwind classes** (must use `DESIGN_TOKENS` + `combineTokens()`)
+- New screens/shells outside **Board / List / Drawer / Spotlight** paradigms
+- Performance regressions; UI bloat; unstable public APIs
+- CI, security/E2EE, billing contracts — **do not modify** without explicit approval
+- Adding dependencies; changing build tooling; lockfile churn
 
 ---
 
@@ -88,19 +88,19 @@ docs/
 export type AppMode = 'individual' | 'team' | 'org';
 
 export interface FeatureFlags {
-  approvals: boolean;         // Unified approval banner
-  files: boolean;             // File Library + Preview
-  powerQuickAdd: boolean;     // @assignee #label !priority ^due grammar
-  presence: boolean;          // real-time presence, typing indicators
-  byos: boolean;              // storage provider switch + residency badge
-  sso: boolean;               // SSO/SCIM (read-only UI surfaces)
-  adminInsights: boolean;     // usage, members, policy readouts
+  approvals: boolean; // Unified approval banner
+  files: boolean; // File Library + Preview
+  powerQuickAdd: boolean; // @assignee #label !priority ^due grammar
+  presence: boolean; // real-time presence, typing indicators
+  byos: boolean; // storage provider switch + residency badge
+  sso: boolean; // SSO/SCIM (read-only UI surfaces)
+  adminInsights: boolean; // usage, members, policy readouts
 }
 
 export const FEATURE_MATRIX: Record<AppMode, FeatureFlags> = {
   individual: {
     approvals: false,
-    files: true,        // local-only basics
+    files: true, // local-only basics
     powerQuickAdd: true,
     presence: false,
     byos: false,
@@ -108,20 +108,20 @@ export const FEATURE_MATRIX: Record<AppMode, FeatureFlags> = {
     adminInsights: false,
   },
   team: {
-    approvals: true,    // single approver
+    approvals: true, // single approver
     files: true,
     powerQuickAdd: true,
     presence: true,
-    byos: true,         // limited providers
+    byos: true, // limited providers
     sso: false,
     adminInsights: true,
   },
   org: {
-    approvals: true,    // seq/parallel/quorum
+    approvals: true, // seq/parallel/quorum
     files: true,
     powerQuickAdd: true,
     presence: true,
-    byos: true,         // multi-storage + residency
+    byos: true, // multi-storage + residency
     sso: true,
     adminInsights: true,
   },
@@ -137,7 +137,13 @@ export const FEATURE_MATRIX: Record<AppMode, FeatureFlags> = {
 import { FEATURE_MATRIX, type AppMode } from '@/config/modes';
 import { useAppMode } from '@/stores/selectors'; // read-only hook
 
-export function ModeGate({ requires, children }: { requires: keyof FeatureFlags; children: React.ReactNode }) {
+export function ModeGate({
+  requires,
+  children,
+}: {
+  requires: keyof FeatureFlags;
+  children: React.ReactNode;
+}) {
   const mode = useAppMode() as AppMode;
   return FEATURE_MATRIX[mode][requires] ? <>{children}</> : null;
 }
@@ -152,22 +158,22 @@ export function ModeGate({ requires, children }: { requires: keyof FeatureFlags;
 
 ### 3.3 Mode Switcher (topbar)
 
-* **Location**: AppShell topbar right (beside Profile)
-* **States**: `Individual | Small Team | Organization`
-* **Persistence**: per workspace (store + local fallback)
-* **A11y**: labeled control; focus ring; visible indicator of current mode
+- **Location**: AppShell topbar right (beside Profile)
+- **States**: `Individual | Small Team | Organization`
+- **Persistence**: per workspace (store + local fallback)
+- **A11y**: labeled control; focus ring; visible indicator of current mode
 
 ### 3.4 Capability Matrix (at a glance)
 
-| Capability                   | Individual |          Small Team |                  Organization |
-| ---------------------------- | ---------: | ------------------: | ----------------------------: |
-| Task CRUD + QuickAdd grammar |          ✅ |                   ✅ |                             ✅ |
-| File Library + Preview       |  ✅ (local) |                   ✅ |                             ✅ |
-| Unified Approval Banner      |          ❌ | ✅ (single approver) |       ✅ (seq/parallel/quorum) |
-| Real‑time Presence           |          ❌ |                   ✅ |                             ✅ |
-| BYOS + Residency Badge       |          ❌ |         ✅ (limited) | ✅ (multi-storage + residency) |
-| Admin Insights               |          ❌ |                   ✅ |                             ✅ |
-| SSO/SCIM                     |          ❌ |                   ❌ |                             ✅ |
+| Capability                   | Individual |           Small Team |                   Organization |
+| ---------------------------- | ---------: | -------------------: | -----------------------------: |
+| Task CRUD + QuickAdd grammar |         ✅ |                   ✅ |                             ✅ |
+| File Library + Preview       | ✅ (local) |                   ✅ |                             ✅ |
+| Unified Approval Banner      |         ❌ | ✅ (single approver) |       ✅ (seq/parallel/quorum) |
+| Real‑time Presence           |         ❌ |                   ✅ |                             ✅ |
+| BYOS + Residency Badge       |         ❌ |         ✅ (limited) | ✅ (multi-storage + residency) |
+| Admin Insights               |         ❌ |                   ✅ |                             ✅ |
+| SSO/SCIM                     |         ❌ |                   ❌ |                             ✅ |
 
 ---
 
@@ -177,71 +183,71 @@ export function ModeGate({ requires, children }: { requires: keyof FeatureFlags;
 
 #### M0 (Week 1–2): **Shell + Trello‑parity foundation**
 
-* AppShell/Topbar/Sidebar (token‑driven)
-* KanbanBoard (60fps DnD mouse+keyboard)
-* QuickAdd per column (optimistic), TaskDrawer with inline edit
-* CommandPalette (⌘K), SearchInput p95 <200ms
-* Library entry in Sidebar; Residency badge surface (gated)
+- AppShell/Topbar/Sidebar (token‑driven)
+- KanbanBoard (60fps DnD mouse+keyboard)
+- QuickAdd per column (optimistic), TaskDrawer with inline edit
+- CommandPalette (⌘K), SearchInput p95 <200ms
+- Library entry in Sidebar; Residency badge surface (gated)
 
 **DoD (M0)**
 
-* p95 interaction <200ms @10k, DnD 60fps, tab order + ARIA complete
-* Unit + Integration >90% on touched components; E2E happy path (add/edit/dnd)
-* Tokens‑only; no public API breaks; zero console errors
+- p95 interaction <200ms @10k, DnD 60fps, tab order + ARIA complete
+- Unit + Integration >90% on touched components; E2E happy path (add/edit/dnd)
+- Tokens‑only; no public API breaks; zero console errors
 
 **Tests (M0)**
 
-* Vitest: TaskCard, QuickAdd, Drawer a11y
-* Playwright: board smoke (`board-container`), create card, DnD, open Drawer
+- Vitest: TaskCard, QuickAdd, Drawer a11y
+- Playwright: board smoke (`board-container`), create card, DnD, open Drawer
 
 #### M1 (Week 3–4): **Task depth + File intelligence**
 
-* Power Quick Add grammar (@, #, !, ^)
-* Focus Sessions (⌘J)
-* Editors: Priority/Labels/Relations/Checklist
-* Unified Approval Banner v1 (single approver) **shared by Task + Asset**
-* File Library Grid/List; Asset Preview in Drawer (image/pdf/video)
-* Local PDF/Doc text extraction; Spotlight tokens (`type:pdf ext:docx owner:@alice`)
-* Offline upload queue; calendar overlay (read‑only hotspots)
+- Power Quick Add grammar (@, #, !, ^)
+- Focus Sessions (⌘J)
+- Editors: Priority/Labels/Relations/Checklist
+- Unified Approval Banner v1 (single approver) **shared by Task + Asset**
+- File Library Grid/List; Asset Preview in Drawer (image/pdf/video)
+- Local PDF/Doc text extraction; Spotlight tokens (`type:pdf ext:docx owner:@alice`)
+- Offline upload queue; calendar overlay (read‑only hotspots)
 
 **DoD (M1)**
 
-* Unified approval banner used by Task + Asset
-* Local search shows PDF content; no context switch task→file→approval
-* Perf: preview <120ms; search p95 <200ms; background upload resilient
+- Unified approval banner used by Task + Asset
+- Local search shows PDF content; no context switch task→file→approval
+- Perf: preview <120ms; search p95 <200ms; background upload resilient
 
 **Tests (M1)**
 
-* Unit: ApprovalBanner, AssetCard, PreviewPane
-* E2E: ZCS proof; unified approval proof; PDF text match
+- Unit: ApprovalBanner, AssetCard, PreviewPane
+- E2E: ZCS proof; unified approval proof; PDF text match
 
 #### M2 (Week 5–6): **BYOS + Migration + Sovereignty proof**
 
-* Google Drive BYOS; CSV Import (smart mapping); `.sparkpack` export/import (≥99% fidelity)
-* Ed25519 signing + verify badge in Activity; offline CRUD with conflict‑cards
-* Residency badge popover; Provider selector; Notifications Center; Billing light
+- Google Drive BYOS; CSV Import (smart mapping); `.sparkpack` export/import (≥99% fidelity)
+- Ed25519 signing + verify badge in Activity; offline CRUD with conflict‑cards
+- Residency badge popover; Provider selector; Notifications Center; Billing light
 
 **DoD (M2)**
 
-* `.sparkpack` retains file↔task relations; signatures verifiable
-* Storage switch preserves relationships; conflict‑cards resolve offline edits
-* Admin: Members/Usage visible; basic notifications working
+- `.sparkpack` retains file↔task relations; signatures verifiable
+- Storage switch preserves relationships; conflict‑cards resolve offline edits
+- Admin: Members/Usage visible; basic notifications working
 
 **Tests (M2)**
 
-* Unit: CSVMapping, ResidencyBadge
-* E2E: sovereignty demo (provider switch), import/export fidelity, offline conflict flow
+- Unit: CSVMapping, ResidencyBadge
+- E2E: sovereignty demo (provider switch), import/export fidelity, offline conflict flow
 
 ### Stage 2: Team Collaboration (Weeks 7–12)
 
-* Real‑time presence; flow chips; WIP limits; dependency mini‑map; shared views & briefs
-* Approvals v2 (sequential/parallel/quorum); multi‑storage BYOS; policy templates (read‑only)
+- Real‑time presence; flow chips; WIP limits; dependency mini‑map; shared views & briefs
+- Approvals v2 (sequential/parallel/quorum); multi‑storage BYOS; policy templates (read‑only)
 
 **DoD**: presence <300ms; WIP gentle saturation; briefs printable; approval activity unified
 
 ### Stage 3: Organization (Weeks 13–18)
 
-* SSO/SCIM; policy inheritance (explainable); audit excellence; global scale options (read‑only toggles)
+- SSO/SCIM; policy inheritance (explainable); audit excellence; global scale options (read‑only toggles)
 
 **DoD**: org policy reads; audit chain visible; export compliance bundle (no backend change in this phase)
 
@@ -255,16 +261,34 @@ export function ModeGate({ requires, children }: { requires: keyof FeatureFlags;
 // tests/ssot/selectors.ts
 export const S = {
   // Shell & nav
-  navTasks: 'nav-tasks', navSidebar: 'nav-sidebar', projectSwitcher: 'project-switcher',
+  navTasks: 'nav-tasks',
+  navSidebar: 'nav-sidebar',
+  projectSwitcher: 'project-switcher',
   // Board & tasks
-  board: 'board-container', quickAdd: 'quick-add-input', taskTitle: 'task-title', dnd: 'card-dnd-handle', drawer: 'task-detail-drawer',
+  board: 'board-container',
+  quickAdd: 'quick-add-input',
+  taskTitle: 'task-title',
+  dnd: 'card-dnd-handle',
+  drawer: 'task-detail-drawer',
   // Search & commands
-  search: 'search-input', results: 'search-results', palette: 'command-palette', macroRun: 'macro-run', macroWhy: 'macro-why',
+  search: 'search-input',
+  results: 'search-results',
+  palette: 'command-palette',
+  macroRun: 'macro-run',
+  macroWhy: 'macro-why',
   // Files
-  upload: 'asset-upload', fileInput: 'file-input', filePreview: 'asset-preview', fileMatch: 'pdf-content-match', library: 'nav-library',
+  upload: 'asset-upload',
+  fileInput: 'file-input',
+  filePreview: 'asset-preview',
+  fileMatch: 'pdf-content-match',
+  library: 'nav-library',
   // Approvals & Modes
-  approvalBanner: 'approval-banner', taskApprove: 'task-approval-banner', assetApprove: 'asset-approval-banner',
-  modeSwitcher: 'mode-switcher', modeIndicator: 'mode-indicator', residencyBadge: 'residency-badge',
+  approvalBanner: 'approval-banner',
+  taskApprove: 'task-approval-banner',
+  assetApprove: 'asset-approval-banner',
+  modeSwitcher: 'mode-switcher',
+  modeIndicator: 'mode-indicator',
+  residencyBadge: 'residency-badge',
 };
 ```
 
@@ -300,12 +324,20 @@ test('Individual hides approvals & BYOS; Org shows them', async ({ page }) => {
   await page.goto('/board');
   await page.click(`[data-testid="${S.modeSwitcher}"]`);
   await page.click('text=Individual');
-  await expect(page.locator(`[data-testid="${S.approvalBanner}"]`)).toHaveCount(0);
-  await expect(page.locator(`[data-testid="${S.residencyBadge}"]`)).toHaveCount(0);
+  await expect(page.locator(`[data-testid="${S.approvalBanner}"]`)).toHaveCount(
+    0
+  );
+  await expect(page.locator(`[data-testid="${S.residencyBadge}"]`)).toHaveCount(
+    0
+  );
   await page.click(`[data-testid="${S.modeSwitcher}"]`);
   await page.click('text=Organization');
-  await expect(page.locator(`[data-testid="${S.approvalBanner}"]`)).toBeVisible();
-  await expect(page.locator(`[data-testid="${S.residencyBadge}"]`)).toBeVisible();
+  await expect(
+    page.locator(`[data-testid="${S.approvalBanner}"]`)
+  ).toBeVisible();
+  await expect(
+    page.locator(`[data-testid="${S.residencyBadge}"]`)
+  ).toBeVisible();
 });
 ```
 
@@ -323,17 +355,17 @@ it('renders cryptographic badge and handles approve', async () => {
 
 ### 5.5 Performance Budgets
 
-* `drawer_tti < 120ms`, `search_p95 < 200ms @10k`, `drag_drop 60fps`, `file_preview < 120ms`, `approval_flow < 100ms`, `offline_sync < 2s`.
+- `drawer_tti < 120ms`, `search_p95 < 200ms @10k`, `drag_drop 60fps`, `file_preview < 120ms`, `approval_flow < 100ms`, `offline_sync < 2s`.
 
 ---
 
 ## 6) DoD — Cross‑Cutting Quality Gates
 
-* **Type Safety**: strict TS, no `any`; public types stable.
-* **A11y**: axe‑clean; keyboard flows; ARIA current/page; focus outlines; focus trap in drawers.
-* **Performance**: budgets met; no layout thrash; content‑visibility where safe; virtualization for large lists.
-* **Design System**: 100% token usage; `combineTokens` for variants; scorecard pass.
-* **Docs**: update MDX/README per component; include purpose/usage/a11y/API.
+- **Type Safety**: strict TS, no `any`; public types stable.
+- **A11y**: axe‑clean; keyboard flows; ARIA current/page; focus outlines; focus trap in drawers.
+- **Performance**: budgets met; no layout thrash; content‑visibility where safe; virtualization for large lists.
+- **Design System**: 100% token usage; `combineTokens` for variants; scorecard pass.
+- **Docs**: update MDX/README per component; include purpose/usage/a11y/API.
 
 ---
 
@@ -417,25 +449,25 @@ DoD: typecheck/test/build; a11y; perf budget; no console errors
 
 ## 9) Token & Styling Rules (no exceptions)
 
-* Import `{ DESIGN_TOKENS, combineTokens }` from `@/design/tokens`.
-* Replace any literal Tailwind classes with tokens; variants map to token groups.
-* Add new design primitives **only** via tokens; propose token before code.
+- Import `{ DESIGN_TOKENS, combineTokens }` from `@/design/tokens`.
+- Replace any literal Tailwind classes with tokens; variants map to token groups.
+- Add new design primitives **only** via tokens; propose token before code.
 
 ---
 
 ## 10) Success Metrics (Exec‑visible)
 
-* Zero‑context‑switch workflows >95%
-* Unified approval usage 100% across tasks/assets
-* Residency visibility 100%; provider switch retains relations
-* p95 interaction <200ms; preview <120ms; DnD 60fps
+- Zero‑context‑switch workflows >95%
+- Unified approval usage 100% across tasks/assets
+- Residency visibility 100%; provider switch retains relations
+- p95 interaction <200ms; preview <120ms; DnD 60fps
 
 ---
 
 ## 11) Governance
 
-* **Change Control**: micro‑patch discipline; if scope exceeds bounds → one question, then stop.
-* **Audit**: log mode changes (who/when) — read‑only in this phase; no CI/security edits without approval.
+- **Change Control**: micro‑patch discipline; if scope exceeds bounds → one question, then stop.
+- **Audit**: log mode changes (who/when) — read‑only in this phase; no CI/security edits without approval.
 
 ---
 

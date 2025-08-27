@@ -70,7 +70,9 @@ className={cn(
 // BEFORE: Manual style mapping
 const levelStyles = {
   error: cn('bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400'),
-  warn: cn('bg-yellow-50 text-yellow-600 dark:bg-yellow-950/50 dark:text-yellow-400'),
+  warn: cn(
+    'bg-yellow-50 text-yellow-600 dark:bg-yellow-950/50 dark:text-yellow-400'
+  ),
   // ...
 };
 

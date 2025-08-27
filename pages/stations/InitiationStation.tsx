@@ -33,7 +33,7 @@ interface ProjectCharter {
 
 /**
  * Initiation Station Component
- * 
+ *
  * Provides project charter creation with PMBOK compliance and academic anchoring
  */
 export const InitiationStation: React.FC = () => {
@@ -57,10 +57,16 @@ export const InitiationStation: React.FC = () => {
     }));
   };
 
-  const handleArrayChange = (field: keyof ProjectCharter, index: number, value: string) => {
+  const handleArrayChange = (
+    field: keyof ProjectCharter,
+    index: number,
+    value: string
+  ) => {
     setCharter(prev => ({
       ...prev,
-      [field]: (prev[field] as string[]).map((item, i) => i === index ? value : item),
+      [field]: (prev[field] as string[]).map((item, i) =>
+        i === index ? value : item
+      ),
     }));
   };
 
@@ -85,97 +91,115 @@ export const InitiationStation: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
+    <div className='mx-auto max-w-4xl space-y-8'>
       {/* Academic Anchor Header */}
-      <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-6 backdrop-blur-sm">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-full">
+      <div className='rounded-lg border border-slate-700 bg-slate-900/50 p-6 backdrop-blur-sm'>
+        <div className='mb-3 flex items-center gap-3'>
+          <div className='rounded-full bg-blue-600 px-3 py-1 text-sm font-medium text-white'>
             PMBOK Initiating
           </div>
-          <h2 className="text-xl font-semibold text-white">Project Charter Creation</h2>
+          <h2 className='text-xl font-semibold text-white'>
+            Project Charter Creation
+          </h2>
         </div>
-        <p className="text-slate-300 text-sm leading-relaxed">
-          <strong>Academic Anchor:</strong> PMBOK 7th Edition - Initiating Process Group
+        <p className='text-sm leading-relaxed text-slate-300'>
+          <strong>Academic Anchor:</strong> PMBOK 7th Edition - Initiating
+          Process Group
           <br />
-          <strong>Purpose:</strong> Formally authorize the project and define initial scope, 
-          objectives, and stakeholder requirements. This station ensures proper project 
-          foundation according to internationally recognized project management standards.
+          <strong>Purpose:</strong> Formally authorize the project and define
+          initial scope, objectives, and stakeholder requirements. This station
+          ensures proper project foundation according to internationally
+          recognized project management standards.
         </p>
       </div>
 
       {/* Project Charter Form */}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-slate-900/30 border border-slate-700 rounded-lg p-6">
-          <h3 className="text-lg font-medium text-white mb-4">Project Charter</h3>
-          
+      <form onSubmit={handleSubmit} className='space-y-6'>
+        <div className='rounded-lg border border-slate-700 bg-slate-900/30 p-6'>
+          <h3 className='mb-4 text-lg font-medium text-white'>
+            Project Charter
+          </h3>
+
           {/* Project Title */}
-          <div className="space-y-2">
-            <label htmlFor="title" className="block text-sm font-medium text-slate-300">
+          <div className='space-y-2'>
+            <label
+              htmlFor='title'
+              className='block text-sm font-medium text-slate-300'
+            >
               Project Title *
             </label>
             <input
-              id="title"
-              type="text"
+              id='title'
+              type='text'
               value={charter.title || ''}
-              onChange={(e) => handleInputChange('title', e.target.value)}
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
-              placeholder="Enter project title..."
+              onChange={e => handleInputChange('title', e.target.value)}
+              className='w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3 text-white placeholder-slate-400 transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              placeholder='Enter project title...'
               required
             />
           </div>
 
           {/* Project Description */}
-          <div className="space-y-2">
-            <label htmlFor="description" className="block text-sm font-medium text-slate-300">
+          <div className='space-y-2'>
+            <label
+              htmlFor='description'
+              className='block text-sm font-medium text-slate-300'
+            >
               Project Description *
             </label>
             <textarea
-              id="description"
+              id='description'
               value={charter.description || ''}
-              onChange={(e) => handleInputChange('description', e.target.value)}
+              onChange={e => handleInputChange('description', e.target.value)}
               rows={4}
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors resize-vertical"
-              placeholder="Describe the project purpose, deliverables, and expected outcomes..."
+              className='resize-vertical w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3 text-white placeholder-slate-400 transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              placeholder='Describe the project purpose, deliverables, and expected outcomes...'
               required
             />
           </div>
 
           {/* Project Scope */}
-          <div className="space-y-2">
-            <label htmlFor="scope" className="block text-sm font-medium text-slate-300">
+          <div className='space-y-2'>
+            <label
+              htmlFor='scope'
+              className='block text-sm font-medium text-slate-300'
+            >
               Project Scope *
             </label>
             <textarea
-              id="scope"
+              id='scope'
               value={charter.scope || ''}
-              onChange={(e) => handleInputChange('scope', e.target.value)}
+              onChange={e => handleInputChange('scope', e.target.value)}
               rows={3}
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors resize-vertical"
-              placeholder="Define what is included and excluded from the project scope..."
+              className='resize-vertical w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3 text-white placeholder-slate-400 transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              placeholder='Define what is included and excluded from the project scope...'
               required
             />
           </div>
 
           {/* Objectives */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-slate-300">
+          <div className='space-y-2'>
+            <label htmlFor='objective-0' className='block text-sm font-medium text-slate-300'>
               Project Objectives *
             </label>
             {charter.objectives?.map((objective, index) => (
-              <div key={index} className="flex gap-2">
+              <div key={index} className='flex gap-2'>
                 <input
-                  type="text"
+                  id={index === 0 ? 'objective-0' : undefined}
+                  type='text'
                   value={objective}
-                  onChange={(e) => handleArrayChange('objectives', index, e.target.value)}
-                  className="flex-1 px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                  onChange={e =>
+                    handleArrayChange('objectives', index, e.target.value)
+                  }
+                  className='flex-1 rounded-lg border border-slate-600 bg-slate-800 px-4 py-2 text-white placeholder-slate-400 transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                   placeholder={`Objective ${index + 1}`}
                   required={index === 0}
                 />
                 {charter.objectives && charter.objectives.length > 1 && (
                   <button
-                    type="button"
+                    type='button'
                     onClick={() => removeArrayItem('objectives', index)}
-                    className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                    className='rounded-lg bg-red-600 px-3 py-2 text-white transition-colors hover:bg-red-700'
                   >
                     Remove
                   </button>
@@ -183,53 +207,57 @@ export const InitiationStation: React.FC = () => {
               </div>
             ))}
             <button
-              type="button"
+              type='button'
               onClick={() => addArrayItem('objectives')}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
+              className='rounded-lg bg-blue-600 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-700'
             >
               Add Objective
             </button>
           </div>
 
           {/* Success Criteria */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-slate-300">
+          <div className='space-y-2'>
+            <label htmlFor='criteria-0' className='block text-sm font-medium text-slate-300'>
               Success Criteria
             </label>
             {charter.successCriteria?.map((criteria, index) => (
-              <div key={index} className="flex gap-2">
+              <div key={index} className='flex gap-2'>
                 <input
-                  type="text"
+                  id={index === 0 ? 'criteria-0' : undefined}
+                  type='text'
                   value={criteria}
-                  onChange={(e) => handleArrayChange('successCriteria', index, e.target.value)}
-                  className="flex-1 px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                  onChange={e =>
+                    handleArrayChange('successCriteria', index, e.target.value)
+                  }
+                  className='flex-1 rounded-lg border border-slate-600 bg-slate-800 px-4 py-2 text-white placeholder-slate-400 transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                   placeholder={`Success criteria ${index + 1}`}
                 />
-                {charter.successCriteria && charter.successCriteria.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeArrayItem('successCriteria', index)}
-                    className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
-                  >
-                    Remove
-                  </button>
-                )}
+                {charter.successCriteria &&
+                  charter.successCriteria.length > 1 && (
+                    <button
+                      type='button'
+                      onClick={() => removeArrayItem('successCriteria', index)}
+                      className='rounded-lg bg-red-600 px-3 py-2 text-white transition-colors hover:bg-red-700'
+                    >
+                      Remove
+                    </button>
+                  )}
               </div>
             ))}
             <button
-              type="button"
+              type='button'
               onClick={() => addArrayItem('successCriteria')}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
+              className='rounded-lg bg-blue-600 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-700'
             >
               Add Success Criteria
             </button>
           </div>
 
           {/* Submit Button */}
-          <div className="pt-6">
+          <div className='pt-6'>
             <button
-              type="submit"
-              className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105"
+              type='submit'
+              className='w-full transform rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-3 font-medium text-white transition-all duration-200 hover:scale-105 hover:from-blue-700 hover:to-purple-700'
             >
               Create Project Charter
             </button>
@@ -238,11 +266,12 @@ export const InitiationStation: React.FC = () => {
       </form>
 
       {/* PMBOK Compliance Note */}
-      <div className="bg-slate-900/20 border border-slate-700 rounded-lg p-4">
-        <p className="text-slate-400 text-sm">
-          <strong>PMBOK Compliance:</strong> This station implements the Initiating Process Group 
-          requirements including project charter development, stakeholder identification, and 
-          initial scope definition as specified in the Project Management Body of Knowledge 7th Edition.
+      <div className='rounded-lg border border-slate-700 bg-slate-900/20 p-4'>
+        <p className='text-sm text-slate-400'>
+          <strong>PMBOK Compliance:</strong> This station implements the
+          Initiating Process Group requirements including project charter
+          development, stakeholder identification, and initial scope definition
+          as specified in the Project Management Body of Knowledge 7th Edition.
         </p>
       </div>
     </div>

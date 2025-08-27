@@ -17,7 +17,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ArrowRight, Hash } from 'lucide-react';
 import React from 'react';
 
-import { getAdaptiveMotionClasses, prefersReducedMotion } from '@/components/primitives/motion-utils';
+import {
+  getAdaptiveMotionClasses,
+  prefersReducedMotion,
+} from '@/components/primitives/motion-utils';
 import { useZIndex } from '@/components/primitives/use-z-index';
 import { cn } from '@/utils/cn';
 
@@ -52,88 +55,91 @@ export interface CommandGroup {
 
 // ===== COMPONENT VARIANTS =====
 
-const commandPaletteVariants = cva([
-  // Base modal styling with MAPS tokens
-  'fixed left-1/2 top-[20%] -translate-x-1/2',
-  'w-full max-w-2xl',
-  'rounded-xl border overflow-hidden',
-  'shadow-2xl',
-], {
-  variants: {
-    surface: {
-      elevated: [
-        'bg-surface-elevated border-border-elevated',
-      ],
-      glass: [
-        'backdrop-blur-lg bg-surface-panel/90 border-border-glass',
-      ],
+const commandPaletteVariants = cva(
+  [
+    // Base modal styling with MAPS tokens
+    'fixed left-1/2 top-[20%] -translate-x-1/2',
+    'w-full max-w-2xl',
+    'overflow-hidden rounded-xl border',
+    'shadow-2xl',
+  ],
+  {
+    variants: {
+      surface: {
+        elevated: ['bg-surface-elevated border-border-elevated'],
+        glass: ['bg-surface-panel/90 border-border-glass backdrop-blur-lg'],
+      },
+      size: {
+        sm: 'max-w-lg',
+        md: 'max-w-2xl',
+        lg: 'max-w-4xl',
+      },
     },
-    size: {
-      sm: 'max-w-lg',
-      md: 'max-w-2xl',
-      lg: 'max-w-4xl',
+    defaultVariants: {
+      surface: 'glass',
+      size: 'md',
     },
-  },
-  defaultVariants: {
-    surface: 'glass',
-    size: 'md',
   }
-});
+);
 
-const commandOverlayVariants = cva([
-  'fixed inset-0',
-  'bg-background-overlay/60 backdrop-blur-sm',
-], {
-  variants: {
-    motionPreset: {
-      standard: '',
-      entrance: '',
-      spring: '',
-    }
-  },
-  defaultVariants: {
-    motionPreset: 'entrance',
+const commandOverlayVariants = cva(
+  ['fixed inset-0', 'bg-background-overlay/60 backdrop-blur-sm'],
+  {
+    variants: {
+      motionPreset: {
+        standard: '',
+        entrance: '',
+        spring: '',
+      },
+    },
+    defaultVariants: {
+      motionPreset: 'entrance',
+    },
   }
-});
+);
 
-const commandItemVariants = cva([
-  'relative flex items-center gap-3 px-4 py-3',
-  'cursor-pointer rounded-lg transition-colors',
-  'focus:outline-none',
-], {
-  variants: {
-    variant: {
-      default: [
-        'text-foreground hover:bg-surface-hover',
-        'data-[selected="true"]:bg-accent-bg data-[selected="true"]:text-accent-fg',
-      ],
-      destructive: [
-        'text-error-foreground hover:bg-error/10',
-        'data-[selected="true"]:bg-error data-[selected="true"]:text-error-foreground',
-      ],
-      success: [
-        'text-success-foreground hover:bg-success/10',
-        'data-[selected="true"]:bg-success data-[selected="true"]:text-success-foreground',
-      ],
-      warning: [
-        'text-warning-foreground hover:bg-warning/10',
-        'data-[selected="true"]:bg-warning data-[selected="true"]:text-warning-foreground',
-      ],
+const commandItemVariants = cva(
+  [
+    'relative flex items-center gap-3 px-4 py-3',
+    'cursor-pointer rounded-lg transition-colors',
+    'focus:outline-none',
+  ],
+  {
+    variants: {
+      variant: {
+        default: [
+          'hover:bg-surface-hover text-foreground',
+          'data-[selected="true"]:bg-accent-bg data-[selected="true"]:text-accent-fg',
+        ],
+        destructive: [
+          'text-error-foreground hover:bg-error/10',
+          'data-[selected="true"]:bg-error data-[selected="true"]:text-error-foreground',
+        ],
+        success: [
+          'text-success-foreground hover:bg-success/10',
+          'data-[selected="true"]:bg-success data-[selected="true"]:text-success-foreground',
+        ],
+        warning: [
+          'text-warning-foreground hover:bg-warning/10',
+          'data-[selected="true"]:bg-warning data-[selected="true"]:text-warning-foreground',
+        ],
+      },
+      disabled: {
+        true: 'cursor-not-allowed opacity-50',
+        false: '',
+      },
     },
-    disabled: {
-      true: 'opacity-50 cursor-not-allowed',
-      false: '',
+    defaultVariants: {
+      variant: 'default',
+      disabled: false,
     },
-  },
-  defaultVariants: {
-    variant: 'default',
-    disabled: false,
   }
-});
+);
 
 // ===== MAIN COMPONENT =====
 
-export interface CommandPaletteProps extends VariantProps<typeof commandPaletteVariants> {
+export interface CommandPaletteProps
+  extends VariantProps<typeof commandPaletteVariants> {
   // Visibility Control
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -184,10 +190,10 @@ export function CommandPalette({
   open,
   onOpenChange,
   trigger,
-  placeholder = "Search commands...",
+  placeholder = 'Search commands...',
   searchValue: controlledSearchValue,
   onSearchChange,
-  emptyText = "No commands found.",
+  emptyText = 'No commands found.',
   commands = [],
   dynamicCommands,
   closeOnSelect = true,
@@ -197,8 +203,8 @@ export function CommandPalette({
   size = 'md',
   _position = 'center',
   motionPreset = 'entrance',
-  ariaLabel = "Command palette",
-  ariaDescription = "Search and execute commands",
+  ariaLabel = 'Command palette',
+  ariaDescription = 'Search and execute commands',
   recentCommands = true,
   maxRecentCommands = 5,
   commandHistory = true,
@@ -216,10 +222,13 @@ export function CommandPalette({
 
   // Controlled search value support
   const currentSearchValue = controlledSearchValue ?? searchValue;
-  const handleSearchChange = React.useCallback((value: string) => {
-    setSearchValue(value);
-    onSearchChange?.(value);
-  }, [onSearchChange]);
+  const handleSearchChange = React.useCallback(
+    (value: string) => {
+      setSearchValue(value);
+      onSearchChange?.(value);
+    },
+    [onSearchChange]
+  );
 
   // ===== MAPS v3.0 INTEGRATIONS =====
 
@@ -242,7 +251,7 @@ export function CommandPalette({
     setLoading(true);
 
     dynamicCommands(currentSearchValue)
-      .then((groups) => {
+      .then(groups => {
         if (!cancelled) {
           setDynamicGroups(groups);
           setLoading(false);
@@ -262,42 +271,55 @@ export function CommandPalette({
 
   // ===== COMMAND EXECUTION =====
 
-  const handleCommandSelect = React.useCallback((commandId: string) => {
-    const allCommands = [
-      ...commands.flatMap(group => group.commands),
-      ...dynamicGroups.flatMap(group => group.commands),
-    ];
+  const handleCommandSelect = React.useCallback(
+    (commandId: string) => {
+      const allCommands = [
+        ...commands.flatMap(group => group.commands),
+        ...dynamicGroups.flatMap(group => group.commands),
+      ];
 
-    const command = allCommands.find(cmd => cmd.id === commandId);
-    if (!command || command.disabled) return;
+      const command = allCommands.find(cmd => cmd.id === commandId);
+      if (!command || command.disabled) return;
 
-    // Track recent commands
-    if (recentCommands && commandHistory) {
-      setRecentCommandIds(prev => {
-        const filtered = prev.filter(id => id !== commandId);
-        return [commandId, ...filtered].slice(0, maxRecentCommands);
-      });
-    }
-
-    // Execute callbacks
-    onCommandSelect?.(command);
-
-    try {
-      const result = command.action();
-      if (result instanceof Promise) {
-        void result.then(() => onCommandExecute?.(command));
-      } else {
-        onCommandExecute?.(command);
+      // Track recent commands
+      if (recentCommands && commandHistory) {
+        setRecentCommandIds(prev => {
+          const filtered = prev.filter(id => id !== commandId);
+          return [commandId, ...filtered].slice(0, maxRecentCommands);
+        });
       }
-    } catch (error) {
-      console.error('Command execution failed:', error);
-    }
 
-    // Close palette if configured
-    if (closeOnSelect) {
-      onOpenChange(false);
-    }
-  }, [commands, dynamicGroups, recentCommands, commandHistory, maxRecentCommands, onCommandSelect, onCommandExecute, closeOnSelect, onOpenChange]);
+      // Execute callbacks
+      onCommandSelect?.(command);
+
+      try {
+        const result = command.action();
+        if (result instanceof Promise) {
+          void result.then(() => onCommandExecute?.(command));
+        } else {
+          onCommandExecute?.(command);
+        }
+      } catch (error) {
+        console.error('Command execution failed:', error);
+      }
+
+      // Close palette if configured
+      if (closeOnSelect) {
+        onOpenChange(false);
+      }
+    },
+    [
+      commands,
+      dynamicGroups,
+      recentCommands,
+      commandHistory,
+      maxRecentCommands,
+      onCommandSelect,
+      onCommandExecute,
+      closeOnSelect,
+      onOpenChange,
+    ]
+  );
 
   // ===== RECENT COMMANDS PROCESSING =====
 
@@ -318,7 +340,7 @@ export function CommandPalette({
     return {
       id: 'recent',
       heading: 'Recent',
-      icon: <Hash className="w-4 h-4" />,
+      icon: <Hash className='h-4 w-4' />,
       commands: recentCmds,
       priority: -1, // Show first
     };
@@ -332,7 +354,7 @@ export function CommandPalette({
       groups.unshift(recentCommandsGroup);
     }
     return groups
-      .filter(group => group.condition ? group.condition() : true)
+      .filter(group => (group.condition ? group.condition() : true))
       .sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0));
   }, [commands, dynamicGroups, recentCommandsGroup]);
 
@@ -353,7 +375,8 @@ export function CommandPalette({
       const isCtrlKey = keys.includes('ctrl');
       const isKey = keys.includes(e.key.toLowerCase());
 
-      const modifierMatch = (isMetaKey && e.metaKey) || (isCtrlKey && e.ctrlKey);
+      const modifierMatch =
+        (isMetaKey && e.metaKey) || (isCtrlKey && e.ctrlKey);
 
       if (isKey && (modifierMatch || (!isMetaKey && !isCtrlKey))) {
         e.preventDefault();
@@ -372,7 +395,7 @@ export function CommandPalette({
       initial: { opacity: 0 },
       animate: { opacity: 1 },
       exit: { opacity: 0 },
-      transition: { duration: isReducedMotion ? 0.01 : 0.15 }
+      transition: { duration: isReducedMotion ? 0.01 : 0.15 },
     },
     content: {
       initial: { opacity: 0, scale: 0.95, y: -20 },
@@ -380,9 +403,9 @@ export function CommandPalette({
       exit: { opacity: 0, scale: 0.95, y: -20 },
       transition: {
         duration: isReducedMotion ? 0.01 : 0.2,
-        ease: [0.2, 0, 0.2, 1] as const
-      }
-    }
+        ease: [0.2, 0, 0.2, 1] as const,
+      },
+    },
   };
 
   return (
@@ -407,48 +430,48 @@ export function CommandPalette({
               motionClasses,
               className
             )}
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
+            onClick={e => e.stopPropagation()}
+            role='dialog'
             aria-label={ariaLabel}
             aria-describedby={ariaDescription}
             {...motionVariants.content}
             {...props}
           >
             <Command
-              className="w-full"
+              className='w-full'
               shouldFilter={!filter && !dynamicCommands}
               {...(filter && { filter })}
               loop={loop}
             >
               {/* Search Input */}
-              <div className="flex items-center border-b border-border-subtle px-4">
-                <Search className="w-4 h-4 text-foreground-muted mr-3" />
+              <div className='flex items-center border-b border-border-subtle px-4'>
+                <Search className='mr-3 h-4 w-4 text-foreground-muted' />
                 <Command.Input
                   value={currentSearchValue}
                   onValueChange={handleSearchChange}
                   placeholder={placeholder}
-                  className="flex-1 py-4 bg-transparent border-none outline-none text-foreground placeholder:text-foreground-muted"
+                  className='flex-1 border-none bg-transparent py-4 text-foreground outline-none placeholder:text-foreground-muted'
                 />
                 {loading && (
-                  <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin ml-3" />
+                  <div className='ml-3 h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent' />
                 )}
               </div>
 
               {/* Command List */}
-              <Command.List className="max-h-80 overflow-y-auto p-2">
-                <Command.Empty className="py-8 px-4 text-center text-foreground-muted">
+              <Command.List className='max-h-80 overflow-y-auto p-2'>
+                <Command.Empty className='px-4 py-8 text-center text-foreground-muted'>
                   {emptyText}
                 </Command.Empty>
 
-                {allGroups.map((group) => (
+                {allGroups.map(group => (
                   <Command.Group key={group.id} heading={group.heading}>
                     {group.heading && (
-                      <div className="flex items-center gap-2 px-2 py-2 text-xs font-medium text-foreground-muted uppercase tracking-wide">
+                      <div className='flex items-center gap-2 px-2 py-2 text-xs font-medium uppercase tracking-wide text-foreground-muted'>
                         {group.icon}
                         {group.heading}
                       </div>
                     )}
-                    {group.commands.map((command) => (
+                    {group.commands.map(command => (
                       <Command.Item
                         key={command.id}
                         value={command.id}
@@ -456,7 +479,7 @@ export function CommandPalette({
                         className={cn(
                           commandItemVariants({
                             variant: command.variant,
-                            disabled: command.disabled ?? false
+                            disabled: command.disabled ?? false,
                           })
                         )}
                         disabled={command.disabled ?? false}
@@ -464,25 +487,25 @@ export function CommandPalette({
                       >
                         {/* Command Icon */}
                         {command.icon && (
-                          <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
+                          <div className='flex h-5 w-5 flex-shrink-0 items-center justify-center'>
                             {command.icon}
                           </div>
                         )}
 
                         {/* Command Content */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium truncate">
+                        <div className='min-w-0 flex-1'>
+                          <div className='flex items-center gap-2'>
+                            <span className='truncate font-medium'>
                               {command.label}
                             </span>
                             {command.badge && (
-                              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-accent-bg text-accent-fg">
+                              <span className='bg-accent-bg text-accent-fg inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium'>
                                 {command.badge}
                               </span>
                             )}
                           </div>
                           {command.description && (
-                            <div className="text-sm text-foreground-muted truncate">
+                            <div className='truncate text-sm text-foreground-muted'>
                               {command.description}
                             </div>
                           )}
@@ -490,11 +513,11 @@ export function CommandPalette({
 
                         {/* Keyboard Shortcut */}
                         {command.shortcut && command.shortcut.length > 0 && (
-                          <div className="flex items-center gap-1 flex-shrink-0">
+                          <div className='flex flex-shrink-0 items-center gap-1'>
                             {command.shortcut.map((key, index) => (
                               <kbd
                                 key={index}
-                                className="inline-flex items-center justify-center min-w-[1.5rem] h-6 px-1.5 rounded text-xs font-mono bg-surface-elevated border border-border-subtle text-foreground-muted"
+                                className='bg-surface-elevated inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded border border-border-subtle px-1.5 font-mono text-xs text-foreground-muted'
                               >
                                 {key}
                               </kbd>
@@ -503,7 +526,7 @@ export function CommandPalette({
                         )}
 
                         {/* Arrow Indicator */}
-                        <ArrowRight className="w-4 h-4 text-foreground-muted opacity-0 group-data-[selected=true]:opacity-100 transition-opacity" />
+                        <ArrowRight className='h-4 w-4 text-foreground-muted opacity-0 transition-opacity group-data-[selected=true]:opacity-100' />
                       </Command.Item>
                     ))}
                   </Command.Group>
@@ -522,29 +545,29 @@ export function CommandPalette({
 export const DefaultCommandCategories = {
   navigation: {
     heading: 'Navigate',
-    icon: <Hash className="w-4 h-4" />,
-    shortcuts: ['g', 'n']
+    icon: <Hash className='h-4 w-4' />,
+    shortcuts: ['g', 'n'],
   },
   actions: {
     heading: 'Actions',
-    icon: <Hash className="w-4 h-4" />,
-    shortcuts: ['a']
+    icon: <Hash className='h-4 w-4' />,
+    shortcuts: ['a'],
   },
   search: {
     heading: 'Search',
-    icon: <Search className="w-4 h-4" />,
-    shortcuts: ['s']
+    icon: <Search className='h-4 w-4' />,
+    shortcuts: ['s'],
   },
   settings: {
     heading: 'Settings',
-    icon: <Hash className="w-4 h-4" />,
-    shortcuts: ['p']
+    icon: <Hash className='h-4 w-4' />,
+    shortcuts: ['p'],
   },
   help: {
     heading: 'Help & Support',
-    icon: <Hash className="w-4 h-4" />,
-    shortcuts: ['h', '?']
-  }
+    icon: <Hash className='h-4 w-4' />,
+    shortcuts: ['h', '?'],
+  },
 } as const;
 
 export type { VariantProps } from 'class-variance-authority';

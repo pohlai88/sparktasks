@@ -2013,8 +2013,9 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Card - Dark-First Content Containers
             </h2>
             <p className='text-muted-foreground'>
-              Sophisticated content containers with Apple HIG philosophy, liquid glass materials,
-              and comprehensive accessibility patterns following MAPS v2.2 architecture.
+              Sophisticated content containers with Apple HIG philosophy, liquid
+              glass materials, and comprehensive accessibility patterns
+              following MAPS v2.2 architecture.
             </p>
 
             {/* Core Card Variants */}
@@ -2024,16 +2025,20 @@ export const ComponentsDemo: React.FC = () => {
                 <EnhancedCardHeader>
                   <EnhancedCardTitle>Default Card</EnhancedCardTitle>
                   <EnhancedCardDescription>
-                    Clean, minimal design with subtle borders and balanced spacing.
+                    Clean, minimal design with subtle borders and balanced
+                    spacing.
                   </EnhancedCardDescription>
                 </EnhancedCardHeader>
                 <EnhancedCardContent>
                   <p className='text-sm text-muted-foreground'>
-                    Perfect for content sections, form groups, and general information display.
+                    Perfect for content sections, form groups, and general
+                    information display.
                   </p>
                 </EnhancedCardContent>
                 <EnhancedCardFooter justify='between'>
-                  <span className='text-xs text-muted-foreground'>Updated 2h ago</span>
+                  <span className='text-xs text-muted-foreground'>
+                    Updated 2h ago
+                  </span>
                   <EnhancedButton variant='secondary' size='sm'>
                     View Details
                   </EnhancedButton>
@@ -2050,11 +2055,16 @@ export const ComponentsDemo: React.FC = () => {
                 </EnhancedCardHeader>
                 <EnhancedCardContent>
                   <p className='text-sm text-muted-foreground'>
-                    Ideal for important content, feature highlights, and call-to-action sections.
+                    Ideal for important content, feature highlights, and
+                    call-to-action sections.
                   </p>
                 </EnhancedCardContent>
                 <EnhancedCardFooter>
-                  <EnhancedButton variant='primary' size='sm' className='w-full'>
+                  <EnhancedButton
+                    variant='primary'
+                    size='sm'
+                    className='w-full'
+                  >
                     Get Started
                   </EnhancedButton>
                 </EnhancedCardFooter>
@@ -2070,7 +2080,8 @@ export const ComponentsDemo: React.FC = () => {
                 </EnhancedCardHeader>
                 <EnhancedCardContent>
                   <p className='text-sm text-muted-foreground'>
-                    Advanced visual treatment for premium features and modern interfaces.
+                    Advanced visual treatment for premium features and modern
+                    interfaces.
                   </p>
                 </EnhancedCardContent>
                 <EnhancedCardFooter justify='center'>
@@ -2084,11 +2095,19 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Interactive Cards */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Interactive Cards</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Interactive Cards
+              </h3>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <EnhancedCard
                   interactive
-                  onClick={() => showToast('info', 'Card Clicked', 'Interactive card demonstrates click handling')}
+                  onClick={() =>
+                    showToast(
+                      'info',
+                      'Card Clicked',
+                      'Interactive card demonstrates click handling'
+                    )
+                  }
                   className='cursor-pointer transition-all hover:scale-[1.02]'
                 >
                   <EnhancedCardHeader>
@@ -2102,7 +2121,8 @@ export const ComponentsDemo: React.FC = () => {
                   </EnhancedCardHeader>
                   <EnhancedCardContent>
                     <p className='text-sm text-muted-foreground'>
-                      Full keyboard navigation support with proper focus management and ARIA attributes.
+                      Full keyboard navigation support with proper focus
+                      management and ARIA attributes.
                     </p>
                   </EnhancedCardContent>
                 </EnhancedCard>
@@ -2116,7 +2136,9 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedCardHeader>
                     <EnhancedCardTitle className='flex items-center justify-between'>
                       <span>Likeable Content</span>
-                      <Heart className={`h-5 w-5 transition-colors ${isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} />
+                      <Heart
+                        className={`h-5 w-5 transition-colors ${isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
+                      />
                     </EnhancedCardTitle>
                     <EnhancedCardDescription>
                       Interactive state management example
@@ -2138,45 +2160,63 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Size Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Size Variants</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Size Variants
+              </h3>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-4'>
                 <EnhancedCard size='sm' variant='outlined'>
                   <EnhancedCardHeader size='sm'>
                     <EnhancedCardTitle size='sm'>Small Card</EnhancedCardTitle>
-                    <EnhancedCardDescription>Compact design</EnhancedCardDescription>
+                    <EnhancedCardDescription>
+                      Compact design
+                    </EnhancedCardDescription>
                   </EnhancedCardHeader>
                   <EnhancedCardContent size='sm'>
-                    <p className='text-xs text-muted-foreground'>Minimal content space</p>
+                    <p className='text-xs text-muted-foreground'>
+                      Minimal content space
+                    </p>
                   </EnhancedCardContent>
                 </EnhancedCard>
 
                 <EnhancedCard size='md'>
                   <EnhancedCardHeader size='md'>
                     <EnhancedCardTitle size='md'>Medium Card</EnhancedCardTitle>
-                    <EnhancedCardDescription>Standard size</EnhancedCardDescription>
+                    <EnhancedCardDescription>
+                      Standard size
+                    </EnhancedCardDescription>
                   </EnhancedCardHeader>
                   <EnhancedCardContent size='md'>
-                    <p className='text-sm text-muted-foreground'>Default card sizing</p>
+                    <p className='text-sm text-muted-foreground'>
+                      Default card sizing
+                    </p>
                   </EnhancedCardContent>
                 </EnhancedCard>
 
                 <EnhancedCard size='lg' variant='elevated'>
                   <EnhancedCardHeader size='lg'>
                     <EnhancedCardTitle size='lg'>Large Card</EnhancedCardTitle>
-                    <EnhancedCardDescription>Spacious layout</EnhancedCardDescription>
+                    <EnhancedCardDescription>
+                      Spacious layout
+                    </EnhancedCardDescription>
                   </EnhancedCardHeader>
                   <EnhancedCardContent size='lg'>
-                    <p className='text-sm text-muted-foreground'>Extended content areas</p>
+                    <p className='text-sm text-muted-foreground'>
+                      Extended content areas
+                    </p>
                   </EnhancedCardContent>
                 </EnhancedCard>
 
                 <EnhancedCard size='xl' variant='glass'>
                   <EnhancedCardHeader size='xl'>
                     <EnhancedCardTitle size='xl'>Extra Large</EnhancedCardTitle>
-                    <EnhancedCardDescription>Maximum spacing</EnhancedCardDescription>
+                    <EnhancedCardDescription>
+                      Maximum spacing
+                    </EnhancedCardDescription>
                   </EnhancedCardHeader>
                   <EnhancedCardContent size='xl'>
-                    <p className='text-sm text-muted-foreground'>Premium card experience</p>
+                    <p className='text-sm text-muted-foreground'>
+                      Premium card experience
+                    </p>
                   </EnhancedCardContent>
                 </EnhancedCard>
               </div>
@@ -2184,12 +2224,16 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Factory Function Examples */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Factory Functions</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Factory Functions
+              </h3>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
                 {/* Using default factory */}
                 <CardFactory.default.Card className='max-w-sm'>
                   <CardFactory.default.Header>
-                    <CardFactory.default.Title>Default Factory</CardFactory.default.Title>
+                    <CardFactory.default.Title>
+                      Default Factory
+                    </CardFactory.default.Title>
                     <CardFactory.default.Description>
                       Pre-configured default variant
                     </CardFactory.default.Description>
@@ -2204,10 +2248,18 @@ export const ComponentsDemo: React.FC = () => {
                 {/* Using interactive factory */}
                 <CardFactory.interactive.Card
                   className='max-w-sm'
-                  onClick={() => showToast('success', 'Factory Card', 'Interactive factory demonstration')}
+                  onClick={() =>
+                    showToast(
+                      'success',
+                      'Factory Card',
+                      'Interactive factory demonstration'
+                    )
+                  }
                 >
                   <CardFactory.interactive.Header>
-                    <CardFactory.interactive.Title>Interactive Factory</CardFactory.interactive.Title>
+                    <CardFactory.interactive.Title>
+                      Interactive Factory
+                    </CardFactory.interactive.Title>
                     <CardFactory.interactive.Description>
                       Pre-configured interactive behavior
                     </CardFactory.interactive.Description>
@@ -2222,14 +2274,17 @@ export const ComponentsDemo: React.FC = () => {
                 {/* Using AAA factory */}
                 <CardFactory.aaa.Card variant='glass' className='max-w-sm'>
                   <CardFactory.aaa.Header>
-                    <CardFactory.aaa.Title>AAA Compliance</CardFactory.aaa.Title>
+                    <CardFactory.aaa.Title>
+                      AAA Compliance
+                    </CardFactory.aaa.Title>
                     <CardFactory.aaa.Description>
                       Maximum accessibility assurance
                     </CardFactory.aaa.Description>
                   </CardFactory.aaa.Header>
                   <CardFactory.aaa.Content>
                     <p className='text-sm text-muted-foreground'>
-                      WCAG AAA compliant with enhanced contrast and focus management.
+                      WCAG AAA compliant with enhanced contrast and focus
+                      management.
                     </p>
                   </CardFactory.aaa.Content>
                 </CardFactory.aaa.Card>
@@ -2238,26 +2293,32 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Complex Card Example */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Complex Example</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Complex Example
+              </h3>
               <div className='mx-auto max-w-md'>
                 <EnhancedCard variant='floating' className='overflow-hidden'>
-                  <div className='aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 p-6 flex items-center justify-center'>
+                  <div className='flex aspect-video items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20 p-6'>
                     <Play className='h-12 w-12 text-primary' />
                   </div>
                   <EnhancedCardHeader>
                     <EnhancedCardTitle>Media Card Example</EnhancedCardTitle>
                     <EnhancedCardDescription>
-                      Sophisticated card with media content and rich interactions
+                      Sophisticated card with media content and rich
+                      interactions
                     </EnhancedCardDescription>
                   </EnhancedCardHeader>
                   <EnhancedCardContent>
                     <div className='space-y-3'>
                       <div className='flex items-center space-x-2'>
                         <User className='h-4 w-4 text-muted-foreground' />
-                        <span className='text-sm text-muted-foreground'>John Doe</span>
+                        <span className='text-sm text-muted-foreground'>
+                          John Doe
+                        </span>
                       </div>
                       <p className='text-sm text-muted-foreground'>
-                        Demonstration of advanced card layouts with media, metadata, and action areas.
+                        Demonstration of advanced card layouts with media,
+                        metadata, and action areas.
                       </p>
                     </div>
                   </EnhancedCardContent>
@@ -2281,10 +2342,14 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Accessibility Features */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Accessibility Features</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Accessibility Features
+              </h3>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>Keyboard Navigation</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Keyboard Navigation
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Interactive cards are focusable with Tab</li>
                     <li>• Enter and Space activate interactive cards</li>
@@ -2292,8 +2357,10 @@ export const ComponentsDemo: React.FC = () => {
                     <li>• Focus management for complex layouts</li>
                   </ul>
                 </div>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>Screen Reader Support</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Screen Reader Support
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Semantic HTML structure with proper roles</li>
                     <li>• ARIA attributes for interactive states</li>
@@ -2311,13 +2378,16 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Badge - Dark-First Status Indicators
             </h2>
             <p className='text-muted-foreground'>
-              Sophisticated status indicators with Apple HIG philosophy, semantic color patterns,
-              and comprehensive accessibility patterns following MAPS v2.2 architecture.
+              Sophisticated status indicators with Apple HIG philosophy,
+              semantic color patterns, and comprehensive accessibility patterns
+              following MAPS v2.2 architecture.
             </p>
 
             {/* Core Badge Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Semantic Variants</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Semantic Variants
+              </h3>
               <div className='flex flex-wrap gap-3'>
                 <EnhancedBadge variant='default'>Default</EnhancedBadge>
                 <EnhancedBadge variant='secondary'>Secondary</EnhancedBadge>
@@ -2330,7 +2400,9 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Status Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Status Variants</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Status Variants
+              </h3>
               <div className='flex flex-wrap gap-3'>
                 <EnhancedBadge variant='success'>Success</EnhancedBadge>
                 <EnhancedBadge variant='warning'>Warning</EnhancedBadge>
@@ -2341,18 +2413,26 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Glass Material Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Liquid Glass Materials</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Liquid Glass Materials
+              </h3>
               <div className='flex flex-wrap gap-3'>
                 <EnhancedBadge variant='glass'>Glass Effect</EnhancedBadge>
                 <EnhancedBadge variant='floating'>Floating Glass</EnhancedBadge>
-                <EnhancedBadge variant='glass' enforceAAA>AAA Glass</EnhancedBadge>
-                <EnhancedBadge variant='floating' enforceAAA>AAA Floating</EnhancedBadge>
+                <EnhancedBadge variant='glass' enforceAAA>
+                  AAA Glass
+                </EnhancedBadge>
+                <EnhancedBadge variant='floating' enforceAAA>
+                  AAA Floating
+                </EnhancedBadge>
               </div>
             </div>
 
             {/* Size System */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Size Variants</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Size Variants
+              </h3>
               <div className='flex flex-wrap items-center gap-3'>
                 <EnhancedBadge size='sm'>Small</EnhancedBadge>
                 <EnhancedBadge size='md'>Medium</EnhancedBadge>
@@ -2363,30 +2443,48 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Count Badges */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Count Badges</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Count Badges
+              </h3>
               <div className='flex flex-wrap gap-4'>
                 <div className='flex items-center gap-2'>
-                  <span className='text-sm text-muted-foreground'>Messages</span>
+                  <span className='text-sm text-muted-foreground'>
+                    Messages
+                  </span>
                   <EnhancedBadge count={3} variant='default' size='sm' />
                 </div>
                 <div className='flex items-center gap-2'>
-                  <span className='text-sm text-muted-foreground'>Notifications</span>
+                  <span className='text-sm text-muted-foreground'>
+                    Notifications
+                  </span>
                   <EnhancedBadge count={12} variant='error' size='sm' />
                 </div>
                 <div className='flex items-center gap-2'>
                   <span className='text-sm text-muted-foreground'>Updates</span>
-                  <EnhancedBadge count={150} max={99} variant='info' size='sm' />
+                  <EnhancedBadge
+                    count={150}
+                    max={99}
+                    variant='info'
+                    size='sm'
+                  />
                 </div>
                 <div className='flex items-center gap-2'>
                   <span className='text-sm text-muted-foreground'>Inbox</span>
-                  <EnhancedBadge count={1247} showOverflow={false} variant='success' size='sm' />
+                  <EnhancedBadge
+                    count={1247}
+                    showOverflow={false}
+                    variant='success'
+                    size='sm'
+                  />
                 </div>
               </div>
             </div>
 
             {/* Icon Badges */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Icon Integration</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Icon Integration
+              </h3>
               <div className='flex flex-wrap gap-3'>
                 <EnhancedBadge
                   icon={<Mail className='h-3 w-3' />}
@@ -2419,18 +2517,32 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Interactive Badges */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Interactive Features</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Interactive Features
+              </h3>
               <div className='flex flex-wrap gap-3'>
                 <EnhancedBadge
                   interactive
-                  onClick={() => showToast('info', 'Badge Clicked', 'Interactive badge demonstration')}
+                  onClick={() =>
+                    showToast(
+                      'info',
+                      'Badge Clicked',
+                      'Interactive badge demonstration'
+                    )
+                  }
                   variant='outline'
                 >
                   Clickable
                 </EnhancedBadge>
                 <EnhancedBadge
                   dismissible
-                  onRemove={() => showToast('success', 'Badge Removed', 'Dismissible badge demonstration')}
+                  onRemove={() =>
+                    showToast(
+                      'success',
+                      'Badge Removed',
+                      'Dismissible badge demonstration'
+                    )
+                  }
                   variant='secondary'
                 >
                   Dismissible
@@ -2449,7 +2561,9 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Dot Badges */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Status Dots</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Status Dots
+              </h3>
               <div className='flex flex-wrap items-center gap-4'>
                 <div className='flex items-center gap-2'>
                   <EnhancedBadge dot variant='success' />
@@ -2469,40 +2583,62 @@ export const ComponentsDemo: React.FC = () => {
                 </div>
                 <div className='flex items-center gap-2'>
                   <EnhancedBadge dot pulse variant='info' />
-                  <span className='text-sm text-muted-foreground'>Processing</span>
+                  <span className='text-sm text-muted-foreground'>
+                    Processing
+                  </span>
                 </div>
               </div>
             </div>
 
             {/* Factory Functions */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Factory Functions</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Factory Functions
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
                 {/* Semantic Factories */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Semantic Patterns</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Semantic Patterns
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
-                    <BadgeFactory.default.Badge>Default</BadgeFactory.default.Badge>
-                    <BadgeFactory.secondary.Badge>Secondary</BadgeFactory.secondary.Badge>
-                    <BadgeFactory.accent.Badge>Accent</BadgeFactory.accent.Badge>
+                    <BadgeFactory.default.Badge>
+                      Default
+                    </BadgeFactory.default.Badge>
+                    <BadgeFactory.secondary.Badge>
+                      Secondary
+                    </BadgeFactory.secondary.Badge>
+                    <BadgeFactory.accent.Badge>
+                      Accent
+                    </BadgeFactory.accent.Badge>
                   </div>
                 </div>
 
                 {/* Status Factories */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Status Patterns</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Status Patterns
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
-                    <BadgeFactory.success.Badge>Success</BadgeFactory.success.Badge>
-                    <BadgeFactory.warning.Badge>Warning</BadgeFactory.warning.Badge>
+                    <BadgeFactory.success.Badge>
+                      Success
+                    </BadgeFactory.success.Badge>
+                    <BadgeFactory.warning.Badge>
+                      Warning
+                    </BadgeFactory.warning.Badge>
                     <BadgeFactory.error.Badge>Error</BadgeFactory.error.Badge>
                   </div>
                 </div>
 
                 {/* Feature Factories */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Feature Patterns</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Feature Patterns
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
-                    <BadgeFactory.interactive.Badge onClick={() => showToast('info', 'Factory Click')}>
+                    <BadgeFactory.interactive.Badge
+                      onClick={() => showToast('info', 'Factory Click')}
+                    >
                       Interactive
                     </BadgeFactory.interactive.Badge>
                     <BadgeFactory.pulse.Badge>Pulsing</BadgeFactory.pulse.Badge>
@@ -2511,8 +2647,10 @@ export const ComponentsDemo: React.FC = () => {
                 </div>
 
                 {/* Compound Patterns */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Compound Patterns</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Compound Patterns
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
                     <BadgeFactory.notification.Badge />
                     <BadgeFactory.status.Badge />
@@ -2521,18 +2659,26 @@ export const ComponentsDemo: React.FC = () => {
                 </div>
 
                 {/* Glass Factories */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Glass Materials</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Glass Materials
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
                     <BadgeFactory.glass.Badge>Glass</BadgeFactory.glass.Badge>
-                    <BadgeFactory.floating.Badge>Floating</BadgeFactory.floating.Badge>
-                    <BadgeFactory.aaa.Badge variant='glass'>AAA Glass</BadgeFactory.aaa.Badge>
+                    <BadgeFactory.floating.Badge>
+                      Floating
+                    </BadgeFactory.floating.Badge>
+                    <BadgeFactory.aaa.Badge variant='glass'>
+                      AAA Glass
+                    </BadgeFactory.aaa.Badge>
                   </div>
                 </div>
 
                 {/* Size Factories */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Size Presets</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Size Presets
+                  </h4>
                   <div className='flex flex-wrap items-center gap-2'>
                     <BadgeFactory.small.Badge>Small</BadgeFactory.small.Badge>
                     <EnhancedBadge>Default</EnhancedBadge>
@@ -2544,10 +2690,14 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Utility Functions */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Utility Functions</h3>
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Count Badges</h4>
+              <h3 className='text-lg font-medium text-foreground'>
+                Utility Functions
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Count Badges
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
                     {createCountBadge(5)}
                     {createCountBadge(23, { variant: 'success' })}
@@ -2555,8 +2705,10 @@ export const ComponentsDemo: React.FC = () => {
                   </div>
                 </div>
 
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Status Dots</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Status Dots
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
                     {createStatusDot('success')}
                     {createStatusDot('warning')}
@@ -2565,8 +2717,10 @@ export const ComponentsDemo: React.FC = () => {
                   </div>
                 </div>
 
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Notification Badges</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Notification Badges
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
                     {createNotificationBadge()} {/* Dot when no count */}
                     {createNotificationBadge(3)} {/* Count when provided */}
@@ -2578,62 +2732,72 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Real-world Examples */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Real-world Examples</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Real-world Examples
+              </h3>
+              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                 {/* Navigation Example */}
-                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
-                  <h4 className='font-medium text-foreground'>Navigation Menu</h4>
+                <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Navigation Menu
+                  </h4>
                   <div className='space-y-3'>
                     <div className='flex items-center justify-between'>
-                      <span className='text-sm text-muted-foreground'>Messages</span>
+                      <span className='text-sm text-muted-foreground'>
+                        Messages
+                      </span>
                       <EnhancedBadge count={12} variant='default' size='sm' />
                     </div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-sm text-muted-foreground'>Notifications</span>
+                      <span className='text-sm text-muted-foreground'>
+                        Notifications
+                      </span>
                       <EnhancedBadge count={3} variant='error' size='sm' />
                     </div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-sm text-muted-foreground'>Updates</span>
+                      <span className='text-sm text-muted-foreground'>
+                        Updates
+                      </span>
                       <EnhancedBadge dot pulse variant='info' />
                     </div>
                   </div>
                 </div>
 
                 {/* User Status Example */}
-                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
                   <h4 className='font-medium text-foreground'>User Status</h4>
                   <div className='space-y-3'>
                     <div className='flex items-center gap-3'>
-                      <div className='w-8 h-8 rounded-full bg-muted flex items-center justify-center'>
+                      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-muted'>
                         <User className='h-4 w-4' />
                       </div>
                       <div className='flex-1'>
                         <div className='text-sm font-medium'>John Doe</div>
-                        <div className='text-xs text-muted-foreground flex items-center gap-2'>
+                        <div className='flex items-center gap-2 text-xs text-muted-foreground'>
                           <EnhancedBadge dot variant='success' />
                           Online
                         </div>
                       </div>
                     </div>
                     <div className='flex items-center gap-3'>
-                      <div className='w-8 h-8 rounded-full bg-muted flex items-center justify-center'>
+                      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-muted'>
                         <User className='h-4 w-4' />
                       </div>
                       <div className='flex-1'>
                         <div className='text-sm font-medium'>Jane Smith</div>
-                        <div className='text-xs text-muted-foreground flex items-center gap-2'>
+                        <div className='flex items-center gap-2 text-xs text-muted-foreground'>
                           <EnhancedBadge dot variant='warning' />
                           Away
                         </div>
                       </div>
                     </div>
                     <div className='flex items-center gap-3'>
-                      <div className='w-8 h-8 rounded-full bg-muted flex items-center justify-center'>
+                      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-muted'>
                         <User className='h-4 w-4' />
                       </div>
                       <div className='flex-1'>
                         <div className='text-sm font-medium'>Bob Wilson</div>
-                        <div className='text-xs text-muted-foreground flex items-center gap-2'>
+                        <div className='flex items-center gap-2 text-xs text-muted-foreground'>
                           <EnhancedBadge dot variant='error' />
                           Offline
                         </div>
@@ -2643,8 +2807,10 @@ export const ComponentsDemo: React.FC = () => {
                 </div>
 
                 {/* Feature Tags Example */}
-                <div className='rounded-lg border border-border bg-card p-6 space-y-4 md:col-span-2'>
-                  <h4 className='font-medium text-foreground'>Feature Tags & Labels</h4>
+                <div className='space-y-4 rounded-lg border border-border bg-card p-6 md:col-span-2'>
+                  <h4 className='font-medium text-foreground'>
+                    Feature Tags & Labels
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
                     <EnhancedBadge variant='success'>New</EnhancedBadge>
                     <EnhancedBadge variant='info'>Updated</EnhancedBadge>
@@ -2675,10 +2841,14 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Accessibility Features */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Accessibility Features</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Accessibility Features
+              </h3>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>Keyboard Navigation</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Keyboard Navigation
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Interactive badges are focusable with Tab</li>
                     <li>• Enter and Space activate interactive badges</li>
@@ -2686,8 +2856,10 @@ export const ComponentsDemo: React.FC = () => {
                     <li>• Dismissible close buttons are keyboard accessible</li>
                   </ul>
                 </div>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>Screen Reader Support</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Screen Reader Support
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Semantic HTML with proper roles and ARIA</li>
                     <li>• Count announcements for dynamic content</li>
@@ -2711,33 +2883,50 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Basic Breadcrumb Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Breadcrumb Variants</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Breadcrumb Variants
+              </h3>
               <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
-
                 {/* Default Breadcrumb */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Default Navigation</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Default Navigation
+                  </h4>
                   <EnhancedBreadcrumb>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/">
-                          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clipRule="evenodd" />
+                        <EnhancedBreadcrumbLink href='/'>
+                          <svg
+                            className='h-4 w-4'
+                            fill='currentColor'
+                            viewBox='0 0 20 20'
+                          >
+                            <path
+                              fillRule='evenodd'
+                              d='M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z'
+                              clipRule='evenodd'
+                            />
                           </svg>
                           Home
                         </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/products">Products</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/products'>
+                          Products
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/products/electronics">Electronics</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/products/electronics'>
+                          Electronics
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator />
                       <EnhancedBreadcrumbItem isCurrentPage>
-                        <EnhancedBreadcrumbPage>Smartphones</EnhancedBreadcrumbPage>
+                        <EnhancedBreadcrumbPage>
+                          Smartphones
+                        </EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
                     </EnhancedBreadcrumbList>
                   </EnhancedBreadcrumb>
@@ -2745,19 +2934,27 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Compact Breadcrumb */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Compact Navigation</h4>
-                  <EnhancedBreadcrumb variant="compact" size="sm">
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Compact Navigation
+                  </h4>
+                  <EnhancedBreadcrumb variant='compact' size='sm'>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/'>
+                          Home
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="slash" />
+                      <EnhancedBreadcrumbSeparator variant='slash' />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/docs">Docs</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/docs'>
+                          Docs
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="slash" />
+                      <EnhancedBreadcrumbSeparator variant='slash' />
                       <EnhancedBreadcrumbItem isCurrentPage>
-                        <EnhancedBreadcrumbPage>API Reference</EnhancedBreadcrumbPage>
+                        <EnhancedBreadcrumbPage>
+                          API Reference
+                        </EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
                     </EnhancedBreadcrumbList>
                   </EnhancedBreadcrumb>
@@ -2765,23 +2962,33 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Pills Breadcrumb */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Pills Navigation</h4>
-                  <EnhancedBreadcrumb variant="pills">
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Pills Navigation
+                  </h4>
+                  <EnhancedBreadcrumb variant='pills'>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/dashboard">Dashboard</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/dashboard'>
+                          Dashboard
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbSeparator variant='dot' />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/projects">Projects</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/projects'>
+                          Projects
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbSeparator variant='dot' />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/projects/web-app">Web App</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/projects/web-app'>
+                          Web App
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbSeparator variant='dot' />
                       <EnhancedBreadcrumbItem isCurrentPage>
-                        <EnhancedBreadcrumbPage>Settings</EnhancedBreadcrumbPage>
+                        <EnhancedBreadcrumbPage>
+                          Settings
+                        </EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
                     </EnhancedBreadcrumbList>
                   </EnhancedBreadcrumb>
@@ -2789,23 +2996,33 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Glass Breadcrumb */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Glass Navigation</h4>
-                  <EnhancedBreadcrumb variant="glass" surface="glass">
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Glass Navigation
+                  </h4>
+                  <EnhancedBreadcrumb variant='glass' surface='glass'>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/workspace">Workspace</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/workspace'>
+                          Workspace
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbSeparator variant='dot' />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/workspace/files">Files</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/workspace/files'>
+                          Files
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbSeparator variant='dot' />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/workspace/files/documents">Documents</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/workspace/files/documents'>
+                          Documents
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbSeparator variant='dot' />
                       <EnhancedBreadcrumbItem isCurrentPage>
-                        <EnhancedBreadcrumbPage>Report.pdf</EnhancedBreadcrumbPage>
+                        <EnhancedBreadcrumbPage>
+                          Report.pdf
+                        </EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
                     </EnhancedBreadcrumbList>
                   </EnhancedBreadcrumb>
@@ -2815,22 +3032,29 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Separator Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Separator Styles</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Separator Styles
+              </h3>
               <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
-
                 {/* Chevron Separators */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Chevron Separators</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Chevron Separators
+                  </h4>
                   <EnhancedBreadcrumb>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/'>
+                          Home
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="chevron" />
+                      <EnhancedBreadcrumbSeparator variant='chevron' />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/category">Category</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/category'>
+                          Category
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="chevron" />
+                      <EnhancedBreadcrumbSeparator variant='chevron' />
                       <EnhancedBreadcrumbItem isCurrentPage>
                         <EnhancedBreadcrumbPage>Current</EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
@@ -2840,17 +3064,23 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Slash Separators */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Slash Separators</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Slash Separators
+                  </h4>
                   <EnhancedBreadcrumb>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/'>
+                          Home
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="slash" />
+                      <EnhancedBreadcrumbSeparator variant='slash' />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/category">Category</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/category'>
+                          Category
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="slash" />
+                      <EnhancedBreadcrumbSeparator variant='slash' />
                       <EnhancedBreadcrumbItem isCurrentPage>
                         <EnhancedBreadcrumbPage>Current</EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
@@ -2860,17 +3090,23 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Dot Separators */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Dot Separators</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Dot Separators
+                  </h4>
                   <EnhancedBreadcrumb>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/'>
+                          Home
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbSeparator variant='dot' />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/category">Category</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/category'>
+                          Category
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
-                      <EnhancedBreadcrumbSeparator variant="dot" />
+                      <EnhancedBreadcrumbSeparator variant='dot' />
                       <EnhancedBreadcrumbItem isCurrentPage>
                         <EnhancedBreadcrumbPage>Current</EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
@@ -2880,20 +3116,26 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Custom Separator */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Custom Separators</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Custom Separators
+                  </h4>
                   <EnhancedBreadcrumb>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/'>
+                          Home
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator>
-                        <span className="text-muted-foreground">→</span>
+                        <span className='text-muted-foreground'>→</span>
                       </EnhancedBreadcrumbSeparator>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/category">Category</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/category'>
+                          Category
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator>
-                        <span className="text-muted-foreground">→</span>
+                        <span className='text-muted-foreground'>→</span>
                       </EnhancedBreadcrumbSeparator>
                       <EnhancedBreadcrumbItem isCurrentPage>
                         <EnhancedBreadcrumbPage>Current</EnhancedBreadcrumbPage>
@@ -2906,26 +3148,35 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Truncated Navigation */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Truncated Navigation</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Truncated Navigation
+              </h3>
               <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
-
                 {/* Long breadcrumb with ellipsis */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Ellipsis Truncation</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Ellipsis Truncation
+                  </h4>
                   <EnhancedBreadcrumb>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/'>
+                          Home
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator />
                       <EnhancedBreadcrumbEllipsis />
                       <EnhancedBreadcrumbSeparator />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/category/subcategory/product">Product</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/category/subcategory/product'>
+                          Product
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator />
                       <EnhancedBreadcrumbItem isCurrentPage>
-                        <EnhancedBreadcrumbPage>Current Item</EnhancedBreadcrumbPage>
+                        <EnhancedBreadcrumbPage>
+                          Current Item
+                        </EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
                     </EnhancedBreadcrumbList>
                   </EnhancedBreadcrumb>
@@ -2933,16 +3184,22 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Demonstration with factory utility */}
                 <div className='space-y-2'>
-                  <h4 className='text-sm font-medium text-foreground'>Factory Pattern</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Factory Pattern
+                  </h4>
                   <div className='space-y-2'>
                     <EnhancedBreadcrumb {...BreadcrumbFactory.navigation()}>
                       <EnhancedBreadcrumbList>
                         <EnhancedBreadcrumbItem>
-                          <EnhancedBreadcrumbLink href="/">Dashboard</EnhancedBreadcrumbLink>
+                          <EnhancedBreadcrumbLink href='/'>
+                            Dashboard
+                          </EnhancedBreadcrumbLink>
                         </EnhancedBreadcrumbItem>
                         <EnhancedBreadcrumbSeparator />
                         <EnhancedBreadcrumbItem isCurrentPage>
-                          <EnhancedBreadcrumbPage>Analytics</EnhancedBreadcrumbPage>
+                          <EnhancedBreadcrumbPage>
+                            Analytics
+                          </EnhancedBreadcrumbPage>
                         </EnhancedBreadcrumbItem>
                       </EnhancedBreadcrumbList>
                     </EnhancedBreadcrumb>
@@ -2950,11 +3207,15 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedBreadcrumb {...BreadcrumbFactory.compact()}>
                       <EnhancedBreadcrumbList>
                         <EnhancedBreadcrumbItem>
-                          <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                          <EnhancedBreadcrumbLink href='/'>
+                            Home
+                          </EnhancedBreadcrumbLink>
                         </EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbSeparator variant="slash" />
+                        <EnhancedBreadcrumbSeparator variant='slash' />
                         <EnhancedBreadcrumbItem isCurrentPage>
-                          <EnhancedBreadcrumbPage>Settings</EnhancedBreadcrumbPage>
+                          <EnhancedBreadcrumbPage>
+                            Settings
+                          </EnhancedBreadcrumbPage>
                         </EnhancedBreadcrumbItem>
                       </EnhancedBreadcrumbList>
                     </EnhancedBreadcrumb>
@@ -2962,9 +3223,11 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedBreadcrumb {...BreadcrumbFactory.glass()}>
                       <EnhancedBreadcrumbList>
                         <EnhancedBreadcrumbItem>
-                          <EnhancedBreadcrumbLink href="/">Workspace</EnhancedBreadcrumbLink>
+                          <EnhancedBreadcrumbLink href='/'>
+                            Workspace
+                          </EnhancedBreadcrumbLink>
                         </EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbSeparator variant="dot" />
+                        <EnhancedBreadcrumbSeparator variant='dot' />
                         <EnhancedBreadcrumbItem isCurrentPage>
                           <EnhancedBreadcrumbPage>Files</EnhancedBreadcrumbPage>
                         </EnhancedBreadcrumbItem>
@@ -2977,22 +3240,32 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* AAA Compliance */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Accessibility Features</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Accessibility Features
+              </h3>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>AAA Compliance Mode</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    AAA Compliance Mode
+                  </h4>
                   <EnhancedBreadcrumb {...BreadcrumbFactory.accessible()}>
                     <EnhancedBreadcrumbList>
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/">Home</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/'>
+                          Home
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator />
                       <EnhancedBreadcrumbItem>
-                        <EnhancedBreadcrumbLink href="/accessible">Accessibility</EnhancedBreadcrumbLink>
+                        <EnhancedBreadcrumbLink href='/accessible'>
+                          Accessibility
+                        </EnhancedBreadcrumbLink>
                       </EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbSeparator />
                       <EnhancedBreadcrumbItem isCurrentPage>
-                        <EnhancedBreadcrumbPage>AAA Standards</EnhancedBreadcrumbPage>
+                        <EnhancedBreadcrumbPage>
+                          AAA Standards
+                        </EnhancedBreadcrumbPage>
                       </EnhancedBreadcrumbItem>
                     </EnhancedBreadcrumbList>
                   </EnhancedBreadcrumb>
@@ -3004,8 +3277,10 @@ export const ComponentsDemo: React.FC = () => {
                   </ul>
                 </div>
 
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>Keyboard Navigation</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Keyboard Navigation
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Tab to navigate between links</li>
                     <li>• Enter and Space to activate links</li>
@@ -3019,23 +3294,34 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Interactive Demo */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Interactive Navigation</h3>
-              <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Interactive Navigation
+              </h3>
+              <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
                 <p className='text-sm text-muted-foreground'>
-                  Click breadcrumb links to navigate (demo handlers show toast notifications)
+                  Click breadcrumb links to navigate (demo handlers show toast
+                  notifications)
                 </p>
                 <EnhancedBreadcrumb>
                   <EnhancedBreadcrumbList>
                     <EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbLink
-                        href="/"
-                        onClick={(e) => {
+                        href='/'
+                        onClick={e => {
                           e.preventDefault();
                           showToast('info', 'Navigation', 'Navigated to Home');
                         }}
                       >
-                        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clipRule="evenodd" />
+                        <svg
+                          className='h-4 w-4'
+                          fill='currentColor'
+                          viewBox='0 0 20 20'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z'
+                            clipRule='evenodd'
+                          />
                         </svg>
                         Home
                       </EnhancedBreadcrumbLink>
@@ -3043,10 +3329,14 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedBreadcrumbSeparator />
                     <EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbLink
-                        href="/products"
-                        onClick={(e) => {
+                        href='/products'
+                        onClick={e => {
                           e.preventDefault();
-                          showToast('info', 'Navigation', 'Navigated to Products');
+                          showToast(
+                            'info',
+                            'Navigation',
+                            'Navigated to Products'
+                          );
                         }}
                       >
                         Products
@@ -3055,10 +3345,14 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedBreadcrumbSeparator />
                     <EnhancedBreadcrumbItem>
                       <EnhancedBreadcrumbLink
-                        href="/products/electronics"
-                        onClick={(e) => {
+                        href='/products/electronics'
+                        onClick={e => {
                           e.preventDefault();
-                          showToast('info', 'Navigation', 'Navigated to Electronics');
+                          showToast(
+                            'info',
+                            'Navigation',
+                            'Navigated to Electronics'
+                          );
                         }}
                       >
                         Electronics
@@ -3066,7 +3360,9 @@ export const ComponentsDemo: React.FC = () => {
                     </EnhancedBreadcrumbItem>
                     <EnhancedBreadcrumbSeparator />
                     <EnhancedBreadcrumbItem isCurrentPage>
-                      <EnhancedBreadcrumbPage>iPhone 15 Pro</EnhancedBreadcrumbPage>
+                      <EnhancedBreadcrumbPage>
+                        iPhone 15 Pro
+                      </EnhancedBreadcrumbPage>
                     </EnhancedBreadcrumbItem>
                   </EnhancedBreadcrumbList>
                 </EnhancedBreadcrumb>
@@ -3080,30 +3376,41 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Calendar - MAPS v2.2 Date Selection System
             </h2>
             <p className='text-muted-foreground'>
-              Comprehensive calendar component with Apple HIG philosophy, dark-first design,
-              and multiple selection modes for optimal user experience.
+              Comprehensive calendar component with Apple HIG philosophy,
+              dark-first design, and multiple selection modes for optimal user
+              experience.
             </p>
 
             {/* Calendar Variants */}
             <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
               {/* Basic Calendar */}
               <div className='space-y-4'>
-                <h3 className='text-lg font-medium text-foreground'>Basic Calendar</h3>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Basic Calendar
+                </h3>
                 <div className='rounded-lg border border-border bg-card p-6'>
                   <EnhancedCalendar
                     selected={selectedDate}
-                    onSelect={(date) => {
+                    onSelect={date => {
                       if (date instanceof Date) {
                         setSelectedDate(date);
-                        showToast('success', 'Date Selected', formatCalendarDate(date, 'long'));
+                        showToast(
+                          'success',
+                          'Date Selected',
+                          formatCalendarDate(date, 'long')
+                        );
                       }
                     }}
-                    mode="single"
+                    mode='single'
                   />
                   {selectedDate && (
-                    <div className='mt-4 p-3 rounded-md bg-muted text-sm'>
-                      <p className='font-medium text-foreground'>Selected Date:</p>
-                      <p className='text-muted-foreground'>{formatCalendarDate(selectedDate, 'long')}</p>
+                    <div className='mt-4 rounded-md bg-muted p-3 text-sm'>
+                      <p className='font-medium text-foreground'>
+                        Selected Date:
+                      </p>
+                      <p className='text-muted-foreground'>
+                        {formatCalendarDate(selectedDate, 'long')}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -3111,15 +3418,21 @@ export const ComponentsDemo: React.FC = () => {
 
               {/* Glass Variant */}
               <div className='space-y-4'>
-                <h3 className='text-lg font-medium text-foreground'>Glass Variant</h3>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Glass Variant
+                </h3>
                 <div className='rounded-lg border border-border bg-card p-6'>
                   <EnhancedCalendar
                     {...CalendarFactory.glass()}
                     selected={selectedDate}
-                    onSelect={(date) => {
+                    onSelect={date => {
                       if (date instanceof Date) {
                         setSelectedDate(date);
-                        showToast('info', 'Glass Calendar', `Selected ${formatCalendarDate(date, 'short')}`);
+                        showToast(
+                          'info',
+                          'Glass Calendar',
+                          `Selected ${formatCalendarDate(date, 'short')}`
+                        );
                       }
                     }}
                   />
@@ -3128,28 +3441,36 @@ export const ComponentsDemo: React.FC = () => {
 
               {/* Multi-Select Calendar */}
               <div className='space-y-4'>
-                <h3 className='text-lg font-medium text-foreground'>Multi-Select Mode</h3>
+                <h3 className='text-lg font-medium text-foreground'>
+                  Multi-Select Mode
+                </h3>
                 <div className='rounded-lg border border-border bg-card p-6'>
                   <EnhancedCalendar
                     {...CalendarFactory.multiSelect()}
                     selected={multiSelectedDates}
-                    onSelect={(dates) => {
+                    onSelect={dates => {
                       if (Array.isArray(dates)) {
                         setMultiSelectedDates(dates);
-                        showToast('success', 'Multiple Dates', `Selected ${dates.length} dates`);
+                        showToast(
+                          'success',
+                          'Multiple Dates',
+                          `Selected ${dates.length} dates`
+                        );
                       } else {
                         setMultiSelectedDates([]);
                       }
                     }}
                   />
                   {multiSelectedDates.length > 0 && (
-                    <div className='mt-4 p-3 rounded-md bg-muted text-sm'>
-                      <p className='font-medium text-foreground'>Selected Dates ({multiSelectedDates.length}):</p>
+                    <div className='mt-4 rounded-md bg-muted p-3 text-sm'>
+                      <p className='font-medium text-foreground'>
+                        Selected Dates ({multiSelectedDates.length}):
+                      </p>
                       <div className='mt-2 flex flex-wrap gap-1'>
                         {multiSelectedDates.map((date, index) => (
                           <span
                             key={index}
-                            className='px-2 py-1 rounded bg-accent text-accent-foreground text-xs'
+                            className='rounded bg-accent px-2 py-1 text-xs text-accent-foreground'
                           >
                             {formatCalendarDate(date, 'short')}
                           </span>
@@ -3162,15 +3483,21 @@ export const ComponentsDemo: React.FC = () => {
 
               {/* Accessible Calendar */}
               <div className='space-y-4'>
-                <h3 className='text-lg font-medium text-foreground'>AAA Accessible</h3>
+                <h3 className='text-lg font-medium text-foreground'>
+                  AAA Accessible
+                </h3>
                 <div className='rounded-lg border border-border bg-card p-6'>
                   <EnhancedCalendar
                     {...CalendarFactory.accessible()}
                     selected={selectedDate}
-                    onSelect={(date) => {
+                    onSelect={date => {
                       if (date instanceof Date) {
                         setSelectedDate(date);
-                        showToast('success', 'Accessible Calendar', 'Date selection announced');
+                        showToast(
+                          'success',
+                          'Accessible Calendar',
+                          'Date selection announced'
+                        );
                       }
                     }}
                   />
@@ -3180,20 +3507,26 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Disabled Dates Demo */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Date Restrictions</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Date Restrictions
+              </h3>
               <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
                 {/* No Weekends */}
-                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
                   <h4 className='font-medium text-foreground'>No Weekends</h4>
                   <p className='text-sm text-muted-foreground'>
                     Weekends are disabled for business date selection
                   </p>
                   <EnhancedCalendar
                     selected={selectedDate}
-                    onSelect={(date) => {
+                    onSelect={date => {
                       if (date instanceof Date) {
                         setSelectedDate(date);
-                        showToast('info', 'Business Date', 'Business day selected');
+                        showToast(
+                          'info',
+                          'Business Date',
+                          'Business day selected'
+                        );
                       }
                     }}
                     disabled={createDateDisabled({ weekends: true })}
@@ -3201,21 +3534,27 @@ export const ComponentsDemo: React.FC = () => {
                 </div>
 
                 {/* Future Dates Only */}
-                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
-                  <h4 className='font-medium text-foreground'>Future Dates Only</h4>
+                <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Future Dates Only
+                  </h4>
                   <p className='text-sm text-muted-foreground'>
                     Past dates are disabled for scheduling
                   </p>
                   <EnhancedCalendar
                     selected={selectedDate}
-                    onSelect={(date) => {
+                    onSelect={date => {
                       if (date instanceof Date) {
                         setSelectedDate(date);
-                        showToast('success', 'Future Date', 'Future date selected');
+                        showToast(
+                          'success',
+                          'Future Date',
+                          'Future date selected'
+                        );
                       }
                     }}
                     disabled={createDateDisabled({
-                      before: new Date()
+                      before: new Date(),
                     })}
                   />
                 </div>
@@ -3224,10 +3563,14 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Calendar Features */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Calendar Features</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Calendar Features
+              </h3>
               <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                 <div className='space-y-4'>
-                  <h4 className='font-medium text-foreground'>Design Features</h4>
+                  <h4 className='font-medium text-foreground'>
+                    Design Features
+                  </h4>
                   <ul className='space-y-2 text-sm text-muted-foreground'>
                     <li>• Dark-first design philosophy</li>
                     <li>• Apple HIG color harmonies</li>
@@ -3237,7 +3580,9 @@ export const ComponentsDemo: React.FC = () => {
                   </ul>
                 </div>
                 <div className='space-y-4'>
-                  <h4 className='font-medium text-foreground'>Interaction Features</h4>
+                  <h4 className='font-medium text-foreground'>
+                    Interaction Features
+                  </h4>
                   <ul className='space-y-2 text-sm text-muted-foreground'>
                     <li>• Single and multiple selection modes</li>
                     <li>• Keyboard navigation support</li>
@@ -3247,7 +3592,9 @@ export const ComponentsDemo: React.FC = () => {
                   </ul>
                 </div>
                 <div className='space-y-4'>
-                  <h4 className='font-medium text-foreground'>Accessibility Features</h4>
+                  <h4 className='font-medium text-foreground'>
+                    Accessibility Features
+                  </h4>
                   <ul className='space-y-2 text-sm text-muted-foreground'>
                     <li>• ARIA labels and roles</li>
                     <li>• Screen reader announcements</li>
@@ -3257,7 +3604,9 @@ export const ComponentsDemo: React.FC = () => {
                   </ul>
                 </div>
                 <div className='space-y-4'>
-                  <h4 className='font-medium text-foreground'>Technical Features</h4>
+                  <h4 className='font-medium text-foreground'>
+                    Technical Features
+                  </h4>
                   <ul className='space-y-2 text-sm text-muted-foreground'>
                     <li>• CVA variant system</li>
                     <li>• Polymorphic component support</li>
@@ -3271,8 +3620,10 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Interactive Calendar Demo */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Interactive Features Demo</h3>
-              <div className='rounded-lg border border-border bg-card p-6 space-y-6'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Interactive Features Demo
+              </h3>
+              <div className='space-y-6 rounded-lg border border-border bg-card p-6'>
                 <p className='text-sm text-muted-foreground'>
                   Try different calendar configurations and interactions
                 </p>
@@ -3280,29 +3631,41 @@ export const ComponentsDemo: React.FC = () => {
                 {/* Compact Calendar */}
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                   <div className='space-y-3'>
-                    <h4 className='font-medium text-foreground'>Compact Size</h4>
+                    <h4 className='font-medium text-foreground'>
+                      Compact Size
+                    </h4>
                     <EnhancedCalendar
                       {...CalendarFactory.compact()}
                       selected={selectedDate}
-                      onSelect={(date) => {
+                      onSelect={date => {
                         if (date instanceof Date) {
                           setSelectedDate(date);
-                          showToast('info', 'Compact Calendar', formatCalendarDate(date));
+                          showToast(
+                            'info',
+                            'Compact Calendar',
+                            formatCalendarDate(date)
+                          );
                         }
                       }}
                     />
                   </div>
 
                   <div className='space-y-3'>
-                    <h4 className='font-medium text-foreground'>Floating Glass</h4>
+                    <h4 className='font-medium text-foreground'>
+                      Floating Glass
+                    </h4>
                     <EnhancedCalendar
-                      variant="floating"
-                      surface="glass"
+                      variant='floating'
+                      surface='glass'
                       selected={selectedDate}
-                      onSelect={(date) => {
+                      onSelect={date => {
                         if (date instanceof Date) {
                           setSelectedDate(date);
-                          showToast('success', 'Floating Calendar', 'Ethereal selection');
+                          showToast(
+                            'success',
+                            'Floating Calendar',
+                            'Ethereal selection'
+                          );
                         }
                       }}
                     />
@@ -3311,17 +3674,23 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Calendar with custom styling */}
                 <div className='space-y-3'>
-                  <h4 className='font-medium text-foreground'>Standard with Elevated Surface</h4>
+                  <h4 className='font-medium text-foreground'>
+                    Standard with Elevated Surface
+                  </h4>
                   <div className='max-w-sm'>
                     <EnhancedCalendar
-                      variant="elevated"
-                      surface="elevated"
-                      size="lg"
+                      variant='elevated'
+                      surface='elevated'
+                      size='lg'
                       selected={selectedDate}
-                      onSelect={(date) => {
+                      onSelect={date => {
                         if (date instanceof Date) {
                           setSelectedDate(date);
-                          showToast('success', 'Elevated Calendar', 'Professional selection');
+                          showToast(
+                            'success',
+                            'Elevated Calendar',
+                            'Professional selection'
+                          );
                         }
                       }}
                     />
@@ -3338,21 +3707,26 @@ export const ComponentsDemo: React.FC = () => {
             </h2>
             <p className='text-muted-foreground'>
               Enterprise-grade date selection components with Apple HIG harmony,
-              liquid glass materials, range selection capabilities, and comprehensive
-              accessibility patterns following MAPS v2.2 architecture.
+              liquid glass materials, range selection capabilities, and
+              comprehensive accessibility patterns following MAPS v2.2
+              architecture.
             </p>
 
             {/* Single Date Picker Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Single Date Selection</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Single Date Selection
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
                 {/* Default DatePicker */}
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Default Surface</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Default Surface
+                  </span>
                   <EnhancedDatePicker
                     placeholder='Select appointment date'
                     {...(singleDate && { value: singleDate })}
-                    onChange={(date) => {
+                    onChange={date => {
                       setSingleDate(date);
                       console.log('Selected date:', date);
                     }}
@@ -3361,21 +3735,25 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Glass Surface DatePicker */}
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Glass Material</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Glass Material
+                  </span>
                   <EnhancedDatePicker
                     surface='glass'
                     placeholder='Select meeting date'
-                    onChange={(date) => console.log('Glass date:', date)}
+                    onChange={date => console.log('Glass date:', date)}
                   />
                 </div>
 
                 {/* Elevated Surface DatePicker */}
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Elevated Surface</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Elevated Surface
+                  </span>
                   <EnhancedDatePicker
                     surface='elevated'
                     placeholder='Select deadline'
-                    onChange={(date) => console.log('Elevated date:', date)}
+                    onChange={date => console.log('Elevated date:', date)}
                   />
                 </div>
               </div>
@@ -3383,32 +3761,40 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Size Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Size Variants</h3>
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Size Variants
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Small (sm)</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Small (sm)
+                  </span>
                   <EnhancedDatePicker
                     size='sm'
                     placeholder='Compact selection'
-                    onChange={(date) => console.log('Small date:', date)}
+                    onChange={date => console.log('Small date:', date)}
                   />
                 </div>
 
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Medium (md)</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Medium (md)
+                  </span>
                   <EnhancedDatePicker
                     size='md'
                     placeholder='Standard selection'
-                    onChange={(date) => console.log('Medium date:', date)}
+                    onChange={date => console.log('Medium date:', date)}
                   />
                 </div>
 
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Large (lg)</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Large (lg)
+                  </span>
                   <EnhancedDatePicker
                     size='lg'
                     placeholder='Prominent selection'
-                    onChange={(date) => console.log('Large date:', date)}
+                    onChange={date => console.log('Large date:', date)}
                   />
                 </div>
               </div>
@@ -3416,34 +3802,44 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Validation States */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Validation States</h3>
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Validation States
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-destructive'>Error State</span>
+                  <span className='text-sm font-medium text-destructive'>
+                    Error State
+                  </span>
                   <EnhancedDatePicker
                     validation='error'
                     placeholder='Invalid date selection'
-                    onChange={(date) => console.log('Error date:', date)}
+                    onChange={date => console.log('Error date:', date)}
                   />
-                  <p className='text-xs text-destructive'>Please select a valid date</p>
+                  <p className='text-xs text-destructive'>
+                    Please select a valid date
+                  </p>
                 </div>
 
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-warning'>Warning State</span>
+                  <span className='text-sm font-medium text-warning'>
+                    Warning State
+                  </span>
                   <EnhancedDatePicker
                     validation='warning'
                     placeholder='Check your selection'
-                    onChange={(date) => console.log('Warning date:', date)}
+                    onChange={date => console.log('Warning date:', date)}
                   />
                   <p className='text-xs text-warning'>Date is in the past</p>
                 </div>
 
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-success'>Success State</span>
+                  <span className='text-sm font-medium text-success'>
+                    Success State
+                  </span>
                   <EnhancedDatePicker
                     validation='success'
                     placeholder='Valid selection'
-                    onChange={(date) => console.log('Success date:', date)}
+                    onChange={date => console.log('Success date:', date)}
                   />
                   <p className='text-xs text-success'>Perfect date selection</p>
                 </div>
@@ -3452,15 +3848,19 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Date Range Picker */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Date Range Selection</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Date Range Selection
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 {/* Default Range Picker */}
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Travel Dates</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Travel Dates
+                  </span>
                   <EnhancedDatePickerRange
                     placeholder='Select travel period'
                     {...(dateRange && { value: dateRange })}
-                    onChange={(range) => {
+                    onChange={range => {
                       setDateRange(range);
                       console.log('Travel range:', range);
                     }}
@@ -3469,11 +3869,13 @@ export const ComponentsDemo: React.FC = () => {
 
                 {/* Glass Range Picker */}
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Project Duration</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Project Duration
+                  </span>
                   <EnhancedDatePickerRange
                     surface='glass'
                     placeholder='Select project timeline'
-                    onChange={(range) => console.log('Project range:', range)}
+                    onChange={range => console.log('Project range:', range)}
                   />
                 </div>
               </div>
@@ -3481,20 +3883,28 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Factory Functions */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Factory Presets</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Factory Presets
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Compact Preset</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Compact Preset
+                  </span>
                   <DatePickerFactory.compact placeholder='Quick selection' />
                 </div>
 
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Large Preset</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Large Preset
+                  </span>
                   <DatePickerFactory.large placeholder='Premium selection' />
                 </div>
 
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Range Preset</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Range Preset
+                  </span>
                   <DatePickerFactory.range placeholder='Period selection' />
                 </div>
               </div>
@@ -3502,63 +3912,81 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Advanced Features */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Advanced Features</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Advanced Features
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 {/* Disabled Dates */}
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Weekend Restrictions</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Weekend Restrictions
+                  </span>
                   <EnhancedDatePicker
                     placeholder='Business days only'
-                    isDateDisabled={(date) => {
+                    isDateDisabled={date => {
                       const day = date.getDay();
                       return day === 0 || day === 6; // Disable weekends
                     }}
-                    onChange={(date) => console.log('Business date:', date)}
+                    onChange={date => console.log('Business date:', date)}
                   />
-                  <p className='text-xs text-muted-foreground'>Weekends are disabled</p>
+                  <p className='text-xs text-muted-foreground'>
+                    Weekends are disabled
+                  </p>
                 </div>
 
                 {/* Date Range Limits */}
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Future Dates Only</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Future Dates Only
+                  </span>
                   <EnhancedDatePicker
                     placeholder='Select future date'
                     minDate={new Date()}
-                    onChange={(date) => console.log('Future date:', date)}
+                    onChange={date => console.log('Future date:', date)}
                   />
-                  <p className='text-xs text-muted-foreground'>Past dates are disabled</p>
+                  <p className='text-xs text-muted-foreground'>
+                    Past dates are disabled
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* Custom Formats */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Custom Date Formats</h3>
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Custom Date Formats
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>ISO Format</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    ISO Format
+                  </span>
                   <EnhancedDatePicker
                     placeholder='YYYY-MM-DD'
                     dateFormat='yyyy-MM-dd'
-                    onChange={(date) => console.log('ISO date:', date)}
+                    onChange={date => console.log('ISO date:', date)}
                   />
                 </div>
 
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Long Format</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Long Format
+                  </span>
                   <EnhancedDatePicker
                     placeholder='Full date display'
                     dateFormat='EEEE, MMMM do, yyyy'
-                    onChange={(date) => console.log('Long date:', date)}
+                    onChange={date => console.log('Long date:', date)}
                   />
                 </div>
 
                 <div className='space-y-2'>
-                  <span className='text-sm font-medium text-foreground'>Short Format</span>
+                  <span className='text-sm font-medium text-foreground'>
+                    Short Format
+                  </span>
                   <EnhancedDatePicker
                     placeholder='MM/DD/YY'
                     dateFormat='MM/dd/yy'
-                    onChange={(date) => console.log('Short date:', date)}
+                    onChange={date => console.log('Short date:', date)}
                   />
                 </div>
               </div>
@@ -3571,66 +3999,165 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Alert - Dark-First Notification System
             </h2>
             <p className='text-muted-foreground'>
-              Apple HIG-inspired notification system with sophisticated visual hierarchy,
-              liquid glass materials, auto-close functionality, and comprehensive
-              accessibility patterns following MAPS v2.2 architecture.
+              Apple HIG-inspired notification system with sophisticated visual
+              hierarchy, liquid glass materials, auto-close functionality, and
+              comprehensive accessibility patterns following MAPS v2.2
+              architecture.
             </p>
 
             {/* Basic Alert Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Semantic Variants</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Semantic Variants
+              </h3>
               <div className='space-y-4'>
-                <EnhancedAlert variant='default' title='Default Alert' description='This is a default alert with standard styling and neutral colors.' />
-                <EnhancedAlert variant='destructive' title='Error Alert' description='Something went wrong! Please check your input and try again.' />
-                <EnhancedAlert variant='warning' title='Warning Alert' description='This action cannot be undone. Please proceed with caution.' />
-                <EnhancedAlert variant='success' title='Success Alert' description='Your changes have been saved successfully.' />
-                <EnhancedAlert variant='info' title='Information Alert' description='Here is some important information you should know.' />
+                <EnhancedAlert
+                  variant='default'
+                  title='Default Alert'
+                  description='This is a default alert with standard styling and neutral colors.'
+                />
+                <EnhancedAlert
+                  variant='destructive'
+                  title='Error Alert'
+                  description='Something went wrong! Please check your input and try again.'
+                />
+                <EnhancedAlert
+                  variant='warning'
+                  title='Warning Alert'
+                  description='This action cannot be undone. Please proceed with caution.'
+                />
+                <EnhancedAlert
+                  variant='success'
+                  title='Success Alert'
+                  description='Your changes have been saved successfully.'
+                />
+                <EnhancedAlert
+                  variant='info'
+                  title='Information Alert'
+                  description='Here is some important information you should know.'
+                />
               </div>
             </div>
 
             {/* Glass Material Variants */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Liquid Glass Materials</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Liquid Glass Materials
+              </h3>
               <div className='space-y-4'>
-                <EnhancedAlert variant='glass' title='Glass Alert' description='Sophisticated liquid glass material with subtle transparency and backdrop blur.' />
-                <EnhancedAlert variant='glass-destructive' title='Glass Error' description='Error alert with glass material styling and enhanced visual depth.' />
-                <EnhancedAlert variant='glass-warning' title='Glass Warning' description='Warning with advanced glass material and liquid aesthetics.' />
-                <EnhancedAlert variant='glass-success' title='Glass Success' description='Success notification with premium glass material finish.' />
-                <EnhancedAlert variant='glass-info' title='Glass Information' description='Information alert featuring the sophisticated glass material system.' />
+                <EnhancedAlert
+                  variant='glass'
+                  title='Glass Alert'
+                  description='Sophisticated liquid glass material with subtle transparency and backdrop blur.'
+                />
+                <EnhancedAlert
+                  variant='glass-destructive'
+                  title='Glass Error'
+                  description='Error alert with glass material styling and enhanced visual depth.'
+                />
+                <EnhancedAlert
+                  variant='glass-warning'
+                  title='Glass Warning'
+                  description='Warning with advanced glass material and liquid aesthetics.'
+                />
+                <EnhancedAlert
+                  variant='glass-success'
+                  title='Glass Success'
+                  description='Success notification with premium glass material finish.'
+                />
+                <EnhancedAlert
+                  variant='glass-info'
+                  title='Glass Information'
+                  description='Information alert featuring the sophisticated glass material system.'
+                />
               </div>
             </div>
 
             {/* Size and Elevation System */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Size & Elevation System</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Size & Elevation System
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div className='space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Size Variants</h4>
-                  <EnhancedAlert size='sm' variant='info' title='Small Alert' description='Compact alert for tight spaces.' />
-                  <EnhancedAlert size='md' variant='info' title='Medium Alert' description='Standard sized alert for most use cases.' />
-                  <EnhancedAlert size='lg' variant='info' title='Large Alert' description='Larger alert for important information.' />
-                  <EnhancedAlert size='xl' variant='info' title='Extra Large Alert' description='Maximum size alert for critical notifications.' />
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Size Variants
+                  </h4>
+                  <EnhancedAlert
+                    size='sm'
+                    variant='info'
+                    title='Small Alert'
+                    description='Compact alert for tight spaces.'
+                  />
+                  <EnhancedAlert
+                    size='md'
+                    variant='info'
+                    title='Medium Alert'
+                    description='Standard sized alert for most use cases.'
+                  />
+                  <EnhancedAlert
+                    size='lg'
+                    variant='info'
+                    title='Large Alert'
+                    description='Larger alert for important information.'
+                  />
+                  <EnhancedAlert
+                    size='xl'
+                    variant='info'
+                    title='Extra Large Alert'
+                    description='Maximum size alert for critical notifications.'
+                  />
                 </div>
                 <div className='space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Elevation Levels</h4>
-                  <EnhancedAlert elevation='subtle' variant='default' title='Subtle Shadow' description='Minimal elevation for subtle presence.' />
-                  <EnhancedAlert elevation='medium' variant='default' title='Medium Shadow' description='Standard elevation for clear definition.' />
-                  <EnhancedAlert elevation='high' variant='default' title='High Shadow' description='Strong elevation for prominent display.' />
-                  <EnhancedAlert elevation='dramatic' variant='default' title='Dramatic Shadow' description='Maximum elevation for critical attention.' />
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Elevation Levels
+                  </h4>
+                  <EnhancedAlert
+                    elevation='subtle'
+                    variant='default'
+                    title='Subtle Shadow'
+                    description='Minimal elevation for subtle presence.'
+                  />
+                  <EnhancedAlert
+                    elevation='medium'
+                    variant='default'
+                    title='Medium Shadow'
+                    description='Standard elevation for clear definition.'
+                  />
+                  <EnhancedAlert
+                    elevation='high'
+                    variant='default'
+                    title='High Shadow'
+                    description='Strong elevation for prominent display.'
+                  />
+                  <EnhancedAlert
+                    elevation='dramatic'
+                    variant='default'
+                    title='Dramatic Shadow'
+                    description='Maximum elevation for critical attention.'
+                  />
                 </div>
               </div>
             </div>
 
             {/* Interactive Features */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Interactive Features</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Interactive Features
+              </h3>
               <div className='space-y-4'>
                 <EnhancedAlert
                   variant='default'
                   title='Dismissible Alert'
                   description='This alert can be manually dismissed by clicking the close button.'
                   dismissible
-                  onDismiss={() => showToast('success', 'Alert Dismissed', 'The alert was successfully dismissed')}
+                  onDismiss={() =>
+                    showToast(
+                      'success',
+                      'Alert Dismissed',
+                      'The alert was successfully dismissed'
+                    )
+                  }
                 />
                 <EnhancedAlert
                   variant='info'
@@ -3638,7 +4165,13 @@ export const ComponentsDemo: React.FC = () => {
                   description='This alert will automatically close after 5 seconds.'
                   autoClose={5000}
                   showProgress
-                  onDismiss={() => showToast('info', 'Alert Auto-closed', 'The alert closed automatically')}
+                  onDismiss={() =>
+                    showToast(
+                      'info',
+                      'Alert Auto-closed',
+                      'The alert closed automatically'
+                    )
+                  }
                 />
                 <EnhancedAlert
                   variant='warning'
@@ -3647,14 +4180,22 @@ export const ComponentsDemo: React.FC = () => {
                   dismissible
                   autoClose={8000}
                   showProgress
-                  onDismiss={() => showToast('info', 'Alert Closed', 'Alert was closed either manually or automatically')}
+                  onDismiss={() =>
+                    showToast(
+                      'info',
+                      'Alert Closed',
+                      'Alert was closed either manually or automatically'
+                    )
+                  }
                 />
               </div>
             </div>
 
             {/* Custom Icons and Actions */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Custom Icons & Actions</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Custom Icons & Actions
+              </h3>
               <div className='space-y-4'>
                 <EnhancedAlert
                   variant='info'
@@ -3671,13 +4212,25 @@ export const ComponentsDemo: React.FC = () => {
                       <EnhancedButton
                         size='sm'
                         variant='outline'
-                        onClick={() => showToast('info', 'Action Clicked', 'Secondary action was clicked')}
+                        onClick={() =>
+                          showToast(
+                            'info',
+                            'Action Clicked',
+                            'Secondary action was clicked'
+                          )
+                        }
                       >
                         Cancel
                       </EnhancedButton>
                       <EnhancedButton
                         size='sm'
-                        onClick={() => showToast('success', 'Action Confirmed', 'Primary action was confirmed')}
+                        onClick={() =>
+                          showToast(
+                            'success',
+                            'Action Confirmed',
+                            'Primary action was confirmed'
+                          )
+                        }
                       >
                         Confirm
                       </EnhancedButton>
@@ -3690,49 +4243,80 @@ export const ComponentsDemo: React.FC = () => {
                   description='This alert features a custom close icon.'
                   dismissible
                   closeIcon={<X className='h-4 w-4' />}
-                  onDismiss={() => showToast('success', 'Custom Close', 'Alert closed with custom icon')}
+                  onDismiss={() =>
+                    showToast(
+                      'success',
+                      'Custom Close',
+                      'Alert closed with custom icon'
+                    )
+                  }
                 />
               </div>
             </div>
 
             {/* Factory Functions */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Factory Functions</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Factory Functions
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
                 {/* Semantic Factories */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Semantic Patterns</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Semantic Patterns
+                  </h4>
                   <div className='space-y-2'>
-                    <AlertFactory.default.Alert title='Default Factory' description='Factory-created default alert.' />
-                    <AlertFactory.success.Alert title='Success Factory' description='Factory-created success alert.' />
-                    <AlertFactory.warning.Alert title='Warning Factory' description='Factory-created warning alert.' />
+                    <AlertFactory.default.Alert
+                      title='Default Factory'
+                      description='Factory-created default alert.'
+                    />
+                    <AlertFactory.success.Alert
+                      title='Success Factory'
+                      description='Factory-created success alert.'
+                    />
+                    <AlertFactory.warning.Alert
+                      title='Warning Factory'
+                      description='Factory-created warning alert.'
+                    />
                   </div>
                 </div>
 
                 {/* Glass Factories */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Glass Materials</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Glass Materials
+                  </h4>
                   <div className='space-y-2'>
-                    <AlertFactory.glass.Alert title='Glass Factory' description='Factory-created glass alert.' />
+                    <AlertFactory.glass.Alert
+                      title='Glass Factory'
+                      description='Factory-created glass alert.'
+                    />
                     {React.createElement(AlertFactory['glass-success'].Alert, {
                       title: 'Glass Success',
-                      description: 'Factory-created glass success alert.'
+                      description: 'Factory-created glass success alert.',
                     })}
-                    {React.createElement(AlertFactory['glass-destructive'].Alert, {
-                      title: 'Glass Error',
-                      description: 'Factory-created glass error alert.'
-                    })}
+                    {React.createElement(
+                      AlertFactory['glass-destructive'].Alert,
+                      {
+                        title: 'Glass Error',
+                        description: 'Factory-created glass error alert.',
+                      }
+                    )}
                   </div>
                 </div>
 
                 {/* Feature Factories */}
-                <div className='rounded-lg border border-border bg-card p-4 space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Feature Patterns</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Feature Patterns
+                  </h4>
                   <div className='space-y-2'>
                     <AlertFactory.dismissible.Alert
                       title='Dismissible Factory'
                       description='Factory-created dismissible alert.'
-                      onDismiss={() => showToast('success', 'Factory Alert Dismissed')}
+                      onDismiss={() =>
+                        showToast('success', 'Factory Alert Dismissed')
+                      }
                     />
                     <AlertFactory.aaa.Alert
                       title='AAA Factory'
@@ -3746,22 +4330,49 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Utility Functions */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Utility Functions</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Utility Functions
+              </h3>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div className='space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Basic Utilities</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Basic Utilities
+                  </h4>
                   <div className='space-y-2'>
-                    {createSuccessAlert('Utility Success', 'Created with createSuccessAlert utility')}
-                    {createErrorAlert('Utility Error', 'Created with createErrorAlert utility')}
-                    {createWarningAlert('Utility Warning', 'Created with createWarningAlert utility')}
-                    {createInfoAlert('Utility Info', 'Created with createInfoAlert utility')}
+                    {createSuccessAlert(
+                      'Utility Success',
+                      'Created with createSuccessAlert utility'
+                    )}
+                    {createErrorAlert(
+                      'Utility Error',
+                      'Created with createErrorAlert utility'
+                    )}
+                    {createWarningAlert(
+                      'Utility Warning',
+                      'Created with createWarningAlert utility'
+                    )}
+                    {createInfoAlert(
+                      'Utility Info',
+                      'Created with createInfoAlert utility'
+                    )}
                   </div>
                 </div>
                 <div className='space-y-3'>
-                  <h4 className='font-medium text-sm text-foreground'>Notification Utility</h4>
+                  <h4 className='text-sm font-medium text-foreground'>
+                    Notification Utility
+                  </h4>
                   <div className='space-y-2'>
-                    {createNotificationAlert('Notification 1', 'Auto-closing notification with progress', 6000)}
-                    {createNotificationAlert('Notification 2', 'Another notification example', 4000, { variant: 'success' })}
+                    {createNotificationAlert(
+                      'Notification 1',
+                      'Auto-closing notification with progress',
+                      6000
+                    )}
+                    {createNotificationAlert(
+                      'Notification 2',
+                      'Another notification example',
+                      4000,
+                      { variant: 'success' }
+                    )}
                   </div>
                 </div>
               </div>
@@ -3769,11 +4380,15 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Real-world Examples */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Real-world Examples</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <h3 className='text-lg font-medium text-foreground'>
+                Real-world Examples
+              </h3>
+              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                 {/* Form Validation */}
-                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
-                  <h4 className='font-medium text-foreground'>Form Validation</h4>
+                <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Form Validation
+                  </h4>
                   <div className='space-y-3'>
                     <EnhancedAlert
                       variant='destructive'
@@ -3797,7 +4412,7 @@ export const ComponentsDemo: React.FC = () => {
                 </div>
 
                 {/* System Status */}
-                <div className='rounded-lg border border-border bg-card p-6 space-y-4'>
+                <div className='space-y-4 rounded-lg border border-border bg-card p-6'>
                   <h4 className='font-medium text-foreground'>System Status</h4>
                   <div className='space-y-3'>
                     <EnhancedAlert
@@ -3822,9 +4437,11 @@ export const ComponentsDemo: React.FC = () => {
                 </div>
 
                 {/* E-commerce Example */}
-                <div className='rounded-lg border border-border bg-card p-6 space-y-4 md:col-span-2'>
-                  <h4 className='font-medium text-foreground'>E-commerce Notifications</h4>
-                  <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                <div className='space-y-4 rounded-lg border border-border bg-card p-6 md:col-span-2'>
+                  <h4 className='font-medium text-foreground'>
+                    E-commerce Notifications
+                  </h4>
+                  <div className='grid grid-cols-1 gap-3 md:grid-cols-2'>
                     <EnhancedAlert
                       variant='success'
                       title='Item Added to Cart'
@@ -3840,9 +4457,7 @@ export const ComponentsDemo: React.FC = () => {
                       description='Only 3 items left in stock!'
                       size='sm'
                       actions={
-                        <EnhancedButton size='sm'>
-                          Buy Now
-                        </EnhancedButton>
+                        <EnhancedButton size='sm'>Buy Now</EnhancedButton>
                       }
                     />
                     <EnhancedAlert
@@ -3870,19 +4485,30 @@ export const ComponentsDemo: React.FC = () => {
 
             {/* Accessibility Features */}
             <div className='space-y-4'>
-              <h3 className='text-lg font-medium text-foreground'>Accessibility Features</h3>
+              <h3 className='text-lg font-medium text-foreground'>
+                Accessibility Features
+              </h3>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
                   <h4 className='font-medium text-foreground'>ARIA Support</h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
-                    <li>• role=&quot;alert&quot; for immediate announcements</li>
-                    <li>• aria-live=&quot;polite&quot; for non-disruptive updates</li>
-                    <li>• aria-atomic=&quot;true&quot; for complete content reading</li>
+                    <li>
+                      • role=&quot;alert&quot; for immediate announcements
+                    </li>
+                    <li>
+                      • aria-live=&quot;polite&quot; for non-disruptive updates
+                    </li>
+                    <li>
+                      • aria-atomic=&quot;true&quot; for complete content
+                      reading
+                    </li>
                     <li>• Proper progress bar ARIA attributes</li>
                   </ul>
                 </div>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>Keyboard Navigation</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Keyboard Navigation
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Dismiss buttons are keyboard accessible</li>
                     <li>• Tab navigation to interactive elements</li>
@@ -3890,8 +4516,10 @@ export const ComponentsDemo: React.FC = () => {
                     <li>• Proper focus management and indicators</li>
                   </ul>
                 </div>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>AAA Compliance</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    AAA Compliance
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Enhanced contrast ratios for glass variants</li>
                     <li>• Automatic AAA mode for glass materials</li>
@@ -3910,8 +4538,10 @@ export const ComponentsDemo: React.FC = () => {
                 Enhanced EmptyState - Steve Jobs Philosophy
               </h2>
               <p className='mt-2 text-lg text-muted-foreground'>
-                Humanized empty states that transform void into opportunity • &ldquo;Empty states are invitations to greatness&rdquo; •
-                18 pre-crafted message templates • Emotional design with encouraging guidance
+                Humanized empty states that transform void into opportunity •
+                &ldquo;Empty states are invitations to greatness&rdquo; • 18
+                pre-crafted message templates • Emotional design with
+                encouraging guidance
               </p>
             </div>
 
@@ -3921,8 +4551,9 @@ export const ComponentsDemo: React.FC = () => {
                 Humanized Message Templates
               </h3>
               <p className='text-muted-foreground'>
-                Following Steve Jobs&apos; philosophy of making technology serve humanity, each template
-                speaks to emotions and guides users toward meaningful action.
+                Following Steve Jobs&apos; philosophy of making technology serve
+                humanity, each template speaks to emotions and guides users
+                toward meaningful action.
               </p>
 
               <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3'>
@@ -3931,8 +4562,10 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='mb-4 text-sm font-medium text-foreground'>
                     Search Results
                   </h4>
-                  <div className='min-h-[320px] flex items-center justify-center'>
-                    {EmptyStateFactory.searchResults('React components', () => console.log('Search retry'))}
+                  <div className='flex min-h-[320px] items-center justify-center'>
+                    {EmptyStateFactory.searchResults('React components', () =>
+                      console.log('Search retry')
+                    )}
                   </div>
                 </div>
 
@@ -3941,8 +4574,10 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='mb-4 text-sm font-medium text-foreground'>
                     New User Welcome
                   </h4>
-                  <div className='min-h-[320px] flex items-center justify-center'>
-                    {EmptyStateFactory.welcome(() => console.log('Get started'))}
+                  <div className='flex min-h-[320px] items-center justify-center'>
+                    {EmptyStateFactory.welcome(() =>
+                      console.log('Get started')
+                    )}
                   </div>
                 </div>
 
@@ -3951,8 +4586,10 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='mb-4 text-sm font-medium text-foreground'>
                     Project Creation
                   </h4>
-                  <div className='min-h-[320px] flex items-center justify-center'>
-                    {EmptyStateFactory.projects(() => console.log('Create project'))}
+                  <div className='flex min-h-[320px] items-center justify-center'>
+                    {EmptyStateFactory.projects(() =>
+                      console.log('Create project')
+                    )}
                   </div>
                 </div>
               </div>
@@ -3970,48 +4607,49 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='mb-4 text-sm font-medium text-foreground'>
                     Inspiring Variant with Floating Vibrancy
                   </h4>
-                  <div className='min-h-[320px] flex items-center justify-center'>
+                  <div className='flex min-h-[320px] items-center justify-center'>
                     <EnhancedEmptyState
-                      messageType="creative"
-                      variant="inspiring"
-                      vibrancy="floating"
+                      messageType='creative'
+                      variant='inspiring'
+                      vibrancy='floating'
                       primaryAction={{
                         label: 'Start Creating',
                         onClick: () => console.log('Create'),
-                        icon: <Plus className="h-4 w-4" />
+                        icon: <Plus className='h-4 w-4' />,
                       }}
                     />
                   </div>
                 </div>
 
-                {/* Magical Variant */
-                <div className='rounded-lg border border-border bg-card p-6'>
-                  <h4 className='mb-4 text-sm font-medium text-foreground'>
-                    Magical Variant with Wonder
-                  </h4>
-                  <div className='min-h-[320px] flex items-center justify-center'>
-                    <EnhancedEmptyState
-                      messageType="magical"
-                      variant="magical"
-                      vibrancy="floating"
-                      primaryAction={{
-                        label: 'Discover Magic',
-                        onClick: () => console.log('Discover'),
-                      }}
-                    />
+                {
+                  /* Magical Variant */
+                  <div className='rounded-lg border border-border bg-card p-6'>
+                    <h4 className='mb-4 text-sm font-medium text-foreground'>
+                      Magical Variant with Wonder
+                    </h4>
+                    <div className='flex min-h-[320px] items-center justify-center'>
+                      <EnhancedEmptyState
+                        messageType='magical'
+                        variant='magical'
+                        vibrancy='floating'
+                        primaryAction={{
+                          label: 'Discover Magic',
+                          onClick: () => console.log('Discover'),
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-}
+                }
                 {/* Peaceful Variant */}
                 <div className='rounded-lg border border-border bg-card p-6'>
                   <h4 className='mb-4 text-sm font-medium text-foreground'>
                     Peaceful Variant with Glass Materials
                   </h4>
-                  <div className='min-h-[320px] flex items-center justify-center'>
+                  <div className='flex min-h-[320px] items-center justify-center'>
                     <EnhancedEmptyState
-                      messageType="peaceful"
-                      variant="peaceful"
-                      vibrancy="glass"
+                      messageType='peaceful'
+                      variant='peaceful'
+                      vibrancy='glass'
                     />
                   </div>
                 </div>
@@ -4021,8 +4659,10 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='mb-4 text-sm font-medium text-foreground'>
                     Community & Belonging
                   </h4>
-                  <div className='min-h-[320px] flex items-center justify-center'>
-                    {EmptyStateFactory.community(() => console.log('Join community'))}
+                  <div className='flex min-h-[320px] items-center justify-center'>
+                    {EmptyStateFactory.community(() =>
+                      console.log('Join community')
+                    )}
                   </div>
                 </div>
               </div>
@@ -4034,40 +4674,55 @@ export const ComponentsDemo: React.FC = () => {
                 Pre-built Factory Functions
               </h3>
               <p className='text-muted-foreground'>
-                Ready-to-use empty state patterns for common scenarios, following
-                Steve Jobs&apos; principle of making complex things simple.
+                Ready-to-use empty state patterns for common scenarios,
+                following Steve Jobs&apos; principle of making complex things
+                simple.
               </p>
 
               <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
                 {/* Team Empty State */}
                 <div className='rounded-lg border border-border bg-card p-6'>
-                  <h4 className='mb-4 text-sm font-medium text-foreground'>Team</h4>
-                  <div className='min-h-[300px] flex items-center justify-center'>
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Team
+                  </h4>
+                  <div className='flex min-h-[300px] items-center justify-center'>
                     {EmptyStateFactory.team(() => console.log('Invite team'))}
                   </div>
                 </div>
 
                 {/* Learning Empty State */}
                 <div className='rounded-lg border border-border bg-card p-6'>
-                  <h4 className='mb-4 text-sm font-medium text-foreground'>Learning</h4>
-                  <div className='min-h-[300px] flex items-center justify-center'>
-                    {EmptyStateFactory.learning(() => console.log('Start learning'))}
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Learning
+                  </h4>
+                  <div className='flex min-h-[300px] items-center justify-center'>
+                    {EmptyStateFactory.learning(() =>
+                      console.log('Start learning')
+                    )}
                   </div>
                 </div>
 
                 {/* Achievements Empty State */}
                 <div className='rounded-lg border border-border bg-card p-6'>
-                  <h4 className='mb-4 text-sm font-medium text-foreground'>Achievements</h4>
-                  <div className='min-h-[300px] flex items-center justify-center'>
-                    {EmptyStateFactory.achievements(() => console.log('Start exploring'))}
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Achievements
+                  </h4>
+                  <div className='flex min-h-[300px] items-center justify-center'>
+                    {EmptyStateFactory.achievements(() =>
+                      console.log('Start exploring')
+                    )}
                   </div>
                 </div>
 
                 {/* Content Empty State */}
                 <div className='rounded-lg border border-border bg-card p-6'>
-                  <h4 className='mb-4 text-sm font-medium text-foreground'>Content</h4>
-                  <div className='min-h-[300px] flex items-center justify-center'>
-                    {EmptyStateFactory.content(() => console.log('Create content'))}
+                  <h4 className='mb-4 text-sm font-medium text-foreground'>
+                    Content
+                  </h4>
+                  <div className='flex min-h-[300px] items-center justify-center'>
+                    {EmptyStateFactory.content(() =>
+                      console.log('Create content')
+                    )}
                   </div>
                 </div>
               </div>
@@ -4085,14 +4740,14 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='mb-4 text-sm font-medium text-foreground'>
                     Small Size (sm)
                   </h4>
-                  <div className='min-h-[280px] flex items-center justify-center'>
+                  <div className='flex min-h-[280px] items-center justify-center'>
                     <EnhancedEmptyState
-                      messageType="ideas"
-                      size="sm"
+                      messageType='ideas'
+                      size='sm'
                       primaryAction={{
                         label: 'Add Idea',
                         onClick: () => console.log('Add idea'),
-                        icon: <Plus className="h-3 w-3" />
+                        icon: <Plus className='h-3 w-3' />,
                       }}
                     />
                   </div>
@@ -4103,20 +4758,20 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='mb-4 text-sm font-medium text-foreground'>
                     Large Size (lg)
                   </h4>
-                  <div className='min-h-[400px] flex items-center justify-center'>
+                  <div className='flex min-h-[400px] items-center justify-center'>
                     <EnhancedEmptyState
-                      messageType="projects"
-                      size="lg"
-                      variant="inspiring"
+                      messageType='projects'
+                      size='lg'
+                      variant='inspiring'
                       primaryAction={{
                         label: 'Create Project',
                         onClick: () => console.log('Create project'),
-                        icon: <Plus className="h-4 w-4" />
+                        icon: <Plus className='h-4 w-4' />,
                       }}
                       secondaryAction={{
                         label: 'Learn More',
                         onClick: () => console.log('Learn more'),
-                        variant: 'outline'
+                        variant: 'outline',
                       }}
                     />
                   </div>
@@ -4130,17 +4785,23 @@ export const ComponentsDemo: React.FC = () => {
                 Accessibility & Human-Centered Design
               </h3>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>Steve Jobs Philosophy</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Steve Jobs Philosophy
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
-                    <li>• &ldquo;Empty states are opportunities to inspire&rdquo;</li>
+                    <li>
+                      • &ldquo;Empty states are opportunities to inspire&rdquo;
+                    </li>
                     <li>• Humanized messaging that speaks to emotions</li>
                     <li>• Clear guidance without overwhelming</li>
                     <li>• Beautiful simplicity that feels purposeful</li>
                   </ul>
                 </div>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>Accessibility Features</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    Accessibility Features
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Proper semantic structure with headings</li>
                     <li>• AccessibleIcon wrapper for screen readers</li>
@@ -4148,8 +4809,10 @@ export const ComponentsDemo: React.FC = () => {
                     <li>• AAA compliance mode available</li>
                   </ul>
                 </div>
-                <div className='rounded-lg border border-border bg-card p-6 space-y-3'>
-                  <h4 className='font-medium text-foreground'>MAPS v2.2 Integration</h4>
+                <div className='space-y-3 rounded-lg border border-border bg-card p-6'>
+                  <h4 className='font-medium text-foreground'>
+                    MAPS v2.2 Integration
+                  </h4>
                   <ul className='space-y-1 text-sm text-muted-foreground'>
                     <li>• Token-based styling (anti-drift)</li>
                     <li>• Liquid glass materials system</li>
@@ -4166,14 +4829,26 @@ export const ComponentsDemo: React.FC = () => {
                 Complete Message Template System
               </h3>
               <p className='text-muted-foreground'>
-                18 carefully crafted message templates, each designed to transform empty moments into opportunities for engagement and growth.
+                18 carefully crafted message templates, each designed to
+                transform empty moments into opportunities for engagement and
+                growth.
               </p>
-              <div className='grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6 text-sm'>
+              <div className='grid grid-cols-2 gap-4 text-sm lg:grid-cols-3 xl:grid-cols-6'>
                 {Object.entries(HUMANIZED_MESSAGES).map(([key, message]) => (
-                  <div key={key} className='rounded-lg border border-border bg-card p-3 space-y-2'>
-                    <div className='font-medium text-foreground capitalize'>{key}</div>
-                    <div className='text-xs text-muted-foreground'>{message.emotion}</div>
-                    <div className='text-xs text-muted-foreground truncate' title={message.title}>
+                  <div
+                    key={key}
+                    className='space-y-2 rounded-lg border border-border bg-card p-3'
+                  >
+                    <div className='font-medium capitalize text-foreground'>
+                      {key}
+                    </div>
+                    <div className='text-xs text-muted-foreground'>
+                      {message.emotion}
+                    </div>
+                    <div
+                      className='truncate text-xs text-muted-foreground'
+                      title={message.title}
+                    >
                       {message.title}
                     </div>
                   </div>
@@ -4727,8 +5402,8 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Sheet - Dark-First Overlay Panels
             </h2>
             <p className='text-muted-foreground'>
-              Professional side panels and overlays with Apple HIG harmony, liquid
-              glass materials, and comprehensive accessibility support.
+              Professional side panels and overlays with Apple HIG harmony,
+              liquid glass materials, and comprehensive accessibility support.
             </p>
 
             {/* Basic Sheet Variants */}
@@ -4753,11 +5428,14 @@ export const ComponentsDemo: React.FC = () => {
                       </EnhancedSheetHeader>
                       <div className='space-y-4 py-4'>
                         <div className='space-y-2'>
-                          <EnhancedLabel htmlFor="theme-select" className='text-sm font-medium text-foreground'>
+                          <EnhancedLabel
+                            htmlFor='theme-select'
+                            className='text-sm font-medium text-foreground'
+                          >
                             Theme
                           </EnhancedLabel>
                           <Select>
-                            <SelectTrigger id="theme-select">
+                            <SelectTrigger id='theme-select'>
                               <SelectValue placeholder='Select theme' />
                             </SelectTrigger>
                             <SelectContent>
@@ -4768,18 +5446,25 @@ export const ComponentsDemo: React.FC = () => {
                           </Select>
                         </div>
                         <div className='space-y-2'>
-                          <EnhancedLabel htmlFor="notifications-switch" className='text-sm font-medium text-foreground'>
+                          <EnhancedLabel
+                            htmlFor='notifications-switch'
+                            className='text-sm font-medium text-foreground'
+                          >
                             Notifications
                           </EnhancedLabel>
-                          <EnhancedSwitch id="notifications-switch" />
+                          <EnhancedSwitch id='notifications-switch' />
                         </div>
                       </div>
                       <EnhancedSheetFooter>
                         <EnhancedSheetClose asChild>
-                          <EnhancedButton variant='outline'>Cancel</EnhancedButton>
+                          <EnhancedButton variant='outline'>
+                            Cancel
+                          </EnhancedButton>
                         </EnhancedSheetClose>
                         <EnhancedSheetClose asChild>
-                          <EnhancedButton variant='primary'>Save Changes</EnhancedButton>
+                          <EnhancedButton variant='primary'>
+                            Save Changes
+                          </EnhancedButton>
                         </EnhancedSheetClose>
                       </EnhancedSheetFooter>
                     </EnhancedSheetContent>
@@ -4799,16 +5484,16 @@ export const ComponentsDemo: React.FC = () => {
                         </EnhancedSheetDescription>
                       </EnhancedSheetHeader>
                       <div className='space-y-2 py-4'>
-                        <button className='w-full p-2 text-left text-sm rounded hover:bg-muted'>
+                        <button className='w-full rounded p-2 text-left text-sm hover:bg-muted'>
                           Dashboard
                         </button>
-                        <button className='w-full p-2 text-left text-sm rounded hover:bg-muted'>
+                        <button className='w-full rounded p-2 text-left text-sm hover:bg-muted'>
                           Projects
                         </button>
-                        <button className='w-full p-2 text-left text-sm rounded hover:bg-muted'>
+                        <button className='w-full rounded p-2 text-left text-sm hover:bg-muted'>
                           Settings
                         </button>
-                        <button className='w-full p-2 text-left text-sm rounded hover:bg-muted'>
+                        <button className='w-full rounded p-2 text-left text-sm hover:bg-muted'>
                           Help
                         </button>
                       </div>
@@ -4839,20 +5524,32 @@ export const ComponentsDemo: React.FC = () => {
                         </EnhancedSheetDescription>
                       </EnhancedSheetHeader>
                       <div className='grid grid-cols-2 gap-3 py-4'>
-                        <EnhancedButton variant='outline' className='h-20 flex-col'>
-                          <Settings className='h-6 w-6 mb-2' />
+                        <EnhancedButton
+                          variant='outline'
+                          className='h-20 flex-col'
+                        >
+                          <Settings className='mb-2 h-6 w-6' />
                           Settings
                         </EnhancedButton>
-                        <EnhancedButton variant='outline' className='h-20 flex-col'>
-                          <User className='h-6 w-6 mb-2' />
+                        <EnhancedButton
+                          variant='outline'
+                          className='h-20 flex-col'
+                        >
+                          <User className='mb-2 h-6 w-6' />
                           Profile
                         </EnhancedButton>
-                        <EnhancedButton variant='outline' className='h-20 flex-col'>
-                          <Mail className='h-6 w-6 mb-2' />
+                        <EnhancedButton
+                          variant='outline'
+                          className='h-20 flex-col'
+                        >
+                          <Mail className='mb-2 h-6 w-6' />
                           Messages
                         </EnhancedButton>
-                        <EnhancedButton variant='outline' className='h-20 flex-col'>
-                          <Search className='h-6 w-6 mb-2' />
+                        <EnhancedButton
+                          variant='outline'
+                          className='h-20 flex-col'
+                        >
+                          <Search className='mb-2 h-6 w-6' />
                           Search
                         </EnhancedButton>
                       </div>
@@ -4873,7 +5570,7 @@ export const ComponentsDemo: React.FC = () => {
                         </EnhancedSheetDescription>
                       </EnhancedSheetHeader>
                       <div className='space-y-3 py-4'>
-                        <div className='flex items-center gap-3 p-2 rounded bg-muted/50'>
+                        <div className='flex items-center gap-3 rounded bg-muted/50 p-2'>
                           <div className='h-2 w-2 rounded-full bg-blue-500' />
                           <div className='flex-1'>
                             <p className='text-sm font-medium'>System Update</p>
@@ -4882,7 +5579,7 @@ export const ComponentsDemo: React.FC = () => {
                             </p>
                           </div>
                         </div>
-                        <div className='flex items-center gap-3 p-2 rounded bg-muted/50'>
+                        <div className='flex items-center gap-3 rounded bg-muted/50 p-2'>
                           <div className='h-2 w-2 rounded-full bg-green-500' />
                           <div className='flex-1'>
                             <p className='text-sm font-medium'>Task Complete</p>
@@ -4919,18 +5616,19 @@ export const ComponentsDemo: React.FC = () => {
                         </EnhancedSheetDescription>
                       </EnhancedSheetHeader>
                       <div className='space-y-4 py-4'>
-                        <div className='p-4 rounded border border-border/50 bg-background/30'>
-                          <h4 className='font-medium mb-2'>Glass Effect</h4>
+                        <div className='rounded border border-border/50 bg-background/30 p-4'>
+                          <h4 className='mb-2 font-medium'>Glass Effect</h4>
                           <p className='text-sm text-muted-foreground'>
-                            This panel demonstrates the liquid glass material system
-                            with proper backdrop blur and transparency effects.
+                            This panel demonstrates the liquid glass material
+                            system with proper backdrop blur and transparency
+                            effects.
                           </p>
                         </div>
                         <div className='grid grid-cols-2 gap-2'>
-                          <div className='p-2 rounded bg-background/20 text-center text-xs'>
+                          <div className='rounded bg-background/20 p-2 text-center text-xs'>
                             Blur: md
                           </div>
-                          <div className='p-2 rounded bg-background/20 text-center text-xs'>
+                          <div className='rounded bg-background/20 p-2 text-center text-xs'>
                             Opacity: 95%
                           </div>
                         </div>
@@ -4946,14 +5644,16 @@ export const ComponentsDemo: React.FC = () => {
                     </EnhancedSheetTrigger>
                     <EnhancedSheetContent surface='floating' size='lg'>
                       <EnhancedSheetHeader>
-                        <EnhancedSheetTitle>Floating Surface</EnhancedSheetTitle>
+                        <EnhancedSheetTitle>
+                          Floating Surface
+                        </EnhancedSheetTitle>
                         <EnhancedSheetDescription>
                           Elevated floating panel with enhanced shadows
                         </EnhancedSheetDescription>
                       </EnhancedSheetHeader>
                       <div className='space-y-4 py-4'>
-                        <div className='p-4 rounded border border-border/30 bg-card'>
-                          <h4 className='font-medium mb-2'>Elevation System</h4>
+                        <div className='rounded border border-border/30 bg-card p-4'>
+                          <h4 className='mb-2 font-medium'>Elevation System</h4>
                           <p className='text-sm text-muted-foreground'>
                             Floating surfaces provide enhanced depth perception
                             with sophisticated shadow systems.
@@ -5020,19 +5720,40 @@ export const ComponentsDemo: React.FC = () => {
                         <div className='space-y-4 py-4'>
                           <div className='grid grid-cols-2 gap-4'>
                             <div className='space-y-2'>
-                              <EnhancedLabel htmlFor="name-input" className='text-sm font-medium'>Name</EnhancedLabel>
-                              <EnhancedInput id="name-input" placeholder='Enter name' />
+                              <EnhancedLabel
+                                htmlFor='name-input'
+                                className='text-sm font-medium'
+                              >
+                                Name
+                              </EnhancedLabel>
+                              <EnhancedInput
+                                id='name-input'
+                                placeholder='Enter name'
+                              />
                             </div>
                             <div className='space-y-2'>
-                              <EnhancedLabel htmlFor="email-input" className='text-sm font-medium'>Email</EnhancedLabel>
-                              <EnhancedInput id="email-input" placeholder='Enter email' />
+                              <EnhancedLabel
+                                htmlFor='email-input'
+                                className='text-sm font-medium'
+                              >
+                                Email
+                              </EnhancedLabel>
+                              <EnhancedInput
+                                id='email-input'
+                                placeholder='Enter email'
+                              />
                             </div>
                           </div>
                           <div className='space-y-2'>
-                            <EnhancedLabel htmlFor="description-textarea" className='text-sm font-medium'>Description</EnhancedLabel>
+                            <EnhancedLabel
+                              htmlFor='description-textarea'
+                              className='text-sm font-medium'
+                            >
+                              Description
+                            </EnhancedLabel>
                             <textarea
-                              id="description-textarea"
-                              className='w-full p-3 rounded border border-border bg-background'
+                              id='description-textarea'
+                              className='w-full rounded border border-border bg-background p-3'
                               rows={4}
                               placeholder='Enter description...'
                             />
@@ -5040,10 +5761,14 @@ export const ComponentsDemo: React.FC = () => {
                         </div>
                         <EnhancedSheetFooter>
                           <EnhancedSheetClose asChild>
-                            <EnhancedButton variant='outline'>Cancel</EnhancedButton>
+                            <EnhancedButton variant='outline'>
+                              Cancel
+                            </EnhancedButton>
                           </EnhancedSheetClose>
                           <EnhancedSheetClose asChild>
-                            <EnhancedButton variant='primary'>Save</EnhancedButton>
+                            <EnhancedButton variant='primary'>
+                              Save
+                            </EnhancedButton>
                           </EnhancedSheetClose>
                         </EnhancedSheetFooter>
                       </EnhancedSheetContent>
@@ -5057,14 +5782,16 @@ export const ComponentsDemo: React.FC = () => {
                       </EnhancedSheetTrigger>
                       <EnhancedSheetContent {...SheetFactory.accessible()}>
                         <EnhancedSheetHeader>
-                          <EnhancedSheetTitle>Accessible Sheet</EnhancedSheetTitle>
+                          <EnhancedSheetTitle>
+                            Accessible Sheet
+                          </EnhancedSheetTitle>
                           <EnhancedSheetDescription>
                             Enhanced accessibility with AAA compliance
                           </EnhancedSheetDescription>
                         </EnhancedSheetHeader>
                         <div className='space-y-4 py-4'>
-                          <div className='p-4 rounded border border-border bg-card'>
-                            <h4 className='font-medium mb-2 text-foreground'>
+                          <div className='rounded border border-border bg-card p-4'>
+                            <h4 className='mb-2 font-medium text-foreground'>
                               AAA Features
                             </h4>
                             <ul className='space-y-1 text-sm text-muted-foreground'>
@@ -5086,18 +5813,23 @@ export const ComponentsDemo: React.FC = () => {
                       </EnhancedSheetTrigger>
                       <EnhancedSheetContent {...SheetFactory.fullOverlay()}>
                         <EnhancedSheetHeader>
-                          <EnhancedSheetTitle>Full Screen Overlay</EnhancedSheetTitle>
+                          <EnhancedSheetTitle>
+                            Full Screen Overlay
+                          </EnhancedSheetTitle>
                           <EnhancedSheetDescription>
                             Complete screen overlay for immersive experiences
                           </EnhancedSheetDescription>
                         </EnhancedSheetHeader>
                         <div className='flex-1 py-4'>
-                          <div className='h-full min-h-[400px] rounded border border-border/50 bg-muted/20 flex items-center justify-center'>
-                            <div className='text-center space-y-2'>
+                          <div className='flex h-full min-h-[400px] items-center justify-center rounded border border-border/50 bg-muted/20'>
+                            <div className='space-y-2 text-center'>
                               <div className='text-4xl'>🎨</div>
-                              <p className='text-lg font-medium'>Full Screen Content</p>
+                              <p className='text-lg font-medium'>
+                                Full Screen Content
+                              </p>
                               <p className='text-sm text-muted-foreground'>
-                                Perfect for detailed views and immersive experiences
+                                Perfect for detailed views and immersive
+                                experiences
                               </p>
                             </div>
                           </div>
@@ -5106,7 +5838,8 @@ export const ComponentsDemo: React.FC = () => {
                     </EnhancedSheet>
                   </div>
                   <p className='text-sm text-muted-foreground'>
-                    Size variants from compact to full-screen with accessibility options
+                    Size variants from compact to full-screen with accessibility
+                    options
                   </p>
                 </div>
 
@@ -5183,8 +5916,9 @@ export const ComponentsDemo: React.FC = () => {
               Enhanced Drawer - Mobile-Optimized Bottom Sheets
             </h2>
             <p className='text-muted-foreground'>
-              Mobile-first drawer components with gesture support, Apple HIG interactions,
-              and sophisticated material handling for bottom sheet patterns.
+              Mobile-first drawer components with gesture support, Apple HIG
+              interactions, and sophisticated material handling for bottom sheet
+              patterns.
             </p>
 
             {/* Basic Drawer Examples */}
@@ -5200,21 +5934,30 @@ export const ComponentsDemo: React.FC = () => {
                         Small Drawer
                       </EnhancedButton>
                     </EnhancedDrawerTrigger>
-                    <EnhancedDrawerContent size="sm" surface="elevated">
+                    <EnhancedDrawerContent size='sm' surface='elevated'>
                       <EnhancedDrawerHeader>
-                        <EnhancedDrawerTitle>Small Quick Actions</EnhancedDrawerTitle>
+                        <EnhancedDrawerTitle>
+                          Small Quick Actions
+                        </EnhancedDrawerTitle>
                         <EnhancedDrawerDescription>
-                          Compact drawer for quick interactions and simple choices
+                          Compact drawer for quick interactions and simple
+                          choices
                         </EnhancedDrawerDescription>
                       </EnhancedDrawerHeader>
                       <EnhancedDrawerBody>
                         <div className='space-y-3'>
-                          <EnhancedButton variant='ghost' className='w-full justify-start'>
-                            <Settings className='h-4 w-4 mr-2' />
+                          <EnhancedButton
+                            variant='ghost'
+                            className='w-full justify-start'
+                          >
+                            <Settings className='mr-2 h-4 w-4' />
                             Settings
                           </EnhancedButton>
-                          <EnhancedButton variant='ghost' className='w-full justify-start'>
-                            <User className='h-4 w-4 mr-2' />
+                          <EnhancedButton
+                            variant='ghost'
+                            className='w-full justify-start'
+                          >
+                            <User className='mr-2 h-4 w-4' />
                             Profile
                           </EnhancedButton>
                         </div>
@@ -5228,9 +5971,11 @@ export const ComponentsDemo: React.FC = () => {
                         Medium Form
                       </EnhancedButton>
                     </EnhancedDrawerTrigger>
-                    <EnhancedDrawerContent size="md" surface="panel">
+                    <EnhancedDrawerContent size='md' surface='panel'>
                       <EnhancedDrawerHeader>
-                        <EnhancedDrawerTitle>Contact Information</EnhancedDrawerTitle>
+                        <EnhancedDrawerTitle>
+                          Contact Information
+                        </EnhancedDrawerTitle>
                         <EnhancedDrawerDescription>
                           Enter your details for our newsletter
                         </EnhancedDrawerDescription>
@@ -5238,18 +5983,22 @@ export const ComponentsDemo: React.FC = () => {
                       <EnhancedDrawerBody>
                         <div className='space-y-4'>
                           <div className='space-y-2'>
-                            <EnhancedLabel htmlFor="drawer-email">Email</EnhancedLabel>
+                            <EnhancedLabel htmlFor='drawer-email'>
+                              Email
+                            </EnhancedLabel>
                             <EnhancedInput
-                              id="drawer-email"
-                              type="email"
-                              placeholder="your@email.com"
+                              id='drawer-email'
+                              type='email'
+                              placeholder='your@email.com'
                             />
                           </div>
                           <div className='space-y-2'>
-                            <EnhancedLabel htmlFor="drawer-name">Name</EnhancedLabel>
+                            <EnhancedLabel htmlFor='drawer-name'>
+                              Name
+                            </EnhancedLabel>
                             <EnhancedInput
-                              id="drawer-name"
-                              placeholder="Your name"
+                              id='drawer-name'
+                              placeholder='Your name'
                             />
                           </div>
                         </div>
@@ -5273,31 +6022,36 @@ export const ComponentsDemo: React.FC = () => {
                         Large Detail
                       </EnhancedButton>
                     </EnhancedDrawerTrigger>
-                    <EnhancedDrawerContent size="lg" surface="glass">
+                    <EnhancedDrawerContent size='lg' surface='glass'>
                       <EnhancedDrawerHeader>
-                        <EnhancedDrawerTitle>Product Details</EnhancedDrawerTitle>
+                        <EnhancedDrawerTitle>
+                          Product Details
+                        </EnhancedDrawerTitle>
                         <EnhancedDrawerDescription>
                           Complete product information and specifications
                         </EnhancedDrawerDescription>
                       </EnhancedDrawerHeader>
                       <EnhancedDrawerBody>
                         <div className='space-y-6'>
-                          <div className='aspect-video rounded-lg bg-muted/50 flex items-center justify-center'>
-                            <div className='text-center space-y-2'>
+                          <div className='flex aspect-video items-center justify-center rounded-lg bg-muted/50'>
+                            <div className='space-y-2 text-center'>
                               <div className='text-3xl'>📱</div>
-                              <p className='text-sm text-muted-foreground'>Product Image</p>
+                              <p className='text-sm text-muted-foreground'>
+                                Product Image
+                              </p>
                             </div>
                           </div>
                           <div className='space-y-4'>
                             <div>
-                              <h4 className='font-medium mb-2'>Description</h4>
+                              <h4 className='mb-2 font-medium'>Description</h4>
                               <p className='text-sm text-muted-foreground'>
-                                This is a comprehensive view of the product with detailed
-                                specifications and feature descriptions.
+                                This is a comprehensive view of the product with
+                                detailed specifications and feature
+                                descriptions.
                               </p>
                             </div>
                             <div>
-                              <h4 className='font-medium mb-2'>Features</h4>
+                              <h4 className='mb-2 font-medium'>Features</h4>
                               <ul className='space-y-1 text-sm text-muted-foreground'>
                                 <li>• Feature one with detailed explanation</li>
                                 <li>• Feature two with specifications</li>
@@ -5308,11 +6062,15 @@ export const ComponentsDemo: React.FC = () => {
                         </div>
                       </EnhancedDrawerBody>
                       <EnhancedDrawerFooter>
-                        <div className='flex gap-3 w-full'>
+                        <div className='flex w-full gap-3'>
                           <EnhancedButton variant='primary' className='flex-1'>
                             Add to Cart
                           </EnhancedButton>
-                          <EnhancedButton variant='outline' size='sm' className='w-10 h-10 p-0'>
+                          <EnhancedButton
+                            variant='outline'
+                            size='sm'
+                            className='h-10 w-10 p-0'
+                          >
                             <Heart className='h-4 w-4' />
                           </EnhancedButton>
                         </div>
@@ -5326,9 +6084,11 @@ export const ComponentsDemo: React.FC = () => {
                         Auto Height
                       </EnhancedButton>
                     </EnhancedDrawerTrigger>
-                    <EnhancedDrawerContent size="auto" surface="floating">
+                    <EnhancedDrawerContent size='auto' surface='floating'>
                       <EnhancedDrawerHeader>
-                        <EnhancedDrawerTitle>Dynamic Content</EnhancedDrawerTitle>
+                        <EnhancedDrawerTitle>
+                          Dynamic Content
+                        </EnhancedDrawerTitle>
                         <EnhancedDrawerDescription>
                           Drawer height adapts to content automatically
                         </EnhancedDrawerDescription>
@@ -5336,11 +6096,13 @@ export const ComponentsDemo: React.FC = () => {
                       <EnhancedDrawerBody>
                         <div className='space-y-3'>
                           <p className='text-sm text-muted-foreground'>
-                            This drawer automatically sizes itself based on the content within.
+                            This drawer automatically sizes itself based on the
+                            content within.
                           </p>
-                          <div className='p-3 rounded bg-card border border-border'>
+                          <div className='rounded border border-border bg-card p-3'>
                             <p className='text-xs text-muted-foreground'>
-                              Content-aware sizing ensures optimal mobile experience.
+                              Content-aware sizing ensures optimal mobile
+                              experience.
                             </p>
                           </div>
                         </div>
@@ -5349,7 +6111,8 @@ export const ComponentsDemo: React.FC = () => {
                   </EnhancedDrawer>
                 </div>
                 <p className='text-sm text-muted-foreground'>
-                  Size variants from compact to auto-sizing with surface material options
+                  Size variants from compact to auto-sizing with surface
+                  material options
                 </p>
               </div>
 
@@ -5373,16 +6136,25 @@ export const ComponentsDemo: React.FC = () => {
                       </EnhancedDrawerHeader>
                       <EnhancedDrawerBody>
                         <div className='space-y-2'>
-                          <EnhancedButton variant='ghost' className='w-full justify-start h-12'>
-                            <Download className='h-5 w-5 mr-3' />
+                          <EnhancedButton
+                            variant='ghost'
+                            className='h-12 w-full justify-start'
+                          >
+                            <Download className='mr-3 h-5 w-5' />
                             Download
                           </EnhancedButton>
-                          <EnhancedButton variant='ghost' className='w-full justify-start h-12'>
-                            <MessageSquare className='h-5 w-5 mr-3' />
+                          <EnhancedButton
+                            variant='ghost'
+                            className='h-12 w-full justify-start'
+                          >
+                            <MessageSquare className='mr-3 h-5 w-5' />
                             Share
                           </EnhancedButton>
-                          <EnhancedButton variant='ghost' className='w-full justify-start h-12 text-destructive'>
-                            <X className='h-5 w-5 mr-3' />
+                          <EnhancedButton
+                            variant='ghost'
+                            className='h-12 w-full justify-start text-destructive'
+                          >
+                            <X className='mr-3 h-5 w-5' />
                             Delete
                           </EnhancedButton>
                         </div>
@@ -5406,22 +6178,36 @@ export const ComponentsDemo: React.FC = () => {
                       <EnhancedDrawerBody>
                         <div className='space-y-6'>
                           <div className='flex items-center space-x-4'>
-                            <div className='h-16 w-16 rounded-lg bg-muted/50 flex items-center justify-center'>
+                            <div className='flex h-16 w-16 items-center justify-center rounded-lg bg-muted/50'>
                               <div className='text-2xl'>🎵</div>
                             </div>
                             <div>
                               <h4 className='font-medium'>Song Title</h4>
-                              <p className='text-sm text-muted-foreground'>Artist Name</p>
+                              <p className='text-sm text-muted-foreground'>
+                                Artist Name
+                              </p>
                             </div>
                           </div>
                           <div className='flex items-center justify-center space-x-6'>
-                            <EnhancedButton variant='ghost' size='sm' className='w-10 h-10 p-0'>
+                            <EnhancedButton
+                              variant='ghost'
+                              size='sm'
+                              className='h-10 w-10 p-0'
+                            >
                               <SkipBack className='h-5 w-5' />
                             </EnhancedButton>
-                            <EnhancedButton variant='primary' size='lg' className='rounded-full'>
+                            <EnhancedButton
+                              variant='primary'
+                              size='lg'
+                              className='rounded-full'
+                            >
                               <Play className='h-6 w-6' />
                             </EnhancedButton>
-                            <EnhancedButton variant='ghost' size='sm' className='w-10 h-10 p-0'>
+                            <EnhancedButton
+                              variant='ghost'
+                              size='sm'
+                              className='h-10 w-10 p-0'
+                            >
                               <SkipForward className='h-5 w-5' />
                             </EnhancedButton>
                           </div>
@@ -5438,7 +6224,9 @@ export const ComponentsDemo: React.FC = () => {
                     </EnhancedDrawerTrigger>
                     <EnhancedDrawerContent {...DrawerFactory.formDrawer()}>
                       <EnhancedDrawerHeader>
-                        <EnhancedDrawerTitle>Create New Item</EnhancedDrawerTitle>
+                        <EnhancedDrawerTitle>
+                          Create New Item
+                        </EnhancedDrawerTitle>
                         <EnhancedDrawerDescription>
                           Fill out the form to create a new item
                         </EnhancedDrawerDescription>
@@ -5446,40 +6234,51 @@ export const ComponentsDemo: React.FC = () => {
                       <EnhancedDrawerBody>
                         <div className='space-y-4'>
                           <div className='space-y-2'>
-                            <EnhancedLabel htmlFor="form-title">Title</EnhancedLabel>
+                            <EnhancedLabel htmlFor='form-title'>
+                              Title
+                            </EnhancedLabel>
                             <EnhancedInput
-                              id="form-title"
-                              placeholder="Enter title"
+                              id='form-title'
+                              placeholder='Enter title'
                             />
                           </div>
                           <div className='space-y-2'>
-                            <EnhancedLabel htmlFor="form-description">Description</EnhancedLabel>
+                            <EnhancedLabel htmlFor='form-description'>
+                              Description
+                            </EnhancedLabel>
                             <textarea
-                              id="form-description"
-                              className='w-full p-3 rounded-md border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent'
+                              id='form-description'
+                              className='w-full rounded-md border border-border bg-background p-3 text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-accent'
                               rows={4}
-                              placeholder="Enter description"
+                              placeholder='Enter description'
                             />
                           </div>
                           <div className='space-y-2'>
-                            <EnhancedLabel htmlFor="form-category">Category</EnhancedLabel>
+                            <EnhancedLabel htmlFor='form-category'>
+                              Category
+                            </EnhancedLabel>
                             <Select>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select category" />
+                                <SelectValue placeholder='Select category' />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="work">Work</SelectItem>
-                                <SelectItem value="personal">Personal</SelectItem>
-                                <SelectItem value="other">Other</SelectItem>
+                                <SelectItem value='work'>Work</SelectItem>
+                                <SelectItem value='personal'>
+                                  Personal
+                                </SelectItem>
+                                <SelectItem value='other'>Other</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
                         </div>
                       </EnhancedDrawerBody>
                       <EnhancedDrawerFooter>
-                        <div className='flex gap-3 w-full'>
+                        <div className='flex w-full gap-3'>
                           <EnhancedDrawerClose asChild>
-                            <EnhancedButton variant='outline' className='flex-1'>
+                            <EnhancedButton
+                              variant='outline'
+                              className='flex-1'
+                            >
                               Cancel
                             </EnhancedButton>
                           </EnhancedDrawerClose>
@@ -5499,22 +6298,35 @@ export const ComponentsDemo: React.FC = () => {
                     </EnhancedDrawerTrigger>
                     <EnhancedDrawerContent {...DrawerFactory.accessible()}>
                       <EnhancedDrawerHeader>
-                        <EnhancedDrawerTitle>Accessible Drawer</EnhancedDrawerTitle>
+                        <EnhancedDrawerTitle>
+                          Accessible Drawer
+                        </EnhancedDrawerTitle>
                         <EnhancedDrawerDescription>
                           Enhanced accessibility with AAA compliance
                         </EnhancedDrawerDescription>
                       </EnhancedDrawerHeader>
                       <EnhancedDrawerBody>
                         <div className='space-y-4'>
-                          <div className='p-4 rounded border border-border bg-card'>
-                            <h4 className='font-medium mb-2 text-foreground'>
+                          <div className='rounded border border-border bg-card p-4'>
+                            <h4 className='mb-2 font-medium text-foreground'>
                               AAA Features
                             </h4>
                             <ul className='space-y-1 text-sm text-muted-foreground'>
-                              <li>• Enhanced contrast ratios for better readability</li>
-                              <li>• Improved focus indicators for keyboard navigation</li>
-                              <li>• Screen reader optimized structure and labeling</li>
-                              <li>• Touch target sizes meet 44px minimum requirement</li>
+                              <li>
+                                • Enhanced contrast ratios for better
+                                readability
+                              </li>
+                              <li>
+                                • Improved focus indicators for keyboard
+                                navigation
+                              </li>
+                              <li>
+                                • Screen reader optimized structure and labeling
+                              </li>
+                              <li>
+                                • Touch target sizes meet 44px minimum
+                                requirement
+                              </li>
                             </ul>
                           </div>
                         </div>
@@ -10449,38 +11261,66 @@ export const ComponentsDemo: React.FC = () => {
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
                   {/* Text Skeleton */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Text Lines</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Text Lines
+                    </h4>
                     <div className='space-y-2 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="text" size="lg" width="100%" />
-                      <EnhancedSkeleton variant="text" size="md" width="90%" />
-                      <EnhancedSkeleton variant="text" size="md" width="75%" />
-                      <EnhancedSkeleton variant="text" size="sm" width="85%" />
+                      <EnhancedSkeleton variant='text' size='lg' width='100%' />
+                      <EnhancedSkeleton variant='text' size='md' width='90%' />
+                      <EnhancedSkeleton variant='text' size='md' width='75%' />
+                      <EnhancedSkeleton variant='text' size='sm' width='85%' />
                     </div>
                   </div>
 
                   {/* Avatar Skeleton */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Avatars</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Avatars
+                    </h4>
                     <div className='space-y-4 rounded-lg border border-border bg-card p-4'>
                       <div className='flex items-center space-x-3'>
-                        <EnhancedSkeleton variant="avatar" size="sm" />
-                        <div className='space-y-1 flex-1'>
-                          <EnhancedSkeleton variant="text" size="sm" width="60%" />
-                          <EnhancedSkeleton variant="text" size="sm" width="40%" />
+                        <EnhancedSkeleton variant='avatar' size='sm' />
+                        <div className='flex-1 space-y-1'>
+                          <EnhancedSkeleton
+                            variant='text'
+                            size='sm'
+                            width='60%'
+                          />
+                          <EnhancedSkeleton
+                            variant='text'
+                            size='sm'
+                            width='40%'
+                          />
                         </div>
                       </div>
                       <div className='flex items-center space-x-3'>
-                        <EnhancedSkeleton variant="avatar" size="md" />
-                        <div className='space-y-2 flex-1'>
-                          <EnhancedSkeleton variant="text" size="md" width="70%" />
-                          <EnhancedSkeleton variant="text" size="sm" width="45%" />
+                        <EnhancedSkeleton variant='avatar' size='md' />
+                        <div className='flex-1 space-y-2'>
+                          <EnhancedSkeleton
+                            variant='text'
+                            size='md'
+                            width='70%'
+                          />
+                          <EnhancedSkeleton
+                            variant='text'
+                            size='sm'
+                            width='45%'
+                          />
                         </div>
                       </div>
                       <div className='flex items-center space-x-3'>
-                        <EnhancedSkeleton variant="avatar" size="lg" />
-                        <div className='space-y-2 flex-1'>
-                          <EnhancedSkeleton variant="text" size="lg" width="80%" />
-                          <EnhancedSkeleton variant="text" size="md" width="55%" />
+                        <EnhancedSkeleton variant='avatar' size='lg' />
+                        <div className='flex-1 space-y-2'>
+                          <EnhancedSkeleton
+                            variant='text'
+                            size='lg'
+                            width='80%'
+                          />
+                          <EnhancedSkeleton
+                            variant='text'
+                            size='md'
+                            width='55%'
+                          />
                         </div>
                       </div>
                     </div>
@@ -10488,30 +11328,62 @@ export const ComponentsDemo: React.FC = () => {
 
                   {/* Button Skeleton */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Buttons</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Buttons
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="button" size="sm" width="80px" />
-                      <EnhancedSkeleton variant="button" size="md" width="120px" />
-                      <EnhancedSkeleton variant="button" size="lg" width="140px" />
-                      <EnhancedSkeleton variant="button" size="xl" width="160px" />
+                      <EnhancedSkeleton
+                        variant='button'
+                        size='sm'
+                        width='80px'
+                      />
+                      <EnhancedSkeleton
+                        variant='button'
+                        size='md'
+                        width='120px'
+                      />
+                      <EnhancedSkeleton
+                        variant='button'
+                        size='lg'
+                        width='140px'
+                      />
+                      <EnhancedSkeleton
+                        variant='button'
+                        size='xl'
+                        width='160px'
+                      />
                     </div>
                   </div>
 
                   {/* Badge Skeleton */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Badges</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Badges
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
                       <div className='flex items-center space-x-2'>
-                        <EnhancedSkeleton variant="text" size="md" width="100px" />
-                        <EnhancedSkeleton variant="badge" size="sm" />
+                        <EnhancedSkeleton
+                          variant='text'
+                          size='md'
+                          width='100px'
+                        />
+                        <EnhancedSkeleton variant='badge' size='sm' />
                       </div>
                       <div className='flex items-center space-x-2'>
-                        <EnhancedSkeleton variant="text" size="md" width="120px" />
-                        <EnhancedSkeleton variant="badge" size="md" />
+                        <EnhancedSkeleton
+                          variant='text'
+                          size='md'
+                          width='120px'
+                        />
+                        <EnhancedSkeleton variant='badge' size='md' />
                       </div>
                       <div className='flex items-center space-x-2'>
-                        <EnhancedSkeleton variant="text" size="md" width="80px" />
-                        <EnhancedSkeleton variant="badge" size="lg" />
+                        <EnhancedSkeleton
+                          variant='text'
+                          size='md'
+                          width='80px'
+                        />
+                        <EnhancedSkeleton variant='badge' size='lg' />
                       </div>
                     </div>
                   </div>
@@ -10526,42 +11398,111 @@ export const ComponentsDemo: React.FC = () => {
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
                   {/* Pulse Animation */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Pulse Animation</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Pulse Animation
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="text" animation="pulse" width="100%" />
-                      <EnhancedSkeleton variant="text" animation="pulse" width="85%" />
-                      <EnhancedSkeleton variant="text" animation="pulse" width="70%" />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='pulse'
+                        width='100%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='pulse'
+                        width='85%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='pulse'
+                        width='70%'
+                      />
                       <div className='flex items-center space-x-3 pt-2'>
-                        <EnhancedSkeleton variant="avatar" size="md" animation="pulse" />
-                        <EnhancedSkeleton variant="button" size="sm" animation="pulse" width="80px" />
+                        <EnhancedSkeleton
+                          variant='avatar'
+                          size='md'
+                          animation='pulse'
+                        />
+                        <EnhancedSkeleton
+                          variant='button'
+                          size='sm'
+                          animation='pulse'
+                          width='80px'
+                        />
                       </div>
                     </div>
                   </div>
 
                   {/* Wave Animation */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Wave Animation</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Wave Animation
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="text" animation="wave" width="100%" />
-                      <EnhancedSkeleton variant="text" animation="wave" width="85%" />
-                      <EnhancedSkeleton variant="text" animation="wave" width="70%" />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='wave'
+                        width='100%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='wave'
+                        width='85%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='wave'
+                        width='70%'
+                      />
                       <div className='flex items-center space-x-3 pt-2'>
-                        <EnhancedSkeleton variant="avatar" size="md" animation="wave" />
-                        <EnhancedSkeleton variant="button" size="sm" animation="wave" width="80px" />
+                        <EnhancedSkeleton
+                          variant='avatar'
+                          size='md'
+                          animation='wave'
+                        />
+                        <EnhancedSkeleton
+                          variant='button'
+                          size='sm'
+                          animation='wave'
+                          width='80px'
+                        />
                       </div>
                     </div>
                   </div>
 
                   {/* No Animation */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>No Animation</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      No Animation
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="text" animation="none" width="100%" />
-                      <EnhancedSkeleton variant="text" animation="none" width="85%" />
-                      <EnhancedSkeleton variant="text" animation="none" width="70%" />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='none'
+                        width='100%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='none'
+                        width='85%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        animation='none'
+                        width='70%'
+                      />
                       <div className='flex items-center space-x-3 pt-2'>
-                        <EnhancedSkeleton variant="avatar" size="md" animation="none" />
-                        <EnhancedSkeleton variant="button" size="sm" animation="none" width="80px" />
+                        <EnhancedSkeleton
+                          variant='avatar'
+                          size='md'
+                          animation='none'
+                        />
+                        <EnhancedSkeleton
+                          variant='button'
+                          size='sm'
+                          animation='none'
+                          width='80px'
+                        />
                       </div>
                     </div>
                   </div>
@@ -10576,52 +11517,124 @@ export const ComponentsDemo: React.FC = () => {
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
                   {/* Elevated Surface */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Elevated</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Elevated
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="text" surface="elevated" width="100%" />
-                      <EnhancedSkeleton variant="text" surface="elevated" width="75%" />
+                      <EnhancedSkeleton
+                        variant='text'
+                        surface='elevated'
+                        width='100%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        surface='elevated'
+                        width='75%'
+                      />
                       <div className='flex items-center space-x-3 pt-2'>
-                        <EnhancedSkeleton variant="avatar" size="md" surface="elevated" />
-                        <EnhancedSkeleton variant="badge" size="md" surface="elevated" />
+                        <EnhancedSkeleton
+                          variant='avatar'
+                          size='md'
+                          surface='elevated'
+                        />
+                        <EnhancedSkeleton
+                          variant='badge'
+                          size='md'
+                          surface='elevated'
+                        />
                       </div>
                     </div>
                   </div>
 
                   {/* Panel Surface */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Panel</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Panel
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="text" surface="panel" width="100%" />
-                      <EnhancedSkeleton variant="text" surface="panel" width="75%" />
+                      <EnhancedSkeleton
+                        variant='text'
+                        surface='panel'
+                        width='100%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        surface='panel'
+                        width='75%'
+                      />
                       <div className='flex items-center space-x-3 pt-2'>
-                        <EnhancedSkeleton variant="avatar" size="md" surface="panel" />
-                        <EnhancedSkeleton variant="badge" size="md" surface="panel" />
+                        <EnhancedSkeleton
+                          variant='avatar'
+                          size='md'
+                          surface='panel'
+                        />
+                        <EnhancedSkeleton
+                          variant='badge'
+                          size='md'
+                          surface='panel'
+                        />
                       </div>
                     </div>
                   </div>
 
                   {/* Glass Surface */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Glass</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Glass
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="text" surface="glass" width="100%" />
-                      <EnhancedSkeleton variant="text" surface="glass" width="75%" />
+                      <EnhancedSkeleton
+                        variant='text'
+                        surface='glass'
+                        width='100%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        surface='glass'
+                        width='75%'
+                      />
                       <div className='flex items-center space-x-3 pt-2'>
-                        <EnhancedSkeleton variant="avatar" size="md" surface="glass" />
-                        <EnhancedSkeleton variant="badge" size="md" surface="glass" />
+                        <EnhancedSkeleton
+                          variant='avatar'
+                          size='md'
+                          surface='glass'
+                        />
+                        <EnhancedSkeleton
+                          variant='badge'
+                          size='md'
+                          surface='glass'
+                        />
                       </div>
                     </div>
                   </div>
 
                   {/* Floating Surface */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Floating</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Floating
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton variant="text" surface="floating" width="100%" />
-                      <EnhancedSkeleton variant="text" surface="floating" width="75%" />
+                      <EnhancedSkeleton
+                        variant='text'
+                        surface='floating'
+                        width='100%'
+                      />
+                      <EnhancedSkeleton
+                        variant='text'
+                        surface='floating'
+                        width='75%'
+                      />
                       <div className='flex items-center space-x-3 pt-2'>
-                        <EnhancedSkeleton variant="avatar" size="md" surface="floating" />
-                        <EnhancedSkeleton variant="badge" size="md" surface="floating" />
+                        <EnhancedSkeleton
+                          variant='avatar'
+                          size='md'
+                          surface='floating'
+                        />
+                        <EnhancedSkeleton
+                          variant='badge'
+                          size='md'
+                          surface='floating'
+                        />
                       </div>
                     </div>
                   </div>
@@ -10636,15 +11649,19 @@ export const ComponentsDemo: React.FC = () => {
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
                   {/* Text Lines */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Text Lines</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Text Lines
+                    </h4>
                     <div className='rounded-lg border border-border bg-card p-4'>
-                      <SkeletonTextLines lines={4} lastLineWidth="60%" />
+                      <SkeletonTextLines lines={4} lastLineWidth='60%' />
                     </div>
                   </div>
 
                   {/* Card Skeleton */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Card</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Card
+                    </h4>
                     <div className='rounded-lg border border-border bg-card'>
                       <SkeletonCard showAvatar={true} showFooter={true} />
                     </div>
@@ -10652,7 +11669,9 @@ export const ComponentsDemo: React.FC = () => {
 
                   {/* Table Skeleton */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Table</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Table
+                    </h4>
                     <div className='rounded-lg border border-border bg-card p-4'>
                       <SkeletonTable rows={4} columns={3} showHeader={true} />
                     </div>
@@ -10668,23 +11687,38 @@ export const ComponentsDemo: React.FC = () => {
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
                   {/* Text Line Factory */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Text Line Factory</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Text Line Factory
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
                       <EnhancedSkeleton {...SkeletonFactory.textLine()} />
-                      <EnhancedSkeleton {...SkeletonFactory.textLine({ width: '85%' })} />
-                      <EnhancedSkeleton {...SkeletonFactory.textLine({ width: '70%' })} />
+                      <EnhancedSkeleton
+                        {...SkeletonFactory.textLine({ width: '85%' })}
+                      />
+                      <EnhancedSkeleton
+                        {...SkeletonFactory.textLine({ width: '70%' })}
+                      />
                     </div>
                   </div>
 
                   {/* Avatar Factory */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>Avatar Factory</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      Avatar Factory
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
                       <div className='flex items-center space-x-3'>
                         <EnhancedSkeleton {...SkeletonFactory.avatar()} />
-                        <div className='space-y-2 flex-1'>
-                          <EnhancedSkeleton {...SkeletonFactory.textLine({ width: '70%' })} />
-                          <EnhancedSkeleton {...SkeletonFactory.textLine({ width: '45%', size: 'sm' })} />
+                        <div className='flex-1 space-y-2'>
+                          <EnhancedSkeleton
+                            {...SkeletonFactory.textLine({ width: '70%' })}
+                          />
+                          <EnhancedSkeleton
+                            {...SkeletonFactory.textLine({
+                              width: '45%',
+                              size: 'sm',
+                            })}
+                          />
                         </div>
                       </div>
                     </div>
@@ -10692,13 +11726,36 @@ export const ComponentsDemo: React.FC = () => {
 
                   {/* Accessible Factory */}
                   <div className='space-y-4'>
-                    <h4 className='text-lg font-medium text-foreground'>AAA Compliance</h4>
+                    <h4 className='text-lg font-medium text-foreground'>
+                      AAA Compliance
+                    </h4>
                     <div className='space-y-3 rounded-lg border border-border bg-card p-4'>
-                      <EnhancedSkeleton {...SkeletonFactory.accessible({ variant: 'text', width: '100%' })} />
-                      <EnhancedSkeleton {...SkeletonFactory.accessible({ variant: 'text', width: '80%' })} />
+                      <EnhancedSkeleton
+                        {...SkeletonFactory.accessible({
+                          variant: 'text',
+                          width: '100%',
+                        })}
+                      />
+                      <EnhancedSkeleton
+                        {...SkeletonFactory.accessible({
+                          variant: 'text',
+                          width: '80%',
+                        })}
+                      />
                       <div className='flex items-center space-x-3 pt-2'>
-                        <EnhancedSkeleton {...SkeletonFactory.accessible({ variant: 'avatar', size: 'md' })} />
-                        <EnhancedSkeleton {...SkeletonFactory.accessible({ variant: 'button', size: 'sm', width: '100px' })} />
+                        <EnhancedSkeleton
+                          {...SkeletonFactory.accessible({
+                            variant: 'avatar',
+                            size: 'md',
+                          })}
+                        />
+                        <EnhancedSkeleton
+                          {...SkeletonFactory.accessible({
+                            variant: 'button',
+                            size: 'sm',
+                            width: '100px',
+                          })}
+                        />
                       </div>
                     </div>
                   </div>
@@ -10818,7 +11875,7 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedPaginationComplete
                     currentPage={3}
                     totalPages={10}
-                    onPageChange={(page) => console.log('Page:', page)}
+                    onPageChange={page => console.log('Page:', page)}
                   />
                 </div>
 
@@ -10829,8 +11886,8 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedPaginationComplete
                     currentPage={5}
                     totalPages={12}
-                    itemVariant="pills"
-                    onPageChange={(page) => console.log('Page:', page)}
+                    itemVariant='pills'
+                    onPageChange={page => console.log('Page:', page)}
                   />
                 </div>
 
@@ -10841,10 +11898,10 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedPaginationComplete
                     currentPage={2}
                     totalPages={8}
-                    size="lg"
+                    size='lg'
                     aaaMode
-                    itemVariant="default"
-                    onPageChange={(page) => console.log('Page:', page)}
+                    itemVariant='default'
+                    onPageChange={page => console.log('Page:', page)}
                   />
                 </div>
 
@@ -10855,15 +11912,15 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedPaginationComplete
                     currentPage={1}
                     totalPages={5}
-                    size="sm"
-                    itemVariant="minimal"
+                    size='sm'
+                    itemVariant='minimal'
                     labels={{
                       previous: '← Prev',
                       next: 'Next →',
                       first: '⟪',
                       last: '⟫',
                     }}
-                    onPageChange={(page) => console.log('Page:', page)}
+                    onPageChange={page => console.log('Page:', page)}
                   />
                 </div>
               </div>
@@ -10880,11 +11937,19 @@ export const ComponentsDemo: React.FC = () => {
                     Default Factory
                   </h4>
                   <PaginationFactory.default.Root>
-                    <PaginationFactory.default.Item>1</PaginationFactory.default.Item>
-                    <PaginationFactory.default.Item isCurrent page={2}>2</PaginationFactory.default.Item>
-                    <PaginationFactory.default.Item>3</PaginationFactory.default.Item>
+                    <PaginationFactory.default.Item>
+                      1
+                    </PaginationFactory.default.Item>
+                    <PaginationFactory.default.Item isCurrent page={2}>
+                      2
+                    </PaginationFactory.default.Item>
+                    <PaginationFactory.default.Item>
+                      3
+                    </PaginationFactory.default.Item>
                     <PaginationFactory.default.Ellipsis />
-                    <PaginationFactory.default.Item>10</PaginationFactory.default.Item>
+                    <PaginationFactory.default.Item>
+                      10
+                    </PaginationFactory.default.Item>
                   </PaginationFactory.default.Root>
                 </div>
 
@@ -10893,11 +11958,19 @@ export const ComponentsDemo: React.FC = () => {
                     Pills Factory
                   </h4>
                   <PaginationFactory.pills.Root>
-                    <PaginationFactory.pills.Item>1</PaginationFactory.pills.Item>
-                    <PaginationFactory.pills.Item isCurrent page={2}>2</PaginationFactory.pills.Item>
-                    <PaginationFactory.pills.Item>3</PaginationFactory.pills.Item>
+                    <PaginationFactory.pills.Item>
+                      1
+                    </PaginationFactory.pills.Item>
+                    <PaginationFactory.pills.Item isCurrent page={2}>
+                      2
+                    </PaginationFactory.pills.Item>
+                    <PaginationFactory.pills.Item>
+                      3
+                    </PaginationFactory.pills.Item>
                     <PaginationFactory.pills.Ellipsis />
-                    <PaginationFactory.pills.Item>10</PaginationFactory.pills.Item>
+                    <PaginationFactory.pills.Item>
+                      10
+                    </PaginationFactory.pills.Item>
                   </PaginationFactory.pills.Root>
                 </div>
 
@@ -10907,7 +11980,9 @@ export const ComponentsDemo: React.FC = () => {
                   </h4>
                   <PaginationFactory.aaa.Root>
                     <PaginationFactory.aaa.Item>1</PaginationFactory.aaa.Item>
-                    <PaginationFactory.aaa.Item isCurrent page={2}>2</PaginationFactory.aaa.Item>
+                    <PaginationFactory.aaa.Item isCurrent page={2}>
+                      2
+                    </PaginationFactory.aaa.Item>
                     <PaginationFactory.aaa.Item>3</PaginationFactory.aaa.Item>
                     <PaginationFactory.aaa.Ellipsis />
                     <PaginationFactory.aaa.Item>10</PaginationFactory.aaa.Item>
@@ -10926,19 +12001,25 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='text-sm font-medium text-muted-foreground'>
                     Custom Navigation with Router Links
                   </h4>
-                  <EnhancedPagination.Root variant="spaced">
+                  <EnhancedPagination.Root variant='spaced'>
                     <EnhancedPagination.Item asChild>
-                      <a href="/page/1" className="no-underline">1</a>
+                      <a href='/page/1' className='no-underline'>
+                        1
+                      </a>
                     </EnhancedPagination.Item>
                     <EnhancedPagination.Item isCurrent page={2}>
                       2
                     </EnhancedPagination.Item>
                     <EnhancedPagination.Item asChild>
-                      <a href="/page/3" className="no-underline">3</a>
+                      <a href='/page/3' className='no-underline'>
+                        3
+                      </a>
                     </EnhancedPagination.Item>
                     <EnhancedPagination.Ellipsis />
                     <EnhancedPagination.Item asChild>
-                      <a href="/page/10" className="no-underline">10</a>
+                      <a href='/page/10' className='no-underline'>
+                        10
+                      </a>
                     </EnhancedPagination.Item>
                   </EnhancedPagination.Root>
                 </div>
@@ -10947,14 +12028,24 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='text-sm font-medium text-muted-foreground'>
                     Liquid Glass with Vibrancy
                   </h4>
-                  <EnhancedPagination.Root variant="pills">
-                    <EnhancedPagination.Item vibrancy="glass">1</EnhancedPagination.Item>
-                    <EnhancedPagination.Item vibrancy="glass" isCurrent page={2}>
+                  <EnhancedPagination.Root variant='pills'>
+                    <EnhancedPagination.Item vibrancy='glass'>
+                      1
+                    </EnhancedPagination.Item>
+                    <EnhancedPagination.Item
+                      vibrancy='glass'
+                      isCurrent
+                      page={2}
+                    >
                       2
                     </EnhancedPagination.Item>
-                    <EnhancedPagination.Item vibrancy="glass">3</EnhancedPagination.Item>
+                    <EnhancedPagination.Item vibrancy='glass'>
+                      3
+                    </EnhancedPagination.Item>
                     <EnhancedPagination.Ellipsis />
-                    <EnhancedPagination.Item vibrancy="glass">10</EnhancedPagination.Item>
+                    <EnhancedPagination.Item vibrancy='glass'>
+                      10
+                    </EnhancedPagination.Item>
                   </EnhancedPagination.Root>
                 </div>
               </div>
@@ -11052,9 +12143,9 @@ export const ComponentsDemo: React.FC = () => {
             <p className='text-muted-foreground'>
               MAPS v2.2 Enhanced Component System • Enhanced Button, Dialog,
               Input, Label, Select, Checkbox, Popover, Switch, Toggle, Tabs,
-              Collapsible, AlertDialog, Skeleton, Pagination & More • Built with Apple HIG Philosophy •
-              Accessible by Design • Liquid Glass Materials • ~9.6/10 AAA
-              Compliance Score
+              Collapsible, AlertDialog, Skeleton, Pagination & More • Built with
+              Apple HIG Philosophy • Accessible by Design • Liquid Glass
+              Materials • ~9.6/10 AAA Compliance Score
             </p>
           </footer>
         </div>
