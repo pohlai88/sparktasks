@@ -1,6 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* ANTI-DRIFT COMPLIANCE: Single source of truth */
-@import '../../../src/index.css';

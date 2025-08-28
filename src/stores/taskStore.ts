@@ -30,6 +30,8 @@ import { compareTasks } from '../domain/task/sort';
 import { deriveUndo, type UndoEntry } from '../domain/task/undo';
 import type { TaskId, TaskStatus } from '../types/task';
 
+type TaskId = string;
+
 interface TaskStore {
   byId: Record<TaskId, Task>;
   undoStack: UndoEntry[];

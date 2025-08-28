@@ -886,5 +886,17 @@ export type {
   MessageType,
 } from './EmptyState';
 
-// Re-export Enhanced Button as default for convenience
-export { EnhancedButton as default } from './Button';
+// ===== COMPOUND EXPORTS FOR RAILWAY COMPONENTS =====
+// These exports provide the exact names that Railway components are importing
+
+// Individual component exports for Railway components
+// Note: These are already exported above, no need for duplicate exports
+// export { EnhancedCard } from './Card';        // Already exported above
+// export { EnhancedProgress } from './Progress'; // Already exported above  
+// export { EnhancedBadge } from './Badge';      // Already exported above
+// export { EnhancedInput } from './Input';      // Already exported above
+// export { EnhancedTabs } from './Tabs';        // Already exported above
+// export { EnhancedSeparator } from './Separator'; // Already exported above
+// export { EnhancedSkeleton } from './Skeleton'; // Already exported above
+// export { EnhancedAlert } from './Alert';      // Already exported above
+// export { Select } from './Select';            // Already exported above

@@ -14,7 +14,7 @@ const getSigner = async (_ns: string, kid: string) => ({
   privB64u: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', // Valid Ed25519 private key (32 bytes)
   retiredAt: null,
 });
-const AuditApi = { log: async (_event: string, _data: any) => {} };
+const AuditApi = { log: async (_event: string, _data: Record<string, unknown>) => {} };
 
 // Types
 export interface PackAttestV2 {
@@ -31,7 +31,7 @@ export interface PackAttestV1 {
   manifest: {
     content: { eventsHash: string; eventsCount: number };
     bytes: number;
-    meta: any;
+    meta: Record<string, unknown>;
   };
   att: {
     alg: 'Ed25519';
@@ -59,12 +59,12 @@ export interface MultiSigResult {
 }
 
 // Canonical bytes (reuse Task 18)
-function canonicalize(obj: any): string {
+function canonicalize(obj: unknown): string {
   if (obj === null || obj === undefined) return JSON.stringify(obj);
   if (typeof obj !== 'object') return JSON.stringify(obj);
   if (Array.isArray(obj)) return '[' + obj.map(canonicalize).join(',') + ']';
-  const keys = Object.keys(obj).sort();
-  const pairs = keys.map(k => `"${k}":${canonicalize(obj[k])}`);
+  const keys = Object.keys(obj as Record<string, unknown>).sort();
+  const pairs = keys.map(k => `"${k}":${canonicalize((obj as Record<string, unknown>)[k])}`);
   return '{' + pairs.join(',') + '}';
 }
 

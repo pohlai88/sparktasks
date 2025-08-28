@@ -424,18 +424,18 @@ export function SortableList<T>({
 
 // ===== SORTABLE ITEM COMPONENT =====
 
-interface SortableItemProps extends VariantProps<typeof sortableItemVariants> {
+interface SortableItemProps<T> extends VariantProps<typeof sortableItemVariants> {
   id: string;
   index: number;
   disabled?: boolean;
   handle?: boolean;
-  animateLayoutChanges?: boolean | ((args: any) => boolean);
-  transition?: any; // TODO: Use proper transition type from dnd-kit
-  children: (item: any, index: number, isDragging: boolean) => React.ReactNode;
+  animateLayoutChanges?: boolean | ((args: Record<string, unknown>) => boolean);
+  transition?: Record<string, unknown>; // TODO: Use proper transition type from dnd-kit
+  children: (item: T, index: number, isDragging: boolean) => React.ReactNode;
   className?: string;
 }
 
-function SortableItem({
+function SortableItem<T>({
   id,
   index,
   surface = 'elevated',
@@ -445,7 +445,7 @@ function SortableItem({
   transition,
   children,
   className,
-}: SortableItemProps) {
+}: SortableItemProps<T>) {
   const {
     attributes,
     listeners,
