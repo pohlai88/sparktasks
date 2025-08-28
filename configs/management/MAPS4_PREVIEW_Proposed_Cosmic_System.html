@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS4 Preview - Proposed Cosmic System (Deep Space Canvas)</title>
+    <meta name="description" content="MAPS4 Design System Preview - Proposed Deep Space Canvas Cosmic Innovation System">
+    
+    <style>
+        /* ===== MAPS4 DESIGN SYSTEM - PROPOSED COSMIC SYSTEM ===== */
+        
+        /* CSS Custom Properties - Proposed MAPS4 Cosmic Colors */
+        :root {
+            /* Foundation Colors - Deep Space Canvas */
+            --deep-space: 10 15 22;           /* #0a0f16 - Deep space canvas */
+            --cosmic-void: 14 22 36;          /* #0e1624 - Cosmic void */
+            --stellar-surface: 13 21 35;      /* #0d1523 - Stellar surface */
+            --nebula-accent: 19 36 61;        /* #13243d - Nebula accent */
+            
+            /* Content Colors - Aurora Light */
+            --cosmic-light: 233 241 255;      /* #e9f1ff - Primary text */
+            --stellar-muted: 166 187 222;     /* #a6bbde - Secondary text */
+            --aurora-accent: 124 196 255;     /* #7cc4ff - Primary accent */
+            --cosmic-cyan: 120 255 214;       /* #78ffd6 - Secondary accent */
+            
+            /* Semantic Colors - Cosmic Harmony */
+            --cosmic-success: 64 214 163;     /* #40d6a3 - Success states */
+            --cosmic-warning: 255 209 102;    /* #ffd166 - Warning states */
+            --cosmic-danger: 255 107 107;     /* #ff6b6b - Error states */
+            --cosmic-info: 42 135 255;        /* #2a87ff - Information states */
+            
+            /* Enhanced Cosmic Accents */
+            --cosmic-primary: 124 196 255;    /* #7cc4ff - Aurora primary */
+            --cosmic-primary-hover: 144 206 255; /* #90ceff - Aurora hover */
+            --cosmic-secondary: 120 255 214;  /* #78ffd6 - Cosmic cyan */
+            --cosmic-secondary-hover: 140 255 234; /* #8cffea - Cosmic hover */
+            
+            /* Cosmic Backgrounds */
+            --background: var(--deep-space);
+            --background-elevated: var(--cosmic-void);
+            --background-panel: var(--stellar-surface);
+            --background-overlay: 0 0 0;
+            
+            /* Cosmic Foregrounds */
+            --foreground: var(--cosmic-light);
+            --foreground-muted: var(--stellar-muted);
+            --foreground-subtle: 156 163 175;
+            --foreground-disabled: 120 128 140;
+            
+            /* Cosmic Borders */
+            --border: 91 103 118;
+            --border-strong: 128 148 166;
+            --border-accent: var(--aurora-accent);
+            
+            /* Motion System */
+            --motion-duration-fast: 120ms;
+            --motion-duration-normal: 180ms;
+            --motion-duration-slow: 240ms;
+            --motion-easing-standard: cubic-bezier(0.2, 0, 0.2, 1);
+            --motion-easing-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+            --motion-easing-cosmic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* ===== BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: radial-gradient(900px 700px at 70% -10%, rgb(var(--nebula-accent)), transparent),
+                        linear-gradient(180deg, #080b12, rgb(var(--deep-space)) 40%, rgb(var(--deep-space)));
+            color: rgb(var(--foreground));
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, 
+                rgba(var(--nebula-accent), 0.8), 
+                rgba(var(--stellar-surface), 0.9));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(150%);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(255, 255, 255, 0.05) 50%, 
+                transparent 70%);
+            animation: cosmic-shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes cosmic-shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, 
+                rgb(var(--cosmic-light)), 
+                rgb(var(--aurora-accent)), 
+                rgb(var(--cosmic-cyan)));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgb(var(--stellar-muted));
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg,
+                rgba(var(--stellar-surface), 0.9),
+                rgba(var(--cosmic-void), 0.95));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px) saturate(140%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            transition: all var(--motion-duration-normal) var(--motion-easing-cosmic);
+        }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, 
+                rgb(var(--cosmic-light)), 
+                rgb(var(--aurora-accent)));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(var(--aurora-accent), 0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* ===== COLOR PALETTE ===== */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .color-item {
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            background: rgba(var(--cosmic-void), 0.6);
+            backdrop-filter: blur(12px);
+            transition: all var(--motion-duration-normal) var(--motion-easing-cosmic);
+        }
+
+        .color-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-swatch {
+            width: 100%;
+            height: 80px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-swatch::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                transparent 70%);
+            animation: cosmic-shimmer 2s ease-in-out infinite;
+        }
+
+        .color-name {
+            font-weight: 700;
+            color: rgb(var(--cosmic-light));
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .color-hex {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.9rem;
+            color: rgb(var(--stellar-muted));
+            background: rgba(var(--cosmic-void), 0.8);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--motion-duration-normal) var(--motion-easing-cosmic);
+            min-height: 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, 
+                rgb(var(--aurora-accent)), 
+                rgb(var(--cosmic-primary-hover)));
+            color: rgb(20, 35, 60);
+            font-weight: 700;
+            box-shadow: 0 4px 16px rgba(var(--aurora-accent), 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(var(--aurora-accent), 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, 
+                rgb(var(--cosmic-cyan)), 
+                rgb(var(--cosmic-secondary-hover)));
+            color: rgb(20, 35, 60);
+            font-weight: 700;
+            box-shadow: 0 4px 16px rgba(var(--cosmic-cyan), 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(var(--cosmic-cyan), 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: rgb(var(--aurora-accent));
+            border: 2px solid rgb(var(--aurora-accent));
+            backdrop-filter: blur(12px);
+        }
+
+        .btn-outline:hover {
+            background: rgba(var(--aurora-accent), 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(var(--aurora-accent), 0.2);
+        }
+
+        .btn-ghost {
+            background: rgba(var(--aurora-accent), 0.1);
+            color: rgb(var(--aurora-accent));
+            backdrop-filter: blur(12px);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(var(--aurora-accent), 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-destructive {
+            background: linear-gradient(135deg, 
+                rgb(var(--cosmic-danger)), 
+                #ff8a8a);
+            color: rgb(255, 255, 255);
+            box-shadow: 0 4px 16px rgba(var(--cosmic-danger), 0.3);
+        }
+
+        .btn-destructive:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(var(--cosmic-danger), 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: linear-gradient(135deg,
+                rgba(var(--stellar-surface), 0.8),
+                rgba(var(--cosmic-void), 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(16px) saturate(140%);
+            transition: all var(--motion-duration-normal) var(--motion-easing-cosmic);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgb(var(--aurora-accent)), 
+                transparent);
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: rgb(var(--cosmic-light));
+            margin-bottom: 1rem;
+        }
+
+        .card-content {
+            color: rgb(var(--stellar-muted));
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(12px);
+            transition: all var(--motion-duration-fast) var(--motion-easing-cosmic);
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-default {
+            background: linear-gradient(135deg, 
+                rgba(var(--aurora-accent), 0.8), 
+                rgba(var(--cosmic-primary-hover), 0.9));
+            color: rgb(255, 255, 255);
+            box-shadow: 0 2px 8px rgba(var(--aurora-accent), 0.3);
+        }
+
+        .badge-secondary {
+            background: linear-gradient(135deg, 
+                rgba(var(--cosmic-cyan), 0.8), 
+                rgba(var(--cosmic-secondary-hover), 0.9));
+            color: rgb(255, 255, 255);
+            box-shadow: 0 2px 8px rgba(var(--cosmic-cyan), 0.3);
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, 
+                rgba(var(--cosmic-success), 0.8), 
+                #4de6b3);
+            color: rgb(255, 255, 255);
+            box-shadow: 0 2px 8px rgba(var(--cosmic-success), 0.3);
+        }
+
+        .badge-warning {
+            background: linear-gradient(135deg, 
+                rgba(var(--cosmic-warning), 0.8), 
+                #ffdb4d);
+            color: rgb(0, 0, 0);
+            box-shadow: 0 2px 8px rgba(var(--cosmic-warning), 0.3);
+        }
+
+        .badge-error {
+            background: linear-gradient(135deg, 
+                rgba(var(--cosmic-danger), 0.8), 
+                #ff8a8a);
+            color: rgb(255, 255, 255);
+            box-shadow: 0 2px 8px rgba(var(--cosmic-danger), 0.3);
+        }
+
+        .badge-outline {
+            background: rgba(var(--aurora-accent), 0.1);
+            color: rgb(var(--aurora-accent));
+            border: 1px solid rgba(var(--aurora-accent), 0.3);
+        }
+
+        /* ===== GLASS EFFECTS ===== */
+        .glass-cosmic-standard {
+            backdrop-filter: blur(20px) saturate(150%);
+            background: linear-gradient(135deg,
+                rgba(var(--nebula-accent), 0.8),
+                rgba(var(--stellar-surface), 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .glass-cosmic-elevated {
+            backdrop-filter: blur(24px) saturate(160%);
+            background: linear-gradient(135deg,
+                rgba(var(--nebula-accent), 0.9),
+                rgba(var(--stellar-surface), 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-cosmic-floating {
+            backdrop-filter: blur(32px) saturate(170%);
+            background: linear-gradient(135deg,
+                rgba(var(--nebula-accent), 0.7),
+                rgba(var(--stellar-surface), 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+        }
+
+        /* ===== SHADOWS ===== */
+        .shadow-demo {
+            padding: 2.5rem;
+            margin: 1rem 0;
+            border-radius: 16px;
+            background: linear-gradient(135deg,
+                rgba(var(--stellar-surface), 0.8),
+                rgba(var(--cosmic-void), 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            transition: all var(--motion-duration-normal) var(--motion-easing-cosmic);
+        }
+
+        .shadow-demo:hover {
+            transform: translateY(-4px);
+        }
+
+        .shadow-cosmic-xs {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+
+        .shadow-cosmic-sm {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .shadow-cosmic-md {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .shadow-cosmic-lg {
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.16);
+        }
+
+        .shadow-cosmic-xl {
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .typography-demo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, 
+                rgb(var(--cosmic-light)), 
+                rgb(var(--aurora-accent)));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+
+        .typography-demo h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: rgb(var(--cosmic-light));
+            margin-bottom: 1rem;
+        }
+
+        .typography-demo h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: rgb(var(--aurora-accent));
+            margin-bottom: 0.75rem;
+        }
+
+        .typography-demo p {
+            color: rgb(var(--stellar-muted));
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+
+        .typography-demo .text-large {
+            font-size: 1.25rem;
+        }
+
+        .typography-demo .text-small {
+            font-size: 0.9rem;
+        }
+
+        /* ===== SPACING DEMO ===== */
+        .spacing-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .spacing-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0.5rem;
+            background: rgba(var(--cosmic-void), 0.5);
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
+        }
+
+        .spacing-visual {
+            background: linear-gradient(135deg, 
+                rgb(var(--aurora-accent)), 
+                rgb(var(--cosmic-cyan)));
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(var(--aurora-accent), 0.3);
+        }
+
+        .spacing-1 { width: 4px; height: 4px; }
+        .spacing-2 { width: 8px; height: 8px; }
+        .spacing-3 { width: 12px; height: 12px; }
+        .spacing-4 { width: 16px; height: 16px; }
+        .spacing-5 { width: 20px; height: 20px; }
+        .spacing-6 { width: 24px; height: 24px; }
+        .spacing-8 { width: 32px; height: 32px; }
+        .spacing-10 { width: 40px; height: 40px; }
+        .spacing-12 { width: 48px; height: 48px; }
+        .spacing-16 { width: 64px; height: 64px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .color-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* ===== COSMIC ANIMATIONS ===== */
+        @keyframes cosmic-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes cosmic-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        .cosmic-float {
+            animation: cosmic-float 3s ease-in-out infinite;
+        }
+
+        .cosmic-pulse {
+            animation: cosmic-pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>MAPS4 Design System</h1>
+            <p>Proposed System - Deep Space Canvas Cosmic Innovation</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: rgb(var(--stellar-muted));">
+                Philosophy: Sir Steve Jobs Cosmic Innovation | Aesthetic: Inspirational, Memorable, Industry-Leading
+            </p>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="section">
+            <h2>🌌 Color Palette - Deep Space Canvas</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--aurora-accent));"></div>
+                    <div class="color-name">Aurora Accent</div>
+                    <div class="color-hex">#7cc4ff</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--cosmic-cyan));"></div>
+                    <div class="color-name">Cosmic Cyan</div>
+                    <div class="color-hex">#78ffd6</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--nebula-accent));"></div>
+                    <div class="color-name">Nebula Accent</div>
+                    <div class="color-hex">#13243d</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--cosmic-success));"></div>
+                    <div class="color-name">Cosmic Success</div>
+                    <div class="color-hex">#40d6a3</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--cosmic-warning));"></div>
+                    <div class="color-name">Cosmic Warning</div>
+                    <div class="color-hex">#ffd166</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--cosmic-danger));"></div>
+                    <div class="color-name">Cosmic Danger</div>
+                    <div class="color-hex">#ff6b6b</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--deep-space));"></div>
+                    <div class="color-name">Deep Space</div>
+                    <div class="color-hex">#0a0f16</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--cosmic-void));"></div>
+                    <div class="color-name">Cosmic Void</div>
+                    <div class="color-hex">#0e1624</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--cosmic-light));"></div>
+                    <div class="color-name">Cosmic Light</div>
+                    <div class="color-hex">#e9f1ff</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--stellar-muted));"></div>
+                    <div class="color-name">Stellar Muted</div>
+                    <div class="color-hex">#a6bbde</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="section">
+            <h2>🔘 Button Components - Cosmic Innovation</h2>
+            <div class="btn-group">
+                <button class="btn btn-primary">Primary</button>
+                <button class="btn btn-secondary">Secondary</button>
+                <button class="btn btn-outline">Outline</button>
+                <button class="btn btn-ghost">Ghost</button>
+                <button class="btn btn-destructive">Destructive</button>
+            </div>
+            <div style="margin-top: 1.5rem;">
+                <button class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">Large Primary</button>
+                <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Small Secondary</button>
+            </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="section">
+            <h2>🃏 Card Components - Stellar Surfaces</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">Cosmic Card</div>
+                    <div class="card-content">This card features cosmic gradients, liquid glass effects, and smooth animations that create an emotional connection.</div>
+                    <button class="btn btn-primary">Explore</button>
+                </div>
+                <div class="card">
+                    <div class="card-title">Interactive Stellar</div>
+                    <div class="card-content">Hover over this card to experience the enhanced cosmic elevation and shimmer effects.</div>
+                    <button class="btn btn-outline">Discover</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges -->
+        <div class="section">
+            <h2>🏷️ Badge Components - Aurora Accents</h2>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <span class="badge badge-default">Default</span>
+                <span class="badge badge-secondary">Secondary</span>
+                <span class="badge badge-success">Success</span>
+                <span class="badge badge-warning">Warning</span>
+                <span class="badge badge-error">Error</span>
+                <span class="badge badge-outline">Outline</span>
+            </div>
+        </div>
+
+        <!-- Glass Effects -->
+        <div class="section">
+            <h2>🔮 Glass Effects - Liquid Glass Materials</h2>
+            <div class="grid">
+                <div class="glass-cosmic-standard" style="padding: 2.5rem; border-radius: 20px;">
+                    <h3 style="margin-bottom: 1rem; color: rgb(var(--cosmic-light));">Cosmic Glass Standard</h3>
+                    <p style="color: rgb(var(--stellar-muted));">Enhanced glass effect with cosmic backdrop blur and nebula gradients.</p>
+                </div>
+                <div class="glass-cosmic-elevated" style="padding: 2.5rem; border-radius: 20px;">
+                    <h3 style="margin-bottom: 1rem; color: rgb(var(--cosmic-light));">Cosmic Glass Elevated</h3>
+                    <p style="color: rgb(var(--stellar-muted));">Elevated glass effect with maximum cosmic backdrop blur and enhanced gradients.</p>
+                </div>
+                <div class="glass-cosmic-floating" style="padding: 2.5rem; border-radius: 20px;">
+                    <h3 style="margin-bottom: 1rem; color: rgb(var(--cosmic-light));">Cosmic Glass Floating</h3>
+                    <p style="color: rgb(var(--stellar-muted));">Floating glass effect with ultimate cosmic backdrop blur and liquid materials.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shadows -->
+        <div class="section">
+            <h2>🌑 Shadow System - Cosmic Depth</h2>
+            <div class="grid">
+                <div class="shadow-demo shadow-cosmic-xs">
+                    <h4 style="color: rgb(var(--cosmic-light));">Cosmic XS</h4>
+                    <p style="color: rgb(var(--stellar-muted));">Subtle cosmic shadow for micro elevation.</p>
+                </div>
+                <div class="shadow-demo shadow-cosmic-sm">
+                    <h4 style="color: rgb(var(--cosmic-light));">Cosmic SM</h4>
+                    <p style="color: rgb(var(--stellar-muted));">Small cosmic shadow for component elevation.</p>
+                </div>
+                <div class="shadow-demo shadow-cosmic-md">
+                    <h4 style="color: rgb(var(--cosmic-light));">Cosmic MD</h4>
+                    <p style="color: rgb(var(--stellar-muted));">Medium cosmic shadow for section elevation.</p>
+                </div>
+                <div class="shadow-demo shadow-cosmic-lg">
+                    <h4 style="color: rgb(var(--cosmic-light));">Cosmic LG</h4>
+                    <p style="color: rgb(var(--stellar-muted));">Large cosmic shadow for major elevation.</p>
+                </div>
+                <div class="shadow-demo shadow-cosmic-xl">
+                    <h4 style="color: rgb(var(--cosmic-light));">Cosmic XL</h4>
+                    <p style="color: rgb(var(--stellar-muted));">Extra large cosmic shadow for maximum elevation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="section">
+            <h2>📖 Typography System - Cosmic Harmony</h2>
+            <div class="typography-demo">
+                <h1>Heading 1 - Cosmic Display Large</h1>
+                <h2>Heading 2 - Cosmic Display Medium</h2>
+                <h3>Heading 3 - Cosmic Display Small</h3>
+                <p class="text-large">Body Large - This is larger body text with cosmic aesthetics and enhanced readability.</p>
+                <p>Body Medium - This is standard body text optimized for cosmic visual hierarchy.</p>
+                <p class="text-small">Body Small - This is smaller text for secondary cosmic content.</p>
+            </div>
+        </div>
+
+        <!-- Spacing -->
+        <div class="section">
+            <h2>📏 Spacing System - Cosmic Golden Ratio</h2>
+            <div class="spacing-demo">
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-1"></div>
+                    <span style="color: rgb(var(--stellar-muted));">4px (0.25rem) - Micro spacing</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-2"></div>
+                    <span style="color: rgb(var(--stellar-muted));">8px (0.5rem) - Base unit</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-3"></div>
+                    <span style="color: rgb(var(--stellar-muted));">12px (0.75rem) - Component spacing</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-4"></div>
+                    <span style="color: rgb(var(--stellar-muted));">16px (1rem) - Standard spacing</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-5"></div>
+                    <span style="color: rgb(var(--stellar-muted));">20px (1.25rem) - Enhanced spacing</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-6"></div>
+                    <span style="color: rgb(var(--stellar-muted));">24px (1.5rem) - Section spacing</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-8"></div>
+                    <span style="color: rgb(var(--stellar-muted));">32px (2rem) - Major spacing</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-10"></div>
+                    <span style="color: rgb(var(--stellar-muted));">40px (2.5rem) - Page spacing</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-12"></div>
+                    <span style="color: rgb(var(--stellar-muted));">48px (3rem) - Content separation</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-16"></div>
+                    <span style="color: rgb(var(--stellar-muted));">64px (4rem) - Major separation</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section" style="background: linear-gradient(135deg, rgba(var(--nebula-accent), 0.8), rgba(var(--cosmic-void), 0.9)); border: 2px solid rgba(var(--aurora-accent), 0.3);">
+            <h2>📊 MAPS4 System Summary</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                <div>
+                    <h4 style="color: rgb(var(--cosmic-success)); margin-bottom: 0.75rem;">✅ Strengths</h4>
+                    <ul style="color: rgb(var(--stellar-muted)); padding-left: 1.5rem; line-height: 1.6;">
+                        <li>Visually stunning cosmic aesthetics</li>
+                        <li>Emotionally engaging user experience</li>
+                        <li>Industry-leading visual innovation</li>
+                        <li>Enhanced liquid glass materials</li>
+                        <li>Cosmic color philosophy</li>
+                        <li>Golden ratio spacing integration</li>
+                        <li>Advanced backdrop effects</li>
+                        <li>Memorable brand identity</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: rgb(var(--cosmic-warning)); margin-bottom: 0.75rem;">🚀 Innovations</h4>
+                    <ul style="color: rgb(var(--stellar-muted)); padding-left: 1.5rem; line-height: 1.6;">
+                        <li>Deep Space Canvas color system</li>
+                        <li>Liquid glass materials</li>
+                        <li>Cosmic gradient backgrounds</li>
+                        <li>Enhanced shadow system</li>
+                        <li>Advanced glass effects</li>
+                        <li>Cosmic animations</li>
+                        <li>Perfect proportions</li>
+                        <li>Emotional design</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: rgb(var(--aurora-accent)); margin-bottom: 0.75rem;">🎯 Best For</h4>
+                    <ul style="color: rgb(var(--stellar-muted)); padding-left: 1.5rem; line-height: 1.6;">
+                        <li>Industry leadership applications</li>
+                        <li>User experience excellence</li>
+                        <li>Memorable brand experiences</li>
+                        <li>Emotional user connections</li>
+                        <li>Beyond Fortune 500 standards</li>
+                        <li>Innovation-driven platforms</li>
+                        <li>Premium user experiences</li>
+                        <li>Competitive advantage</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(var(--stellar-surface), 0.6); border-radius: 12px; backdrop-filter: blur(12px);">
+                <h4 style="color: rgb(var(--cosmic-light)); margin-bottom: 0.75rem;">🌌 Proposed Visual Identity</h4>
+                <p style="color: rgb(var(--stellar-muted)); line-height: 1.7;">
+                    <strong>Philosophy:</strong> Sir Steve Jobs Cosmic Innovation<br>
+                    <strong>Aesthetic:</strong> Inspirational, cosmic, memorable<br>
+                    <strong>Emotional Response:</strong> Exciting, innovative, love at first sight<br>
+                    <strong>Brand Recognition:</strong> Distinctive, industry-leading<br>
+                    <strong>User Experience:</strong> Engaging, emotionally connected, premium
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

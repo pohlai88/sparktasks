@@ -8,24 +8,18 @@ export default defineConfig({
       // Explicitly include files from all directories
       include: [
         '**/*.{js,jsx,ts,tsx}', // All JS/TS files anywhere
-        'src/**/*.{js,jsx,ts,tsx}',
-        'app/**/*.{js,jsx,ts,tsx}',
-        'pages/**/*.{js,jsx,ts,tsx}',
-        'components/**/*.{js,jsx,ts,tsx}'
+        'src/**/*.{js,jsx,ts,tsx}'
       ],
       exclude: ['node_modules', 'dist']
     })
   ],
   resolve: {
     alias: {
-      '@shared': resolve(__dirname, 'src/shared'),
       '@': resolve(__dirname, 'src'),
-      '@components': resolve(__dirname, 'src/components'),
-      '@utils': resolve(__dirname, 'src/utils'),
-      '@stores': resolve(__dirname, 'src/stores'),
-      // Add aliases for app and pages folders
-      '@app': resolve(__dirname, 'app'),
-      '@pages': resolve(__dirname, 'pages')
+      '@/components': resolve(__dirname, 'src/components'),
+      '@/design': resolve(__dirname, 'src/design'),
+      '@/utils': resolve(__dirname, 'src/utils'),
+      '@/': resolve(__dirname, 'src/')
     }
   },
   build: {
@@ -75,23 +69,23 @@ export default defineConfig({
           
           // UI library chunks - split by component type
           'ui-containers': [
-            './src/components/ui-enhanced/Accordion',
-            './src/components/ui-enhanced/ScrollArea',
-            './src/components/ui-enhanced/Tabs',
-            './src/components/ui-enhanced/Collapsible'
+            './src/components/ui-enhanced/Accordion.tsx',
+            './src/components/ui-enhanced/ScrollArea.tsx',
+            './src/components/ui-enhanced/Tabs.tsx',
+            './src/components/ui-enhanced/Collapsible.tsx'
           ],
           'ui-interactive': [
-            './src/components/ui-enhanced/Button',
-            './src/components/ui-enhanced/Dialog',
-            './src/components/ui-enhanced/AlertDialog',
-            './src/components/ui-enhanced/DropdownMenu'
+            './src/components/ui-enhanced/Button.tsx',
+            './src/components/ui-enhanced/Dialog.tsx',
+            './src/components/ui-enhanced/AlertDialog.tsx',
+            './src/components/ui-enhanced/DropdownMenu.tsx'
           ],
           'ui-form': [
-            './src/components/ui-enhanced/Input',
-            './src/components/ui-enhanced/Checkbox',
-            './src/components/ui-enhanced/RadioGroup',
-            './src/components/ui-enhanced/Switch',
-            './src/components/ui-enhanced/Select'
+            './src/components/ui-enhanced/Input.tsx',
+            './src/components/ui-enhanced/Checkbox.tsx',
+            './src/components/ui-enhanced/RadioGroup.tsx',
+            './src/components/ui-enhanced/Switch.tsx',
+            './src/components/ui-enhanced/Select.tsx'
           ],
           
           // Utility libraries

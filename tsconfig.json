@@ -23,13 +23,6 @@
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
 
-    /* Testing types */
-    "types": [
-      "vitest/globals",
-      "vitest/importMeta",
-      "@testing-library/jest-dom"
-    ],
-
     /* Performance */
     "incremental": true,
 
@@ -41,22 +34,24 @@
       "@components/*": ["./src/components/*"],
       "@utils/*": ["./src/utils/*"],
       "@stores/*": ["./src/stores/*"],
-      "test/*": ["./test/*"],
-      "vitest/*": ["./vitest/*"]
+      "tests/*": ["./tests/*"]
     },
 
     /* React support */
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    
+    /* Testing support */
+    "types": [
+      "vitest/globals",
+      "vitest/importMeta",
+      "@testing-library/jest-dom"
+    ]
   },
   "include": [
     "src",
-    "app",
-    "pages",
-    "test",
-    "vitest",
+    "tests",
     "vite.config.ts",
-    "vitest.config.ts",
-    "tsup.config.ts"
+    "vitest.config.ts"
   ],
-  "exclude": ["node_modules", "dist", "coverage", "test-results", "e2e"]
+  "exclude": ["node_modules", "dist", "coverage", "test-results"]
 }

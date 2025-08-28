@@ -23,9 +23,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: [
-      './vitest/setup/vitest.setup.ts',
-      './vitest/setup/console-guard.ts',
-      './vitest/setup/matchMedia.ts',
+      './tests/setup/test-setup.ts',
     ],
     restoreMocks: true,
     clearMocks: true,
@@ -35,19 +33,20 @@ export default defineConfig({
 
     // Fortune-500 Test Discovery
     include: [
-      'vitest/unit/**/*.test.{ts,tsx}',
-      'vitest/components/**/*.test.{ts,tsx}',
-      'vitest/integration/**/*.test.{ts,tsx}'
+      'tests/unit/**/*.{test,spec}.{ts,tsx}',
+      'tests/components/**/*.{test,spec}.{ts,tsx}',
+      'tests/integration/**/*.{test,spec}.{ts,tsx}'
     ],
-    exclude: [
-      '**/node_modules/**',
-      '**/dist/**',
-      '**/coverage/**',
-      '**/e2e/**',
-      '**/.{idea,git,cache,output,temp}/**',
-      '**/stories/**',
-      '**/tokens/**'
-    ],
+          exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/coverage/**',
+        '**/tests/e2e/**',
+        '**/.{idea,git,cache,output,temp}/**',
+        '**/stories/**',
+        '**/tokens/**',
+        '**/vitest/**'
+      ],
 
     // Enterprise Test Isolation
     isolate: true,
@@ -132,7 +131,11 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "./src")
+      "@": path.resolve(import.meta.dirname, "./src"),
+      "@/components": path.resolve(import.meta.dirname, "./src/components"),
+      "@/design": path.resolve(import.meta.dirname, "./src/design"),
+      "@/utils": path.resolve(import.meta.dirname, "./src/utils"),
+      "@/": path.resolve(import.meta.dirname, "./src/")
     }
   },
 })

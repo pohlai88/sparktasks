@@ -88,6 +88,39 @@ D:\sparktasks\
 - **NO bypassing** the mandatory sequence
 - **NO exceptions** to this rule
 
+---
+
+## 🏗️ **SSOT IMPLEMENTATION GOVERNANCE**
+
+### **✅ MANDATORY SSOT PATTERNS**
+
+**All Railway components must follow SSOT governance:**
+
+#### **1. Interface Definition SSOT**
+- **Canonical Interface**: Single, documented interface for each component
+- **No Dual APIs**: Prohibit competing interface patterns
+- **Validation Schema**: Zod schemas for all external data
+- **Documentation**: SSOT documents in `configs/governance/`
+
+#### **2. Component Contract SSOT**
+- **Single Prop Pattern**: Components accept canonical data objects
+- **No Render-time Computation**: All data pre-validated and pre-computed
+- **Semantic Token Usage**: All visual states use enhanced tokens
+- **Accessibility Compliance**: WCAG AAA standards enforced
+
+#### **3. Testing Contract SSOT**
+- **Fixture-driven Testing**: Use canonical test data from SSOT
+- **No Interface Mismatches**: Tests and components use same interface
+- **Validation Testing**: Test Zod schema compliance
+- **Accessibility Testing**: Verify ARIA and keyboard support
+
+### **🚨 SSOT VIOLATION PENALTIES**
+
+- **Interface Drift**: Immediate component refactoring required
+- **Validation Bypass**: Component disabled until validation restored
+- **Test Mismatch**: Test suite rewritten to match SSOT
+- **Documentation Gap**: Development halted until SSOT documented
+
 #### **IMPLEMENTATION EXAMPLE:**
 ```typescript
 // ✅ CORRECT: Following mandatory architecture flow

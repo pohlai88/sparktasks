@@ -5,10 +5,10 @@ const isSmoke = process.env.SMOKE === '1';
 const isCritical = process.env.CRITICAL === '1';
 
 export default defineConfig({
-  testDir: './e2e/tests',
+  testDir: './tests/e2e/tests',
   testMatch: '**/*.spec.ts',
   testIgnore: /.*\.quarantine\.spec\.ts/,
-  snapshotDir: './e2e/__screenshots__',
+  snapshotDir: './tests/e2e/__screenshots__',
   outputDir: './test-results/playwright-artifacts',
   reportSlowTests: { max: 5, threshold: 15_000 },
   fullyParallel: true,
@@ -60,8 +60,8 @@ export default defineConfig({
   ...(isCritical ? { grep: /@critical/ } : {}),
   ...(!(isSmoke || isCritical) ? { grepInvert: /@quarantine/ } : {}), // Exclude flaky tests from normal runs
 
-  globalSetup: './e2e/global-setup.ts',
-  globalTeardown: './e2e/global-teardown.ts',
+  globalSetup: './tests/e2e/global-setup.ts',
+  globalTeardown: './tests/e2e/global-teardown.ts',
 
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
@@ -103,7 +103,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: './e2e/data/storage-state.json',
+        storageState: './tests/e2e/data/storage-state.json',
       },
       dependencies: ['setup'],
     },
@@ -111,7 +111,7 @@ export default defineConfig({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
-        storageState: './e2e/data/storage-state.json',
+        storageState: './tests/e2e/data/storage-state.json',
       },
       dependencies: ['setup'],
     },
@@ -119,7 +119,7 @@ export default defineConfig({
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
-        storageState: './e2e/data/storage-state.json',
+        storageState: './tests/e2e/data/storage-state.json',
       },
       dependencies: ['setup'],
     },
@@ -129,7 +129,7 @@ export default defineConfig({
       name: 'mobile-chrome',
       use: {
         ...devices['Pixel 7'],
-        storageState: './e2e/data/storage-state.json',
+        storageState: './tests/e2e/data/storage-state.json',
       },
       dependencies: ['setup'],
       grep: /@mobile|@critical/,
@@ -138,7 +138,7 @@ export default defineConfig({
       name: 'mobile-safari',
       use: {
         ...devices['iPhone 14'],
-        storageState: './e2e/data/storage-state.json',
+        storageState: './tests/e2e/data/storage-state.json',
       },
       dependencies: ['setup'],
       grep: /@mobile|@critical/,

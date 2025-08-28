@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS3 Preview - Current System (Apple HIG Corporate)</title>
+    <meta name="description" content="MAPS3 Design System Preview - Current Apple HIG Corporate Professional System">
+    
+    <style>
+        /* ===== MAPS3 DESIGN SYSTEM - CURRENT SYSTEM ===== */
+        
+        /* CSS Custom Properties - Current MAPS3 Colors */
+        :root {
+            /* Deep Space Canvas System - Primary surfaces */
+            --background: 10 15 22; /* #0a0f16 - Deep space canvas */
+            --background-elevated: 23 22 42; /* #17162a - Perfect depth */
+            --background-panel: 36 28 65; /* #241c41 - Ideal panel surface */
+            --background-overlay: 0 0 0; /* #000000 - Overlay base */
+
+            /* Apple HIG Content Hierarchy - Guaranteed AAA compliance */
+            --foreground: 232 236 241; /* #e8ecf1 - Calm off-white */
+            --foreground-muted: 200 206 214; /* #c8ced6 - Secondary */
+            --foreground-subtle: 156 163 175; /* #9ca3af - Tertiary */
+            --foreground-disabled: 120 128 140; /* #78808c - Disabled */
+
+            /* Apple-Calm Accent System - Sophisticated, not harsh */
+            --primary: 48 176 199; /* #30b0c7 - Apple-calm teal */
+            --primary-hover: 58 186 222; /* #3abade - Gentle lift */
+            --primary-foreground: 255 255 255; /* #ffffff - Maximum contrast */
+
+            /* Secondary Apple Harmony */
+            --secondary: 88 86 214; /* #5856d6 - Apple system purple */
+            --secondary-hover: 98 96 224; /* #6260e0 - Refined interaction */
+            --secondary-foreground: 255 255 255; /* #ffffff - High contrast */
+
+            /* Enhanced Accent System */
+            --accent: 48 176 199; /* #30b0c7 - Primary accent */
+            --accent-foreground: 255 255 255; /* #ffffff - High contrast */
+            --accent-hover: 58 186 222; /* #3abade - Accent hover state */
+            --accent-pressed: 38 138 159; /* #268a9f - Accent pressed state */
+
+            /* Semantic Feedback - Apple HIG naturals */
+            --success: 52 199 89; /* #34c759 - Apple system green */
+            --success-foreground: 255 255 255; /* #ffffff */
+            --warning: 255 149 0; /* #ff9500 - Apple system orange */
+            --warning-foreground: 255 255 255; /* #ffffff */
+            --error: 255 59 48; /* #ff3b30 - Apple system red */
+            --error-foreground: 255 255 255; /* #ffffff */
+
+            /* Border & Stroke System */
+            --border: 91 103 118; /* #5b6776 - Hairline dividers */
+            --border-strong: 128 148 166; /* #8094a6 - Strong elements */
+            --border-accent: 48 176 199; /* #30b0c7 - Accent borders */
+
+            /* Interactive States */
+            --ring: 48 176 199; /* #30b0c7 - Focus rings */
+            --muted: 36 28 65; /* #241c41 - Muted backgrounds */
+
+            /* Motion System Variables */
+            --motion-duration-fast: 120ms;
+            --motion-duration-normal: 180ms;
+            --motion-duration-slow: 240ms;
+            --motion-easing-standard: cubic-bezier(0.2, 0, 0.2, 1);
+            --motion-easing-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* ===== BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: rgb(var(--background));
+            color: rgb(var(--foreground));
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgb(var(--background-elevated));
+            border-radius: 12px;
+            border: 1px solid rgb(var(--border) / 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: rgb(var(--foreground));
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: rgb(var(--foreground-muted));
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgb(var(--background-panel));
+            border-radius: 12px;
+            border: 1px solid rgb(var(--border) / 0.3);
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: rgb(var(--foreground));
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgb(var(--border-accent));
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* ===== COLOR PALETTE ===== */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .color-item {
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgb(var(--border) / 0.3);
+            text-align: center;
+        }
+
+        .color-swatch {
+            width: 100%;
+            height: 60px;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgb(var(--border) / 0.3);
+        }
+
+        .color-name {
+            font-weight: 600;
+            color: rgb(var(--foreground));
+            margin-bottom: 0.25rem;
+        }
+
+        .color-hex {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.875rem;
+            color: rgb(var(--foreground-muted));
+        }
+
+        /* ===== COMPONENT SHOWCASE ===== */
+        .component-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .component-card {
+            padding: 1.5rem;
+            background: rgb(var(--background-elevated));
+            border-radius: 8px;
+            border: 1px solid rgb(var(--border) / 0.3);
+            transition: all var(--motion-duration-normal) var(--motion-easing-standard);
+        }
+
+        .component-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--motion-duration-fast) var(--motion-easing-standard);
+            min-height: 36px;
+        }
+
+        .btn-primary {
+            background: rgb(var(--primary));
+            color: rgb(var(--primary-foreground));
+        }
+
+        .btn-primary:hover {
+            background: rgb(var(--primary-hover));
+        }
+
+        .btn-secondary {
+            background: rgb(var(--secondary));
+            color: rgb(var(--secondary-foreground));
+        }
+
+        .btn-secondary:hover {
+            background: rgb(var(--secondary-hover));
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: rgb(var(--foreground));
+            border: 1px solid rgb(var(--border));
+        }
+
+        .btn-outline:hover {
+            background: rgb(var(--accent));
+            color: rgb(var(--accent-foreground));
+            border-color: rgb(var(--accent));
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: rgb(var(--foreground));
+        }
+
+        .btn-ghost:hover {
+            background: rgb(var(--accent));
+            color: rgb(var(--accent-foreground));
+        }
+
+        .btn-destructive {
+            background: rgb(var(--error));
+            color: rgb(var(--error-foreground));
+        }
+
+        .btn-destructive:hover {
+            background: rgb(var(--error) / 0.9);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: rgb(var(--background-elevated));
+            border: 1px solid rgb(var(--border) / 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all var(--motion-duration-normal) var(--motion-easing-standard);
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: rgb(var(--foreground));
+            margin-bottom: 0.5rem;
+        }
+
+        .card-content {
+            color: rgb(var(--foreground-muted));
+            margin-bottom: 1rem;
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-default {
+            background: rgb(var(--primary));
+            color: rgb(var(--primary-foreground));
+        }
+
+        .badge-secondary {
+            background: rgb(var(--secondary));
+            color: rgb(var(--secondary-foreground));
+        }
+
+        .badge-success {
+            background: rgb(var(--success));
+            color: rgb(var(--success-foreground));
+        }
+
+        .badge-warning {
+            background: rgb(var(--warning));
+            color: rgb(var(--warning-foreground));
+        }
+
+        .badge-error {
+            background: rgb(var(--error));
+            color: rgb(var(--error-foreground));
+        }
+
+        .badge-outline {
+            background: transparent;
+            color: rgb(var(--foreground));
+            border: 1px solid rgb(var(--border));
+        }
+
+        /* ===== INPUTS ===== */
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgb(var(--foreground));
+            margin-bottom: 0.5rem;
+        }
+
+        .input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            background: rgb(var(--background-elevated));
+            border: 1px solid rgb(var(--border));
+            border-radius: 6px;
+            color: rgb(var(--foreground));
+            font-size: 0.875rem;
+            transition: all var(--motion-duration-fast) var(--motion-easing-standard);
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: rgb(var(--border-accent));
+            box-shadow: 0 0 0 2px rgb(var(--ring) / 0.2);
+        }
+
+        .input::placeholder {
+            color: rgb(var(--foreground-subtle));
+        }
+
+        /* ===== GLASS EFFECTS ===== */
+        .glass-standard {
+            backdrop-filter: blur(12px) saturate(135%);
+            background-color: rgb(var(--background-panel) / 0.8);
+            border: 1px solid rgb(var(--border) / 0.3);
+        }
+
+        .glass-elevated {
+            backdrop-filter: blur(8px) saturate(135%);
+            background-color: rgb(var(--background-elevated) / 0.85);
+            border: 1px solid rgb(var(--border) / 0.2);
+        }
+
+        .glass-floating {
+            backdrop-filter: blur(16px) saturate(135%);
+            background-color: rgb(var(--background-panel) / 0.75);
+            border: 1px solid rgb(var(--border) / 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== SHADOWS ===== */
+        .shadow-demo {
+            padding: 2rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            background: rgb(var(--background-elevated));
+            border: 1px solid rgb(var(--border) / 0.3);
+        }
+
+        .shadow-elevation-low {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .shadow-elevation-medium {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .shadow-elevation-high {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4), 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .shadow-glass {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .typography-demo h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: rgb(var(--foreground));
+            margin-bottom: 1rem;
+        }
+
+        .typography-demo h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: rgb(var(--foreground));
+            margin-bottom: 0.75rem;
+        }
+
+        .typography-demo h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: rgb(var(--foreground));
+            margin-bottom: 0.5rem;
+        }
+
+        .typography-demo p {
+            color: rgb(var(--foreground-muted));
+            margin-bottom: 0.5rem;
+        }
+
+        .typography-demo .text-large {
+            font-size: 1.125rem;
+        }
+
+        .typography-demo .text-small {
+            font-size: 0.875rem;
+        }
+
+        /* ===== SPACING DEMO ===== */
+        .spacing-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .spacing-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .spacing-visual {
+            background: rgb(var(--accent));
+            border-radius: 4px;
+        }
+
+        .spacing-1 { width: 4px; height: 4px; }
+        .spacing-2 { width: 8px; height: 8px; }
+        .spacing-3 { width: 12px; height: 12px; }
+        .spacing-4 { width: 16px; height: 16px; }
+        .spacing-5 { width: 20px; height: 20px; }
+        .spacing-6 { width: 24px; height: 24px; }
+        .spacing-8 { width: 32px; height: 32px; }
+        .spacing-10 { width: 40px; height: 40px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .color-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>MAPS3 Design System</h1>
+            <p>Current System - Apple HIG Corporate Professional</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: rgb(var(--foreground-subtle));">
+                Philosophy: Clean, Safe, Enterprise-Focused | Aesthetic: Professional, Trustworthy, Forgettable
+            </p>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="section">
+            <h2>🎨 Color Palette - Apple HIG Corporate</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--primary));"></div>
+                    <div class="color-name">Primary</div>
+                    <div class="color-hex">#30b0c7</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--secondary));"></div>
+                    <div class="color-name">Secondary</div>
+                    <div class="color-hex">#5856d6</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--accent));"></div>
+                    <div class="color-name">Accent</div>
+                    <div class="color-hex">#30b0c7</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--success));"></div>
+                    <div class="color-name">Success</div>
+                    <div class="color-hex">#34c759</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--warning));"></div>
+                    <div class="color-name">Warning</div>
+                    <div class="color-hex">#ff9500</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--error));"></div>
+                    <div class="color-name">Error</div>
+                    <div class="color-hex">#ff3b30</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--background));"></div>
+                    <div class="color-name">Background</div>
+                    <div class="color-hex">#0a0f16</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--background-elevated));"></div>
+                    <div class="color-name">Background Elevated</div>
+                    <div class="color-hex">#17162a</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--foreground));"></div>
+                    <div class="color-name">Foreground</div>
+                    <div class="color-hex">#e8ecf1</div>
+                </div>
+                <div class="color-item">
+                    <div class="color-swatch" style="background: rgb(var(--foreground-muted));"></div>
+                    <div class="color-name">Foreground Muted</div>
+                    <div class="color-hex">#c8ced6</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="section">
+            <h2>🔘 Button Components</h2>
+            <div class="btn-group">
+                <button class="btn btn-primary">Primary</button>
+                <button class="btn btn-secondary">Secondary</button>
+                <button class="btn btn-outline">Outline</button>
+                <button class="btn btn-ghost">Ghost</button>
+                <button class="btn btn-destructive">Destructive</button>
+            </div>
+            <div style="margin-top: 1rem;">
+                <button class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 1rem;">Large Primary</button>
+                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;">Small Secondary</button>
+            </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="section">
+            <h2>🃏 Card Components</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">Standard Card</div>
+                    <div class="card-content">This is a standard card with basic styling and hover effects.</div>
+                    <button class="btn btn-primary">Action</button>
+                </div>
+                <div class="card">
+                    <div class="card-title">Interactive Card</div>
+                    <div class="card-content">Hover over this card to see the elevation effect.</div>
+                    <button class="btn btn-outline">Learn More</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges -->
+        <div class="section">
+            <h2>🏷️ Badge Components</h2>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="badge badge-default">Default</span>
+                <span class="badge badge-secondary">Secondary</span>
+                <span class="badge badge-success">Success</span>
+                <span class="badge badge-warning">Warning</span>
+                <span class="badge badge-error">Error</span>
+                <span class="badge badge-outline">Outline</span>
+            </div>
+        </div>
+
+        <!-- Inputs -->
+        <div class="section">
+            <h2>📝 Input Components</h2>
+            <div class="grid">
+                <div class="input-group">
+                    <label class="input-label">Text Input</label>
+                    <input type="text" class="input" placeholder="Enter your text here...">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Email Input</label>
+                    <input type="email" class="input" placeholder="Enter your email...">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Password Input</label>
+                    <input type="password" class="input" placeholder="Enter your password...">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Textarea</label>
+                    <textarea class="input" rows="3" placeholder="Enter your message..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Glass Effects -->
+        <div class="section">
+            <h2>🔮 Glass Effects</h2>
+            <div class="grid">
+                <div class="glass-standard" style="padding: 2rem; border-radius: 12px;">
+                    <h3 style="margin-bottom: 1rem;">Glass Standard</h3>
+                    <p>Standard glass effect with backdrop blur and transparency.</p>
+                </div>
+                <div class="glass-elevated" style="padding: 2rem; border-radius: 12px;">
+                    <h3 style="margin-bottom: 1rem;">Glass Elevated</h3>
+                    <p>Elevated glass effect with enhanced backdrop blur.</p>
+                </div>
+                <div class="glass-floating" style="padding: 2rem; border-radius: 12px;">
+                    <h3 style="margin-bottom: 1rem;">Glass Floating</h3>
+                    <p>Floating glass effect with maximum backdrop blur.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shadows -->
+        <div class="section">
+            <h2>🌑 Shadow System</h2>
+            <div class="grid">
+                <div class="shadow-demo shadow-elevation-low">
+                    <h4>Elevation Low</h4>
+                    <p>Subtle shadow for basic elevation.</p>
+                </div>
+                <div class="shadow-demo shadow-elevation-medium">
+                    <h4>Elevation Medium</h4>
+                    <p>Medium shadow for elevated surfaces.</p>
+                </div>
+                <div class="shadow-demo shadow-elevation-high">
+                    <h4>Elevation High</h4>
+                    <p>Strong shadow for high elevation.</p>
+                </div>
+                <div class="shadow-demo shadow-glass">
+                    <h4>Glass Shadow</h4>
+                    <p>Special shadow for glass effects.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="section">
+            <h2>📖 Typography System</h2>
+            <div class="typography-demo">
+                <h1>Heading 1 - Display Large</h1>
+                <h2>Heading 2 - Display Medium</h2>
+                <h3>Heading 3 - Display Small</h3>
+                <p class="text-large">Body Large - This is larger body text for important content.</p>
+                <p>Body Medium - This is standard body text for regular content.</p>
+                <p class="text-small">Body Small - This is smaller text for secondary content.</p>
+            </div>
+        </div>
+
+        <!-- Spacing -->
+        <div class="section">
+            <h2>📏 Spacing System - 8pt Grid</h2>
+            <div class="spacing-demo">
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-1"></div>
+                    <span>4px (0.25rem)</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-2"></div>
+                    <span>8px (0.5rem) - Base Unit</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-3"></div>
+                    <span>12px (0.75rem)</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-4"></div>
+                    <span>16px (1rem) - Standard</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-5"></div>
+                    <span>20px (1.25rem)</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-6"></div>
+                    <span>24px (1.5rem)</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-8"></div>
+                    <span>32px (2rem)</span>
+                </div>
+                <div class="spacing-item">
+                    <div class="spacing-visual spacing-10"></div>
+                    <span>40px (2.5rem)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section" style="background: rgb(var(--background-elevated)); border: 2px solid rgb(var(--border-accent));">
+            <h2>📊 MAPS3 System Summary</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <div>
+                    <h4 style="color: rgb(var(--success)); margin-bottom: 0.5rem;">✅ Strengths</h4>
+                    <ul style="color: rgb(var(--foreground-muted)); padding-left: 1.5rem;">
+                        <li>Technically excellent architecture</li>
+                        <li>WCAG AAA compliant</li>
+                        <li>Apple HIG professional standards</li>
+                        <li>Consistent 8pt grid system</li>
+                        <li>Enterprise-ready components</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: rgb(var(--warning)); margin-bottom: 0.5rem;">⚠️ Limitations</h4>
+                    <ul style="color: rgb(var(--foreground-muted)); padding-left: 1.5rem;">
+                        <li>Visually uninspiring</li>
+                        <li>Generic enterprise appearance</li>
+                        <li>No emotional connection</li>
+                        <li>Forgettable brand identity</li>
+                        <li>Basic glass effects</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: rgb(var(--accent)); margin-bottom: 0.5rem;">🎯 Best For</h4>
+                    <ul style="color: rgb(var(--foreground-muted)); padding-left: 1.5rem;">
+                        <li>Basic enterprise applications</li>
+                        <li>Corporate internal tools</li>
+                        <li>Professional business software</li>
+                        <li>Traditional enterprise UX</li>
+                        <li>Safe, conventional design</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem; padding: 1rem; background: rgb(var(--background-panel)); border-radius: 8px;">
+                <h4 style="color: rgb(var(--foreground)); margin-bottom: 0.5rem;">🎨 Current Visual Identity</h4>
+                <p style="color: rgb(var(--foreground-muted));">
+                    <strong>Philosophy:</strong> Apple HIG Corporate Professional<br>
+                    <strong>Aesthetic:</strong> Clean, safe, enterprise-focused<br>
+                    <strong>Emotional Response:</strong> Trustworthy, professional, forgettable<br>
+                    <strong>Brand Recognition:</strong> Generic enterprise application<br>
+                    <strong>User Experience:</strong> Functional, no emotional connection
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -122,6 +122,16 @@ export function RailwayMap({
   className,
 }: RailwayMapProps): JSX.Element {
   
+  // ===== FOCUS MANAGEMENT =====
+  
+  const handleStationFocus = (stationId: string) => {
+    // Focus management for keyboard navigation
+    const stationElement = document.querySelector(`[data-station-id="${stationId}"]`);
+    if (stationElement instanceof HTMLElement) {
+      stationElement.focus();
+    }
+  };
+  
   // ===== ENHANCED TOKENS INTEGRATION =====
   
   const getStatusVariant = (status: RailwayStation['status']): 'success' | 'warning' | 'info' | 'secondary' => {
@@ -171,6 +181,7 @@ export function RailwayMap({
   const renderStationCard = (station: RailwayStation, index: number) => (
     <EnhancedCard
       key={station.id}
+      data-station-id={station.id}
       variant="elevated"
       interactive={station.status !== 'locked'}
       className={cn(
@@ -178,10 +189,47 @@ export function RailwayMap({
         getStationCardVariants(station)
       )}
       onClick={() => {
-        if (station.status !== 'locked' && onStationClick) {
-          onStationClick(station);
+        if (station.status !== 'locked') {
+          if (onStationClick) {
+            onStationClick(station);
+          }
+          if (onStationNavigate) {
+            onStationNavigate(station.id);
+          }
         }
       }}
+      onKeyDown={(e) => {
+        if (station.status !== 'locked') {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (onStationClick) {
+              onStationClick(station);
+            }
+            if (onStationNavigate) {
+              onStationNavigate(station.id);
+            }
+          } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            // Navigate to next available station
+            const currentIndex = stations.findIndex(s => s.id === station.id);
+            const nextStation = stations.slice(currentIndex + 1).find(s => s.status !== 'locked');
+            if (nextStation) {
+              handleStationFocus(nextStation.id);
+            }
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            // Navigate to previous available station
+            const currentIndex = stations.findIndex(s => s.id === station.id);
+            const prevStation = stations.slice(0, currentIndex).reverse().find(s => s.status !== 'locked');
+            if (prevStation) {
+              handleStationFocus(prevStation.id);
+            }
+          }
+        }
+      }}
+      tabIndex={station.status !== 'locked' ? 0 : -1}
+      role="button"
+      aria-label={`${station.name} - ${station.status} - Progress: ${Math.round(station.progress * 100)}%`}
     >
       {/* Station Header */}
       <div className="flex items-start justify-between mb-4">
@@ -273,7 +321,14 @@ export function RailwayMap({
               e.stopPropagation();
               onStationNavigate(station.id);
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.stopPropagation();
+                onStationNavigate(station.id);
+              }
+            }}
             className="w-full"
+            aria-label={`Navigate to ${station.name}`}
           >
             Navigate to Station
           </EnhancedButton>
@@ -294,7 +349,12 @@ export function RailwayMap({
   // ===== MAIN RENDER =====
 
   return (
-    <div className={cn(railwayMapVariants({ variant, size }), className)}>
+    <div 
+      className={cn(railwayMapVariants({ variant, size }), className)}
+      role="region"
+      aria-label="Project Railway Map"
+      tabIndex={-1}
+    >
       {/* Railway Map Header */}
       <div className="text-center mb-8">
         <h1 className={cn(
