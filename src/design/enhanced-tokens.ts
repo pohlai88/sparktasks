@@ -258,30 +258,30 @@ export const ENHANCED_DESIGN_TOKENS = {
      * Motion System - Animation and transitions
      */
     motion: {
-      // Duration tokens
+      // Duration tokens - Using CSS custom properties
       duration: {
-        instant: '75ms', // Immediate feedback
-        fast: '120ms', // Quick interactions
-        normal: '180ms', // Standard transitions
-        slow: '240ms', // Complex animations
-        slower: '320ms', // Entrance/exit animations
+        instant: 'var(--motion-duration-instant)',
+        fast: 'var(--motion-duration-fast)',
+        normal: 'var(--motion-duration-normal)',
+        slow: 'var(--motion-duration-slow)',
+        slower: 'var(--motion-duration-slower)',
       },
 
-      // Easing curves
+      // Easing curves - Using CSS custom properties
       easing: {
-        linear: 'linear',
-        standard: 'cubic-bezier(0.2, 0, 0.2, 1)', // Apple standard
-        emphasized: 'cubic-bezier(0.2, 0.8, 0.2, 1)', // Emphasized entry
-        decelerate: 'cubic-bezier(0, 0, 0.2, 1)', // Natural exit
-        accelerate: 'cubic-bezier(0.4, 0, 1, 1)', // Quick entry
+        linear: 'var(--motion-easing-linear)',
+        standard: 'var(--motion-easing-standard)',
+        emphasized: 'var(--motion-easing-emphasized)',
+        decelerate: 'var(--motion-easing-decelerate)',
+        accelerate: 'var(--motion-easing-accelerate)',
       },
 
-      // Predefined transition patterns
+      // Predefined transition patterns - Using CSS custom properties
       transition: {
-        colors: 'transition-colors duration-normal ease-standard',
-        transform: 'transition-transform duration-normal ease-standard',
-        opacity: 'transition-opacity duration-fast ease-standard',
-        all: 'transition-all duration-normal ease-standard',
+        colors: 'transition-colors var(--motion-duration-normal) var(--motion-easing-standard)',
+        transform: 'transition-transform var(--motion-duration-normal) var(--motion-easing-standard)',
+        opacity: 'transition-opacity var(--motion-duration-fast) var(--motion-easing-standard)',
+        all: 'transition-all var(--motion-duration-normal) var(--motion-easing-standard)',
         none: 'transition-none',
       },
     },
@@ -383,6 +383,41 @@ export const ENHANCED_DESIGN_TOKENS = {
       ],
       error: ['border-error', 'focus-visible:ring-error'],
       success: ['border-success', 'focus-visible:ring-success'],
+    },
+
+    /**
+     * Textarea component recipes
+     */
+    textarea: {
+      base: [
+        'flex',
+        'w-full',
+        'min-h-[80px]',
+        'rounded-md',
+        'border',
+        'border-input-border',
+        'bg-input',
+        'px-3',
+        'py-2',
+        'text-sm',
+        'ring-offset-background',
+        'placeholder:text-input-placeholder',
+        'resize-vertical',
+        'focus-visible:outline-none',
+        'focus-visible:ring-2',
+        'focus-visible:ring-ring',
+        'focus-visible:ring-offset-2',
+        'disabled:cursor-not-allowed',
+        'disabled:opacity-50',
+      ],
+      error: ['border-error', 'focus-visible:ring-error'],
+      success: ['border-success', 'focus-visible:ring-success'],
+      size: {
+        sm: ['min-h-[60px]', 'text-xs'],
+        md: ['min-h-[80px]', 'text-sm'],
+        lg: ['min-h-[120px]', 'text-base'],
+        xl: ['min-h-[160px]', 'text-lg'],
+      },
     },
 
     /**

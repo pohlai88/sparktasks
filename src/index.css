@@ -90,9 +90,12 @@
     --motion-duration-fast: 120ms;
     --motion-duration-normal: 180ms;
     --motion-duration-slow: 240ms;
+    --motion-duration-slower: 320ms;
     --motion-easing-linear: linear;
     --motion-easing-standard: cubic-bezier(0.2, 0, 0.2, 1);
     --motion-easing-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --motion-easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+    --motion-easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
 
     /* Elevation & Glass Materials */
     --card: var(--background-elevated);

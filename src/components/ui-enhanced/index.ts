@@ -234,6 +234,16 @@ export {
 // Enhanced Input Types
 export type { EnhancedInputOwnProps, InputVariantProps } from './Input';
 
+// Enhanced Textarea Component
+export {
+  EnhancedTextarea,
+  createTextarea,
+  enhancedTextareaVariants,
+} from './Textarea';
+
+// Enhanced Textarea Types
+export type { EnhancedTextareaOwnProps, TextareaVariantProps } from './Textarea';
+
 // Enhanced AlertDialog Component
 export {
   AlertDialog,
