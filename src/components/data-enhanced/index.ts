@@ -46,7 +46,6 @@ export type {
   LineChartProps,
 
   // Shared Types
-  EmptyState,
   TableFilter,
   BulkAction,
 } from './types';

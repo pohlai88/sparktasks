@@ -1,0 +1,158 @@
+{
+  "comment": "USER'S APPROACH ADOPTED - Authoritative feature flag registry",
+  "metadata": {
+    "version": "6.1.0",
+    "last_updated": "2025-08-27",
+    "change_control": "formal_approval_required"
+  },
+  
+  "core_surfaces": {
+    "comment": "Pages 1-22: Core enterprise functionality",
+    "dashboard": {
+      "enabled": true,
+      "components": ["KPICards", "RecentList", "QuickSearch", "WorkspaceWidgets"],
+      "dependencies": ["Auth", "PolicyKernel", "ActivityFeed"]
+    },
+    "inbox": {
+      "enabled": true,
+      "components": ["CaptureInput", "TriageList", "AIHintBar", "QuickAssign"],
+      "dependencies": ["EventBus", "PolicyKernel", "Projects"]
+    },
+    "projects": {
+      "enabled": true,
+      "components": ["RailMap", "StationTabs", "ActivityRail", "ApprovalBadge"],
+      "dependencies": ["PolicyKernel", "Files", "Approvals"]
+    },
+    "calendar": {
+      "enabled": true,
+      "components": ["Agenda", "MiniMonth", "ICSImport"],
+      "dependencies": ["SchedulingEngine", "ExternalCalendars"]
+    },
+    "library": {
+      "enabled": true,
+      "components": ["FileBrowser", "AttachmentPanel", "StorageBadge"],
+      "dependencies": ["StorageAdapters", "CryptoTrail"]
+    },
+    "approvals": {
+      "enabled": true,
+      "components": ["ApprovalDrawer", "RequestForm", "AuditTimeline"],
+      "dependencies": ["SignatureService", "TransparencyLog"]
+    },
+    "admin": {
+      "enabled": true,
+      "components": ["OrgSettings", "SecurityRBAC", "RLSPanel", "Backups", "LinkedOrgs"],
+      "dependencies": ["Auth", "RLS", "ZeroTrustGuardrails"]
+    },
+    "audit": {
+      "enabled": true,
+      "components": ["AuditTable", "FilterBar", "ExportButton"],
+      "dependencies": ["AuditLogStore", "CryptoTrail"]
+    },
+    "offline": {
+      "enabled": true,
+      "components": ["StatusBanner", "ConflictCenter", "SyncControls"],
+      "dependencies": ["LocalDB", "CRDTEngine"]
+    },
+    "help": {
+      "enabled": true,
+      "components": ["WelcomeWizard", "DemoLauncher", "FeedbackForm", "DocsLink"],
+      "dependencies": ["ContentRegistry", "Telemetry"]
+    }
+  },
+  
+  "railway_stations": {
+    "comment": "Pages 4-13: Railway station implementation",
+    "initiation": {
+      "enabled": true,
+      "components": ["CharterWizard", "TemplatePicker", "ScopeCard"],
+      "dependencies": ["TemplateRegistry", "PolicyKernel"],
+      "pmbok_anchor": "PMBOK 7th Edition, Initiating Process Group"
+    },
+    "budget": {
+      "enabled": true,
+      "components": ["BudgetForm", "ThresholdAlerts", "VarianceBadge"],
+      "dependencies": ["PolicyKernel", "FinanceAdapter"],
+      "pmbok_anchor": "PMBOK 7th Edition, Planning Process Group"
+    },
+    "schedule": {
+      "enabled": true,
+      "components": ["Milestones", "GanttLite", "DependencyList"],
+      "dependencies": ["SchedulingEngine", "PolicyKernel"],
+      "pmbok_anchor": "PMBOK 7th Edition, Planning Process Group"
+    },
+    "resource": {
+      "enabled": false,
+      "components": ["WorkloadHeatmap", "RACIGrid"],
+      "dependencies": ["WorkloadAllocator", "PeopleDirectory"],
+      "pmbok_anchor": "PMBOK 7th Edition, Planning Process Group"
+    },
+    "risk": {
+      "enabled": true,
+      "components": ["RiskList", "HeatmapLite", "MitigationDrawer"],
+      "dependencies": ["RiskEngine", "PolicyKernel"],
+      "academic_anchor": "ISO 31000:2018 Risk Management"
+    },
+    "communication": {
+      "enabled": false,
+      "components": ["ThreadPanel", "UpdateComposer", "NotifySettings"],
+      "dependencies": ["NotificationService", "EventBus"],
+      "pmbok_anchor": "PMBOK 7th Edition, Executing Process Group"
+    },
+    "execution": {
+      "enabled": true,
+      "components": ["TaskBoard", "Column", "Card", "WIPBadge"],
+      "dependencies": ["EventBus", "PolicyKernel"],
+      "academic_anchor": "Kanban + Lean Manufacturing Principles"
+    },
+    "qa": {
+      "enabled": false,
+      "components": ["QAChecklist", "ControlChartLite"],
+      "dependencies": ["QAEngine", "Analytics"],
+      "academic_anchor": "ISO 9001:2015 Quality Management"
+    },
+    "handover": {
+      "enabled": true,
+      "components": ["HandoverWizard", "CompletionChecklist"],
+      "dependencies": ["DocPackager", "Approvals"],
+      "pmbok_anchor": "PMBOK 7th Edition, Closing Process Group"
+    },
+    "evaluation": {
+      "enabled": true,
+      "components": ["KPIScorecard", "LessonsPanel", "ActionItems"],
+      "dependencies": ["Analytics", "PolicyKernel"],
+      "academic_anchor": "PDCA Cycle + Balanced Scorecard"
+    }
+  },
+  
+  "advanced_features": {
+    "comment": "Pages 17, 21: Advanced enterprise features",
+    "analytics": {
+      "enabled": false,
+      "components": ["ChartDeck", "DrillDownPanel"],
+      "dependencies": ["AnalyticsEngine", "DataWarehouse"],
+      "enterprise_grade": true
+    },
+    "extensions": {
+      "enabled": false,
+      "components": ["MarketplaceCatalog", "InstallDrawer", "PermissionsViewer"],
+      "dependencies": ["ModuleSDK", "PolicyKernel"],
+      "enterprise_grade": true
+    }
+  },
+  
+  "ai_features": {
+    "comment": "Page 24: AI Conductor system",
+    "aiConductor": {
+      "enabled": false,
+      "components": ["HintBar", "WhyPanel", "ApplyAction"],
+      "dependencies": ["PolicyKernel", "Analytics", "EventBus"],
+      "requires_api_key": true
+    },
+    "mobileHat": {
+      "enabled": false,
+      "components": ["VoiceCapture", "QuickCapture", "ShareTarget"],
+      "dependencies": ["MobileSDK", "Inbox", "EventBus"],
+      "mobile_specific": true
+    }
+  }
+}
