@@ -1,16 +1,16 @@
-# 🚂 RAILWAY APP SHELL Interface — Single Source of Truth (SSOT) v1.0
+# 🚂 RAILWAY APP SHELL Interface — Single Source of Truth (SSOT) v2.0
 
-**Date:** August 28, 2025  
+**Date:** January 27, 2025  
 **Applies to:** SparkTasks v7.x Single-Repo  
 **Owner:** Architecture Lead (Wee)  
-**Status:** ✅ Approved (Governs App Shell Implementation)  
-**Governance Compliance:** Anti-Drift v7.1 + Fortune 500 Standards + Superior Masterplan  
+**Status:** ✅ Approved (Governs Railway Station Development)  
+**Governance Compliance:** Anti-Drift v7.1 + MAPS4 Cosmic Innovation + SSOT Standards  
 
 ---
 
 ## 0) Purpose & Non‑Negotiables
 
-This SSOT defines the **canonical interface** and **component contract** for the `RailwayAppShell` UI - the **cornerstone container** that houses all 24 Railway pages. It establishes the foundation for **elegance supreme** and **beyond Fortune 500** user experience.
+This SSOT defines the **canonical interface** and **component contract** for all Railway components - the **cornerstone system** that provides project management capabilities with **MAPS4 Deep Space Canvas Cosmic Innovation**. It establishes the foundation for **elegance supreme** and **beyond Fortune 500** user experience across all Railway stations.
 
 **Non‑Negotiables**
 
@@ -19,268 +19,314 @@ This SSOT defines the **canonical interface** and **component contract** for the
 * **Single‑repo rules**: Follow the **UI architecture flow** (Tailwind → CSS variables → enhanced tokens → ui‑enhanced → railway components).
 * **Strict TS**: `strict: true`, zero `any`, explicit bounds for numbers.
 * **A11y**: Keyboard + screen reader compliant.
-* **Performance**: <200ms render time for app shell.
+* **Performance**: <200ms render time for all Railway stations.
+* **MAPS4 Compliance**: All components must follow MAPS4 cosmic innovation principles.
 
 ---
 
-## 1) Domain Model — `RailwayAppShell`
+## 1) Domain Model — Railway Component System
 
-Represents the **main application container** that orchestrates navigation, layout, and content presentation for the entire Railway project management platform.
+Represents the **comprehensive Railway project management platform** with multiple specialized stations for different aspects of project lifecycle management.
 
-### 1.1 Type Definitions (authoritative)
+### 1.1 Railway Station Types (authoritative)
 
 ```ts
-// App Shell State Management
-export type AppShellState = 
+// Railway Station Types
+export type RailwayStationType = 
+  | "initiation"      // Project initiation and charter creation
+  | "budget"          // Financial planning and budget tracking
+  | "schedule"        // Timeline management and schedule tracking
+  | "conductor"       // Project orchestration and coordination
+  | "charter-wizard"  // Interactive project charter creation
+  | "map"             // Project overview and navigation
+  | "station"         // Generic station wrapper
+  | "station-card"    // Station summary and navigation cards;
+
+// Railway Station State
+export type RailwayStationState = 
   | "loading"           // Initial loading state
-  | "authenticated"     // User authenticated, app ready
-  | "unauthenticated"   // User not authenticated
+  | "ready"             // Station ready for interaction
+  | "processing"        // Processing user input
   | "error"             // Error state
   | "maintenance";      // Maintenance mode
 
-// Navigation Item Structure
-export interface NavigationItem {
-  /** Unique identifier for the navigation item */
-  id: string;
-  /** Display label */
-  label: string;
-  /** Navigation path/route */
-  path: string;
-  /** Icon identifier (from icon system) */
-  icon: string;
-  /** Whether this item is currently active */
-  isActive: boolean;
-  /** Whether this item is visible */
-  isVisible: boolean;
-  /** Optional badge content (notifications, counts) */
-  badge?: {
-    content: string | number;
-    variant: "default" | "success" | "warning" | "error" | "info";
-  };
-  /** Child navigation items */
-  children?: NavigationItem[];
-  /** Required permissions to access this item */
-  permissions?: string[];
+// Railway Station Progress
+export interface RailwayStationProgress {
+  /** Current completion percentage (0-100) */
+  percentage: number;
+  /** Current step identifier */
+  currentStep: string;
+  /** Total number of steps */
+  totalSteps: number;
+  /** Whether the station is complete */
+  isComplete: boolean;
+  /** Whether the station can advance to next */
+  canAdvance: boolean;
+  /** Whether the station can rollback */
+  canRollback: boolean;
 }
 
-// App Shell Configuration
-export interface AppShellConfig {
-  /** Application title */
-  title: string;
-  /** Application logo/icon */
-  logo: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-  };
-  /** Theme configuration */
-  theme: {
-    mode: "light" | "dark" | "auto";
-    primaryColor: string;
-    accentColor: string;
-  };
-  /** Navigation configuration */
-  navigation: {
-    items: NavigationItem[];
-    collapsed: boolean;
-    collapsible: boolean;
-  };
-  /** Header configuration */
-  header: {
-    showUserMenu: boolean;
-    showNotifications: boolean;
-    showSearch: boolean;
-    showBreadcrumbs: boolean;
-  };
-  /** Footer configuration */
-  footer: {
-    show: boolean;
-    content: string;
-    links: Array<{ label: string; href: string }>;
-  };
-}
-
-// App Shell Props Interface
-export interface RailwayAppShellProps {
-  /** Application configuration */
-  config: AppShellConfig;
-  /** Current user information */
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    avatar?: string;
-    role: string;
-    permissions: string[];
-  };
-  /** Current application state */
-  state: AppShellState;
-  /** Current route/path */
-  currentPath: string;
-  /** Navigation change handler */
-  onNavigationChange?: (path: string) => void;
-  /** Theme change handler */
-  onThemeChange?: (theme: "light" | "dark" | "auto") => void;
-  /** User logout handler */
-  onLogout?: () => void;
-  /** Error boundary handler */
-  onError?: (error: Error) => void;
-  /** Loading state handler */
-  onLoadingComplete?: () => void;
-  /** Content area render function */
-  children: React.ReactNode;
-  /** Optional custom CSS classes */
-  className?: string;
-  /** Optional test ID */
-  testId?: string;
+// Railway Station Navigation
+export interface RailwayStationNavigation {
+  /** Previous station in the workflow */
+  previous?: string;
+  /** Next station in the workflow */
+  next?: string;
+  /** Whether this station is required */
+  required: boolean;
+  /** Station order in the workflow */
+  order: number;
+  /** Dependencies that must be completed first */
+  dependencies: string[];
 }
 ```
 
-### 1.2 Validation Schema (must gate all external data)
+### 1.2 Railway Station Base Interface (authoritative)
+
+```ts
+// Base Railway Station Props Interface
+export interface RailwayStationBaseProps {
+  /** Station configuration and metadata */
+  config: RailwayStationConfig;
+  /** Current station state */
+  state: RailwayStationState;
+  /** Current progress information */
+  progress: RailwayStationProgress;
+  /** Navigation information */
+  navigation: RailwayStationNavigation;
+  /** Content to render in the station */
+  children?: React.ReactNode;
+  /** Optional interaction hooks */
+  onSave?: (data: any) => void;
+  onAdvance?: () => void;
+  onRollback?: () => void;
+  onError?: (error: Error) => void;
+  /** Presentation variations */
+  variant?: "default" | "elevated" | "glass";
+  size?: "sm" | "md" | "lg" | "xl";
+  className?: string;
+  testId?: string;
+}
+
+// Railway Station Configuration
+export interface RailwayStationConfig {
+  /** Station identifier */
+  id: string;
+  /** Station display name */
+  name: string;
+  /** Station description */
+  description: string;
+  /** Station icon/emoji */
+  icon: string;
+  /** Station category */
+  category: "planning" | "execution" | "monitoring" | "closing";
+  /** Station capabilities */
+  capabilities: string[];
+  /** Required permissions */
+  permissions: string[];
+  /** Station metadata */
+  metadata: Record<string, any>;
+}
+```
+
+### 1.3 Validation Schema (must gate all external data)
 
 ```ts
 import { z } from "zod";
 
-export const NavigationItemZ = z.object({
+export const RailwayStationProgressZ = z.object({
+  percentage: z.number().min(0).max(100),
+  currentStep: z.string().min(1),
+  totalSteps: z.number().int().positive(),
+  isComplete: z.boolean(),
+  canAdvance: z.boolean(),
+  canRollback: z.boolean(),
+});
+
+export const RailwayStationNavigationZ = z.object({
+  previous: z.string().optional(),
+  next: z.string().optional(),
+  required: z.boolean(),
+  order: z.number().int().positive(),
+  dependencies: z.array(z.string()),
+});
+
+export const RailwayStationConfigZ = z.object({
   id: z.string().min(1),
-  label: z.string().min(1),
-  path: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().min(1),
   icon: z.string().min(1),
-  isActive: z.boolean(),
-  isVisible: z.boolean(),
-  badge: z.object({
-    content: z.union([z.string(), z.number()]),
-    variant: z.enum(["default", "success", "warning", "error", "info"]),
-  }).optional(),
-  children: z.array(z.lazy(() => NavigationItemZ)).optional(),
-  permissions: z.array(z.string()).optional(),
+  category: z.enum(["planning", "execution", "monitoring", "closing"]),
+  capabilities: z.array(z.string()),
+  permissions: z.array(z.string()),
+  metadata: z.record(z.any()),
 });
 
-export const AppShellConfigZ = z.object({
-  title: z.string().min(1),
-  logo: z.object({
-    src: z.string().url(),
-    alt: z.string().min(1),
-    width: z.number().int().positive(),
-    height: z.number().int().positive(),
-  }),
-  theme: z.object({
-    mode: z.enum(["light", "dark", "auto"]),
-    primaryColor: z.string().regex(/^#[0-9A-F]{6}$/i),
-    accentColor: z.string().regex(/^#[0-9A-F]{6}$/i),
-  }),
-  navigation: z.object({
-    items: z.array(NavigationItemZ),
-    collapsed: z.boolean(),
-    collapsible: z.boolean(),
-  }),
-  header: z.object({
-    showUserMenu: z.boolean(),
-    showNotifications: z.boolean(),
-    showSearch: z.boolean(),
-    showBreadcrumbs: z.boolean(),
-  }),
-  footer: z.object({
-    show: z.boolean(),
-    content: z.string(),
-    links: z.array(z.object({
-      label: z.string().min(1),
-      href: z.string().url(),
-    })),
-  }),
-});
-
-export const RailwayAppShellPropsZ = z.object({
-  config: AppShellConfigZ,
-  user: z.object({
-    id: z.string().min(1),
-    name: z.string().min(1),
-    email: z.string().email(),
-    avatar: z.string().url().optional(),
-    role: z.string().min(1),
-    permissions: z.array(z.string()),
-  }).optional(),
-  state: z.enum(["loading", "authenticated", "unauthenticated", "error", "maintenance"]),
-  currentPath: z.string().min(1),
-  onNavigationChange: z.function().args(z.string()).returns(z.void()).optional(),
-  onThemeChange: z.function().args(z.enum(["light", "dark", "auto"])).returns(z.void()).optional(),
-  onLogout: z.function().args().returns(z.void()).optional(),
+export const RailwayStationBasePropsZ = z.object({
+  config: RailwayStationConfigZ,
+  state: z.enum(["loading", "ready", "processing", "error", "maintenance"]),
+  progress: RailwayStationProgressZ,
+  navigation: RailwayStationNavigationZ,
+  children: z.any().optional(), // React.ReactNode equivalent
+  onSave: z.function().args(z.any()).returns(z.void()).optional(),
+  onAdvance: z.function().args().returns(z.void()).optional(),
+  onRollback: z.function().args().returns(z.void()).optional(),
   onError: z.function().args(z.instanceof(Error)).returns(z.void()).optional(),
-  onLoadingComplete: z.function().args().returns(z.void()).optional(),
-  children: z.any(), // React.ReactNode equivalent
+  variant: z.enum(["default", "elevated", "glass"]).optional(),
+  size: z.enum(["sm", "md", "lg", "xl"]).optional(),
   className: z.string().optional(),
   testId: z.string().optional(),
 });
 
-export type RailwayAppShellValidated = z.infer<typeof RailwayAppShellPropsZ>;
+export type RailwayStationBaseValidated = z.infer<typeof RailwayStationBasePropsZ>;
 ```
 
 ---
 
-## 2) Component Contract — `RailwayAppShell`
+## 2) Component Contract — Railway Station System
 
-The **main application container** that orchestrates the entire Railway experience with **elegance supreme**.
+The **comprehensive Railway project management platform** with specialized stations for different project lifecycle phases.
 
-### 2.1 Props
+### 2.1 Railway Station Variants (authoritative)
 
 ```ts
-export interface RailwayAppShellProps {
-  /** Canonical app shell configuration — the only mandatory prop */
-  config: AppShellConfig;
-
-  /** Current user information (optional for unauthenticated state) */
-  user?: User;
-
-  /** Current application state */
-  state: AppShellState;
-
-  /** Current navigation path */
-  currentPath: string;
-
-  /** Content to render in the main area */
-  children: React.ReactNode;
-
-  /** Optional interaction hooks */
-  onNavigationChange?: (path: string) => void;
-  onThemeChange?: (theme: "light" | "dark" | "auto") => void;
-  onLogout?: () => void;
-  onError?: (error: Error) => void;
-  onLoadingComplete?: () => void;
-
-  /** Presentation variations */
-  className?: string;
-  testId?: string;
-}
+// Railway Station Variant System
+export const railwayStationVariants = cva(
+  [
+    // Foundation: Layout/shape - Clean Tailwind utilities
+    'w-full max-w-7xl mx-auto',
+    'space-y-8',
+    
+    // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    
+    // MAPS4 Foundation: Motion - Respect user preferences
+    'transition-all duration-300 ease-out',
+    'motion-reduce:transition-none',
+  ],
+  {
+    variants: {
+      variant: {
+        // Default: Clean station with subtle elevation
+        default: ['p-8', 'rounded-2xl'],
+        
+        // Elevated: Enhanced depth with stronger shadow
+        elevated: [
+          'p-10', 
+          'rounded-3xl',
+          'shadow-elevation-lg',
+          'border border-aurora-accent'
+        ],
+        
+        // Glass: Liquid glass materials with cosmic aesthetics
+        glass: [
+          'p-8',
+          'rounded-2xl',
+          'backdrop-blur-md backdrop-saturate-[135%]',
+          'shadow-elevation-md',
+          'border border-cosmic-border/30'
+        ],
+      },
+      
+      size: {
+        // Clean systematic sizing with 8pt grid
+        sm: ['space-y-6', 'p-6'],
+        md: ['space-y-8', 'p-8'],
+        lg: ['space-y-10', 'p-10'],
+        xl: ['space-y-12', 'p-12'],
+      },
+    },
+    
+    defaultVariants: {
+      variant: 'default',
+      size: 'md',
+    },
+  }
+);
 ```
 
-### 2.2 Derived/Computed (implementation guidance)
+### 2.2 Railway Station Header Template (mandatory)
 
-* **Navigation State**: Derive active navigation items from `currentPath`
-* **Theme Application**: Apply theme based on `config.theme.mode` and user preference
-* **Permission Filtering**: Filter navigation items based on user permissions
-* **Responsive Behavior**: Adapt layout based on viewport size
-* **Loading States**: Show appropriate loading indicators during state transitions
+```tsx
+/**
+ * Railway [Station Name] Component - MAPS4 Deep Space Canvas Cosmic Innovation
+ *
+ * COMPLIANCE MATRIX:
+ * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
+ * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
+ * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
+ * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
+ *
+ * ARCHITECTURE INTEGRATION:
+ * - MAPS4 Enhanced Tokens → Railway [Station Name] variants → Cosmic user experience
+ * - MAPS4 Guidelines → Railway [Station Name] behavior → Accessibility excellence
+ * - Railway Ecosystem → [Station Name] → Project Management
+ *
+ * RESOLUTION MODEL:
+ * theme → mode (dark|light|hc) → density (comfortable|compact)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
+ *
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
+ */
+```
 
 ### 2.3 Forbidden
 
-* ❌ Hardcoded navigation items or routes
-* ❌ Hardcoded styling or layout constraints
+* ❌ Hardcoded text sizes (use `ENHANCED_DESIGN_TOKENS.foundation.typography.*`)
+* ❌ Hardcoded semantic colors (use MAPS4 cosmic system: `text-cosmic-success`, `border-cosmic-warning`, etc.)
 * ❌ Direct DOM manipulation outside React patterns
 * ❌ Network calls inside the component
 * ❌ Bypassing the enhanced token system
+* ❌ Non-compliant header templates
 
 ---
 
 ## 3) Token Consumption (no hardcoded Tailwind)
 
-**All visual states** must use the semantic token layer, e.g.:
+**All visual states** must use the semantic token layer from `ENHANCED_DESIGN_TOKENS.foundation.*`:
 
+### 3.1 Typography Tokens (mandatory)
+
+```tsx
+// Typography - Use these tokens for all text elements
+ENHANCED_DESIGN_TOKENS.foundation.typography.display.large      // text-4xl font-bold
+ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium     // text-3xl font-bold  
+ENHANCED_DESIGN_TOKENS.foundation.typography.display.small      // text-2xl font-semibold
+ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h1         // text-3xl font-semibold
+ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2         // text-2xl font-semibold
+ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3         // text-xl font-semibold
+ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4         // text-lg font-medium
+ENHANCED_DESIGN_TOKENS.foundation.typography.body.large         // text-lg font-normal
+ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium        // text-base font-normal
+ENHANCED_DESIGN_TOKENS.foundation.typography.body.small         // text-sm font-normal
+ENHANCED_DESIGN_TOKENS.foundation.typography.label              // text-sm font-medium
+ENHANCED_DESIGN_TOKENS.foundation.typography.caption            // text-xs font-normal
 ```
-layout → container tokens (app-shell | sidebar | header | footer | content)
-navigation → navigation tokens (nav-item | nav-active | nav-hover)
-theme → theme tokens (light | dark | auto)
-surface → surface tokens (elevated | outlined | flat)
+
+### 3.2 Color Tokens (mandatory)
+
+```tsx
+// Colors - Use these tokens for all color states
+ENHANCED_DESIGN_TOKENS.foundation.color.content.primary         // text-cosmic-light
+ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary       // text-stellar-muted
+ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas          // bg-deep-space
+ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated        // bg-cosmic-void
+
+// Semantic colors - Use MAPS4 cosmic system
+"text-cosmic-success"    // Success states
+"text-cosmic-warning"    // Warning states  
+"text-cosmic-danger"     // Error states
+"text-cosmic-info"       // Info states
+"border-cosmic-success"  // Success borders
+"border-cosmic-warning"  // Warning borders
+"border-cosmic-danger"   // Error borders
+"bg-cosmic-success/5"    // Success backgrounds
+"bg-cosmic-warning/5"    // Warning backgrounds
+"bg-cosmic-danger/5"     // Error backgrounds
 ```
 
 > If a token is missing: extend **tailwind.config.js → \:root CSS vars → enhanced‑tokens.ts**, then consume here. Do **not** inline any new classes.
@@ -302,71 +348,18 @@ surface → surface tokens (elevated | outlined | flat)
 
 **Unit (Vitest + RTL)**
 
-1. **App Shell Renders**: Valid configuration renders without errors
-2. **Navigation State**: Active navigation items are correctly highlighted
-3. **Theme Switching**: Theme changes are applied correctly
-4. **User Authentication**: Different states render appropriate content
+1. **Station Renders**: Valid configuration renders without errors
+2. **Progress State**: Progress indicators work correctly
+3. **Navigation State**: Navigation between stations works
+4. **User Interactions**: All interactive elements respond correctly
 5. **Responsive Behavior**: Layout adapts to different viewport sizes
 6. **Accessibility**: All interactive elements are keyboard accessible
-7. **Performance**: App shell renders in <200ms
-
-**Fixtures**
-
-```ts
-// tests/fixtures/railway/app-shell.json
-{
-  "validConfig": {
-    "title": "SparkTasks Railway",
-    "logo": {
-      "src": "/logo.svg",
-      "alt": "SparkTasks Logo",
-      "width": 32,
-      "height": 32
-    },
-    "theme": {
-      "mode": "dark",
-      "primaryColor": "#7cc4ff",
-      "accentColor": "#78ffd6"
-    },
-    "navigation": {
-      "items": [
-        {
-          "id": "dashboard",
-          "label": "Dashboard",
-          "path": "/dashboard",
-          "icon": "dashboard",
-          "isActive": true,
-          "isVisible": true
-        }
-      ],
-      "collapsed": false,
-      "collapsible": true
-    },
-    "header": {
-      "showUserMenu": true,
-      "showNotifications": true,
-      "showSearch": true,
-      "showBreadcrumbs": true
-    },
-    "footer": {
-      "show": true,
-      "content": "© 2025 SparkTasks. All rights reserved.",
-      "links": [
-        {
-          "label": "Privacy Policy",
-          "href": "/privacy"
-        }
-      ]
-    }
-  }
-}
-```
+7. **Performance**: Station renders in <200ms
 
 **E2E (Playwright)**
 
-* **Smoke**: App shell loads and displays navigation correctly
-* **Navigation**: Clicking navigation items changes routes
-* **Theme**: Theme switching works and persists
+* **Smoke**: Station loads and displays content correctly
+* **Navigation**: Station navigation works end-to-end
 * **Responsive**: Layout adapts to mobile and desktop viewports
 * **Accessibility**: Keyboard navigation works end-to-end
 
@@ -381,123 +374,95 @@ surface → surface tokens (elevated | outlined | flat)
 
 ## 6) Implementation Architecture
 
-### 6.1 Component Structure
+### 6.1 Railway Station Structure
 
 ```tsx
-// Main App Shell Component
-src/components/railway/app-shell/
-├── RailwayAppShell.tsx           # Main container component
-├── RailwayHeader.tsx             # Top header with user menu, notifications
-├── RailwaySidebar.tsx            # Left navigation sidebar
-├── RailwayContent.tsx            # Main content area
-├── RailwayFooter.tsx             # Bottom footer
-└── RailwayOverlay.tsx            # Modals, panels, floating elements
+// Railway Station Components
+src/components/railway/
+├── RailwayInitiationStation.tsx    # Project initiation and charter creation
+├── RailwayBudgetStation.tsx        # Financial planning and budget tracking
+├── RailwayScheduleStation.tsx      # Timeline management and schedule tracking
+├── RailwayConductor.tsx            # Project orchestration and coordination
+├── RailwayStation.tsx              # Generic station wrapper
+├── RailwayStationCard.tsx          # Station summary and navigation cards
+├── RailwayMap.tsx                  # Project overview and navigation
+└── index.ts                        # Railway component exports
 
-// Navigation Components
-src/components/railway/navigation/
-├── RailwayNavigation.tsx         # Main navigation component
-├── RailwayNavigationItem.tsx     # Individual navigation item
-├── RailwayNavigationGroup.tsx    # Grouped navigation items
-├── RailwayBreadcrumbs.tsx        # Page breadcrumbs
-└── RailwaySearch.tsx             # Global search component
-
-// Layout Components
-src/components/railway/layout/
-├── RailwayLayout.tsx             # Page layout wrapper
-├── RailwayGrid.tsx               # Grid system
-├── RailwayContainer.tsx          # Content container
-└── RailwaySection.tsx            # Content sections
+// Enhanced UI Components (consumed by Railway stations)
+src/components/ui-enhanced/
+├── Badge.tsx                       # Status and label badges
+├── Button.tsx                      # Interactive buttons
+├── Card.tsx                        # Content containers
+├── Input.tsx                       # Form input fields
+├── Textarea.tsx                    # Multi-line text input
+├── Tabs.tsx                        # Tabbed content
+├── Progress.tsx                    # Progress indicators
+└── Calendar.tsx                    # Date selection
 ```
 
-### 6.2 State Management
+### 6.2 Railway Station Development Pattern
 
 ```tsx
-// App Shell State Management
-export const useAppShell = () => {
-  const [state, setState] = useState<AppShellState>("loading");
-  const [currentPath, setCurrentPath] = useState("/");
-  const [theme, setTheme] = useState<"light" | "dark" | "auto">("auto");
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  
-  // Navigation state
-  const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
-  const [activeItem, setActiveItem] = useState<string>("");
-  
-  // User state
-  const [user, setUser] = useState<User | undefined>();
-  
-  // Theme management
-  const applyTheme = useCallback((newTheme: "light" | "dark" | "auto") => {
-    setTheme(newTheme);
-    // Apply theme to document and persist
-  }, []);
-  
-  // Navigation management
-  const navigateTo = useCallback((path: string) => {
-    setCurrentPath(path);
-    setActiveItem(path);
-    // Trigger route change
-  }, []);
-  
-  return {
-    state,
-    currentPath,
-    theme,
-    sidebarCollapsed,
-    navigationItems,
-    activeItem,
-    user,
-    setState,
-    applyTheme,
-    navigateTo,
-    setSidebarCollapsed,
-  };
-};
+// 1. Import required dependencies
+import { cva, type VariantProps } from 'class-variance-authority';
+import { useState } from 'react';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
+import { cn } from '@/utils/cn';
+
+// 2. Define station variants using railwayStationVariants pattern
+const [stationName]Variants = cva([...], { variants: {...} });
+
+// 3. Define station interfaces
+export interface [StationName]Props extends VariantProps<typeof [stationName]Variants> {
+  // Station-specific props
+}
+
+// 4. Implement station component with mandatory header template
+export function [StationName]({ variant = 'default', size = 'md', ...props }: [StationName]Props) {
+  // Component implementation using enhanced tokens only
+}
 ```
 
 ### 6.3 Enhanced Token Integration
 
 ```tsx
-// Enhanced Token Consumption
+// Enhanced Token Consumption - NO hardcoded values
 import { ENHANCED_DESIGN_TOKENS } from "@/design/enhanced-tokens";
 
-const appShellClasses = {
-  container: ENHANCED_DESIGN_TOKENS.layout.appShell.container,
-  sidebar: ENHANCED_DESIGN_TOKENS.layout.appShell.sidebar,
-  header: ENHANCED_DESIGN_TOKENS.layout.appShell.header,
-  content: ENHANCED_DESIGN_TOKENS.layout.appShell.content,
-  footer: ENHANCED_DESIGN_TOKENS.layout.appShell.footer,
-  navigation: ENHANCED_DESIGN_TOKENS.navigation.container,
-  navItem: ENHANCED_DESIGN_TOKENS.navigation.item,
-  navActive: ENHANCED_DESIGN_TOKENS.navigation.active,
-  navHover: ENHANCED_DESIGN_TOKENS.navigation.hover,
+const stationClasses = {
+  container: ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+  content: ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+  secondary: ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+  heading: ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
+  body: ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+  label: ENHANCED_DESIGN_TOKENS.foundation.typography.label,
 };
 ```
 
 ---
 
-## 7) Design Excellence - Sir Steve Jobs Philosophy
+## 7) Design Excellence - MAPS4 Cosmic Innovation
 
-### 7.1 Elegance Supreme
+### 7.1 MAPS4 Foundation
 
-* **Minimalist Layout**: Clean, uncluttered interface that focuses on content
-* **Perfect Proportions**: Golden ratio and 8pt grid system for harmonious spacing
+* **Deep Space Canvas**: Primary cosmic app background with stellar aesthetics
+* **Aurora Accents**: Interactive elements with aurora accent system
+* **Cosmic Cyan**: Secondary cosmic color for highlights and accents
 * **Liquid Glass Materials**: Sophisticated backdrop blur and transparency effects
-* **Cosmic Color Palette**: Deep space canvas with aurora accents
 
-### 7.2 Thoughtful Interactions
+### 7.2 Cosmic Typography System
 
-* **Smooth Transitions**: 300ms cubic-bezier transitions for all state changes
-* **Micro-Interactions**: Subtle hover effects and focus states
-* **Progressive Disclosure**: Information revealed progressively to reduce cognitive load
-* **Contextual Actions**: Actions appear when and where they're needed
+* **Display Text**: Large, bold text for cosmic impact
+* **Semantic Hierarchy**: Clear content structure with cosmic harmony
+* **Body Text**: Readable cosmic text with proper contrast
+* **Specialized Text**: Labels, captions, and interactive text with cosmic aesthetics
 
-### 7.3 Heart-Driven Innovation
+### 7.3 Cosmic Color Harmony
 
-* **Emotional Connection**: Design that users love and trust
-* **Human Touch**: Technology that feels human and caring
-* **Purpose-Driven**: Every element serves a meaningful goal
-* **Inspirational**: Design that motivates and empowers
+* **Success States**: Cosmic success colors for positive feedback
+* **Warning States**: Cosmic warning colors for attention
+* **Error States**: Cosmic danger colors for critical issues
+* **Info States**: Cosmic info colors for informational content
 
 ---
 
@@ -505,41 +470,59 @@ const appShellClasses = {
 
 ### 8.1 Render Performance
 
-* **Initial Render**: <200ms for app shell
-* **Navigation**: <100ms for route changes
-* **Theme Switching**: <50ms for theme application
+* **Initial Render**: <200ms for all Railway stations
+* **State Changes**: <100ms for state transitions
+* **Navigation**: <100ms for station changes
 * **Responsive**: <100ms for layout adaptations
 
 ### 8.2 Bundle Optimization
 
-* **Code Splitting**: Lazy load navigation and content areas
-* **Tree Shaking**: Remove unused navigation items and features
-* **Asset Optimization**: Optimize logos and icons
-* **Caching**: Cache navigation structure and user preferences
+* **Code Splitting**: Lazy load station content
+* **Tree Shaking**: Remove unused station features
+* **Asset Optimization**: Optimize station assets
+* **Caching**: Cache station configurations and user preferences
 
 ---
 
-## 9) DoD for RailwayAppShell Stabilization
+## 9) DoD for Railway Station Development
 
-* ✅ `RailwayAppShell` types + Zod schema shipped under `src/types/railway.ts`
-* ✅ `RailwayAppShell` consumes **ui‑enhanced** primitives + tokens only
-* ✅ Unit tests (7) + fixtures added with 100% branch coverage
-* ✅ E2E tests cover navigation, theme switching, and responsive behavior
+* ✅ Station types + Zod schema shipped under `src/types/railway.ts`
+* ✅ Station consumes **ui‑enhanced** primitives + tokens only
+* ✅ Unit tests with 100% branch coverage
+* ✅ E2E tests cover station functionality and navigation
 * ✅ A11y checks green; keyboard support proven
 * ✅ No hardcoded classes; tokens extended only via approved flow
 * ✅ Performance targets met (<200ms render time)
 * ✅ Responsive design works perfectly on all devices
+* ✅ MAPS4 cosmic innovation principles implemented
+* ✅ Anti-drift governance compliance verified
 
 ---
 
-## 10) Reference Implementation Notes (non-binding)
+## 10) Railway Station Development Checklist
 
-* Use `<Container>`, `<Grid>`, `<Card>` from `ui-enhanced`
-* Implement smooth transitions for all state changes
-* Use CSS Grid for responsive layout management
-* Implement proper focus management for keyboard navigation
-* Use CSS custom properties for theme switching
-* Implement proper error boundaries and loading states
+### 10.1 Pre-Development
+
+- [ ] Review existing Railway stations for patterns
+- [ ] Identify required enhanced tokens
+- [ ] Plan station variants and sizing
+- [ ] Define station interfaces and validation
+
+### 10.2 Development
+
+- [ ] Use mandatory header template
+- [ ] Implement railwayStationVariants pattern
+- [ ] Use enhanced tokens for all visual states
+- [ ] Implement proper error handling
+- [ ] Add loading and error states
+
+### 10.3 Post-Development
+
+- [ ] Verify no hardcoded values remain
+- [ ] Test all station variants and sizes
+- [ ] Validate accessibility compliance
+- [ ] Performance testing and optimization
+- [ ] Documentation and examples
 
 ---
 
@@ -553,6 +536,7 @@ const appShellClasses = {
 4. **Test Contract**: Clear expectations prevent test/component drift
 5. **No Hardcoded Values**: All visual states use semantic token layer
 6. **Performance Standards**: Enforced render time and bundle size limits
+7. **MAPS4 Compliance**: All components follow cosmic innovation principles
 
 **Governance References:**
 - `SUPERIOR_STATE_OF_THE_ART_DEVELOPMENT_MASTERPLAN.md` - Superior development strategy
@@ -562,6 +546,33 @@ const appShellClasses = {
 
 ---
 
-**This SSOT supersedes any prior implicit contracts for RailwayAppShell and is the authoritative source for all RailwayAppShell implementations.**
+## 12) Reference Implementation Examples
 
-**The RailwayAppShell is the foundation upon which all 24 Railway pages will be built, embodying elegance supreme and beyond Fortune 500 standards.**
+### 12.1 RailwayInitiationStation.tsx
+- ✅ MAPS4 header template compliance
+- ✅ Enhanced token consumption
+- ✅ Railway station variants pattern
+- ✅ Comprehensive form handling
+- ✅ Progress tracking and validation
+
+### 12.2 RailwayBudgetStation.tsx
+- ✅ MAPS4 header template compliance
+- ✅ Enhanced token consumption
+- ✅ Financial data management
+- ✅ Budget tracking and analysis
+- ✅ Variance reporting and visualization
+
+### 12.3 RailwayScheduleStation.tsx
+- ✅ MAPS4 header template compliance
+- ✅ Enhanced token consumption
+- ✅ Timeline management
+- ✅ Task and milestone tracking
+- ✅ Critical path analysis
+
+---
+
+**This SSOT supersedes any prior implicit contracts for Railway components and is the authoritative source for all Railway station development.**
+
+**The Railway system is the foundation for comprehensive project management, embodying MAPS4 cosmic innovation and beyond Fortune 500 standards.**
+
+**Use this SSOT to develop all future Railway stations with guaranteed compliance and excellence.**
