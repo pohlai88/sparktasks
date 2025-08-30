@@ -1,17 +1,17 @@
 /**
- * Charter Wizard Component - MAPS v3.0 Dark-First Philosophy with Fortune 500 Standards
+ * Charter Wizard Component - MAPS4 Deep Space Canvas Cosmic Innovation with Fortune 500 Standards
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Cosmic Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
  * - Anti-Drift Enforcement: ✅ Enhanced tokens only, no hardcoded values
  * - Enhanced UI Integration: ✅ Uses enhanced UI components exclusively
  * - Fortune 500 Quality: ✅ Sophisticated form system with liquid glass materials
  * - AAA Accessibility: ✅ WCAG 2.1 AA compliance with enforcement mode
  *
  * ARCHITECTURE INTEGRATION:
- * - Enhanced Tokens → Charter Wizard variants → User experience
- * - MAPS Guidelines → Form hierarchy → Project initiation
- * - Dark-First Philosophy → Primary design approach (NO EXCEPTIONS)
+ * - MAPS4 Enhanced Tokens → Charter Wizard variants → User experience
+ * - MAPS4 Guidelines → Form hierarchy → Project initiation
+ * - MAPS4 Cosmic Philosophy → Primary design approach (NO EXCEPTIONS)
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -33,7 +33,7 @@ import { cn } from '@/utils/cn';
 // ===== CHARTER WIZARD VARIANTS =====
 
 /**
- * Charter Wizard variants following MAPS v3.0 foundation
+ * Charter Wizard variants following MAPS4 Deep Space Canvas Cosmic Innovation foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens or CSS custom properties
  */
 const charterWizardVariants = cva(
@@ -42,11 +42,11 @@ const charterWizardVariants = cva(
     'w-full max-w-4xl mx-auto',
     'space-y-8',
     
-    // Foundation: Colors - Deep space foundation with ethereal accents
+    // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
-    // Foundation: Motion - Respect user preferences
+    // MAPS4 Foundation: Motion - Respect user preferences
     'transition-all duration-300 ease-out',
     'motion-reduce:transition-none',
   ],
@@ -61,16 +61,16 @@ const charterWizardVariants = cva(
           'p-10', 
           'rounded-3xl',
           'shadow-elevation-lg',
-          'border border-border-accent'
+          'border border-aurora-accent'
         ],
         
-        // Glass: Liquid glass materials
+        // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
           'p-8',
           'rounded-2xl',
           'backdrop-blur-md backdrop-saturate-[135%]',
           'shadow-elevation-md',
-          'border border-border/30'
+          'border border-cosmic-border/30'
         ],
       },
       
@@ -274,7 +274,10 @@ export function CharterWizard({
         <div className="mt-4">
           <div className="w-full bg-muted rounded-full h-2">
             <div 
-              className="bg-primary h-2 rounded-full transition-all duration-300"
+                              className={cn(
+                  'h-2 rounded-full transition-all duration-300',
+                  ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
+                )}
               style={{ width: `${(currentStep / steps.length) * 100}%` }}
             />
           </div>
@@ -612,7 +615,10 @@ export function CharterWizard({
   };
 
   const renderNavigation = () => (
-    <div className="flex items-center justify-between pt-6 border-t border-border">
+            <div className={cn(
+          'flex items-center justify-between pt-6 border-t',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+        )}>
       <EnhancedButton
         variant="ghost"
         onClick={prevStep}

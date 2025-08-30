@@ -7,107 +7,144 @@ export default {
     '!./src/**/*.{test,spec}.{js,ts,jsx,tsx}',
     '!./node_modules/**/*',
   ],
-  darkMode: 'class', // Enable dark mode support
+  darkMode: 'class', // Enable dark mode support - MAPS4 Cosmic System
   theme: {
     extend: {
-      // 🌙 MAPS v2.2 Enhanced Dark-First Foundation with WCAG AAA Compliance
+      // 🌌 MAPS4 Deep Space Canvas Cosmic Innovation with WCAG AAA Compliance
       colors: {
-        // CSS Custom Properties Integration
+        // CSS Custom Properties Integration - MAPS4 Cosmic System (COMPLETE)
         background: {
-          DEFAULT: 'rgb(var(--background) / <alpha-value>)',
-          elevated: 'rgb(var(--background-elevated) / <alpha-value>)',
-          panel: 'rgb(var(--background-panel) / <alpha-value>)',
-          overlay: 'rgb(var(--background-overlay) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--deep-space) / <alpha-value>)',
+          elevated: 'rgb(var(--cosmic-void) / <alpha-value>)',
+          panel: 'rgb(var(--stellar-surface) / <alpha-value>)',
+          overlay: 'rgb(var(--cosmic-overlay) / <alpha-value>)',
         },
 
         foreground: {
-          DEFAULT: 'rgb(var(--foreground) / <alpha-value>)',
-          muted: 'rgb(var(--foreground-muted) / <alpha-value>)',
-          subtle: 'rgb(var(--foreground-subtle) / <alpha-value>)',
-          disabled: 'rgb(var(--foreground-disabled) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-light) / <alpha-value>)',
+          muted: 'rgb(var(--stellar-muted) / <alpha-value>)',
+          subtle: 'rgb(var(--cosmic-subtle) / <alpha-value>)',
+          disabled: 'rgb(var(--cosmic-disabled) / <alpha-value>)',
         },
 
+        // MAPS4 Cosmic Accent System (COMPLETE)
         accent: {
-          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
-          foreground: 'rgb(var(--accent-foreground) / <alpha-value>)',
-          'foreground-muted': 'rgb(var(--accent-foreground-muted) / <alpha-value>)',
-          hover: 'rgb(var(--accent-hover) / <alpha-value>)',
-          pressed: 'rgb(var(--accent-pressed) / <alpha-value>)',
-          secondary: 'rgb(var(--accent-secondary) / <alpha-value>)',
-          'secondary-foreground': 'rgb(var(--accent-secondary-foreground) / <alpha-value>)',
-          'secondary-hover': 'rgb(var(--accent-secondary-hover) / <alpha-value>)',
-          'solid-aaa': 'rgb(var(--accent-solid-aaa) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--aurora-accent) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-dark) / <alpha-value>)',
+          'foreground-muted': 'rgb(var(--cosmic-accent-muted) / <alpha-value>)',
+          hover: 'rgb(var(--cosmic-primary-hover) / <alpha-value>)',
+          pressed: 'rgb(var(--cosmic-accent-pressed) / <alpha-value>)',
+          secondary: 'rgb(var(--cosmic-cyan) / <alpha-value>)',
+          'secondary-foreground': 'rgb(var(--cosmic-dark) / <alpha-value>)',
+          'secondary-hover': 'rgb(var(--cosmic-secondary-hover) / <alpha-value>)',
+          'solid-aaa': 'rgb(var(--cosmic-accent-solid) / <alpha-value>)',
         },
 
         border: {
-          DEFAULT: 'rgb(var(--border) / <alpha-value>)',
-          strong: 'rgb(var(--border-strong) / <alpha-value>)',
-          subtle: 'rgb(var(--border-subtle) / <alpha-value>)',
-          accent: 'rgb(var(--border-accent) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-border) / <alpha-value>)',
+          strong: 'rgb(var(--cosmic-border-strong) / <alpha-value>)',
+          subtle: 'rgb(var(--cosmic-border-subtle) / <alpha-value>)',
+          accent: 'rgb(var(--aurora-accent) / <alpha-value>)',
         },
 
-        // Enhanced semantic colors
+        // MAPS4 Enhanced semantic colors (COMPLETE)
         success: {
-          DEFAULT: 'rgb(var(--success) / <alpha-value>)',
-          foreground: 'rgb(var(--success-foreground) / <alpha-value>)',
-          'solid-aaa': 'rgb(var(--success-solid-aaa) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-success) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-dark) / <alpha-value>)',
+          'solid-aaa': 'rgb(var(--cosmic-success-solid) / <alpha-value>)',
         },
         warning: {
-          DEFAULT: 'rgb(var(--warning) / <alpha-value>)',
-          foreground: 'rgb(var(--warning-foreground) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-warning) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-dark) / <alpha-value>)',
         },
         error: {
-          DEFAULT: 'rgb(var(--error) / <alpha-value>)',
-          foreground: 'rgb(var(--error-foreground) / <alpha-value>)',
-          'solid-aaa': 'rgb(var(--error-solid-aaa) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-danger) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-dark) / <alpha-value>)',
+          'solid-aaa': 'rgb(var(--cosmic-danger-solid) / <alpha-value>)',
         },
 
-        // Card and surface colors
+        // Card and surface colors (COMPLETE)
         card: {
-          DEFAULT: 'rgb(var(--card) / <alpha-value>)',
-          elevated: 'rgb(var(--card-elevated) / <alpha-value>)',
-          foreground: 'rgb(var(--card-foreground) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--stellar-surface) / <alpha-value>)',
+          elevated: 'rgb(var(--cosmic-void) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-light) / <alpha-value>)',
         },
 
-        // Input colors
+        // Input colors (COMPLETE MAPS4)
         input: {
-          DEFAULT: 'rgb(var(--input) / <alpha-value>)',
-          border: 'rgb(var(--input-border) / <alpha-value>)',
-          foreground: 'rgb(var(--input-foreground) / <alpha-value>)',
-          placeholder: 'rgb(var(--input-placeholder) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-input) / <alpha-value>)',
+          border: 'rgb(var(--cosmic-input-border) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-light) / <alpha-value>)',
+          placeholder: 'rgb(var(--cosmic-input-placeholder) / <alpha-value>)',
         },
 
-        // Muted colors
+        // Muted colors (COMPLETE MAPS4)
         muted: {
-          DEFAULT: 'rgb(var(--muted) / <alpha-value>)',
-          foreground: 'rgb(var(--muted-foreground) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-muted) / <alpha-value>)',
+          foreground: 'rgb(var(--stellar-muted) / <alpha-value>)',
         },
 
-        // Primary brand colors
+        // MAPS4 Primary brand colors (Aurora Accent) - COMPLETE
         primary: {
-          DEFAULT: 'rgb(var(--primary) / <alpha-value>)',
-          foreground: 'rgb(var(--primary-foreground) / <alpha-value>)',
-          hover: 'rgb(var(--primary-hover) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--aurora-accent) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-dark) / <alpha-value>)',
+          hover: 'rgb(var(--cosmic-primary-hover) / <alpha-value>)',
         },
 
-        // Secondary brand colors
+        // MAPS4 Secondary brand colors (Cosmic Cyan) - COMPLETE
         secondary: {
-          DEFAULT: 'rgb(var(--secondary) / <alpha-value>)',
-          foreground: 'rgb(var(--secondary-foreground) / <alpha-value>)',
-          hover: 'rgb(var(--secondary-hover) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-cyan) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-dark) / <alpha-value>)',
+          hover: 'rgb(var(--cosmic-secondary-hover) / <alpha-value>)',
         },
 
-        // Destructive colors
+        // Destructive colors (COMPLETE MAPS4)
         destructive: {
-          DEFAULT: 'rgb(var(--destructive) / <alpha-value>)',
-          foreground: 'rgb(var(--destructive-foreground) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--cosmic-danger) / <alpha-value>)',
+          foreground: 'rgb(var(--cosmic-dark) / <alpha-value>)',
         },
 
-        // Ring colors for focus
+        // Ring colors for focus (COMPLETE MAPS4)
         ring: {
-          DEFAULT: 'rgb(var(--ring) / <alpha-value>)',
-          offset: 'rgb(var(--ring-offset) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--aurora-accent) / <alpha-value>)',
+          offset: 'rgb(var(--cosmic-ring-offset) / <alpha-value>)',
         },
+
+        // MAPS4 Cosmic Color System - Direct Access (COMPLETE)
+        'aurora-accent': 'rgb(var(--aurora-accent) / <alpha-value>)',
+        'cosmic-cyan': 'rgb(var(--cosmic-cyan) / <alpha-value>)',
+        'cosmic-primary': 'rgb(var(--cosmic-primary) / <alpha-value>)',
+        'cosmic-primary-hover': 'rgb(var(--cosmic-primary-hover) / <alpha-value>)',
+        'cosmic-secondary': 'rgb(var(--cosmic-secondary) / <alpha-value>)',
+        'cosmic-secondary-hover': 'rgb(var(--cosmic-secondary-hover) / <alpha-value>)',
+        'deep-space': 'rgb(var(--deep-space) / <alpha-value>)',
+        'cosmic-void': 'rgb(var(--cosmic-void) / <alpha-value>)',
+        'stellar-surface': 'rgb(var(--stellar-surface) / <alpha-value>)',
+        'nebula-accent': 'rgb(var(--nebula-accent) / <alpha-value>)',
+        'cosmic-light': 'rgb(var(--cosmic-light) / <alpha-value>)',
+        'stellar-muted': 'rgb(var(--stellar-muted) / <alpha-value>)',
+        'cosmic-success': 'rgb(var(--cosmic-success) / <alpha-value>)',
+        'cosmic-warning': 'rgb(var(--cosmic-warning) / <alpha-value>)',
+        'cosmic-danger': 'rgb(var(--cosmic-danger) / <alpha-value>)',
+        'cosmic-info': 'rgb(var(--cosmic-info) / <alpha-value>)',
+        'cosmic-dark': 'rgb(var(--cosmic-dark) / <alpha-value>)',
+        // Additional MAPS4 Cosmic System Variables
+        'cosmic-overlay': 'rgb(var(--cosmic-overlay) / <alpha-value>)',
+        'cosmic-subtle': 'rgb(var(--cosmic-subtle) / <alpha-value>)',
+        'cosmic-disabled': 'rgb(var(--cosmic-disabled) / <alpha-value>)',
+        'cosmic-accent-muted': 'rgb(var(--cosmic-accent-muted) / <alpha-value>)',
+        'cosmic-accent-pressed': 'rgb(var(--cosmic-accent-pressed) / <alpha-value>)',
+        'cosmic-accent-solid': 'rgb(var(--cosmic-accent-solid) / <alpha-value>)',
+        'cosmic-border': 'rgb(var(--cosmic-border) / <alpha-value>)',
+        'cosmic-border-strong': 'rgb(var(--cosmic-border-strong) / <alpha-value>)',
+        'cosmic-border-subtle': 'rgb(var(--cosmic-border-subtle) / <alpha-value>)',
+        'cosmic-success-solid': 'rgb(var(--cosmic-success-solid) / <alpha-value>)',
+        'cosmic-danger-solid': 'rgb(var(--cosmic-danger-solid) / <alpha-value>)',
+        'cosmic-input': 'rgb(var(--cosmic-input) / <alpha-value>)',
+        'cosmic-input-border': 'rgb(var(--cosmic-input-border) / <alpha-value>)',
+        'cosmic-input-placeholder': 'rgb(var(--cosmic-input-placeholder) / <alpha-value>)',
+        'cosmic-muted': 'rgb(var(--cosmic-muted) / <alpha-value>)',
+        'cosmic-ring-offset': 'rgb(var(--cosmic-ring-offset) / <alpha-value>)',
       },
 
       // ✅ Wire Tailwind's actual ring + outline system to your tokens
@@ -204,8 +241,8 @@ export default {
         'elevation-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
 
         // Apple vibrancy effects
-        'glow-accent': '0 0 20px rgb(var(--accent) / 0.3)',
-        'glow-secondary': '0 0 20px rgb(var(--accent-secondary) / 0.3)',
+        'glow-accent': '0 0 20px rgb(var(--aurora-accent) / 0.3)',
+        'glow-secondary': '0 0 20px rgb(var(--cosmic-cyan) / 0.3)',
       },
 
       // 🔄 Apple-style border radius
@@ -296,7 +333,7 @@ export default {
     },
   },
 
-  // ✅ Keep token-driven dynamic classes from being purged
+  // ✅ Keep token-driven dynamic classes from being purged - MAPS4 Cosmic System
   safelist: [
     { pattern: /(bg|text|border|ring)-(background|foreground|muted|primary|secondary|accent|success|warning|error|card|destructive)(?:-[a-z]+)?/ },
     { pattern: /ring-(accent|error|success|warning)/ },
@@ -307,6 +344,8 @@ export default {
     { pattern: /z-(surface|overlay|popover|modal|toast|tooltip)/ },  // Z-Index Orchestrator tokens
     { pattern: /duration-(0|100|120|160|180|200|220|600)/ },  // Motion duration tokens
     { pattern: /ease-(standard|entrance|exit|spring)/ },  // Motion easing tokens
+    // MAPS4 Cosmic Color System - Direct Access (COMPLETE)
+    { pattern: /(bg|text|border|ring)-(aurora-accent|cosmic-cyan|cosmic-primary|cosmic-primary-hover|cosmic-secondary|cosmic-secondary-hover|deep-space|cosmic-void|stellar-surface|nebula-accent|cosmic-light|stellar-muted|cosmic-success|cosmic-warning|cosmic-danger|cosmic-info|cosmic-dark|cosmic-overlay|cosmic-subtle|cosmic-disabled|cosmic-accent-muted|cosmic-accent-pressed|cosmic-accent-solid|cosmic-border|cosmic-border-strong|cosmic-border-subtle|cosmic-success-solid|cosmic-danger-solid|cosmic-input|cosmic-input-border|cosmic-input-placeholder|cosmic-muted|cosmic-ring-offset)/ },
     // Liquid glass utilities
     'glass',
     'glass-sm',

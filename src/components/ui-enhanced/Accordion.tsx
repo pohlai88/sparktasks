@@ -1,28 +1,25 @@
 /**
- * Enhanced Accordion Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Accordion Component - MAPS4 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Radix UI Foundation: ✅ Accordion primitives for behavior and accessibility
- * - Dark-First Philosophy: ✅ Deep space surfaces with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
- * - AAA Compliance: ✅ High contrast mode with 7:1 ratios
- * - Liquid Glass Materials: ✅ Governed vibrancy system with backdrop blur
- * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
+ * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
+ * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
+ * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
+ * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
  *
- * ARCHITECTURE DECISION:
- * - Radix owns: Behavior, ARIA, focus management, keyboard navigation
- * - MAPS owns: Apple HIG materials, liquid glass, AAA enforcement
- * - Wrapper owns: Token application, governance rules, brand consistency
- *
- * GOVERNANCE RULES:
- * - Foundation tokens only (no component-specific tokens)
- * - Auto-apply AAA scrims over glass materials
- * - Apple HIG motion with respect for reduced motion
- * - Platform-aware touch targets
+ * ARCHITECTURE INTEGRATION:
+ * - MAPS4 Enhanced Tokens → Accordion variants → Cosmic user experience
+ * - MAPS4 Guidelines → Accordion behavior → Accessibility excellence
+ * - [Ecosystem] → [Accordion] → [Composability]
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
- * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
+ *
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
@@ -53,51 +50,51 @@ const enhancedAccordionRootVariants = cva(
         // Default: Clean structure with subtle borders
         default: [
           'space-y-0',
-          'rounded-lg border border-border',
-          'divide-y divide-border',
+          'rounded-[var(--radius-md)] border-[var(--border-width-1)] border-border',
+          'divide-y-[var(--border-width-1)] divide-border',
         ],
 
         // Ghost: Borderless, minimal styling
-        ghost: ['space-y-2'],
+        ghost: ['space-y-[var(--space-2)]'],
 
         // Glass: Liquid glass material with backdrop blur
         glass: [
           'space-y-0',
-          'backdrop-blur-[12px] backdrop-saturate-[135%]',
-          'border border-[#5b6776]/40 bg-[#241c41]/85',
-          'divide-y divide-[#5b6776]/30 rounded-lg',
-          'shadow-lg',
+          'backdrop-blur-[var(--blur-md)] backdrop-saturate-[var(--saturate-135)]',
+          'border-[var(--border-width-1)] border-[color:var(--cosmic-border)] bg-[color:var(--cosmic-muted)]',
+          'divide-y-[var(--border-width-1)] divide-[color:var(--cosmic-border)] rounded-[var(--radius-md)]',
+          'shadow-[var(--shadow-elevation-md)]',
         ],
 
         // Floating: Enhanced glass with stronger blur
         floating: [
           'space-y-0',
-          'backdrop-blur-[16px] backdrop-saturate-[135%]',
-          'border border-[#6f7f92]/30 bg-[#17162a]/80',
-          'divide-y divide-[#6f7f92]/25 rounded-lg',
-          'shadow-xl',
+          'backdrop-blur-[var(--blur-lg)] backdrop-saturate-[var(--saturate-135)]',
+          'border-[var(--border-width-1)] border-[color:var(--cosmic-border-strong)] bg-[color:var(--nebula-accent)]',
+          'divide-y-[var(--border-width-1)] divide-[color:var(--cosmic-border-strong)] rounded-[var(--radius-md)]',
+          'shadow-[var(--shadow-elevation-lg)]',
         ],
 
         // Outlined: Strong borders for emphasis
         outlined: [
           'space-y-0',
-          'rounded-lg border-2 border-border',
-          'divide-y-2 divide-border',
+          'rounded-[var(--radius-md)] border-[var(--border-width-2)] border-border',
+          'divide-y-[var(--border-width-2)] divide-border',
         ],
 
         // Filled: Solid background
         filled: [
           'space-y-0',
-          'rounded-lg border border-border bg-muted',
-          'divide-y divide-border',
+          'rounded-[var(--radius-md)] border-[var(--border-width-1)] border-border bg-muted',
+          'divide-y-[var(--border-width-1)] divide-border',
         ],
       },
 
       // AAA Compliance enforcement mode
       aaaMode: {
         true: [
-          'border-2 border-[#8094a6] bg-[#0a0f16]',
-          'divide-y-2 divide-[#8094a6]',
+          'border-[var(--border-width-2)] border-[color:var(--cosmic-border-strong)] bg-[color:var(--deep-space)]',
+          'divide-y-[var(--border-width-2)] divide-[color:var(--cosmic-border-strong)]',
           'shadow-none',
           // Override any glass effects for maximum contrast
           '!backdrop-blur-none !backdrop-saturate-100',
@@ -108,7 +105,7 @@ const enhancedAccordionRootVariants = cva(
       // Dense mode for compact layouts
       density: {
         comfortable: [],
-        compact: ['text-sm'],
+        compact: ['text-[var(--font-size-sm)]'],
       },
     },
 
@@ -129,14 +126,14 @@ const enhancedAccordionItemVariants = cva(
     'relative',
 
     // Foundation: Motion - Apple HIG with accessibility respect
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-[var(--motion-easing-standard)]',
     'motion-reduce:transition-none',
   ],
   {
     variants: {
       variant: {
         default: [],
-        ghost: ['rounded-lg border border-border', 'hover:bg-muted/50'],
+        ghost: ['rounded-[var(--radius-md)] border-[var(--border-width-1)] border-border', 'hover:bg-muted/50'],
         glass: [],
         floating: [],
         outlined: [],
@@ -166,21 +163,21 @@ const enhancedAccordionTriggerVariants = cva(
     'text-left',
 
     // Foundation: Typography - Apple HIG hierarchy
-    'font-medium',
+    'font-[var(--font-weight-medium)]',
 
     // Foundation: Spacing - systematic padding
-    'px-4 py-3',
+    'px-[var(--space-4)] py-[var(--space-3)]',
 
     // Foundation: Motion - Apple HIG with accessibility respect
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-[var(--motion-easing-standard)]',
     'motion-reduce:transition-none',
 
     // Foundation: States
-    'disabled:pointer-events-none disabled:opacity-50',
+    'disabled:pointer-events-none disabled:opacity-[var(--opacity-disabled)]',
 
     // Foundation: Focus - AAA compliant ring system
     'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    'focus-visible:ring-[var(--ring-2)] focus-visible:ring-ring focus-visible:ring-offset-[var(--ring-offset-2)]',
     'focus-visible:ring-offset-background',
 
     // Foundation: Apple HIG interaction patterns
@@ -194,24 +191,24 @@ const enhancedAccordionTriggerVariants = cva(
     variants: {
       variant: {
         default: [],
-        ghost: ['rounded-lg', 'hover:bg-muted/70'],
-        glass: ['text-[#e8ecf1]', 'hover:bg-[#5b6776]/20'],
-        floating: ['text-[#e8ecf1]', 'hover:bg-[#6f7f92]/15'],
-        outlined: ['font-semibold'],
+        ghost: ['rounded-[var(--radius-lg)]', 'hover:bg-muted/70'],
+        glass: ['text-[color:var(--cosmic-light)]', 'hover:bg-[color:var(--cosmic-border)]/20'],
+        floating: ['text-[color:var(--cosmic-light)]', 'hover:bg-[color:var(--cosmic-border-strong)]/15'],
+        outlined: ['font-[var(--font-weight-semibold)]'],
         filled: ['hover:bg-background/50'],
       },
 
       size: {
-        sm: ['px-3 py-2', 'text-sm'],
-        default: ['px-4 py-3', 'text-base'],
-        lg: ['px-5 py-4', 'text-lg'],
+        sm: ['px-[var(--space-3)] py-[var(--space-2)]', 'text-[var(--font-size-sm)]'],
+        default: ['px-[var(--space-4)] py-[var(--space-3)]', 'text-[var(--font-size-base)]'],
+        lg: ['px-[var(--space-5)] py-[var(--space-4)]', 'text-[var(--font-size-lg)]'],
       },
 
       // AAA Compliance enforcement mode
       aaaMode: {
         true: [
-          'bg-[#0a0f16] text-[#e8ecf1]',
-          'hover:bg-[#17162a] focus:bg-[#17162a]',
+          'bg-[color:var(--deep-space)] text-[color:var(--cosmic-light)]',
+          'hover:bg-[color:var(--nebula-accent)] focus:bg-[color:var(--nebula-accent)]',
           'border-none',
         ],
         false: [],
@@ -220,7 +217,7 @@ const enhancedAccordionTriggerVariants = cva(
       // Dense mode for compact layouts
       density: {
         comfortable: [],
-        compact: ['px-3 py-2', 'text-sm'],
+        compact: ['px-[var(--space-3)] py-[var(--space-2)]', 'text-[var(--font-size-sm)]'],
       },
     },
 
@@ -245,7 +242,7 @@ const enhancedAccordionContentVariants = cva(
     'text-muted-foreground',
 
     // Foundation: Motion - Apple HIG with accessibility respect
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-[var(--motion-easing-standard)]',
     'motion-reduce:transition-none',
 
     // Foundation: Radix animation integration
@@ -257,22 +254,22 @@ const enhancedAccordionContentVariants = cva(
       variant: {
         default: [],
         ghost: [],
-        glass: ['text-[#c8ced6]'],
-        floating: ['text-[#c8ced6]'],
+        glass: ['text-[color:var(--stellar-muted)]'],
+        floating: ['text-[color:var(--stellar-muted)]'],
         outlined: [],
         filled: [],
       },
 
       // AAA Compliance enforcement mode
       aaaMode: {
-        true: ['text-[#c8ced6]'],
+        true: ['text-[color:var(--stellar-muted)]'],
         false: [],
       },
 
       // Dense mode for compact layouts
       density: {
         comfortable: [],
-        compact: ['text-sm'],
+        compact: ['text-[var(--font-size-sm)]'],
       },
     },
 
@@ -290,20 +287,20 @@ const enhancedAccordionContentVariants = cva(
 const enhancedAccordionContentInnerVariants = cva(
   [
     // Foundation: Spacing - systematic padding
-    'px-4 py-3',
+    'px-[var(--space-4)] py-[var(--space-3)]',
   ],
   {
     variants: {
       size: {
-        sm: ['px-3 py-2'],
-        default: ['px-4 py-3'],
-        lg: ['px-5 py-4'],
+        sm: ['px-[var(--space-3)] py-[var(--space-2)]'],
+        default: ['px-[var(--space-4)] py-[var(--space-3)]'],
+        lg: ['px-[var(--space-5)] py-[var(--space-4)]'],
       },
 
       // Dense mode for compact layouts
       density: {
         comfortable: [],
-        compact: ['px-3 py-2'],
+        compact: ['px-[var(--space-3)] py-[var(--space-2)]'],
       },
     },
 
@@ -561,11 +558,11 @@ const EnhancedAccordionTrigger = React.forwardRef<
         >
           {children}
           {showChevron && (
-            <div className='ml-2 flex-shrink-0'>
+            <div className='ml-[var(--space-2)] shrink-0'>
               {chevronIcon || (
                 <ChevronDown
                   className={cn(
-                    'h-4 w-4 transition-transform duration-200',
+                    'size-[var(--icon-sm)] transition-transform duration-[var(--motion-duration-2)]',
                     'group-data-[state=open]:rotate-180'
                   )}
                 />

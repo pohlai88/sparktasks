@@ -1,17 +1,17 @@
 /**
- * Railway Map Component - MAPS v3.0 Dark-First Philosophy with Fortune 500 Standards
+ * Railway Map Component - MAPS4 Deep Space Canvas Cosmic Innovation with Fortune 500 Standards
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Cosmic Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
  * - Anti-Drift Enforcement: ✅ Enhanced tokens only, no hardcoded values
  * - Enhanced UI Integration: ✅ Uses enhanced UI components exclusively
  * - Fortune 500 Quality: ✅ Sophisticated variant system with liquid glass materials
  * - AAA Accessibility: ✅ WCAG 2.1 AA compliance with enforcement mode
  *
  * ARCHITECTURE INTEGRATION:
- * - Enhanced Tokens → Railway Map variants → User experience
- * - MAPS Guidelines → Visual hierarchy → Project phase navigation
- * - Dark-First Philosophy → Primary design approach (NO EXCEPTIONS)
+ * - MAPS4 Enhanced Tokens → Railway Map variants → User experience
+ * - MAPS4 Guidelines → Visual hierarchy → Project phase navigation
+ * - MAPS4 Cosmic Philosophy → Primary design approach (NO EXCEPTIONS)
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -31,7 +31,7 @@ import { cn } from '@/utils/cn';
 // ===== RAILWAY MAP VARIANTS =====
 
 /**
- * Railway Map variants following MAPS v3.0 foundation
+ * Railway Map variants following MAPS4 Deep Space Canvas Cosmic Innovation foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens or CSS custom properties
  */
 const railwayMapVariants = cva(
@@ -40,11 +40,11 @@ const railwayMapVariants = cva(
     'w-full',
     'space-y-6',
     
-    // Foundation: Colors - Deep space foundation with ethereal accents
+    // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
-    // Foundation: Motion - Respect user preferences
+    // MAPS4 Foundation: Motion - Respect user preferences
     'transition-all duration-300 ease-out',
     'motion-reduce:transition-none',
   ],
@@ -59,16 +59,16 @@ const railwayMapVariants = cva(
           'p-8', 
           'rounded-2xl',
           'shadow-elevation-lg',
-          'border border-border-accent'
+          'border border-aurora-accent'
         ],
         
-        // Glass: Liquid glass materials
+        // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
           'p-6',
           'rounded-xl',
           'backdrop-blur-md backdrop-saturate-[135%]',
           'shadow-elevation-md',
-          'border border-border/30'
+          'border border-cosmic-border/30'
         ],
       },
       
@@ -294,18 +294,27 @@ export function RailwayMap({
         </div>
 
         {/* Academic Anchor */}
-        <div className="text-xs text-muted-foreground">
+        <div className={cn(
+          'text-xs',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+        )}>
           <strong>Academic Anchor:</strong> {station.academicAnchor}
         </div>
 
         {/* Duration */}
-        <div className="text-xs text-muted-foreground">
+        <div className={cn(
+          'text-xs',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+        )}>
           <strong>Estimated Duration:</strong> {station.estimatedDuration}
         </div>
 
         {/* Dependencies */}
         {station.dependencies.length > 0 && (
-          <div className="text-xs text-muted-foreground">
+          <div className={cn(
+            'text-xs',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>
             <strong>Dependencies:</strong> {station.dependencies.join(', ')}
           </div>
         )}
@@ -313,7 +322,10 @@ export function RailwayMap({
 
       {/* Navigation Button */}
       {station.status !== 'locked' && onStationNavigate && (
-        <div className="mt-4 pt-4 border-t border-border">
+        <div className={cn(
+          'mt-4 pt-4 border-t',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+        )}>
           <EnhancedButton
             variant="ghost"
             size="sm"
@@ -377,7 +389,10 @@ export function RailwayMap({
       </div>
 
       {/* Railway Map Footer */}
-      <div className="text-center mt-8 pt-6 border-t border-border">
+              <div className={cn(
+          'text-center mt-8 pt-6 border-t',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+        )}>
         <p className={cn(
           'text-sm',
           ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary

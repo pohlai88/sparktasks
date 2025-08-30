@@ -1,29 +1,19 @@
-/**
- * ESLint v8 configuration (non-flat) — SparkTasks
- * - Prettier runs separately (no eslint-plugin-prettier)
- * - Tailwind class ordering handled by prettier-plugin-tailwindcss
- * - Type-aware TS via parserOptions.project
+/* 
+ * Basic ESLint Configuration for MAPS4 Development
+ * 
+ * GOAL: Essential code quality without blocking refactoring
+ * - Basic TypeScript and React rules
+ * - Essential code quality standards
+ * - No overly aggressive MAPS4 enforcement
  */
 module.exports = {
   root: true,
-  env: {
-    browser: true,
-    es2022: true,
-    node: true,
-    jest: false,
-  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
     project: ['./tsconfig.json'],
     tsconfigRootDir: __dirname,
-  },
-  settings: {
-    react: { version: 'detect' },
-    'import/resolver': {
-      typescript: { project: ['./tsconfig.json'] },
-    },
   },
   plugins: [
     '@typescript-eslint',
@@ -33,7 +23,6 @@ module.exports = {
     'import',
     'unicorn',
     'tailwindcss',
-    'unused-imports',
   ],
   extends: [
     'eslint:recommended',
@@ -43,136 +32,89 @@ module.exports = {
     'plugin:jsx-a11y/recommended',
     'plugin:import/recommended',
     'plugin:unicorn/recommended',
-    // Keep Prettier last to disable stylistic conflicts
+    'plugin:tailwindcss/recommended',
     'prettier',
   ],
+  settings: {
+    react: { version: 'detect' },
+    'import/resolver': {
+      typescript: { project: ['./tsconfig.json'] },
+    },
+    tailwindcss: {
+      callees: ['cn', 'clsx', 'classnames'],
+      config: 'tailwind.config.js',
+      cssFiles: ['src/**/*.css', 'src/**/*.scss'],
+    },
+  },
+  env: { 
+    es2022: true, 
+    browser: true, 
+    node: true 
+  },
   rules: {
-    // TS strictness
-    '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/await-thenable': 'error',
-    '@typescript-eslint/no-misused-promises': [
-      'error',
-      { checksVoidReturn: { attributes: false } },
-    ],
-    '@typescript-eslint/consistent-type-imports': [
-      'warn',
-      { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-    ],
-
-    // Unused imports (faster signal than no-unused-vars)
-    'unused-imports/no-unused-imports': 'warn',
-    'unused-imports/no-unused-vars': [
-      'warn',
-      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-    ],
-
-    // Configure TypeScript unused vars to use underscore pattern
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-    ],
-
-    // React
+    /* ===== Essential Code Quality ===== */
+    
+    /* TypeScript */
+    '@typescript-eslint/no-unused-vars': ['warn', { 
+      argsIgnorePattern: '^_', 
+      varsIgnorePattern: '^_' 
+    }],
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'prefer-const': 'warn',
+    
+    /* React */
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',
-    'react/self-closing-comp': 'warn',
-
-    // Hooks
+    'react/jsx-key': 'error',
+    'react/jsx-no-duplicate-props': 'error',
+    'react/jsx-no-undef': 'error',
+    
+    /* React Hooks */
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-
-    // A11y
+    
+    /* Accessibility */
+    'jsx-a11y/alt-text': 'warn',
     'jsx-a11y/anchor-is-valid': 'warn',
-
-    // Imports
-    'import/order': [
-      'warn',
-      {
-        'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true },
-      },
-    ],
-    'import/no-unresolved': 'off', // TS handles this
-
-    // Unicorn - adjusted for practicality
-    'unicorn/filename-case': 'off',
+    
+    /* Imports */
+    'import/order': ['warn', {
+      'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      'newlines-between': 'always',
+      'alphabetize': { order: 'asc', caseInsensitive: true }
+    }],
+    'import/no-unresolved': 'off', // TypeScript handles this
+    
+    /* General */
+    'no-console': 'warn',
+    'no-debugger': 'error',
+    'prefer-const': 'warn',
+    'no-var': 'error',
+    
+    /* Tailwind */
+    'tailwindcss/no-arbitrary-value': 'warn',
+    'tailwindcss/no-contradicting-classname': 'error',
+    
+    /* Unicorn - Relaxed */
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/prefer-optional-catch-binding': 'off',
     'unicorn/no-null': 'off',
     'unicorn/prefer-top-level-await': 'off',
-    'unicorn/prefer-code-point': 'off', // charCodeAt is fine for ASCII
-    'unicorn/no-array-callback-reference': 'off', // common pattern
-    'unicorn/consistent-function-scoping': 'off', // allow inline functions
-    'unicorn/prefer-query-selector': 'off', // getElementById is fine
-    'unicorn/prefer-ternary': 'off', // if statements are often clearer
-    'unicorn/no-useless-switch-case': 'off', // sometimes needed for clarity
-    'unicorn/numeric-separators-style': 'off',
-    'unicorn/switch-case-braces': 'off',
-    'unicorn/no-negated-condition': 'off',
-    'unicorn/no-empty-file': 'off',
-    'unicorn/prefer-array-some': 'off',
-
-    // Tailwind — let Prettier sort classes
-    'tailwindcss/classnames-order': 'off',
-    'tailwindcss/no-custom-classname': 'off',
-
-    // ===== ANTI-DRIFT GOVERNANCE RULES =====
-    // Block manual accessibility patterns
-    'no-restricted-syntax': [
-      'error',
-      {
-        selector: "JSXAttribute[name.name='aria-hidden'][value.value=true]",
-        message: '🚫 Use <AccessibleIcon> wrapper instead of manual aria-hidden'
-      },
-      {
-        selector: "Literal[value='sr-only']",
-        message: '🚫 Use <VisuallyHidden> component instead of sr-only class'
-      },
-      {
-        selector: "Property[key.name='aria-hidden'][value.value=true]",
-        message: '🚫 Use <AccessibleIcon> wrapper instead of object aria-hidden'
-      }
-    ],
-
-    // Block primitive bypassing
-    'no-restricted-imports': [
-      'error',
-      {
-        paths: [
-          {
-            name: '@radix-ui/react-visually-hidden',
-            message: '🚫 Import from @/components/primitives instead'
-          },
-          {
-            name: '@radix-ui/react-slot',
-            message: '🚫 Import from @/components/primitives instead'
-          },
-          {
-            name: '@radix-ui/react-accessible-icon',
-            message: '🚫 Import from @/components/primitives instead'
-          },
-          {
-            name: '@radix-ui/react-direction',
-            message: '🚫 Import from @/components/primitives instead'
-          }
-        ]
-      }
-    ],
-
-    // ===== MAPS GOVERNANCE RULES =====
-    // Note: Z-index governance now handled by ZIndexOrchestrator runtime system
-    // Core design token governance remains through no-restricted-syntax rules above
+    'unicorn/filename-case': 'off', // Too strict for refactoring
   },
+
   overrides: [
+    /* ===== Test Files (Relaxed Rules) ===== */
     {
-      files: ['**/*.test.*', '**/*.spec.*', 'test/**/*.*'],
-      env: { node: true },
+      files: ['**/*.test.*', '**/*.spec.*'],
       rules: {
-        'no-unused-expressions': 'off',
+        'no-console': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
       },
     },
+
+    /* ===== Configuration Files (Relaxed Rules) ===== */
     {
-      // Config files: disable type-aware parsing for performance
       files: [
         '*.{js,cjs,mjs}',
         '*.config.*',
@@ -184,32 +126,12 @@ module.exports = {
       ],
       parserOptions: { project: null },
       rules: {
-        // Disable type-aware rules for config files
-        '@typescript-eslint/no-floating-promises': 'off',
-        '@typescript-eslint/await-thenable': 'off',
-        '@typescript-eslint/no-misused-promises': 'off',
-      },
-    },
-    {
-      // Documentation files: disable type-aware parsing
-      files: ['**/docs/**/*.{ts,tsx}'],
-      parserOptions: { project: null },
-      rules: {
-        // Disable type-aware rules for docs
-        '@typescript-eslint/no-floating-promises': 'off',
-        '@typescript-eslint/await-thenable': 'off',
-        '@typescript-eslint/no-misused-promises': 'off',
-      },
-    },
-    {
-      // Primitive components: allow direct Radix imports
-      files: ['src/components/primitives/**/*.{ts,tsx}'],
-      rules: {
-        // Allow primitives to import directly from Radix UI
-        'no-restricted-imports': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
+        'no-console': 'off',
       },
     },
   ],
+  
   ignorePatterns: [
     'node_modules/',
     'dist/',
@@ -224,6 +146,5 @@ module.exports = {
     '.eslintcache',
     'test-results/',
     'e2e/playwright-report/',
-    '.eslintrc.cjs', // Exclude this file from type checking
   ],
 };

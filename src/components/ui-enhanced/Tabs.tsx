@@ -1,18 +1,18 @@
 /**
- * Enhanced Tabs Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Tabs Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Tailwind Config → CSS Custom Properties → Component classes
  * - Enhanced Tokens → Semantic API → Component variants
- * - MAPS Guidelines → Component behavior → User experience
+ * - MAPS4 Guidelines → Component behavior → User experience
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -51,8 +51,8 @@ const enhancedTabsRootVariants = cva(
         vertical: ['flex-row'],
       },
       density: {
-        comfortable: ['gap-6'],
-        compact: ['gap-4'],
+        comfortable: ['gap-[var(--space-6)]'],
+        compact: ['gap-[var(--space-4)]'],
       },
     },
     defaultVariants: {
@@ -72,20 +72,20 @@ const enhancedTabsListVariants = cva(
     // Foundation: Layout - Clean navigation structure
     'inline-flex shrink-0',
 
-    // MAPS v2.2: Liquid glass surface with subtle elevation
-    'rounded-lg bg-muted/30 backdrop-blur-sm',
-    'border border-border/50',
+    // MAPS4: Liquid glass surface with subtle elevation
+    'rounded-[var(--radius-lg)] bg-cosmic-muted/30 backdrop-blur-[var(--blur-sm)]',
+    'border border-cosmic-border/50',
 
     // Foundation: Typography & spacing
-    'p-1',
+    'p-[var(--space-1)]',
 
     // Enhanced: Visual depth with controlled shadows
-    'shadow-sm',
+    'shadow-[var(--shadow-sm)]',
 
     // Foundation: Focus ring for keyboard navigation
     'focus-visible:outline-none focus-visible:ring-2',
-    'focus-visible:ring-accent focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    'focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
+    'focus-visible:ring-offset-stellar-surface',
   ],
   {
     variants: {
@@ -95,27 +95,27 @@ const enhancedTabsListVariants = cva(
       },
       variant: {
         default: [],
-        pills: ['border-0 bg-transparent shadow-none', 'gap-2 p-0'],
+        pills: ['border-0 bg-transparent shadow-none', 'gap-[var(--space-2)] p-0'],
         underline: [
-          'border-0 border-b border-border bg-transparent',
+          'border-0 border-b border-cosmic-border bg-transparent',
           'rounded-none shadow-none',
           'p-0 pb-0',
         ],
         glass: [
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'bg-background-elevated/60',
-          'border-border/30',
-          'shadow-elevation-md',
+          'backdrop-blur-[var(--blur-md)] backdrop-saturate-[var(--saturate-135)]',
+          'bg-stellar-surface-elevated/60',
+          'border-cosmic-border/30',
+          'shadow-[var(--shadow-elevation-md)]',
         ],
       },
       size: {
-        sm: ['text-sm', 'gap-1'],
-        default: ['text-sm'],
-        lg: ['text-base'],
+        sm: ['text-[var(--font-size-sm)]', 'gap-[var(--space-1)]'],
+        default: ['text-[var(--font-size-sm)]'],
+        lg: ['text-[var(--font-size-base)]'],
       },
       density: {
-        comfortable: ['p-1'],
-        compact: ['p-0.5'],
+        comfortable: ['p-[var(--space-1)]'],
+        compact: ['p-[var(--space-0_5)]'],
       },
     },
     defaultVariants: {
@@ -136,31 +136,31 @@ const enhancedTabsTriggerVariants = cva(
   [
     // Foundation: Layout & interaction base
     'inline-flex items-center justify-center whitespace-nowrap',
-    'rounded-md text-sm font-medium',
+    'rounded-[var(--radius-md)] text-[var(--font-size-sm)] font-[var(--font-weight-medium)]',
     'cursor-pointer select-none',
 
     // Foundation: Touch targets - 44px minimum for accessibility
-    'min-h-[2.75rem] px-3 py-1.5',
+    'min-h-[var(--space-11)] px-[var(--space-3)] py-[var(--space-1_5)]',
 
     // Foundation: Motion - Apple-quality transitions
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: States - Comprehensive interaction feedback
     'focus-visible:outline-none focus-visible:ring-2',
-    'focus-visible:ring-accent focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    'focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
+    'focus-visible:ring-offset-stellar-surface',
 
     // Foundation: Disabled state
-    'disabled:pointer-events-none disabled:opacity-50',
+    'disabled:pointer-events-none disabled:opacity-[var(--opacity-50)]',
 
-    // MAPS v2.2: Default state - Subtle presence
-    'text-muted-foreground',
-    'hover:bg-muted/50 hover:text-foreground',
+    // MAPS4: Default state - Subtle presence
+    'text-cosmic-muted',
+    'hover:bg-cosmic-muted/50 hover:text-cosmic-foreground',
 
     // Enhanced: Active state with Apple calm confidence
-    'data-[state=active]:bg-background data-[state=active]:text-foreground',
-    'data-[state=active]:shadow-sm',
+    'data-[state=active]:bg-stellar-surface data-[state=active]:text-cosmic-foreground',
+    'data-[state=active]:shadow-[var(--shadow-sm)]',
 
     // Enhanced: Keyboard navigation support
     'focus:z-10',
@@ -171,43 +171,43 @@ const enhancedTabsTriggerVariants = cva(
         default: [],
         pills: [
           'rounded-full',
-          'data-[state=active]:bg-accent data-[state=active]:text-accent-foreground',
-          'data-[state=active]:shadow-md data-[state=active]:shadow-accent/20',
+          'data-[state=active]:bg-aurora-accent data-[state=active]:text-aurora-accent-foreground',
+          'data-[state=active]:shadow-[var(--shadow-md)] data-[state=active]:shadow-aurora-accent/20',
         ],
         underline: [
           'rounded-none border-b-2 border-transparent',
-          'hover:border-border',
-          'data-[state=active]:border-accent data-[state=active]:bg-transparent',
+          'hover:border-cosmic-border',
+          'data-[state=active]:border-aurora-accent data-[state=active]:bg-transparent',
           'data-[state=active]:shadow-none',
         ],
         glass: [
-          'backdrop-blur-sm',
-          'data-[state=active]:bg-background/80 data-[state=active]:backdrop-blur-md',
-          'data-[state=active]:border data-[state=active]:border-border/50',
+          'backdrop-blur-[var(--blur-sm)]',
+          'data-[state=active]:bg-stellar-surface/80 data-[state=active]:backdrop-blur-[var(--blur-md)]',
+          'data-[state=active]:border data-[state=active]:border-cosmic-border/50',
         ],
       },
       size: {
-        sm: ['text-xs', 'min-h-[2.25rem]', 'px-2', 'py-1'],
-        default: ['text-sm', 'min-h-[2.75rem]', 'px-3', 'py-1.5'],
-        lg: ['text-base', 'min-h-[3rem]', 'px-4', 'py-2'],
+        sm: ['text-[var(--font-size-xs)]', 'min-h-[var(--space-9)]', 'px-[var(--space-2)]', 'py-[var(--space-1)]'],
+        default: ['text-[var(--font-size-sm)]', 'min-h-[var(--space-11)]', 'px-[var(--space-3)]', 'py-[var(--space-1_5)]'],
+        lg: ['text-[var(--font-size-base)]', 'min-h-[var(--space-12)]', 'px-[var(--space-4)]', 'py-[var(--space-2)]'],
       },
       density: {
         comfortable: [],
-        compact: ['min-h-[2.25rem]', 'px-2', 'py-1'],
+        compact: ['min-h-[var(--space-9)]', 'px-[var(--space-2)]', 'py-[var(--space-1)]'],
       },
       feedback: {
         none: [],
         success: [
-          'data-[state=active]:bg-success data-[state=active]:text-success-foreground',
-          'data-[state=active]:shadow-success/20',
+          'data-[state=active]:bg-cosmic-success data-[state=active]:text-cosmic-success-foreground',
+          'data-[state=active]:shadow-cosmic-success/20',
         ],
         warning: [
-          'data-[state=active]:bg-warning data-[state=active]:text-warning-foreground',
-          'data-[state=active]:shadow-warning/20',
+          'data-[state=active]:bg-cosmic-warning data-[state=active]:text-cosmic-warning-foreground',
+          'data-[state=active]:shadow-cosmic-warning/20',
         ],
         destructive: [
-          'data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground',
-          'data-[state=active]:shadow-destructive/20',
+          'data-[state=active]:bg-cosmic-destructive data-[state=active]:text-cosmic-destructive-foreground',
+          'data-[state=active]:shadow-cosmic-destructive/20',
         ],
       },
     },
@@ -228,18 +228,18 @@ const enhancedTabsTriggerVariants = cva(
 const enhancedTabsContentVariants = cva(
   [
     // Foundation: Layout & typography
-    'ring-offset-background',
+    'ring-offset-stellar-surface',
 
     // Foundation: Focus management
     'focus-visible:outline-none focus-visible:ring-2',
-    'focus-visible:ring-accent focus-visible:ring-offset-2',
+    'focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
 
     // Foundation: Motion - Smooth content transitions
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
-    // MAPS v2.2: Content hierarchy with proper spacing
-    'text-foreground',
+    // MAPS4: Content hierarchy with proper spacing
+    'text-cosmic-foreground',
 
     // Enhanced: Animation states for smooth transitions
     'data-[state=active]:animate-in data-[state=active]:fade-in-0',
@@ -248,28 +248,28 @@ const enhancedTabsContentVariants = cva(
   {
     variants: {
       variant: {
-        default: ['mt-6'],
-        pills: ['mt-4'],
-        underline: ['mt-4', 'pt-4'],
-        glass: ['mt-6', 'rounded-lg', 'backdrop-blur-sm', 'bg-background/5'],
+        default: ['mt-[var(--space-6)]'],
+        pills: ['mt-[var(--space-4)]'],
+        underline: ['mt-[var(--space-4)]', 'pt-[var(--space-4)]'],
+        glass: ['mt-[var(--space-6)]', 'rounded-[var(--radius-lg)]', 'backdrop-blur-[var(--blur-sm)]', 'bg-stellar-surface/5'],
       },
       padding: {
         none: [],
-        default: ['p-4'],
-        comfortable: ['p-6'],
-        compact: ['p-3'],
+        default: ['p-[var(--space-4)]'],
+        comfortable: ['p-[var(--space-6)]'],
+        compact: ['p-[var(--space-3)]'],
       },
       surface: {
         none: [],
-        card: ['rounded-lg border border-border bg-card', 'shadow-sm'],
+        card: ['rounded-[var(--radius-lg)] border border-cosmic-border bg-stellar-surface-card', 'shadow-[var(--shadow-sm)]'],
         elevated: [
-          'rounded-lg border border-border bg-background-elevated',
-          'shadow-md',
+          'rounded-[var(--radius-lg)] border border-cosmic-border bg-stellar-surface-elevated',
+          'shadow-[var(--shadow-md)]',
         ],
         glass: [
-          'rounded-lg border border-border/30',
-          'bg-background/60 backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
+          'rounded-[var(--radius-lg)] border border-cosmic-border/30',
+          'bg-stellar-surface/60 backdrop-blur-[var(--blur-md)] backdrop-saturate-[var(--saturate-135)]',
+          'shadow-[var(--shadow-elevation-md)]',
         ],
       },
     },

@@ -1,18 +1,18 @@
 /**
- * Enhanced Dialog Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Dialog Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system with overlay protection
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Radix Dialog → Behavior, accessibility, focus management
  * - Enhanced Tokens → Visual styling, systematic spacing
- * - MAPS Materials → Liquid glass overlay with AAA text protection
+ * - MAPS4 Materials → Liquid glass overlay with AAA text protection
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → vibrancy (none|glass|floating)
@@ -65,7 +65,7 @@ const dialogOverlayVariants = cva(
         standard: '',
         aaa: [
           // AAA mode: Ensure sufficient contrast for overlay
-          'bg-black/75', // Higher opacity for better separation
+          'bg-cosmic-dark/75', // Higher opacity for better separation
           // Windows High Contrast support
           'forced-colors:bg-[Canvas]',
         ],
@@ -144,7 +144,7 @@ const dialogContentVariants = cva(
         standard: '',
         aaa: [
           // AAA mode: Force solid background for maximum contrast
-          'border-border bg-background',
+          'border-cosmic-border bg-stellar-surface',
           // Remove vibrancy effects that might reduce readability
           'backdrop-blur-none',
           // Windows High Contrast support
@@ -165,7 +165,7 @@ const dialogContentVariants = cva(
  * Dialog header variants - Apple semantic hierarchy
  */
 const dialogHeaderVariants = cva(
-  ['flex flex-col space-y-1.5 text-center sm:text-left'],
+  ['flex flex-col space-y-[var(--space-1_5)] text-center sm:text-left'],
   {
     variants: {
       alignment: {
@@ -217,13 +217,13 @@ const dialogFooterVariants = cva([
  * Dialog close button variants - Apple HIG close pattern
  */
 const dialogCloseVariants = cva([
-  'absolute right-4 top-4',
-  'rounded-sm opacity-70',
-  'ring-offset-background transition-opacity',
+  'absolute right-[var(--space-4)] top-[var(--space-4)]',
+  'rounded-[var(--radius-sm)] opacity-[var(--opacity-70)]',
+  'ring-offset-stellar-surface transition-opacity',
   'pointer:hover:opacity-100', // Pointer-only hover
-  'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'focus:outline-none focus:ring-2 focus:ring-aurora-accent focus:ring-offset-2',
   'disabled:pointer-events-none',
-  'data-[state=open]:bg-accent data-[state=open]:text-muted-foreground',
+  'data-[state=open]:bg-aurora-accent data-[state=open]:text-cosmic-muted',
 
   // Platform-aware hit target
   ENHANCED_DESIGN_TOKENS.foundation.interaction.hitTarget.base,
@@ -338,7 +338,7 @@ const DialogContent = React.forwardRef<
         </div>
         {showClose && (
           <DialogPrimitive.Close className={cn(dialogCloseVariants())}>
-            <X className={cn('h-4 w-4', 'h-4 w-4')} />
+            <X className={cn('size-[var(--icon-sm)]')} />
             <VisuallyHidden>Close</VisuallyHidden>
           </DialogPrimitive.Close>
         )}

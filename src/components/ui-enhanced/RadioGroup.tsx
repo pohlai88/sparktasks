@@ -1,17 +1,17 @@
 /**
- * Enhanced Radio Group Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Radio Group Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Radix owns: Behavior, ARIA, focus management, state management, keyboard navigation
- * - MAPS owns: Apple HIG materials, liquid glass, AAA enforcement
+ * - MAPS4 owns: Apple HIG materials, liquid glass, AAA enforcement
  * - Wrapper owns: Token application, governance rules, brand consistency
  *
  * GOVERNANCE RULES:
@@ -38,7 +38,7 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED RADIO GROUP VARIANTS =====
 
 /**
- * Enhanced radio group container variants following MAPS v2.2 foundation
+ * Enhanced radio group container variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
  */
 const enhancedRadioGroupVariants = cva(
@@ -65,25 +65,25 @@ const enhancedRadioGroupVariants = cva(
 );
 
 /**
- * Enhanced radio item variants following MAPS v2.2 foundation
+ * Enhanced radio item variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedRadioItemVariants = cva(
   [
     // Foundation: Layout - Square aspect ratio with proper sizing
     'flex items-center justify-center',
-    'h-4 w-4',
+    'size-[var(--space-4)]',
     'shrink-0',
 
     // Foundation: Shape - Apple HIG circular for radio inputs
     'rounded-full',
 
     // Foundation: Border system - Clean, systematic
-    'border-2 border-border',
+    'border-2 border-cosmic-border',
 
     // Foundation: States - Systematic visual feedback
     'disabled:cursor-not-allowed disabled:opacity-50',
-    'data-[state=checked]:border-accent',
+    'data-[state=checked]:border-aurora-accent',
 
     // Foundation: Apple HIG interaction patterns
     'transition-all duration-200 ease-out',
@@ -91,16 +91,16 @@ const enhancedRadioItemVariants = cva(
 
     // Foundation: Focus - AAA compliant ring system
     'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    'focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
+    'focus-visible:ring-offset-stellar-surface',
 
     // Foundation: Touch targets - 44px minimum (expanded hit area)
     'relative',
     'before:absolute before:inset-[-12px] before:content-[""]',
-    'pointer:hover:before:rounded-full pointer:hover:before:bg-accent/10',
+    'pointer:hover:before:rounded-full pointer:hover:before:bg-aurora-accent/10',
 
     // Foundation: Platform awareness - Pointer-only hover states
-    'pointer:hover:border-accent/70',
+    'pointer:hover:border-aurora-accent/70',
     'active:scale-95',
   ],
   {
@@ -108,53 +108,53 @@ const enhancedRadioItemVariants = cva(
       variant: {
         // Default: Clean accent styling with systematic feedback
         default: [
-          'bg-background',
-          'data-[state=checked]:bg-accent/10 data-[state=checked]:text-accent-foreground',
-          'pointer:hover:bg-accent/5',
+          'bg-stellar-surface',
+          'data-[state=checked]:bg-aurora-accent/10 data-[state=checked]:text-cosmic-light',
+          'pointer:hover:bg-aurora-accent/5',
         ],
 
         // Ghost: Subtle, muted styling
         ghost: [
-          'border-muted-foreground/30 bg-transparent',
-          'data-[state=checked]:border-muted-foreground',
-          'data-[state=checked]:bg-muted/20',
-          'pointer:hover:border-muted-foreground/50 pointer:hover:bg-muted/10',
+          'border-cosmic-muted/30 bg-transparent',
+          'data-[state=checked]:border-cosmic-muted',
+          'data-[state=checked]:bg-aurora-accent/20',
+          'pointer:hover:border-cosmic-muted/50 pointer:hover:bg-aurora-accent/10',
         ],
 
         // Glass: Liquid glass material with governed vibrancy
         glass: [
-          'backdrop-blur-sm backdrop-saturate-150',
-          'border-border/60 bg-background-elevated/60',
-          'data-[state=checked]:border-accent/80 data-[state=checked]:bg-accent/20',
-          'pointer:hover:border-border/80 pointer:hover:bg-background-elevated/80',
+          'backdrop-blur-[var(--blur-sm)] backdrop-saturate-[var(--saturate-150)]',
+          'border-cosmic-border/60 bg-stellar-surface-elevated/60',
+          'data-[state=checked]:border-aurora-accent/80 data-[state=checked]:bg-aurora-accent/20',
+          'pointer:hover:border-cosmic-border/80 pointer:hover:bg-stellar-surface-elevated/80',
           // AAA compliance: Text scrim for content protection
-          '[&_+_label]:rounded-sm [&_+_label]:bg-background/85 [&_+_label]:px-1',
+          '[&_+_label]:rounded-sm [&_+_label]:bg-stellar-surface/85 [&_+_label]:px-[var(--space-1)]',
         ],
 
         // Elevated: Sophisticated surface with subtle elevation
         elevated: [
-          'border-border bg-background-elevated',
+          'border-cosmic-border bg-stellar-surface-elevated',
           'shadow-elevation-sm',
-          'data-[state=checked]:border-accent data-[state=checked]:bg-accent/15',
-          'data-[state=checked]:shadow-[0_0_12px_rgba(var(--accent-primary-rgb),0.25)]',
-          'pointer:hover:bg-background-elevated pointer:hover:shadow-elevation-md',
+          'data-[state=checked]:border-aurora-accent data-[state=checked]:bg-aurora-accent/15',
+          'data-[state=checked]:shadow-[0_0_12px_rgba(var(--aurora-accent-rgb),0.25)]',
+          'pointer:hover:bg-stellar-surface-elevated pointer:hover:shadow-elevation-md',
         ],
 
         // AAA: High contrast mode for compliance
         aaa: [
-          'border-border bg-background',
-          'data-[state=checked]:border-accent-solid-aaa data-[state=checked]:bg-accent-solid-aaa',
-          'data-[state=checked]:text-background',
-          'pointer:hover:bg-muted/20',
+          'border-cosmic-border bg-stellar-surface',
+          'data-[state=checked]:border-aurora-accent-solid-aaa data-[state=checked]:bg-aurora-accent-solid-aaa',
+          'data-[state=checked]:text-stellar-surface',
+          'pointer:hover:bg-aurora-accent/20',
           'forced-colors:bg-Field forced-colors:border-FieldText',
           'forced-colors:data-[state=checked]:bg-Highlight forced-colors:data-[state=checked]:border-Highlight',
         ],
       },
       size: {
-        sm: 'h-3 w-3',
-        md: 'h-4 w-4', // Default
-        lg: 'h-5 w-5',
-        xl: 'h-6 w-6',
+        sm: 'size-[var(--space-3)]',
+        md: 'size-[var(--space-4)]', // Default
+        lg: 'size-[var(--space-5)]',
+        xl: 'size-[var(--space-6)]',
       },
       density: {
         comfortable: 'before:inset-[-12px]',
@@ -207,32 +207,32 @@ const enhancedRadioIndicatorVariants = cva(
 const enhancedRadioLabelVariants = cva(
   [
     // Foundation: Typography - Apple body text
-    'text-sm font-medium leading-none',
-    'text-foreground',
+    'text-[var(--font-size-sm)] font-[var(--font-weight-medium)] leading-none',
+    'text-cosmic-light',
 
     // Foundation: Interaction states
     'peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
 
     // Foundation: Smooth transitions
-    'transition-colors duration-200 ease-out',
+    'transition-colors duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: Platform-aware interactions
-    'cursor-pointer pointer:hover:text-accent',
+    'cursor-pointer pointer:hover:text-aurora-accent',
     'select-none',
   ],
   {
     variants: {
       position: {
-        right: 'ml-2',
-        left: 'order-first mr-2',
-        top: 'mb-1 block',
-        bottom: 'order-last mt-1 block',
+        right: 'ml-[var(--space-2)]',
+        left: 'order-first mr-[var(--space-2)]',
+        top: 'mb-[var(--space-1)] block',
+        bottom: 'order-last mt-[var(--space-1)] block',
       },
       emphasis: {
-        subtle: 'text-muted-foreground',
-        normal: 'text-foreground',
-        strong: 'font-semibold text-foreground',
+        subtle: 'text-cosmic-muted',
+        normal: 'text-cosmic-light',
+        strong: 'font-[var(--font-weight-semibold)] text-cosmic-light',
       },
     },
     defaultVariants: {
@@ -297,8 +297,8 @@ const EnhancedRadioGroup = React.forwardRef<
         {description && (
           <p
             className={cn(
-              'mb-2 text-sm text-muted-foreground',
-              enforceAAA && 'text-foreground'
+              'mb-[var(--space-2)] text-[var(--font-size-sm)] text-cosmic-muted',
+              enforceAAA && 'text-cosmic-light'
             )}
             id={`${props.name || 'radio-group'}-description`}
           >
@@ -395,24 +395,21 @@ const EnhancedRadioGroupItem = React.forwardRef<
           {indicatorStyle === 'dot' && (
             <Circle
               className={cn(
-                'h-2.5 w-2.5 fill-current text-current',
-                'size-2.5 fill-current'
+                'size-[var(--space-2_5)] fill-current text-current'
               )}
             />
           )}
           {indicatorStyle === 'icon' && (
             <Circle
               className={cn(
-                'h-3 w-3 fill-current text-current',
-                'size-3 fill-current'
+                'size-[var(--space-3)] fill-current text-current'
               )}
             />
           )}
           {indicatorStyle === 'filled' && (
             <div
               className={cn(
-                'h-2 w-2 rounded-full bg-current',
-                'size-2 rounded-full bg-current'
+                'size-[var(--space-2)] rounded-full bg-current'
               )}
             />
           )}
@@ -435,15 +432,15 @@ const EnhancedRadioGroupItem = React.forwardRef<
     );
 
     const descriptionElement = description && (
-      <p
-        id={`${itemId}-description`}
-        className={cn(
-          'mt-1 text-xs text-muted-foreground',
-          enforceAAA && 'text-foreground/80',
-          (labelPosition === 'top' || labelPosition === 'bottom') && 'ml-0',
-          (labelPosition === 'left' || labelPosition === 'right') && 'ml-6'
-        )}
-      >
+              <p
+          id={`${itemId}-description`}
+          className={cn(
+            'mt-[var(--space-1)] text-[var(--font-size-xs)] text-cosmic-muted',
+            enforceAAA && 'text-cosmic-light/80',
+            (labelPosition === 'top' || labelPosition === 'right') && 'ml-0',
+            (labelPosition === 'left' || labelPosition === 'bottom') && 'ml-[var(--space-6)]'
+          )}
+        >
         {description}
       </p>
     );
@@ -453,7 +450,7 @@ const EnhancedRadioGroupItem = React.forwardRef<
       return (
         <div className={cn('space-y-1', 'flex flex-col gap-1')}>
           {labelElement}
-          <div className={cn('flex items-center', 'flex items-center')}>
+          <div className={cn('flex items-center')}>
             {radioButton}
             {children}
           </div>
@@ -465,7 +462,7 @@ const EnhancedRadioGroupItem = React.forwardRef<
     if (labelPosition === 'bottom') {
       return (
         <div className={cn('space-y-1', 'flex flex-col gap-1')}>
-          <div className={cn('flex items-center', 'flex items-center')}>
+          <div className={cn('flex items-center')}>
             {radioButton}
             {children}
           </div>
@@ -531,21 +528,21 @@ const EnhancedRadioGroupCard = React.forwardRef<
 
     const cardStyles = {
       default: cn(
-        'border-2 border-border bg-background',
-        'data-[state=checked]:border-accent data-[state=checked]:bg-accent/5',
-        'pointer:hover:bg-accent/2 pointer:hover:border-accent/50',
-        enforceAAA && 'data-[state=checked]:bg-accent-solid-aaa/10'
+        'border-2 border-cosmic-border bg-stellar-surface',
+        'data-[state=checked]:border-aurora-accent data-[state=checked]:bg-aurora-accent/5',
+        'pointer:hover:bg-aurora-accent/2 pointer:hover:border-aurora-accent/50',
+        enforceAAA && 'data-[state=checked]:bg-aurora-accent-solid-aaa/10'
       ),
       glass: cn(
-        'border-2 border-border/60 bg-background-elevated/60 backdrop-blur-sm backdrop-saturate-150',
-        'data-[state=checked]:border-accent/80 data-[state=checked]:bg-accent/15',
-        'pointer:hover:border-border/80 pointer:hover:bg-background-elevated/80'
+        'border-2 border-cosmic-border/60 bg-stellar-surface-elevated/60 backdrop-blur-[var(--blur-sm)] backdrop-saturate-[var(--saturate-150)]',
+        'data-[state=checked]:border-aurora-accent/80 data-[state=checked]:bg-aurora-accent/15',
+        'pointer:hover:border-cosmic-border/80 pointer:hover:bg-stellar-surface-elevated/80'
       ),
       elevated: cn(
-        'border-2 border-border bg-background-elevated shadow-elevation-sm',
-        'data-[state=checked]:border-accent data-[state=checked]:bg-accent/10',
-        'data-[state=checked]:shadow-[0_0_12px_rgba(var(--accent-primary-rgb),0.2)]',
-        'pointer:hover:bg-background-elevated pointer:hover:shadow-elevation-md'
+        'border-2 border-cosmic-border bg-stellar-surface-elevated shadow-elevation-sm',
+        'data-[state=checked]:border-aurora-accent data-[state=checked]:bg-aurora-accent/10',
+        'data-[state=checked]:shadow-[0_0_12px_rgba(var(--aurora-accent-rgb),0.2)]',
+        'pointer:hover:bg-stellar-surface-elevated pointer:hover:shadow-elevation-md'
       ),
     };
 
@@ -556,13 +553,13 @@ const EnhancedRadioGroupCard = React.forwardRef<
           id={itemId}
           className={cn(
             // Foundation: Layout and spacing
-            'w-full rounded-lg p-4 transition-all duration-200 ease-out',
+            'w-full rounded-[var(--radius-lg)] p-[var(--space-4)] transition-all duration-[var(--motion-duration-2)] ease-out',
             'motion-reduce:transition-none',
             'cursor-pointer',
 
             // Foundation: Focus management
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-            'focus-visible:ring-offset-background',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
+            'focus-visible:ring-offset-stellar-surface',
 
             // Foundation: Disabled states
             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -576,26 +573,25 @@ const EnhancedRadioGroupCard = React.forwardRef<
         >
           <div
             className={cn(
-              'flex items-start space-x-3',
-              'flex items-start space-x-3'
+              'flex items-start space-x-[var(--space-3)]'
             )}
           >
             {/* Radio indicator */}
             <div className='mt-0.5 flex items-center justify-center'>
               <div
                 className={cn(
-                  'h-4 w-4 rounded-full border-2 border-border transition-all duration-200',
+                  'size-[var(--space-4)] rounded-full border-2 border-cosmic-border transition-all duration-[var(--motion-duration-2)]',
                   'flex items-center justify-center',
-                  'group-data-[state=checked]:border-accent',
+                  'group-data-[state=checked]:border-aurora-accent',
                   enforceAAA &&
-                    'group-data-[state=checked]:border-accent-solid-aaa'
+                    'group-data-[state=checked]:border-aurora-accent-solid-aaa'
                 )}
               >
                 <RadioGroupPrimitive.Indicator className='flex items-center justify-center'>
                   <div
                     className={cn(
-                      'h-2 w-2 rounded-full transition-all duration-200',
-                      enforceAAA ? 'bg-accent-solid-aaa' : 'bg-accent'
+                      'size-[var(--space-2)] rounded-full transition-all duration-[var(--motion-duration-2)]',
+                      enforceAAA ? 'bg-aurora-accent-solid-aaa' : 'bg-aurora-accent'
                     )}
                   />
                 </RadioGroupPrimitive.Indicator>
@@ -606,10 +602,10 @@ const EnhancedRadioGroupCard = React.forwardRef<
             {icon && (
               <div
                 className={cn(
-                  'mt-0.5 flex-shrink-0',
-                  'text-muted-foreground group-data-[state=checked]:text-accent',
+                  'mt-[var(--space-0_5)] flex-shrink-0',
+                  'text-cosmic-muted group-data-[state=checked]:text-aurora-accent',
                   enforceAAA &&
-                    'group-data-[state=checked]:text-accent-solid-aaa'
+                    'group-data-[state=checked]:text-aurora-accent-solid-aaa'
                 )}
               >
                 {icon}
@@ -617,13 +613,13 @@ const EnhancedRadioGroupCard = React.forwardRef<
             )}
 
             {/* Content */}
-            <div className={cn('min-w-0 flex-1', 'min-w-0 flex-1')}>
+            <div className={cn('min-w-0 flex-1')}>
               <div
                 className={cn(
-                  'text-sm font-medium leading-5 text-foreground',
-                  'group-data-[state=checked]:text-accent',
+                  'text-[var(--font-size-sm)] font-[var(--font-weight-medium)] leading-5 text-cosmic-light',
+                  'group-data-[state=checked]:text-aurora-accent',
                   enforceAAA &&
-                    'group-data-[state=checked]:text-accent-solid-aaa'
+                    'group-data-[state=checked]:text-aurora-accent-solid-aaa'
                 )}
               >
                 {title}
@@ -632,8 +628,8 @@ const EnhancedRadioGroupCard = React.forwardRef<
                 <p
                   id={`${itemId}-description`}
                   className={cn(
-                    'mt-1 text-xs leading-4 text-muted-foreground',
-                    enforceAAA && 'text-foreground/80'
+                    'mt-[var(--space-1)] text-[var(--font-size-xs)] leading-4 text-cosmic-muted',
+                    enforceAAA && 'text-cosmic-light/80'
                   )}
                 >
                   {description}

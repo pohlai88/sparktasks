@@ -1,17 +1,17 @@
 /**
- * Enhanced Popover Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Popover Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Focus management and keyboard navigation
  * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE DECISION:
  * - Radix owns: Behavior, ARIA, focus management, positioning
- * - MAPS owns: Apple HIG materials, liquid glass, AAA enforcement
+ * - MAPS4 owns: Apple HIG materials, liquid glass, AAA enforcement
  * - Wrapper owns: Token application, governance rules, brand consistency
  *
  * GOVERNANCE RULES:
@@ -44,21 +44,21 @@ const enhancedPopoverVariants = cva(
   [
     // Foundation: Layout - Clean positioning and size constraints
     'z-50',
-    'min-w-[8rem]',
-    'max-w-sm',
+    'min-w-[var(--space-32)]',
+    'max-w-[var(--space-96)]',
     'overflow-hidden',
-    'rounded-md',
+    'rounded-[var(--radius-md)]',
 
     // Foundation: Typography - Apple HIG hierarchy
-    'text-sm',
+    'text-[var(--font-size-sm)]',
 
     // Foundation: Materials - Deep space canvas with elevation
-    'border border-border',
-    'bg-popover',
-    'text-popover-foreground',
+    'border border-cosmic-border',
+    'bg-stellar-surface',
+    'text-cosmic-foreground',
 
     // Foundation: Elevation - Sophisticated depth
-    'shadow-lg',
+    'shadow-[var(--shadow-lg)]',
 
     // Foundation: Motion - Respect user preferences
     'data-[state=open]:animate-in',
@@ -74,44 +74,44 @@ const enhancedPopoverVariants = cva(
     'motion-reduce:animate-none',
 
     // Foundation: Enhanced padding for content
-    'p-4',
+    'p-[var(--space-4)]',
 
     // Foundation: Focus management - AAA compliance
     'focus:outline-none',
     'focus-visible:ring-2',
-    'focus-visible:ring-accent',
+    'focus-visible:ring-aurora-accent',
     'focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    'focus-visible:ring-offset-stellar-surface',
   ],
   {
     variants: {
       variant: {
         default: [
           // Default: Clean elevated surface
-          'bg-background',
-          'border-border',
+          'bg-stellar-surface',
+          'border-cosmic-border',
         ],
         glass: [
           // Glass: Liquid glass material with vibrancy
-          'backdrop-blur-md',
-          'backdrop-saturate-150',
-          'bg-background/80',
-          'border-border/50',
+          'backdrop-blur-[var(--blur-md)]',
+          'backdrop-saturate-[var(--saturate-150)]',
+          'bg-stellar-surface/80',
+          'border-cosmic-border/50',
           // AAA scrim protection for text content
-          'supports-[backdrop-filter]:bg-background/60',
+          'supports-[backdrop-filter]:bg-stellar-surface/60',
         ],
         elevated: [
           // Elevated: Higher contrast for important content
-          'bg-card',
-          'border-border',
-          'shadow-xl',
+          'bg-stellar-surface-elevated',
+          'border-cosmic-border',
+          'shadow-[var(--shadow-xl)]',
         ],
       },
       size: {
-        sm: ['min-w-[6rem]', 'max-w-xs', 'p-3', 'text-xs'],
-        default: ['min-w-[8rem]', 'max-w-sm', 'p-4', 'text-sm'],
-        lg: ['min-w-[12rem]', 'max-w-md', 'p-6', 'text-base'],
-        xl: ['min-w-[16rem]', 'max-w-lg', 'p-6', 'text-base'],
+        sm: ['min-w-[var(--space-24)]', 'max-w-[var(--space-80)]', 'p-[var(--space-3)]', 'text-[var(--font-size-xs)]'],
+        default: ['min-w-[var(--space-32)]', 'max-w-[var(--space-96)]', 'p-[var(--space-4)]', 'text-[var(--font-size-sm)]'],
+        lg: ['min-w-[var(--space-48)]', 'max-w-[var(--space-112)]', 'p-[var(--space-6)]', 'text-[var(--font-size-base)]'],
+        xl: ['min-w-[var(--space-64)]', 'max-w-[var(--space-128)]', 'p-[var(--space-6)]', 'text-[var(--font-size-base)]'],
       },
     },
     defaultVariants: {
@@ -130,50 +130,50 @@ const enhancedPopoverTriggerVariants = cva(
     'inline-flex',
     'items-center',
     'justify-center',
-    'rounded-md',
+    'rounded-[var(--radius-md)]',
     'transition-colors',
-    'duration-200',
+    'duration-[var(--motion-duration-2)]',
     'ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: Focus management
     'focus:outline-none',
     'focus-visible:ring-2',
-    'focus-visible:ring-accent',
+    'focus-visible:ring-aurora-accent',
     'focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    'focus-visible:ring-offset-stellar-surface',
 
     // Foundation: Interactive states
     'disabled:pointer-events-none',
-    'disabled:opacity-50',
+    'disabled:opacity-[var(--opacity-50)]',
   ],
   {
     variants: {
       variant: {
         default: [
           'bg-transparent',
-          'text-foreground',
-          'hover:bg-accent/10',
-          'hover:text-accent-foreground',
+          'text-cosmic-foreground',
+          'hover:bg-aurora-accent/10',
+          'hover:text-aurora-accent-foreground',
         ],
         outline: [
           'border',
-          'border-input',
-          'bg-background',
-          'hover:bg-accent/10',
-          'hover:text-accent-foreground',
+          'border-cosmic-input',
+          'bg-stellar-surface',
+          'hover:bg-aurora-accent/10',
+          'hover:text-aurora-accent-foreground',
         ],
         ghost: [
           'bg-transparent',
-          'text-foreground',
-          'hover:bg-accent/10',
-          'hover:text-accent-foreground',
+          'text-cosmic-foreground',
+          'hover:bg-aurora-accent/10',
+          'hover:text-aurora-accent-foreground',
         ],
       },
       size: {
-        sm: 'h-8 px-2 text-xs',
-        default: 'h-9 px-3 text-sm',
-        lg: 'h-10 px-4 text-base',
+        sm: 'h-[var(--space-8)] px-[var(--space-2)] text-[var(--font-size-xs)]',
+        default: 'h-[var(--space-9)] px-[var(--space-3)] text-[var(--font-size-sm)]',
+        lg: 'h-[var(--space-10)] px-[var(--space-4)] text-[var(--font-size-base)]',
       },
     },
     defaultVariants: {
@@ -376,7 +376,7 @@ const PopoverArrow = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <PopoverPrimitive.Arrow
     ref={ref}
-    className={cn('fill-popover', 'stroke-border', 'stroke-1', className)}
+    className={cn('fill-stellar-surface', 'stroke-cosmic-border', 'stroke-[var(--stroke-1)]', className)}
     {...props}
   />
 ));
@@ -393,21 +393,20 @@ const PopoverClose = React.forwardRef<
     ref={ref}
     className={cn(
       'absolute',
-      'right-2',
-      'top-2',
+      'right-[var(--space-2)]',
+      'top-[var(--space-2)]',
       'inline-flex',
-      'h-6',
-      'w-6',
+      'size-[var(--space-6)]',
       'items-center',
       'justify-center',
-      'rounded-sm',
-      'opacity-70',
-      'ring-offset-background',
+      'rounded-[var(--radius-sm)]',
+      'opacity-[var(--opacity-70)]',
+      'ring-offset-stellar-surface',
       'transition-opacity',
       'hover:opacity-100',
       'focus:outline-none',
       'focus:ring-2',
-      'focus:ring-accent',
+      'focus:ring-aurora-accent',
       'focus:ring-offset-2',
       'disabled:pointer-events-none',
       className
@@ -449,16 +448,14 @@ const PopoverWithTrigger = React.forwardRef<
     ref
   ) => (
     <Popover
-      {...(open !== undefined ? { open } : {})}
-      {...(onOpenChange !== undefined ? { onOpenChange } : {})}
-      {...(defaultOpen !== undefined ? { defaultOpen } : {})}
+      {...(open !== undefined && { open })}
+      {...(onOpenChange !== undefined && { onOpenChange })}
+      {...(defaultOpen !== undefined && { defaultOpen })}
     >
       <PopoverTrigger
         variant={triggerVariant}
         size={triggerSize}
-        {...(triggerClassName !== undefined
-          ? { className: triggerClassName }
-          : {})}
+        {...(triggerClassName !== undefined && { className: triggerClassName })}
       >
         {trigger}
       </PopoverTrigger>
@@ -466,11 +463,9 @@ const PopoverWithTrigger = React.forwardRef<
         ref={ref}
         variant={variant}
         size={size}
-        {...(className !== undefined ? { className } : {})}
-        {...(closeOnEscape ? {} : { onEscapeKeyDown: e => e.preventDefault() })}
-        {...(closeOnOutsideClick
-          ? {}
-          : { onPointerDownOutside: e => e.preventDefault() })}
+        {...(className !== undefined && { className })}
+        {...(closeOnEscape || { onEscapeKeyDown: e => e.preventDefault() })}
+        {...(closeOnOutsideClick || { onPointerDownOutside: e => e.preventDefault() })}
         {...contentProps}
       >
         {children}

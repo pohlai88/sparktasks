@@ -7,7 +7,6 @@
  * - Focuses on what users experience, not internal code structure
  */
 
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { RailwayMap } from '@/components/railway/RailwayMap';

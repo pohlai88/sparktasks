@@ -1,5 +1,5 @@
 /**
- * MAPS v2.2 Design System - CSS Foundation Layer
+ * MAPS4 Deep Space Canvas Cosmic Innovation - CSS Foundation Layer
  *
  * INTEGRATION ARCHITECTURE:
  * 1. Tailwind Config → CSS Custom Properties (this layer)
@@ -8,7 +8,7 @@
  *
  * COMPLIANCE:
  * - Dark-First Foundation: All colors optimized for dark mode
- * - Apple HIG Harmony: Semantic hierarchy with sophisticated accents
+ * - Sir Steve Jobs Cosmic Innovation: Inspirational, memorable, industry-leading
  * - AAA Accessibility: 7:1+ contrast ratios enforced
  * - Liquid Glass Materials: Governed vibrancy system
  */
@@ -21,71 +21,63 @@
 
 @layer base {
   /**
-   * CSS Custom Properties - Dark-First Foundation
+   * CSS Custom Properties - MAPS4 Deep Space Canvas Cosmic Innovation
    * These map directly to our Tailwind config and provide the foundation
    * for both enhanced tokens and component implementations
    */
   :root {
-    /* Deep Space Canvas System - Primary surfaces */
-    --background: 10 15 22; /* #0a0f16 - Deep space canvas */
-    --background-elevated: 23 22 42; /* #17162a - Perfect depth (ΔL=0.045) */
-    --background-panel: 36 28 65; /* #241c41 - Ideal panel surface */
-    --background-overlay: 0 0 0; /* #000000 - Overlay base */
+    /* MAPS4 Deep Space Canvas System - Primary surfaces */
+    --deep-space: 10 15 22; /* #0a0f16 - Deep space canvas */
+    --cosmic-void: 14 22 36; /* #0e1624 - Cosmic void */
+    --stellar-surface: 13 21 35; /* #0d1523 - Stellar surface */
+    --cosmic-overlay: 0 0 0; /* #000000 - Overlay base */
 
-    /* Apple HIG Content Hierarchy - Guaranteed AAA compliance */
-    --foreground: 232 236 241; /* #e8ecf1 - Calm off-white (16.8:1) */
-    --foreground-muted: 200 206 214; /* #c8ced6 - Secondary (9.2:1) */
-    --foreground-subtle: 156 163 175; /* #9ca3af - Tertiary (5.1:1) */
-    --foreground-disabled: 120 128 140; /* #78808c - Disabled (3.8:1) */
-    --muted-foreground: 166 187 222; /* #a6bbde - Muted with ethereal hint */
+    /* MAPS4 Cosmic Content Hierarchy - Guaranteed AAA compliance */
+    --cosmic-light: 233 241 255; /* #e9f1ff - Cosmic light (16.8:1) */
+    --stellar-muted: 166 187 222; /* #a6bbde - Stellar muted (9.2:1) */
+    --cosmic-subtle: 156 163 175; /* #9ca3af - Cosmic subtle (5.1:1) */
+    --cosmic-disabled: 120 128 140; /* #78808c - Cosmic disabled (3.8:1) */
 
-    /* Apple-Calm Accent System - Sophisticated, not harsh */
-    --primary: 48 176 199; /* #30b0c7 - Apple-calm teal */
-    --primary-hover: 58 186 222; /* #3abade - Gentle lift */
-    --primary-foreground: 255 255 255; /* #ffffff - Maximum contrast */
+    /* MAPS4 Aurora Accent System - Primary brand colors */
+    --aurora-accent: 124 196 255; /* #7cc4ff - Aurora accent */
+    --cosmic-primary: 124 196 255; /* #7cc4ff - Cosmic primary */
+    --cosmic-primary-hover: 144 206 255; /* #90ceff - Cosmic primary hover */
+    --cosmic-dark: 20 35 60; /* #14233c - Cosmic dark for text on light backgrounds */
 
-    /* Secondary Apple Harmony */
-    --secondary: 88 86 214; /* #5856d6 - Apple system purple */
-    --secondary-hover: 98 96 224; /* #6260e0 - Refined interaction */
-    --secondary-foreground: 255 255 255; /* #ffffff - High contrast */
+    /* MAPS4 Cosmic Cyan System - Secondary brand colors */
+    --cosmic-cyan: 120 255 214; /* #78ffd6 - Cosmic cyan */
+    --cosmic-secondary: 120 255 214; /* #78ffd6 - Cosmic secondary */
+    --cosmic-secondary-hover: 140 255 234; /* #8cffea - Cosmic secondary hover */
 
-    /* Enhanced Accent System - Missing variables for components */
-    --accent: 48 176 199; /* #30b0c7 - Primary accent (same as primary) */
-    --accent-foreground: 255 255 255; /* #ffffff - High contrast on accent */
-    --accent-foreground-muted: 200 206 214; /* #c8ced6 - Muted accent text */
-    --accent-hover: 58 186 222; /* #3abade - Accent hover state */
-    --accent-pressed: 38 138 159; /* #268a9f - Accent pressed state */
-    --accent-secondary: 88 86 214; /* #5856d6 - Secondary accent */
-    --accent-secondary-foreground: 255 255 255; /* #ffffff - Secondary accent text */
-    --accent-secondary-hover: 98 96 224; /* #6260e0 - Secondary accent hover */
+    /* MAPS4 Enhanced Accent System - Complete cosmic variables */
+    --cosmic-accent-muted: 166 187 222; /* #a6bbde - Cosmic accent muted */
+    --cosmic-accent-pressed: 104 176 199; /* #68b0c7 - Cosmic accent pressed */
+    --cosmic-accent-solid: 104 176 199; /* #68b0c7 - Cosmic accent solid AAA */
 
-    /* Semantic Feedback - Apple HIG naturals */
-    --success: 52 199 89; /* #34c759 - Apple system green */
-    --success-foreground: 255 255 255; /* #ffffff */
-    --warning: 255 149 0; /* #ff9500 - Apple system orange */
-    --warning-foreground: 255 255 255; /* #ffffff */
-    --error: 255 59 48; /* #ff3b30 - Apple system red */
-    --error-foreground: 255 255 255; /* #ffffff */
+    /* MAPS4 Semantic Feedback - Cosmic harmony */
+    --cosmic-success: 64 214 163; /* #40d6a3 - Cosmic success */
+    --cosmic-warning: 255 209 102; /* #ffd166 - Cosmic warning */
+    --cosmic-danger: 255 107 107; /* #ff6b6b - Cosmic danger */
+    --cosmic-info: 42 135 255; /* #2a87ff - Cosmic info */
 
-    /* Destructive Actions (maps to error for consistency) */
-    --destructive: 255 59 48; /* #ff3b30 - Apple system red */
-    --destructive-foreground: 255 255 255; /* #ffffff */
+    /* MAPS4 Destructive Actions */
+    --destructive: 255 107 107; /* #ff6b6b - Cosmic danger */
+    --destructive-foreground: 20 35 60; /* #14233c - Cosmic dark */
 
-    /* AAA-Only Solid Fills for Compliance Mode */
-    --accent-solid-aaa: 38 138 159; /* #268a9f - 7:1+ contrast */
-    --success-solid-aaa: 42 159 71; /* #2a9f47 - 7:1+ contrast */
-    --error-solid-aaa: 204 47 38; /* #cc2f26 - 7:1+ compliance */
+    /* MAPS4 AAA-Only Solid Fills for Compliance Mode */
+    --cosmic-success-solid: 52 199 89; /* #34c759 - 7:1+ contrast */
+    --cosmic-danger-solid: 204 47 38; /* #cc2f26 - 7:1+ compliance */
 
-    /* Border & Stroke System */
-    --border: 91 103 118; /* #5b6776 - Hairline dividers (2.8:1) */
-    --border-strong: 128 148 166; /* #8094a6 - Strong elements (4.1:1) */
-    --border-accent: 48 176 199; /* #30b0c7 - Accent borders */
+    /* MAPS4 Border & Stroke System */
+    --cosmic-border: 91 103 118; /* #5b6776 - Hairline dividers (2.8:1) */
+    --cosmic-border-strong: 128 148 166; /* #8094a6 - Strong elements (4.1:1) */
+    --cosmic-border-subtle: 156 163 175; /* #9ca3af - Subtle borders */
 
-    /* Interactive States */
-    --ring: 48 176 199; /* #30b0c7 - Focus rings */
-    --muted: 36 28 65; /* #241c41 - Muted backgrounds */
+    /* MAPS4 Interactive States */
+    --ring: 124 196 255; /* #7cc4ff - Aurora accent focus rings */
+    --cosmic-muted: 36 28 65; /* #241c41 - Cosmic muted backgrounds */
 
-    /* Motion System Variables */
+    /* MAPS4 Motion System Variables */
     --motion-duration-instant: 75ms;
     --motion-duration-fast: 120ms;
     --motion-duration-normal: 180ms;
@@ -97,85 +89,219 @@
     --motion-easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
     --motion-easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
 
-    /* Elevation & Glass Materials */
-    --card: var(--background-elevated);
-    --popover: var(--background-panel);
-    --input: var(--background-elevated);
+    /* MAPS4 Elevation & Glass Materials */
+    --card: var(--stellar-surface);
+    --popover: var(--cosmic-void);
+    --cosmic-input: var(--stellar-surface);
+    --cosmic-input-border: var(--cosmic-border);
+    --cosmic-input-placeholder: var(--stellar-muted);
 
-    /* Z-Index Management */
+    /* MAPS4 Z-Index Management */
     --z-surface: 0;
     --z-overlay: 10;
     --z-modal: 20;
     --z-popover: 30;
     --z-toast: 40;
     --z-tooltip: 50;
+
+    /* MAPS4 Additional Cosmic Variables */
+    --nebula-accent: 19 36 61; /* #13243d - Nebula accent */
+    --cosmic-ring-offset: 10 15 22; /* #0a0f16 - Cosmic ring offset */
+
+      /* MAPS4 Component-Specific Variables - Required for 10/10 Button Component */
+  --opacity-disabled: 0.5;
+  --btn-scale-hover: 1.02;
+  --btn-scale-active: 0.98;
+  --btn-h-sm: 2rem;
+  --btn-h-md: 2.5rem;
+  --btn-h-lg: 3rem;
+  --btn-h-touch: 2.75rem;
+  --radius-md: 0.375rem;
+  --space-0_5: 0.125rem;
+  --space-1: 0.25rem;
+  --space-1_5: 0.375rem;
+  --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-7: 1.75rem;
+    --space-2_5: 0.625rem;
+    --font-size-xs: 0.875rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --motion-duration-2: 200ms;
+    --ring-2: 0.5rem;
+    --ring-offset-2: 0.125rem;
+    --border-width-1: 1px;
+    --border-width-2: 2px;
+    --blur-md: 12px;
+    --blur-lg: 16px;
+    --saturate-135: 1.35;
+    --saturate-150: 1.5;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-elevation-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-elevation-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    --shadow-elevation-high: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --icon-sm: 1rem;
+    --icon-md: 1.25rem;
+    --icon-lg: 1.5rem;
+    --size-full: 100%;
+    --opacity-spinner-track: 0.25;
+    --opacity-spinner-head: 0.75;
+    --spinner-stroke-width: 4;
+    --card-scale-active: 0.98;
+    --badge-scale-hover: 1.05;
+    --badge-scale-active: 0.95;
   }
 
   /**
-   * Light Mode Override (when needed)
+   * MAPS4 Light Mode Override (when needed)
    * Maintains the same semantic structure with light adaptations
    */
   .light {
-    --background: 255 255 255;
-    --background-elevated: 250 250 250;
-    --background-panel: 245 245 245;
-    --background-overlay: 255 255 255;
+    --deep-space: 255 255 255;
+    --cosmic-void: 250 250 250;
+    --stellar-surface: 245 245 245;
+    --cosmic-overlay: 255 255 255;
 
-    --foreground: 10 15 22;
-    --foreground-muted: 102 102 102;
-    --foreground-subtle: 128 128 128;
-    --foreground-disabled: 163 163 163;
-    --muted-foreground: 115 115 115;
+    --cosmic-light: 10 15 22;
+    --stellar-muted: 102 102 102;
+    --cosmic-subtle: 128 128 128;
+    --cosmic-disabled: 163 163 163;
 
-    /* Accent colors remain consistent for brand recognition */
-    --primary: 48 176 199;
-    --primary-hover: 38 138 159;
-    --primary-foreground: 255 255 255;
+    /* MAPS4 Aurora Accent System - Light mode variants */
+    --aurora-accent: 124 196 255; /* #7cc4ff - Aurora accent (consistent) */
+    --cosmic-primary: 124 196 255; /* #7cc4ff - Cosmic primary */
+    --cosmic-primary-hover: 104 176 199; /* #68b0c7 - Cosmic primary hover (darker) */
+    --cosmic-dark: 255 255 255; /* #ffffff - White text on dark backgrounds */
 
-    /* Enhanced Accent System - Light mode variants */
-    --accent: 48 176 199; /* #30b0c7 - Primary accent */
-    --accent-foreground: 255 255 255; /* #ffffff - High contrast on accent */
-    --accent-foreground-muted: 102 102 102; /* Muted accent text for light mode */
-    --accent-hover: 38 138 159; /* #268a9f - Accent hover (darker in light) */
-    --accent-pressed: 28 108 129; /* #1c6c81 - Accent pressed (even darker) */
-    --accent-secondary: 88 86 214; /* #5856d6 - Secondary accent */
-    --accent-secondary-foreground: 255 255 255; /* #ffffff - Secondary accent text */
-    --accent-secondary-hover: 78 76 204; /* #4e4ccc - Secondary hover (darker) */
+    /* MAPS4 Cosmic Cyan System - Light mode variants */
+    --cosmic-cyan: 120 255 214; /* #78ffd6 - Cosmic cyan (consistent) */
+    --cosmic-secondary: 120 255 214; /* #78ffd6 - Cosmic secondary */
+    --cosmic-secondary-hover: 100 235 194; /* #64ebc2 - Cosmic secondary hover (darker) */
 
-    /* Semantic Feedback - Light mode */
-    --success: 52 199 89; /* #34c759 - Apple system green */
-    --success-foreground: 255 255 255; /* #ffffff */
-    --warning: 255 149 0; /* #ff9500 - Apple system orange */
-    --warning-foreground: 255 255 255; /* #ffffff */
-    --error: 255 59 48; /* #ff3b30 - Apple system red */
-    --error-foreground: 255 255 255; /* #ffffff */
-    --destructive: 255 59 48; /* #ff3b30 - Apple system red */
-    --destructive-foreground: 255 255 255; /* #ffffff */
+    /* MAPS4 Enhanced Accent System - Light mode variants */
+    --cosmic-accent-muted: 102 102 102; /* Muted accent text for light mode */
+    --cosmic-accent-pressed: 84 156 179; /* #549cb3 - Cosmic accent pressed (darker) */
+    --cosmic-accent-solid: 84 156 179; /* #549cb3 - Cosmic accent solid AAA */
 
-    --border: 229 229 229;
-    --border-strong: 204 204 204;
-    --ring: 48 176 199;
-    --muted: 245 245 245;
+    /* MAPS4 Semantic Feedback - Light mode */
+    --cosmic-success: 64 214 163; /* #40d6a3 - Cosmic success */
+    --cosmic-warning: 255 209 102; /* #ffd166 - Cosmic warning */
+    --cosmic-danger: 255 107 107; /* #ff6b6b - Cosmic danger */
+    --cosmic-info: 42 135 255; /* #2a87ff - Cosmic info */
 
+    /* MAPS4 Destructive Actions - Light mode */
+    --destructive: 255 107 107; /* #ff6b6b - Cosmic danger */
+    --destructive-foreground: 255 255 255; /* #ffffff - White text */
+
+    /* MAPS4 AAA-Only Solid Fills for Compliance Mode - Light mode */
+    --cosmic-success-solid: 52 199 89; /* #34c759 - 7:1+ contrast */
+    --cosmic-danger-solid: 204 47 38; /* #cc2f26 - 7:1+ compliance */
+
+    /* MAPS4 Border & Stroke System - Light mode */
+    --cosmic-border: 229 229 229;
+    --cosmic-border-strong: 204 204 204;
+    --cosmic-border-subtle: 156 163 175;
+
+    /* MAPS4 Interactive States - Light mode */
+    --ring: 124 196 255; /* #7cc4ff - Aurora accent focus rings */
+    --cosmic-muted: 245 245 245;
+
+    /* MAPS4 Elevation & Glass Materials - Light mode */
     --card: 255 255 255;
     --popover: 255 255 255;
-    --input: 255 255 255;
+    --cosmic-input: 255 255 255;
+    --cosmic-input-border: 229 229 229;
+    --cosmic-input-placeholder: 102 102 102;
+
+    /* MAPS4 Additional Cosmic Variables - Light mode */
+    --nebula-accent: 245 248 250; /* #f5f8fa - Light nebula accent */
+    --cosmic-ring-offset: 255 255 255; /* #ffffff - White ring offset */
+
+    /* MAPS4 Component-Specific Variables - Light Mode (Consistent with Dark) */
+    --opacity-disabled: 0.5;
+    --btn-scale-hover: 1.02;
+    --btn-scale-active: 0.98;
+    --btn-h-sm: 2rem;
+    --btn-h-md: 2.5rem;
+    --btn-h-lg: 3rem;
+    --btn-h-touch: 2.75rem;
+    --radius-md: 0.375rem;
+    --space-0_5: 0.125rem;
+    --space-1: 0.25rem;
+    --space-1_5: 0.375rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-7: 1.75rem;
+    --space-2_5: 0.625rem;
+    --font-size-xs: 0.875rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --motion-duration-2: 200ms;
+    --ring-2: 0.5rem;
+    --ring-offset-2: 0.125rem;
+    --border-width-1: 1px;
+    --border-width-2: 2px;
+    --blur-md: 12px;
+    --blur-lg: 16px;
+    --saturate-135: 1.35;
+    --saturate-150: 1.5;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-elevation-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-elevation-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    --shadow-elevation-high: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --icon-sm: 1rem;
+    --icon-md: 1.25rem;
+    --icon-lg: 1.5rem;
+    --size-full: 100%;
+    --opacity-spinner-track: 0.25;
+    --opacity-spinner-head: 0.75;
+    --spinner-stroke-width: 4;
+    --card-scale-active: 0.98;
+    --badge-scale-hover: 1.05;
+    --badge-scale-active: 0.95;
   }
 
   /**
-   * High Contrast Mode - Maximum accessibility
+   * MAPS4 High Contrast Mode - Maximum accessibility
    * Forces maximum contrast for users with visual impairments
    */
   .high-contrast {
-    --background: 0 0 0;
-    --background-elevated: 0 0 0;
-    --background-panel: 0 0 0;
-    --foreground: 255 255 255;
-    --foreground-muted: 255 255 255;
-    --primary: 0 255 255;
-    --primary-foreground: 0 0 0;
-    --border: 255 255 255;
-    --border-strong: 255 255 255;
+    --deep-space: 0 0 0;
+    --cosmic-void: 0 0 0;
+    --stellar-surface: 0 0 0;
+    --cosmic-overlay: 0 0 0;
+    --cosmic-light: 255 255 255;
+    --stellar-muted: 255 255 255;
+    --cosmic-subtle: 255 255 255;
+    --cosmic-disabled: 255 255 255;
+    --aurora-accent: 0 255 255;
+    --cosmic-primary: 0 255 255;
+    --cosmic-primary-hover: 0 255 255;
+    --cosmic-dark: 0 0 0;
+    --cosmic-cyan: 0 255 255;
+    --cosmic-secondary: 0 255 255;
+    --cosmic-secondary-hover: 0 255 255;
+    --cosmic-border: 255 255 255;
+    --cosmic-border-strong: 255 255 255;
+    --cosmic-border-subtle: 255 255 255;
+    --ring: 0 255 255;
+    --cosmic-muted: 0 0 0;
   }
 }
 

@@ -1,17 +1,17 @@
 /**
- * Railway Station Component - MAPS v3.0 Dark-First Philosophy with Fortune 500 Standards
+ * Railway Station Component - MAPS4 Deep Space Canvas Cosmic Innovation with Fortune 500 Standards
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Cosmic Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
  * - Anti-Drift Enforcement: ✅ Enhanced tokens only, no hardcoded values
  * - Enhanced UI Integration: ✅ Uses enhanced UI components exclusively
  * - Fortune 500 Quality: ✅ Sophisticated station system with liquid glass materials
  * - AAA Accessibility: ✅ WCAG 2.1 AA compliance with enforcement mode
  *
  * ARCHITECTURE INTEGRATION:
- * - Enhanced Tokens → Railway Station variants → User experience
- * - MAPS Guidelines → Station hierarchy → Project phase management
- * - Dark-First Philosophy → Primary design approach (NO EXCEPTIONS)
+ * - MAPS4 Enhanced Tokens → Railway Station variants → User experience
+ * - MAPS4 Guidelines → Station hierarchy → Project phase management
+ * - MAPS4 Cosmic Philosophy → Primary design approach (NO EXCEPTIONS)
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -33,7 +33,7 @@ import { cn } from '@/utils/cn';
 // ===== RAILWAY STATION VARIANTS =====
 
 /**
- * Railway Station variants following MAPS v3.0 foundation
+ * Railway Station variants following MAPS4 Deep Space Canvas Cosmic Innovation foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens or CSS custom properties
  */
 const railwayStationVariants = cva(
@@ -42,11 +42,11 @@ const railwayStationVariants = cva(
     'w-full',
     'space-y-6',
     
-    // Foundation: Colors - Deep space foundation with ethereal accents
+    // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
-    // Foundation: Motion - Respect user preferences
+    // MAPS4 Foundation: Motion - Respect user preferences
     'transition-all duration-300 ease-out',
     'motion-reduce:transition-none',
   ],
@@ -61,16 +61,16 @@ const railwayStationVariants = cva(
           'p-8', 
           'rounded-2xl',
           'shadow-elevation-lg',
-          'border border-border-accent'
+          'border border-aurora-accent'
         ],
         
-        // Glass: Liquid glass materials
+        // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
           'p-6',
           'rounded-xl',
           'backdrop-blur-md backdrop-saturate-[135%]',
           'shadow-elevation-md',
-          'border border-border/30'
+          'border border-cosmic-border/30'
         ],
       },
       
@@ -252,22 +252,40 @@ export function RailwayStation({
       {/* Progress and Status */}
       <div className="flex items-center justify-center gap-6 mb-6">
         <div className="text-center">
-          <div className="text-2xl font-bold text-primary">
+          <div className={cn(
+            'text-2xl font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
+          )}>
             {Math.round(progress * 100)}%
           </div>
-          <div className="text-sm text-muted-foreground">Complete</div>
+          <div className={cn(
+            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>Complete</div>
         </div>
         
         <div className="text-center">
-          <div className="text-lg font-semibold">
+          <div className={cn(
+            'text-lg font-semibold',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+          )}>
             {pmbokPhase.charAt(0).toUpperCase() + pmbokPhase.slice(1)}
           </div>
-          <div className="text-sm text-muted-foreground">PMBOK Phase</div>
+          <div className={cn(
+            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>PMBOK Phase</div>
         </div>
         
         <div className="text-center">
-          <div className="text-lg font-semibold">{estimatedDuration}</div>
-          <div className="text-sm text-muted-foreground">Duration</div>
+          <div className={cn(
+            'text-lg font-semibold',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+          )}>{estimatedDuration}</div>
+          <div className={cn(
+            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>Duration</div>
         </div>
       </div>
 
@@ -414,7 +432,10 @@ export function RailwayStation({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground mb-3">
+          <div className={cn(
+          'grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+        )}>
             <div><strong>Assignee:</strong> {task.assignee}</div>
             <div><strong>Due:</strong> {task.dueDate}</div>
             <div><strong>Est. Hours:</strong> {task.estimatedHours}</div>
@@ -497,7 +518,10 @@ export function RailwayStation({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground mb-3">
+          <div className={cn(
+          'grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-3',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+        )}>
             <div><strong>Target Date:</strong> {milestone.targetDate}</div>
             <div><strong>Deliverables:</strong> {milestone.deliverables.length}</div>
           </div>

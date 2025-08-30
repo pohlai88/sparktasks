@@ -1,28 +1,25 @@
 /**
- * Enhanced Tooltip Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Tooltip Component - MAPS4 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Radix UI Foundation: ✅ Tooltip primitives for behavior and accessibility
- * - Dark-First Philosophy: ✅ Deep space surfaces with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
- * - AAA Compliance: ✅ High contrast mode with 7:1 ratios
- * - Liquid Glass Materials: ✅ Governed vibrancy system with backdrop blur
- * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
+ * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
+ * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
+ * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
+ * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
  *
- * ARCHITECTURE DECISION:
- * - Radix owns: Behavior, ARIA, focus management, positioning
- * - MAPS owns: Apple HIG materials, liquid glass, AAA enforcement
- * - Wrapper owns: Token application, governance rules, brand consistency
- *
- * GOVERNANCE RULES:
- * - Foundation tokens only (no component-specific tokens)
- * - Auto-apply AAA scrims over glass materials
- * - Apple HIG motion with respect for reduced motion
- * - Platform-aware touch targets
+ * ARCHITECTURE INTEGRATION:
+ * - MAPS4 Enhanced Tokens → Tooltip variants → Cosmic user experience
+ * - MAPS4 Guidelines → Tooltip behavior → Accessibility excellence
+ * - [Ecosystem] → [Component] → [Composability]
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
- * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
+ *
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
@@ -34,7 +31,7 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED TOOLTIP VARIANTS =====
 
 /**
- * Enhanced tooltip content variants following MAPS v2.2 foundation
+ * Enhanced tooltip content variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens system
  */
 const enhancedTooltipVariants = cva(

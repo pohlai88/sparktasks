@@ -1,8 +1,8 @@
 /**
- * Enhanced Textarea Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Textarea Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system
@@ -11,7 +11,7 @@
  *
  * ARCHITECTURE INTEGRATION:
  * - Enhanced Tokens → Textarea variants → User experience
- * - MAPS Guidelines → Validation states → Accessibility
+ * - MAPS4 Guidelines → Validation states → Accessibility
  * - Form ecosystem → Textarea component → Field composability
  *
  * RESOLUTION MODEL:
@@ -39,23 +39,23 @@ const enhancedTextareaVariants = cva(
     'flex w-full',
 
     // Foundation: Typography - Apple HIG hierarchy (from enhanced tokens)
-    'text-sm', // matches our typography.footnote base size
+    'text-[var(--font-size-sm)]', // matches our typography.footnote base size
 
     // Foundation: Shape - Systematic from design tokens
-    'rounded-md border',
+    'rounded-[var(--radius-md)] border',
 
     // Foundation: Spacing - 8pt grid system
-    'px-3 py-2',
+    'px-[var(--space-3)] py-[var(--space-2)]',
 
     // Foundation: Colors - Deep space foundation with ethereal accents
-    'bg-input text-foreground',
-    'border-border',
+    'bg-cosmic-input text-cosmic-light',
+    'border-cosmic-border',
 
     // Foundation: Placeholder - Subtle hierarchy
-    'placeholder:text-muted-foreground',
+    'placeholder:text-cosmic-muted',
 
     // Foundation: Motion - Respect user preferences (from enhanced tokens)
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: States - Disabled styling
@@ -63,7 +63,7 @@ const enhancedTextareaVariants = cva(
 
     // Foundation: Focus - AAA compliant ring system (from enhanced tokens)
     'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    'focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stellar-surface',
 
     // Foundation: Resize behavior
     'resize-vertical',
@@ -72,44 +72,44 @@ const enhancedTextareaVariants = cva(
     variants: {
       variant: {
         // Default: Clean, professional baseline
-        default: ['border-border bg-input', 'focus-visible:border-ring'],
+        default: ['border-cosmic-border bg-cosmic-input', 'focus-visible:border-aurora-accent'],
 
         // Ghost: Minimal, elegant
         ghost: [
           'border-transparent bg-transparent',
-          'focus-visible:border-border focus-visible:bg-input',
+          'focus-visible:border-cosmic-border focus-visible:bg-cosmic-input',
         ],
 
         // Filled: Subtle depth
         filled: [
-          'border-transparent bg-muted',
-          'focus-visible:border-border focus-visible:bg-input',
+          'border-transparent bg-aurora-accent',
+          'focus-visible:border-cosmic-border focus-visible:bg-cosmic-input',
         ],
 
         // Outline: Clear boundaries
-        outline: ['border-border bg-transparent', 'focus-visible:border-ring'],
+        outline: ['border-cosmic-border bg-transparent', 'focus-visible:border-aurora-accent'],
 
         // Floating: Modern glass effect (when vibrancy enabled)
         floating: [
-          'border-border/50 bg-input/80',
-          'backdrop-blur-sm backdrop-saturate-[135%]',
-          'focus-visible:border-ring focus-visible:bg-input',
+          'border-cosmic-border/50 bg-cosmic-input/80',
+          'backdrop-blur-[var(--blur-sm)] backdrop-saturate-[var(--saturate-135)]',
+          'focus-visible:border-aurora-accent focus-visible:bg-cosmic-input',
         ],
       },
 
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['min-h-[60px]', 'text-xs', 'px-2 py-1.5'],
-        md: ['min-h-[80px]', 'text-sm', 'px-3 py-2'],
-        lg: ['min-h-[120px]', 'text-base', 'px-4 py-3'],
-        xl: ['min-h-[160px]', 'text-lg', 'px-4 py-4'],
+        sm: ['min-h-[var(--space-60)]', 'text-[var(--font-size-xs)]', 'px-[var(--space-2)] py-[var(--space-1_5)]'],
+        md: ['min-h-[var(--space-80)]', 'text-[var(--font-size-sm)]', 'px-[var(--space-3)] py-[var(--space-2)]'],
+        lg: ['min-h-[var(--space-120)]', 'text-[var(--font-size-base)]', 'px-[var(--space-4)] py-[var(--space-3)]'],
+        xl: ['min-h-[var(--space-160)]', 'text-[var(--font-size-lg)]', 'px-[var(--space-4)] py-[var(--space-4)]'],
       },
 
       validation: {
         default: '',
-        error: ['border-error', 'focus-visible:ring-error'],
-        success: ['border-success', 'focus-visible:ring-success'],
-        warning: ['border-warning', 'focus-visible:ring-warning'],
+        error: ['border-cosmic-error', 'focus-visible:ring-cosmic-error'],
+        success: ['border-cosmic-success', 'focus-visible:ring-cosmic-success'],
+        warning: ['border-cosmic-warning', 'focus-visible:ring-cosmic-warning'],
       },
 
       density: {
@@ -196,7 +196,6 @@ export const EnhancedTextarea = React.forwardRef<
   className,
   variant,
   size,
-  validation,
   density,
   label,
   required = false,
@@ -224,10 +223,11 @@ export const EnhancedTextarea = React.forwardRef<
     props.defaultValue?.toString().length || props.value?.toString().length || 0
   );
 
+  const { onChange } = props;
   const handleChange = React.useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCharCount(e.target.value.length);
-    props.onChange?.(e);
-  }, [props.onChange]);
+    onChange?.(e);
+  }, [onChange]);
 
   // ===== ACCESSIBILITY ATTRIBUTES =====
   
@@ -254,18 +254,18 @@ export const EnhancedTextarea = React.forwardRef<
         id={labelId}
         htmlFor={textareaId}
         className={cn(
-          'block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-          'text-foreground mb-2'
+          'block text-[var(--font-size-sm)] font-[var(--font-weight-medium)] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
+          'text-cosmic-light mb-[var(--space-2)]'
         )}
       >
         {label}
         {required && (
-          <span className="text-error ml-1" aria-label="required">
+          <span className="text-cosmic-error ml-[var(--space-1)]" aria-label="required">
             *
           </span>
         )}
         {!required && showOptional && (
-          <span className="text-xs text-muted-foreground ml-1">(optional)</span>
+          <span className="text-[var(--font-size-xs)] text-cosmic-muted ml-[var(--space-1)]">(optional)</span>
         )}
       </label>
     );
@@ -277,7 +277,7 @@ export const EnhancedTextarea = React.forwardRef<
     return (
       <p
         id={helperId}
-        className="text-xs text-muted-foreground mt-1"
+        className="text-[var(--font-size-xs)] text-cosmic-muted mt-[var(--space-1)]"
       >
         {helperText}
       </p>
@@ -290,10 +290,10 @@ export const EnhancedTextarea = React.forwardRef<
     return (
       <p
         id={errorId}
-        className="text-xs text-error mt-1 flex items-center gap-1"
+        className="text-[var(--font-size-xs)] text-cosmic-error mt-[var(--space-1)] flex items-center gap-[var(--space-1)]"
         role="alert"
       >
-        <span className="w-1 h-1 bg-error rounded-full" />
+        <span className="size-[var(--space-1)] bg-cosmic-error rounded-full" />
         {error}
       </p>
     );
@@ -303,8 +303,8 @@ export const EnhancedTextarea = React.forwardRef<
     if (!success) return null;
 
     return (
-      <p className="text-xs text-success mt-1 flex items-center gap-1">
-        <span className="w-1 h-1 bg-success rounded-full" />
+              <p className="text-[var(--font-size-xs)] text-cosmic-success mt-[var(--space-1)] flex items-center gap-[var(--space-1)]">
+          <span className="size-[var(--space-1)] bg-cosmic-success rounded-full" />
         {success}
       </p>
     );
@@ -320,8 +320,8 @@ export const EnhancedTextarea = React.forwardRef<
       <div
         id={`${textareaId}-count`}
         className={cn(
-          'text-xs mt-1 text-right',
-          isOverLimit ? 'text-error' : isNearLimit ? 'text-warning' : 'text-muted-foreground'
+          'text-[var(--font-size-xs)] mt-[var(--space-1)] text-right',
+          isOverLimit ? 'text-cosmic-error' : isNearLimit ? 'text-cosmic-warning' : 'text-cosmic-muted'
         )}
       >
         {charCount}
@@ -335,7 +335,7 @@ export const EnhancedTextarea = React.forwardRef<
   const Comp = asChild ? Slot : 'textarea';
 
   return (
-    <div className="w-full space-y-2">
+    <div className="w-full space-y-[var(--space-2)]">
       {renderLabel()}
       
       <div className="relative">
@@ -362,7 +362,7 @@ export const EnhancedTextarea = React.forwardRef<
         />
       </div>
 
-      <div className="space-y-1">
+      <div className="space-y-[var(--space-1)]">
         {renderHelperText()}
         {renderError()}
         {renderSuccess()}

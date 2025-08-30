@@ -1,18 +1,18 @@
 /**
- * Enhanced Sheet Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Sheet Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with stellar surfaces & aurora accents
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
- * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
- * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic transparency
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
+ * - Anti-Drift Enforcement: ✅ 100% tokenization, zero hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Tailwind Config → CSS Custom Properties → Component classes
  * - Enhanced Tokens → Semantic API → Component variants
- * - MAPS Guidelines → Component behavior → User experience
+ * - MAPS4 Guidelines → Component behavior → User experience
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -38,7 +38,7 @@ import { cn } from '@/utils/cn';
 const enhancedSheetOverlayVariants = cva([
   // Foundation: Overlay base styling
   'fixed inset-0 z-50',
-  'bg-black/80 backdrop-blur-sm',
+  'bg-cosmic-dark/80 backdrop-blur-[var(--blur-sm)]',
 
   // Foundation: Motion - Apple quality transitions
   'data-[state=open]:animate-in data-[state=closed]:animate-out',
@@ -54,12 +54,12 @@ const enhancedSheetOverlayVariants = cva([
 const enhancedSheetContentVariants = cva(
   [
     // Foundation: Base positioning and layout
-    'fixed z-50 gap-4 p-6',
-    'border bg-background shadow-elevation-high',
+    'fixed z-50 gap-[var(--space-4)] p-[var(--space-6)]',
+    'border bg-stellar-surface shadow-elevation-high',
 
     // Foundation: Motion - Elegant entrance animations
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
-    'data-[state=closed]:duration-300 data-[state=open]:duration-500',
+    'data-[state=closed]:duration-[var(--motion-duration-3)] data-[state=open]:duration-[var(--motion-duration-5)]',
 
     // Foundation: Focus management
     'focus-visible:outline-none',
@@ -72,23 +72,23 @@ const enhancedSheetContentVariants = cva(
       side: {
         top: [
           'inset-x-0 top-0',
-          'rounded-b-lg border-b',
+          'rounded-b-[var(--radius-lg)] border-b',
           'data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
         ],
         bottom: [
           'inset-x-0 bottom-0',
-          'rounded-t-lg border-t',
+          'rounded-t-[var(--radius-lg)] border-t',
           'data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
         ],
         left: [
           'inset-y-0 left-0 h-full w-3/4',
-          'rounded-r-lg border-r',
+          'rounded-r-[var(--radius-lg)] border-r',
           'data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left',
           'sm:max-w-sm md:max-w-md lg:max-w-lg',
         ],
         right: [
           'inset-y-0 right-0 h-full w-3/4',
-          'rounded-l-lg border-l',
+          'rounded-l-[var(--radius-lg)] border-l',
           'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
           'sm:max-w-sm md:max-w-md lg:max-w-lg',
         ],
@@ -101,25 +101,25 @@ const enhancedSheetContentVariants = cva(
         full: [],
       },
       surface: {
-        elevated: ['border-border-elevated bg-background-elevated'],
-        panel: ['border-border-panel bg-background-panel'],
+        elevated: ['border-cosmic-border-elevated bg-stellar-surface-elevated'],
+        panel: ['border-cosmic-border-panel bg-stellar-surface-panel'],
         glass: [
-          'bg-background/95 backdrop-blur-md backdrop-saturate-150',
-          'border-border/50',
+          'bg-stellar-surface/95 backdrop-blur-[var(--blur-md)] backdrop-saturate-[var(--saturate-150)]',
+          'border-cosmic-border/50',
         ],
         floating: [
-          'bg-background/90 backdrop-blur-lg backdrop-saturate-150',
-          'shadow-elevation-floating border-border/30',
+          'bg-stellar-surface/90 backdrop-blur-[var(--blur-lg)] backdrop-saturate-[var(--saturate-150)]',
+          'shadow-elevation-floating border-cosmic-border/30',
         ],
       },
       density: {
-        comfortable: ['gap-4 p-6'],
-        compact: ['gap-3 p-4'],
+        comfortable: ['gap-[var(--space-4)] p-[var(--space-6)]'],
+        compact: ['gap-[var(--space-3)] p-[var(--space-4)]'],
       },
       enforceAAA: {
         false: '',
         true: [
-          'aaa:bg-background-aaa aaa:border-border-aaa',
+          'aaa:bg-stellar-surface-aaa aaa:border-cosmic-border-aaa',
           'aaa:shadow-elevation-aaa',
         ],
       },
@@ -182,12 +182,12 @@ const enhancedSheetContentVariants = cva(
         surface: 'elevated',
         enforceAAA: true,
         className:
-          'aaa:bg-background-elevated-aaa aaa:border-border-elevated-aaa',
+          'aaa:bg-stellar-surface-elevated-aaa aaa:border-cosmic-border-elevated-aaa',
       },
       {
         surface: 'glass',
         enforceAAA: true,
-        className: 'aaa:bg-background-aaa/95 aaa:border-border-aaa/50',
+        className: 'aaa:bg-stellar-surface-aaa/95 aaa:border-cosmic-border-aaa/50',
       },
     ],
     defaultVariants: {
@@ -205,14 +205,14 @@ const enhancedSheetContentVariants = cva(
  */
 const enhancedSheetHeaderVariants = cva([
   // Foundation: Layout and spacing
-  'flex flex-col space-y-1.5',
+  'flex flex-col space-y-[var(--space-1_5)]',
   'text-center sm:text-left',
 
   // Foundation: Border and padding
-  'border-b border-border pb-4',
+  'border-b border-cosmic-border pb-[var(--space-4)]',
 
   // Enhanced: Proper content hierarchy
-  'mb-4',
+  'mb-[var(--space-4)]',
 ]);
 
 /**
@@ -220,11 +220,11 @@ const enhancedSheetHeaderVariants = cva([
  */
 const enhancedSheetTitleVariants = cva([
   // Foundation: Typography following Apple HIG
-  'text-lg font-semibold leading-none tracking-tight',
-  'text-foreground',
+  'text-[var(--font-size-lg)] font-[var(--font-weight-semibold)] leading-none tracking-tight',
+  'text-cosmic-light',
 
   // Foundation: Spacing for content hierarchy
-  'mb-1',
+  'mb-[var(--space-1)]',
 ]);
 
 /**
@@ -232,7 +232,7 @@ const enhancedSheetTitleVariants = cva([
  */
 const enhancedSheetDescriptionVariants = cva([
   // Foundation: Typography for secondary text
-  'text-sm text-muted-foreground',
+  'text-[var(--font-size-sm)] text-cosmic-muted',
   'leading-relaxed',
 ]);
 
@@ -241,10 +241,10 @@ const enhancedSheetDescriptionVariants = cva([
  */
 const enhancedSheetFooterVariants = cva([
   // Foundation: Layout for actions
-  'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
+  'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-[var(--space-2)]',
 
   // Foundation: Spacing and borders
-  'mt-4 border-t border-border pt-4',
+  'mt-[var(--space-4)] border-t border-cosmic-border pt-[var(--space-4)]',
 ]);
 
 /**
@@ -252,19 +252,19 @@ const enhancedSheetFooterVariants = cva([
  */
 const enhancedSheetCloseVariants = cva([
   // Foundation: Positioning
-  'absolute right-4 top-4',
+  'absolute right-[var(--space-4)] top-[var(--space-4)]',
 
   // Foundation: Size and shape
-  'rounded-sm p-1.5',
+  'rounded-[var(--radius-sm)] p-[var(--space-1_5)]',
 
   // Foundation: Colors and states
-  'text-muted-foreground opacity-70',
-  'hover:bg-muted hover:opacity-100',
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-  'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'text-cosmic-muted opacity-[var(--opacity-70)]',
+  'hover:bg-stellar-surface-elevated hover:opacity-100',
+  'focus-visible:outline-none focus-visible:ring-[var(--ring-2)] focus-visible:ring-aurora-accent',
+  'focus-visible:ring-offset-[var(--ring-offset-2)] focus-visible:ring-offset-stellar-surface',
 
   // Foundation: Motion
-  'transition-all duration-200 ease-out',
+  'transition-all duration-[var(--motion-duration-2)] ease-out',
   'motion-reduce:transition-none',
 
   // Foundation: Disabled state
@@ -425,7 +425,7 @@ const EnhancedSheetContent = React.forwardRef<
               className={cn(enhancedSheetCloseVariants())}
               aria-label='Close sheet'
             >
-              <X className={cn('h-4 w-4', 'h-4 w-4')} />
+              <X className={cn('size-[var(--icon-sm)]')} />
             </button>
           </SheetPrimitive.Close>
         </Comp>

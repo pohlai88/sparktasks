@@ -1,27 +1,25 @@
 /**
- * Enhanced Avatar Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Avatar Component - MAPS4 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
- * - AAA Compliance: ✅ Dual-track with enforcement mode
- * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
- * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
+ * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
+ * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
+ * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
+ * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
- * - Radix Avatar → Behavior, focus management, accessibility
- * - MAPS v2.2 → Apple HIG materials, liquid glass, AAA enforcement
- * - Enhanced Tokens → Dark-first aesthetic with systematic spacing
+ * - MAPS4 Enhanced Tokens → Avatar variants → Cosmic user experience
+ * - MAPS4 Guidelines → Avatar behavior → Accessibility excellence
+ * - [Ecosystem] → [Component] → [Composability]
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
- * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
  *
- * MATERIALS & VIBRANCY GOVERNANCE:
- * - Liquid glass effects only on surfaces (never on content)
- * - AAA text scrims for content protection
- * - Systematic opacity levels with backdrop governance
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
@@ -41,7 +39,7 @@ const AvatarContext = React.createContext<{
 // ===== ENHANCED AVATAR VARIANTS =====
 
 /**
- * Enhanced avatar variants following MAPS v2.2 foundation
+ * Enhanced avatar variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced-tokens CSS custom properties
  */
 const enhancedAvatarVariants = cva(
@@ -51,7 +49,7 @@ const enhancedAvatarVariants = cva(
     'overflow-hidden rounded-full',
 
     // Foundation: Motion - Respect user preferences
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: Focus - AAA compliant ring system
@@ -65,13 +63,13 @@ const enhancedAvatarVariants = cva(
   {
     variants: {
       size: {
-        xs: 'h-6 w-6', // 24px - Compact lists, chat
-        sm: 'h-8 w-8', // 32px - Dense layouts
-        md: 'h-10 w-10', // 40px - Standard default
-        lg: 'h-12 w-12', // 48px - Prominent display
-        xl: 'h-16 w-16', // 64px - Profile headers
-        '2xl': 'h-20 w-20', // 80px - Hero avatars
-        touch: 'h-11 w-11', // 44px - Touch-friendly
+        xs: 'h-[var(--space-6)] w-[var(--space-6)]', // 24px - Compact lists, chat
+        sm: 'h-[var(--space-8)] w-[var(--space-8)]', // 32px - Dense layouts
+        md: 'h-[var(--space-10)] w-[var(--space-10)]', // 40px - Standard default
+        lg: 'h-[var(--space-12)] w-[var(--space-12)]', // 48px - Prominent display
+        xl: 'h-[var(--space-16)] w-[var(--space-16)]', // 64px - Profile headers
+        '2xl': 'h-[var(--space-20)] w-[var(--space-20)]', // 80px - Hero avatars
+        touch: 'h-[var(--space-11)] w-[var(--space-11)]', // 44px - Touch-friendly
       },
 
       variant: {
@@ -466,15 +464,18 @@ function getAvatarInitials(name: string): string {
  */
 function getStatusColor(status: EnhancedAvatarOwnProps['status']): string {
   switch (status) {
-    case 'online':
+    case 'online': {
       return ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.bg;
-    case 'away':
+    }
+    case 'away': {
       return ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.bg;
-    case 'busy':
+    }
+    case 'busy': {
       return ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.bg;
-    case 'offline':
-    default:
+    }
+    default: {
       return ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary;
+    }
   }
 }
 

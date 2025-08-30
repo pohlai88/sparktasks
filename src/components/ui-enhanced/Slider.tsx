@@ -1,17 +1,17 @@
 /**
- * Enhanced Slider Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Slider Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Radix owns: Behavior, ARIA, focus management, positioning
- * - MAPS owns: Apple HIG materials, liquid glass, AAA enforcement
+ * - MAPS4 owns: Apple HIG materials, liquid glass, AAA enforcement
  * - Wrapper owns: Token application, governance rules, brand consistency
  *
  * GOVERNANCE RULES:
@@ -47,26 +47,26 @@ const enhancedSliderVariants = cva(
     'relative flex w-full touch-none select-none items-center',
 
     // Foundation: Motion - Respect user preferences
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Enhanced: Platform-aware sizing with proper touch targets
-    'min-h-[44px] py-3', // 44px minimum touch target
-    'hover:min-h-[32px] hover:py-2', // Desktop precision
+    'min-h-[var(--space-11)] py-[var(--space-3)]', // 44px minimum touch target
+    'hover:min-h-[var(--space-8)] hover:py-[var(--space-2)]', // Desktop precision
 
     // Foundation: Focus management
     'focus-visible:outline-none',
 
     // Enhanced: Disabled state
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
+    'disabled:cursor-not-allowed disabled:opacity-[var(--opacity-50)]',
+    'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-[var(--opacity-50)]',
   ],
   {
     variants: {
       size: {
-        sm: ['h-4'],
-        default: ['h-5'],
-        lg: ['h-6'],
+        sm: ['h-[var(--space-4)]'],
+        default: ['h-[var(--space-5)]'],
+        lg: ['h-[var(--space-6)]'],
       },
       orientation: {
         horizontal: ['w-full'],
@@ -96,32 +96,32 @@ const enhancedSliderTrackVariants = cva(
     // Foundation: Layout
     'relative grow overflow-hidden rounded-full',
 
-    // Enhanced: Dark-first foundation with liquid glass option
-    'border border-border/50 bg-muted',
+    // Enhanced: MAPS4 foundation with liquid glass option
+    'border border-cosmic-border/50 bg-cosmic-muted',
 
     // Enhanced: Visual depth and sophistication
-    'shadow-inner',
+    'shadow-[var(--shadow-inner)]',
 
     // Foundation: Motion
-    'transition-colors duration-200 ease-out',
+    'transition-colors duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
   ],
   {
     variants: {
       size: {
-        sm: ['h-1.5'],
-        default: ['h-2'],
-        lg: ['h-2.5'],
+        sm: ['h-[var(--space-1_5)]'],
+        default: ['h-[var(--space-2)]'],
+        lg: ['h-[var(--space-2_5)]'],
       },
       variant: {
-        default: ['bg-muted'],
-        accent: ['bg-muted'],
-        success: ['bg-muted'],
-        warning: ['bg-muted'],
-        destructive: ['bg-muted'],
+        default: ['bg-cosmic-muted'],
+        accent: ['bg-cosmic-muted'],
+        success: ['bg-cosmic-muted'],
+        warning: ['bg-cosmic-muted'],
+        destructive: ['bg-cosmic-muted'],
         glass: [
-          'border-border/30 bg-muted/60 backdrop-blur-sm',
-          'shadow-lg shadow-black/10',
+          'border-cosmic-border/30 bg-cosmic-muted/60 backdrop-blur-[var(--blur-sm)]',
+          'shadow-[var(--shadow-lg)] shadow-black/10',
         ],
       },
     },
@@ -141,33 +141,33 @@ const enhancedSliderRangeVariants = cva(
     'absolute rounded-full',
 
     // Foundation: Motion - Smooth value transitions
-    'transition-all duration-150 ease-out',
+    'transition-all duration-[var(--motion-duration-1_5)] ease-out',
     'motion-reduce:transition-none',
 
     // Enhanced: Visual sophistication with glow effects
-    'shadow-sm',
+    'shadow-[var(--shadow-sm)]',
   ],
   {
     variants: {
       size: {
-        sm: ['h-1.5'],
-        default: ['h-2'],
-        lg: ['h-2.5'],
+        sm: ['h-[var(--space-1_5)]'],
+        default: ['h-[var(--space-2)]'],
+        lg: ['h-[var(--space-2_5)]'],
       },
       variant: {
-        default: ['bg-accent', 'shadow-accent/25', 'hover:shadow-accent/40'],
-        accent: ['bg-accent', 'shadow-accent/25', 'hover:shadow-accent/40'],
-        success: ['bg-success', 'shadow-success/25', 'hover:shadow-success/40'],
-        warning: ['bg-warning', 'shadow-warning/25', 'hover:shadow-warning/40'],
+        default: ['bg-aurora-accent', 'shadow-aurora-accent/25', 'hover:shadow-aurora-accent/40'],
+        accent: ['bg-aurora-accent', 'shadow-aurora-accent/25', 'hover:shadow-aurora-accent/40'],
+        success: ['bg-cosmic-success', 'shadow-cosmic-success/25', 'hover:shadow-cosmic-success/40'],
+        warning: ['bg-cosmic-warning', 'shadow-cosmic-warning/25', 'hover:shadow-cosmic-warning/40'],
         destructive: [
-          'bg-destructive',
-          'shadow-destructive/25',
-          'hover:shadow-destructive/40',
+          'bg-cosmic-destructive',
+          'shadow-cosmic-destructive/25',
+          'hover:shadow-cosmic-destructive/40',
         ],
         glass: [
-          'bg-accent/80 backdrop-blur-sm',
-          'shadow-lg shadow-accent/30',
-          'hover:shadow-accent/50',
+          'bg-aurora-accent/80 backdrop-blur-[var(--blur-sm)]',
+          'shadow-[var(--shadow-lg)] shadow-aurora-accent/30',
+          'hover:shadow-aurora-accent/50',
         ],
       },
     },
@@ -184,59 +184,59 @@ const enhancedSliderRangeVariants = cva(
 const enhancedSliderThumbVariants = cva(
   [
     // Foundation: Layout with enhanced contrast
-    'block rounded-full border-2 bg-background',
-    'transition-all duration-200 ease-out',
+    'block rounded-full border-2 bg-stellar-surface',
+    'transition-all duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: Focus states with Apple HIG compliance
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-    'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aurora-accent',
+    'focus-visible:ring-offset-2 focus-visible:ring-offset-stellar-surface',
 
     // Enhanced: Interactive states with sophisticated feedback
-    'hover:scale-110 hover:shadow-lg',
+    'hover:scale-110 hover:shadow-[var(--shadow-lg)]',
     'active:scale-105',
-    'disabled:pointer-events-none disabled:opacity-50',
-    'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+    'disabled:pointer-events-none disabled:opacity-[var(--opacity-50)]',
+    'data-[disabled]:pointer-events-none data-[disabled]:opacity-[var(--opacity-50)]',
 
     // Enhanced: Platform-aware cursor
     'cursor-grab active:cursor-grabbing',
     'touch-none', // Prevent default touch behaviors
 
     // Enhanced: Visual sophistication
-    'shadow-md ring-1 ring-black/5',
+    'shadow-[var(--shadow-md)] ring-1 ring-black/5',
   ],
   {
     variants: {
       size: {
-        sm: ['h-4 w-4', 'border border-border'],
-        default: ['h-5 w-5', 'border-2 border-border'],
-        lg: ['h-6 w-6', 'border-2 border-border'],
+        sm: ['size-[var(--space-4)]', 'border border-cosmic-border'],
+        default: ['size-[var(--space-5)]', 'border-2 border-cosmic-border'],
+        lg: ['size-[var(--space-6)]', 'border-2 border-cosmic-border'],
       },
       variant: {
         default: [
-          'border-accent/50 hover:border-accent',
-          'hover:shadow-accent/25',
+          'border-aurora-accent/50 hover:border-aurora-accent',
+          'hover:shadow-aurora-accent/25',
         ],
         accent: [
-          'border-accent/50 hover:border-accent',
-          'hover:shadow-accent/25',
+          'border-aurora-accent/50 hover:border-aurora-accent',
+          'hover:shadow-aurora-accent/25',
         ],
         success: [
-          'border-success/50 hover:border-success',
-          'hover:shadow-success/25',
+          'border-cosmic-success/50 hover:border-cosmic-success',
+          'hover:shadow-cosmic-success/25',
         ],
         warning: [
-          'border-warning/50 hover:border-warning',
-          'hover:shadow-warning/25',
+          'border-cosmic-warning/50 hover:border-cosmic-warning',
+          'hover:shadow-cosmic-warning/25',
         ],
         destructive: [
-          'border-destructive/50 hover:border-destructive',
-          'hover:shadow-destructive/25',
+          'border-cosmic-destructive/50 hover:border-cosmic-destructive',
+          'hover:shadow-cosmic-destructive/25',
         ],
         glass: [
-          'bg-background/80 backdrop-blur-sm',
-          'border-accent/30 hover:border-accent/60',
-          'shadow-lg hover:shadow-accent/30',
+          'bg-stellar-surface/80 backdrop-blur-[var(--blur-sm)]',
+          'border-aurora-accent/30 hover:border-aurora-accent/60',
+          'shadow-[var(--shadow-lg)] hover:shadow-aurora-accent/30',
         ],
       },
     },
@@ -350,7 +350,7 @@ const EnhancedSlider = React.forwardRef<
     // Density adjustments
     const densityClasses =
       density === 'compact'
-        ? 'min-h-[36px] py-1 @media (hover: hover) { min-h-[28px] py-0.5 }'
+        ? 'min-h-[var(--space-9)] py-[var(--space-1)] @media (hover: hover) { min-h-[var(--space-7)] py-[var(--space-0_5)] }'
         : '';
 
     const Comp = asChild ? Slot : SliderPrimitives.Root;
@@ -402,22 +402,22 @@ const EnhancedSlider = React.forwardRef<
                 <div
                   className={cn(
                     // Foundation: Typography and positioning
-                    'absolute -top-10 left-1/2 -translate-x-1/2',
-                    'text-xs font-medium text-foreground',
+                    'absolute -top-[var(--space-10)] left-1/2 -translate-x-1/2',
+                    'text-[var(--font-size-xs)] font-[var(--font-weight-medium)] text-cosmic-foreground',
 
                     // Enhanced: Tooltip styling with liquid glass option
-                    'rounded-md px-2 py-1',
+                    'rounded-[var(--radius-md)] px-[var(--space-2)] py-[var(--space-1)]',
                     liquidGlass
-                      ? 'border border-border/50 bg-background/80 shadow-lg backdrop-blur-sm'
-                      : 'border border-border bg-background shadow-md',
+                      ? 'border border-cosmic-border/50 bg-stellar-surface/80 shadow-[var(--shadow-lg)] backdrop-blur-[var(--blur-sm)]'
+                      : 'border border-cosmic-border bg-stellar-surface shadow-[var(--shadow-md)]',
 
                     // Enhanced: Motion and interaction
-                    'transition-all duration-200 ease-out',
+                    'transition-all duration-[var(--motion-duration-2)] ease-out',
                     'motion-reduce:transition-none',
 
                     // Foundation: AAA compliance
                     aaaMode &&
-                      'border-2 border-foreground bg-background contrast-more:bg-[ButtonFace]'
+                      'border-2 border-cosmic-foreground bg-stellar-surface contrast-more:bg-[ButtonFace]'
                   )}
                   role='status'
                   aria-live='polite'

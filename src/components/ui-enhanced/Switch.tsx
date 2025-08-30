@@ -1,18 +1,18 @@
 /**
- * Enhanced Switch Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Switch Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
+ * - MAPS4 Foundation: ✅ Deep space canvas with ethereal accents
+ * - Cosmic Innovation: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Tailwind Config → CSS Custom Properties → Component classes
  * - Enhanced Tokens → Semantic API → Component variants
- * - MAPS Guidelines → Component behavior → User experience
+ * - MAPS4 Guidelines → Component behavior → User experience
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -30,7 +30,7 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED SWITCH VARIANTS =====
 
 /**
- * Enhanced switch root variants following MAPS v2.2 foundation
+ * Enhanced switch root variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
  */
 const enhancedSwitchVariants = cva(
@@ -40,68 +40,68 @@ const enhancedSwitchVariants = cva(
     'rounded-full border-2 border-transparent',
 
     // Foundation: Motion - Respect user preferences
-    'transition-colors duration-200 ease-out',
+    'transition-colors duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: Focus states
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    'focus-visible:ring-offset-stellar-surface',
 
     // Foundation: States
-    'disabled:cursor-not-allowed disabled:opacity-50',
+    'disabled:cursor-not-allowed disabled:opacity-[var(--opacity-50)]',
 
-    // MAPS v2.2: Enhanced contrast for better visibility
-    'border-border bg-muted shadow-sm',
-    'hover:bg-muted/80',
+    // MAPS4 v4.0: Enhanced contrast for better visibility
+    'border-cosmic-border bg-cosmic-muted shadow-[var(--shadow-sm)]',
+    'hover:bg-cosmic-muted/80',
 
     // Enhanced: Checked state with strong semantic colors and glow
-    'data-[state=checked]:bg-accent',
-    'data-[state=checked]:hover:bg-accent-hover',
-    'data-[state=checked]:border-accent/50',
-    'data-[state=checked]:shadow-lg data-[state=checked]:shadow-accent/25',
+    'data-[state=checked]:bg-aurora-accent',
+    'data-[state=checked]:hover:bg-aurora-accent-hover',
+    'data-[state=checked]:border-aurora-accent/50',
+    'data-[state=checked]:shadow-[var(--shadow-lg)] data-[state=checked]:shadow-aurora-accent/25',
 
     // Additional contrast enhancement: Ring for unchecked state
-    'ring-1 ring-border/50 data-[state=checked]:ring-0',
+    'ring-1 ring-cosmic-border/50 data-[state=checked]:ring-0',
 
     // Enhanced: Focus ring - Semantic accent with proper contrast
-    'focus-visible:ring-accent',
+    'focus-visible:ring-aurora-accent',
   ],
   {
     variants: {
       size: {
-        default: ['h-5 w-9'],
-        sm: ['h-4 w-7'],
-        lg: ['h-6 w-11'],
+        default: ['h-[var(--space-5)] w-[var(--space-9)]'],
+        sm: ['h-[var(--space-4)] w-[var(--space-7)]'],
+        lg: ['h-[var(--space-6)] w-[var(--space-11)]'],
       },
       variant: {
         default: [],
         destructive: [
-          'data-[state=checked]:bg-destructive',
-          'data-[state=checked]:hover:bg-destructive/90',
-          'data-[state=checked]:border-destructive/50',
-          'data-[state=checked]:ring-1 data-[state=checked]:ring-destructive/30',
-          'data-[state=checked]:shadow-lg data-[state=checked]:shadow-destructive/25',
-          'focus-visible:ring-destructive',
+          'data-[state=checked]:bg-cosmic-feedback-error',
+          'data-[state=checked]:hover:bg-cosmic-feedback-error/90',
+          'data-[state=checked]:border-cosmic-feedback-error/50',
+          'data-[state=checked]:ring-1 data-[state=checked]:ring-cosmic-feedback-error/30',
+          'data-[state=checked]:shadow-[var(--shadow-lg)] data-[state=checked]:shadow-cosmic-feedback-error/25',
+          'focus-visible:ring-cosmic-feedback-error',
         ],
         success: [
-          'data-[state=checked]:bg-success',
-          'data-[state=checked]:hover:bg-success/90',
-          'data-[state=checked]:border-success/50',
-          'data-[state=checked]:ring-1 data-[state=checked]:ring-success/30',
-          'data-[state=checked]:shadow-lg data-[state=checked]:shadow-success/25',
-          'focus-visible:ring-success',
+          'data-[state=checked]:bg-cosmic-feedback-success',
+          'data-[state=checked]:hover:bg-cosmic-feedback-success/90',
+          'data-[state=checked]:border-cosmic-feedback-success/50',
+          'data-[state=checked]:ring-1 data-[state=checked]:ring-cosmic-feedback-success/30',
+          'data-[state=checked]:shadow-[var(--shadow-lg)] data-[state=checked]:shadow-cosmic-feedback-success/25',
+          'focus-visible:ring-cosmic-feedback-success',
         ],
         warning: [
-          'data-[state=checked]:bg-warning',
-          'data-[state=checked]:hover:bg-warning/90',
-          'data-[state=checked]:border-warning/50',
-          'data-[state=checked]:ring-1 data-[state=checked]:ring-warning/30',
-          'data-[state=checked]:shadow-lg data-[state=checked]:shadow-warning/25',
-          'focus-visible:ring-warning',
+          'data-[state=checked]:bg-cosmic-feedback-warning',
+          'data-[state=checked]:hover:bg-cosmic-feedback-warning/90',
+          'data-[state=checked]:border-cosmic-feedback-warning/50',
+          'data-[state=checked]:ring-1 data-[state=checked]:ring-cosmic-feedback-warning/30',
+          'data-[state=checked]:shadow-[var(--shadow-lg)] data-[state=checked]:shadow-cosmic-feedback-warning/25',
+          'focus-visible:ring-cosmic-feedback-warning',
         ],
       },
       density: {
-        comfortable: ['p-0.5'],
+        comfortable: ['p-[var(--space-0_5)]'],
         compact: ['p-0'],
       },
     },
@@ -119,29 +119,29 @@ const enhancedSwitchVariants = cva(
 const enhancedSwitchThumbVariants = cva(
   [
     // Foundation: Layout/shape with enhanced contrast
-    'pointer-events-none block rounded-full shadow-lg ring-0',
-    'border border-border/50 bg-background',
+    'pointer-events-none block rounded-full shadow-[var(--shadow-lg)] ring-0',
+    'border border-cosmic-border/50 bg-stellar-surface',
 
     // Foundation: Motion - Smooth data-driven transitions
-    'transition-all duration-200 ease-out',
+    'transition-all duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Enhanced: Transform states with proper positioning
-    'translate-x-0 data-[state=checked]:translate-x-4',
+    'translate-x-0 data-[state=checked]:translate-x-[var(--space-4)]',
 
     // Enhanced: Checked state styling for better visibility
-    'data-[state=checked]:border-transparent data-[state=checked]:bg-background',
-    'data-[state=checked]:shadow-xl',
+    'data-[state=checked]:border-transparent data-[state=checked]:bg-stellar-surface',
+    'data-[state=checked]:shadow-[var(--shadow-xl)]',
 
     // Additional contrast: Inner shadow for depth
-    'shadow-inner data-[state=checked]:shadow-md',
+    'shadow-inner data-[state=checked]:shadow-[var(--shadow-md)]',
   ],
   {
     variants: {
       size: {
-        default: ['h-4 w-4', 'data-[state=checked]:translate-x-4'],
-        sm: ['h-3 w-3', 'data-[state=checked]:translate-x-3'],
-        lg: ['h-5 w-5', 'data-[state=checked]:translate-x-5'],
+        default: ['h-[var(--space-4)] w-[var(--space-4)]', 'data-[state=checked]:translate-x-[var(--space-4)]'],
+        sm: ['h-[var(--space-3)] w-[var(--space-3)]', 'data-[state=checked]:translate-x-[var(--space-3)]'],
+        lg: ['h-[var(--space-5)] w-[var(--space-5)]', 'data-[state=checked]:translate-x-[var(--space-5)]'],
       },
     },
     defaultVariants: {
@@ -190,12 +190,12 @@ const EnhancedSwitch = React.forwardRef<
   const aaaClasses = aaaMode
     ? [
         // High contrast base styles
-        'bg-background border-2 border-foreground/20',
-        'data-[state=checked]:bg-foreground data-[state=checked]:border-foreground',
+        'bg-stellar-surface border-2 border-cosmic-border/20',
+        'data-[state=checked]:bg-cosmic-border data-[state=checked]:border-cosmic-border',
 
         // Enhanced focus and interaction
         'contrast-more:ring-4 contrast-more:border-4',
-        'contrast-more:ring-foreground contrast-more:border-foreground',
+        'contrast-more:ring-cosmic-border contrast-more:border-cosmic-border',
 
         // Stronger shadows for depth
         'shadow-lg data-[state=checked]:shadow-xl',
@@ -205,8 +205,8 @@ const EnhancedSwitch = React.forwardRef<
   // AAA thumb classes for better visibility
   const aaaThumbClasses = aaaMode
     ? [
-        'bg-foreground data-[state=checked]:bg-background',
-        'border-2 border-foreground data-[state=checked]:border-foreground',
+        'bg-cosmic-border data-[state=checked]:bg-stellar-surface',
+        'border-2 border-cosmic-border data-[state=checked]:border-cosmic-border',
         'shadow-xl',
       ].join(' ')
     : '';
@@ -234,7 +234,7 @@ EnhancedSwitch.displayName = 'EnhancedSwitch';
 
 /**
  * Enhanced Switch Factory Functions
- * @description Semantic constructors following MAPS v2.2 patterns
+ * @description Semantic constructors following MAPS4 v4.0 patterns
  */
 export const SwitchFactory = {
   /**

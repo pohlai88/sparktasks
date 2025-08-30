@@ -131,13 +131,19 @@ export function RailwayStationCard({
         {/* Station Details */}
         <div className="space-y-3">
           {/* Index */}
-          <div className="text-xs text-muted-foreground">
+          <div className={cn(
+            'text-xs',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>
             <strong>Position:</strong> {parsed.index + 1}
           </div>
 
           {/* ETA */}
           {parsed.eta && (
-            <div className="text-xs text-muted-foreground">
+            <div className={cn(
+              'text-xs',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+            )}>
               <strong>ETA:</strong> {parsed.eta}
             </div>
           )}
@@ -146,17 +152,26 @@ export function RailwayStationCard({
           {parsed.metrics && (
             <div className="space-y-1">
               {parsed.metrics.openIssues !== undefined && (
-                <div className="text-xs text-muted-foreground">
+                <div className={cn(
+                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                )}>
                   <strong>Open Issues:</strong> {parsed.metrics.openIssues}
                 </div>
               )}
               {parsed.metrics.risks !== undefined && (
-                <div className="text-xs text-muted-foreground">
+                <div className={cn(
+                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                )}>
                   <strong>Risks:</strong> {parsed.metrics.risks}
                 </div>
               )}
               {parsed.metrics.budgetVariancePct !== undefined && (
-                <div className="text-xs text-muted-foreground">
+                <div className={cn(
+                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                )}>
                   <strong>Budget Variance:</strong> {parsed.metrics.budgetVariancePct}%
                 </div>
               )}
@@ -167,12 +182,18 @@ export function RailwayStationCard({
           {parsed.links && (
             <div className="space-y-1">
               {parsed.links.href && (
-                <div className="text-xs text-muted-foreground">
+                <div className={cn(
+                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                )}>
                   <strong>Link:</strong> {parsed.links.href}
                 </div>
               )}
               {parsed.links.docIds && parsed.links.docIds.length > 0 && (
-                <div className="text-xs text-muted-foreground">
+                <div className={cn(
+                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                )}>
                   <strong>Documents:</strong> {parsed.links.docIds.join(", ")}
                 </div>
               )}
@@ -182,7 +203,10 @@ export function RailwayStationCard({
 
         {/* Action Buttons */}
         {onAction && (
-          <div className="flex space-x-2 pt-4 border-t border-border">
+          <div className={cn(
+            'flex space-x-2 pt-4 border-t',
+            ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+          )}>
             <button
               onClick={(e) => {
                 e.stopPropagation();

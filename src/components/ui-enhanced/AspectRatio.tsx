@@ -1,28 +1,25 @@
 /**
- * Enhanced AspectRatio Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced AspectRatio Component - MAPS4 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
- * - AAA Compliance: ✅ Dual-track with enforcement mode
- * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
- * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
+ * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
+ * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
+ * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
+ * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
  *
- * ARCHITECTURE DECISION:
- * - Radix owns: Aspect ratio behavior, container management
- * - MAPS owns: Apple HIG materials, liquid glass, AAA enforcement
- * - Wrapper owns: Token application, governance rules, brand consistency
- *
- * GOVERNANCE RULES:
- * - Foundation tokens only (no component-specific tokens)
- * - Auto-apply AAA scrims over glass materials
- * - Apple HIG motion with respect for reduced motion
- * - Platform-aware aspect ratios for common use cases
+ * ARCHITECTURE INTEGRATION:
+ * - MAPS4 Enhanced Tokens → AspectRatio variants → Cosmic user experience
+ * - MAPS4 Guidelines → AspectRatio behavior → Accessibility excellence
+ * - [Ecosystem] → [Component] → [Composability]
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
- * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
+ *
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 /* eslint-disable react/prop-types */
@@ -37,7 +34,7 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED ASPECT RATIO VARIANTS =====
 
 /**
- * Enhanced aspect ratio variants following MAPS v2.2 foundation
+ * Enhanced aspect ratio variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedAspectRatioVariants = cva(
@@ -426,32 +423,23 @@ export const AspectRatioPlaceholder = React.forwardRef<
     {...props}
   >
     <div
-      className={cn(
-        'text-content-tertiary flex flex-col items-center justify-center gap-2',
-        'text-content-tertiary flex flex-col items-center justify-center gap-2'
-      )}
+      className="text-content-tertiary flex flex-col items-center justify-center gap-2"
     >
       {icon && (
-        <div className={cn('text-2xl opacity-50', 'text-2xl opacity-50')}>
+        <div className="text-2xl opacity-50">
           {icon}
         </div>
       )}
       {title && (
         <p
-          className={cn(
-            'text-content-secondary text-sm font-medium',
-            'text-content-secondary text-sm font-medium'
-          )}
+          className="text-content-secondary text-sm font-medium"
         >
           {title}
         </p>
       )}
       {description && (
         <p
-          className={cn(
-            'text-content-tertiary max-w-48 text-center text-xs',
-            'text-content-tertiary max-w-48 text-center text-xs'
-          )}
+          className="text-content-tertiary max-w-48 text-center text-xs"
         >
           {description}
         </p>

@@ -1,23 +1,23 @@
 /**
- * Enhanced Checkbox Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Checkbox Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
+ * - MAPS4 Foundation: ✅ Deep space canvas with ethereal accents
+ * - Cosmic Innovation: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Radix owns: Behavior, ARIA, focus management, state management
- * - MAPS owns: Apple HIG materials, liquid glass, AAA enforcement
+ * - MAPS4 owns: Cosmic materials, liquid glass, AAA enforcement
  * - Wrapper owns: Token application, governance rules, brand consistency
  *
  * GOVERNANCE RULES:
  * - Foundation tokens only (no component-specific tokens)
  * - Auto-apply AAA scrims over glass materials
- * - Apple HIG motion with respect for reduced motion
+ * - Cosmic motion with respect for reduced motion
  * - Platform-aware touch targets (44px minimum)
  *
  * RESOLUTION MODEL:
@@ -37,42 +37,42 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED CHECKBOX VARIANTS =====
 
 /**
- * Enhanced checkbox variants following MAPS v2.2 foundation
+ * Enhanced checkbox variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
  */
 const enhancedCheckboxVariants = cva(
   [
     // Foundation: Layout - Square aspect ratio with proper sizing
     'flex items-center justify-center',
-    'h-4 w-4',
+    'h-[var(--space-4)] w-[var(--space-4)]',
     'shrink-0',
 
-    // Foundation: Shape - Apple HIG rounded corners
-    'rounded-sm',
+    // Foundation: Shape - Cosmic rounded corners
+    'rounded-[var(--radius-sm)]',
 
     // Foundation: Border system - Clean, systematic
-    'border-2 border-border',
+    'border-2 border-cosmic-border',
 
     // Foundation: States - Systematic visual feedback
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    'data-[state=checked]:border-accent data-[state=indeterminate]:border-accent',
+    'disabled:cursor-not-allowed disabled:opacity-[var(--opacity-50)]',
+    'data-[state=checked]:border-aurora-accent data-[state=indeterminate]:border-aurora-accent',
 
-    // Foundation: Apple HIG interaction patterns
-    'transition-all duration-200 ease-out',
+    // Foundation: Cosmic interaction patterns
+    'transition-all duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: Focus - AAA compliant ring system
     'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    'focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
+    'focus-visible:ring-offset-stellar-surface',
 
     // Foundation: Touch targets - 44px minimum (expanded hit area)
     'relative',
     'before:absolute before:inset-[-12px] before:content-[""]',
-    'pointer:hover:before:rounded-md pointer:hover:before:bg-accent/10',
+    'pointer:hover:before:rounded-[var(--radius-md)] pointer:hover:before:bg-aurora-accent/10',
 
     // Foundation: Platform awareness - Pointer-only hover states
-    'pointer:hover:border-accent/70',
+    'pointer:hover:border-aurora-accent/70',
     'active:scale-95',
   ],
   {
@@ -80,50 +80,50 @@ const enhancedCheckboxVariants = cva(
       variant: {
         // Default: Clean accent styling with systematic feedback
         default: [
-          'bg-background',
-          'data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground',
-          'data-[state=indeterminate]:bg-accent data-[state=indeterminate]:text-accent-foreground',
-          'pointer:hover:bg-accent/5',
+          'bg-stellar-surface',
+          'data-[state=checked]:bg-aurora-accent data-[state=checked]:text-aurora-accent-foreground',
+          'data-[state=indeterminate]:bg-aurora-accent data-[state=indeterminate]:text-aurora-accent-foreground',
+          'pointer:hover:bg-aurora-accent/5',
         ],
 
         // Ghost: Subtle, muted styling
         ghost: [
-          'border-muted-foreground/30 bg-transparent',
-          'data-[state=checked]:border-muted-foreground data-[state=checked]:bg-muted',
-          'data-[state=checked]:text-foreground',
-          'data-[state=indeterminate]:border-muted-foreground data-[state=indeterminate]:bg-muted',
-          'data-[state=indeterminate]:text-foreground',
-          'pointer:hover:border-muted-foreground/50 pointer:hover:bg-muted/20',
+          'border-cosmic-muted-foreground/30 bg-transparent',
+          'data-[state=checked]:border-cosmic-muted-foreground data-[state=checked]:bg-cosmic-muted',
+          'data-[state=checked]:text-cosmic-foreground',
+          'data-[state=indeterminate]:border-cosmic-muted-foreground data-[state=indeterminate]:bg-cosmic-muted',
+          'data-[state=indeterminate]:text-cosmic-foreground',
+          'pointer:hover:border-cosmic-muted-foreground/50 pointer:hover:bg-cosmic-muted/20',
         ],
 
         // Glass: Liquid glass material with governed vibrancy
         glass: [
-          'backdrop-blur-sm backdrop-saturate-150',
-          'border-border/60 bg-background/60',
-          'data-[state=checked]:border-accent data-[state=checked]:bg-accent/90',
-          'data-[state=checked]:text-accent-foreground',
-          'data-[state=indeterminate]:border-accent data-[state=indeterminate]:bg-accent/90',
-          'data-[state=indeterminate]:text-accent-foreground',
-          'pointer:hover:border-border/80 pointer:hover:bg-background/80',
+          'backdrop-blur-[var(--blur-sm)] backdrop-saturate-[var(--saturate-150)]',
+          'border-cosmic-border/60 bg-stellar-surface/60',
+          'data-[state=checked]:border-aurora-accent data-[state=checked]:bg-aurora-accent/90',
+          'data-[state=checked]:text-aurora-accent-foreground',
+          'data-[state=indeterminate]:border-aurora-accent data-[state=indeterminate]:bg-aurora-accent/90',
+          'data-[state=indeterminate]:text-aurora-accent-foreground',
+          'pointer:hover:border-cosmic-border/80 pointer:hover:bg-stellar-surface/80',
         ],
       },
 
       size: {
         // Small: 16px (4 units in 8pt grid)
         sm: [
-          'h-3 w-3',
+          'h-[var(--space-3)] w-[var(--space-3)]',
           'before:inset-[-14px]', // Maintain 44px touch target
         ],
 
         // Default: 16px (4 units in 8pt grid)
         default: [
-          'h-4 w-4',
+          'h-[var(--space-4)] w-[var(--space-4)]',
           'before:inset-[-12px]', // 44px touch target (16 + 24 = 40, close to 44)
         ],
 
         // Large: 20px (5 units in 8pt grid)
         lg: [
-          'h-5 w-5',
+          'h-[var(--space-5)] w-[var(--space-5)]',
           'before:inset-[-12px]', // Maintain adequate touch target
         ],
       },
@@ -131,19 +131,19 @@ const enhancedCheckboxVariants = cva(
       validation: {
         none: '',
         error: [
-          'border-destructive',
-          'data-[state=checked]:border-destructive data-[state=checked]:bg-destructive',
-          'focus-visible:ring-destructive',
+          'border-cosmic-feedback-error',
+          'data-[state=checked]:border-cosmic-feedback-error data-[state=checked]:bg-cosmic-feedback-error',
+          'focus-visible:ring-cosmic-feedback-error',
         ],
         success: [
-          'border-success',
-          'data-[state=checked]:border-success data-[state=checked]:bg-success',
-          'focus-visible:ring-success',
+          'border-cosmic-feedback-success',
+          'data-[state=checked]:border-cosmic-feedback-success data-[state=checked]:bg-cosmic-feedback-success',
+          'focus-visible:ring-cosmic-feedback-success',
         ],
         warning: [
-          'border-warning',
-          'data-[state=checked]:border-warning data-[state=checked]:bg-warning',
-          'focus-visible:ring-warning',
+          'border-cosmic-feedback-warning',
+          'data-[state=checked]:border-cosmic-feedback-warning data-[state=checked]:bg-cosmic-feedback-warning',
+          'focus-visible:ring-cosmic-feedback-warning',
         ],
       },
     },
@@ -164,16 +164,16 @@ const enhancedCheckboxIndicatorVariants = cva(
     'flex items-center justify-center',
     'text-current',
 
-    // Foundation: Animation - Apple-calm entrance
-    'animate-in zoom-in-50 duration-200',
+    // Foundation: Animation - Cosmic-calm entrance
+    'animate-in zoom-in-50 duration-[var(--motion-duration-2)]',
     'motion-reduce:animate-none',
   ],
   {
     variants: {
       size: {
-        sm: 'h-2.5 w-2.5', // 10px icons for 12px checkbox
-        default: 'h-3 w-3', // 12px icons for 16px checkbox
-        lg: 'h-3.5 w-3.5', // 14px icons for 20px checkbox
+        sm: 'h-[var(--space-2_5)] w-[var(--space-2_5)]', // 10px icons for 12px checkbox
+        default: 'h-[var(--space-3)] w-[var(--space-3)]', // 12px icons for 16px checkbox
+        lg: 'h-[var(--space-3_5)] w-[var(--space-3_5)]', // 14px icons for 20px checkbox
       },
     },
     defaultVariants: {
@@ -185,7 +185,7 @@ const enhancedCheckboxIndicatorVariants = cva(
 // ===== ENHANCED CHECKBOX COMPONENTS =====
 
 /**
- * Enhanced Checkbox Root - Radix primitive with MAPS v2.2 compliance
+ * Enhanced Checkbox Root - Radix primitive with MAPS4 v4.0 compliance
  */
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
@@ -205,9 +205,9 @@ const Checkbox = React.forwardRef<
     >
       {/* Conditional rendering based on checkbox state */}
       {props.checked === 'indeterminate' ? (
-        <Minus className={cn('h-full w-full', 'h-full w-full')} />
+        <Minus className="size-full" />
       ) : (
-        <Check className={cn('h-full w-full', 'h-full w-full')} />
+        <Check className="size-full" />
       )}
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
@@ -270,22 +270,22 @@ const CheckboxWithLabel = React.forwardRef<
       <label
         htmlFor={checkboxId}
         className={cn(
-          // Foundation: Typography - Apple HIG body text
-          'text-sm font-medium text-foreground',
+          // Foundation: Typography - Cosmic body text
+          'text-[var(--font-size-sm)] font-[var(--font-weight-medium)] text-cosmic-foreground',
           'cursor-pointer select-none',
 
           // Foundation: Disabled state
-          props.disabled && 'cursor-not-allowed opacity-50',
+          props.disabled && 'cursor-not-allowed opacity-[var(--opacity-50)]',
 
           // Foundation: Required indicator
-          "after:ml-1 after:content-['']",
-          required && "after:text-destructive after:content-['*']",
+          "after:ml-[var(--space-1)] after:content-['']",
+          required && "after:text-cosmic-feedback-error after:content-['*']",
 
           // Foundation: Touch targets for mobile
           'flex min-h-[44px] items-center',
 
           // Foundation: Spacing based on position
-          labelPosition === 'right' ? 'ml-2' : 'order-1 mr-2'
+          labelPosition === 'right' ? 'ml-[var(--space-2)]' : 'order-1 mr-[var(--space-2)]'
         )}
       >
         {label}
@@ -296,9 +296,9 @@ const CheckboxWithLabel = React.forwardRef<
       <p
         id={descriptionId}
         className={cn(
-          'text-xs text-muted-foreground',
-          'mt-1',
-          props.disabled && 'opacity-50',
+          'text-[var(--font-size-xs)] text-cosmic-muted-foreground',
+          'mt-[var(--space-1)]',
+          props.disabled && 'opacity-[var(--opacity-50)]',
           labelPosition === 'left' && 'order-2'
         )}
       >
@@ -374,15 +374,15 @@ const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>(
       [ariaDescribedBy, descriptionId].filter(Boolean).join(' ') || undefined;
 
     return (
-      <div className={cn('space-y-3', className)} {...props}>
+      <div className={cn('space-y-[var(--space-3)]', className)} {...props}>
         {label && (
           <label
             id={labelId}
             className={cn(
-              'text-sm font-medium text-foreground',
+              'text-[var(--font-size-sm)] font-[var(--font-weight-medium)] text-cosmic-foreground',
               "after:content-['']",
               required &&
-                "after:ml-1 after:text-destructive after:content-['*']"
+                "after:ml-[var(--space-1)] after:text-cosmic-feedback-error after:content-['*']"
             )}
           >
             {label}
@@ -393,8 +393,7 @@ const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>(
           <p
             id={descriptionId}
             className={cn(
-              'text-xs text-muted-foreground',
-              'text-xs text-muted-foreground'
+              'text-[var(--font-size-xs)] text-cosmic-muted-foreground'
             )}
           >
             {description}
@@ -407,7 +406,7 @@ const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>(
           aria-labelledby={combinedAriaLabelledBy}
           aria-describedby={combinedAriaDescribedBy}
           className={cn(
-            'flex gap-4',
+            'flex gap-[var(--space-4)]',
             orientation === 'vertical' ? 'flex-col' : 'flex-row flex-wrap'
           )}
         >

@@ -1,18 +1,18 @@
 /**
- * Enhanced Separator Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Separator Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Radix Separator → Behavior, ARIA, semantic roles
- * - MAPS v2.2 → Apple HIG spacing, liquid glass, AAA enforcement
- * - Enhanced Tokens → Dark-first aesthetic with systematic spacing
+ * - MAPS4 → Apple HIG spacing, liquid glass, AAA enforcement
+ * - Enhanced Tokens → Deep space aesthetic with systematic spacing
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -45,56 +45,56 @@ const enhancedSeparatorVariants = cva(
     'shrink-0',
 
     // Foundation: Color - Using design tokens from Tailwind config
-    'bg-border',
+    'bg-cosmic-border',
 
     // Foundation: Motion - Respect user preferences
-    'transition-colors duration-200 ease-out',
+    'transition-colors duration-[var(--motion-duration-2)] ease-out',
     'motion-reduce:transition-none',
 
     // Foundation: States - AAA compliant states
-    'data-[disabled]:opacity-50',
+    'data-[disabled]:opacity-[var(--opacity-50)]',
 
     // Foundation: Focus - ARIA-compliant separator doesn't receive focus by default
     // But can be made focusable for navigation purposes when role="separator"
     'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    'focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
   ],
   {
     variants: {
       variant: {
         // Default: Subtle border using design tokens
-        default: ['bg-border'],
+        default: ['bg-cosmic-border'],
 
         // Strong: More prominent separator for major sections
-        strong: ['bg-border-strong'],
+        strong: ['bg-cosmic-border-strong'],
 
         // Accent: Brand-colored separator for emphasis
-        accent: ['bg-accent'],
+        accent: ['bg-aurora-accent'],
 
         // Glass: Liquid glass separator with vibrancy
         glass: [
-          'bg-border/60',
-          'backdrop-blur-[8px] backdrop-saturate-[135%]',
+          'bg-cosmic-border/60',
+          'backdrop-blur-[var(--blur-8)] backdrop-saturate-[var(--saturate-135)]',
           'shadow-[0_1px_3px_rgba(0,0,0,0.2)]',
         ],
 
-        // Ethereal: Beautiful ethereal accent following MAPS v2.2
+        // Ethereal: Beautiful ethereal accent following MAPS4
         ethereal: [
-          'bg-gradient-to-r from-accent/20 via-accent to-accent/20',
+          'bg-gradient-to-r from-aurora-accent/20 via-aurora-accent to-aurora-accent/20',
           'shadow-[0_0_8px_rgba(124,196,255,0.2)]',
         ],
 
         // Dotted: Subtle dotted pattern for flexible sections
         dotted: [
           'bg-transparent',
-          'border-t border-dotted border-border',
+          'border-t border-dotted border-cosmic-border',
           'bg-none',
         ],
 
         // Dashed: Dashed pattern for temporary or draft sections
         dashed: [
           'bg-transparent',
-          'border-t border-dashed border-border',
+          'border-t border-dashed border-cosmic-border',
           'bg-none',
         ],
       },
@@ -115,16 +115,16 @@ const enhancedSeparatorVariants = cva(
         none: 'm-0',
 
         // Small: Compact vertical spacing
-        sm: 'my-2',
+        sm: 'my-[var(--space-2)]',
 
         // Default: Standard Apple HIG spacing
-        default: 'my-4',
+        default: 'my-[var(--space-4)]',
 
         // Large: Generous spacing for major sections
-        lg: 'my-6',
+        lg: 'my-[var(--space-6)]',
 
         // Extra large: Maximum spacing for chapter-level divisions
-        xl: 'my-8',
+        xl: 'my-[var(--space-8)]',
       },
 
       decoration: {
@@ -135,17 +135,17 @@ const enhancedSeparatorVariants = cva(
         glow: [
           'shadow-[0_0_12px_rgba(124,196,255,0.15)]',
           'relative',
-          'before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-accent/10 before:to-transparent',
+          'before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-aurora-accent/10 before:to-transparent',
         ],
 
         // Gradient: Sophisticated gradient effect
         gradient: [
-          'bg-gradient-to-r from-transparent via-border to-transparent',
+          'bg-gradient-to-r from-transparent via-cosmic-border to-transparent',
         ],
 
         // Fade: Fade-out edges for organic feel
         fade: [
-          'bg-gradient-to-r from-transparent via-border to-transparent',
+          'bg-gradient-to-r from-transparent via-cosmic-border to-transparent',
           'mask-image:linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
         ],
       },
@@ -154,7 +154,7 @@ const enhancedSeparatorVariants = cva(
       aaa: {
         false: '',
         true: [
-          '!bg-[#666666]', // 7:1 contrast with dark background
+          '!bg-cosmic-aaa', // 7:1 contrast with dark background
           '!shadow-none', // Remove decorative shadows
           '!backdrop-blur-none', // Remove vibrancy effects
         ],
@@ -165,7 +165,7 @@ const enhancedSeparatorVariants = cva(
       {
         variant: 'glass',
         aaa: true,
-        className: '!bg-border !shadow-none !backdrop-blur-none',
+        className: '!bg-cosmic-border !shadow-none !backdrop-blur-none',
       },
 
       // Ethereal variant with AAA override
@@ -173,7 +173,7 @@ const enhancedSeparatorVariants = cva(
         variant: 'ethereal',
         aaa: true,
         className:
-          '!bg-[#666666] !from-transparent !via-transparent !to-transparent !shadow-none',
+          '!bg-cosmic-aaa !from-transparent !via-transparent !to-transparent !shadow-none',
       },
     ],
     defaultVariants: {
@@ -205,21 +205,27 @@ function getOrientationClasses(
   // Handle sizing based on orientation
   if (orientation === 'horizontal') {
     switch (size) {
-      case 'thin':
-        return 'h-px';
-      case 'thick':
-        return 'h-0.5';
-      default:
-        return 'h-px';
+      case 'thin': {
+        return 'h-[var(--stroke-1)]';
+      }
+      case 'thick': {
+        return 'h-[var(--space-2)]';
+      }
+      default: {
+        return 'h-[var(--stroke-1)]';
+      }
     }
   } else {
     switch (size) {
-      case 'thin':
-        return 'w-px';
-      case 'thick':
-        return 'w-0.5';
-      default:
-        return 'w-px';
+      case 'thin': {
+        return 'w-[var(--stroke-1)]';
+      }
+      case 'thick': {
+        return 'w-[var(--space-2)]';
+      }
+      default: {
+        return 'w-[var(--stroke-1)]';
+      }
     }
   }
 }
@@ -431,10 +437,10 @@ const SeparatorWithContent = React.forwardRef<
         className={cn(
           'relative flex items-center',
           spacing === 'none' && 'my-0',
-          spacing === 'sm' && 'my-2',
-          spacing === 'default' && 'my-4',
-          spacing === 'lg' && 'my-6',
-          spacing === 'xl' && 'my-8',
+          spacing === 'sm' && 'my-[var(--space-2)]',
+          spacing === 'default' && 'my-[var(--space-4)]',
+          spacing === 'lg' && 'my-[var(--space-6)]',
+          spacing === 'xl' && 'my-[var(--space-8)]',
           className
         )}
         data-testid={dataTestId}
@@ -451,10 +457,10 @@ const SeparatorWithContent = React.forwardRef<
         {/* Content container */}
         <div
           className={cn(
-            'flex shrink-0 items-center px-4',
-            'text-sm font-medium text-muted-foreground',
+            'flex shrink-0 items-center px-[var(--space-4)]',
+            'text-[var(--font-size-sm)] font-[var(--font-weight-medium)] text-cosmic-muted',
             // AAA compliance for text content
-            aaa && 'text-[#ffffff]'
+            aaa && 'text-cosmic-aaa'
           )}
         >
           {children}

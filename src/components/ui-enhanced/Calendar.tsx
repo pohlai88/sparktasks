@@ -731,13 +731,14 @@ export const formatCalendarDate = (
   format: 'short' | 'long' | 'iso' = 'short'
 ): string => {
   switch (format) {
-    case 'long':
+    case 'long': {
       return date.toLocaleDateString('en-US', {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
         day: 'numeric',
       });
+    }
     case 'iso': {
       // Fix: Ensure proper UTC date formatting without timezone offset issues
       const year = date.getFullYear();
@@ -745,9 +746,9 @@ export const formatCalendarDate = (
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
     }
-    case 'short':
-    default:
+    default: {
       return date.toLocaleDateString();
+    }
   }
 };
 

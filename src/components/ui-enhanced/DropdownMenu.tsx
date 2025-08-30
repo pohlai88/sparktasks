@@ -1,27 +1,25 @@
 /**
- * Enhanced DropdownMenu Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced DropdownMenu Component - MAPS4 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
- * - AAA Compliance: ✅ Dual-track with enforcement mode
- * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
- * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
+ * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
+ * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
+ * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
+ * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
- * - Radix DropdownMenu → Behavior, ARIA, focus management, positioning
- * - MAPS v2.2 → Apple HIG materials, liquid glass, AAA enforcement
- * - Enhanced Tokens → Dark-first aesthetic with systematic spacing
+ * - MAPS4 Enhanced Tokens → DropdownMenu variants → Cosmic user experience
+ * - MAPS4 Guidelines → DropdownMenu behavior → Accessibility excellence
+ * - [Ecosystem] → [Component] → [Composability]
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
- * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
  *
- * MATERIALS & VIBRANCY GOVERNANCE:
- * - Liquid glass effects only on surfaces (never on content)
- * - AAA text scrims for content protection
- * - Systematic opacity levels with backdrop governance
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
@@ -34,7 +32,7 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED DROPDOWN MENU VARIANTS =====
 
 /**
- * Enhanced dropdown menu content variants following MAPS v2.2 foundation
+ * Enhanced dropdown menu content variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced-tokens CSS custom properties
  */
 const enhancedDropdownMenuContentVariants = cva(
@@ -338,19 +336,9 @@ const DropdownMenuCheckboxItem = React.forwardRef<
     checked={checked}
     {...props}
   >
-    <span
-      className={cn(
-        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
-        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center'
-      )}
-    >
+          <span className="absolute left-2 flex size-3.5 items-center justify-center">
       <DropdownMenuPrimitive.ItemIndicator>
-        <Check
-          className={cn(
-            'h-4 w-4 text-accent-foreground',
-            'h-4 w-4 text-accent-foreground'
-          )}
-        />
+        <Check className="size-4 text-accent-foreground" />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -379,21 +367,11 @@ const DropdownMenuRadioItem = React.forwardRef<
     )}
     {...props}
   >
-    <span
-      className={cn(
-        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center',
-        'absolute left-2 flex h-3.5 w-3.5 items-center justify-center'
-      )}
-    >
-      <DropdownMenuPrimitive.ItemIndicator>
-        <Circle
-          className={cn(
-            'h-2 w-2 fill-current text-accent-foreground',
-            'h-2 w-2 fill-current text-accent-foreground'
-          )}
-        />
-      </DropdownMenuPrimitive.ItemIndicator>
-    </span>
+          <span className="absolute left-2 flex size-3.5 items-center justify-center">
+        <DropdownMenuPrimitive.ItemIndicator>
+          <Circle className="size-2 fill-current text-accent-foreground" />
+        </DropdownMenuPrimitive.ItemIndicator>
+      </span>
     {children}
   </DropdownMenuPrimitive.RadioItem>
 ));
@@ -465,7 +443,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <ChevronRight className={cn('ml-auto h-4 w-4', 'ml-auto h-4 w-4')} />
+    <ChevronRight className="ml-auto size-4" />
   </DropdownMenuPrimitive.SubTrigger>
 ));
 DropdownMenuSubTrigger.displayName =
@@ -536,17 +514,19 @@ const createDropdownMenu = ({
           const key = `item-${index}`;
 
           switch (item.type) {
-            case 'separator':
+            case 'separator': {
               return <DropdownMenuSeparator key={key} />;
+            }
 
-            case 'label':
+            case 'label': {
               return (
                 <DropdownMenuLabel key={key} inset={item.inset ?? false}>
                   {item.content}
                 </DropdownMenuLabel>
               );
+            }
 
-            case 'checkbox':
+            case 'checkbox': {
               if (!item.onClick) {
                 return (
                   <DropdownMenuCheckboxItem
@@ -576,8 +556,9 @@ const createDropdownMenu = ({
                   )}
                 </DropdownMenuCheckboxItem>
               );
+            }
 
-            case 'radio':
+            case 'radio': {
               if (!item.onClick) {
                 return (
                   <DropdownMenuRadioItem
@@ -607,8 +588,9 @@ const createDropdownMenu = ({
                   )}
                 </DropdownMenuRadioItem>
               );
+            }
 
-            default: // 'item'
+            default: { // 'item'
               if (!item.onClick) {
                 return (
                   <DropdownMenuItem
@@ -642,6 +624,7 @@ const createDropdownMenu = ({
                   )}
                 </DropdownMenuItem>
               );
+            }
           }
         })}
       </DropdownMenuContent>

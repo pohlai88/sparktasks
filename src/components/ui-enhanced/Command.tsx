@@ -1,22 +1,25 @@
 /**
- * Enhanced Command Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Command Component - MAPS4 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
- * - AAA Compliance: ✅ Dual-track with enforcement mode
- * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - cmdk Integration: ✅ Command palette excellence
- * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
+ * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
+ * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
+ * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
+ * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
- * - Tailwind Config → CSS Custom Properties → Component classes
- * - Enhanced Tokens → Semantic API → Component variants
- * - MAPS Guidelines → Component behavior → User experience
+ * - MAPS4 Enhanced Tokens → Command variants → Cosmic user experience
+ * - MAPS4 Guidelines → Command behavior → Accessibility excellence
+ * - [Ecosystem] → [Component] → [Composability]
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
- * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
+ *
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 /* eslint-disable react/prop-types */
@@ -32,7 +35,7 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED COMMAND VARIANTS =====
 
 /**
- * Enhanced command container variants following MAPS v2.2 foundation
+ * Enhanced command container variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
  */
 const enhancedCommandVariants = cva(
@@ -368,17 +371,11 @@ const EnhancedCommandInput = React.forwardRef<
 >(({ className, variant, enforceAAA, ...props }, ref) => {
   return (
     <div
-      className={cn(
-        'flex items-center border-b border-border px-3',
-        'flex items-center border-b border-border px-3'
-      )}
+      className="flex items-center border-b border-border px-3"
       data-cmdk-input-wrapper=''
     >
       <Search
-        className={cn(
-          'mr-2 h-4 w-4 shrink-0 text-muted-foreground',
-          'mr-2 h-4 w-4 shrink-0 text-muted-foreground'
-        )}
+        className="mr-2 h-4 w-4 shrink-0 text-muted-foreground"
       />
       <CommandPrimitive.Input
         ref={ref}

@@ -1,18 +1,18 @@
 /**
- * Enhanced Skeleton Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Skeleton Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
  * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
+ * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
  * - Tailwind Config → CSS Custom Properties → Component classes
  * - Enhanced Tokens → Semantic API → Component variants
- * - MAPS Guidelines → Component behavior → User experience
+ * - MAPS4 Guidelines → Component behavior → User experience
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -30,7 +30,7 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED SKELETON VARIANTS =====
 
 /**
- * Enhanced skeleton variants following MAPS v2.2 foundation
+ * Enhanced skeleton variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
  */
 const enhancedSkeletonVariants = cva(
@@ -39,8 +39,8 @@ const enhancedSkeletonVariants = cva(
     'relative overflow-hidden',
     'rounded-md',
 
-    // Foundation: Background colors using semantic tokens
-    'bg-muted',
+    // Foundation: Background colors using MAPS4 cosmic tokens
+    'bg-aurora-accent',
 
     // Foundation: Pulse animation for loading indication
     'animate-pulse',
@@ -58,22 +58,22 @@ const enhancedSkeletonVariants = cva(
         default: [],
 
         // Text: Text line skeleton with proper proportions
-        text: ['h-4 rounded'],
+        text: ['h-[var(--space-4)] rounded'],
 
         // Avatar: Circular skeleton for profile images
         avatar: ['rounded-full'],
 
         // Button: Button-shaped skeleton
-        button: ['h-10 rounded-md'],
+        button: ['h-[var(--btn-h-md)] rounded-md'],
 
         // Card: Card skeleton with proper proportions
         card: ['rounded-lg'],
 
         // Input: Input field skeleton
-        input: ['h-10 rounded-md'],
+        input: ['h-[var(--btn-h-md)] rounded-md'],
 
         // Badge: Small badge skeleton
-        badge: ['h-5 rounded-full'],
+        badge: ['h-[var(--space-5)] rounded-full'],
       },
 
       size: {
@@ -103,12 +103,12 @@ const enhancedSkeletonVariants = cva(
       },
 
       surface: {
-        elevated: ['bg-background-elevated'],
-        panel: ['bg-background-panel'],
-        glass: ['bg-background/50 backdrop-blur-sm', 'border border-border/30'],
+        elevated: ['bg-stellar-surface-elevated'],
+        panel: ['bg-stellar-surface-panel'],
+        glass: ['bg-stellar-surface/50 backdrop-blur-[var(--blur-sm)]', 'border border-cosmic-border/30'],
         floating: [
-          'bg-background/40 backdrop-blur-md',
-          'border border-border/20',
+          'bg-stellar-surface/40 backdrop-blur-[var(--blur-md)]',
+          'border border-cosmic-border/20',
           'shadow-elevation-floating',
         ],
       },
@@ -120,7 +120,7 @@ const enhancedSkeletonVariants = cva(
 
       enforceAAA: {
         false: '',
-        true: ['aaa:bg-muted-aaa', 'aaa:border-border-aaa'],
+        true: ['aaa:bg-aurora-accent-aaa', 'aaa:border-cosmic-border-aaa'],
       },
     },
 
@@ -129,117 +129,117 @@ const enhancedSkeletonVariants = cva(
       {
         variant: 'text',
         size: 'sm',
-        className: 'h-3',
+        className: 'h-[var(--space-3)]',
       },
       {
         variant: 'text',
         size: 'md',
-        className: 'h-4',
+        className: 'h-[var(--space-4)]',
       },
       {
         variant: 'text',
         size: 'lg',
-        className: 'h-5',
+        className: 'h-[var(--space-5)]',
       },
       {
         variant: 'text',
         size: 'xl',
-        className: 'h-6',
+        className: 'h-[var(--space-6)]',
       },
 
       // Avatar size variants
       {
         variant: 'avatar',
         size: 'sm',
-        className: 'h-8 w-8',
+        className: 'size-[var(--space-8)]',
       },
       {
         variant: 'avatar',
         size: 'md',
-        className: 'h-10 w-10',
+        className: 'size-[var(--space-10)]',
       },
       {
         variant: 'avatar',
         size: 'lg',
-        className: 'h-12 w-12',
+        className: 'size-[var(--space-12)]',
       },
       {
         variant: 'avatar',
         size: 'xl',
-        className: 'h-16 w-16',
+        className: 'size-[var(--space-16)]',
       },
 
       // Button size variants
       {
         variant: 'button',
         size: 'sm',
-        className: 'h-8',
+        className: 'h-[var(--btn-h-sm)]',
       },
       {
         variant: 'button',
         size: 'md',
-        className: 'h-10',
+        className: 'h-[var(--btn-h-md)]',
       },
       {
         variant: 'button',
         size: 'lg',
-        className: 'h-12',
+        className: 'h-[var(--btn-h-lg)]',
       },
       {
         variant: 'button',
         size: 'xl',
-        className: 'h-14',
+        className: 'h-[var(--btn-h-xl)]',
       },
 
       // Card size variants
       {
         variant: 'card',
         size: 'sm',
-        className: 'h-32',
+        className: 'h-[var(--space-32)]',
       },
       {
         variant: 'card',
         size: 'md',
-        className: 'h-48',
+        className: 'h-[var(--space-48)]',
       },
       {
         variant: 'card',
         size: 'lg',
-        className: 'h-64',
+        className: 'h-[var(--space-64)]',
       },
       {
         variant: 'card',
         size: 'xl',
-        className: 'h-80',
+        className: 'h-[var(--space-80)]',
       },
 
       // Badge size variants
       {
         variant: 'badge',
         size: 'sm',
-        className: 'h-4 w-12',
+        className: 'h-[var(--space-4)] w-[var(--space-12)]',
       },
       {
         variant: 'badge',
         size: 'md',
-        className: 'h-5 w-16',
+        className: 'h-[var(--space-5)] w-[var(--space-16)]',
       },
       {
         variant: 'badge',
         size: 'lg',
-        className: 'h-6 w-20',
+        className: 'h-[var(--space-6)] w-[var(--space-20)]',
       },
 
       // Surface + AAA combinations
       {
         surface: 'elevated',
         enforceAAA: true,
-        className: 'aaa:bg-background-elevated-aaa',
+        className: 'aaa:bg-stellar-surface-elevated-aaa',
       },
       {
         surface: 'glass',
         enforceAAA: true,
-        className: 'aaa:bg-background-aaa/50 aaa:border-border-aaa/30',
+        className: 'aaa:bg-stellar-surface-aaa/50 aaa:border-cosmic-border-aaa/30',
       },
 
       // Animation + motion preferences
@@ -499,7 +499,7 @@ const SkeletonTextLines = React.forwardRef<
   const { 'data-testid': testId, ...skeletonProps } = props;
 
   return (
-    <div ref={ref} className={cn('space-y-2', className)} data-testid={testId}>
+    <div ref={ref} className={cn('space-y-[var(--space-2)]', className)} data-testid={testId}>
       {Array.from({ length: lines }).map((_, index) => (
         <EnhancedSkeleton
           key={index}
@@ -528,22 +528,17 @@ const SkeletonCard = React.forwardRef<HTMLDivElement, SkeletonCardProps>(
     const { 'data-testid': testId, ...skeletonProps } = props;
 
     return (
-      <div
-        ref={ref}
-        className={cn('space-y-4 p-4', className)}
-        data-testid={testId}
-      >
-        {/* Header with optional avatar */}
-        <div
-          className={cn(
-            'flex items-center space-x-3',
-            'flex items-center space-x-3'
-          )}
+              <div
+          ref={ref}
+          className={cn('space-y-[var(--space-4)] p-[var(--space-4)]', className)}
+          data-testid={testId}
         >
+        {/* Header with optional avatar */}
+                  <div className={cn('flex items-center space-x-[var(--space-3)]')}>
           {showAvatar && (
             <EnhancedSkeleton variant='avatar' size='md' {...skeletonProps} />
           )}
-          <div className={cn('flex-1 space-y-2', 'flex-1 space-y-2')}>
+          <div className={cn('flex-1 space-y-[var(--space-2)]')}>
             <EnhancedSkeleton
               variant='text'
               size='lg'
@@ -560,7 +555,7 @@ const SkeletonCard = React.forwardRef<HTMLDivElement, SkeletonCardProps>(
         </div>
 
         {/* Content */}
-        <div className={cn('space-y-2', 'space-y-2')}>
+        <div className={cn('space-y-[var(--space-2)]')}>
           <EnhancedSkeleton variant='text' width='100%' {...skeletonProps} />
           <EnhancedSkeleton variant='text' width='100%' {...skeletonProps} />
           <EnhancedSkeleton variant='text' width='75%' {...skeletonProps} />
@@ -568,7 +563,7 @@ const SkeletonCard = React.forwardRef<HTMLDivElement, SkeletonCardProps>(
 
         {/* Footer */}
         {showFooter && (
-          <div className='flex items-center justify-between pt-2'>
+          <div className='flex items-center justify-between pt-[var(--space-2)]'>
             <EnhancedSkeleton variant='badge' {...skeletonProps} />
             <EnhancedSkeleton
               variant='button'
@@ -600,15 +595,15 @@ const SkeletonTable = React.forwardRef<HTMLDivElement, SkeletonTableProps>(
     const { 'data-testid': testId, ...skeletonProps } = props;
 
     return (
-      <div
-        ref={ref}
-        className={cn('space-y-2', className)}
-        data-testid={testId}
-      >
+              <div
+          ref={ref}
+          className={cn('space-y-[var(--space-2)]', className)}
+          data-testid={testId}
+        >
         {/* Header */}
         {showHeader && (
           <div
-            className={cn('grid gap-4', 'grid gap-4')}
+            className={cn('grid gap-[var(--space-4)]')}
             style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
           >
             {Array.from({ length: columns }).map((_, index) => (
@@ -627,7 +622,7 @@ const SkeletonTable = React.forwardRef<HTMLDivElement, SkeletonTableProps>(
         {Array.from({ length: rows }).map((_, rowIndex) => (
           <div
             key={`row-${rowIndex}`}
-            className={cn('grid gap-4', 'grid gap-4')}
+            className={cn('grid gap-[var(--space-4)]')}
             style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
           >
             {Array.from({ length: columns }).map((_, colIndex) => (

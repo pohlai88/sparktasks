@@ -1,44 +1,44 @@
 /**
- * MAPS v3.0 Enhanced Design Tokens - Clean Architecture Foundation
+ * MAPS4 Deep Space Canvas Cosmic Innovation - Enhanced Design Tokens
  *
  * SYSTEM ARCHITECTURE RELATIONSHIPS:
  * ┌─────────────────────────────────────────────────────────────────┐
- * │                     DESIGN SYSTEM FLOW                         │
+ * │                MAPS4 COSMIC DESIGN SYSTEM FLOW                 │
  * └─────────────────────────────────────────────────────────────────┘
  *
  * 1. tailwind.config.js
- *    ├─ Defines Tailwind classes using CSS custom properties
- *    ├─ Maps: `bg-primary` → `rgb(var(--primary) / <alpha-value>)`
+ *    ├─ Defines Tailwind classes using MAPS4 CSS custom properties
+ *    ├─ Maps: `bg-aurora-accent` → `rgb(var(--aurora-accent) / <alpha-value>)`
  *    └─ Safelist protects dynamic classes from purging
  *
  * 2. src/index.css
- *    ├─ Defines CSS custom properties: `--primary: 48 176 199`
- *    ├─ Dark/light mode variants
- *    └─ SINGLE SOURCE OF TRUTH for color values
+ *    ├─ Defines MAPS4 CSS custom properties: `--aurora-accent: 124 196 255`
+ *    ├─ Dark/light mode variants with cosmic harmony
+ *    └─ SINGLE SOURCE OF TRUTH for MAPS4 cosmic color values
  *
  * 3. enhanced-tokens.ts (THIS FILE)
- *    ├─ Semantic API layer over CSS foundation
- *    ├─ Component recipes and patterns
- *    ├─ TypeScript-safe token access
- *    └─ NO hardcoded values - references CSS variables only
+ *    ├─ Semantic API layer over MAPS4 cosmic foundation
+ *    ├─ Component recipes and patterns with cosmic aesthetics
+ *    ├─ TypeScript-safe token access to cosmic system
+ *    └─ NO hardcoded values - references MAPS4 CSS variables only
  *
  * 4. Dynamic Token Registry (z-index-registry.ts)
- *    ├─ Consumes this file's z-index tokens
- *    ├─ Provides conflict resolution
- *    ├─ Visual debugging capabilities
- *    └─ Runtime token management
+ *    ├─ Consumes this file's cosmic z-index tokens
+ *    ├─ Provides conflict resolution for cosmic layers
+ *    ├─ Visual debugging capabilities for cosmic system
+ *    └─ Runtime token management for cosmic aesthetics
  *
  * DESIGN PRINCIPLES:
- * ✅ CSS Variables as SSOT - No hardcoded hex values
- * ✅ Semantic Naming - Human-readable, purposeful tokens
- * ✅ Component Recipes - Common UI patterns pre-defined
+ * ✅ MAPS4 CSS Variables as SSOT - No hardcoded hex values
+ * ✅ Cosmic Semantic Naming - Human-readable, purposeful cosmic tokens
+ * ✅ Component Recipes - Common UI patterns with cosmic aesthetics
  * ✅ TypeScript Safety - Full type inference and validation
- * ✅ Registry Integration - Dynamic systems consume these tokens
+ * ✅ Registry Integration - Dynamic systems consume cosmic tokens
  *
  * COMPLIANCE STANDARDS:
- * - WCAG AAA: 7:1 contrast ratios enforced in CSS layer
- * - Apple HIG: Semantic hierarchy and spacing system
- * - Dark-First: Optimized for dark mode with light overrides
+ * - WCAG AAA: 7:1 contrast ratios enforced in MAPS4 CSS layer
+ * - Sir Steve Jobs Cosmic Innovation: Inspirational, memorable, industry-leading
+ * - Dark-First: Optimized for cosmic dark mode with light overrides
  * - Motion Respect: prefers-reduced-motion compliance
  */
 
@@ -55,141 +55,140 @@ export const ENHANCED_DESIGN_TOKENS = {
    * Metadata and versioning
    */
   meta: {
-    version: '3.0.0',
-    name: 'MAPS Enhanced Design Tokens - Clean Architecture',
+    version: '4.0.0',
+    name: 'MAPS4 Deep Space Canvas Cosmic Innovation - Enhanced Design Tokens',
     description:
-      'CSS variable-based token system with dynamic registry support',
-    lastUpdated: '2025-08-27',
+      'MAPS4 cosmic CSS variable-based token system with dynamic registry support',
+    lastUpdated: '2025-01-27',
   },
 
   /**
-   * Foundation Layer - Core Semantic Tokens
-   * All values reference CSS custom properties from index.css
+   * Foundation Layer - MAPS4 Cosmic Semantic Tokens
+   * All values reference MAPS4 CSS custom properties from index.css
    */
   foundation: {
     /**
-     * Color System - Semantic Color API
-     * References CSS variables, no hardcoded values
+     * MAPS4 Cosmic Color System - Semantic Color API
+     * References MAPS4 CSS variables, no hardcoded values
      */
     color: {
-      // Surface colors for backgrounds and containers
+      // MAPS4 Surface colors for backgrounds and containers
       surface: {
-        canvas: 'bg-background', // Primary app background
-        elevated: 'bg-background-elevated', // Cards, elevated surfaces
-        panel: 'bg-background-panel', // Panels, sidebars
-        overlay: 'bg-background-overlay', // Modal overlays
-        translucent: 'bg-background-panel/80', // Semi-transparent surfaces
-        scrim: 'bg-background/60', // Content protection scrim
+        canvas: 'bg-deep-space', // Primary cosmic app background
+        elevated: 'bg-cosmic-void', // Cards, elevated cosmic surfaces
+        panel: 'bg-stellar-surface', // Panels, sidebars with stellar aesthetics
+        overlay: 'bg-cosmic-overlay', // Modal overlays with cosmic depth
+        translucent: 'bg-stellar-surface/80', // Semi-transparent cosmic surfaces
+        scrim: 'bg-deep-space/60', // Content protection scrim with cosmic depth
       },
 
-      // Content colors for text and foreground elements
+      // MAPS4 Content colors for text and foreground elements
       content: {
-        primary: 'text-foreground', // Primary text content
-        secondary: 'text-foreground-muted', // Secondary text
-        tertiary: 'text-foreground-subtle', // Tertiary text, captions
-        disabled: 'text-foreground-disabled', // Disabled state text
-        inverse: 'text-background', // Inverse text on dark backgrounds
-        muted: 'text-muted-foreground', // Muted text with hint color
+        primary: 'text-cosmic-light', // Primary cosmic text content
+        secondary: 'text-stellar-muted', // Secondary cosmic text
+        tertiary: 'text-cosmic-subtle', // Tertiary cosmic text, captions
+        disabled: 'text-cosmic-disabled', // Disabled state cosmic text
+        inverse: 'text-deep-space', // Inverse text on cosmic dark backgrounds
+        muted: 'text-stellar-muted', // Muted cosmic text with hint color
       },
 
-      // Brand colors for interactive elements
+      // MAPS4 Aurora Accent System for interactive elements
       brand: {
         primary: {
-          bg: 'bg-primary', // Primary brand background
-          fg: 'text-primary-foreground', // Text on primary background
-          border: 'border-primary', // Primary borders
-          hover: 'hover:bg-primary-hover', // Primary hover state
-          pressed: 'active:bg-primary/90', // Primary pressed state
+          bg: 'bg-aurora-accent', // Aurora accent background
+          fg: 'text-cosmic-dark', // Text on aurora accent background
+          border: 'border-aurora-accent', // Aurora accent borders
+          hover: 'hover:bg-cosmic-primary-hover', // Aurora accent hover state
+          pressed: 'active:bg-aurora-accent/90', // Aurora accent pressed state
         },
         secondary: {
-          bg: 'bg-secondary', // Secondary brand background
-          fg: 'text-secondary-foreground', // Text on secondary background
-          border: 'border-secondary', // Secondary borders
-          hover: 'hover:bg-secondary-hover', // Secondary hover state
-          pressed: 'active:bg-secondary/90', // Secondary pressed state
+          bg: 'bg-cosmic-cyan', // Cosmic cyan background
+          fg: 'text-cosmic-dark', // Text on cosmic cyan background
+          border: 'border-cosmic-cyan', // Cosmic cyan borders
+          hover: 'hover:bg-cosmic-secondary-hover', // Cosmic cyan hover state
+          pressed: 'active:bg-cosmic-cyan/90', // Cosmic cyan pressed state
         },
         accent: {
-          bg: 'bg-accent', // Accent background
-          fg: 'text-accent-foreground', // Text on accent background
-          border: 'border-accent', // Accent borders
-          hover: 'hover:bg-accent-hover', // Accent hover state
-          pressed: 'active:bg-accent-pressed', // Accent pressed state
+          bg: 'bg-aurora-accent', // Aurora accent background
+          fg: 'text-cosmic-dark', // Text on aurora accent background
+          border: 'border-aurora-accent', // Aurora accent borders
+          hover: 'hover:bg-cosmic-primary-hover', // Aurora accent hover state
+          pressed: 'active:bg-cosmic-accent-pressed', // Aurora accent pressed state
         },
       },
 
-      // Semantic feedback colors
+      // MAPS4 Semantic feedback colors with cosmic harmony
       feedback: {
         success: {
-          bg: 'bg-success', // Success background
-          fg: 'text-success-foreground', // Text on success background
-          border: 'border-success', // Success borders
-          solid: 'bg-success-solid-aaa', // AAA compliant solid
+          bg: 'bg-cosmic-success', // Cosmic success background
+          fg: 'text-cosmic-dark', // Text on cosmic success background
+          border: 'border-cosmic-success', // Cosmic success borders
+          solid: 'bg-cosmic-success-solid', // AAA compliant cosmic solid
         },
         warning: {
-          bg: 'bg-warning', // Warning background
-          fg: 'text-warning-foreground', // Text on warning background
-          border: 'border-warning', // Warning borders
+          bg: 'bg-cosmic-warning', // Cosmic warning background
+          fg: 'text-cosmic-dark', // Text on cosmic warning background
+          border: 'border-cosmic-warning', // Cosmic warning borders
         },
         error: {
-          bg: 'bg-error', // Error background
-          fg: 'text-error-foreground', // Text on error background
-          border: 'border-error', // Error borders
-          solid: 'bg-error-solid-aaa', // AAA compliant solid
+          bg: 'bg-cosmic-danger', // Cosmic danger background
+          fg: 'text-cosmic-dark', // Text on cosmic danger background
+          border: 'border-cosmic-danger', // Cosmic danger borders
+          solid: 'bg-cosmic-danger-solid', // AAA compliant cosmic solid
         },
         info: {
-          bg: 'bg-accent', // Info uses accent system
-          fg: 'text-accent-foreground', // Info text
-          border: 'border-accent', // Info borders
+          bg: 'bg-cosmic-info', // Cosmic info background
+          fg: 'text-cosmic-dark', // Text on cosmic info background
+          border: 'border-cosmic-info', // Cosmic info borders
         },
       },
 
-      // Border and stroke system
+      // MAPS4 Border and stroke system with cosmic aesthetics
       border: {
-        subtle: 'border-border', // Subtle dividers
-        default: 'border-border', // Standard borders
-        strong: 'border-border-strong', // Emphasized borders
-        accent: 'border-border-accent', // Accent borders
-        focus: 'border-ring', // Focus indicators
+        subtle: 'border-cosmic-border-subtle', // Subtle cosmic dividers
+        default: 'border-cosmic-border', // Standard cosmic borders
+        strong: 'border-cosmic-border-strong', // Emphasized cosmic borders
+        focus: 'border-ring', // Aurora accent focus indicators
       },
     },
 
     /**
-     * Typography System - Semantic Text Hierarchy
-     * Based on Apple HIG principles, adapted for web
+     * MAPS4 Typography System - Cosmic Text Hierarchy
+     * Based on Sir Steve Jobs Cosmic Innovation principles, adapted for web
      */
     typography: {
-      // Display text styles
+      // MAPS4 Display text styles with cosmic aesthetics
       display: {
-        large: 'text-4xl font-bold leading-tight tracking-tight',
-        medium: 'text-3xl font-bold leading-tight tracking-tight',
-        small: 'text-2xl font-semibold leading-snug tracking-tight',
+        large: 'text-4xl font-bold leading-tight tracking-tight text-cosmic-light',
+        medium: 'text-3xl font-bold leading-tight tracking-tight text-cosmic-light',
+        small: 'text-2xl font-semibold leading-snug tracking-tight text-cosmic-light',
       },
 
-      // Semantic content hierarchy
+      // MAPS4 Semantic content hierarchy with cosmic harmony
       heading: {
-        h1: 'text-3xl font-semibold leading-snug tracking-tight',
-        h2: 'text-2xl font-semibold leading-snug',
-        h3: 'text-xl font-semibold leading-normal',
-        h4: 'text-lg font-medium leading-normal',
-        h5: 'text-base font-medium leading-normal',
-        h6: 'text-sm font-medium leading-normal',
+        h1: 'text-3xl font-semibold leading-snug tracking-tight text-cosmic-light',
+        h2: 'text-2xl font-semibold leading-snug text-cosmic-light',
+        h3: 'text-xl font-semibold leading-normal text-cosmic-light',
+        h4: 'text-lg font-medium leading-normal text-cosmic-light',
+        h5: 'text-base font-medium leading-normal text-cosmic-light',
+        h6: 'text-sm font-medium leading-normal text-cosmic-light',
       },
 
-      // Body text styles
+      // MAPS4 Body text styles with cosmic readability
       body: {
-        large: 'text-lg font-normal leading-relaxed',
-        medium: 'text-base font-normal leading-relaxed',
-        small: 'text-sm font-normal leading-normal',
+        large: 'text-lg font-normal leading-relaxed text-cosmic-light',
+        medium: 'text-base font-normal leading-relaxed text-cosmic-light',
+        small: 'text-sm font-normal leading-normal text-cosmic-light',
       },
 
-      // Specialized text styles
-      label: 'text-sm font-medium leading-normal',
-      caption: 'text-xs font-normal leading-tight',
-      overline: 'text-xs font-medium leading-tight uppercase tracking-wide',
+      // MAPS4 Specialized text styles with cosmic aesthetics
+      label: 'text-sm font-medium leading-normal text-cosmic-light',
+      caption: 'text-xs font-normal leading-tight text-stellar-muted',
+      overline: 'text-xs font-medium leading-tight uppercase tracking-wide text-stellar-muted',
 
-      // Interactive text
-      link: 'text-accent hover:text-accent-hover underline decoration-1 underline-offset-2 transition-colors',
-      button: 'text-sm font-medium leading-normal',
+      // MAPS4 Interactive text with cosmic accents
+      link: 'text-aurora-accent hover:text-cosmic-primary-hover underline decoration-1 underline-offset-2 transition-colors',
+      button: 'text-sm font-medium leading-normal text-cosmic-light',
     },
 
     /**
@@ -316,37 +315,37 @@ export const ENHANCED_DESIGN_TOKENS = {
       },
       variant: {
         primary: [
-          'bg-primary',
-          'text-primary-foreground',
-          'hover:bg-primary-hover',
+          'bg-aurora-accent',
+          'text-cosmic-dark',
+          'hover:bg-cosmic-primary-hover',
         ],
         secondary: [
-          'bg-secondary',
-          'text-secondary-foreground',
-          'hover:bg-secondary-hover',
+          'bg-cosmic-cyan',
+          'text-cosmic-dark',
+          'hover:bg-cosmic-secondary-hover',
         ],
         outline: [
           'border',
-          'border-border',
+          'border-cosmic-border',
           'bg-transparent',
-          'hover:bg-accent',
-          'hover:text-accent-foreground',
+          'hover:bg-aurora-accent',
+          'hover:text-cosmic-dark',
         ],
-        ghost: ['hover:bg-accent', 'hover:text-accent-foreground'],
-        destructive: ['bg-error', 'text-error-foreground', 'hover:bg-error/90'],
+        ghost: ['hover:bg-aurora-accent', 'hover:text-cosmic-dark'],
+        destructive: ['bg-cosmic-danger', 'text-cosmic-dark', 'hover:bg-cosmic-danger/90'],
       },
     },
 
     /**
-     * Card component recipes
+     * MAPS4 Card component recipes with cosmic aesthetics
      */
     card: {
       base: [
         'rounded-lg',
         'border',
-        'border-border',
-        'bg-card',
-        'text-card-foreground',
+        'border-cosmic-border',
+        'bg-stellar-surface',
+        'text-cosmic-light',
       ],
       elevated: ['shadow-md'],
       interactive: ['hover:shadow-lg', 'transition-shadow', 'duration-normal'],
@@ -358,7 +357,7 @@ export const ENHANCED_DESIGN_TOKENS = {
     },
 
     /**
-     * Input component recipes
+     * MAPS4 Input component recipes with cosmic aesthetics
      */
     input: {
       base: [
@@ -367,13 +366,13 @@ export const ENHANCED_DESIGN_TOKENS = {
         'w-full',
         'rounded-md',
         'border',
-        'border-input-border',
-        'bg-input',
+        'border-cosmic-input-border',
+        'bg-cosmic-input',
         'px-3',
         'py-2',
         'text-sm',
-        'ring-offset-background',
-        'placeholder:text-input-placeholder',
+        'ring-offset-cosmic-ring-offset',
+        'placeholder:text-cosmic-input-placeholder',
         'focus-visible:outline-none',
         'focus-visible:ring-2',
         'focus-visible:ring-ring',
@@ -381,8 +380,8 @@ export const ENHANCED_DESIGN_TOKENS = {
         'disabled:cursor-not-allowed',
         'disabled:opacity-50',
       ],
-      error: ['border-error', 'focus-visible:ring-error'],
-      success: ['border-success', 'focus-visible:ring-success'],
+      error: ['border-cosmic-danger', 'focus-visible:ring-cosmic-danger'],
+      success: ['border-cosmic-success', 'focus-visible:ring-cosmic-success'],
     },
 
     /**
@@ -400,8 +399,8 @@ export const ENHANCED_DESIGN_TOKENS = {
         'px-3',
         'py-2',
         'text-sm',
-        'ring-offset-background',
-        'placeholder:text-input-placeholder',
+        'ring-offset-cosmic-ring-offset',
+        'placeholder:text-cosmic-input-placeholder',
         'resize-vertical',
         'focus-visible:outline-none',
         'focus-visible:ring-2',
@@ -410,8 +409,8 @@ export const ENHANCED_DESIGN_TOKENS = {
         'disabled:cursor-not-allowed',
         'disabled:opacity-50',
       ],
-      error: ['border-error', 'focus-visible:ring-error'],
-      success: ['border-success', 'focus-visible:ring-success'],
+      error: ['border-cosmic-danger', 'focus-visible:ring-cosmic-danger'],
+      success: ['border-cosmic-success', 'focus-visible:ring-cosmic-success'],
       size: {
         sm: ['min-h-[60px]', 'text-xs'],
         md: ['min-h-[80px]', 'text-sm'],
@@ -434,23 +433,23 @@ export const ENHANCED_DESIGN_TOKENS = {
         'font-semibold',
       ],
       variant: {
-        default: ['bg-primary', 'text-primary-foreground'],
-        secondary: ['bg-secondary', 'text-secondary-foreground'],
-        success: ['bg-success', 'text-success-foreground'],
-        warning: ['bg-warning', 'text-warning-foreground'],
-        error: ['bg-error', 'text-error-foreground'],
-        outline: ['border', 'border-border', 'text-foreground'],
+        default: ['bg-aurora-accent', 'text-cosmic-dark'],
+        secondary: ['bg-cosmic-cyan', 'text-cosmic-dark'],
+        success: ['bg-cosmic-success', 'text-cosmic-dark'],
+        warning: ['bg-cosmic-warning', 'text-cosmic-dark'],
+        error: ['bg-cosmic-danger', 'text-cosmic-dark'],
+        outline: ['border', 'border-cosmic-border', 'text-cosmic-light'],
       },
     },
 
     /**
-     * Progress component recipes
+     * MAPS4 Progress component recipes with cosmic aesthetics
      */
     progress: {
-      container: ['w-full', 'overflow-hidden', 'rounded-full', 'bg-secondary'],
+      container: ['w-full', 'overflow-hidden', 'rounded-full', 'bg-cosmic-cyan'],
       bar: [
         'h-full',
-        'bg-primary',
+        'bg-aurora-accent',
         'transition-all',
         'duration-normal',
         'ease-standard',
@@ -463,14 +462,14 @@ export const ENHANCED_DESIGN_TOKENS = {
     },
 
     /**
-     * Dialog/Modal component recipes
+     * MAPS4 Dialog/Modal component recipes with cosmic aesthetics
      */
     dialog: {
       overlay: [
         'fixed',
         'inset-0',
         'z-modal',
-        'bg-background-overlay/80',
+        'bg-cosmic-overlay/80',
         'backdrop-blur-sm',
       ],
       content: [
@@ -485,31 +484,31 @@ export const ENHANCED_DESIGN_TOKENS = {
         'translate-y-[-50%]',
         'gap-4',
         'border',
-        'border-border',
-        'bg-background-elevated',
+        'border-cosmic-border',
+        'bg-cosmic-void',
         'p-6',
         'shadow-lg',
         'duration-normal',
         'rounded-lg',
       ],
-      title: ['text-lg', 'font-semibold', 'leading-none', 'tracking-tight'],
-      description: ['text-sm', 'text-muted-foreground'],
+      title: ['text-lg', 'font-semibold', 'leading-none', 'tracking-tight', 'text-cosmic-light'],
+      description: ['text-sm', 'text-stellar-muted'],
     },
 
     /**
-     * Tooltip component recipes
+     * MAPS4 Tooltip component recipes with cosmic aesthetics
      */
     tooltip: {
       content: [
         'z-tooltip',
         'rounded-md',
         'border',
-        'border-border',
-        'bg-background-panel',
+        'border-cosmic-border',
+        'bg-stellar-surface',
         'px-3',
         'py-1.5',
         'text-sm',
-        'text-foreground',
+        'text-cosmic-light',
         'shadow-md',
         'animate-in',
         'fade-in-0',
@@ -542,10 +541,10 @@ export const ENHANCED_DESIGN_TOKENS = {
         'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
     },
 
-    // High contrast support
+    // MAPS4 High contrast support with cosmic aesthetics
     highContrast: {
       border: 'contrast-more:border-2',
-      text: 'contrast-more:text-foreground',
+      text: 'contrast-more:text-cosmic-light',
     },
 
     // Reduced motion compliance
@@ -688,10 +687,10 @@ export function validateTokenUsage(className: string): boolean {
 if (process.env.NODE_ENV === 'development') {
   try {
     DesignTokensSchema.parse(ENHANCED_DESIGN_TOKENS);
-    console.log('✅ MAPS v3.0 Enhanced Design Tokens validated successfully');
+    console.log('✅ MAPS4 Deep Space Canvas Cosmic Innovation Enhanced Design Tokens validated successfully');
   } catch (error) {
-    console.error('❌ Design tokens validation failed:', error);
-    throw new Error('Design tokens validation failed - check token structure');
+    console.error('❌ MAPS4 Design tokens validation failed:', error);
+    throw new Error('MAPS4 Design tokens validation failed - check token structure');
   }
 }
 

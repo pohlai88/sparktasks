@@ -1,17 +1,17 @@
 /**
- * Railway Conductor Component - MAPS v3.0 Dark-First Philosophy with Fortune 500 Standards
+ * Railway Conductor Component - MAPS4 Deep Space Canvas Cosmic Innovation with Fortune 500 Standards
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
+ * - MAPS4 Cosmic Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
  * - Anti-Drift Enforcement: ✅ Enhanced tokens only, no hardcoded values
  * - Enhanced UI Integration: ✅ Uses enhanced UI components exclusively
  * - Fortune 500 Quality: ✅ Sophisticated conductor system with liquid glass materials
  * - AAA Accessibility: ✅ WCAG 2.1 AA compliance with enforcement mode
  *
  * ARCHITECTURE INTEGRATION:
- * - Enhanced Tokens → Railway Conductor variants → User experience
- * - MAPS Guidelines → Conductor hierarchy → Project orchestration
- * - Dark-First Philosophy → Primary design approach (NO EXCEPTIONS)
+ * - MAPS4 Enhanced Tokens → Railway Conductor variants → User experience
+ * - MAPS4 Guidelines → Conductor hierarchy → Project orchestration
+ * - MAPS4 Cosmic Philosophy → Primary design approach (NO EXCEPTIONS)
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -33,7 +33,7 @@ import { cn } from '@/utils/cn';
 // ===== RAILWAY CONDUCTOR VARIANTS =====
 
 /**
- * Railway Conductor variants following MAPS v3.0 foundation
+ * Railway Conductor variants following MAPS4 Deep Space Canvas Cosmic Innovation foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens or CSS custom properties
  */
 const railwayConductorVariants = cva(
@@ -42,11 +42,11 @@ const railwayConductorVariants = cva(
     'w-full',
     'space-y-6',
     
-    // Foundation: Colors - Deep space foundation with ethereal accents
+    // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
-    // Foundation: Motion - Respect user preferences
+    // MAPS4 Foundation: Motion - Respect user preferences
     'transition-all duration-300 ease-out',
     'motion-reduce:transition-none',
   ],
@@ -61,16 +61,16 @@ const railwayConductorVariants = cva(
           'p-8', 
           'rounded-2xl',
           'shadow-elevation-lg',
-          'border border-border-accent'
+          'border border-aurora-accent'
         ],
         
-        // Glass: Liquid glass materials
+        // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
           'p-6',
           'rounded-xl',
           'backdrop-blur-md backdrop-saturate-[135%]',
           'shadow-elevation-md',
-          'border border-border/30'
+          'border border-cosmic-border/30'
         ],
       },
       
@@ -256,24 +256,42 @@ export function RailwayConductor({
       {/* Project Stats */}
       <div className="flex items-center justify-center gap-6 mb-6">
         <div className="text-center">
-          <div className="text-2xl font-bold text-primary">
+          <div className={cn(
+            'text-2xl font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
+          )}>
             {workflows.length}
           </div>
-          <div className="text-sm text-muted-foreground">Active Workflows</div>
+          <div className={cn(
+            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>Active Workflows</div>
         </div>
         
         <div className="text-center">
-          <div className="text-2xl font-bold text-primary">
+          <div className={cn(
+            'text-2xl font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
+          )}>
             {automationRules.length}
           </div>
-          <div className="text-sm text-muted-foreground">Automation Rules</div>
+          <div className={cn(
+            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>Automation Rules</div>
         </div>
         
         <div className="text-center">
-          <div className="text-2xl font-bold text-primary">
+          <div className={cn(
+            'text-2xl font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
+          )}>
             {governancePolicies.length}
           </div>
-          <div className="text-sm text-muted-foreground">Governance Policies</div>
+          <div className={cn(
+            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>Governance Policies</div>
         </div>
       </div>
 
@@ -298,25 +316,52 @@ export function RailwayConductor({
         </h3>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="text-center p-4 bg-muted rounded-lg">
-            <div className="text-2xl font-bold text-green-600">
+          <div className={cn(
+            'text-center p-4 rounded-lg',
+            ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
+          )}>
+            <div className={cn(
+              'text-2xl font-bold',
+              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.bg
+            )}>
               {workflows.filter(w => w.status === 'active').length}
             </div>
-            <div className="text-sm text-muted-foreground">Active Workflows</div>
+            <div className={cn(
+              'text-sm',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+            )}>Active Workflows</div>
           </div>
           
-          <div className="text-center p-4 bg-muted rounded-lg">
-            <div className="text-2xl font-bold text-blue-600">
+          <div className={cn(
+            'text-center p-4 rounded-lg',
+            ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
+          )}>
+            <div className={cn(
+              'text-2xl font-bold',
+              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.bg
+            )}>
               {automationRules.filter(r => r.status === 'active').length}
             </div>
-            <div className="text-sm text-muted-foreground">Active Rules</div>
+            <div className={cn(
+              'text-sm',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+            )}>Active Rules</div>
           </div>
           
-          <div className="text-center p-4 bg-muted rounded-lg">
-            <div className="text-2xl font-bold text-purple-600">
+          <div className={cn(
+            'text-center p-4 rounded-lg',
+            ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
+          )}>
+            <div className={cn(
+              'text-2xl font-bold',
+              ENHANCED_DESIGN_TOKENS.foundation.color.brand.secondary.bg
+            )}>
               {governancePolicies.filter(p => p.status === 'enforced').length}
             </div>
-            <div className="text-sm text-muted-foreground">Enforced Policies</div>
+            <div className={cn(
+              'text-sm',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+            )}>Enforced Policies</div>
           </div>
         </div>
       </EnhancedCard>
@@ -332,10 +377,16 @@ export function RailwayConductor({
         
         <div className="space-y-3">
           {workflows.slice(0, 3).map((workflow) => (
-            <div key={workflow.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+            <div key={workflow.id} className={cn(
+              'flex items-center justify-between p-3 rounded-lg',
+              ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
+            )}>
               <div>
                 <div className="font-medium">{workflow.name}</div>
-                <div className="text-sm text-muted-foreground">
+                <div className={cn(
+                  'text-sm',
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                )}>
                   Last executed: {workflow.lastExecuted}
                 </div>
               </div>
@@ -423,7 +474,10 @@ export function RailwayConductor({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground mb-3">
+          <div className={cn(
+            'grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>
             <div><strong>Step:</strong> {workflow.currentStep} / {workflow.totalSteps}</div>
             <div><strong>Duration:</strong> {workflow.estimatedDuration}</div>
             <div><strong>Team:</strong> {workflow.assignedTeam.length} members</div>
@@ -433,7 +487,10 @@ export function RailwayConductor({
           {/* Progress Bar */}
           <div className="mb-3">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm text-muted-foreground">Progress</span>
+              <span className={cn(
+                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+              )}>Progress</span>
               <span className="text-sm font-medium">{Math.round(workflow.progress * 100)}%</span>
             </div>
             <EnhancedProgress
@@ -515,7 +572,10 @@ export function RailwayConductor({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground mb-3">
+          <div className={cn(
+            'grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>
             <div><strong>Trigger:</strong> {rule.trigger.replace('_', ' ')}</div>
             <div><strong>Executions:</strong> {rule.executionCount}</div>
             <div><strong>Success Rate:</strong> {rule.successRate}%</div>
@@ -594,7 +654,10 @@ export function RailwayConductor({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground mb-3">
+          <div className={cn(
+            'grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3',
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>
             <div><strong>Status:</strong> {policy.status}</div>
             <div><strong>Rules:</strong> {policy.rules.length}</div>
             <div><strong>Compliance:</strong> {policy.complianceScore}%</div>
@@ -604,7 +667,10 @@ export function RailwayConductor({
           {/* Compliance Score */}
           <div className="mb-3">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm text-muted-foreground">Compliance Score</span>
+              <span className={cn(
+                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+              )}>Compliance Score</span>
               <span className="text-sm font-medium">{policy.complianceScore}%</span>
             </div>
             <EnhancedProgress
@@ -677,3 +743,4 @@ export function RailwayConductor({
     </div>
   );
 }
+

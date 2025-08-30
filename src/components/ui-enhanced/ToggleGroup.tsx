@@ -1,29 +1,26 @@
 /**
- * Enhanced Toggle Group Component - MAPS v2.2 Dark-First Philosophy with Apple HIG Harmony
+ * Enhanced Toggle Group Component - MAPS4 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - Dark-First Foundation: ✅ Deep space canvas with ethereal accents
- * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
- * - AAA Compliance: ✅ Dual-track with enforcement mode
- * - Liquid Glass Materials: ✅ Governed vibrancy system
- * - Radix + Tailwind + MAPS: ✅ Proper foundation integration
- * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
+ * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
+ * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
+ * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
+ * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
+ * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
- * - Radix owns: Behavior, ARIA, focus management, selection states
- * - MAPS owns: Apple HIG materials, liquid glass, AAA enforcement
- * - Wrapper owns: Token application, governance rules, brand consistency
- *
- * GOVERNANCE RULES:
- * - Foundation tokens only (no component-specific tokens)
- * - Auto-apply AAA scrims over glass materials
- * - Apple HIG motion with respect for reduced motion
- * - Platform-aware touch targets (44px minimum)
+ * - MAPS4 Enhanced Tokens → ToggleGroup variants → Cosmic user experience
+ * - MAPS4 Guidelines → ToggleGroup behavior → Accessibility excellence
+ * - [Ecosystem] → [Component] → [Composability]
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
- * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
  * → accessibility (standard|aaa) → dir (ltr|rtl)
+ *
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 /* eslint-disable react/prop-types */
@@ -37,7 +34,7 @@ import { cn } from '@/utils/cn';
 // ===== ENHANCED TOGGLE GROUP VARIANTS =====
 
 /**
- * Enhanced toggle group variants following MAPS v2.2 foundation
+ * Enhanced toggle group variants following MAPS4 v4.0 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens system
  */
 const enhancedToggleGroupVariants = cva(
