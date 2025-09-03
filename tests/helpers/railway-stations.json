@@ -1,4 +1,0 @@
-[
-  {"id":"init","name":"Initiation","slug":"initiation","index":0,"status":"completed","progressPct":100},
-  {"id":"sched","name":"Scheduling","slug":"scheduling","index":2,"status":"active","progressPct":65}
-]
