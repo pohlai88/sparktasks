@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "allowJs": true,
@@ -12,9 +12,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["@playwright/test"],
-    "baseUrl": ".",
+    "baseUrl": "..",
     "paths": {
-      "@/*": ["../src/*"]
+      "@/*": ["../src/*"],
+      "@/components/*": ["../src/components/*"],
+      "@/design/*": ["../src/design/*"],
+      "@/utils/*": ["../src/utils/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "../../playwright.config.ts"],

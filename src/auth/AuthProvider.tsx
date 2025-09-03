@@ -21,7 +21,8 @@
  * - Phase A1: Complete SaaS application authentication
  */
 
-import React, {
+import type React from 'react';
+import {
   createContext,
   useContext,
   useState,
@@ -143,6 +144,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
     error: null,
     token: null,
   });
+  // Flag: choose real vs simulator
+  let useRealService = false
+  try {
+    const raw = localStorage.getItem('__spark_flags_override')
+    if (raw) {
+      const f = JSON.parse(raw)
+      if (f?.auth?.useRealService === true) useRealService = true
+    }
+  } catch {}
+
+  // If bootstrap defined flags, prefer them
+  try {
+    // dynamic import to avoid cycles
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod: any = require('../bootstrap')
+    const flags = mod?.getFlags?.()
+    if (flags && typeof flags.auth?.useRealService === 'boolean') {
+      useRealService = flags.auth.useRealService
+    }
+  } catch {}
+
 
   // ===== UTILITIES =====
 
@@ -158,7 +180,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const saveToken = useCallback((token: string) => {
     localStorage.setItem('auth_token', token);
-    localStorage.setItem('auth_expires', String(Date.now() + 3600000)); // 1 hour
+    localStorage.setItem('auth_expires', String(Date.now() + 3_600_000)); // 1 hour
   }, []);
 
   const removeToken = useCallback(() => {
@@ -183,17 +205,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // ===== API CALLS =====
 
+  // Coerce service user into local rich User shape for PREP
+  const coerceUser = useCallback((incoming: any): User => {
+    return {
+      id: incoming?.id ?? 'u_local',
+      email: incoming?.email ?? 'user@sparktasks.test',
+      name: incoming?.name ?? 'User',
+      role: (incoming?.role as UserRole) ?? 'admin',
+      createdAt: incoming?.createdAt ? new Date(incoming.createdAt) : new Date(),
+      workspaceId: incoming?.workspaceId,
+      preferences: incoming?.preferences,
+      mfaEnabled: incoming?.mfaEnabled,
+      lastLogin: incoming?.lastLogin ? new Date(incoming.lastLogin) : new Date(),
+      avatar: incoming?.avatar,
+    }
+  }, [])
+
   const login = useCallback(
     async (credentials: LoginCredentials) => {
       try {
         setLoading(true);
         setError(null);
-
-        // Simulate API call - replace with actual endpoint
-        const response = await simulateAuthAPI('/auth/login', {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-        });
+        const { AuthService } = await import('../services/auth')
+        const response = await AuthService.login(credentials, useRealService)
 
         const { user, token } = response;
 
@@ -201,12 +235,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
           throw new Error('Invalid response from server');
         }
 
+        const normalized = coerceUser(user)
         saveToken(token);
-        localStorage.setItem('auth_user', JSON.stringify(user));
+        localStorage.setItem('auth_user', JSON.stringify(normalized));
 
         setState(prev => ({
           ...prev,
-          user,
+          user: normalized,
           token,
           isAuthenticated: true,
           error: null,
@@ -226,12 +261,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       try {
         setLoading(true);
         setError(null);
-
-        // Simulate API call - replace with actual endpoint
-        const response = await simulateAuthAPI('/auth/signup', {
-          method: 'POST',
-          body: JSON.stringify(data),
-        });
+        // In PREP, signup mirrors login in simulator; real service not implemented
+        const { AuthService } = await import('../services/auth')
+        const response = await AuthService.login({ email: data.email, password: data.password }, useRealService)
 
         const { user, token } = response;
 
@@ -239,12 +271,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
           throw new Error('Invalid response from server');
         }
 
+        const normalized = coerceUser(user)
         saveToken(token);
-        localStorage.setItem('auth_user', JSON.stringify(user));
+        localStorage.setItem('auth_user', JSON.stringify(normalized));
 
         setState(prev => ({
           ...prev,
-          user,
+          user: normalized,
           token,
           isAuthenticated: true,
           error: null,
@@ -262,16 +295,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = useCallback(async () => {
     try {
       setLoading(true);
-
-      // Call logout endpoint to invalidate token
-      if (state.token) {
-        await simulateAuthAPI('/auth/logout', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-        });
-      }
+      const { AuthService } = await import('../services/auth')
+      await AuthService.logout(useRealService)
     } catch (error) {
       console.warn('Logout API call failed:', error);
     } finally {
@@ -292,13 +317,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (!currentToken) {
         throw new Error('No token to refresh');
       }
-
-      const response = await simulateAuthAPI('/auth/refresh', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${currentToken}`,
-        },
-      });
+      // In PREP, me() is enough to validate session in both modes
+      const { AuthService } = await import('../services/auth')
+      const me = await AuthService.me(useRealService)
+      const response = me ? { token: currentToken, user: me } : { token: '', user: null }
 
       const { token, user } = response;
 
@@ -306,11 +328,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         throw new Error('Invalid refresh response');
       }
 
+      const normalized = coerceUser(user)
       saveToken(token);
 
       setState(prev => ({
         ...prev,
-        user,
+        user: normalized,
         token,
         isAuthenticated: true,
       }));
@@ -324,16 +347,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     async (updates: Partial<User>) => {
       try {
         setError(null);
-
-        const response = await simulateAuthAPI('/auth/profile', {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-          body: JSON.stringify(updates),
-        });
-
-        const updatedUser = response.user;
+        // In PREP, just merge locally
+        const updatedUser = { ...state.user!, ...updates }
 
         if (!updatedUser) {
           throw new Error('Invalid user update response');
@@ -357,11 +372,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     async (email: string) => {
       try {
         setError(null);
-
-        await simulateAuthAPI('/auth/reset-password', {
-          method: 'POST',
-          body: JSON.stringify({ email }),
-        });
+        // noop in PREP
       } catch (error) {
         setError(error instanceof Error ? error.message : 'Reset failed');
         throw error;
@@ -374,19 +385,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     async (code: string) => {
       try {
         setError(null);
-
-        await simulateAuthAPI('/auth/mfa/verify', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-          body: JSON.stringify({ code }),
-        });
-
-        setState(prev => ({
-          ...prev,
-          user: { ...prev.user!, mfaEnabled: true },
-        }));
+        // noop in PREP
       } catch (error) {
         setError(
           error instanceof Error ? error.message : 'MFA verification failed'
@@ -400,15 +399,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const enableMFA = useCallback(async () => {
     try {
       setError(null);
-
-      const response = await simulateAuthAPI('/auth/mfa/enable', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
-
-      return response;
+      return { qrCode: '', backupCodes: [] }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'MFA enable failed');
       throw error;
@@ -419,19 +410,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     async (password: string) => {
       try {
         setError(null);
-
-        await simulateAuthAPI('/auth/mfa/disable', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-          body: JSON.stringify({ password }),
-        });
-
-        setState(prev => ({
-          ...prev,
-          user: { ...prev.user!, mfaEnabled: false },
-        }));
+        // noop in PREP
       } catch (error) {
         setError(error instanceof Error ? error.message : 'MFA disable failed');
         throw error;
@@ -523,7 +502,7 @@ async function simulateAuthAPI(
   const body = options.body ? JSON.parse(options.body) : {};
 
   switch (endpoint) {
-    case '/auth/login':
+    case '/auth/login': {
       if (
         body.email === 'admin@sparktasks.test' &&
         body.password === 'password'
@@ -546,8 +525,9 @@ async function simulateAuthAPI(
         };
       }
       throw new Error('Invalid credentials');
+    }
 
-    case '/auth/signup':
+    case '/auth/signup': {
       return {
         user: {
           id: `user_${Date.now()}`,
@@ -564,8 +544,9 @@ async function simulateAuthAPI(
         },
         token: `jwt_token_${Date.now()}`,
       };
+    }
 
-    case '/auth/refresh':
+    case '/auth/refresh': {
       // Simulate token refresh
       return {
         user: {
@@ -583,11 +564,13 @@ async function simulateAuthAPI(
         },
         token: 'jwt_token_refreshed',
       };
+    }
 
-    case '/auth/logout':
+    case '/auth/logout': {
       return { success: true };
+    }
 
-    case '/auth/profile':
+    case '/auth/profile': {
       return {
         user: {
           id: 'user_1',
@@ -603,22 +586,27 @@ async function simulateAuthAPI(
           createdAt: new Date(),
         },
       };
+    }
 
-    case '/auth/reset-password':
+    case '/auth/reset-password': {
       return { success: true };
+    }
 
-    case '/auth/mfa/enable':
+    case '/auth/mfa/enable': {
       return {
         qrCode: 'data:image/png;base64,mock_qr_code',
         backupCodes: ['123456', '789012', '345678'],
       };
+    }
 
     case '/auth/mfa/verify':
-    case '/auth/mfa/disable':
+    case '/auth/mfa/disable': {
       return { success: true };
+    }
 
-    default:
+    default: {
       throw new Error(`Unknown endpoint: ${endpoint}`);
+    }
   }
 }
 

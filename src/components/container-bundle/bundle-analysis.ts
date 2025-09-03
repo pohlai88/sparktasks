@@ -13,9 +13,9 @@
  * - Performance recommendations
  */
 
-import * as fs from 'node:fs/promises';
-import * as path from 'node:path';
 import { execSync } from 'node:child_process';
+import * as fs from 'node:fs/promises';
+import path from 'node:path';
 
 interface BundleAnalysis {
   totalSize: number;
@@ -73,7 +73,7 @@ async function analyzeBundleSize(): Promise<BundleAnalysis> {
     for (const bundle of jsBundles) {
       const bundlePath = path.join(distPath, bundle as string);
       const stats = await fs.stat(bundlePath);
-      const content = await fs.readFile(bundlePath, 'utf-8');
+      const content = await fs.readFile(bundlePath, 'utf8');
 
       analysis.totalSize += stats.size;
 
@@ -107,7 +107,7 @@ function extractModulesFromBundle(content: string): string[] {
   // Extract module references from the bundle
   const moduleRegex = /["'](@\/|@radix-ui\/|react|lucide-react)[^"']*["']/g;
   const matches = content.match(moduleRegex) || [];
-  return Array.from(new Set(matches.map(m => m.slice(1, -1))));
+  return [...new Set(matches.map(m => m.slice(1, -1)))];
 }
 
 async function analyzeComponentUsage(): Promise<
@@ -135,7 +135,7 @@ async function analyzeComponentUsage(): Promise<
     if (!file.endsWith('.tsx')) continue;
 
     const filePath = path.join(componentsPath, file);
-    const content = await fs.readFile(filePath, 'utf-8');
+    const content = await fs.readFile(filePath, 'utf8');
     const stats = await fs.stat(filePath);
 
     // Extract dependencies
@@ -184,7 +184,7 @@ async function analyzeRadixUsage(): Promise<
     if (!file.endsWith('.tsx')) continue;
 
     const filePath = path.join(componentsPath, file);
-    const content = await fs.readFile(filePath, 'utf-8');
+    const content = await fs.readFile(filePath, 'utf8');
 
     // Find Radix imports
     const radixImportRegex = /import.*?from\s+["'](@radix-ui\/[^"']+)["']/g;
@@ -200,7 +200,7 @@ async function analyzeRadixUsage(): Promise<
     }
   }
 
-  return Array.from(radixUsage.entries()).map(([primitive, components]) => ({
+  return [...radixUsage.entries()].map(([primitive, components]) => ({
     primitive,
     usage: components.length,
     components,
@@ -250,7 +250,7 @@ function formatBytes(bytes: number): string {
   const k = 1024;
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
 async function generateReport(analysis: BundleAnalysis): Promise<void> {
@@ -352,7 +352,9 @@ async function main() {
 
     if (analysis.recommendations.length > 0) {
       console.log('\n⚠️ Recommendations:');
-      analysis.recommendations.forEach(rec => console.log(`  ${rec}`));
+      for (const rec of analysis.recommendations) {
+        console.log(`  ${rec}`);
+      }
     }
 
     await generateReport(analysis);
@@ -367,7 +369,7 @@ async function main() {
 // Run the main function if this file is executed directly
 if (typeof process !== 'undefined' && process.argv && process.argv.length > 1) {
   const scriptPath = process.argv[1];
-  const currentFile = __filename || '';
+  const currentFile = import.meta.url || '';
   if (
     scriptPath &&
     currentFile &&

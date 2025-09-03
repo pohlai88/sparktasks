@@ -19,7 +19,3 @@ export type {
   ToolbarTool,
 } from './SimpleEditor';
 export { EditorPresets } from './SimpleEditor';
-
-// ===== RE-EXPORTS =====
-
-export * from './SimpleEditor';

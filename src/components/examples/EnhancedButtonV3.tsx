@@ -35,8 +35,8 @@ const enhancedButtonVariants = cva(
     'disabled:pointer-events-none disabled:opacity-50',
     'focus-visible:outline-none',
     'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-    'pointer:hover:scale-[1.02]',
-    'active:scale-[0.98]',
+    'pointer:hover:scale-105',
+    'active:scale-98',
   ],
   {
     variants: {
@@ -205,7 +205,7 @@ const EnhancedButtonV3 = React.forwardRef<
           <>
             <AccessibleIcon label='Loading'>
               <svg
-                className='h-4 w-4 shrink-0 animate-spin'
+                className='size-4 shrink-0 animate-spin'
                 fill='none'
                 viewBox='0 0 24 24'
               >

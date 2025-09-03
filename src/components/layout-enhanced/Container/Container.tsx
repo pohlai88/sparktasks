@@ -12,26 +12,32 @@
  * - Developer Experience: Intuitive APIs that make complex layouts simple to implement
  */
 
-import React, { forwardRef } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type React from 'react';
+import { forwardRef } from 'react';
+
 import { cn } from '../../../utils/cn';
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
 
 // ===== VARIANTS =====
 
-const containerVariants = cva(['mx-auto w-full'], {
+const containerVariants = cva([
+  ENHANCED_DESIGN_TOKENS.foundation.layout.margin['x-auto'],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+], {
   variants: {
     // Size Constraints based on MAPS design tokens
     size: {
-      xs: 'max-w-sm', // 320px - Mobile small
-      sm: 'max-w-md', // 384px - Mobile large
-      md: 'max-w-lg', // 448px - Tablet small
-      lg: 'max-w-2xl', // 512px - Tablet large
-      xl: 'max-w-4xl', // 576px - Desktop small
-      '2xl': 'max-w-6xl', // 672px - Desktop large
-      full: 'max-w-full', // Full width
-      content: 'max-w-2xl', // Optimal content width (65ch equivalent)
-      prose: 'max-w-prose', // Reading width (75ch equivalent)
+      xs: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'],
+      sm: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'],
+      md: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-lg'],
+      lg: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-2xl'],
+      xl: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-4xl'],
+      '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-6xl'],
+      full: ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+      content: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-2xl'],
+      prose: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-3xl'],
     },
 
     // Spacing Control using Tailwind spacing scale
@@ -67,27 +73,34 @@ const containerVariants = cva(['mx-auto w-full'], {
 
     // Alignment
     center: {
-      true: 'text-center',
+      true: ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
       false: '',
     },
 
     centerContent: {
-      true: 'flex flex-col items-center justify-center',
+      true: cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.alignment.center,
+      ),
       false: '',
     },
 
     // Responsive Behavior
     fluid: {
-      true: 'w-full',
+      true: ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
       false: '',
     },
 
     // MAPS Integration - Surface variants
     surface: {
-      canvas: 'bg-background',
-      elevated: 'bg-background-elevated',
-      glass: 'bg-background/80 backdrop-blur-sm',
-      panel: 'bg-background-panel',
+      canvas: ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+      elevated: ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+      glass: cn(
+        ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+        ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+      ),
+      panel: ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
     },
   },
   defaultVariants: {

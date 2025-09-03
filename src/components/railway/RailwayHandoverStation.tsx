@@ -23,13 +23,13 @@
  */
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { EnhancedBadge } from '@/components/ui-enhanced/Badge';
 import { EnhancedButton } from '@/components/ui-enhanced/Button';
 import { EnhancedCard } from '@/components/ui-enhanced/Card';
-import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
 import { EnhancedProgress } from '@/components/ui-enhanced/Progress';
+import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
 import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
@@ -41,48 +41,53 @@ import { cn } from '@/utils/cn';
  */
 const railwayHandoverStationVariants = cva(
   [
-    // Foundation: Layout/shape - Clean Tailwind utilities
-    'w-full max-w-7xl mx-auto',
-    'space-y-8',
+    // Foundation: Layout/shape - Enhanced design tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-7xl'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.margin['x-auto'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
     
     // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
     // MAPS4 Foundation: Motion - Respect user preferences
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         // Default: Clean handover station with subtle elevation
-        default: ['p-8', 'rounded-2xl'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl']],
         
         // Elevated: Enhanced depth with stronger shadow
         elevated: [
-          'p-10', 
-          'rounded-3xl',
-          'shadow-elevation-lg',
-          'border border-aurora-accent'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10'], 
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['3xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
         ],
         
         // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
-          'p-8',
-          'rounded-2xl',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
-          'border border-cosmic-border/30'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
         ],
       },
       
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['space-y-6', 'p-6'],
-        md: ['space-y-8', 'p-8'],
-        lg: ['space-y-10', 'p-10'],
-        xl: ['space-y-12', 'p-12'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8']],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10']],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['12']],
       },
     },
     
@@ -312,52 +317,70 @@ export function RailwayHandoverStation({
 
   const getStatusColor = (status: HandoverDeliverable['status']) => {
     switch (status) {
-      case 'pending':
+      case 'pending': {
         return 'secondary';
-      case 'in_progress':
+      }
+      case 'in_progress': {
         return 'warning';
-      case 'completed':
+      }
+      case 'completed': {
         return 'success';
-      case 'verified':
+      }
+      case 'verified': {
         return 'info';
-      case 'accepted':
+      }
+      case 'accepted': {
         return 'success';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
   const getPriorityColor = (priority: HandoverDeliverable['priority']) => {
     switch (priority) {
-      case 'low':
+      case 'low': {
         return 'secondary';
-      case 'medium':
+      }
+      case 'medium': {
         return 'info';
-      case 'high':
+      }
+      case 'high': {
         return 'warning';
-      case 'critical':
+      }
+      case 'critical': {
         return 'error';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
   const getTypeColor = (type: HandoverDeliverable['type']) => {
     switch (type) {
-      case 'documentation':
+      case 'documentation': {
         return 'accent';
-      case 'code':
+      }
+      case 'code': {
         return 'info';
-      case 'configuration':
+      }
+      case 'configuration': {
         return 'warning';
-      case 'training':
+      }
+      case 'training': {
         return 'success';
-      case 'access':
+      }
+      case 'access': {
         return 'error';
-      case 'certification':
+      }
+      case 'certification': {
         return 'success';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
@@ -365,16 +388,21 @@ export function RailwayHandoverStation({
 
   const getPhaseStatusColor = (status: HandoverPhase['status']) => {
     switch (status) {
-      case 'pending':
+      case 'pending': {
         return 'secondary';
-      case 'active':
+      }
+      case 'active': {
         return 'warning';
-      case 'completed':
+      }
+      case 'completed': {
         return 'success';
-      case 'delayed':
+      }
+      case 'delayed': {
         return 'error';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
@@ -397,7 +425,7 @@ export function RailwayHandoverStation({
     { id: 'compliance', label: 'Compliance', icon: '📋' },
   ];
 
-  const handoverMetrics = calculateHandoverMetrics();
+  const handoverMetrics = useMemo(() => calculateHandoverMetrics(), [handoverDataState]);
 
   return (
     <div
@@ -405,7 +433,10 @@ export function RailwayHandoverStation({
       className={cn(railwayHandoverStationVariants({ variant, size }))}
     >
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md
+      )}>
         <h1 className={cn(
           ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -420,10 +451,9 @@ export function RailwayHandoverStation({
         </p>
         
         {/* Progress Overview */}
-        <div className="flex items-center justify-center space-x-4">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           <EnhancedProgress
             value={handoverMetrics.overallProgress}
-            className="w-64"
             variant="default"
             size="md"
           />
@@ -437,26 +467,32 @@ export function RailwayHandoverStation({
       </div>
 
       {/* Handover Summary Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-4'])}>
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
             )}>
               Total Deliverables
             </h3>
-            <p className={cn(
-              ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
-              ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
-            )}>
+                          <p className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
+                ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+              )}>
               {handoverMetrics.totalDeliverables}
             </p>
           </div>
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -465,9 +501,9 @@ export function RailwayHandoverStation({
             </h3>
             <p className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
-              handoverMetrics.handoverReadiness >= 90 ? "text-cosmic-success" :
-              handoverMetrics.handoverReadiness >= 70 ? "text-cosmic-warning" :
-              "text-cosmic-danger"
+              handoverMetrics.handoverReadiness >= 90 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg :
+              (handoverMetrics.handoverReadiness >= 70 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg :
+              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg)
             )}>
               {handoverMetrics.handoverReadiness}%
             </p>
@@ -475,7 +511,10 @@ export function RailwayHandoverStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -484,9 +523,9 @@ export function RailwayHandoverStation({
             </h3>
             <p className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
-              handoverMetrics.complianceScore >= 95 ? "text-cosmic-success" :
-              handoverMetrics.complianceScore >= 80 ? "text-cosmic-warning" :
-              "text-cosmic-danger"
+              handoverMetrics.complianceScore >= 95 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg :
+              (handoverMetrics.complianceScore >= 80 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg :
+              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg)
             )}>
               {handoverMetrics.complianceScore}%
             </p>
@@ -494,7 +533,10 @@ export function RailwayHandoverStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -503,9 +545,9 @@ export function RailwayHandoverStation({
             </h3>
             <p className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
-              handoverMetrics.stakeholderSatisfaction >= 90 ? "text-cosmic-success" :
-              handoverMetrics.stakeholderSatisfaction >= 70 ? "text-cosmic-warning" :
-              "text-cosmic-danger"
+              handoverMetrics.stakeholderSatisfaction >= 90 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg :
+              (handoverMetrics.stakeholderSatisfaction >= 70 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg :
+              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg)
             )}>
               {handoverMetrics.stakeholderSatisfaction}%
             </p>
@@ -517,25 +559,25 @@ export function RailwayHandoverStation({
       <EnhancedTabs.Root
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-full"
+        className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
       >
-        <EnhancedTabs.List className="grid w-full grid-cols-5">
+        <EnhancedTabs.List className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid, ENHANCED_DESIGN_TOKENS.foundation.layout.width.full, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[5])}>
           {tabs.map((tab) => (
             <EnhancedTabs.Trigger
               key={tab.id}
               value={tab.id}
-              className="flex items-center space-x-2"
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}
             >
               <span>{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
+              <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.hidden, ENHANCED_DESIGN_TOKENS.foundation.layout.display.inline)}>{tab.label}</span>
             </EnhancedTabs.Trigger>
           ))}
         </EnhancedTabs.List>
 
         {/* Overview Tab */}
-        <EnhancedTabs.Content value="overview" className="space-y-6">
+        <EnhancedTabs.Content value="overview" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -543,8 +585,8 @@ export function RailwayHandoverStation({
                 Handover Overview
               </h3>
               
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-4">
+              <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                   <h4 className={cn(
                     ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -552,8 +594,8 @@ export function RailwayHandoverStation({
                     Handover Status
                   </h4>
                   
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -562,14 +604,14 @@ export function RailwayHandoverStation({
                       </span>
                       <EnhancedBadge
                         variant={handoverMetrics.overallProgress >= 90 ? 'success' : 
-                                handoverMetrics.overallProgress >= 70 ? 'warning' : 'error'}
+                                (handoverMetrics.overallProgress >= 70 ? 'warning' : 'error')}
                         size="sm"
                       >
                         {handoverMetrics.overallProgress}%
                       </EnhancedBadge>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -578,14 +620,14 @@ export function RailwayHandoverStation({
                       </span>
                       <EnhancedBadge
                         variant={handoverMetrics.handoverReadiness >= 90 ? 'success' :
-                                handoverMetrics.handoverReadiness >= 70 ? 'warning' : 'error'}
+                                (handoverMetrics.handoverReadiness >= 70 ? 'warning' : 'error')}
                         size="sm"
                       >
                         {handoverMetrics.handoverReadiness}%
                       </EnhancedBadge>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -594,7 +636,7 @@ export function RailwayHandoverStation({
                       </span>
                       <EnhancedBadge
                         variant={handoverMetrics.complianceScore >= 95 ? 'success' :
-                                handoverMetrics.complianceScore >= 80 ? 'warning' : 'error'}
+                                (handoverMetrics.complianceScore >= 80 ? 'warning' : 'error')}
                         size="sm"
                       >
                         {handoverMetrics.complianceScore}%
@@ -603,7 +645,7 @@ export function RailwayHandoverStation({
                   </div>
                 </div>
                 
-                <div className="space-y-4">
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                   <h4 className={cn(
                     ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -611,8 +653,8 @@ export function RailwayHandoverStation({
                     Deliverable Metrics
                   </h4>
                   
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -620,14 +662,14 @@ export function RailwayHandoverStation({
                         Completed:
                       </span>
                       <span className={cn(
-                        "font-medium",
-                        "text-cosmic-success"
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg
                       )}>
                         {handoverMetrics.completedDeliverables}
                       </span>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -635,14 +677,14 @@ export function RailwayHandoverStation({
                         Verified:
                       </span>
                       <span className={cn(
-                        "font-medium",
-                        "text-cosmic-info"
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.fg
                       )}>
                         {handoverMetrics.verifiedDeliverables}
                       </span>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -650,8 +692,8 @@ export function RailwayHandoverStation({
                         Accepted:
                       </span>
                       <span className={cn(
-                        "font-medium",
-                        "text-cosmic-success"
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg
                       )}>
                         {handoverMetrics.acceptedDeliverables}
                       </span>
@@ -664,9 +706,9 @@ export function RailwayHandoverStation({
         </EnhancedTabs.Content>
 
         {/* Handover Phases Tab */}
-        <EnhancedTabs.Content value="phases" className="space-y-6">
+        <EnhancedTabs.Content value="phases" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -674,17 +716,17 @@ export function RailwayHandoverStation({
                 Handover Phases
               </h3>
               
-              <div className="space-y-6">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                 {handoverDataState.map((phase) => (
                   <div
                     key={phase.id}
-                    className="p-6 rounded-lg border border-cosmic-border bg-cosmic-void/20"
+                    className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)}
                   >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
+                        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
                           <h4 className={cn(
-                            "font-medium",
+                            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                           )}>
                             {phase.name}
@@ -703,12 +745,12 @@ export function RailwayHandoverStation({
                           {phase.description}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.right}>
                         <div className={cn(
-                          "text-2xl font-bold",
-                          phase.progress === 100 ? "text-cosmic-success" :
-                          phase.progress >= 50 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
+                          phase.progress === 100 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg :
+                          (phase.progress >= 50 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg)
                         )}>
                           {phase.progress}%
                         </div>
@@ -721,7 +763,7 @@ export function RailwayHandoverStation({
                       </div>
                     </div>
                     
-                    <div className="grid gap-4 md:grid-cols-3 mb-4">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[3])}>
                       <div>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.label,
@@ -730,7 +772,7 @@ export function RailwayHandoverStation({
                           Start Date:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {phase.startDate}
@@ -745,8 +787,8 @@ export function RailwayHandoverStation({
                           End Date:
                         </span>
                         <p className={cn(
-                          "font-medium",
-                          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                         )}>
                           {phase.endDate}
                         </p>
@@ -760,7 +802,7 @@ export function RailwayHandoverStation({
                           Deliverables:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {phase.deliverables.length}
@@ -770,7 +812,7 @@ export function RailwayHandoverStation({
                     
                     <EnhancedProgress
                       value={phase.progress}
-                      className="w-full"
+                      className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
                       variant="default"
                       size="sm"
                     />
@@ -782,9 +824,9 @@ export function RailwayHandoverStation({
         </EnhancedTabs.Content>
 
         {/* Deliverables Tab */}
-        <EnhancedTabs.Content value="deliverables" className="space-y-6">
+        <EnhancedTabs.Content value="deliverables" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -792,17 +834,17 @@ export function RailwayHandoverStation({
                 Deliverables Management
               </h3>
               
-              <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                 {handoverDataState.flatMap(phase => phase.deliverables).map((deliverable) => (
                   <div
                     key={deliverable.id}
-                    className="p-4 rounded-lg border border-cosmic-border bg-cosmic-void/20"
+                    className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)}
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
+                        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
                           <h4 className={cn(
-                            "font-medium",
+                            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                           )}>
                             {deliverable.name}
@@ -833,13 +875,13 @@ export function RailwayHandoverStation({
                           {deliverable.description}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.right}>
                         <div className={cn(
-                          "text-xl font-bold",
-                          deliverable.verificationStatus === 'accepted' ? "text-cosmic-success" :
-                          deliverable.verificationStatus === 'verified' ? "text-cosmic-info" :
-                          deliverable.verificationStatus === 'rejected' ? "text-cosmic-danger" :
-                          "text-cosmic-secondary"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
+                          deliverable.verificationStatus === 'accepted' ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg :
+                          deliverable.verificationStatus === 'verified' ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.fg :
+                          deliverable.verificationStatus === 'rejected' ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                         )}>
                           {deliverable.verificationStatus.replace('_', ' ')}
                         </div>
@@ -852,7 +894,7 @@ export function RailwayHandoverStation({
                       </div>
                     </div>
                     
-                    <div className="grid gap-4 md:grid-cols-4 mb-3">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[4])}>
                       <div>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.label,
@@ -861,7 +903,7 @@ export function RailwayHandoverStation({
                           Assignee:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {deliverable.assignee}
@@ -876,7 +918,7 @@ export function RailwayHandoverStation({
                           Due Date:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {deliverable.dueDate}
@@ -891,8 +933,8 @@ export function RailwayHandoverStation({
                           Completion:
                         </span>
                         <p className={cn(
-                          "font-medium",
-                          deliverable.completionDate ? "text-cosmic-success" : "text-cosmic-warning"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          deliverable.completionDate ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg : ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg
                         )}>
                           {deliverable.completionDate || 'Pending'}
                         </p>
@@ -906,7 +948,7 @@ export function RailwayHandoverStation({
                           Status:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {deliverable.status.replace('_', ' ')}
@@ -915,17 +957,17 @@ export function RailwayHandoverStation({
                     </div>
                     
                     {deliverable.acceptanceCriteria.length > 0 && (
-                      <div className="mb-3">
+                      <div>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                         )}>
                           Acceptance Criteria:
                         </span>
-                        <ul className="mt-2 space-y-1">
+                        <ul className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs)}>
                           {deliverable.acceptanceCriteria.map((criteria, index) => (
                             <li key={index} className={cn(
-                              "text-sm",
+                              ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                             )}>
                               • {criteria}
@@ -936,7 +978,7 @@ export function RailwayHandoverStation({
                     )}
                     
                     {deliverable.notes && (
-                      <div className="mb-3">
+                      <div>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -944,7 +986,7 @@ export function RailwayHandoverStation({
                           Notes:
                         </span>
                         <p className={cn(
-                          "text-sm mt-1",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {deliverable.notes}
@@ -959,9 +1001,9 @@ export function RailwayHandoverStation({
         </EnhancedTabs.Content>
 
         {/* Verification Tab */}
-        <EnhancedTabs.Content value="verification" className="space-y-6">
+        <EnhancedTabs.Content value="verification" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -969,9 +1011,9 @@ export function RailwayHandoverStation({
                 Verification Status
               </h3>
               
-              <div className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
+                <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                     <h4 className={cn(
                       ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                       ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -979,8 +1021,8 @@ export function RailwayHandoverStation({
                       Verification by Status
                     </h4>
                     
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
+                    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -988,15 +1030,15 @@ export function RailwayHandoverStation({
                           Not Verified:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          "text-cosmic-secondary"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                         )}>
                           {handoverDataState.flatMap(phase => phase.deliverables)
                             .filter(d => d.verificationStatus === 'not_verified').length}
                         </span>
                       </div>
                       
-                      <div className="flex items-center justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -1004,14 +1046,14 @@ export function RailwayHandoverStation({
                           Verified:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          "text-cosmic-info"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.fg
                         )}>
                           {handoverMetrics.verifiedDeliverables}
                         </span>
                       </div>
                       
-                      <div className="flex items-center justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -1019,14 +1061,14 @@ export function RailwayHandoverStation({
                           Accepted:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          "text-cosmic-success"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg
                         )}>
                           {handoverMetrics.acceptedDeliverables}
                         </span>
                       </div>
                       
-                      <div className="flex items-center justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -1034,8 +1076,8 @@ export function RailwayHandoverStation({
                           Rejected:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg
                         )}>
                           {handoverDataState.flatMap(phase => phase.deliverables)
                             .filter(d => d.verificationStatus === 'rejected').length}
@@ -1044,7 +1086,7 @@ export function RailwayHandoverStation({
                     </div>
                   </div>
                   
-                  <div className="space-y-4">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                     <h4 className={cn(
                       ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                       ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -1052,8 +1094,8 @@ export function RailwayHandoverStation({
                       Verification Progress
                     </h4>
                     
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
+                    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -1061,17 +1103,17 @@ export function RailwayHandoverStation({
                           Verification Rate:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.8 ? "text-cosmic-success" :
-                          handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.8 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg :
+                          (handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg)
                         )}>
                           {handoverMetrics.totalDeliverables > 0 ? 
                             Math.round((handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables) * 100) : 0}%
                         </span>
                       </div>
                       
-                      <div className="flex items-center justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -1079,10 +1121,10 @@ export function RailwayHandoverStation({
                           Acceptance Rate:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          handoverMetrics.acceptedDeliverables / handoverMetrics.totalDeliverables >= 0.8 ? "text-cosmic-success" :
-                          handoverMetrics.acceptedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          handoverMetrics.acceptedDeliverables / handoverMetrics.totalDeliverables >= 0.8 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg :
+                          (handoverMetrics.acceptedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg)
                         )}>
                           {handoverMetrics.totalDeliverables > 0 ? 
                             Math.round((handoverMetrics.acceptedDeliverables / handoverMetrics.totalDeliverables) * 100) : 0}%
@@ -1090,25 +1132,25 @@ export function RailwayHandoverStation({
                       </div>
                     </div>
                     
-                    <div className="p-4 rounded-lg border border-cosmic-border bg-cosmic-void/20">
-                      <div className="text-center">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)}>
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
                         <div className={cn(
-                          "text-2xl font-bold mb-2",
-                          handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.8 ? "text-cosmic-success" :
-                          handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
+                          handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.8 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg :
+                          (handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg)
                         )}>
                           {handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.8 ? 'Ready for Handover' :
-                           handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? 'Partial Verification' :
-                           'Verification Required'}
+                           (handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? 'Partial Verification' :
+                           'Verification Required')}
                         </div>
                         <p className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                         )}>
                           {handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.8 ? 'Project is ready for formal handover with high verification rate.' :
-                           handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? 'Project has partial verification and may need additional review.' :
-                           'Project requires significant verification before handover can proceed.'}
+                           (handoverMetrics.verifiedDeliverables / handoverMetrics.totalDeliverables >= 0.6 ? 'Project has partial verification and may need additional review.' :
+                           'Project requires significant verification before handover can proceed.')}
                         </p>
                       </div>
                     </div>
@@ -1121,8 +1163,8 @@ export function RailwayHandoverStation({
       </EnhancedTabs.Root>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-6 border-t border-border">
-        <div className="flex items-center space-x-4">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           <EnhancedButton
             onClick={onRollback}
             variant="outline"

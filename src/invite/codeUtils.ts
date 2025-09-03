@@ -11,7 +11,7 @@ const B32_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
 function calculateChecksum(code: string): string {
   let hash = 0;
   for (let i = 0; i < code.length; i++) {
-    hash = ((hash << 5) - hash + code.charCodeAt(i)) & 0xff_ff_ff_ff;
+    hash = ((hash << 5) - hash + code.charCodeAt(i)) & 0xFF_FF_FF_FF;
   }
   const c1 = B32_ALPHABET[Math.abs(hash) % 32];
   const c2 = B32_ALPHABET[Math.abs(hash >> 5) % 32];

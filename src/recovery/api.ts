@@ -35,7 +35,7 @@ function recoveryAAD(ns: string): ArrayBuffer {
 
 // Simple FNV-1a 32-bit hash for bundle ID generation
 function simpleHash(str: string): string {
-  let hash = 0x81_1c_9d_c5; // FNV offset basis (32-bit)
+  let hash = 0x81_1C_9D_C5; // FNV offset basis (32-bit)
 
   for (let i = 0; i < str.length; i++) {
     hash ^= str.charCodeAt(i);

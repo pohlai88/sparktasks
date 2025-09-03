@@ -31,6 +31,7 @@ import * as RadixHoverCard from '@radix-ui/react-hover-card';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED HOVER CARD VARIANTS =====
@@ -41,13 +42,18 @@ import { cn } from '@/utils/cn';
  */
 const enhancedHoverCardContentVariants = cva(
   [
-    // Foundation: Layout & Structure
-    'relative z-50 min-w-[16rem] max-w-[24rem]',
-    'overflow-hidden rounded-lg',
-    'border border-border-subtle',
+    // Foundation: Layout & Structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    getZIndexClass('popover'),
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
 
-    // Foundation: Dark-First Philosophy - Solid background for readability
-    'text-content-primary bg-background-elevated',
+    // Foundation: Dark-First Philosophy - Solid background for readability - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
 
     // Foundation: Liquid Glass Materials (Surface-Only)
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
@@ -58,66 +64,69 @@ const enhancedHoverCardContentVariants = cva(
     'data-[side=right]:slide-in-from-left-2',
     'data-[side=top]:slide-in-from-bottom-2',
 
-    // Foundation: Elevation & Shadow System
-    'shadow-lg',
+    // Foundation: Elevation & Shadow System - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
 
-    // Foundation: Motion - Respect user preferences
-    'motion-reduce:transition-none',
-    'motion-reduce:animate-none',
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Apple HIG Interaction
     'will-change-[opacity,transform]',
 
     // Foundation: Accessibility
-    'focus:outline-none',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Content Structure
-    'p-4',
+    // Foundation: Content Structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
   ],
   {
     variants: {
       variant: {
-        // Default: Clean solid background styling
-        default: ['border-border-subtle bg-background-elevated', 'shadow-lg'],
+        // Default: Clean solid background styling - Enhanced tokens
+        default: [ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated, ENHANCED_DESIGN_TOKENS.foundation.elevation.lg],
 
-        // Glass: Liquid glass vibrancy (Surface-Only) with solid background
+        // Glass: Liquid glass vibrancy (Surface-Only) with solid background - Enhanced tokens
         glass: [
-          'backdrop-blur-[12px] backdrop-saturate-[135%]',
-          'bg-background-translucent/80',
-          'border-border-subtle/50',
-          'shadow-xl shadow-background/20',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
 
-        // Floating: Enhanced elevation
+        // Floating: Enhanced elevation - Enhanced tokens
         floating: [
-          'border-border-subtle bg-background-elevated',
-          'shadow-xl shadow-background/30',
-          'ring-1 ring-border-subtle/20',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
         ],
 
-        // Outlined: Subtle border emphasis
-        outlined: ['border-border bg-background-elevated', 'shadow-md'],
+        // Outlined: Subtle border emphasis - Enhanced tokens
+        outlined: [ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated, ENHANCED_DESIGN_TOKENS.foundation.elevation.md],
 
-        // Ghost: Minimal styling
-        ghost: ['border-transparent bg-background-elevated/50', 'shadow-sm'],
+        // Ghost: Minimal styling - Enhanced tokens
+        ghost: [ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none, ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent, ENHANCED_DESIGN_TOKENS.foundation.elevation.sm],
 
-        // Filled: Strong background
-        filled: ['border-border-subtle bg-background-panel', 'shadow-lg'],
+        // Filled: Strong background - Enhanced tokens
+        filled: [ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle, ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel, ENHANCED_DESIGN_TOKENS.foundation.elevation.lg],
       },
 
       size: {
-        sm: 'min-w-[12rem] max-w-[18rem] p-3',
-        md: 'min-w-[16rem] max-w-[24rem] p-4',
-        lg: 'min-w-[20rem] max-w-[32rem] p-6',
+        sm: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'],
+        md: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'],
+        lg: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-lg'],
       },
 
-      // AAA Compliance Mode
+      // AAA Compliance Mode - Enhanced tokens
       aaaMode: {
         true: [
-          'border-border-strong bg-background',
-          'shadow-lg',
-          'contrast-more:bg-background',
-          'contrast-more:border-border-strong',
+          'border-cosmic-border-strong',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          'contrast-more:bg-cosmic-void',
+          'contrast-more:border-cosmic-border-strong',
           'forced-colors:border-[ButtonBorder]',
           'forced-colors:bg-[ButtonFace]',
           // Override any glass effects for maximum contrast
@@ -125,10 +134,10 @@ const enhancedHoverCardContentVariants = cva(
         ],
       },
 
-      // Density variations for different contexts
+      // Density variations for different contexts - Enhanced tokens
       density: {
-        comfortable: 'p-4',
-        compact: 'p-3',
+        comfortable: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+        compact: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
       },
     },
     defaultVariants: {
@@ -145,58 +154,60 @@ const enhancedHoverCardContentVariants = cva(
  */
 const enhancedHoverCardTriggerVariants = cva(
   [
-    // Foundation: Apple HIG Touch Targets
-    'inline-flex items-center justify-center',
+    // Foundation: Apple HIG Touch Targets - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.inlineBlock,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
     'min-h-[44px] min-w-[44px]',
 
-    // Foundation: Interaction States
-    'transition-colors duration-200 ease-out',
-    'hover:bg-background-elevated/50',
-    'focus:bg-background-elevated/50 focus:outline-none',
-    'active:bg-background-elevated/80',
+    // Foundation: Interaction States - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    'pointer:hover:bg-cosmic-void/50',
+    'focus:bg-cosmic-void/50',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+    'active:bg-cosmic-void/80',
 
-    // Foundation: Motion Respect
-    'motion-reduce:transition-none',
+    // Foundation: Motion Respect - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Accessibility - Focus ring
-    'focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    // Foundation: Accessibility - Focus ring - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
     // Foundation: Disabled State
     'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-    'data-[disabled]:text-content-disabled',
+    'data-[disabled]:text-cosmic-disabled',
 
-    // Foundation: Border radius for interaction feedback
-    'rounded-md',
+    // Foundation: Border radius for interaction feedback - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
   ],
   {
     variants: {
       variant: {
         default: [
-          'hover:bg-background-elevated/50',
-          'focus:bg-background-elevated/50',
+          'pointer:hover:bg-cosmic-void/50',
+          'focus:bg-cosmic-void/50',
         ],
 
         ghost: [
-          'hover:bg-background-elevated/30',
-          'focus:bg-background-elevated/30',
+          'pointer:hover:bg-cosmic-void/30',
+          'focus:bg-cosmic-void/30',
         ],
 
         subtle: [
-          'text-content-secondary',
-          'hover:text-content-primary hover:bg-background-elevated/30',
-          'focus:text-content-primary focus:bg-background-elevated/30',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          'pointer:hover:text-cosmic-light pointer:hover:bg-cosmic-void/30',
+          'focus:text-cosmic-light focus:bg-cosmic-void/30',
         ],
       },
 
-      // AAA Compliance Mode
+      // AAA Compliance Mode - Enhanced tokens
       aaaMode: {
         true: [
-          'hover:bg-background-elevated',
-          'focus:bg-background-elevated',
-          'contrast-more:text-content-primary',
+          'hover:bg-cosmic-void',
+          'focus:bg-cosmic-void',
+          'contrast-more:text-cosmic-light',
           'contrast-more:border',
-          'contrast-more:border-border-strong',
+          'contrast-more:border-cosmic-border-strong',
           'forced-colors:text-[ButtonText]',
           'forced-colors:bg-[ButtonFace]',
           'forced-colors:border-[ButtonBorder]',
@@ -204,9 +215,9 @@ const enhancedHoverCardTriggerVariants = cva(
       },
 
       size: {
-        sm: 'min-h-[36px] min-w-[36px] text-sm',
-        md: 'min-h-[44px] min-w-[44px] text-base',
-        lg: 'min-h-[52px] min-w-[52px] text-lg',
+        sm: 'min-h-[36px] min-w-[36px]',
+        md: 'min-h-[44px] min-w-[44px]',
+        lg: 'min-h-[52px] min-w-[52px]',
       },
     },
     defaultVariants: {
@@ -231,6 +242,7 @@ interface HoverCardTriggerProps {
   variant?: VariantProps<typeof enhancedHoverCardTriggerVariants>['variant'];
   size?: VariantProps<typeof enhancedHoverCardTriggerVariants>['size'];
   aaaMode?: boolean;
+  disableAnimations?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
@@ -246,11 +258,18 @@ const HoverCardTrigger = React.forwardRef<
       variant = 'default',
       size = 'md',
       aaaMode = false,
+      disableAnimations = false,
       children,
       ...props
     },
     ref
-  ) => (
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    return (
     <RadixHoverCard.Trigger
       ref={ref}
       className={cn(
@@ -259,13 +278,15 @@ const HoverCardTrigger = React.forwardRef<
           size,
           aaaMode,
         }),
+        motionClasses,
         className
       )}
       {...props}
     >
       {children}
     </RadixHoverCard.Trigger>
-  )
+    );
+  }
 );
 HoverCardTrigger.displayName = RadixHoverCard.Trigger.displayName;
 
@@ -277,6 +298,7 @@ interface HoverCardContentProps {
   size?: VariantProps<typeof enhancedHoverCardContentVariants>['size'];
   aaaMode?: boolean;
   density?: VariantProps<typeof enhancedHoverCardContentVariants>['density'];
+  disableAnimations?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
@@ -293,12 +315,19 @@ const HoverCardContent = React.forwardRef<
       size = 'md',
       aaaMode = false,
       density = 'comfortable',
+      disableAnimations = false,
       children,
       sideOffset = 4,
       ...props
     },
     ref
-  ) => (
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    return (
     <HoverCardPortal>
       <RadixHoverCard.Content
         ref={ref}
@@ -310,6 +339,7 @@ const HoverCardContent = React.forwardRef<
             aaaMode,
             density,
           }),
+          motionClasses,
           className
         )}
         {...props}
@@ -317,7 +347,8 @@ const HoverCardContent = React.forwardRef<
         {children}
       </RadixHoverCard.Content>
     </HoverCardPortal>
-  )
+    );
+  }
 );
 HoverCardContent.displayName = RadixHoverCard.Content.displayName;
 
@@ -333,7 +364,7 @@ const HoverCardArrow = React.forwardRef<
   <RadixHoverCard.Arrow
     ref={ref}
     className={cn(
-      'fill-background-elevated stroke-border-subtle',
+      'fill-cosmic-void stroke-cosmic-border-subtle',
       'h-2 w-4',
       className
     )}
@@ -354,6 +385,7 @@ interface EnhancedHoverCardProps {
   size?: VariantProps<typeof enhancedHoverCardContentVariants>['size'];
   aaaMode?: boolean;
   density?: VariantProps<typeof enhancedHoverCardContentVariants>['density'];
+  disableAnimations?: boolean;
   openDelay?: number;
   closeDelay?: number;
   open?: boolean;
@@ -374,6 +406,7 @@ const EnhancedHoverCard: React.FC<EnhancedHoverCardProps> = ({
   size = 'md',
   aaaMode = false,
   density = 'comfortable',
+  disableAnimations = false,
   openDelay = 700,
   closeDelay = 300,
   open,
@@ -402,6 +435,7 @@ const EnhancedHoverCard: React.FC<EnhancedHoverCardProps> = ({
     size,
     aaaMode,
     density,
+    disableAnimations,
     side,
     sideOffset,
     align,
@@ -423,9 +457,146 @@ const EnhancedHoverCard: React.FC<EnhancedHoverCardProps> = ({
 // ===== HOVER CARD FACTORY PATTERNS =====
 
 /**
- * Factory patterns for common hover card configurations
+ * Factory for creating pre-configured hover card components
  */
 const HoverCardFactory = {
+  /**
+   * Default hover card configuration
+   */
+  default: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Glass hover card configuration
+   */
+  glass: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'glass' as const,
+    size: 'md' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Floating hover card configuration
+   */
+  floating: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'floating' as const,
+    size: 'md' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Outlined hover card configuration
+   */
+  outlined: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'outlined' as const,
+    size: 'md' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Ghost hover card configuration
+   */
+  ghost: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'ghost' as const,
+    size: 'md' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Filled hover card configuration
+   */
+  filled: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'filled' as const,
+    size: 'md' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Accessible hover card configuration with AAA compliance
+   */
+  accessible: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    aaaMode: true,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Small hover card configuration
+   */
+  small: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Large hover card configuration
+   */
+  large: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'lg' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Compact hover card configuration
+   */
+  compact: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    aaaMode: false,
+    density: 'compact' as const,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Performance-optimized hover card with disabled animations
+   */
+  performance: (props: Partial<EnhancedHoverCardProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    aaaMode: false,
+    density: 'comfortable' as const,
+    disableAnimations: true,
+    ...props,
+  }),
+};
+
+/**
+ * Factory patterns for common hover card configurations
+ */
+const HoverCardFactoryPatterns = {
   /**
    * Default hover card with standard styling
    */
@@ -538,6 +709,7 @@ export {
 
   // Factory patterns
   HoverCardFactory,
+  HoverCardFactoryPatterns,
 
   // Primitives
   HoverCardPrimitive,

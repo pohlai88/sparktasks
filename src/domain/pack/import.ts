@@ -13,7 +13,7 @@ import type {
 
 // tiny hash, no deps
 const fnv1a = (s: string) => {
-  let h = 0x81_1c_9d_c5 >>> 0;
+  let h = 0x81_1C_9D_C5 >>> 0;
   for (let i = 0; i < s.length; i++) {
     h ^= s.charCodeAt(i);
     h = Math.imul(h, 0x01_00_01_93) >>> 0;

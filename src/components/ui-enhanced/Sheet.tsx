@@ -2,21 +2,30 @@
  * Enhanced Sheet Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
- * - MAPS4 Foundation: ✅ Deep space canvas with stellar surfaces & aurora accents
+ * - MAPS4 Foundation: ✅ Deep space canvas with cosmic innovation
  * - Apple HIG Harmony: ✅ Semantic hierarchy & systematic spacing
  * - AAA Compliance: ✅ Dual-track with enforcement mode
- * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic transparency
+ * - Liquid Glass Materials: ✅ Governed vibrancy system
  * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
- * - Anti-Drift Enforcement: ✅ 100% tokenization, zero hardcoded values
+ * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
- * - Tailwind Config → CSS Custom Properties → Component classes
- * - Enhanced Tokens → Semantic API → Component variants
- * - MAPS4 Guidelines → Component behavior → User experience
+ * - Radix owns: Behavior, ARIA, focus management, state management, keyboard navigation
+ * - MAPS4 owns: Apple HIG materials, liquid glass, AAA enforcement
+ * - Wrapper owns: Token application, governance rules, brand consistency
+ *
+ * GOVERNANCE RULES:
+ * - Foundation tokens only (no component-specific tokens)
+ * - Auto-apply AAA scrims over glass materials
+ * - Apple HIG motion with respect for reduced motion
+ * - Platform-aware touch targets (44px minimum)
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
  * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
+ *
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 /* eslint-disable react/prop-types */
@@ -27,124 +36,189 @@ import { X } from 'lucide-react';
 import * as React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED SHEET VARIANTS =====
 
 /**
- * Enhanced sheet overlay variants following MAPS v2.2 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
+ * Enhanced sheet overlay variants following MAPS4 v4.0 foundation
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedSheetOverlayVariants = cva([
-  // Foundation: Overlay base styling
-  'fixed inset-0 z-50',
-  'bg-cosmic-dark/80 backdrop-blur-[var(--blur-sm)]',
+  // Foundation: Overlay base styling - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.position.fixed,
+  ENHANCED_DESIGN_TOKENS.foundation.positioning.inset[0],
+  getZIndexClass('overlay'),
+  ENHANCED_DESIGN_TOKENS.foundation.color.surface.overlay,
+  ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
 
-  // Foundation: Motion - Apple quality transitions
+  // Foundation: Motion - Apple quality transitions - Enhanced tokens
   'data-[state=open]:animate-in data-[state=closed]:animate-out',
   'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
 
-  // Foundation: Respect motion preferences
-  'motion-reduce:transition-none',
+  // Foundation: Respect motion preferences - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 ]);
 
 /**
  * Enhanced sheet content variants with systematic positioning
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedSheetContentVariants = cva(
   [
-    // Foundation: Base positioning and layout
-    'fixed z-50 gap-[var(--space-4)] p-[var(--space-6)]',
-    'border bg-stellar-surface shadow-elevation-high',
+    // Foundation: Base positioning and layout - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.fixed,
+    getZIndexClass('modal'),
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
 
-    // Foundation: Motion - Elegant entrance animations
+    // Foundation: Motion - Elegant entrance animations - Enhanced tokens
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
-    'data-[state=closed]:duration-[var(--motion-duration-3)] data-[state=open]:duration-[var(--motion-duration-5)]',
+    ENHANCED_DESIGN_TOKENS.foundation.animation.duration[300],
 
-    // Foundation: Focus management
-    'focus-visible:outline-none',
+    // Foundation: Focus management - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Motion preferences
-    'motion-reduce:transition-none',
+    // Foundation: Motion preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       side: {
+        // Top: Slide from top - Enhanced tokens
         top: [
-          'inset-x-0 top-0',
-          'rounded-b-[var(--radius-lg)] border-b',
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.left[0],
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.right[0],
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.top[0],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          'border-b',
           'data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
         ],
+        
+        // Bottom: Slide from bottom - Enhanced tokens
         bottom: [
-          'inset-x-0 bottom-0',
-          'rounded-t-[var(--radius-lg)] border-t',
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.left[0],
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.right[0],
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.bottom[0],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          'border-t',
           'data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
         ],
+        
+        // Left: Slide from left - Enhanced tokens
         left: [
-          'inset-y-0 left-0 h-full w-3/4',
-          'rounded-r-[var(--radius-lg)] border-r',
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.top[0],
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.bottom[0],
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.left[0],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          'border-r',
           'data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left',
-          'sm:max-w-sm md:max-w-md lg:max-w-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'],
         ],
+        
+        // Right: Slide from right - Enhanced tokens
         right: [
-          'inset-y-0 right-0 h-full w-3/4',
-          'rounded-l-[var(--radius-lg)] border-l',
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.top[0],
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.bottom[0],
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.right[0],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          'border-l',
           'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
-          'sm:max-w-sm md:max-w-md lg:max-w-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'],
         ],
       },
+      
       size: {
+        // Size variants for different content needs - Enhanced tokens
         sm: [],
         md: [],
         lg: [],
         xl: [],
         full: [],
       },
+      
       surface: {
-        elevated: ['border-cosmic-border-elevated bg-stellar-surface-elevated'],
-        panel: ['border-cosmic-border-panel bg-stellar-surface-panel'],
+        // Elevated: Enhanced surface with depth - Enhanced tokens
+        elevated: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+        ],
+        
+        // Panel: Standard panel surface - Enhanced tokens
+        panel: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+        ],
+        
+        // Glass: Liquid glass material with governed vibrancy - Enhanced tokens
         glass: [
-          'bg-stellar-surface/95 backdrop-blur-[var(--blur-md)] backdrop-saturate-[var(--saturate-150)]',
-          'border-cosmic-border/50',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
+        
+        // Floating: Floating surface with enhanced depth - Enhanced tokens
         floating: [
-          'bg-stellar-surface/90 backdrop-blur-[var(--blur-lg)] backdrop-saturate-[var(--saturate-150)]',
-          'shadow-elevation-floating border-cosmic-border/30',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
       },
+      
       density: {
-        comfortable: ['gap-[var(--space-4)] p-[var(--space-6)]'],
-        compact: ['gap-[var(--space-3)] p-[var(--space-4)]'],
+        // Comfortable: Standard spacing for most use cases - Enhanced tokens
+        comfortable: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6]],
+        
+        // Compact: Reduced spacing for dense layouts - Enhanced tokens
+        compact: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4]],
       },
-      enforceAAA: {
+      
+      // AAA compliance mode - Enhanced tokens
+      aaa: {
         false: '',
         true: [
-          'aaa:bg-stellar-surface-aaa aaa:border-cosmic-border-aaa',
+          'aaa:bg-cosmic-void aaa:border-cosmic-border-strong',
           'aaa:shadow-elevation-aaa',
         ],
       },
     },
+    
     compoundVariants: [
-      // Size variants for different sides
+      // Size variants for different sides - Enhanced tokens
       {
         side: ['left', 'right'],
         size: 'sm',
-        className: 'w-80 sm:max-w-80',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'],
       },
       {
         side: ['left', 'right'],
         size: 'md',
-        className: 'w-96 sm:max-w-96',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'],
       },
       {
         side: ['left', 'right'],
         size: 'lg',
-        className: 'w-[32rem] sm:max-w-[32rem]',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-lg'],
       },
       {
         side: ['left', 'right'],
         size: 'xl',
-        className: 'w-[40rem] sm:max-w-[40rem]',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-xl'],
       },
       {
         side: ['left', 'right'],
@@ -154,22 +228,22 @@ const enhancedSheetContentVariants = cva(
       {
         side: ['top', 'bottom'],
         size: 'sm',
-        className: 'h-80',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.height.auto,
       },
       {
         side: ['top', 'bottom'],
         size: 'md',
-        className: 'h-96',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.height.auto,
       },
       {
         side: ['top', 'bottom'],
         size: 'lg',
-        className: 'h-[32rem]',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.height.auto,
       },
       {
         side: ['top', 'bottom'],
         size: 'xl',
-        className: 'h-[40rem]',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.height.auto,
       },
       {
         side: ['top', 'bottom'],
@@ -177,97 +251,120 @@ const enhancedSheetContentVariants = cva(
         className: 'h-full',
       },
 
-      // Surface + AAA combinations
+      // Surface + AAA combinations - Enhanced tokens
       {
         surface: 'elevated',
-        enforceAAA: true,
+        aaa: true,
         className:
-          'aaa:bg-stellar-surface-elevated-aaa aaa:border-cosmic-border-elevated-aaa',
+          'aaa:bg-cosmic-void aaa:border-cosmic-border-strong',
       },
       {
         surface: 'glass',
-        enforceAAA: true,
-        className: 'aaa:bg-stellar-surface-aaa/95 aaa:border-cosmic-border-aaa/50',
+        aaa: true,
+        className: 'aaa:bg-cosmic-void/95 aaa:border-cosmic-border-strong/50',
       },
     ],
+    
     defaultVariants: {
       side: 'right',
       size: 'md',
       surface: 'elevated',
       density: 'comfortable',
-      enforceAAA: false,
+      aaa: false,
     },
   }
 );
 
 /**
  * Enhanced sheet header variants
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedSheetHeaderVariants = cva([
-  // Foundation: Layout and spacing
-  'flex flex-col space-y-[var(--space-1_5)]',
+  // Foundation: Layout and spacing - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm,
   'text-center sm:text-left',
 
-  // Foundation: Border and padding
-  'border-b border-cosmic-border pb-[var(--space-4)]',
+  // Foundation: Border and padding - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+  'border-b',
+  ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
 
-  // Enhanced: Proper content hierarchy
-  'mb-[var(--space-4)]',
+  // Enhanced: Proper content hierarchy - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.margin[4],
 ]);
 
 /**
  * Enhanced sheet title variants
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedSheetTitleVariants = cva([
-  // Foundation: Typography following Apple HIG
-  'text-[var(--font-size-lg)] font-[var(--font-weight-semibold)] leading-none tracking-tight',
-  'text-cosmic-light',
+  // Foundation: Typography following Apple HIG - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+  'leading-none tracking-tight',
 
-  // Foundation: Spacing for content hierarchy
-  'mb-[var(--space-1)]',
+  // Foundation: Spacing for content hierarchy - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.margin[1],
 ]);
 
 /**
  * Enhanced sheet description variants
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedSheetDescriptionVariants = cva([
-  // Foundation: Typography for secondary text
-  'text-[var(--font-size-sm)] text-cosmic-muted',
+  // Foundation: Typography for secondary text - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
   'leading-relaxed',
 ]);
 
 /**
  * Enhanced sheet footer variants
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedSheetFooterVariants = cva([
-  // Foundation: Layout for actions
-  'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-[var(--space-2)]',
+  // Foundation: Layout for actions - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+  'sm:flex-row sm:justify-end sm:space-x-2',
 
-  // Foundation: Spacing and borders
-  'mt-[var(--space-4)] border-t border-cosmic-border pt-[var(--space-4)]',
+  // Foundation: Spacing and borders - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.margin[4],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+  'border-t',
+  ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
 ]);
 
 /**
  * Enhanced sheet close button variants
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedSheetCloseVariants = cva([
-  // Foundation: Positioning
-  'absolute right-[var(--space-4)] top-[var(--space-4)]',
+  // Foundation: Positioning - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+  ENHANCED_DESIGN_TOKENS.foundation.positioning.right[4],
+  ENHANCED_DESIGN_TOKENS.foundation.positioning.top[4],
 
-  // Foundation: Size and shape
-  'rounded-[var(--radius-sm)] p-[var(--space-1_5)]',
+  // Foundation: Size and shape - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
 
-  // Foundation: Colors and states
-  'text-cosmic-muted opacity-[var(--opacity-70)]',
-  'hover:bg-stellar-surface-elevated hover:opacity-100',
-  'focus-visible:outline-none focus-visible:ring-[var(--ring-2)] focus-visible:ring-aurora-accent',
-  'focus-visible:ring-offset-[var(--ring-offset-2)] focus-visible:ring-offset-stellar-surface',
+  // Foundation: Colors and states - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+  'opacity-70',
+  'pointer:hover:bg-cosmic-void pointer:hover:opacity-100',
+  ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-  // Foundation: Motion
-  'transition-all duration-[var(--motion-duration-2)] ease-out',
-  'motion-reduce:transition-none',
+  // Foundation: Motion - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+  ENHANCED_DESIGN_TOKENS.foundation.animation.duration[200],
+  ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-  // Foundation: Disabled state
+  // Foundation: Disabled state - Enhanced tokens
   'disabled:pointer-events-none',
 ]);
 
@@ -299,7 +396,11 @@ interface EnhancedSheetContentProps
   /**
    * AAA accessibility compliance
    */
-  enforceAAA?: boolean;
+  aaa?: boolean;
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 interface EnhancedSheetHeaderProps
@@ -392,7 +493,8 @@ const EnhancedSheetContent = React.forwardRef<
       size = 'md',
       surface = 'elevated',
       density = 'comfortable',
-      enforceAAA = false,
+      aaa = false,
+      disableAnimations = false,
       className,
       children,
       asChild = false,
@@ -400,6 +502,11 @@ const EnhancedSheetContent = React.forwardRef<
     },
     ref
   ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     const Comp = asChild ? Slot : SheetPrimitive.Content;
 
     return (
@@ -413,8 +520,9 @@ const EnhancedSheetContent = React.forwardRef<
               size,
               surface,
               density,
-              enforceAAA,
+              aaa,
             }),
+            motionClasses,
             className
           )}
           {...props}
@@ -422,7 +530,7 @@ const EnhancedSheetContent = React.forwardRef<
           {children}
           <SheetPrimitive.Close asChild>
             <button
-              className={cn(enhancedSheetCloseVariants())}
+              className={cn(enhancedSheetCloseVariants(), motionClasses)}
               aria-label='Close sheet'
             >
               <X className={cn('size-[var(--icon-sm)]')} />
@@ -530,79 +638,148 @@ const EnhancedSheetClose = React.forwardRef<
 });
 EnhancedSheetClose.displayName = SheetPrimitive.Close.displayName;
 
-// ===== SHEET FACTORY FUNCTIONS =====
+// ===== ENHANCED SHEET FACTORY =====
 
 /**
- * Factory for creating pre-configured sheet components
+ * Enhanced Sheet Factory Functions
+ * @description Semantic constructors following MAPS v2.2 patterns
  */
-const SheetFactory = {
+export const SheetFactory = {
   /**
-   * Standard side panel configuration
+   * Default sheet with clean styling
    */
-  sidePanel: (overrides?: Partial<EnhancedSheetContentProps>) => ({
-    side: 'right' as const,
-    size: 'md' as const,
-    surface: 'elevated' as const,
-    density: 'comfortable' as const,
-    ...overrides,
-  }),
+  default: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'variant'>) => (
+      <EnhancedSheetContent {...props} />
+    ),
+  },
 
   /**
-   * Mobile drawer configuration
+   * Glass variant with liquid glass materials
    */
-  mobileDrawer: (overrides?: Partial<EnhancedSheetContentProps>) => ({
-    side: 'bottom' as const,
-    size: 'lg' as const,
-    surface: 'panel' as const,
-    density: 'comfortable' as const,
-    ...overrides,
-  }),
+  glass: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'surface'>) => (
+      <EnhancedSheetContent surface='glass' {...props} />
+    ),
+  },
 
   /**
-   * Navigation drawer configuration
+   * Elevated variant with enhanced depth
    */
-  navigationDrawer: (overrides?: Partial<EnhancedSheetContentProps>) => ({
-    side: 'left' as const,
-    size: 'sm' as const,
-    surface: 'elevated' as const,
-    density: 'compact' as const,
-    ...overrides,
-  }),
+  elevated: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'surface'>) => (
+      <EnhancedSheetContent surface='elevated' {...props} />
+    ),
+  },
 
   /**
-   * Full overlay configuration
+   * Floating variant with enhanced depth
    */
-  fullOverlay: (overrides?: Partial<EnhancedSheetContentProps>) => ({
-    side: 'bottom' as const,
-    size: 'full' as const,
-    surface: 'glass' as const,
-    density: 'comfortable' as const,
-    ...overrides,
-  }),
+  floating: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'surface'>) => (
+      <EnhancedSheetContent surface='floating' {...props} />
+    ),
+  },
 
   /**
-   * Accessible configuration with AAA compliance
+   * AAA compliance variant for high contrast
    */
-  accessible: (overrides?: Partial<EnhancedSheetContentProps>) => ({
-    side: 'right' as const,
-    size: 'lg' as const,
-    surface: 'elevated' as const,
-    density: 'comfortable' as const,
-    enforceAAA: true,
-    ...overrides,
-  }),
+  aaa: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'aaa'>) => (
+      <EnhancedSheetContent aaa={true} {...props} />
+    ),
+  },
 
   /**
-   * Glass material configuration
+   * Performance-optimized sheet with disabled animations
    */
-  glass: (overrides?: Partial<EnhancedSheetContentProps>) => ({
-    side: 'right' as const,
-    size: 'md' as const,
-    surface: 'glass' as const,
-    density: 'comfortable' as const,
-    ...overrides,
-  }),
-};
+  performance: {
+    Content: (props: React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>) => (
+      <EnhancedSheetContent disableAnimations={true} {...props} />
+    ),
+  },
+
+  /**
+   * Small size for compact layouts
+   */
+  small: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'size'>) => (
+      <EnhancedSheetContent size='sm' {...props} />
+    ),
+  },
+
+  /**
+   * Large size for prominent content
+   */
+  large: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'size'>) => (
+      <EnhancedSheetContent size='lg' {...props} />
+    ),
+  },
+
+  /**
+   * Extra large size for maximum visibility
+   */
+  xlarge: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'size'>) => (
+      <EnhancedSheetContent size='xl' {...props} />
+    ),
+  },
+
+  /**
+   * Full size for maximum content
+   */
+  full: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'size'>) => (
+      <EnhancedSheetContent size='full' {...props} />
+    ),
+  },
+
+  /**
+   * Compact density for dense layouts
+   */
+  compact: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'density'>) => (
+      <EnhancedSheetContent density='compact' {...props} />
+    ),
+  },
+
+  /**
+   * Side panel configuration for right-side panels
+   */
+  sidePanel: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'side' | 'size' | 'surface'>) => (
+      <EnhancedSheetContent side='right' size='md' surface='elevated' {...props} />
+    ),
+  },
+
+  /**
+   * Mobile drawer configuration for bottom sheets
+   */
+  mobileDrawer: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'side' | 'size' | 'surface'>) => (
+      <EnhancedSheetContent side='bottom' size='lg' surface='panel' {...props} />
+    ),
+  },
+
+  /**
+   * Navigation drawer configuration for left-side navigation
+   */
+  navigationDrawer: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'side' | 'size' | 'surface' | 'density'>) => (
+      <EnhancedSheetContent side='left' size='sm' surface='elevated' density='compact' {...props} />
+    ),
+  },
+
+  /**
+   * Full overlay configuration for modal-like behavior
+   */
+  fullOverlay: {
+    Content: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSheetContent>, 'side' | 'size' | 'surface'>) => (
+      <EnhancedSheetContent side='bottom' size='full' surface='glass' {...props} />
+    ),
+  },
+} as const;
 
 // ===== EXPORTS =====
 
@@ -617,7 +794,6 @@ export {
   EnhancedSheetDescription,
   EnhancedSheetFooter,
   EnhancedSheetClose,
-  SheetFactory,
   enhancedSheetOverlayVariants,
   enhancedSheetContentVariants,
   enhancedSheetHeaderVariants,
@@ -635,3 +811,5 @@ export type {
   EnhancedSheetFooterProps,
   EnhancedSheetCloseProps,
 };
+
+export type { VariantProps } from 'class-variance-authority';

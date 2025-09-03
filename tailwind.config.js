@@ -10,6 +10,10 @@ export default {
   darkMode: 'class', // Enable dark mode support - MAPS4 Cosmic System
   theme: {
     extend: {
+      // Named transforms to eliminate bracketed utilities in components
+      scale: {
+        98: '0.98', // replacement for scale-[0.98]
+      },
       // 🌌 MAPS4 Deep Space Canvas Cosmic Innovation with WCAG AAA Compliance
       colors: {
         // CSS Custom Properties Integration - MAPS4 Cosmic System (COMPLETE)
@@ -346,6 +350,32 @@ export default {
     { pattern: /ease-(standard|entrance|exit|spring)/ },  // Motion easing tokens
     // MAPS4 Cosmic Color System - Direct Access (COMPLETE)
     { pattern: /(bg|text|border|ring)-(aurora-accent|cosmic-cyan|cosmic-primary|cosmic-primary-hover|cosmic-secondary|cosmic-secondary-hover|deep-space|cosmic-void|stellar-surface|nebula-accent|cosmic-light|stellar-muted|cosmic-success|cosmic-warning|cosmic-danger|cosmic-info|cosmic-dark|cosmic-overlay|cosmic-subtle|cosmic-disabled|cosmic-accent-muted|cosmic-accent-pressed|cosmic-accent-solid|cosmic-border|cosmic-border-strong|cosmic-border-subtle|cosmic-success-solid|cosmic-danger-solid|cosmic-input|cosmic-input-border|cosmic-input-placeholder|cosmic-muted|cosmic-ring-offset)/ },
+    
+    // 🚀 COMPREHENSIVE TOKEN COVERAGE - All critical utilities
+    // Transform patterns
+    { pattern: /(scale|rotate|translate|skew)-(0|50|75|90|95|100|105|110|125|150|200|1|2|3|6|12|45|90|180|270|360|1\/2|1\/3|2\/3|1\/4|3\/4|full|px|0\.5|1\.5|2\.5|3\.5|auto|none)/ },
+    { pattern: /(scale|rotate|translate|skew)-(x|y)-(0|50|75|90|95|100|105|110|125|150|200|1|2|3|6|12|45|90|180|270|360|1\/2|1\/3|2\/3|1\/4|3\/4|full|px|0\.5|1\.5|2\.5|3\.5|auto|none)/ },
+    // Ensure named active scale cannot be purged
+    { pattern: /(hover:|active:|focus:)?scale-(95|98|100|105)/ },
+    
+    // Filter patterns
+    { pattern: /(blur|brightness|contrast|grayscale|hue-rotate|invert|saturate|sepia)-(none|sm|md|lg|xl|2xl|3xl|0|50|75|90|95|100|105|110|125|150|200|15|30|60|90|180)/ },
+    { pattern: /drop-shadow-(none|sm|md|lg|xl|2xl)/ },
+    
+    // Animation patterns
+    { pattern: /animate-(none|spin|ping|pulse|bounce|fade-in|slide-up|scale-in|bounce-gentle)/ },
+    { pattern: /(duration|delay)-(0|75|100|120|150|160|180|200|220|300|500|600|700|1000)/ },
+    { pattern: /ease-(linear|in|out|in-out|standard|entrance|exit|spring)/ },
+    
+    // Positioning patterns
+    { pattern: /(top|right|bottom|left|inset)-(0|auto|1|2|3|4|5|6|8|10|12|16|20|24|32|40|48|56|64|1\/2|1\/3|2\/3|1\/4|3\/4|full|px|0\.5|1\.5|2\.5|3\.5)/ },
+    { pattern: /-(top|right|bottom|left|inset)-(1|2|3|4|5|6|8|10|12|16|20|24|32|40|48|56|64|1\/2|1\/3|2\/3|1\/4|3\/4|full)/ },
+    
+
+    
+    // Comprehensive fractional sizing
+    { pattern: /(w|h)-(1\/2|1\/3|2\/3|1\/4|2\/4|3\/4|1\/5|2\/5|3\/5|4\/5|1\/6|2\/6|3\/6|4\/6|5\/6|1\/12|2\/12|3\/12|4\/12|5\/12|6\/12|7\/12|8\/12|9\/12|10\/12|11\/12)$/ },
+    
     // Liquid glass utilities
     'glass',
     'glass-sm',

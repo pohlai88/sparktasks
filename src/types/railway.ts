@@ -90,9 +90,9 @@ export const adaptLegacyToStation = (p: {
   slug: p.name
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-"), // compute ONCE in fixture setup
+    .replaceAll(/[^a-z0-9\s-]/g, "")
+    .replaceAll(/\s+/g, "-")
+    .replaceAll(/-+/g, "-"), // compute ONCE in fixture setup
   index: 0,
   status: p.status,
   progressPct: Math.max(0, Math.min(100, Math.round(p.progressPct))),

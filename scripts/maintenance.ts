@@ -4,11 +4,11 @@
  * Usage: node scripts/maintenance.js [options]
  */
 
+import { KeyringProvider } from '../src/crypto/keyring';
 import { planMaintenance } from '../src/maintenance/plan';
 import { runMaintenance } from '../src/maintenance/run';
-import { LocalStorageDriver } from '../src/storage/local';
 import { EncryptedDriver } from '../src/storage/encrypted';
-import { KeyringProvider } from '../src/crypto/keyring';
+import { LocalStorageDriver } from '../src/storage/local';
 
 interface CliOptions {
   compact?: number;
@@ -28,13 +28,13 @@ function parseArgs(): CliOptions {
     if (arg === '--help' || arg === '-h') {
       options.help = true;
     } else if (arg.startsWith('--compact=')) {
-      options.compact = parseInt(arg.split('=')[1], 10);
+      options.compact = Number.parseInt(arg.split('=')[1], 10);
     } else if (arg.startsWith('--rekey-prefix=')) {
       options.rekeyPrefix = arg.split('=')[1];
     } else if (arg.startsWith('--sweep-prefix=')) {
       options.sweepPrefix = arg.split('=')[1];
     } else if (arg.startsWith('--sample=')) {
-      options.sample = parseInt(arg.split('=')[1], 10);
+      options.sample = Number.parseInt(arg.split('=')[1], 10);
     } else if (arg.startsWith('--resume=')) {
       options.resume = arg.split('=')[1];
     } else if (arg === '--fix') {

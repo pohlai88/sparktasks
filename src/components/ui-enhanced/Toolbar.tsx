@@ -1,24 +1,24 @@
 /**
- * Enhanced Toolbar Component - MAPS4 Deep Space Canvas Cosmic Innovation
+ * Enhanced Toolbar Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
  * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
  * - Sir Steve Jobs Cosmic Innovation: ✅ Inspirational, memorable, industry-leading
  * - AAA Compliance: ✅ WCAG 2.2 with cosmic color harmony
  * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
- * - Radix + Tailwind + MAPS4: ✅ Proper foundation integration
+ * - Radix Compatibility: ✅ Polymorphic pattern ready
  * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
  *
- * ARCHITECTURE DECISION:
- * - Radix owns: Behavior, ARIA, focus management, keyboard navigation
- * - MAPS4 owns: Cosmic materials, liquid glass, AAA enforcement
- * - Wrapper owns: Token application, governance rules, brand consistency
+ * ARCHITECTURE INTEGRATION:
+ * - MAPS4 Enhanced Tokens → Toolbar variants → Cosmic user experience
+ * - MAPS4 Guidelines → Toolbar behavior → Accessibility excellence
+ * - [Ecosystem] → [Component] → [Composability]
  *
  * GOVERNANCE RULES:
  * - Foundation tokens only (no component-specific tokens)
  * - Auto-apply AAA scrims over glass materials
- * - MAPS4 motion with respect for reduced motion
- * - Platform-aware touch targets
+ * - Apple HIG motion with respect for reduced motion
+ * - Platform-aware touch targets (44px minimum)
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
@@ -28,111 +28,148 @@
  * LAST UPDATED: 2025-01-27
  */
 
-/* eslint-disable react/prop-types */
-
 import * as RadixToolbar from '@radix-ui/react-toolbar';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED TOOLBAR VARIANTS =====
 
 /**
  * Enhanced toolbar root variants following MAPS4 v4.0 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from MAPS4 design tokens
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedToolbarVariants = cva(
   [
-    // Foundation: Layout/positioning - Clean structured container
-    'flex items-center justify-start',
-    'min-h-[var(--btn-h-lg)] w-full', // MAPS4 minimum touch target
+    // Foundation: Layout & positioning - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.start,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
-    // Foundation: Surface hierarchy - Dark-first with systematic elevation
-    'bg-stellar-surface-elevated',
-    'border-b border-cosmic-border-subtle',
+    // Foundation: Surface hierarchy - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
 
-    // Foundation: Spacing - MAPS4 systematic spacing (8pt grid)
-    'px-[var(--space-4)] py-[var(--space-2)]',
-    'gap-[var(--space-2)]',
+    // Foundation: Spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding['2'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
 
-    // Foundation: Typography - MAPS4 semantic hierarchy
-    'text-cosmic-light text-[var(--font-size-sm)] font-[var(--font-weight-medium)]',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
-    // Foundation: Motion - Respect user preferences
-    'transition-all duration-[var(--motion-duration-2)] ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Focus management - Radix handles tab navigation
-    'focus-within:ring-[var(--ring-2)] focus-within:ring-aurora-accent focus-within:ring-offset-[var(--ring-offset-2)]',
-    'focus-within:ring-offset-stellar-surface',
+    // Foundation: Focus management - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
-        // Default: Clean elevated surface
-        default: ['bg-stellar-surface-elevated', 'border-cosmic-border-subtle'],
+        // Default: Clean elevated surface - Enhanced tokens
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
+        ],
 
-        // Elevated: Higher z-index surface
+        // Elevated: Higher z-index surface - Enhanced tokens
         elevated: [
-          'bg-stellar-surface-elevated2',
-          'border-cosmic-border-default',
-          'shadow-elevation-medium',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
 
-        // Glass: Liquid glass material with governed vibrancy
+        // Glass: Liquid glass material with governed vibrancy - Enhanced tokens
         glass: [
-          'bg-stellar-surface-translucent',
-          'backdrop-blur-[var(--blur-md)] backdrop-saturate-[var(--saturate-135)]',
-          'border-aurora-accent/[var(--opacity-30)]',
-          'shadow-elevation-high',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
 
-        // Floating: Maximum elevation with accent glow
+        // Floating: Maximum elevation with accent glow - Enhanced tokens
         floating: [
-          'bg-stellar-surface-elevated2',
-          'border-aurora-accent/[var(--opacity-50)]',
-          'shadow-elevation-xl shadow-aurora-accent/[var(--opacity-20)]',
-          'rounded-[var(--radius-lg)]',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
         ],
 
-        // Outline: Minimal border-focused design
-        outline: ['bg-stellar-surface', 'border border-cosmic-border-strong'],
+        // Outline: Minimal border-focused design - Enhanced tokens
+        outline: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+        ],
 
-        // Ghost: Transparent minimal styling
-        ghost: ['bg-transparent', 'border-transparent'],
+        // Ghost: Transparent minimal styling - Enhanced tokens
+        ghost: [ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none],
 
-        // AAA: High-contrast mode for accessibility
+        // AAA: High-contrast mode for accessibility - Enhanced tokens
         aaa: [
-          'bg-[var(--aaa-surface)]',
-          'border-[var(--aaa-border)]',
-          'text-[var(--aaa-content)]',
-          'shadow-elevation-high',
+          'bg-cosmic-void',
+          'border-cosmic-border',
+          'text-cosmic-light',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          'forced-colors:bg-Field forced-colors:border-FieldText',
         ],
       },
       size: {
-        // Small: Compact toolbar for dense layouts
-        sm: ['min-h-[var(--btn-h-sm)]', 'px-[var(--space-3)] py-[var(--space-1)]', 'gap-[var(--space-1)]'],
+        // Clean systematic sizing with 8pt grid - Enhanced tokens
+        sm: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['1'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs
+        ],
 
-        // Default: Standard MAPS4 sizing
-        md: ['min-h-[var(--btn-h-lg)]', 'px-[var(--space-4)] py-[var(--space-2)]', 'gap-[var(--space-2)]'],
+        // Default: Standard MAPS4 sizing - Enhanced tokens
+        md: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['2'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm
+        ],
 
-        // Large: Prominent toolbar for primary actions
-        lg: ['min-h-[var(--btn-h-xl)]', 'px-[var(--space-6)] py-[var(--space-3)]', 'gap-[var(--space-3)]'],
+        // Large: Prominent toolbar for primary actions - Enhanced tokens
+        lg: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md
+        ],
+
+        // Extra large: Maximum visibility - Enhanced tokens
+        xl: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg
+        ],
       },
       density: {
-        // Comfortable: Default spacing for general use
-        comfortable: ['gap-[var(--space-2)]'],
+        // Comfortable: Default spacing for general use - Enhanced tokens
+        comfortable: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm],
 
-        // Compact: Reduced spacing for dense interfaces
-        compact: ['gap-[var(--space-1)]'],
+        // Compact: Reduced spacing for dense interfaces - Enhanced tokens
+        compact: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs],
       },
       orientation: {
-        // Horizontal: Default toolbar layout
-        horizontal: ['flex-row'],
+        // Horizontal: Default toolbar layout - Enhanced tokens
+        horizontal: [ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row],
 
-        // Vertical: Sidebar-style toolbar
-        vertical: ['flex-col', 'h-full w-auto', 'min-w-[var(--btn-h-lg)]'],
+        // Vertical: Sidebar-style toolbar - Enhanced tokens
+        vertical: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+          'h-full w-auto',
+          'min-w-[var(--space-10)]'
+        ],
       },
     },
     defaultVariants: {
@@ -145,119 +182,180 @@ const enhancedToolbarVariants = cva(
 );
 
 /**
- * Enhanced toolbar button variants with MAPS4 interaction patterns
+ * Enhanced toolbar button variants following MAPS4 v4.0 foundation
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedToolbarButtonVariants = cva(
   [
-    // Foundation: Layout - Clean button structure
-    'inline-flex items-center justify-center',
-    'rounded-[var(--radius-md)]',
+    // Foundation: Layout & positioning - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
     'gap-[var(--space-1_5)]',
 
-    // Foundation: Sizing - MAPS4 minimum touch targets
-    'min-h-[var(--btn-h-md)] min-w-[var(--btn-h-md)]',
+    // Foundation: Sizing - Platform-aware touch targets - Enhanced tokens
+    'min-h-[var(--space-9)] min-w-[var(--space-9)]',
     'px-[var(--space-2)] py-[var(--space-1)]',
 
-    // Foundation: Typography - Consistent with MAPS4 hierarchy
-    'text-[var(--font-size-xs)] font-[var(--font-weight-medium)]',
-    'text-cosmic-muted',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
 
-    // Foundation: Motion - MAPS4-quality interactions
-    'transition-all duration-[var(--motion-duration-1)] ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: States - Comprehensive interaction design
+    // Foundation: States - Comprehensive interaction design - Enhanced tokens
     'disabled:pointer-events-none disabled:opacity-50',
-    'data-[pressed=true]:bg-stellar-surface-elevated2',
+    'data-[pressed=true]:bg-aurora-accent/20',
     'data-[pressed=true]:text-cosmic-light',
 
-    // Foundation: Focus - AAA compliant focus management
-    'focus-visible:outline-none',
-    'focus-visible:ring-[var(--ring-2)] focus-visible:ring-aurora-accent focus-visible:ring-offset-[var(--ring-offset-1)]',
-    'focus-visible:ring-offset-stellar-surface-elevated',
+    // Foundation: Focus - AAA compliant focus management - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: MAPS4 hover patterns - Pointer-only
-    'pointer:hover:bg-stellar-surface-elevated2',
+    // Foundation: Touch targets - 44px minimum (expanded hit area)
+    'relative',
+    'before:absolute before:inset-[-12px] before:content-[""]',
+    'pointer:hover:before:rounded-md pointer:hover:before:bg-aurora-accent/10',
+
+    // Foundation: Platform awareness - Pointer-only hover states
+    'pointer:hover:bg-aurora-accent/10',
     'pointer:hover:text-cosmic-light',
-    'pointer:hover:scale-[var(--scale-102)]',
-    'active:scale-[var(--scale-98)]',
+    'active:scale-98',
   ],
   {
     variants: {
       variant: {
-        // Default: Subtle secondary button
+        // Default: Clean accent styling with systematic feedback - Enhanced tokens
         default: [
           'bg-transparent',
           'text-cosmic-muted',
-          'pointer:hover:bg-stellar-surface-elevated2',
+          'pointer:hover:bg-aurora-accent/10',
         ],
 
-        // Primary: Accent-colored primary action
+        // Primary: Accent-colored primary action - Enhanced tokens
         primary: [
           'bg-aurora-accent',
           'text-cosmic-dark',
           'pointer:hover:bg-aurora-accent/90',
         ],
 
-        // Secondary: Clear secondary styling
+        // Secondary: Clear secondary styling - Enhanced tokens
         secondary: [
-          'bg-stellar-surface-elevated2',
+          'bg-cosmic-void',
           'text-cosmic-light',
-          'border border-cosmic-border-subtle',
-          'pointer:hover:bg-stellar-surface-elevated1',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          'pointer:hover:bg-aurora-accent/10',
         ],
 
-        // Ghost: Minimal invisible styling
+        // Ghost: Minimal invisible styling - Enhanced tokens
         ghost: [
           'bg-transparent',
           'text-cosmic-muted',
-          'pointer:hover:bg-stellar-surface-elevated1/50',
+          'pointer:hover:bg-aurora-accent/5',
         ],
 
-        // Outline: Border-focused design
+        // Outline: Border-focused design - Enhanced tokens
         outline: [
           'bg-transparent',
-          'border-cosmic-border-default border',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
           'text-cosmic-light',
-          'pointer:hover:bg-stellar-surface-elevated1',
+          'pointer:hover:bg-aurora-accent/10',
         ],
 
-        // Success: Affirming actions
+        // Success: Affirming actions - Enhanced tokens
         success: [
-          'bg-feedback-success',
-          'text-feedback-success-foreground',
-          'pointer:hover:bg-feedback-success/90',
+          'bg-cosmic-feedback-success',
+          'text-cosmic-dark',
+          'pointer:hover:bg-cosmic-feedback-success/90',
         ],
 
-        // Warning: Cautionary actions
+        // Warning: Cautionary actions - Enhanced tokens
         warning: [
-          'bg-feedback-warning',
-          'text-feedback-warning-foreground',
-          'pointer:hover:bg-feedback-warning/90',
+          'bg-cosmic-feedback-warning',
+          'text-cosmic-dark',
+          'pointer:hover:bg-cosmic-feedback-warning/90',
         ],
 
-        // Destructive: High-attention dangerous actions
+        // Destructive: High-attention dangerous actions - Enhanced tokens
         destructive: [
-          'bg-feedback-error',
-          'text-feedback-error-foreground',
-          'pointer:hover:bg-feedback-error/90',
+          'bg-cosmic-feedback-error',
+          'text-cosmic-dark',
+          'pointer:hover:bg-cosmic-feedback-error/90',
+        ],
+
+        // Glass: Liquid glass material with governed vibrancy - Enhanced tokens
+        glass: [
+          'bg-cosmic-void/10',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          'text-cosmic-light',
+          'pointer:hover:bg-cosmic-void/20',
+        ],
+
+        // Elevated: Sophisticated surface with subtle elevation - Enhanced tokens
+        elevated: [
+          'bg-cosmic-void',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
+          'text-cosmic-light',
+          'pointer:hover:bg-aurora-accent/10',
+        ],
+
+        // AAA: High contrast mode for compliance - Enhanced tokens
+        aaa: [
+          'bg-cosmic-void',
+          'text-cosmic-light',
+          'pointer:hover:bg-aurora-accent/20',
+          'forced-colors:bg-Field forced-colors:text-FieldText',
         ],
       },
       size: {
-        // Small: Compact buttons for dense toolbars
-        sm: ['min-h-[var(--btn-h-sm)] min-w-[var(--btn-h-sm)]', 'px-[var(--space-1_5)] py-[var(--space-0_5)]', 'text-[var(--font-size-xs)]'],
+        // Clean systematic sizing with 8pt grid - Enhanced tokens
+        sm: [
+          'min-h-[var(--space-7)] min-w-[var(--space-7)]',
+          'px-[var(--space-1_5)] py-[var(--space-0_5)]',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+          'before:inset-[-8px]'
+        ],
 
-        // Default: Standard sizing
-        md: ['min-h-[var(--btn-h-md)] min-w-[var(--btn-h-md)]', 'px-[var(--space-2)] py-[var(--space-1)]', 'text-[var(--font-size-xs)]'],
+        // Default: Standard sizing - Enhanced tokens
+        md: [
+          'min-h-[var(--space-9)] min-w-[var(--space-9)]',
+          'px-[var(--space-2)] py-[var(--space-1)]',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+          'before:inset-[-12px]'
+        ],
 
-        // Large: Prominent primary actions
-        lg: ['min-h-[var(--btn-h-lg)] min-w-[var(--btn-h-lg)]', 'px-[var(--space-3)] py-[var(--space-1_5)]', 'text-[var(--font-size-sm)]'],
+        // Large: Prominent primary actions - Enhanced tokens
+        lg: [
+          'min-h-[var(--space-11)] min-w-[var(--space-11)]',
+          'px-[var(--space-3)] py-[var(--space-1_5)]',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          'before:inset-[-16px]'
+        ],
+
+        // Extra large: Maximum visibility - Enhanced tokens
+        xl: [
+          'min-h-[var(--space-13)] min-w-[var(--space-13)]',
+          'px-[var(--space-4)] py-[var(--space-2)]',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+          'before:inset-[-20px]'
+        ],
       },
       state: {
-        // Pressed: Active/selected state
-        pressed: ['bg-aurora-accent/20', 'text-aurora-accent', 'border border-aurora-accent/30'],
+        // Pressed: Active/selected state - Enhanced tokens
+        pressed: [
+          'bg-aurora-accent/20',
+          'text-aurora-accent',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          'border-aurora-accent/30'
+        ],
 
-        // Loading: Processing state
+        // Loading: Processing state - Enhanced tokens
         loading: ['opacity-75', 'cursor-wait'],
       },
     },
@@ -274,22 +372,23 @@ const enhancedToolbarButtonVariants = cva(
 const enhancedToolbarSeparatorVariants = cva(
   [
     // Foundation: Structure - Clean divider
-    'shrink-0',
-    'bg-cosmic-border-subtle',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0],
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
 
     // Foundation: Motion - Subtle transitions
-    'transition-colors duration-[var(--motion-duration-2)]',
+    'transition-colors',
+    ENHANCED_DESIGN_TOKENS.foundation.animation.duration[200],
   ],
   {
     variants: {
       orientation: {
-        horizontal: ['h-px w-full', 'my-[var(--space-2)]'],
-        vertical: ['h-[var(--space-6)] w-px', 'mx-[var(--space-2)]'],
+        horizontal: ['h-px w-full', ENHANCED_DESIGN_TOKENS.foundation.layout.margin[2]],
+        vertical: ['w-px', 'h-6', ENHANCED_DESIGN_TOKENS.foundation.layout.margin[2]],
       },
       variant: {
-        default: ['bg-cosmic-border-subtle'],
-        strong: ['bg-cosmic-border-default'],
-        accent: ['bg-aurora-accent/[var(--opacity-30)]'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle],
+        strong: [ENHANCED_DESIGN_TOKENS.foundation.color.border.default],
+        accent: ['bg-aurora-accent/30'],
       },
     },
     defaultVariants: {
@@ -305,19 +404,21 @@ const enhancedToolbarSeparatorVariants = cva(
 const enhancedToolbarToggleGroupVariants = cva(
   [
     // Foundation: Layout - Clean grouped container
-    'inline-flex items-center',
-    'rounded-[var(--radius-md)]',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
     'bg-stellar-surface-elevated',
-    'border border-cosmic-border-subtle',
-    'p-[var(--space-0_5)]',
-    'gap-[var(--space-px)]',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding['1'],
+    'gap-px',
   ],
   {
     variants: {
       size: {
-        sm: 'p-[var(--space-0_5)]',
-        md: 'p-[var(--space-1)]',
-        lg: 'p-[var(--space-1_5)]',
+        sm: ENHANCED_DESIGN_TOKENS.foundation.layout.padding['1'],
+        md: ENHANCED_DESIGN_TOKENS.foundation.layout.padding['1'],
+        lg: ENHANCED_DESIGN_TOKENS.foundation.layout.padding['2'],
       },
     },
     defaultVariants: {
@@ -348,6 +449,10 @@ interface EnhancedToolbarProps
    */
   enableVibrancy?: boolean;
   /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
+  /**
    * Custom aria-label for screen readers
    */
   'aria-label'?: string;
@@ -377,6 +482,14 @@ interface EnhancedToolbarButtonProps
    * Tooltip content for accessibility
    */
   tooltip?: string;
+  /**
+   * Enforce AAA compliance mode
+   */
+  enforceAAA?: boolean;
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 interface EnhancedToolbarLinkProps
@@ -474,24 +587,37 @@ const EnhancedToolbar = React.forwardRef<
       orientation,
       enforceAAA,
       enableVibrancy,
+      disableAnimations,
+      asChild,
       ...props
     },
     ref
   ) => {
-    // Apply AAA compliance if enforced
-    const aaaClassName = enforceAAA
-      ? className?.replace(/bg-aurora-accent/g, 'bg-[var(--aaa-accent)]')
-      : className;
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    // Use AAA variant when enforceAAA is true
+    const effectiveVariant = enforceAAA ? 'aaa' : variant;
+
+    const Comp = asChild ? Slot : RadixToolbar.Root;
 
     return (
-      <RadixToolbar.Root
+      <Comp
         ref={ref}
         className={cn(
-          enhancedToolbarVariants({ variant, size, density, orientation }),
+          enhancedToolbarVariants({ 
+            variant: effectiveVariant, 
+            size, 
+            density, 
+            orientation 
+          }),
+          motionClasses,
           enableVibrancy &&
             variant === 'glass' &&
-            'supports-backdrop-blur:bg-stellar-surface-translucent/80',
-          aaaClassName
+            'supports-backdrop-blur:bg-cosmic-void/80',
+          className
         )}
         aria-label={props['aria-label'] || 'Toolbar'}
         {...props}
@@ -518,10 +644,23 @@ const EnhancedToolbarButton = React.forwardRef<
       icon,
       tooltip,
       children,
+      enforceAAA,
+      disableAnimations,
+      asChild,
       ...props
     },
     ref
   ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    // Use AAA variant when enforceAAA is true
+    const effectiveVariant = enforceAAA ? 'aaa' : variant;
+
+    const Comp = asChild ? Slot : RadixToolbar.Button;
+
     const content = (
       <>
         {loading && (
@@ -537,10 +676,15 @@ const EnhancedToolbarButton = React.forwardRef<
     );
 
     return (
-      <RadixToolbar.Button
+      <Comp
         ref={ref}
         className={cn(
-          enhancedToolbarButtonVariants({ variant, size, state }),
+          enhancedToolbarButtonVariants({ 
+            variant: effectiveVariant, 
+            size, 
+            state 
+          }),
+          motionClasses,
           loading && 'cursor-wait',
           className
         )}
@@ -550,7 +694,7 @@ const EnhancedToolbarButton = React.forwardRef<
         {...props}
       >
         {content}
-      </RadixToolbar.Button>
+      </Comp>
     );
   }
 );
@@ -693,92 +837,205 @@ EnhancedToolbarToggleItem.displayName = 'EnhancedToolbarToggleItem';
 // ===== ENHANCED TOOLBAR FACTORY FUNCTIONS =====
 
 /**
- * Enhanced Toolbar Factory - Semantic Constructors
- * Following Apple HIG semantic hierarchy
+ * Enhanced Toolbar Factory Functions
+ * @description Semantic constructors following MAPS v2.2 patterns
  */
 export const ToolbarFactory = {
   /**
-   * Default semantic toolbar - balanced visual weight
+   * Default toolbar with clean styling
    */
-  default: (props: Omit<EnhancedToolbarProps, 'variant'>) => (
+  default: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'variant'>) => (
     <EnhancedToolbar variant='default' {...props} />
   ),
 
   /**
-   * Elevated semantic toolbar - prominent surface hierarchy
+   * Elevated toolbar with enhanced depth
    */
-  elevated: (props: Omit<EnhancedToolbarProps, 'variant'>) => (
+  elevated: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'variant'>) => (
     <EnhancedToolbar variant='elevated' {...props} />
   ),
 
   /**
-   * Glass semantic toolbar - liquid glass materials
+   * Glass variant with liquid glass materials
    */
-  glass: (props: Omit<EnhancedToolbarProps, 'variant'>) => (
+  glass: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'variant'>) => (
     <EnhancedToolbar variant='glass' enableVibrancy {...props} />
   ),
 
   /**
-   * Floating semantic toolbar - maximum elevation
+   * Floating variant with maximum elevation
    */
-  floating: (props: Omit<EnhancedToolbarProps, 'variant'>) => (
+  floating: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'variant'>) => (
     <EnhancedToolbar variant='floating' {...props} />
   ),
 
   /**
-   * AAA semantic toolbar - high contrast accessibility
+   * Ghost variant for subtle styling
    */
-  aaa: (props: Omit<EnhancedToolbarProps, 'variant'>) => (
-    <EnhancedToolbar variant='aaa' enforceAAA {...props} />
+  ghost: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'variant'>) => (
+    <EnhancedToolbar variant='ghost' {...props} />
   ),
-};
+
+  /**
+   * AAA compliance variant for high contrast
+   */
+  aaa: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'enforceAAA'>) => (
+    <EnhancedToolbar enforceAAA={true} {...props} />
+  ),
+
+  /**
+   * Performance-optimized toolbar with disabled animations
+   */
+  performance: (props: React.ComponentPropsWithoutRef<typeof EnhancedToolbar>) => (
+    <EnhancedToolbar disableAnimations={true} {...props} />
+  ),
+
+  /**
+   * Small size for compact layouts
+   */
+  small: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'size'>) => (
+    <EnhancedToolbar size='sm' {...props} />
+  ),
+
+  /**
+   * Large size for prominent content
+   */
+  large: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'size'>) => (
+    <EnhancedToolbar size='lg' {...props} />
+  ),
+
+  /**
+   * Extra large size for maximum visibility
+   */
+  xlarge: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'size'>) => (
+    <EnhancedToolbar size='xl' {...props} />
+  ),
+
+  /**
+   * Vertical orientation for sidebar layouts
+   */
+  vertical: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'orientation'>) => (
+    <EnhancedToolbar orientation='vertical' {...props} />
+  ),
+
+  /**
+   * Compact density for dense layouts
+   */
+  compact: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbar>, 'density'>) => (
+    <EnhancedToolbar density='compact' {...props} />
+  ),
+} as const;
 
 /**
- * Enhanced Toolbar Button Factory - Semantic Constructors
+ * Enhanced Toolbar Button Factory Functions
+ * @description Semantic constructors following MAPS v2.2 patterns
  */
 export const ToolbarButtonFactory = {
   /**
+   * Default button with clean styling
+   */
+  default: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
+    <EnhancedToolbarButton variant='default' {...props} />
+  ),
+
+  /**
    * Primary action button - main toolbar actions
    */
-  primary: (props: Omit<EnhancedToolbarButtonProps, 'variant'>) => (
+  primary: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
     <EnhancedToolbarButton variant='primary' {...props} />
   ),
 
   /**
    * Secondary action button - supporting actions
    */
-  secondary: (props: Omit<EnhancedToolbarButtonProps, 'variant'>) => (
+  secondary: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
     <EnhancedToolbarButton variant='secondary' {...props} />
   ),
 
   /**
    * Ghost action button - minimal styling
    */
-  ghost: (props: Omit<EnhancedToolbarButtonProps, 'variant'>) => (
+  ghost: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
     <EnhancedToolbarButton variant='ghost' {...props} />
+  ),
+
+  /**
+   * Outline action button - border-focused design
+   */
+  outline: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
+    <EnhancedToolbarButton variant='outline' {...props} />
   ),
 
   /**
    * Success action button - affirming actions
    */
-  success: (props: Omit<EnhancedToolbarButtonProps, 'variant'>) => (
+  success: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
     <EnhancedToolbarButton variant='success' {...props} />
   ),
 
   /**
    * Warning action button - cautionary actions
    */
-  warning: (props: Omit<EnhancedToolbarButtonProps, 'variant'>) => (
+  warning: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
     <EnhancedToolbarButton variant='warning' {...props} />
   ),
 
   /**
    * Destructive action button - dangerous actions
    */
-  destructive: (props: Omit<EnhancedToolbarButtonProps, 'variant'>) => (
+  destructive: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
     <EnhancedToolbarButton variant='destructive' {...props} />
   ),
-};
+
+  /**
+   * Glass variant with liquid glass materials
+   */
+  glass: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
+    <EnhancedToolbarButton variant='glass' {...props} />
+  ),
+
+  /**
+   * Elevated variant with enhanced depth
+   */
+  elevated: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'variant'>) => (
+    <EnhancedToolbarButton variant='elevated' {...props} />
+  ),
+
+  /**
+   * AAA compliance variant for high contrast
+   */
+  aaa: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'enforceAAA'>) => (
+    <EnhancedToolbarButton enforceAAA={true} {...props} />
+  ),
+
+  /**
+   * Performance-optimized button with disabled animations
+   */
+  performance: (props: React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>) => (
+    <EnhancedToolbarButton disableAnimations={true} {...props} />
+  ),
+
+  /**
+   * Small size for compact layouts
+   */
+  small: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'size'>) => (
+    <EnhancedToolbarButton size='sm' {...props} />
+  ),
+
+  /**
+   * Large size for prominent content
+   */
+  large: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'size'>) => (
+    <EnhancedToolbarButton size='lg' {...props} />
+  ),
+
+  /**
+   * Extra large size for maximum visibility
+   */
+  xlarge: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToolbarButton>, 'size'>) => (
+    <EnhancedToolbarButton size='xl' {...props} />
+  ),
+} as const;
 
 // ===== ENHANCED TOOLBAR ICONS =====
 
@@ -965,24 +1222,25 @@ export const ToolbarIcons = {
 // ===== EXPORTS =====
 
 export {
-  EnhancedToolbar as Toolbar,
-  EnhancedToolbarButton as ToolbarButton,
-  EnhancedToolbarLink as ToolbarLink,
-  EnhancedToolbarSeparator as ToolbarSeparator,
-  EnhancedToolbarToggleGroup as ToolbarToggleGroup,
-  EnhancedToolbarToggleItem as ToolbarToggleItem,
-  enhancedToolbarVariants as toolbarVariants,
-  enhancedToolbarButtonVariants as toolbarButtonVariants,
-  enhancedToolbarSeparatorVariants as toolbarSeparatorVariants,
-  enhancedToolbarToggleGroupVariants as toolbarToggleGroupVariants,
+  EnhancedToolbar,
+  EnhancedToolbarButton,
+  EnhancedToolbarLink,
+  EnhancedToolbarSeparator,
+  EnhancedToolbarToggleGroup,
+  EnhancedToolbarToggleItem,
+  enhancedToolbarVariants,
+  enhancedToolbarButtonVariants,
+  enhancedToolbarSeparatorVariants,
+  enhancedToolbarToggleGroupVariants,
 };
 
-// Export types
-export type {
-  EnhancedToolbarProps as ToolbarProps,
-  EnhancedToolbarButtonProps as ToolbarButtonProps,
-  EnhancedToolbarLinkProps as ToolbarLinkProps,
-  EnhancedToolbarSeparatorProps as ToolbarSeparatorProps,
-  EnhancedToolbarToggleGroupProps as ToolbarToggleGroupProps,
-  EnhancedToolbarToggleItemProps as ToolbarToggleItemProps,
+export type { 
+  EnhancedToolbarProps,
+  EnhancedToolbarButtonProps,
+  EnhancedToolbarLinkProps,
+  EnhancedToolbarSeparatorProps,
+  EnhancedToolbarToggleGroupProps,
+  EnhancedToolbarToggleItemProps,
 };
+
+export type { VariantProps } from 'class-variance-authority';

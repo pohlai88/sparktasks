@@ -6,7 +6,7 @@
  */
 
 // BEFORE: Current Badge with manual accessibility patterns
-const BadgeBefore = () => (
+const _BadgeBefore = () => (
   <span className='badge'>
     <svg aria-hidden='true' focusable='false'>
       <path d='...' />
@@ -17,7 +17,7 @@ const BadgeBefore = () => (
 );
 
 // AFTER: Enhanced Badge with Radix utilities
-const BadgeAfter = () => (
+const _BadgeAfter = () => (
   <span className='badge'>
     <AccessibleIcon>
       <svg>

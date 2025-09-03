@@ -28,6 +28,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
 import { AccessibleIcon, Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED PAGINATION VARIANTS =====
@@ -38,34 +39,36 @@ import { cn } from '@/utils/cn';
  */
 const enhancedPaginationRootVariants = cva(
   [
-    // Foundation: Layout structure
-    'flex items-center justify-center',
+    // Foundation: Layout structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
 
-    // Foundation: Motion - Respect user preferences
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Typography - Apple HIG hierarchy
-    'text-sm',
+    // Foundation: Typography - Apple HIG hierarchy - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Focus management for keyboard navigation
-    'focus-visible:outline-none',
+    // Foundation: Focus management for keyboard navigation - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
-        default: ['gap-1'],
-        spaced: ['gap-2'],
-        compact: ['gap-0.5'],
-        pills: ['gap-1.5'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm],
+        spaced: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.md],
+        compact: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs],
+        pills: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm],
       },
       size: {
-        sm: ['text-xs'],
-        md: ['text-sm'],
-        lg: ['text-base'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
       },
       density: {
-        comfortable: ['gap-1'],
-        compact: ['gap-0.5'],
+        comfortable: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm],
+        compact: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs],
       },
     },
     defaultVariants: {
@@ -81,129 +84,135 @@ const enhancedPaginationRootVariants = cva(
  */
 const enhancedPaginationItemVariants = cva(
   [
-    // Foundation: Layout - Clean navigation structure
-    'inline-flex items-center justify-center',
-    'relative',
+    // Foundation: Layout - Clean navigation structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.inline,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
 
-    // Foundation: Touch targets - 44px minimum for accessibility
-    'min-h-[44px] min-w-[44px]',
+    // Foundation: Touch targets - 44px minimum for accessibility - use hitTarget token equivalents
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
 
-    // Foundation: Typography & spacing - 8pt grid system
-    'text-sm font-medium',
+    // Foundation: Typography & spacing - 8pt grid system - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'font-medium',
 
-    // Foundation: Shape - Systematic border radius
-    'rounded-md',
+    // Foundation: Shape - Systematic border radius - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
 
-    // Foundation: Motion - Apple-quality transitions
-    'transition-all duration-200 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Apple-quality transitions - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: States - Comprehensive interaction feedback
-    'focus-visible:outline-none focus-visible:ring-2',
-    'focus-visible:ring-accent focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    // Foundation: States - Comprehensive interaction feedback - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Disabled state
+    // Foundation: Disabled state - Enhanced tokens
     'disabled:pointer-events-none disabled:opacity-50',
 
-    // MAPS v2.2: Default state - Subtle presence
-    'text-muted-foreground',
-    'hover:bg-muted hover:text-foreground',
+    // MAPS v2.2: Default state - Subtle presence - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+    'pointer:hover:bg-cosmic-void pointer:hover:text-cosmic-light',
 
-    // Enhanced: Keyboard navigation support
+    // Enhanced: Keyboard navigation support - Enhanced tokens
     'focus:z-10',
 
-    // Enhanced: Platform-aware interactions
-    'pointer:hover:scale-[1.02]',
-    'active:scale-[0.98]',
+    // Enhanced: Platform-aware interactions - Enhanced tokens
+    // Transform scaling applied at call-sites if needed per SSOT size triad; keep motion tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
   ],
   {
     variants: {
       variant: {
-        default: ['border border-border', 'hover:border-border-strong'],
-        ghost: ['border-transparent', 'hover:bg-muted'],
-        outline: ['border border-border', 'bg-transparent', 'hover:bg-muted'],
-        pills: ['rounded-full', 'border border-border', 'hover:border-accent'],
-        minimal: ['border-transparent', 'bg-transparent'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, 'pointer:hover:border-cosmic-border-strong'],
+        ghost: [ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none, 'pointer:hover:bg-cosmic-void'],
+        outline: [ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent, 'pointer:hover:bg-cosmic-void'],
+        pills: [ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, 'pointer:hover:border-aurora-accent'],
+        minimal: [ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none, ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent],
       },
       state: {
         default: '',
         current: [
-          'bg-accent text-accent-foreground',
-          'border-accent',
-          'hover:bg-accent-hover',
-          'shadow-sm',
+          'bg-aurora-accent text-cosmic-dark',
+          'border-aurora-accent',
+          'pointer:hover:bg-cosmic-primary-hover',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
         disabled: ['cursor-not-allowed', 'opacity-50', 'pointer-events-none'],
       },
       size: {
-        sm: ['h-8 min-w-[32px] px-2 text-xs'],
-        md: ['h-10 min-w-[40px] px-3 text-sm'],
-        lg: ['h-12 min-w-[48px] px-4 text-base'],
-        touch: ['h-11 min-w-[44px] px-3 text-sm'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2], ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        touch: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
       },
       feedback: {
         none: '',
         success: [
-          'data-[state=current]:bg-success data-[state=current]:text-success-foreground',
-          'data-[state=current]:border-success',
+          'data-[state=current]:bg-cosmic-success data-[state=current]:text-cosmic-dark',
+          'data-[state=current]:border-cosmic-success',
         ],
         warning: [
-          'data-[state=current]:bg-warning data-[state=current]:text-warning-foreground',
-          'data-[state=current]:border-warning',
+          'data-[state=current]:bg-cosmic-warning data-[state=current]:text-cosmic-dark',
+          'data-[state=current]:border-cosmic-warning',
         ],
         error: [
-          'data-[state=current]:bg-error data-[state=current]:text-error-foreground',
-          'data-[state=current]:border-error',
+          'data-[state=current]:bg-cosmic-danger data-[state=current]:text-cosmic-dark',
+          'data-[state=current]:border-cosmic-danger',
         ],
       },
       vibrancy: {
         none: '',
         glass: [
-          'bg-background/80 backdrop-blur-md backdrop-saturate-150',
-          'data-[state=current]:bg-accent/90 data-[state=current]:backdrop-blur-md',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          'data-[state=current]:bg-aurora-accent/90 data-[state=current]:backdrop-blur-md',
         ],
         floating: [
-          'bg-background/75 backdrop-blur-lg backdrop-saturate-150',
-          'shadow-elevation-medium',
-          'data-[state=current]:shadow-elevation-high',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          'data-[state=current]:' + ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
       },
       enforceAAA: {
         false: '',
         true: [
-          'aaa:border-border-strong aaa:bg-background',
-          'aaa:data-[state=current]:bg-accent-solid-aaa aaa:data-[state=current]:text-white',
-          'aaa:focus-visible:ring-accent-solid-aaa',
+          'aaa:border-cosmic-border-strong aaa:bg-cosmic-void',
+          'aaa:data-[state=current]:bg-aurora-accent aaa:data-[state=current]:text-cosmic-dark',
+          'aaa:focus-visible:ring-aurora-accent',
         ],
       },
     },
     compoundVariants: [
-      // Pills + current state
+      // Pills + current state - Enhanced tokens
       {
         variant: 'pills',
         state: 'current',
         class:
-          'border-accent bg-accent text-accent-foreground shadow-accent/20',
+          'border-aurora-accent bg-aurora-accent text-cosmic-dark shadow-aurora-accent/20',
       },
-      // Ghost + current state
+      // Ghost + current state - Enhanced tokens
       {
         variant: 'ghost',
         state: 'current',
-        class: 'bg-accent text-accent-foreground',
+        class: 'bg-aurora-accent text-cosmic-dark',
       },
-      // Minimal + current state
+      // Minimal + current state - Enhanced tokens
       {
         variant: 'minimal',
         state: 'current',
-        class: 'font-semibold text-accent',
+        class: 'font-semibold text-aurora-accent',
       },
-      // AAA enforcement combinations
+      // AAA enforcement combinations - Enhanced tokens
       {
         state: 'current',
         enforceAAA: true,
         class:
-          'aaa:border-accent-solid-aaa aaa:bg-accent-solid-aaa aaa:text-white',
+          'aaa:border-aurora-accent aaa:bg-aurora-accent aaa:text-cosmic-dark',
       },
     ],
     defaultVariants: {
@@ -222,23 +231,27 @@ const enhancedPaginationItemVariants = cva(
  */
 const enhancedPaginationEllipsisVariants = cva(
   [
-    // Foundation: Layout
-    'inline-flex items-center justify-center',
-    'min-h-[44px] min-w-[44px]',
+    // Foundation: Layout - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.inline,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
 
-    // Foundation: Typography
-    'text-sm text-muted-foreground',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
 
-    // Foundation: Non-interactive
+    // Foundation: Non-interactive - Enhanced tokens
     'pointer-events-none',
   ],
   {
     variants: {
       size: {
-        sm: ['h-8 min-w-[32px] text-xs'],
-        md: ['h-10 min-w-[40px] text-sm'],
-        lg: ['h-12 min-w-[48px] text-base'],
-        touch: ['h-11 min-w-[44px] text-sm'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        touch: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
       },
     },
     defaultVariants: {
@@ -266,6 +279,13 @@ export interface EnhancedPaginationRootProps
    * @default false
    */
   aaaMode?: boolean;
+
+  /**
+   * Performance optimization - disable animations
+   * @description Disables animations for performance-critical scenarios
+   * @default false
+   */
+  disableAnimations?: boolean;
 
   /**
    * Navigation aria label
@@ -306,6 +326,13 @@ export interface EnhancedPaginationItemProps
    * Navigation direction for screen readers
    */
   navigationDirection?: 'previous' | 'next';
+
+  /**
+   * Performance optimization - disable animations
+   * @description Disables animations for performance-critical scenarios
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 export interface EnhancedPaginationEllipsisProps
@@ -382,12 +409,18 @@ const EnhancedPaginationRoot = React.forwardRef<
       size,
       density,
       aaaMode = false,
+      disableAnimations = false,
       asChild = false,
       'aria-label': ariaLabel = 'Pagination Navigation',
       ...props
     },
     ref
   ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     // AAA Mode: Enhanced contrast enforcement
     const aaaClasses = aaaMode
       ? [
@@ -405,6 +438,7 @@ const EnhancedPaginationRoot = React.forwardRef<
         aria-label={ariaLabel}
         className={cn(
           enhancedPaginationRootVariants({ variant, size, density }),
+          motionClasses,
           aaaClasses,
           className
         )}
@@ -432,6 +466,7 @@ const EnhancedPaginationItem = React.forwardRef<
       feedback,
       vibrancy,
       enforceAAA = false,
+      disableAnimations = false,
       asChild = false,
       isCurrent = false,
       page,
@@ -485,6 +520,11 @@ const EnhancedPaginationItem = React.forwardRef<
       return;
     }, [ariaLabel, isNavigation, navigationDirection, page, isCurrent]);
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     // AAA Mode: Enhanced contrast enforcement
     const aaaClasses = enforceAAA
       ? [
@@ -512,6 +552,7 @@ const EnhancedPaginationItem = React.forwardRef<
             vibrancy,
             enforceAAA,
           }),
+          motionClasses,
           aaaClasses,
           className
         )}
@@ -720,6 +761,45 @@ export const PaginationFactory = {
     Ellipsis: (props: Omit<EnhancedPaginationEllipsisProps, 'size'>) => (
       <EnhancedPaginationEllipsis size='lg' {...props} />
     ),
+  },
+
+  /**
+   * Performance-optimized pagination with disabled animations
+   */
+  performance: {
+    Root: (props: Omit<EnhancedPaginationRootProps, 'disableAnimations'>) => (
+      <EnhancedPaginationRoot disableAnimations={true} {...props} />
+    ),
+    Item: (props: Omit<EnhancedPaginationItemProps, 'disableAnimations'>) => (
+      <EnhancedPaginationItem disableAnimations={true} {...props} />
+    ),
+    Ellipsis: EnhancedPaginationEllipsis,
+  },
+
+  /**
+   * Glass variant with liquid glass materials
+   */
+  glass: {
+    Root: (props: Omit<EnhancedPaginationRootProps, 'variant'>) => (
+      <EnhancedPaginationRoot variant='spaced' {...props} />
+    ),
+    Item: (props: Omit<EnhancedPaginationItemProps, 'vibrancy'>) => (
+      <EnhancedPaginationItem vibrancy='glass' {...props} />
+    ),
+    Ellipsis: EnhancedPaginationEllipsis,
+  },
+
+  /**
+   * Floating variant with elevated presentation
+   */
+  floating: {
+    Root: (props: Omit<EnhancedPaginationRootProps, 'variant'>) => (
+      <EnhancedPaginationRoot variant='spaced' {...props} />
+    ),
+    Item: (props: Omit<EnhancedPaginationItemProps, 'vibrancy'>) => (
+      <EnhancedPaginationItem vibrancy='floating' {...props} />
+    ),
+    Ellipsis: EnhancedPaginationEllipsis,
   },
 } as const;
 

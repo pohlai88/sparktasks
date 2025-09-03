@@ -2,7 +2,8 @@
  * Enhanced State Management for M0 Foundation Enterprise
  * Optimized reducer with better performance and error handling
  */
-import React, { createContext, useContext, useMemo, useReducer } from 'react';
+import type React from 'react';
+import { createContext, useContext, useMemo, useReducer } from 'react';
 
 import type { AppState, AppAction, Task, AuditEntry } from '@/types';
 
@@ -26,8 +27,8 @@ const initialState: AppState = {
       due: '2025-08-23',
       tags: ['#close'],
       priority: 'high',
-      createdAt: now() - 600000,
-      updatedAt: now() - 600000,
+      createdAt: now() - 600_000,
+      updatedAt: now() - 600_000,
     },
     t2: {
       id: 't2',
@@ -35,8 +36,8 @@ const initialState: AppState = {
       assignee: 'Cindy',
       tags: ['#audit'],
       priority: 'medium',
-      createdAt: now() - 500000,
-      updatedAt: now() - 500000,
+      createdAt: now() - 500_000,
+      updatedAt: now() - 500_000,
     },
     t3: {
       id: 't3',
@@ -45,8 +46,8 @@ const initialState: AppState = {
       due: '2025-08-22',
       tags: ['#ap'],
       priority: 'critical',
-      createdAt: now() - 400000,
-      updatedAt: now() - 400000,
+      createdAt: now() - 400_000,
+      updatedAt: now() - 400_000,
     },
   },
   columns: {
@@ -65,7 +66,7 @@ const initialState: AppState = {
     t1: [
       {
         id: generateId(),
-        ts: now() - 600000,
+        ts: now() - 600_000,
         actor: 'System',
         action: 'create',
       },
@@ -73,7 +74,7 @@ const initialState: AppState = {
     t2: [
       {
         id: generateId(),
-        ts: now() - 500000,
+        ts: now() - 500_000,
         actor: 'System',
         action: 'create',
       },
@@ -81,7 +82,7 @@ const initialState: AppState = {
     t3: [
       {
         id: generateId(),
-        ts: now() - 400000,
+        ts: now() - 400_000,
         actor: 'System',
         action: 'create',
       },
@@ -93,16 +94,19 @@ const initialState: AppState = {
 // Optimized reducer with better performance
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
-    case 'INIT_DEMO':
+    case 'INIT_DEMO': {
       return { ...initialState };
+    }
 
-    case 'SET_LOADING':
+    case 'SET_LOADING': {
       return { ...state, isLoading: action.isLoading };
+    }
 
-    case 'SET_ERROR':
+    case 'SET_ERROR': {
       return { ...state, error: action.error };
+    }
 
-    case 'SET_RESIDENCY':
+    case 'SET_RESIDENCY': {
       return {
         ...state,
         residency: action.mode,
@@ -120,6 +124,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           ],
         },
       };
+    }
 
     case 'ADD_TASK': {
       const { columnId, task, actor } = action;
@@ -258,7 +263,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
       const fromTaskIds = fromColumn.taskIds.filter(id => id !== taskId);
       const toTaskIds = [...toColumn.taskIds];
 
-      if (from !== to) {
+      if (from === to) {
         toTaskIds.splice(index, 0, taskId);
       } else {
         toTaskIds.splice(index, 0, taskId);
@@ -279,8 +284,9 @@ function appReducer(state: AppState, action: AppAction): AppState {
       };
     }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 

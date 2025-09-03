@@ -23,13 +23,13 @@
  */
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { EnhancedBadge } from '@/components/ui-enhanced/Badge';
 import { EnhancedButton } from '@/components/ui-enhanced/Button';
 import { EnhancedCard } from '@/components/ui-enhanced/Card';
-import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
 import { EnhancedProgress } from '@/components/ui-enhanced/Progress';
+import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
 import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
@@ -40,49 +40,55 @@ import { cn } from '@/utils/cn';
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens or CSS custom properties
  */
 const railwayQualityStationVariants = cva(
-  [
-    // Foundation: Layout/shape - Clean Tailwind utilities
-    'w-full max-w-7xl mx-auto',
-    'space-y-8',
-    
-    // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
-    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
-    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
-    
-    // MAPS4 Foundation: Motion - Respect user preferences
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
-  ],
+      [
+      // Foundation: Layout/shape - Clean Tailwind utilities
+      ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-7xl'],
+      ENHANCED_DESIGN_TOKENS.foundation.layout.margin['x-auto'],
+      ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
+      
+      // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
+      ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+      ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+      
+      // MAPS4 Foundation: Motion - Respect user preferences
+      ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+      ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ],
   {
     variants: {
       variant: {
         // Default: Clean quality station with subtle elevation
-        default: ['p-8', 'rounded-2xl'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl']],
         
         // Elevated: Enhanced depth with stronger shadow
         elevated: [
-          'p-10', 
-          'rounded-3xl',
-          'shadow-elevation-lg',
-          'border border-aurora-accent'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10'], 
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['3xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
         ],
         
         // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
-          'p-8',
-          'rounded-2xl',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
-          'border border-cosmic-border/30'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
         ],
       },
       
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['space-y-6', 'p-6'],
-        md: ['space-y-8', 'p-8'],
-        lg: ['space-y-10', 'p-10'],
-        xl: ['space-y-12', 'p-12'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8']],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10']],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['12']],
       },
     },
     
@@ -292,8 +298,10 @@ export function RailwayQualityStation({
     );
     const defectDensity = totalTests > 0 ? Math.round((totalDefects / totalTests) * 1000) : 0;
     
-    // Calculate quality score based on passed tests and coverage
-    const qualityScore = Math.round((passedTests / totalTests) * 0.7 + (testCoverage / 100) * 0.3) * 100;
+    // Calculate quality score based on passed tests and coverage (0-100 scale)
+    const qualityScore = totalTests > 0
+      ? Math.round(((passedTests / totalTests) * 0.7 + (testCoverage / 100) * 0.3) * 100)
+      : 0;
     
     return {
       totalTests,
@@ -309,67 +317,90 @@ export function RailwayQualityStation({
 
   const getStatusColor = (status: QualityTest['status']) => {
     switch (status) {
-      case 'pending':
+      case 'pending': {
         return 'secondary';
-      case 'in_progress':
+      }
+      case 'in_progress': {
         return 'warning';
-      case 'passed':
+      }
+      case 'passed': {
         return 'success';
-      case 'failed':
+      }
+      case 'failed': {
         return 'error';
-      case 'blocked':
+      }
+      case 'blocked': {
         return 'info';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
   const getPriorityColor = (priority: QualityTest['priority']) => {
     switch (priority) {
-      case 'low':
+      case 'low': {
         return 'secondary';
-      case 'medium':
+      }
+      case 'medium': {
         return 'info';
-      case 'high':
+      }
+      case 'high': {
         return 'warning';
-      case 'critical':
+      }
+      case 'critical': {
         return 'error';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
   const getTypeColor = (type: QualityTest['type']) => {
     switch (type) {
-      case 'unit':
+      case 'unit': {
         return 'accent';
-      case 'integration':
+      }
+      case 'integration': {
         return 'info';
-      case 'system':
+      }
+      case 'system': {
         return 'warning';
-      case 'user_acceptance':
+      }
+      case 'user_acceptance': {
         return 'success';
-      case 'performance':
+      }
+      case 'performance': {
         return 'error';
-      case 'security':
+      }
+      case 'security': {
         return 'error';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
   const getPhaseStatusColor = (status: QualityPhase['status']) => {
     switch (status) {
-      case 'pending':
+      case 'pending': {
         return 'secondary';
-      case 'active':
+      }
+      case 'active': {
         return 'warning';
-      case 'completed':
+      }
+      case 'completed': {
         return 'success';
-      case 'delayed':
+      }
+      case 'delayed': {
         return 'error';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
@@ -378,8 +409,7 @@ export function RailwayQualityStation({
   };
 
   const handleAdvance = () => {
-    const metrics = calculateQualityMetrics();
-    if (metrics.qualityScore >= 85 && metrics.failedTests === 0) {
+    if (qualityMetrics.qualityScore >= 85 && qualityMetrics.failedTests === 0) {
       onAdvance?.();
     }
   };
@@ -392,7 +422,8 @@ export function RailwayQualityStation({
     { id: 'defects', label: 'Defect Tracking', icon: '🐛' },
   ];
 
-  const qualityMetrics = calculateQualityMetrics();
+  const qualityMetrics = useMemo(() => calculateQualityMetrics(), [qualityDataState]);
+  const allTests = useMemo(() => qualityDataState.flatMap(phase => phase.tests), [qualityDataState]);
 
   return (
     <div
@@ -400,7 +431,10 @@ export function RailwayQualityStation({
       className={cn(railwayQualityStationVariants({ variant, size }))}
     >
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md
+      )}>
         <h1 className={cn(
           ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -415,10 +449,9 @@ export function RailwayQualityStation({
         </p>
         
         {/* Progress Overview */}
-        <div className="flex items-center justify-center space-x-4">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           <EnhancedProgress
             value={qualityMetrics.overallProgress}
-            className="w-64"
             variant="default"
             size="md"
           />
@@ -432,9 +465,12 @@ export function RailwayQualityStation({
       </div>
 
       {/* Quality Summary Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-4'])}>
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -451,7 +487,10 @@ export function RailwayQualityStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -460,7 +499,7 @@ export function RailwayQualityStation({
             </h3>
             <p className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
-              "text-cosmic-success"
+              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted
             )}>
               {qualityMetrics.passedTests}
             </p>
@@ -468,7 +507,10 @@ export function RailwayQualityStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -477,9 +519,9 @@ export function RailwayQualityStation({
             </h3>
             <p className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
-              qualityMetrics.testCoverage >= 90 ? "text-cosmic-success" :
-              qualityMetrics.testCoverage >= 70 ? "text-cosmic-warning" :
-              "text-cosmic-danger"
+              qualityMetrics.testCoverage >= 90 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+              (qualityMetrics.testCoverage >= 70 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
             )}>
               {qualityMetrics.testCoverage}%
             </p>
@@ -487,7 +529,10 @@ export function RailwayQualityStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -496,9 +541,9 @@ export function RailwayQualityStation({
             </h3>
             <p className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
-              qualityMetrics.qualityScore >= 90 ? "text-cosmic-success" :
-              qualityMetrics.qualityScore >= 75 ? "text-cosmic-warning" :
-              "text-cosmic-danger"
+              qualityMetrics.qualityScore >= 90 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+              (qualityMetrics.qualityScore >= 75 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
             )}>
               {qualityMetrics.qualityScore}
             </p>
@@ -510,25 +555,25 @@ export function RailwayQualityStation({
       <EnhancedTabs.Root
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-full"
+        className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
       >
-        <EnhancedTabs.List className="grid w-full grid-cols-5">
+        <EnhancedTabs.List className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid, ENHANCED_DESIGN_TOKENS.foundation.layout.width.full, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[5])}>
           {tabs.map((tab) => (
             <EnhancedTabs.Trigger
               key={tab.id}
               value={tab.id}
-              className="flex items-center space-x-2"
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}
             >
               <span>{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
+              <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.hidden, 'sm:inline')}>{tab.label}</span>
             </EnhancedTabs.Trigger>
           ))}
         </EnhancedTabs.List>
 
         {/* Overview Tab */}
-        <EnhancedTabs.Content value="overview" className="space-y-6">
+        <EnhancedTabs.Content value="overview" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -536,8 +581,8 @@ export function RailwayQualityStation({
                 Quality Overview
               </h3>
               
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-4">
+              <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                   <h4 className={cn(
                     ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -545,8 +590,8 @@ export function RailwayQualityStation({
                     Test Results
                   </h4>
                   
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -555,14 +600,14 @@ export function RailwayQualityStation({
                       </span>
                       <EnhancedBadge
                         variant={qualityMetrics.overallProgress >= 90 ? 'success' : 
-                                qualityMetrics.overallProgress >= 70 ? 'warning' : 'error'}
+                                (qualityMetrics.overallProgress >= 70 ? 'warning' : 'error')}
                         size="sm"
                       >
                         {qualityMetrics.overallProgress}%
                       </EnhancedBadge>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -570,14 +615,14 @@ export function RailwayQualityStation({
                         Failed Tests:
                       </span>
                       <span className={cn(
-                        "font-medium",
-                        qualityMetrics.failedTests === 0 ? "text-cosmic-success" : "text-cosmic-danger"
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                        qualityMetrics.failedTests === 0 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted : ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted
                       )}>
                         {qualityMetrics.failedTests}
                       </span>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -585,8 +630,8 @@ export function RailwayQualityStation({
                         Blocked Tests:
                       </span>
                       <span className={cn(
-                        "font-medium",
-                        qualityMetrics.blockedTests === 0 ? "text-cosmic-success" : "text-cosmic-warning"
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                        qualityMetrics.blockedTests === 0 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted : ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted
                       )}>
                         {qualityMetrics.blockedTests}
                       </span>
@@ -594,7 +639,7 @@ export function RailwayQualityStation({
                   </div>
                 </div>
                 
-                <div className="space-y-4">
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                   <h4 className={cn(
                     ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -602,8 +647,8 @@ export function RailwayQualityStation({
                     Quality Metrics
                   </h4>
                   
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -612,14 +657,14 @@ export function RailwayQualityStation({
                       </span>
                       <EnhancedBadge
                         variant={qualityMetrics.testCoverage >= 90 ? 'success' :
-                                qualityMetrics.testCoverage >= 70 ? 'warning' : 'error'}
+                                (qualityMetrics.testCoverage >= 70 ? 'warning' : 'error')}
                         size="sm"
                       >
                         {qualityMetrics.testCoverage}%
                       </EnhancedBadge>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -628,14 +673,14 @@ export function RailwayQualityStation({
                       </span>
                       <EnhancedBadge
                         variant={qualityMetrics.qualityScore >= 90 ? 'success' :
-                                qualityMetrics.qualityScore >= 75 ? 'warning' : 'error'}
+                                (qualityMetrics.qualityScore >= 75 ? 'warning' : 'error')}
                         size="sm"
                       >
                         {qualityMetrics.qualityScore}
                       </EnhancedBadge>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <span className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -643,10 +688,10 @@ export function RailwayQualityStation({
                         Defect Density:
                       </span>
                       <span className={cn(
-                        "font-medium",
-                        qualityMetrics.defectDensity <= 5 ? "text-cosmic-success" :
-                        qualityMetrics.defectDensity <= 15 ? "text-cosmic-warning" :
-                        "text-cosmic-danger"
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                        qualityMetrics.defectDensity <= 5 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                        (qualityMetrics.defectDensity <= 15 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                       )}>
                         {qualityMetrics.defectDensity}
                       </span>
@@ -659,9 +704,9 @@ export function RailwayQualityStation({
         </EnhancedTabs.Content>
 
         {/* Quality Phases Tab */}
-        <EnhancedTabs.Content value="phases" className="space-y-6">
+        <EnhancedTabs.Content value="phases" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -669,17 +714,17 @@ export function RailwayQualityStation({
                 Quality Phases
               </h3>
               
-              <div className="space-y-6">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                 {qualityDataState.map((phase) => (
                   <div
                     key={phase.id}
-                    className="p-6 rounded-lg border border-cosmic-border bg-cosmic-void/20"
+                    className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)}
                   >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
+                        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
                           <h4 className={cn(
-                            "font-medium",
+                            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                           )}>
                             {phase.name}
@@ -698,12 +743,12 @@ export function RailwayQualityStation({
                           {phase.description}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.right}>
                         <div className={cn(
-                          "text-2xl font-bold",
-                          phase.progress === 100 ? "text-cosmic-success" :
-                          phase.progress >= 50 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
+                          phase.progress === 100 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                          (phase.progress >= 50 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                         )}>
                           {phase.progress}%
                         </div>
@@ -716,7 +761,7 @@ export function RailwayQualityStation({
                       </div>
                     </div>
                     
-                    <div className="grid gap-4 md:grid-cols-3 mb-4">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[3])}>
                       <div>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.label,
@@ -725,7 +770,7 @@ export function RailwayQualityStation({
                           Start Date:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {phase.startDate}
@@ -740,7 +785,7 @@ export function RailwayQualityStation({
                           End Date:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {phase.endDate}
@@ -755,7 +800,6 @@ export function RailwayQualityStation({
                           Tests:
                         </span>
                         <p className={cn(
-                          "font-medium",
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {phase.tests.length}
@@ -765,7 +809,7 @@ export function RailwayQualityStation({
                     
                     <EnhancedProgress
                       value={phase.progress}
-                      className="w-full"
+                      className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
                       variant="default"
                       size="sm"
                     />
@@ -777,9 +821,9 @@ export function RailwayQualityStation({
         </EnhancedTabs.Content>
 
         {/* Test Management Tab */}
-        <EnhancedTabs.Content value="tests" className="space-y-6">
+        <EnhancedTabs.Content value="tests" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -787,17 +831,17 @@ export function RailwayQualityStation({
                 Test Management
               </h3>
               
-              <div className="space-y-4">
-                {qualityDataState.flatMap(phase => phase.tests).map((test) => (
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
+                {allTests.map((test) => (
                   <div
                     key={test.id}
-                    className="p-4 rounded-lg border border-cosmic-border bg-cosmic-void/20"
+                    className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)}
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
+                        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
                           <h4 className={cn(
-                            "font-medium",
+                            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                           )}>
                             {test.name}
@@ -828,12 +872,12 @@ export function RailwayQualityStation({
                           {test.description}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.right}>
                         <div className={cn(
-                          "text-xl font-bold",
-                          test.coverage >= 90 ? "text-cosmic-success" :
-                          test.coverage >= 70 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
+                          test.coverage >= 90 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                          (test.coverage >= 70 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                         )}>
                           {test.coverage}%
                         </div>
@@ -846,7 +890,7 @@ export function RailwayQualityStation({
                       </div>
                     </div>
                     
-                    <div className="grid gap-4 md:grid-cols-4 mb-3">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[4])}>
                       <div>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.label,
@@ -855,7 +899,7 @@ export function RailwayQualityStation({
                           Assignee:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {test.assignee}
@@ -870,7 +914,7 @@ export function RailwayQualityStation({
                           Test Date:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {test.testDate}
@@ -885,8 +929,8 @@ export function RailwayQualityStation({
                           Defects:
                         </span>
                         <p className={cn(
-                          "font-medium",
-                          test.defects.length === 0 ? "text-cosmic-success" : "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          test.defects.length === 0 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted : ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted
                         )}>
                           {test.defects.length}
                         </p>
@@ -900,7 +944,7 @@ export function RailwayQualityStation({
                           Status:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {test.status.replace('_', ' ')}
@@ -910,7 +954,7 @@ export function RailwayQualityStation({
                     
                     <EnhancedProgress
                       value={test.coverage}
-                      className="w-full"
+                      className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
                       variant="default"
                       size="sm"
                     />
@@ -922,9 +966,9 @@ export function RailwayQualityStation({
         </EnhancedTabs.Content>
 
         {/* Test Coverage Tab */}
-        <EnhancedTabs.Content value="coverage" className="space-y-6">
+        <EnhancedTabs.Content value="coverage" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -932,9 +976,9 @@ export function RailwayQualityStation({
                 Test Coverage Analysis
               </h3>
               
-              <div className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
+                <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                     <h4 className={cn(
                       ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                       ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -947,8 +991,8 @@ export function RailwayQualityStation({
                         Math.round(phase.tests.reduce((sum, test) => sum + test.coverage, 0) / phase.tests.length) : 0;
                       
                       return (
-                        <div key={phase.id} className="space-y-2">
-                          <div className="flex items-center justify-between">
+                        <div key={phase.id} className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                          <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                             <span className={cn(
                               ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                               ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -956,17 +1000,17 @@ export function RailwayQualityStation({
                               {phase.name}
                             </span>
                             <span className={cn(
-                              "font-medium",
-                              phaseCoverage >= 90 ? "text-cosmic-success" :
-                              phaseCoverage >= 70 ? "text-cosmic-warning" :
-                              "text-cosmic-danger"
+                              ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                              phaseCoverage >= 90 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                              (phaseCoverage >= 70 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                             )}>
                               {phaseCoverage}%
                             </span>
                           </div>
                           <EnhancedProgress
                             value={phaseCoverage}
-                            className="w-full"
+                            className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
                             variant="default"
                             size="sm"
                           />
@@ -975,7 +1019,7 @@ export function RailwayQualityStation({
                     })}
                   </div>
                   
-                  <div className="space-y-4">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                     <h4 className={cn(
                       ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                       ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -983,14 +1027,14 @@ export function RailwayQualityStation({
                       Coverage by Type
                     </h4>
                     
-                    <div className="space-y-3">
+                    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
                       {['unit', 'integration', 'system', 'user_acceptance', 'performance', 'security'].map((type) => {
                         const typeTests = qualityDataState.flatMap(phase => phase.tests).filter(test => test.type === type);
                         const typeCoverage = typeTests.length > 0 ? 
                           Math.round(typeTests.reduce((sum, test) => sum + test.coverage, 0) / typeTests.length) : 0;
                         
                         return (
-                          <div key={type} className="flex items-center justify-between">
+                          <div key={type} className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                             <span className={cn(
                               ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -998,10 +1042,10 @@ export function RailwayQualityStation({
                               {type.replace('_', ' ').toUpperCase()}:
                             </span>
                             <span className={cn(
-                              "font-medium",
-                              typeCoverage >= 90 ? "text-cosmic-success" :
-                              typeCoverage >= 70 ? "text-cosmic-warning" :
-                              "text-cosmic-danger"
+                              ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                              typeCoverage >= 90 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                              (typeCoverage >= 70 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                             )}>
                               {typeCoverage}%
                             </span>
@@ -1017,9 +1061,9 @@ export function RailwayQualityStation({
         </EnhancedTabs.Content>
 
         {/* Defect Tracking Tab */}
-        <EnhancedTabs.Content value="defects" className="space-y-6">
+        <EnhancedTabs.Content value="defects" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -1027,9 +1071,9 @@ export function RailwayQualityStation({
                 Defect Tracking
               </h3>
               
-              <div className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
+                <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                     <h4 className={cn(
                       ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                       ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -1037,8 +1081,8 @@ export function RailwayQualityStation({
                       Defect Summary
                     </h4>
                     
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
+                    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -1046,16 +1090,16 @@ export function RailwayQualityStation({
                           Total Defects:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          qualityMetrics.defectDensity <= 5 ? "text-cosmic-success" :
-                          qualityMetrics.defectDensity <= 15 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          qualityMetrics.defectDensity <= 5 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                          (qualityMetrics.defectDensity <= 15 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                         )}>
                           {qualityDataState.flatMap(phase => phase.tests).reduce((sum, test) => sum + test.defects.length, 0)}
                         </span>
                       </div>
                       
-                      <div className="flex items-center justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -1063,41 +1107,41 @@ export function RailwayQualityStation({
                           Defect Density:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          qualityMetrics.defectDensity <= 5 ? "text-cosmic-success" :
-                          qualityMetrics.defectDensity <= 15 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          qualityMetrics.defectDensity <= 5 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                          (qualityMetrics.defectDensity <= 15 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                         )}>
                           {qualityMetrics.defectDensity} per 1000 tests
                         </span>
                       </div>
                     </div>
                     
-                    <div className="p-4 rounded-lg border border-cosmic-border bg-cosmic-void/20">
-                      <div className="text-center">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)}>
+                      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
                         <div className={cn(
-                          "text-2xl font-bold mb-2",
-                          qualityMetrics.defectDensity <= 5 ? "text-cosmic-success" :
-                          qualityMetrics.defectDensity <= 15 ? "text-cosmic-warning" :
-                          "text-cosmic-danger"
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
+                          qualityMetrics.defectDensity <= 5 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                          (qualityMetrics.defectDensity <= 15 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                         )}>
                           {qualityMetrics.defectDensity <= 5 ? 'Excellent Quality' :
-                           qualityMetrics.defectDensity <= 15 ? 'Good Quality' :
-                           'Quality Issues Detected'}
+                           (qualityMetrics.defectDensity <= 15 ? 'Good Quality' :
+                           'Quality Issues Detected')}
                         </div>
                         <p className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                         )}>
                           {qualityMetrics.defectDensity <= 5 ? 'Very low defect density indicates excellent code quality and thorough testing.' :
-                           qualityMetrics.defectDensity <= 15 ? 'Acceptable defect density within industry standards.' :
-                           'High defect density suggests quality issues that need immediate attention.'}
+                           (qualityMetrics.defectDensity <= 15 ? 'Acceptable defect density within industry standards.' :
+                           'High defect density suggests quality issues that need immediate attention.')}
                         </p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="space-y-4">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                     <h4 className={cn(
                       ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                       ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -1105,13 +1149,13 @@ export function RailwayQualityStation({
                       Defects by Test Type
                     </h4>
                     
-                    <div className="space-y-3">
+                    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
                       {['unit', 'integration', 'system', 'user_acceptance', 'performance', 'security'].map((type) => {
                         const typeTests = qualityDataState.flatMap(phase => phase.tests).filter(test => test.type === type);
                         const typeDefects = typeTests.reduce((sum, test) => sum + test.defects.length, 0);
                         
                         return (
-                          <div key={type} className="flex items-center justify-between">
+                          <div key={type} className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                             <span className={cn(
                               ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
                               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -1119,10 +1163,10 @@ export function RailwayQualityStation({
                               {type.replace('_', ' ').toUpperCase()}:
                             </span>
                             <span className={cn(
-                              "font-medium",
-                              typeDefects === 0 ? "text-cosmic-success" :
-                              typeDefects <= 2 ? "text-cosmic-warning" :
-                              "text-cosmic-danger"
+                              ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                              typeDefects === 0 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted :
+                              (typeDefects <= 2 ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted :
+                              ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted)
                             )}>
                               {typeDefects}
                             </span>
@@ -1139,8 +1183,8 @@ export function RailwayQualityStation({
       </EnhancedTabs.Root>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-6 border-t border-border">
-        <div className="flex items-center space-x-4">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           <EnhancedButton
             onClick={onRollback}
             variant="outline"

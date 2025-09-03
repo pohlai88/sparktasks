@@ -10,7 +10,7 @@
  * - Performance optimization with proper provider hierarchy
  */
 
-import React from 'react';
+import type React from 'react';
 
 interface AppProvidersProps {
   children: React.ReactNode;

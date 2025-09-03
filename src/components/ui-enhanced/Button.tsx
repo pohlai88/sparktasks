@@ -27,7 +27,8 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
-import { AccessibleIcon, VisuallyHidden, Slot } from '@/components/primitives';
+import { VisuallyHidden, Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS, getReducedMotionVariant } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED BUTTON VARIANTS =====
@@ -38,100 +39,109 @@ import { cn } from '@/utils/cn';
  */
 const enhancedButtonVariants = cva(
   [
-    // Foundation: Layout/shape - Clean MAPS4 utilities
-    'inline-flex items-center justify-center',
-    'rounded-[var(--radius-md)]',
-    'gap-[var(--space-2)]',
+    // Foundation: Layout/shape - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.inlineBlock,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
 
-    // Foundation: Typography - MAPS4 hierarchy
-    'text-[var(--font-size-sm)] font-[var(--font-weight-medium)]',
+    // Foundation: Typography - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.typography.button,
 
     // Foundation: Motion - Respect user preferences
-    'transition-all duration-[var(--motion-duration-2)]',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.recipes.motion.button.base,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: States
     'disabled:pointer-events-none disabled:opacity-50',
 
-    // Foundation: Focus - AAA compliant ring system using MAPS4 config
-    'focus-visible:outline-none',
-    'focus-visible:ring-[var(--ring-2)] focus-visible:ring-ring focus-visible:ring-offset-[var(--ring-offset-2)] focus-visible:ring-offset-background',
+    // Foundation: Focus - AAA compliant ring system
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
     // Foundation: MAPS4 interaction patterns - Pointer-only for calm touch
-    'pointer:hover:scale-[var(--btn-scale-hover)]',
-    'active:scale-[var(--btn-scale-active)]',
+    // Hover/active transforms are gated at runtime via reduced-motion helper
   ],
   {
     variants: {
       variant: {
-        // Primary: Using MAPS4 cosmic colors
+        // Primary: Using enhanced tokens
         primary: [
-          'bg-aurora-accent text-cosmic-dark',
-          'pointer:hover:bg-cosmic-primary-hover',
-          'active:bg-aurora-accent/90',
+          ENHANCED_DESIGN_TOKENS.recipes.color.interactive.primary,
         ],
 
-        // Secondary: Clean MAPS4 secondary styling
+        // Secondary: Clean enhanced tokens
         secondary: [
-          'bg-cosmic-cyan text-cosmic-dark',
-          'pointer:hover:bg-cosmic-secondary-hover',
-          'active:bg-cosmic-cyan/90',
-          'border border-cosmic-border',
+          ENHANCED_DESIGN_TOKENS.recipes.color.interactive.secondary,
         ],
 
-        // Ghost: Subtle, clean MAPS4
+        // Ghost: Subtle, clean enhanced tokens
         ghost: [
-          'bg-transparent text-cosmic-light',
-          'pointer:hover:bg-aurora-accent',
-          'active:bg-aurora-accent/80',
+          ENHANCED_DESIGN_TOKENS.recipes.color.interactive.ghost,
         ],
 
-        // Outline: Elegant MAPS4 borders
+        // Outline: Elegant enhanced tokens
         outline: [
-          'bg-transparent text-cosmic-light',
-          'border border-cosmic-border',
-          'pointer:hover:bg-aurora-accent',
-          'active:bg-aurora-accent/80',
+          ENHANCED_DESIGN_TOKENS.recipes.color.interactive.outline,
         ],
 
-        // Success: MAPS4 success colors
+        // Success: Enhanced tokens
         success: [
-          'bg-cosmic-success text-cosmic-dark',
-          'pointer:hover:bg-cosmic-success/90',
-          'active:bg-cosmic-success/80',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg,
         ],
 
-        // Warning: MAPS4 warning colors
+        // Warning: Enhanced tokens
         warning: [
-          'bg-cosmic-warning text-cosmic-dark',
-          'pointer:hover:bg-cosmic-warning/90',
-          'active:bg-cosmic-warning/80',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.fg,
         ],
 
-        // Error: MAPS4 error colors
+        // Error: Enhanced tokens
         error: [
-          'bg-cosmic-danger text-cosmic-dark',
-          'pointer:hover:bg-cosmic-danger/90',
-          'active:bg-cosmic-danger/80',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg,
         ],
       },
 
       size: {
-        // Clean systematic sizing with MAPS4 8pt grid
-        sm: ['h-[var(--btn-h-sm)] px-[var(--space-3)]', 'text-[var(--font-size-xs)]', 'gap-[var(--space-1_5)]'],
-        md: ['h-[var(--btn-h-md)] px-[var(--space-4)]', 'text-[var(--font-size-sm)]', 'gap-[var(--space-2)]'],
-        lg: ['h-[var(--btn-h-lg)] px-[var(--space-6)]', 'text-[var(--font-size-base)]', 'gap-[var(--space-2)]'],
+        // Clean systematic sizing with enhanced tokens
+        sm: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs,
+        ],
+        md: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+        ],
+        lg: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+        ],
         // Touch: Platform-aware for mobile
-        touch: ['h-[var(--btn-h-touch)] px-[var(--space-6)]', 'text-[var(--font-size-sm)]', 'gap-[var(--space-2)]'],
+        touch: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+        ],
       },
 
-      // Liquid glass materials - Clean MAPS4 utilities
+      // Liquid glass materials - Enhanced tokens
       vibrancy: {
         none: '',
-        glass: ['bg-stellar-surface/80 backdrop-blur-md backdrop-saturate-150'],
+        glass: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+        ],
         floating: [
-          'bg-stellar-surface/75 backdrop-blur-lg backdrop-saturate-150',
-          'shadow-elevation-high',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
       },
 
@@ -139,8 +149,8 @@ const enhancedButtonVariants = cva(
       enforceAAA: {
         false: '',
         true: [
-          // Use AAA-compliant alternatives from MAPS4 config
-          'aaa:bg-accent-solid-aaa aaa:text-white',
+          // Use AAA-compliant alternatives from enhanced tokens
+          'aaa:bg-aurora-accent-solid aaa:text-cosmic-dark',
         ],
       },
     },
@@ -150,17 +160,17 @@ const enhancedButtonVariants = cva(
       {
         variant: 'primary',
         enforceAAA: true,
-        class: 'bg-accent-solid-aaa text-white',
+        class: 'bg-aurora-accent-solid text-cosmic-dark',
       },
       {
         variant: 'success',
         enforceAAA: true,
-        class: 'bg-success-solid-aaa text-white',
+        class: 'bg-cosmic-success-solid text-cosmic-dark',
       },
       {
         variant: 'error',
         enforceAAA: true,
-        class: 'bg-error-solid-aaa text-white',
+        class: 'bg-cosmic-danger-solid text-cosmic-dark',
       },
     ],
 
@@ -188,6 +198,7 @@ interface EnhancedButtonOwnProps {
   size?: 'sm' | 'md' | 'lg' | 'touch';
   vibrancy?: 'none' | 'glass' | 'floating';
   enforceAAA?: boolean;
+  disableAnimations?: boolean;
   pending?: boolean;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right' | 'only';
@@ -201,7 +212,7 @@ type ButtonVariantProps = VariantProps<typeof enhancedButtonVariants>;
 
 // ===== ENHANCED LOADING SPINNER =====
 
-// Constants using MAPS4 CSS variables to avoid hardcoded values
+// Constants using enhanced tokens to avoid hardcoded values
 const BUTTON_CONSTANTS = {
   SVG: {
     FILL: 'none',
@@ -215,11 +226,10 @@ const BUTTON_CONSTANTS = {
   },
   LOADING: 'Loading',
   SHRINK: 'shrink-0',
-  FULL_WIDTH: 'w-[var(--size-full)]',
   OPACITY: {
-    SPINNER_TRACK: 'opacity-[var(--opacity-spinner-track)]',
-    SPINNER_HEAD: 'opacity-[var(--opacity-spinner-head)]',
-    CONTENT_LOADING: 'opacity-[var(--opacity-70)]',
+    SPINNER_TRACK: 'opacity-25',
+    SPINNER_HEAD: 'opacity-75',
+    CONTENT_LOADING: 'opacity-70',
   },
   IDS: {
     LOADING_SUFFIX: 'loading',
@@ -237,15 +247,15 @@ const EnhancedSpinner: React.FC<{
   size?: 'sm' | 'md' | 'lg';
 }> = ({ className, size = 'md' }) => {
   const sizeMap = {
-    sm: 'w-[var(--icon-sm)] h-[var(--icon-sm)]',
-    md: 'w-[var(--icon-md)] h-[var(--icon-md)]',
-    lg: 'w-[var(--icon-lg)] h-[var(--icon-lg)]',
-  };
+    sm: ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm,
+    md: ENHANCED_DESIGN_TOKENS.foundation.icon.size.md,
+    lg: ENHANCED_DESIGN_TOKENS.foundation.icon.size.lg,
+  } as const;
 
   return (
-    <AccessibleIcon>
+    <span role="status" aria-live="polite" className="inline-flex">
       <svg
-        className={cn('animate-spin text-current', sizeMap[size], className)}
+        className={cn(ENHANCED_DESIGN_TOKENS.foundation.animation.name.spin, 'text-current', sizeMap[size], className)}
         fill={BUTTON_CONSTANTS.SVG.FILL}
         viewBox={BUTTON_CONSTANTS.SVG.VIEWBOX}
         xmlns={BUTTON_CONSTANTS.SVG.XMLNS}
@@ -264,7 +274,7 @@ const EnhancedSpinner: React.FC<{
           fill={BUTTON_CONSTANTS.SVG.STROKE}
         />
       </svg>
-    </AccessibleIcon>
+    </span>
   );
 };
 
@@ -291,6 +301,7 @@ const EnhancedButton = React.forwardRef<
       size = 'md',
       vibrancy = 'none',
       enforceAAA = false,
+      disableAnimations = false,
       pending = false,
       icon,
       iconPosition = 'left',
@@ -305,6 +316,16 @@ const EnhancedButton = React.forwardRef<
     ref
   ) => {
     const isDisabled = props.disabled || pending;
+
+    // Reduced-motion variant for gating transforms
+    const rmv = getReducedMotionVariant();
+    const motionTransforms = React.useMemo(() => {
+      if (disableAnimations) return '';
+      return [
+        `${rmv}:pointer:hover:scale-105`,
+        `${rmv}:active:${ENHANCED_DESIGN_TOKENS.foundation.transform.scale['98']}`,
+      ];
+    }, [disableAnimations, rmv]);
 
     // Auto-adjust size for touch devices (platform-aware)
     const responsiveSize = React.useMemo(() => {
@@ -332,6 +353,11 @@ const EnhancedButton = React.forwardRef<
       ariaLabel || (typeof children === 'string' ? children : undefined);
     const loadingAnnouncement = pending ? loadingText || BUTTON_CONSTANTS.LOADING : undefined;
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     const Comp = asChild ? Slot : 'button';
 
     return (
@@ -345,7 +371,9 @@ const EnhancedButton = React.forwardRef<
             vibrancy,
             enforceAAA,
           }),
-          fullWidth && BUTTON_CONSTANTS.FULL_WIDTH,
+          motionClasses,
+          motionTransforms,
+          fullWidth && ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
           className
         )}
         disabled={isDisabled}
@@ -360,9 +388,7 @@ const EnhancedButton = React.forwardRef<
       >
         {/* Left icon */}
         {icon && iconPosition === 'left' && !pending && (
-          <AccessibleIcon>
-            <span className={BUTTON_CONSTANTS.SHRINK}>{icon}</span>
-          </AccessibleIcon>
+          <span aria-hidden="true" className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0])}>{icon}</span>
         )}
 
         {/* Loading spinner */}
@@ -372,11 +398,11 @@ const EnhancedButton = React.forwardRef<
               size={
                 responsiveSize === 'sm'
                   ? 'sm'
-                  : responsiveSize === 'lg' || responsiveSize === 'touch'
+                  : (responsiveSize === 'lg' || responsiveSize === 'touch'
                     ? 'lg'
-                    : 'md'
+                    : 'md')
               }
-              className={BUTTON_CONSTANTS.SHRINK}
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0])}
             />
             {loadingAnnouncement && (
               <VisuallyHidden id={createLoadingId(testId)}>
@@ -395,16 +421,12 @@ const EnhancedButton = React.forwardRef<
 
         {/* Right icon */}
         {icon && iconPosition === 'right' && !pending && (
-          <AccessibleIcon>
-            <span className={BUTTON_CONSTANTS.SHRINK}>{icon}</span>
-          </AccessibleIcon>
+          <span aria-hidden="true" className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0])}>{icon}</span>
         )}
 
         {/* Icon only */}
         {icon && iconPosition === 'only' && !pending && (
-          <AccessibleIcon>
-            <span className={BUTTON_CONSTANTS.SHRINK}>{icon}</span>
-          </AccessibleIcon>
+          <span aria-hidden="true" className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0])}>{icon}</span>
         )}
       </Comp>
     );
@@ -412,6 +434,173 @@ const EnhancedButton = React.forwardRef<
 );
 
 EnhancedButton.displayName = 'EnhancedButton';
+
+// ===== BUTTON FACTORY FUNCTIONS =====
+
+/**
+ * Factory function for creating semantic button configurations
+ */
+export const ButtonFactory = {
+  /**
+   * Create a primary button
+   */
+  primary: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a secondary button
+   */
+  secondary: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'secondary' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a ghost button
+   */
+  ghost: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'ghost' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create an outline button
+   */
+  outline: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'outline' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a success button
+   */
+  success: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'success' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a warning button
+   */
+  warning: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'warning' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create an error button
+   */
+  error: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'error' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a glass button
+   */
+  glass: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    vibrancy: 'glass' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a floating button
+   */
+  floating: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    vibrancy: 'floating' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create an AAA compliant button
+   */
+  accessible: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    enforceAAA: true,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a performance-optimized button
+   */
+  performance: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    disableAnimations: true,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a small button
+   */
+  small: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    size: 'sm' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a large button
+   */
+  large: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    size: 'lg' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a touch-optimized button
+   */
+  touch: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    size: 'touch' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a full-width button
+   */
+  fullWidth: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    fullWidth: true,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create an icon-only button
+   */
+  iconOnly: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'ghost' as const,
+    iconPosition: 'only' as const,
+    size: 'md' as const,
+    ...props,
+  }),
+
+  /**
+   * Create a loading button
+   */
+  loading: (props: Partial<EnhancedButtonOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    pending: true,
+    size: 'md' as const,
+    ...props,
+  }),
+};
 
 // ===== EXPORTS =====
 

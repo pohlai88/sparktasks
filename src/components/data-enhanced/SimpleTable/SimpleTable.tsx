@@ -64,7 +64,7 @@ const simpleTableVariants = cva(
         ],
         glass: [
           ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
-          ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
       },
       striped: {
@@ -82,7 +82,8 @@ const simpleTableVariants = cva(
 
 const tableHeaderVariants = cva(
   [
-    'border-b text-left font-medium transition-colors',
+    'border-b text-left font-medium',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.navHover,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
     ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
@@ -93,7 +94,7 @@ const tableHeaderVariants = cva(
         true: [
           'cursor-pointer select-none',
           'hover:bg-accent hover:text-accent-foreground',
-          ENHANCED_DESIGN_TOKENS.accessibility.focus.ring,
+          ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
         ],
         false: '',
       },
@@ -106,9 +107,10 @@ const tableHeaderVariants = cva(
 
 const tableRowVariants = cva(
   [
-    'group border-b transition-colors',
+    'group border-b',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.navHover,
     ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
-    ENHANCED_DESIGN_TOKENS.accessibility.motion.safe,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
@@ -157,7 +159,7 @@ function TableSkeleton({
   surface?: 'elevated' | 'glass';
 }) {
   const rowHeight =
-    density === 'compact' ? 'h-8' : density === 'comfortable' ? 'h-12' : 'h-16';
+    density === 'compact' ? 'h-8' : (density === 'comfortable' ? 'h-12' : 'h-16');
 
   return (
     <div className={cn(simpleTableVariants({ density, surface }))}>
@@ -196,7 +198,7 @@ function SortIndicator({
   return (
     <Icon
       className={cn(
-        'ml-2 h-4 w-4',
+        'ml-2 size-4',
         ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
       )}
     />
@@ -332,12 +334,12 @@ export function SimpleTable<TData>({
                     role={canSort ? 'button' : undefined}
                     aria-sort={
                       sortDirection
-                        ? sortDirection === 'asc'
+                        ? (sortDirection === 'asc'
                           ? 'ascending'
-                          : 'descending'
-                        : canSort
+                          : 'descending')
+                        : (canSort
                           ? 'none'
-                          : undefined
+                          : undefined)
                     }
                   >
                     <div className='flex items-center'>

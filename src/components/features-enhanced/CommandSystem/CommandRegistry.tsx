@@ -11,11 +11,12 @@
  * - Command history and favorites
  */
 
-import type { Command, CommandGroup } from './CommandPalette';
 
 import React from 'react';
 
 import { cn } from '@/utils/cn';
+
+import type { Command, CommandGroup } from './CommandPalette';
 
 // ===== CONTEXT INTERFACES =====
 

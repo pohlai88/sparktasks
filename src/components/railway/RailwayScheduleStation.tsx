@@ -23,17 +23,16 @@
  */
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { EnhancedBadge } from '@/components/ui-enhanced/Badge';
 import { EnhancedButton } from '@/components/ui-enhanced/Button';
+import { EnhancedCalendar } from '@/components/ui-enhanced/Calendar';
 import { EnhancedCard } from '@/components/ui-enhanced/Card';
 import { EnhancedInput } from '@/components/ui-enhanced/Input';
-import { EnhancedTextarea } from '@/components/ui-enhanced/Textarea';
-import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
 import { EnhancedProgress } from '@/components/ui-enhanced/Progress';
-
-import { EnhancedCalendar } from '@/components/ui-enhanced/Calendar';
+import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
+import { EnhancedTextarea } from '@/components/ui-enhanced/Textarea';
 import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
@@ -46,47 +45,52 @@ import { cn } from '@/utils/cn';
 const railwayScheduleStationVariants = cva(
   [
     // Foundation: Layout/shape - Clean Tailwind utilities
-    'w-full max-w-7xl mx-auto',
-    'space-y-8',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-7xl'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
     
     // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
     // MAPS4 Foundation: Motion - Respect user preferences
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         // Default: Clean schedule station with subtle elevation
-        default: ['p-8', 'rounded-2xl'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl']],
         
         // Elevated: Enhanced depth with stronger shadow
         elevated: [
-          'p-10', 
-          'rounded-3xl',
-          'shadow-elevation-lg',
-          'border border-aurora-accent'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10'], 
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['3xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
         ],
         
         // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
-          'p-8',
-          'rounded-2xl',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
-          'border border-cosmic-border/30'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
         ],
       },
       
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['space-y-6', 'p-6'],
-        md: ['space-y-8', 'p-8'],
-        lg: ['space-y-10', 'p-10'],
-        xl: ['space-y-12', 'p-12'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8']],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10']],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['12']],
       },
     },
     
@@ -373,34 +377,45 @@ export function RailwayScheduleStation({
   const getStatusColor = (status: ProjectTask['status'] | ProjectMilestone['status']) => {
     switch (status) {
       case 'completed':
-      case 'achieved':
+      case 'achieved': {
         return 'success';
+      }
       case 'in_progress':
-      case 'pending':
+      case 'pending': {
         return 'warning';
-      case 'delayed':
+      }
+      case 'delayed': {
         return 'error';
-      case 'blocked':
+      }
+      case 'blocked': {
         return 'error';
-      case 'cancelled':
+      }
+      case 'cancelled': {
         return 'secondary';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
   const getPriorityColor = (priority: ProjectTask['priority']) => {
     switch (priority) {
-      case 'critical':
+      case 'critical': {
         return 'error';
-      case 'high':
+      }
+      case 'high': {
         return 'warning';
-      case 'medium':
+      }
+      case 'medium': {
         return 'accent';
-      case 'low':
+      }
+      case 'low': {
         return 'secondary';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
@@ -425,7 +440,8 @@ export function RailwayScheduleStation({
     { id: 'resources', label: 'Resources', icon: '👥' },
   ];
 
-  const scheduleMetrics = calculateScheduleMetrics();
+  const scheduleMetrics = useMemo(() => calculateScheduleMetrics(), [scheduleDataState.tasks, scheduleDataState.milestones]);
+  const completionPct = useMemo(() => calculateCompletion(), [steps]);
 
   return (
     <div
@@ -433,7 +449,10 @@ export function RailwayScheduleStation({
       className={cn(railwayScheduleStationVariants({ variant, size }))}
     >
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md
+      )}>
                  <h1 className={cn(
            ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium,
            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -448,15 +467,14 @@ export function RailwayScheduleStation({
         </p>
         
         {/* Progress Overview */}
-        <div className="flex items-center justify-center space-x-4">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.md)}>
           <EnhancedProgress
-            value={calculateCompletion()}
-            className="w-64"
+            value={completionPct}
             variant="default"
             size="md"
           />
           <span className={cn(
-            "text-sm font-medium",
+            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
             {calculateCompletion()}% Complete
@@ -465,9 +483,12 @@ export function RailwayScheduleStation({
       </div>
 
       {/* Schedule Summary Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-4'])}>
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
                          <h3 className={cn(
                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -484,7 +505,10 @@ export function RailwayScheduleStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
                          <h3 className={cn(
                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -501,7 +525,10 @@ export function RailwayScheduleStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
                          <h3 className={cn(
                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -518,7 +545,10 @@ export function RailwayScheduleStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
                          <h3 className={cn(
                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -541,25 +571,25 @@ export function RailwayScheduleStation({
       <EnhancedTabs.Root
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-full"
+                        className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
       >
-        <EnhancedTabs.List className="grid w-full grid-cols-6">
+        <EnhancedTabs.List className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid, ENHANCED_DESIGN_TOKENS.foundation.layout.width.full, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[6])}>
           {tabs.map((tab) => (
             <EnhancedTabs.Trigger
               key={tab.id}
               value={tab.id}
-              className="flex items-center space-x-2"
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm)}
             >
               <span>{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
+              <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.hidden, 'sm:inline')}>{tab.label}</span>
             </EnhancedTabs.Trigger>
           ))}
         </EnhancedTabs.List>
 
         {/* Overview Tab */}
-        <EnhancedTabs.Content value="overview" className="space-y-6">
+        <EnhancedTabs.Content value="overview" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -567,21 +597,24 @@ export function RailwayScheduleStation({
                  Schedule Progress
                </h3>
               
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                             <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-3'])}>
                 {steps.map((step) => (
                   <div
                     key={step.id}
-                    className={cn(
-                      "p-4 rounded-lg border transition-all duration-200",
-                                             step.status === 'completed' && "border-cosmic-success bg-cosmic-success/5",
-                       step.status === 'in_progress' && "border-cosmic-warning bg-cosmic-warning/5",
-                       step.status === 'blocked' && "border-cosmic-danger bg-cosmic-danger/5",
-                       step.status === 'pending' && "border-cosmic-border bg-cosmic-muted/5"
+                                        className={cn(
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+                      ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+                      step.status === 'completed' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle),
+                      step.status === 'in_progress' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle),
+                      step.status === 'blocked' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle),
+                      step.status === 'pending' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.border.default)
                     )}
                   >
-                    <div className="flex items-start justify-between mb-2">
+                                         <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <h4 className={cn(
-                        "font-medium",
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                       )}>
                         {step.title}
@@ -602,11 +635,10 @@ export function RailwayScheduleStation({
                        {step.description}
                      </p>
                     {step.required && (
-                                             <span className={cn(
-                         "inline-block mt-2",
-                         ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
-                         "text-cosmic-warning"
-                       )}>
+                                                                   <span className={cn(
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+                        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted
+                      )}>
                          Required
                        </span>
                     )}
@@ -618,9 +650,9 @@ export function RailwayScheduleStation({
         </EnhancedTabs.Content>
 
         {/* Timeline Tab */}
-        <EnhancedTabs.Content value="timeline" className="space-y-6">
+        <EnhancedTabs.Content value="timeline" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -628,8 +660,8 @@ export function RailwayScheduleStation({
                  Project Timeline
                </h3>
               
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-4">
+                             <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                                      <h4 className={cn(
                      ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                      ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -637,7 +669,7 @@ export function RailwayScheduleStation({
                      Project Dates
                    </h4>
                   
-                  <div className="space-y-3">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
                     <EnhancedInput
                       label="Start Date"
                       type="date"
@@ -658,7 +690,7 @@ export function RailwayScheduleStation({
                   </div>
                 </div>
                 
-                <div className="space-y-4">
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                                      <h4 className={cn(
                      ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                      ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -669,7 +701,7 @@ export function RailwayScheduleStation({
                   <EnhancedCalendar
                     mode="single"
                     selected={new Date(scheduleDataState.startDate)}
-                    className="rounded-md border"
+                    className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default)}
                   />
                 </div>
               </div>
@@ -678,9 +710,9 @@ export function RailwayScheduleStation({
         </EnhancedTabs.Content>
 
         {/* Tasks Tab */}
-        <EnhancedTabs.Content value="tasks" className="space-y-6">
+        <EnhancedTabs.Content value="tasks" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -688,25 +720,43 @@ export function RailwayScheduleStation({
                  Project Tasks
                </h3>
               
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse border border-border">
-                  <thead>
-                    <tr className="border-b border-border bg-muted/50">
-                      <th className="p-3 text-left font-medium">Task</th>
-                      <th className="p-3 text-left font-medium">Duration</th>
-                      <th className="p-3 text-left font-medium">Status</th>
-                      <th className="p-3 text-left font-medium">Priority</th>
-                      <th className="p-3 text-left font-medium">Assignee</th>
-                      <th className="p-3 text-left font-medium">Progress</th>
+                           <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.x.auto)}>
+                <table className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.width.full, ENHANCED_DESIGN_TOKENS.foundation.layout.border.collapse, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+                 <thead>
+                                          <tr className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+                                              <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Task</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Duration</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Status</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Priority</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Assignee</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Progress</th>
                     </tr>
                   </thead>
                   <tbody>
                     {scheduleDataState.tasks.map((task) => (
-                      <tr key={task.id} className="border-b border-border">
-                        <td className="p-3">
+                      <tr key={task.id} className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>
                           <div>
                             <p className={cn(
-                              "font-medium",
+                              ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                               ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                             )}>
                               {task.name}
@@ -719,8 +769,8 @@ export function RailwayScheduleStation({
                              </p>
                           </div>
                         </td>
-                        <td className="p-3">{task.duration} days</td>
-                        <td className="p-3">
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>{task.duration} days</td>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>
                           <EnhancedBadge
                             variant={getStatusColor(task.status)}
                             size="sm"
@@ -728,7 +778,7 @@ export function RailwayScheduleStation({
                             {task.status.replace('_', ' ')}
                           </EnhancedBadge>
                         </td>
-                        <td className="p-3">
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>
                           <EnhancedBadge
                             variant={getPriorityColor(task.priority)}
                             size="sm"
@@ -736,11 +786,10 @@ export function RailwayScheduleStation({
                             {task.priority}
                           </EnhancedBadge>
                         </td>
-                        <td className="p-3">{task.assignee}</td>
-                        <td className="p-3">
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>{task.assignee}</td>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>
                           <EnhancedProgress
                             value={task.progress}
-                            className="w-20"
                             variant="default"
                             size="sm"
                           />
@@ -755,9 +804,9 @@ export function RailwayScheduleStation({
         </EnhancedTabs.Content>
 
         {/* Milestones Tab */}
-        <EnhancedTabs.Content value="milestones" className="space-y-6">
+        <EnhancedTabs.Content value="milestones" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -765,19 +814,22 @@ export function RailwayScheduleStation({
                  Project Milestones
                </h3>
               
-              <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                 {scheduleDataState.milestones.map((milestone) => (
                   <div
                     key={milestone.id}
-                    className={cn(
-                      "p-4 rounded-lg border transition-all duration-200",
-                                             milestone.status === 'achieved' && "border-cosmic-success bg-cosmic-success/5",
-                       milestone.status === 'pending' && "border-cosmic-warning bg-cosmic-warning/5",
-                       milestone.status === 'delayed' && "border-cosmic-danger bg-cosmic-danger/5",
-                       milestone.status === 'cancelled' && "border-cosmic-border bg-cosmic-muted/5"
+                                        className={cn(
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+                      ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+                      milestone.status === 'achieved' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle),
+                      milestone.status === 'pending' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle),
+                      milestone.status === 'delayed' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle),
+                      milestone.status === 'cancelled' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)
                     )}
                   >
-                    <div className="flex items-start justify-between mb-3">
+                                         <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <div>
                                                  <h4 className={cn(
                            ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
@@ -785,11 +837,7 @@ export function RailwayScheduleStation({
                          )}>
                            {milestone.name}
                            {milestone.critical && (
-                             <span className={cn(
-                               "ml-2",
-                               ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
-                               "text-cosmic-danger"
-                             )}>Critical</span>
+                             <EnhancedBadge variant="error" size="sm">Critical</EnhancedBadge>
                            )}
                          </h4>
                                                  <p className={cn(
@@ -807,16 +855,16 @@ export function RailwayScheduleStation({
                       </EnhancedBadge>
                     </div>
                     
-                    <div className="grid gap-4 md:grid-cols-2">
+                                        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
                       <div>
-                                                 <span className={cn(
-                           ENHANCED_DESIGN_TOKENS.foundation.typography.label,
-                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
-                         )}>
-                           Target Date:
-                         </span>
+                        <span className={cn(
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                        )}>
+                          Target Date:
+                        </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           {milestone.targetDate}
@@ -832,7 +880,7 @@ export function RailwayScheduleStation({
                            Actual Date:
                          </span>
                           <p className={cn(
-                            "font-medium",
+                            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                           )}>
                             {milestone.actualDate}
@@ -842,14 +890,14 @@ export function RailwayScheduleStation({
                     </div>
                     
                     {milestone.deliverables.length > 0 && (
-                      <div className="mt-3">
+                      <div>
                                                  <span className={cn(
                            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                          )}>
                            Deliverables:
                          </span>
-                        <ul className="mt-1 space-y-1">
+                        <ul className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs)}>
                           {milestone.deliverables.map((deliverable, index) => (
                                                          <li key={index} className={cn(
                                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
@@ -869,9 +917,9 @@ export function RailwayScheduleStation({
         </EnhancedTabs.Content>
 
         {/* Critical Path Tab */}
-        <EnhancedTabs.Content value="critical-path" className="space-y-6">
+        <EnhancedTabs.Content value="critical-path" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -879,7 +927,7 @@ export function RailwayScheduleStation({
                  Critical Path Analysis
                </h3>
               
-              <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                                  <p className={cn(
                    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -888,7 +936,7 @@ export function RailwayScheduleStation({
                    Any delay in these tasks will directly impact the project completion date.
                  </p>
                 
-                <div className="space-y-3">
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
                   {scheduleDataState.criticalPath.map((taskId, index) => {
                     const task = scheduleDataState.tasks.find(t => t.id === taskId);
                     if (!task) return null;
@@ -896,18 +944,28 @@ export function RailwayScheduleStation({
                     return (
                       <div
                         key={taskId}
-                                                 className="flex items-center space-x-3 p-3 rounded-lg border border-cosmic-danger bg-cosmic-danger/5"
+                        className={cn(
+                          ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+                          ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+                          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.md,
+                          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
+                          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+                          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.border,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle
+                        )}
                       >
-                                                 <span className={cn(
-                           "flex items-center justify-center w-6 h-6 rounded-full",
-                           ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
-                           "font-bold bg-cosmic-danger text-cosmic-dark"
-                         )}>
-                           {index + 1}
-                         </span>
-                        <div className="flex-1">
+                        <span className={cn(
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.solid,
+                          ENHANCED_DESIGN_TOKENS.foundation.color.content.inverse,
+                          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full
+                        )}>
+                          {index + 1}
+                        </span>
+                        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
                           <p className={cn(
-                            "font-medium",
+                            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                           )}>
                             {task.name}
@@ -935,9 +993,9 @@ export function RailwayScheduleStation({
         </EnhancedTabs.Content>
 
         {/* Resources Tab */}
-        <EnhancedTabs.Content value="resources" className="space-y-6">
+        <EnhancedTabs.Content value="resources" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -945,7 +1003,7 @@ export function RailwayScheduleStation({
                  Resource Management
                </h3>
               
-              <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                 <EnhancedTextarea
                   label="Resource Allocation Notes"
                   placeholder="Enter resource allocation details and capacity planning..."
@@ -954,7 +1012,7 @@ export function RailwayScheduleStation({
                   rows={6}
                 />
                 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
                   <EnhancedInput
                     label="Team Size"
                     type="number"
@@ -978,8 +1036,8 @@ export function RailwayScheduleStation({
       </EnhancedTabs.Root>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-6 border-t border-border">
-        <div className="flex items-center space-x-4">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.md)}>
           <EnhancedButton
             onClick={onRollback}
             variant="outline"

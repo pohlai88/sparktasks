@@ -243,11 +243,13 @@ DISABLE_ANALYTICS=1
 ```
 e2e/
 ├── tests/                      # Test specifications
-│   ├── auth.spec.ts           # Authentication flows
-│   ├── visual.spec.ts         # Visual regression
-│   ├── a11y.spec.ts          # Accessibility compliance
-│   ├── performance.spec.ts    # Performance benchmarks
-│   └── api-mocking.spec.ts    # API mocking scenarios
+│   ├── homepage-flow.test.ts     # Homepage functionality
+│   ├── api-mocking-flow.test.ts  # API mocking scenarios
+│   ├── visual-regression.test.ts # Visual regression
+│   ├── accessibility-audit.test.ts # Accessibility compliance
+│   ├── performance-metrics.test.ts # Performance benchmarks
+│   ├── remote-smoke.test.ts      # Remote functionality smoke tests
+│   └── simulation-smoke.test.ts  # Simulation functionality smoke tests
 ├── fixtures/                   # Test fixtures & utilities
 │   ├── test-fixtures.ts       # Custom test fixtures
 │   └── authenticated-user.ts  # Pre-authenticated state

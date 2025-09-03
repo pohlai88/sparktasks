@@ -14,9 +14,9 @@ const getSigner = (kid?: string) => ({
   kid: kid || 'test',
   status: kid?.includes('revoked')
     ? 'REVOKED'
-    : kid?.includes('retired')
+    : (kid?.includes('retired')
       ? 'RETIRED'
-      : 'ACTIVE',
+      : 'ACTIVE'),
   privateKey: 'mock-private-key',
   publicKey: 'mock-public-key',
 });

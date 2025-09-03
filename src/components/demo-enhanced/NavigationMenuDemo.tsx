@@ -14,7 +14,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import React from 'react';
+import type React from 'react';
 
 import {
   EnhancedNavigationMenu,
@@ -55,7 +55,7 @@ const NavigationMenuDemo: React.FC = () => {
                         variant='accent'
                       >
                         <div className='flex items-center space-x-3'>
-                          <Laptop className='h-6 w-6' />
+                          <Laptop className='size-6' />
                           <div>
                             <div className='mb-2 mt-4 text-lg font-medium'>
                               Product Suite
@@ -70,19 +70,19 @@ const NavigationMenuDemo: React.FC = () => {
                     </div>
                     <EnhancedNavigationMenuLink href='/analytics'>
                       <div className='flex items-center space-x-2'>
-                        <Database className='h-4 w-4' />
+                        <Database className='size-4' />
                         <span>Analytics Platform</span>
                       </div>
                     </EnhancedNavigationMenuLink>
                     <EnhancedNavigationMenuLink href='/automation'>
                       <div className='flex items-center space-x-2'>
-                        <Zap className='h-4 w-4' />
+                        <Zap className='size-4' />
                         <span>Automation Tools</span>
                       </div>
                     </EnhancedNavigationMenuLink>
                     <EnhancedNavigationMenuLink href='/integrations'>
                       <div className='flex items-center space-x-2'>
-                        <Globe className='h-4 w-4' />
+                        <Globe className='size-4' />
                         <span>Integrations</span>
                       </div>
                     </EnhancedNavigationMenuLink>
@@ -103,7 +103,7 @@ const NavigationMenuDemo: React.FC = () => {
                         active={true}
                       >
                         <div className='flex items-center space-x-3'>
-                          <Users className='h-6 w-6' />
+                          <Users className='size-6' />
                           <div>
                             <div className='mb-2 mt-4 text-lg font-medium'>
                               Enterprise Solutions
@@ -119,7 +119,7 @@ const NavigationMenuDemo: React.FC = () => {
                       <EnhancedNavigationMenuLink href='/solutions/startups'>
                         <div className='flex items-center justify-between'>
                           <span>For Startups</span>
-                          <ChevronRight className='h-4 w-4' />
+                          <ChevronRight className='size-4' />
                         </div>
                       </EnhancedNavigationMenuLink>
                     </li>
@@ -127,7 +127,7 @@ const NavigationMenuDemo: React.FC = () => {
                       <EnhancedNavigationMenuLink href='/solutions/agencies'>
                         <div className='flex items-center justify-between'>
                           <span>For Agencies</span>
-                          <ChevronRight className='h-4 w-4' />
+                          <ChevronRight className='size-4' />
                         </div>
                       </EnhancedNavigationMenuLink>
                     </li>
@@ -135,7 +135,7 @@ const NavigationMenuDemo: React.FC = () => {
                       <EnhancedNavigationMenuLink href='/solutions/developers'>
                         <div className='flex items-center justify-between'>
                           <span>For Developers</span>
-                          <ChevronRight className='h-4 w-4' />
+                          <ChevronRight className='size-4' />
                         </div>
                       </EnhancedNavigationMenuLink>
                     </li>
@@ -188,7 +188,7 @@ const NavigationMenuDemo: React.FC = () => {
                       variant='accent'
                     >
                       <div className='flex items-center space-x-3'>
-                        <Code className='h-5 w-5' />
+                        <Code className='size-5' />
                         <div>
                           <div className='font-medium'>Platform Overview</div>
                           <p className='text-xs text-muted-foreground'>
@@ -199,7 +199,7 @@ const NavigationMenuDemo: React.FC = () => {
                     </EnhancedNavigationMenuLink>
                     <EnhancedNavigationMenuLink href='/platform/api'>
                       <div className='flex items-center space-x-3'>
-                        <Database className='h-5 w-5' />
+                        <Database className='size-5' />
                         <div>
                           <div className='font-medium'>API & SDK</div>
                           <p className='text-xs text-muted-foreground'>
@@ -210,7 +210,7 @@ const NavigationMenuDemo: React.FC = () => {
                     </EnhancedNavigationMenuLink>
                     <EnhancedNavigationMenuLink href='/platform/hosting'>
                       <div className='flex items-center space-x-3'>
-                        <Globe className='h-5 w-5' />
+                        <Globe className='size-5' />
                         <div>
                           <div className='font-medium'>Cloud Hosting</div>
                           <p className='text-xs text-muted-foreground'>
@@ -221,7 +221,7 @@ const NavigationMenuDemo: React.FC = () => {
                     </EnhancedNavigationMenuLink>
                     <EnhancedNavigationMenuLink href='/platform/analytics'>
                       <div className='flex items-center space-x-3'>
-                        <Zap className='h-5 w-5' />
+                        <Zap className='size-5' />
                         <div>
                           <div className='font-medium'>Real-time Analytics</div>
                           <p className='text-xs text-muted-foreground'>
@@ -267,7 +267,7 @@ const NavigationMenuDemo: React.FC = () => {
               <EnhancedNavigationMenuItem>
                 <EnhancedNavigationMenuTrigger size='lg' showIndicator={false}>
                   <div className='flex items-center space-x-3'>
-                    <Laptop className='h-5 w-5' />
+                    <Laptop className='size-5' />
                     <span>Dashboard</span>
                   </div>
                 </EnhancedNavigationMenuTrigger>
@@ -292,7 +292,7 @@ const NavigationMenuDemo: React.FC = () => {
               <EnhancedNavigationMenuItem>
                 <EnhancedNavigationMenuLink href='/settings' variant='subtle'>
                   <div className='flex items-center space-x-3'>
-                    <Users className='h-5 w-5' />
+                    <Users className='size-5' />
                     <span>Settings</span>
                   </div>
                 </EnhancedNavigationMenuLink>
@@ -301,7 +301,7 @@ const NavigationMenuDemo: React.FC = () => {
               <EnhancedNavigationMenuItem>
                 <EnhancedNavigationMenuLink href='/help' variant='subtle'>
                   <div className='flex items-center space-x-3'>
-                    <Globe className='h-5 w-5' />
+                    <Globe className='size-5' />
                     <span>Help & Support</span>
                   </div>
                 </EnhancedNavigationMenuLink>

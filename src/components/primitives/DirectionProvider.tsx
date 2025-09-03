@@ -11,7 +11,7 @@
  */
 
 import { DirectionProvider as DirectionProviderPrimitive } from '@radix-ui/react-direction';
-import React from 'react';
+import type React from 'react';
 
 // ===== TYPES =====
 

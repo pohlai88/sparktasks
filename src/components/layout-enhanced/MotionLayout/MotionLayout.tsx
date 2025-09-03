@@ -14,10 +14,9 @@
  * Part of the MAPS v3.0 layout enhanced component system.
  */
 
-import React, { forwardRef } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../../../utils/cn';
+
 
 // Import framer-motion components
 import {
@@ -26,12 +25,17 @@ import {
   type Variants,
   type Transition,
 } from 'framer-motion';
+import { forwardRef } from 'react';
+import type React from 'react';
+
+import { cn } from '../../../utils/cn';
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
 
 // Motion Layout Variants
 const motionLayoutVariants = cva(
   [
     // Base styles
-    'relative',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
   ],
   {
     variants: {
@@ -43,10 +47,10 @@ const motionLayoutVariants = cva(
         custom: '',
       },
       overflow: {
-        visible: 'overflow-visible',
-        hidden: 'overflow-hidden',
-        auto: 'overflow-auto',
-        scroll: 'overflow-scroll',
+        visible: ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.visible,
+        hidden: ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+        auto: ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.auto,
+        scroll: ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.scroll,
       },
     },
     defaultVariants: {
@@ -325,4 +329,6 @@ export {
 };
 
 // Export types
-export type { Variants, Transition };
+
+
+export {type Variants, type Transition} from 'framer-motion';

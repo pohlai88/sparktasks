@@ -27,53 +27,77 @@ import { ChevronRight, Home, MoreHorizontal } from 'lucide-react';
 import * as React from 'react';
 
 import { AccessibleIcon, Slot, VisuallyHidden } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED BREADCRUMB VARIANTS =====
 
 const enhancedBreadcrumbVariants = cva(
-  // Base styles - Apple HIG foundation
+  // Base styles - Apple HIG foundation - Enhanced tokens only
   [
-    'flex items-center space-x-1 overflow-x-auto',
-    'text-sm text-muted-foreground',
-    'transition-all duration-200 ease-out',
-    'motion-reduce:transition-none',
-    'focus-visible:outline-none focus-visible:ring-2',
-    'focus-visible:ring-ring focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.x.auto,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.navHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
         // Default: Clean navigation breadcrumb
-        default: ['py-2'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2]],
 
         // Compact: Dense layout for limited space
-        compact: ['space-x-0.5 py-1 text-xs'],
+        compact: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        ],
 
         // Pills: Rounded pill-style navigation
-        pills: ['space-x-2 py-1'],
+        pills: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+        ],
 
         // Glass: Liquid glass material styling
         glass: [
-          'rounded-lg px-3 py-2',
-          'bg-background/80 backdrop-blur-sm',
-          'border border-border/20',
-          'shadow-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
       },
 
       size: {
-        sm: ['gap-1 text-xs'],
-        md: ['gap-2 text-sm'],
-        lg: ['gap-3 text-base'],
+        sm: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        ],
+        md: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+        ],
+        lg: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+        ],
       },
 
       // Surface variants following MAPS v2.2 foundation
       surface: {
-        elevated: ['bg-background-elevated'],
-        panel: ['bg-background-panel'],
-        glass: ['bg-background/80 backdrop-blur-sm'],
+        elevated: [ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated],
+        panel: [ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel],
+        glass: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+        ],
       },
     },
     defaultVariants: {
@@ -85,43 +109,53 @@ const enhancedBreadcrumbVariants = cva(
 );
 
 const enhancedBreadcrumbItemVariants = cva(
-  // Base item styles - Apple HIG foundation
+  // Base item styles - Apple HIG foundation - Enhanced tokens only
   [
-    'inline-flex items-center',
-    'transition-all duration-200 ease-out',
-    'motion-reduce:transition-none',
-    'focus-visible:outline-none focus-visible:ring-2',
-    'focus-visible:ring-ring focus-visible:ring-offset-1',
-    'focus-visible:ring-offset-background',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.inlineBlock,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.navHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
         default: [
-          'text-muted-foreground hover:text-foreground',
-          'rounded-sm px-1 py-0.5',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          'pointer:hover:text-cosmic-light',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
         ],
         pills: [
-          'text-muted-foreground hover:text-foreground',
-          'rounded-full px-2 py-1',
-          'hover:bg-muted/50',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          'pointer:hover:text-cosmic-light',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+          'pointer:hover:bg-cosmic-void/50',
         ],
         link: [
-          'text-accent hover:text-accent-hover',
-          'rounded-sm px-1 py-0.5',
-          'decoration-1 underline-offset-2 hover:underline',
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.accent.fg,
+          'pointer:hover:text-cosmic-primary-hover',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+          'decoration-1 underline-offset-2 pointer:hover:underline',
         ],
       },
 
       isCurrentPage: {
-        true: ['font-medium text-foreground', 'cursor-default'],
-        false: ['cursor-pointer'],
+        true: [
+          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
+        ],
+        false: [ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer],
       },
 
       // AAA compliance enforcement
       enforceAAA: {
         false: '',
-        true: ['aaa:text-accent-solid-aaa'],
+        true: ['aaa:text-aurora-accent-solid'],
       },
     },
     defaultVariants: {
@@ -133,18 +167,27 @@ const enhancedBreadcrumbItemVariants = cva(
 );
 
 const enhancedBreadcrumbSeparatorVariants = cva(
-  // Base separator styles
+  // Base separator styles - Enhanced tokens only
   [
-    'flex items-center justify-center',
-    'text-muted-foreground/60',
-    'select-none',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    'text-stellar-muted/60',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
   ],
   {
     variants: {
       variant: {
         chevron: ['size-4'],
-        slash: ['text-base font-light'],
-        dot: ['size-1 rounded-full bg-muted-foreground/40'],
+        slash: [
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+          'font-light',
+        ],
+        dot: [
+          'size-1',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
+          'bg-stellar-muted/40',
+        ],
       },
     },
     defaultVariants: {
@@ -163,6 +206,7 @@ interface EnhancedBreadcrumbProps
   separator?: 'chevron' | 'slash' | 'dot' | React.ReactNode;
   homeIcon?: React.ReactNode;
   enforceAAA?: boolean;
+  disableAnimations?: boolean;
   'data-testid'?: string;
 }
 
@@ -184,6 +228,7 @@ interface EnhancedBreadcrumbLinkProps extends React.ComponentProps<'a'> {
   asChild?: boolean;
   isCurrentPage?: boolean;
   enforceAAA?: boolean;
+  disableAnimations?: boolean;
 }
 
 interface EnhancedBreadcrumbPageProps extends React.ComponentProps<'span'> {
@@ -230,6 +275,7 @@ const EnhancedBreadcrumb = React.forwardRef<
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       homeIcon: _unused_homeIcon,
       enforceAAA = false,
+      disableAnimations = false,
       className,
       children,
       'data-testid': testId,
@@ -238,6 +284,11 @@ const EnhancedBreadcrumb = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : 'nav';
+
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
     return (
       <Comp
@@ -249,6 +300,7 @@ const EnhancedBreadcrumb = React.forwardRef<
             size,
             surface,
           }),
+          motionClasses,
           className
         )}
         data-aaa={enforceAAA ? 'true' : 'false'}
@@ -276,7 +328,10 @@ const EnhancedBreadcrumbList = React.forwardRef<
     <Comp
       ref={ref}
       className={cn(
-        'flex flex-wrap items-center gap-1.5 break-words',
+        ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+        'flex-wrap',
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+        'gap-1.5 break-words',
         className
       )}
       {...props}
@@ -340,6 +395,7 @@ const EnhancedBreadcrumbLink = React.forwardRef<
       asChild = false,
       isCurrentPage = false,
       enforceAAA = false,
+      disableAnimations = false,
       className,
       children,
       ...props
@@ -352,8 +408,9 @@ const EnhancedBreadcrumbLink = React.forwardRef<
       return (
         <span
           className={cn(
-            'font-medium text-foreground',
-            'cursor-default',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
             className
           )}
           aria-current='page'
@@ -363,19 +420,26 @@ const EnhancedBreadcrumbLink = React.forwardRef<
       );
     }
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : 'transition-colors duration-200';
+
     return (
       <Comp
         ref={ref}
         className={cn(
-          'inline-flex items-center gap-1.5',
-          'text-muted-foreground hover:text-foreground',
-          'transition-colors duration-200',
-          'motion-reduce:transition-none',
-          'focus-visible:outline-none focus-visible:ring-2',
-          'focus-visible:ring-ring focus-visible:ring-offset-1',
-          'focus-visible:ring-offset-background',
-          'rounded-sm px-1 py-0.5',
-          enforceAAA && 'aaa:text-accent-solid-aaa',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.display.inlineBlock,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+          'gap-1.5',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          'hover:text-cosmic-light',
+          motionClasses,
+          ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+          'px-1 py-0.5',
+          enforceAAA && 'aaa:text-aurora-accent-solid',
           className
         )}
         data-aaa={enforceAAA ? 'true' : 'false'}
@@ -405,8 +469,10 @@ const EnhancedBreadcrumbPage = React.forwardRef<
       aria-disabled='true'
       aria-current='page'
       className={cn(
-        'font-medium text-foreground',
-        'rounded-sm px-1 py-0.5',
+        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+        ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+        'px-1 py-0.5',
         className
       )}
       {...props}
@@ -443,7 +509,7 @@ const EnhancedBreadcrumbSeparator = React.forwardRef<
           <>
             {variant === 'chevron' && (
               <AccessibleIcon label='Breadcrumb separator'>
-                <ChevronRight className='size-4' />
+                <ChevronRight className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)} aria-hidden='true' />
               </AccessibleIcon>
             )}
             {variant === 'slash' && <span>/</span>}
@@ -475,14 +541,17 @@ const EnhancedBreadcrumbEllipsis = React.forwardRef<
       ref={ref}
       role='presentation'
       className={cn(
-        'flex items-center justify-center',
-        'size-9 text-muted-foreground/60',
+        ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+        'size-9',
+        'text-stellar-muted/60',
         className
       )}
       {...props}
     >
       <AccessibleIcon label='More pages'>
-        <MoreHorizontal className='size-4' />
+        <MoreHorizontal className='size-4' aria-hidden='true' />
       </AccessibleIcon>
       <VisuallyHidden>More pages</VisuallyHidden>
     </Comp>
@@ -537,6 +606,16 @@ export const BreadcrumbFactory = {
     separator: 'chevron' as const,
     ...props,
   }),
+
+  /**
+   * Create a performance-optimized breadcrumb
+   */
+  performance: (props: Partial<EnhancedBreadcrumbProps> = {}) => ({
+    variant: 'default' as const,
+    disableAnimations: true,
+    separator: 'chevron' as const,
+    ...props,
+  }),
 };
 
 /**
@@ -549,7 +628,7 @@ export const createHomeBreadcrumb = (
 ) => ({
   href,
   label,
-  icon: icon || <Home className='size-4' />,
+  icon: icon || <Home className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)} />,
   isHome: true,
 });
 

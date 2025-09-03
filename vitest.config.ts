@@ -1,6 +1,12 @@
 /**
  * Vitest Configuration - Fortune-500 Grade Testing Infrastructure
  *
+ * Configuration Hierarchy:
+ * - Extends: vite.config.ts (build configuration)
+ * - Aliases: Synchronized with vite.config.ts for consistency
+ * - Path Resolution: Uses __dirname for Node.js compatibility
+ * - Test Environment: jsdom for React component testing
+ *
  * Features:
  * - 100% coverage enforcement for production code
  * - Accessibility testing with jest-axe
@@ -131,11 +137,11 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "./src"),
-      "@/components": path.resolve(import.meta.dirname, "./src/components"),
-      "@/design": path.resolve(import.meta.dirname, "./src/design"),
-      "@/utils": path.resolve(import.meta.dirname, "./src/utils"),
-      "@/": path.resolve(import.meta.dirname, "./src/")
+      "@": path.resolve(__dirname, "src"),
+      "@/components": path.resolve(__dirname, "src/components"),
+      "@/design": path.resolve(__dirname, "src/design"),
+      "@/utils": path.resolve(__dirname, "src/utils"),
+      "@/": path.resolve(__dirname, "src/")
     }
   },
 })

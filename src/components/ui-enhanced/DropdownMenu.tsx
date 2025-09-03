@@ -27,6 +27,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import React from 'react';
 
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED DROPDOWN MENU VARIANTS =====
@@ -37,13 +38,18 @@ import { cn } from '@/utils/cn';
  */
 const enhancedDropdownMenuContentVariants = cva(
   [
-    // Foundation: Layout & Structure
-    'relative z-50 min-w-[8rem]',
-    'overflow-hidden rounded-lg',
-    'border border-border',
+    // Foundation: Layout & Structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    getZIndexClass('popover'),
+    'min-w-[8rem]',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
-    // Foundation: Dark-First Philosophy - Solid background for readability
-    'bg-background text-foreground',
+    // Foundation: Dark-First Philosophy - Solid background for readability - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
     // Foundation: Liquid Glass Materials (Surface-Only)
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
@@ -54,12 +60,11 @@ const enhancedDropdownMenuContentVariants = cva(
     'data-[side=right]:slide-in-from-left-2',
     'data-[side=top]:slide-in-from-bottom-2',
 
-    // Foundation: Elevation & Shadow System
-    'shadow-md',
+    // Foundation: Elevation & Shadow System - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
 
-    // Foundation: Motion - Respect user preferences
-    'motion-reduce:transition-none',
-    'motion-reduce:animate-none',
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Apple HIG Interaction
     'will-change-[opacity,transform]',
@@ -67,35 +72,44 @@ const enhancedDropdownMenuContentVariants = cva(
   {
     variants: {
       variant: {
-        // Default: Clean solid background styling
-        default: ['border-border bg-background', 'shadow-lg'],
-
-        // Glass: Liquid glass vibrancy (Surface-Only) with solid background
-        glass: [
-          'bg-background/95 backdrop-blur-lg backdrop-saturate-150',
-          'border-border/50',
-          'shadow-xl shadow-background/20',
+        // Default: Clean solid background styling - Enhanced tokens
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
 
-        // Floating: Enhanced elevation
+        // Glass: Liquid glass vibrancy (Surface-Only) with solid background - Enhanced tokens
+        glass: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
+        ],
+
+        // Floating: Enhanced elevation - Enhanced tokens
         floating: [
-          'border-border bg-background',
-          'shadow-xl shadow-background/30',
-          'ring-1 ring-border/20',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
       },
 
       size: {
-        sm: 'p-1',
-        md: 'p-2',
-        lg: 'p-3',
+        sm: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+        md: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+        lg: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
       },
 
-      // AAA Compliance Mode
+      // AAA Compliance Mode - Enhanced tokens
       enforceAAA: {
         true: [
-          'border-border bg-background',
-          'shadow-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
           // Override any glass effects for maximum contrast
           'backdrop-blur-none backdrop-saturate-100',
         ],
@@ -103,13 +117,14 @@ const enhancedDropdownMenuContentVariants = cva(
       },
     },
     compoundVariants: [
-      // Glass variant interactions when interactive
+      // Glass variant interactions when interactive - Enhanced tokens
       {
         variant: 'glass',
         enforceAAA: false,
         className: [
-          'hover:bg-background/98 hover:backdrop-blur-xl',
-          'transition-all duration-200 ease-out',
+          'pointer:hover:bg-cosmic-void/98',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
         ],
       },
     ],
@@ -126,34 +141,41 @@ const enhancedDropdownMenuContentVariants = cva(
  */
 const enhancedDropdownMenuItemVariants = cva(
   [
-    // Foundation: Layout
-    'relative flex cursor-default select-none items-center',
-    'rounded-sm px-2 py-1.5 text-sm outline-none',
+    // Foundation: Layout - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'outline-none',
 
-    // Foundation: Typography
+    // Foundation: Typography - Enhanced tokens
     'font-normal',
 
-    // Foundation: Interaction States - Enhanced contrast like Select component
-    'transition-colors duration-150 ease-out',
-    'focus:bg-accent focus:text-accent-foreground',
-    'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-    'hover:bg-accent/80 hover:text-accent-foreground',
+    // Foundation: Interaction States - Enhanced contrast like Select component - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    'focus:bg-aurora-accent focus:text-cosmic-dark',
+    'data-[highlighted]:bg-aurora-accent data-[highlighted]:text-cosmic-dark data-[highlighted]:shadow-lg',
+    'pointer:hover:bg-aurora-accent/80 pointer:hover:text-cosmic-dark',
 
     // Foundation: Platform Awareness
     'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
 
-    // Foundation: Motion
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
-        default: 'text-foreground',
+        default: ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
         destructive: [
-          'text-destructive',
-          'focus:bg-destructive focus:text-destructive-foreground',
-          'data-[highlighted]:bg-destructive data-[highlighted]:text-destructive-foreground',
-          'hover:bg-destructive/80 hover:text-destructive-foreground',
+          'text-cosmic-danger',
+          'focus:bg-cosmic-danger focus:text-cosmic-dark',
+          'data-[highlighted]:bg-cosmic-danger data-[highlighted]:text-cosmic-dark',
+          'pointer:hover:bg-cosmic-danger/80 pointer:hover:text-cosmic-dark',
         ],
       },
 
@@ -162,11 +184,11 @@ const enhancedDropdownMenuItemVariants = cva(
         false: '',
       },
 
-      // AAA Compliance Mode
+      // AAA Compliance Mode - Enhanced tokens
       enforceAAA: {
         true: [
-          'focus:bg-accent focus:text-accent-foreground',
-          'hover:bg-accent hover:text-accent-foreground',
+          'focus:bg-aurora-accent focus:text-cosmic-dark',
+          'hover:bg-aurora-accent hover:text-cosmic-dark',
         ],
         false: '',
       },
@@ -184,12 +206,14 @@ const enhancedDropdownMenuItemVariants = cva(
  */
 const enhancedDropdownMenuLabelVariants = cva(
   [
-    // Foundation: Typography
-    'px-2 py-1.5 text-sm font-semibold',
-    'text-muted-foreground',
+    // Foundation: Typography - Enhanced tokens
+    'px-2 py-1.5',
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'font-semibold',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
 
-    // Foundation: Spacing
-    'select-none',
+    // Foundation: Spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
   ],
   {
     variants: {
@@ -208,18 +232,22 @@ const enhancedDropdownMenuLabelVariants = cva(
  * Enhanced dropdown menu separator variants
  */
 const enhancedDropdownMenuSeparatorVariants = cva([
-  // Foundation: Layout
-  '-mx-1 my-1 h-px',
-  'bg-muted',
+  // Foundation: Layout - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+  ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.margin[1],
 ]);
 
 /**
  * Enhanced dropdown menu shortcut variants
  */
 const enhancedDropdownMenuShortcutVariants = cva([
-  // Foundation: Typography
-  'ml-auto text-xs tracking-widest',
-  'text-muted-foreground',
+  // Foundation: Typography - Enhanced tokens
+  'ml-auto',
+  ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+  'tracking-widest',
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
 
   // Foundation: Platform Awareness
   'opacity-60',
@@ -232,6 +260,8 @@ interface EnhancedDropdownMenuContentOwnProps
     VariantProps<typeof enhancedDropdownMenuContentVariants> {
   /** Apply AAA compliance mode for maximum accessibility */
   enforceAAA?: boolean;
+  /** Disable animations for performance optimization */
+  disableAnimations?: boolean;
 }
 
 interface EnhancedDropdownMenuItemOwnProps
@@ -270,9 +300,15 @@ const DropdownMenuContent = React.forwardRef<
   EnhancedDropdownMenuContentOwnProps
 >(
   (
-    { className, variant, size, enforceAAA = false, sideOffset = 4, ...props },
+    { className, variant, size, enforceAAA = false, disableAnimations = false, sideOffset = 4, ...props },
     ref
-  ) => (
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
         ref={ref}
@@ -283,13 +319,15 @@ const DropdownMenuContent = React.forwardRef<
             size,
             enforceAAA,
           }),
+          motionClasses,
           className
         )}
         data-aaa={enforceAAA ? 'true' : 'false'}
         {...props}
       />
     </DropdownMenuPrimitive.Portal>
-  )
+    );
+  }
 );
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName;
 
@@ -324,13 +362,24 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none',
-      'transition-colors duration-150 ease-out',
-      'focus:bg-accent focus:text-accent-foreground',
-      'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-      'hover:bg-accent/80 hover:text-accent-foreground',
+      // Foundation: Layout - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+      'pl-8',
+      ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+      'outline-none',
+      // Foundation: Motion - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+      'focus:bg-aurora-accent focus:text-cosmic-dark',
+      'data-[highlighted]:bg-aurora-accent data-[highlighted]:text-cosmic-dark data-[highlighted]:shadow-lg',
+      'pointer:hover:bg-aurora-accent/80 pointer:hover:text-cosmic-dark',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      'motion-reduce:transition-none',
+      ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
       className
     )}
     checked={checked}
@@ -356,13 +405,24 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none',
-      'transition-colors duration-150 ease-out',
-      'focus:bg-accent focus:text-accent-foreground',
-      'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-      'hover:bg-accent/80 hover:text-accent-foreground',
+      // Foundation: Layout - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+      'pl-8',
+      ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+      'outline-none',
+      // Foundation: Motion - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+      'focus:bg-aurora-accent focus:text-cosmic-dark',
+      'data-[highlighted]:bg-aurora-accent data-[highlighted]:text-cosmic-dark data-[highlighted]:shadow-lg',
+      'pointer:hover:bg-aurora-accent/80 pointer:hover:text-cosmic-dark',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      'motion-reduce:transition-none',
+      ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
       className
     )}
     {...props}
@@ -430,20 +490,29 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      'flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none',
-      'focus:bg-accent focus:text-accent-foreground',
-      'data-[highlighted]:bg-accent data-[highlighted]:text-white data-[highlighted]:shadow-lg',
-      'hover:bg-accent/80 hover:text-accent-foreground',
-      'data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
-      'transition-colors duration-150 ease-out',
-      'motion-reduce:transition-none',
+      // Foundation: Layout - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      'rounded-sm px-2 py-1.5',
+      ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+      'outline-none',
+      // Foundation: Interaction States - Enhanced tokens
+      'focus:bg-aurora-accent focus:text-cosmic-dark',
+      'data-[highlighted]:bg-aurora-accent data-[highlighted]:text-cosmic-dark data-[highlighted]:shadow-lg',
+      'hover:bg-aurora-accent/80 hover:text-cosmic-dark',
+      'data-[state=open]:bg-aurora-accent data-[state=open]:text-cosmic-dark',
+      // Foundation: Motion - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+      ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
       inset && 'pl-8',
       className
     )}
     {...props}
   >
     {children}
-    <ChevronRight className="ml-auto size-4" />
+    <ChevronRight className={cn('ml-auto', ENHANCED_DESIGN_TOKENS.foundation.icon.size.md)} />
   </DropdownMenuPrimitive.SubTrigger>
 ));
 DropdownMenuSubTrigger.displayName =
@@ -456,7 +525,18 @@ const DropdownMenuSubContent = React.forwardRef<
   <DropdownMenuPrimitive.SubContent
     ref={ref}
     className={cn(
-      'z-50 min-w-[8rem] overflow-hidden rounded-lg border bg-background p-1 text-foreground shadow-lg',
+      // Foundation: Layout & Structure - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.zIndex.dropdown,
+      'min-w-32',
+      ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+      ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+      ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+      ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+      ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+      // Foundation: Animations
       'data-[state=open]:animate-in data-[state=closed]:animate-out',
       'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -464,7 +544,8 @@ const DropdownMenuSubContent = React.forwardRef<
       'data-[side=left]:slide-in-from-right-2',
       'data-[side=right]:slide-in-from-left-2',
       'data-[side=top]:slide-in-from-bottom-2',
-      'motion-reduce:animate-none motion-reduce:transition-none',
+      // Foundation: Motion - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
       className
     )}
     {...props}
@@ -472,6 +553,90 @@ const DropdownMenuSubContent = React.forwardRef<
 ));
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName;
+
+// ===== DROPDOWN MENU FACTORY =====
+
+/**
+ * Factory for creating pre-configured dropdown menu components
+ */
+const DropdownMenuFactory = {
+  /**
+   * Default dropdown menu configuration
+   */
+  default: (props: Partial<EnhancedDropdownMenuContentOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Glass material dropdown menu configuration
+   */
+  glass: (props: Partial<EnhancedDropdownMenuContentOwnProps> = {}) => ({
+    variant: 'glass' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Floating dropdown menu configuration
+   */
+  floating: (props: Partial<EnhancedDropdownMenuContentOwnProps> = {}) => ({
+    variant: 'floating' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Accessible dropdown menu configuration with AAA compliance
+   */
+  accessible: (props: Partial<EnhancedDropdownMenuContentOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    enforceAAA: true,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Small dropdown menu configuration
+   */
+  small: (props: Partial<EnhancedDropdownMenuContentOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Large dropdown menu configuration
+   */
+  large: (props: Partial<EnhancedDropdownMenuContentOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'lg' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Performance-optimized dropdown menu with disabled animations
+   */
+  performance: (props: Partial<EnhancedDropdownMenuContentOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: true,
+    ...props,
+  }),
+};
 
 // ===== UTILITY FUNCTIONS =====
 
@@ -650,6 +815,7 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
+  DropdownMenuFactory,
   enhancedDropdownMenuContentVariants,
   enhancedDropdownMenuItemVariants,
   enhancedDropdownMenuLabelVariants,

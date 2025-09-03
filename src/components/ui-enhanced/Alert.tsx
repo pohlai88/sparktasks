@@ -26,113 +26,148 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED ALERT VARIANTS =====
 
 const enhancedAlertVariants = cva(
-  // Base styles - Apple HIG foundation
+  // Base styles - MAPS4 foundation with enhanced tokens
   [
-    'relative w-full rounded-[var(--radius-lg)] border p-[var(--space-4)]',
-    'transition-all duration-[var(--motion-duration-2)] ease-out',
-    'motion-reduce:transition-none',
-    'focus-visible:outline-none focus-visible:ring-[var(--ring-2)]',
-    'focus-visible:ring-aurora-accent focus-visible:ring-offset-[var(--ring-offset-2)]',
-    'focus-visible:ring-offset-stellar-surface',
-    '[&>svg+div]:translate-y-[-3px] [&>svg~*]:pl-[var(--space-7)]',
-    '[&>svg]:absolute [&>svg]:left-[var(--space-4)] [&>svg]:top-[var(--space-4)]',
-    '[&>svg]:size-[var(--space-4)] [&>svg]:text-cosmic-foreground',
+    // Foundation: Layout structure - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+    
+    // Foundation: Motion - Apple HIG with accessibility respect
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.cardHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    
+    // Foundation: Focus - AAA compliant ring system
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+    
+    // Foundation: Icon positioning and spacing
+    '[&>svg+div]:-translate-y-0.5 [&>svg~*]:pl-7',
+    '[&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4',
+    '[&>svg]:size-4 [&>svg]:text-cosmic-foreground',
   ],
   {
     variants: {
       variant: {
-        // Semantic variants - Apple HIG status patterns
+        // Semantic variants - MAPS4 cosmic status patterns
         default: [
-          'bg-background text-foreground',
-          'border-border/20',
-          'shadow-sm backdrop-blur-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
         ],
         destructive: [
-          'border-destructive/50 text-destructive',
-          'bg-destructive/5 backdrop-blur-sm',
-          'dark:border-destructive [&>svg]:text-destructive',
-          'shadow-sm shadow-destructive/10',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.error,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          '[&>svg]:text-cosmic-danger',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
         warning: [
-          'border-yellow-500/50 text-yellow-900',
-          'bg-yellow-50/80 backdrop-blur-sm',
-          'dark:border-yellow-500 dark:text-yellow-200',
-          'dark:bg-yellow-950/20 [&>svg]:text-yellow-600',
-          'shadow-sm shadow-yellow-500/10 dark:[&>svg]:text-yellow-400',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.warning,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.warning,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          '[&>svg]:text-cosmic-warning',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
         success: [
-          'border-green-500/50 text-green-900',
-          'bg-green-50/80 backdrop-blur-sm',
-          'dark:border-green-500 dark:text-green-200',
-          'dark:bg-green-950/20 [&>svg]:text-green-600',
-          'shadow-sm shadow-green-500/10 dark:[&>svg]:text-green-400',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.success,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.success,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          '[&>svg]:text-cosmic-success',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
         info: [
-          'border-blue-500/50 text-blue-900',
-          'bg-blue-50/80 backdrop-blur-sm',
-          'dark:border-blue-500 dark:text-blue-200',
-          'dark:bg-blue-950/20 [&>svg]:text-blue-600',
-          'shadow-sm shadow-blue-500/10 dark:[&>svg]:text-blue-400',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.info,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.info,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          '[&>svg]:text-cosmic-info',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
 
-        // Glass material variants - MAPS v2.2 liquid glass
+        // Glass material variants - MAPS4 liquid glass
         glass: [
-          'bg-white/10 backdrop-blur-md',
-          'border-white/20 text-foreground',
-          'shadow-lg shadow-black/5',
-          'dark:border-white/10 dark:bg-black/20',
-          'dark:shadow-black/20',
-          'supports-[backdrop-filter]:bg-white/5',
-          'dark:supports-[backdrop-filter]:bg-black/10',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
         'glass-destructive': [
-          'bg-red-500/10 backdrop-blur-md',
-          'border-red-500/30 text-red-900',
-          'shadow-lg shadow-red-500/5 dark:text-red-200',
-          'dark:border-red-500/20 dark:bg-red-950/20',
-          '[&>svg]:text-red-600 dark:[&>svg]:text-red-400',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.error,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          '[&>svg]:text-cosmic-danger',
         ],
         'glass-warning': [
-          'bg-yellow-500/10 backdrop-blur-md',
-          'border-yellow-500/30 text-yellow-900',
-          'shadow-lg shadow-yellow-500/5 dark:text-yellow-200',
-          'dark:border-yellow-500/20 dark:bg-yellow-950/20',
-          '[&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.warning,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.warning,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          '[&>svg]:text-cosmic-warning',
         ],
         'glass-success': [
-          'bg-green-500/10 backdrop-blur-md',
-          'border-green-500/30 text-green-900',
-          'shadow-lg shadow-green-500/5 dark:text-green-200',
-          'dark:border-green-500/20 dark:bg-green-950/20',
-          '[&>svg]:text-green-600 dark:[&>svg]:text-green-400',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.success,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.success,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          '[&>svg]:text-cosmic-success',
         ],
         'glass-info': [
-          'bg-blue-500/10 backdrop-blur-md',
-          'border-blue-500/30 text-blue-900',
-          'shadow-lg shadow-blue-500/5 dark:text-blue-200',
-          'dark:border-blue-500/20 dark:bg-blue-950/20',
-          '[&>svg]:text-blue-600 dark:[&>svg]:text-blue-400',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.info,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.info,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          '[&>svg]:text-cosmic-info',
         ],
       },
 
       size: {
-        sm: 'p-3 text-sm [&>svg]:size-3',
-        md: 'p-4 text-sm [&>svg]:size-4',
-        lg: 'p-6 text-base [&>svg]:size-5',
-        xl: 'p-8 text-lg [&>svg]:size-6',
+        sm: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          '[&>svg]:size-3',
+        ],
+        md: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          '[&>svg]:size-4',
+        ],
+        lg: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+          '[&>svg]:size-5',
+        ],
+        xl: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[8],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.large,
+          '[&>svg]:size-6',
+        ],
       },
 
       elevation: {
-        none: 'shadow-none',
-        subtle: 'shadow-sm',
-        medium: 'shadow-md',
-        high: 'shadow-lg',
-        dramatic: 'shadow-xl shadow-black/10 dark:shadow-black/30',
+        none: ENHANCED_DESIGN_TOKENS.foundation.elevation.none,
+        subtle: ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
+        medium: ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+        high: ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+        dramatic: ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
       },
     },
     defaultVariants: {
@@ -207,6 +242,11 @@ export interface EnhancedAlertProps
    * Custom close button icon
    */
   closeIcon?: React.ReactNode;
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 // ===== ENHANCED ALERT COMPONENT =====
@@ -230,6 +270,7 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
       enforceAAA = false,
       animate = true,
       closeIcon,
+      disableAnimations = false,
       children,
       ...props
     },
@@ -304,21 +345,25 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
     // Determine if we should enforce higher contrast
     const needsAAA = enforceAAA || variant?.includes('glass');
 
-    // Default icons for each variant
-    const getDefaultIcon = () => {
-      if (icon) return icon;
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
-      const iconClass = 'h-4 w-4';
+    // Default icons for each variant - memoized for performance
+    const getDefaultIcon = React.useMemo(() => {
+      if (icon) return icon;
 
       switch (variant) {
         case 'destructive':
         case 'glass-destructive': {
           return (
             <svg
-              className={iconClass}
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)}
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
+              aria-hidden='true'
             >
               <path
                 strokeLinecap='round'
@@ -333,10 +378,11 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
         case 'glass-warning': {
           return (
             <svg
-              className={iconClass}
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)}
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
+              aria-hidden='true'
             >
               <path
                 strokeLinecap='round'
@@ -351,10 +397,11 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
         case 'glass-success': {
           return (
             <svg
-              className={iconClass}
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)}
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
+              aria-hidden='true'
             >
               <path
                 strokeLinecap='round'
@@ -369,10 +416,11 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
         case 'glass-info': {
           return (
             <svg
-              className={iconClass}
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)}
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
+              aria-hidden='true'
             >
               <path
                 strokeLinecap='round'
@@ -386,10 +434,11 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
         default: {
           return (
             <svg
-              className={iconClass}
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)}
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
+              aria-hidden='true'
             >
               <path
                 strokeLinecap='round'
@@ -401,7 +450,7 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
           );
         }
       }
-    };
+    }, [icon, variant]);
 
     return (
       <Comp
@@ -414,10 +463,12 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
             'contrast-more:border-current contrast-more:bg-background',
           ],
           // Animation classes
-          animate && [
+          animate && !disableAnimations && [
             'animate-in fade-in-0 slide-in-from-left-1',
             'duration-300 ease-out',
           ],
+          // Performance optimization classes
+          motionClasses,
           className
         )}
         role='alert'
@@ -443,7 +494,7 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
         )}
 
         {/* Icon */}
-        {getDefaultIcon()}
+        {getDefaultIcon}
 
         {/* Content */}
         <div className='flex-1'>
@@ -478,10 +529,13 @@ const EnhancedAlert = React.forwardRef<HTMLDivElement, EnhancedAlertProps>(
           <button
             onClick={handleDismiss}
             className={cn(
-              'absolute right-2 top-2 rounded-md p-1',
+              ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+              'right-2 top-2',
+              ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
               'hover:bg-background/80 focus:bg-background/80',
               'focus:outline-none focus:ring-2 focus:ring-ring',
-              'transition-colors duration-150',
+              ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
               needsAAA && 'focus:ring-offset-2 focus:ring-offset-background'
             )}
             aria-label='Dismiss alert'
@@ -600,6 +654,12 @@ const AAAAlert = React.forwardRef<
 >((props, ref) => <EnhancedAlert ref={ref} enforceAAA {...props} />);
 AAAAlert.displayName = 'AAAAlert';
 
+const PerformanceAlert = React.forwardRef<
+  HTMLDivElement,
+  Omit<EnhancedAlertProps, 'disableAnimations'>
+>((props, ref) => <EnhancedAlert ref={ref} disableAnimations={true} {...props} />);
+PerformanceAlert.displayName = 'PerformanceAlert';
+
 /**
  * Alert factory for common use cases
  */
@@ -622,6 +682,7 @@ export const AlertFactory = {
   dismissible: { Alert: DismissibleAlert },
   autoClose: { Alert: AutoCloseAlert },
   aaa: { Alert: AAAAlert },
+  performance: { Alert: PerformanceAlert },
 };
 
 // Set display names for factory components
@@ -638,6 +699,7 @@ AlertFactory['glass-info'].Alert.displayName = 'GlassInfoAlert';
 AlertFactory.dismissible.Alert.displayName = 'DismissibleAlert';
 AlertFactory.autoClose.Alert.displayName = 'AutoCloseAlert';
 AlertFactory.aaa.Alert.displayName = 'AAAAlert';
+AlertFactory.performance.Alert.displayName = 'PerformanceAlert';
 
 // ===== UTILITY FUNCTIONS =====
 

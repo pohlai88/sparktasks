@@ -29,6 +29,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED ASPECT RATIO VARIANTS =====
@@ -39,79 +40,87 @@ import { cn } from '@/utils/cn';
  */
 const enhancedAspectRatioVariants = cva(
   [
-    // Foundation: Base container positioning
-    'relative overflow-hidden',
+    // Foundation: Base container positioning - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
 
     // Foundation: Surface hierarchy - Dark-first with systematic elevation
-    'bg-surface-canvas',
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
 
     // Foundation: Motion - Respect user preferences
-    'transition-all duration-200 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.cardHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Content protection for accessibility
-    'focus-within:ring-offset-surface-canvas focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
         default: [
           // Clean canvas with subtle border
-          'border border-border-subtle',
-          'rounded-md',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
         ],
         elevated: [
           // Elevated surface with shadow
-          'bg-surface-elevated1',
-          'border border-border-subtle',
-          'rounded-lg',
-          'shadow-md',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
         glass: [
           // Liquid glass material with backdrop effects
-          'bg-surface-translucent/80',
-          'backdrop-blur-md backdrop-saturate-150',
-          'border border-border-subtle/50',
-          'rounded-lg',
-          'shadow-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
         floating: [
           // Floating surface with strong elevation
-          'bg-surface-elevated2',
-          'border border-border-subtle',
-          'rounded-xl',
-          'shadow-xl',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
         outline: [
           // Outline only design
-          'bg-transparent',
-          'border-2 border-border-strong',
-          'rounded-md',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
         ],
         ghost: [
           // Minimal ghost variant
-          'bg-transparent',
-          'border-0',
-          'rounded-md',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
         ],
         aaa: [
           // AAA compliance mode with high contrast
-          'bg-surface-elevated1',
-          'border-2 border-border-strong',
-          'rounded-md',
-          'ring-2 ring-accent ring-offset-2',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
         ],
       },
       size: {
-        sm: ['p-2'],
-        md: ['p-4'],
-        lg: ['p-6'],
-        xl: ['p-8'],
-        none: ['p-0'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2]],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4]],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6]],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[8]],
+        none: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[0]],
       },
       density: {
-        comfortable: ['gap-4'],
-        compact: ['gap-2'],
+        comfortable: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md],
+        compact: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm],
       },
     },
     defaultVariants: {
@@ -127,24 +136,27 @@ const enhancedAspectRatioVariants = cva(
  */
 const enhancedAspectRatioContentVariants = cva(
   [
-    // Foundation: Content positioning
-    'flex items-center justify-center',
-    'h-full w-full',
+    // Foundation: Content positioning - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
     // Foundation: Content hierarchy
-    'text-content-primary',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
     // Foundation: Content protection
-    'overflow-hidden',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
   ],
   {
     variants: {
       objectFit: {
-        cover: 'object-cover',
-        contain: 'object-contain',
-        fill: 'object-fill',
-        'scale-down': 'object-scale-down',
-        none: 'object-none',
+        cover: ENHANCED_DESIGN_TOKENS.foundation.layout.object.cover,
+        contain: ENHANCED_DESIGN_TOKENS.foundation.layout.object.contain,
+        fill: ENHANCED_DESIGN_TOKENS.foundation.layout.object.fill,
+        'scale-down': ENHANCED_DESIGN_TOKENS.foundation.layout.object.scaleDown,
+        none: ENHANCED_DESIGN_TOKENS.foundation.layout.object.none,
       },
       position: {
         center: 'object-center',
@@ -190,6 +202,11 @@ interface EnhancedAspectRatioOwnProps
    * Polymorphic support - render as different element/component
    */
   asChild?: boolean;
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 type AspectRatioVariantProps = VariantProps<typeof enhancedAspectRatioVariants>;
@@ -246,6 +263,7 @@ const EnhancedAspectRatio = React.forwardRef<
       enforceAAA,
       content,
       asChild = false,
+      disableAnimations = false,
       children,
       ...props
     },
@@ -256,6 +274,11 @@ const EnhancedAspectRatio = React.forwardRef<
 
     // Apply AAA enforcement
     const finalVariant = enforceAAA ? 'aaa' : variant;
+
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
     const Comp = asChild ? Slot : RadixAspectRatio.Root;
 
@@ -269,6 +292,7 @@ const EnhancedAspectRatio = React.forwardRef<
             size,
             density,
           }),
+          motionClasses,
           className
         )}
         {...props}
@@ -339,6 +363,11 @@ export const AspectRatioFactory = {
   aaa: (props: Omit<EnhancedAspectRatioProps, 'variant'>) => (
     <EnhancedAspectRatio variant='aaa' enforceAAA {...props} />
   ),
+
+  // Performance variants
+  performance: (props: Omit<EnhancedAspectRatioProps, 'disableAnimations'>) => (
+    <EnhancedAspectRatio disableAnimations={true} {...props} />
+  ),
 };
 
 // ===== SPECIALIZED COMPONENTS =====
@@ -361,7 +390,8 @@ export const AspectRatioImage = React.forwardRef<
       <img
         ref={ref}
         className={cn(
-          'h-full w-full',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
           enhancedAspectRatioContentVariants(imageContent)
         )}
         alt={alt}
@@ -391,7 +421,8 @@ export const AspectRatioVideo = React.forwardRef<
       <video
         ref={ref}
         className={cn(
-          'h-full w-full',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
           enhancedAspectRatioContentVariants(videoContent)
         )}
         {...(props as React.VideoHTMLAttributes<HTMLVideoElement>)}
@@ -419,11 +450,23 @@ export const AspectRatioPlaceholder = React.forwardRef<
 >(({ icon, title, description, className, ...props }, ref) => (
   <EnhancedAspectRatio
     ref={ref}
-    className={cn('border-2 border-dashed border-border-subtle', className)}
+    className={cn(
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+      'border-dashed',
+      ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+      className
+    )}
     {...props}
   >
     <div
-      className="text-content-tertiary flex flex-col items-center justify-center gap-2"
+      className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm
+      )}
     >
       {icon && (
         <div className="text-2xl opacity-50">
@@ -432,14 +475,23 @@ export const AspectRatioPlaceholder = React.forwardRef<
       )}
       {title && (
         <p
-          className="text-content-secondary text-sm font-medium"
+          className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.label
+          )}
         >
           {title}
         </p>
       )}
       {description && (
         <p
-          className="text-content-tertiary max-w-48 text-center text-xs"
+          className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
+            'max-w-48',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.caption
+          )}
         >
           {description}
         </p>

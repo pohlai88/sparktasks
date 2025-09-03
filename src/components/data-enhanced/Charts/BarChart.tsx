@@ -32,7 +32,7 @@ const chartVariants = cva(['relative w-full overflow-hidden'], {
       glass: [
         ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
         'rounded-lg border p-4',
-        ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+        ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
       ],
     },
     theme: {

@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-import { getAdaptiveMotionClasses } from '@/components/primitives/motion-utils';
+import { getAdaptiveMotionClasses } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== UPPY INTERFACES =====
@@ -229,36 +229,36 @@ const builtinProviders: UppyProvider[] = [
   {
     name: 'local',
     displayName: 'My Device',
-    icon: <HardDrive className='h-5 w-5' />,
+    icon: <HardDrive className='size-5' />,
   },
   {
     name: 'webcam',
     displayName: 'Camera',
-    icon: <Camera className='h-5 w-5' />,
+    icon: <Camera className='size-5' />,
   },
   {
     name: 'url',
     displayName: 'Link',
-    icon: <Globe className='h-5 w-5' />,
+    icon: <Globe className='size-5' />,
   },
   {
     name: 'googledrive',
     displayName: 'Google Drive',
-    icon: <Cloud className='h-5 w-5' />,
+    icon: <Cloud className='size-5' />,
     authUrl: '/uppy/googledrive/auth',
     serverUrl: '/uppy/googledrive',
   },
   {
     name: 'dropbox',
     displayName: 'Dropbox',
-    icon: <Cloud className='h-5 w-5' />,
+    icon: <Cloud className='size-5' />,
     authUrl: '/uppy/dropbox/auth',
     serverUrl: '/uppy/dropbox',
   },
   {
     name: 'onedrive',
     displayName: 'OneDrive',
-    icon: <Cloud className='h-5 w-5' />,
+    icon: <Cloud className='size-5' />,
     authUrl: '/uppy/onedrive/auth',
     serverUrl: '/uppy/onedrive',
   },
@@ -381,7 +381,7 @@ export function UppyAdapter({
 
   // ===== MOTION INTEGRATION =====
 
-  const motionClasses = getAdaptiveMotionClasses('all');
+  const motionClasses = getAdaptiveMotionClasses('fadeInStandard');
 
   // ===== FILE MANAGEMENT =====
 
@@ -531,9 +531,9 @@ export function UppyAdapter({
       xhr.open('POST', endpoint || '/upload');
 
       if (uploadHeaders) {
-        Object.entries(uploadHeaders).forEach(([key, value]) => {
+        for (const [key, value] of Object.entries(uploadHeaders)) {
           xhr.setRequestHeader(key, value);
-        });
+        }
       }
 
       xhr.send(formData);
@@ -571,7 +571,7 @@ export function UppyAdapter({
           setTimeout(() => {
             clearInterval(checkClosed);
             reject(new Error('Authentication timeout'));
-          }, 30000);
+          }, 30_000);
         });
       } else {
         setProviderConnections(prev => ({
@@ -587,7 +587,7 @@ export function UppyAdapter({
 
   const handleFileSelect = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const files = Array.from(e.target.files || []);
+      const files = [...e.target.files || []];
       files.forEach(addFile);
     },
     [addFile]
@@ -628,7 +628,7 @@ export function UppyAdapter({
             )}
           </div>
           {providerConnections[provider.name] && (
-            <CheckCircle className='h-5 w-5 text-success' />
+            <CheckCircle className='size-5 text-success' />
           )}
         </div>
       ))}
@@ -644,7 +644,7 @@ export function UppyAdapter({
       return (
         <div className='flex flex-1 items-center justify-center p-8 text-center'>
           <div>
-            <Upload className='mx-auto mb-4 h-12 w-12 text-foreground-muted' />
+            <Upload className='mx-auto mb-4 size-12 text-foreground-muted' />
             <h3 className='mb-2 text-lg font-medium text-foreground'>
               No files selected
             </h3>
@@ -664,12 +664,12 @@ export function UppyAdapter({
               key={file.id}
               className='flex items-center gap-3 rounded-lg border border-border-subtle p-3'
             >
-              <div className='bg-surface-subtle flex h-10 w-10 items-center justify-center rounded'>
+              <div className='bg-surface-subtle flex size-10 items-center justify-center rounded'>
                 {file.type.startsWith('image/') ? (
                   <img
                     src={URL.createObjectURL(file.data as File)}
                     alt={file.name}
-                    className='h-full w-full rounded object-cover'
+                    className='size-full rounded object-cover'
                     onLoad={e =>
                       URL.revokeObjectURL((e.target as HTMLImageElement).src)
                     }
@@ -717,7 +717,7 @@ export function UppyAdapter({
                 onClick={() => removeFile(file.id)}
                 className='p-1 text-foreground-muted transition-colors hover:text-foreground'
               >
-                <X className='h-4 w-4' />
+                <X className='size-4' />
               </button>
             </div>
           ))}
@@ -751,7 +751,7 @@ export function UppyAdapter({
 
           {state.error && (
             <div className='flex items-center gap-2 text-sm text-error'>
-              <AlertCircle className='h-4 w-4' />
+              <AlertCircle className='size-4' />
               {state.error}
             </div>
           )}
@@ -764,14 +764,14 @@ export function UppyAdapter({
                 onClick={pauseUpload}
                 className='hover:bg-warning-hover flex items-center gap-2 rounded bg-warning px-3 py-1.5 text-sm text-warning-foreground transition-colors'
               >
-                <Pause className='h-4 w-4' />
+                <Pause className='size-4' />
                 Pause
               </button>
               <button
                 onClick={cancelUpload}
                 className='hover:bg-error-hover flex items-center gap-2 rounded bg-error px-3 py-1.5 text-sm text-error-foreground transition-colors'
               >
-                <X className='h-4 w-4' />
+                <X className='size-4' />
                 Cancel
               </button>
             </>
@@ -781,7 +781,7 @@ export function UppyAdapter({
               disabled={totalFiles === 0}
               className='flex items-center gap-2 rounded bg-accent px-4 py-2 font-medium text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50'
             >
-              <Upload className='h-4 w-4' />
+              <Upload className='size-4' />
               Upload{' '}
               {totalFiles > 0
                 ? `${totalFiles} file${totalFiles > 1 ? 's' : ''}`
@@ -825,10 +825,10 @@ export function UppyAdapter({
         <h2 className='text-lg font-semibold text-foreground'>Upload Files</h2>
         <div className='flex items-center gap-2'>
           <button className='p-2 text-foreground-muted transition-colors hover:text-foreground'>
-            <Info className='h-4 w-4' />
+            <Info className='size-4' />
           </button>
           <button className='p-2 text-foreground-muted transition-colors hover:text-foreground'>
-            <Settings className='h-4 w-4' />
+            <Settings className='size-4' />
           </button>
         </div>
       </div>
@@ -874,7 +874,7 @@ function formatFileSize(bytes: number): string {
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+  return `${Number.parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
 }
 
 // ===== CONFIGURATION PRESETS =====

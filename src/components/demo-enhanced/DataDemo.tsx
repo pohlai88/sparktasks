@@ -55,12 +55,12 @@ interface UserData {
 
 // Mock data with enhanced realism
 const salesData: SalesData[] = [
-  { id: 1, month: 'Jan', revenue: 125000, customers: 320, growth: 12.5 },
-  { id: 2, month: 'Feb', revenue: 138000, customers: 348, growth: 10.4 },
-  { id: 3, month: 'Mar', revenue: 152000, customers: 385, growth: 10.1 },
-  { id: 4, month: 'Apr', revenue: 168000, customers: 421, growth: 10.5 },
-  { id: 5, month: 'May', revenue: 185000, customers: 458, growth: 10.1 },
-  { id: 6, month: 'Jun', revenue: 203000, customers: 495, growth: 9.7 },
+  { id: 1, month: 'Jan', revenue: 125_000, customers: 320, growth: 12.5 },
+  { id: 2, month: 'Feb', revenue: 138_000, customers: 348, growth: 10.4 },
+  { id: 3, month: 'Mar', revenue: 152_000, customers: 385, growth: 10.1 },
+  { id: 4, month: 'Apr', revenue: 168_000, customers: 421, growth: 10.5 },
+  { id: 5, month: 'May', revenue: 185_000, customers: 458, growth: 10.1 },
+  { id: 6, month: 'Jun', revenue: 203_000, customers: 495, growth: 9.7 },
 ];
 
 const userData: UserData[] = [
@@ -151,9 +151,9 @@ export function DataDemo() {
   const StatusBadge = ({ status }: { status: UserData['status'] }) => {
     const colors = APPLE_HIG_STATUS_COLORS[status];
     const icons = {
-      active: <CheckCircle className='h-3 w-3' />,
-      inactive: <XCircle className='h-3 w-3' />,
-      pending: <Clock className='h-3 w-3' />,
+      active: <CheckCircle className='size-3' />,
+      inactive: <XCircle className='size-3' />,
+      pending: <Clock className='size-3' />,
     };
 
     return (
@@ -175,7 +175,7 @@ export function DataDemo() {
       header: 'Name',
       cell: ({ row }: { row: { original: UserData } }) => (
         <div className='flex items-center gap-3'>
-          <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-sm font-medium text-white'>
+          <div className='flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-sm font-medium text-white'>
             {row.original.name
               .split(' ')
               .map(n => n[0])
@@ -235,7 +235,7 @@ export function DataDemo() {
       header: 'Revenue',
       cell: ({ row }: { row: { original: SalesData } }) => (
         <div className='flex items-center gap-2'>
-          <DollarSign className='h-4 w-4 text-emerald-500' />
+          <DollarSign className='size-4 text-emerald-500' />
           <span className='font-semibold text-foreground'>
             ${row.original.revenue.toLocaleString()}
           </span>
@@ -247,7 +247,7 @@ export function DataDemo() {
       header: 'Customers',
       cell: ({ row }: { row: { original: SalesData } }) => (
         <div className='flex items-center gap-2'>
-          <Users className='h-4 w-4 text-blue-500' />
+          <Users className='size-4 text-blue-500' />
           <span className='text-foreground'>
             {row.original.customers.toLocaleString()}
           </span>
@@ -262,9 +262,9 @@ export function DataDemo() {
         return (
           <div className='flex items-center gap-1.5'>
             {growth > 0 ? (
-              <TrendingUp className='h-4 w-4 text-emerald-500' />
+              <TrendingUp className='size-4 text-emerald-500' />
             ) : (
-              <TrendingDown className='h-4 w-4 text-red-500' />
+              <TrendingDown className='size-4 text-red-500' />
             )}
             <span
               className={`font-medium ${
@@ -332,7 +332,7 @@ export function DataDemo() {
                       ${totalRevenue.toLocaleString()}
                     </p>
                     <div className='flex items-center gap-1 text-sm'>
-                      <TrendingUp className='h-4 w-4 text-emerald-500' />
+                      <TrendingUp className='size-4 text-emerald-500' />
                       <span className='font-medium text-emerald-600 dark:text-emerald-400'>
                         +12.3%
                       </span>
@@ -341,8 +341,8 @@ export function DataDemo() {
                       </span>
                     </div>
                   </div>
-                  <div className='flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30'>
-                    <DollarSign className='h-6 w-6 text-emerald-600 dark:text-emerald-400' />
+                  <div className='flex size-12 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30'>
+                    <DollarSign className='size-6 text-emerald-600 dark:text-emerald-400' />
                   </div>
                 </div>
               </EnhancedCardContent>
@@ -359,7 +359,7 @@ export function DataDemo() {
                       {totalCustomers.toLocaleString()}
                     </p>
                     <div className='flex items-center gap-1 text-sm'>
-                      <TrendingUp className='h-4 w-4 text-blue-500' />
+                      <TrendingUp className='size-4 text-blue-500' />
                       <span className='font-medium text-blue-600 dark:text-blue-400'>
                         +8.7%
                       </span>
@@ -368,8 +368,8 @@ export function DataDemo() {
                       </span>
                     </div>
                   </div>
-                  <div className='flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30'>
-                    <Users className='h-6 w-6 text-blue-600 dark:text-blue-400' />
+                  <div className='flex size-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30'>
+                    <Users className='size-6 text-blue-600 dark:text-blue-400' />
                   </div>
                 </div>
               </EnhancedCardContent>
@@ -386,7 +386,7 @@ export function DataDemo() {
                       {activeUsers}
                     </p>
                     <div className='flex items-center gap-1 text-sm'>
-                      <Activity className='h-4 w-4 text-purple-500' />
+                      <Activity className='size-4 text-purple-500' />
                       <span className='font-medium text-purple-600 dark:text-purple-400'>
                         {Math.round((activeUsers / userData.length) * 100)}%
                       </span>
@@ -395,8 +395,8 @@ export function DataDemo() {
                       </span>
                     </div>
                   </div>
-                  <div className='flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30'>
-                    <Activity className='h-6 w-6 text-purple-600 dark:text-purple-400' />
+                  <div className='flex size-12 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30'>
+                    <Activity className='size-6 text-purple-600 dark:text-purple-400' />
                   </div>
                 </div>
               </EnhancedCardContent>
@@ -413,15 +413,15 @@ export function DataDemo() {
                       {avgGrowth.toFixed(1)}%
                     </p>
                     <div className='flex items-center gap-1 text-sm'>
-                      <Star className='h-4 w-4 text-amber-500' />
+                      <Star className='size-4 text-amber-500' />
                       <span className='font-medium text-amber-600 dark:text-amber-400'>
                         Excellent
                       </span>
                       <span className='text-muted-foreground'>performance</span>
                     </div>
                   </div>
-                  <div className='flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30'>
-                    <BarChart3 className='h-6 w-6 text-amber-600 dark:text-amber-400' />
+                  <div className='flex size-12 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30'>
+                    <BarChart3 className='size-6 text-amber-600 dark:text-amber-400' />
                   </div>
                 </div>
               </EnhancedCardContent>
@@ -439,7 +439,7 @@ export function DataDemo() {
             <EnhancedCard className='border-border'>
               <EnhancedCardHeader>
                 <EnhancedCardTitle className='flex items-center gap-2'>
-                  <BarChart3 className='h-5 w-5 text-blue-500' />
+                  <BarChart3 className='size-5 text-blue-500' />
                   Monthly Revenue
                 </EnhancedCardTitle>
                 <EnhancedCardDescription>
@@ -462,7 +462,7 @@ export function DataDemo() {
             <EnhancedCard className='border-border'>
               <EnhancedCardHeader>
                 <EnhancedCardTitle className='flex items-center gap-2'>
-                  <Activity className='h-5 w-5 text-emerald-500' />
+                  <Activity className='size-5 text-emerald-500' />
                   Growth Percentage
                 </EnhancedCardTitle>
                 <EnhancedCardDescription>
@@ -501,7 +501,7 @@ export function DataDemo() {
           <EnhancedCard className='border-border'>
             <EnhancedCardHeader>
               <EnhancedCardTitle className='flex items-center gap-2'>
-                <Users className='h-5 w-5 text-purple-500' />
+                <Users className='size-5 text-purple-500' />
                 Team Management
               </EnhancedCardTitle>
               <EnhancedCardDescription>
@@ -541,7 +541,7 @@ export function DataDemo() {
           <EnhancedCard className='border-border'>
             <EnhancedCardHeader>
               <EnhancedCardTitle className='flex items-center gap-2'>
-                <DollarSign className='h-5 w-5 text-emerald-500' />
+                <DollarSign className='size-5 text-emerald-500' />
                 Financial Performance
               </EnhancedCardTitle>
               <EnhancedCardDescription>
@@ -571,7 +571,7 @@ export function DataDemo() {
             <EnhancedCard className='border-border'>
               <EnhancedCardHeader>
                 <EnhancedCardTitle className='flex items-center gap-2'>
-                  <Mail className='h-5 w-5 text-blue-500' />
+                  <Mail className='size-5 text-blue-500' />
                   Contact Form
                 </EnhancedCardTitle>
                 <EnhancedCardDescription>
@@ -609,7 +609,7 @@ export function DataDemo() {
             <EnhancedCard className='border-border'>
               <EnhancedCardHeader>
                 <EnhancedCardTitle className='flex items-center gap-2'>
-                  <User className='h-5 w-5 text-purple-500' />
+                  <User className='size-5 text-purple-500' />
                   User Registration
                 </EnhancedCardTitle>
                 <EnhancedCardDescription>
@@ -658,21 +658,21 @@ export function DataDemo() {
                     </h3>
                     <ul className='space-y-2 text-sm'>
                       <li className='flex items-center gap-2'>
-                        <div className='h-2 w-2 rounded-full bg-blue-500' />
+                        <div className='size-2 rounded-full bg-blue-500' />
                         <span className='text-foreground'>
                           <strong>SimpleTable</strong> - Universal data table
                           with sorting, pagination, selection
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <div className='h-2 w-2 rounded-full bg-emerald-500' />
+                        <div className='size-2 rounded-full bg-emerald-500' />
                         <span className='text-foreground'>
                           <strong>EnhancedForm</strong> - Schema-driven forms
                           with validation and elegant layouts
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <div className='h-2 w-2 rounded-full bg-purple-500' />
+                        <div className='size-2 rounded-full bg-purple-500' />
                         <span className='text-foreground'>
                           <strong>BarChart & LineChart</strong> - Professional
                           visualization with Nivo integration
@@ -687,31 +687,31 @@ export function DataDemo() {
                     </h3>
                     <ul className='space-y-2 text-sm'>
                       <li className='flex items-center gap-2'>
-                        <div className='h-2 w-2 rounded-full bg-amber-500' />
+                        <div className='size-2 rounded-full bg-amber-500' />
                         <span className='text-foreground'>
                           MAPS v3.0 design system integration
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <div className='h-2 w-2 rounded-full bg-blue-500' />
+                        <div className='size-2 rounded-full bg-blue-500' />
                         <span className='text-foreground'>
                           Apple HIG sophisticated color philosophy
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <div className='h-2 w-2 rounded-full bg-emerald-500' />
+                        <div className='size-2 rounded-full bg-emerald-500' />
                         <span className='text-foreground'>
                           TypeScript with comprehensive type safety
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <div className='h-2 w-2 rounded-full bg-purple-500' />
+                        <div className='size-2 rounded-full bg-purple-500' />
                         <span className='text-foreground'>
                           WCAG AAA accessibility compliance
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <div className='h-2 w-2 rounded-full bg-rose-500' />
+                        <div className='size-2 rounded-full bg-rose-500' />
                         <span className='text-foreground'>
                           Liquid glass materials and dark mode excellence
                         </span>

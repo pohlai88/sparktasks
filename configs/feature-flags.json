@@ -5,6 +5,10 @@
     "last_updated": "2025-08-27",
     "change_control": "formal_approval_required"
   },
+  "auth": { "useRealService": false },
+  "sync": { "remoteEnabled": false },
+  "storage": { "encrypted": false },
+  "search": { "useSqliteFts": false, "liveIndex": false, "minQueryLen": 2, "limit": 20 },
   
   "core_surfaces": {
     "comment": "Pages 1-22: Core enterprise functionality",
@@ -81,8 +85,8 @@
       "pmbok_anchor": "PMBOK 7th Edition, Planning Process Group"
     },
     "resource": {
-      "enabled": false,
-      "components": ["WorkloadHeatmap", "RACIGrid"],
+      "enabled": true,
+      "components": ["WorkloadHeatmap", "RACIGrid", "TeamManagement", "AllocationTracker"],
       "dependencies": ["WorkloadAllocator", "PeopleDirectory"],
       "pmbok_anchor": "PMBOK 7th Edition, Planning Process Group"
     },
@@ -93,8 +97,8 @@
       "academic_anchor": "ISO 31000:2018 Risk Management"
     },
     "communication": {
-      "enabled": false,
-      "components": ["ThreadPanel", "UpdateComposer", "NotifySettings"],
+      "enabled": true,
+      "components": ["ThreadPanel", "UpdateComposer", "NotifySettings", "StakeholderManagement", "CommunicationPlans"],
       "dependencies": ["NotificationService", "EventBus"],
       "pmbok_anchor": "PMBOK 7th Edition, Executing Process Group"
     },

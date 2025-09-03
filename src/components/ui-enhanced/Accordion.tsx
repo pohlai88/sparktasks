@@ -1,5 +1,5 @@
 /**
- * Accordion Component - MAPS4 Deep Space Canvas Cosmic Innovation
+ * Enhanced Accordion Component - MAPS4 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
  * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
@@ -28,74 +28,94 @@ import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED ACCORDION VARIANTS =====
 
 /**
- * Enhanced accordion root variants following MAPS v2.2 foundation
+ * Enhanced accordion root variants following MAPS4 foundation
  * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens system
  */
 const enhancedAccordionRootVariants = cva(
   [
-    // Foundation: Layout structure
-    'w-full',
-
+    // Foundation: Layout structure - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    
     // Foundation: Motion - Apple HIG with accessibility respect
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         // Default: Clean structure with subtle borders
         default: [
-          'space-y-0',
-          'rounded-[var(--radius-md)] border-[var(--border-width-1)] border-border',
-          'divide-y-[var(--border-width-1)] divide-border',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.none,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          `${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.y} ${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.subtle}`,
         ],
 
         // Ghost: Borderless, minimal styling
-        ghost: ['space-y-[var(--space-2)]'],
+        ghost: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm,
+        ],
 
         // Glass: Liquid glass material with backdrop blur
         glass: [
-          'space-y-0',
-          'backdrop-blur-[var(--blur-md)] backdrop-saturate-[var(--saturate-135)]',
-          'border-[var(--border-width-1)] border-[color:var(--cosmic-border)] bg-[color:var(--cosmic-muted)]',
-          'divide-y-[var(--border-width-1)] divide-[color:var(--cosmic-border)] rounded-[var(--radius-md)]',
-          'shadow-[var(--shadow-elevation-md)]',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.none,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          `${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.y} ${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.subtleCosmic}`,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
 
         // Floating: Enhanced glass with stronger blur
         floating: [
-          'space-y-0',
-          'backdrop-blur-[var(--blur-lg)] backdrop-saturate-[var(--saturate-135)]',
-          'border-[var(--border-width-1)] border-[color:var(--cosmic-border-strong)] bg-[color:var(--nebula-accent)]',
-          'divide-y-[var(--border-width-1)] divide-[color:var(--cosmic-border-strong)] rounded-[var(--radius-md)]',
-          'shadow-[var(--shadow-elevation-lg)]',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.none,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.scrim,
+          `${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.y} ${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.strong}`,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
 
         // Outlined: Strong borders for emphasis
         outlined: [
-          'space-y-0',
-          'rounded-[var(--radius-md)] border-[var(--border-width-2)] border-border',
-          'divide-y-[var(--border-width-2)] divide-border',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.none,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          `${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.y} ${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.subtle}`,
         ],
 
         // Filled: Solid background
         filled: [
-          'space-y-0',
-          'rounded-[var(--radius-md)] border-[var(--border-width-1)] border-border bg-muted',
-          'divide-y-[var(--border-width-1)] divide-border',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.none,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          `${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.y} ${ENHANCED_DESIGN_TOKENS.foundation.layout.divide.subtle}`,
         ],
       },
 
       // AAA Compliance enforcement mode
       aaaMode: {
         true: [
-          'border-[var(--border-width-2)] border-[color:var(--cosmic-border-strong)] bg-[color:var(--deep-space)]',
-          'divide-y-[var(--border-width-2)] divide-[color:var(--cosmic-border-strong)]',
-          'shadow-none',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          'divide-y-2 divide-cosmic-border-strong',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.none,
           // Override any glass effects for maximum contrast
           '!backdrop-blur-none !backdrop-saturate-100',
         ],
@@ -105,7 +125,7 @@ const enhancedAccordionRootVariants = cva(
       // Dense mode for compact layouts
       density: {
         comfortable: [],
-        compact: ['text-[var(--font-size-sm)]'],
+        compact: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
       },
     },
 
@@ -118,22 +138,27 @@ const enhancedAccordionRootVariants = cva(
 );
 
 /**
- * Enhanced accordion item variants following MAPS v2.2 foundation
+ * Enhanced accordion item variants following MAPS4 foundation
  */
 const enhancedAccordionItemVariants = cva(
   [
-    // Foundation: Layout structure
-    'relative',
+    // Foundation: Layout structure - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
 
     // Foundation: Motion - Apple HIG with accessibility respect
-    'transition-all duration-[var(--motion-duration-2)] ease-[var(--motion-easing-standard)]',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.accordionHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         default: [],
-        ghost: ['rounded-[var(--radius-md)] border-[var(--border-width-1)] border-border', 'hover:bg-muted/50'],
+        ghost: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          'pointer:hover:bg-cosmic-void/50',
+        ],
         glass: [],
         floating: [],
         outlined: [],
@@ -154,61 +179,82 @@ const enhancedAccordionItemVariants = cva(
 );
 
 /**
- * Enhanced accordion trigger variants following MAPS v2.2 foundation
+ * Enhanced accordion trigger variants following MAPS4 foundation
  */
 const enhancedAccordionTriggerVariants = cva(
   [
-    // Foundation: Layout and interaction
-    'flex w-full items-center justify-between',
-    'text-left',
+    // Foundation: Layout and interaction - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left,
 
     // Foundation: Typography - Apple HIG hierarchy
-    'font-[var(--font-weight-medium)]',
+    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
 
-    // Foundation: Spacing - systematic padding
-    'px-[var(--space-4)] py-[var(--space-3)]',
+    // Foundation: Spacing - handled by size variants (no base padding)
 
     // Foundation: Motion - Apple HIG with accessibility respect
-    'transition-all duration-[var(--motion-duration-2)] ease-[var(--motion-easing-standard)]',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.accordionHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: States
-    'disabled:pointer-events-none disabled:opacity-[var(--opacity-disabled)]',
+    'disabled:pointer-events-none disabled:opacity-50',
 
     // Foundation: Focus - AAA compliant ring system
-    'focus-visible:outline-none',
-    'focus-visible:ring-[var(--ring-2)] focus-visible:ring-ring focus-visible:ring-offset-[var(--ring-offset-2)]',
-    'focus-visible:ring-offset-background',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
     // Foundation: Apple HIG interaction patterns
-    'hover:bg-muted/50',
-    'active:bg-muted/80',
+    'pointer:hover:bg-cosmic-void/50',
+    'active:bg-cosmic-void/80',
 
     // Foundation: Typography
-    'text-foreground',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
   ],
   {
     variants: {
       variant: {
         default: [],
-        ghost: ['rounded-[var(--radius-lg)]', 'hover:bg-muted/70'],
-        glass: ['text-[color:var(--cosmic-light)]', 'hover:bg-[color:var(--cosmic-border)]/20'],
-        floating: ['text-[color:var(--cosmic-light)]', 'hover:bg-[color:var(--cosmic-border-strong)]/15'],
-        outlined: ['font-[var(--font-weight-semibold)]'],
-        filled: ['hover:bg-background/50'],
+        ghost: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          'pointer:hover:bg-cosmic-void/70',
+        ],
+        glass: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-cosmic-border/20',
+        ],
+        floating: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-cosmic-border-strong/15',
+        ],
+        outlined: [
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
+        ],
+        filled: ['pointer:hover:bg-cosmic-void/50'],
       },
 
       size: {
-        sm: ['px-[var(--space-3)] py-[var(--space-2)]', 'text-[var(--font-size-sm)]'],
-        default: ['px-[var(--space-4)] py-[var(--space-3)]', 'text-[var(--font-size-base)]'],
-        lg: ['px-[var(--space-5)] py-[var(--space-4)]', 'text-[var(--font-size-lg)]'],
+        sm: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+        ],
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+        ],
+        lg: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[5],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.large,
+        ],
       },
 
       // AAA Compliance enforcement mode
       aaaMode: {
         true: [
-          'bg-[color:var(--deep-space)] text-[color:var(--cosmic-light)]',
-          'hover:bg-[color:var(--nebula-accent)] focus:bg-[color:var(--nebula-accent)]',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-aurora-accent focus:bg-aurora-accent',
           'border-none',
         ],
         false: [],
@@ -217,7 +263,11 @@ const enhancedAccordionTriggerVariants = cva(
       // Dense mode for compact layouts
       density: {
         comfortable: [],
-        compact: ['px-[var(--space-3)] py-[var(--space-2)]', 'text-[var(--font-size-sm)]'],
+        compact: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+        ],
       },
     },
 
@@ -231,19 +281,19 @@ const enhancedAccordionTriggerVariants = cva(
 );
 
 /**
- * Enhanced accordion content variants following MAPS v2.2 foundation
+ * Enhanced accordion content variants following MAPS4 foundation
  */
 const enhancedAccordionContentVariants = cva(
   [
-    // Foundation: Layout structure
-    'overflow-hidden',
+    // Foundation: Layout structure - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
 
     // Foundation: Typography
-    'text-muted-foreground',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
 
     // Foundation: Motion - Apple HIG with accessibility respect
-    'transition-all duration-[var(--motion-duration-2)] ease-[var(--motion-easing-standard)]',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.accordionExpand,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Radix animation integration
     'data-[state=closed]:animate-accordion-up',
@@ -254,22 +304,22 @@ const enhancedAccordionContentVariants = cva(
       variant: {
         default: [],
         ghost: [],
-        glass: ['text-[color:var(--stellar-muted)]'],
-        floating: ['text-[color:var(--stellar-muted)]'],
+        glass: [ENHANCED_DESIGN_TOKENS.foundation.color.content.muted],
+        floating: [ENHANCED_DESIGN_TOKENS.foundation.color.content.muted],
         outlined: [],
         filled: [],
       },
 
       // AAA Compliance enforcement mode
       aaaMode: {
-        true: ['text-[color:var(--stellar-muted)]'],
+        true: [ENHANCED_DESIGN_TOKENS.foundation.color.content.muted],
         false: [],
       },
 
       // Dense mode for compact layouts
       density: {
         comfortable: [],
-        compact: ['text-[var(--font-size-sm)]'],
+        compact: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
       },
     },
 
@@ -286,21 +336,29 @@ const enhancedAccordionContentVariants = cva(
  */
 const enhancedAccordionContentInnerVariants = cva(
   [
-    // Foundation: Spacing - systematic padding
-    'px-[var(--space-4)] py-[var(--space-3)]',
+    // Foundation: Spacing - systematic padding - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
   ],
   {
     variants: {
       size: {
-        sm: ['px-[var(--space-3)] py-[var(--space-2)]'],
-        default: ['px-[var(--space-4)] py-[var(--space-3)]'],
-        lg: ['px-[var(--space-5)] py-[var(--space-4)]'],
+        sm: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+        ],
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+        ],
+        lg: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[5],
+        ],
       },
 
       // Dense mode for compact layouts
       density: {
         comfortable: [],
-        compact: ['px-[var(--space-3)] py-[var(--space-2)]'],
+        compact: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+        ],
       },
     },
 
@@ -359,6 +417,11 @@ interface EnhancedAccordionRootProps
    * Polymorphic support - render as different element/component
    */
   asChild?: boolean;
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 interface EnhancedAccordionItemProps
@@ -440,6 +503,7 @@ const EnhancedAccordionRoot = React.forwardRef<
       value,
       onValueChange,
       asChild = false,
+      disableAnimations = false,
       ...props
     },
     ref
@@ -458,6 +522,11 @@ const EnhancedAccordionRoot = React.forwardRef<
 
     const Comp = asChild ? Slot : AccordionPrimitive.Root;
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     return (
       <Comp
         ref={ref}
@@ -467,7 +536,8 @@ const EnhancedAccordionRoot = React.forwardRef<
             aaaMode,
             density,
             className,
-          })
+          }),
+          motionClasses
         )}
         {...accordionProps}
         {...props}
@@ -558,13 +628,18 @@ const EnhancedAccordionTrigger = React.forwardRef<
         >
           {children}
           {showChevron && (
-            <div className='ml-[var(--space-2)] shrink-0'>
+            <div className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.margin[2],
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0]
+            )}>
               {chevronIcon || (
                 <ChevronDown
                   className={cn(
-                    'size-[var(--icon-sm)] transition-transform duration-[var(--motion-duration-2)]',
+                    ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm,
+                    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.accordionExpand,
                     'group-data-[state=open]:rotate-180'
                   )}
+                  aria-hidden='true'
                 />
               )}
             </div>
@@ -747,7 +822,7 @@ EnhancedAccordionItemComplete.displayName = 'EnhancedAccordionItemComplete';
 
 /**
  * Accordion Factory - Pre-configured accordion compositions for common use cases
- * Following MAPS v2.2 systematic approach to component creation
+ * Following MAPS4 systematic approach to component creation with performance optimizations
  */
 const AccordionFactory = {
   /**
@@ -804,6 +879,13 @@ const AccordionFactory = {
    */
   compact: (props: Omit<EnhancedAccordionRootProps, 'density'>) => (
     <EnhancedAccordionRoot density='compact' {...props} />
+  ),
+
+  /**
+   * Performance-optimized accordion with disabled animations
+   */
+  performance: (props: Omit<EnhancedAccordionRootProps, 'disableAnimations'>) => (
+    <EnhancedAccordionRoot disableAnimations={true} {...props} />
   ),
 } as const;
 

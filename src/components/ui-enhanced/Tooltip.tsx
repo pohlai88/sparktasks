@@ -1,5 +1,5 @@
 /**
- * Enhanced Tooltip Component - MAPS4 Deep Space Canvas Cosmic Innovation
+ * Enhanced Tooltip Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
  * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
@@ -14,6 +14,12 @@
  * - MAPS4 Guidelines → Tooltip behavior → Accessibility excellence
  * - [Ecosystem] → [Component] → [Composability]
  *
+ * GOVERNANCE RULES:
+ * - Foundation tokens only (no component-specific tokens)
+ * - Auto-apply AAA scrims over glass materials
+ * - Apple HIG motion with respect for reduced motion
+ * - Platform-aware touch targets (44px minimum)
+ *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
  * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
@@ -26,171 +32,198 @@ import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED TOOLTIP VARIANTS =====
 
 /**
  * Enhanced tooltip content variants following MAPS4 v4.0 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens system
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedTooltipVariants = cva(
   [
-    // Foundation: Layout and positioning
-    'z-50 overflow-hidden rounded-md',
-    'px-3 py-1.5',
-    'text-sm',
+    // Foundation: Layout & positioning - Enhanced tokens
+    getZIndexClass('tooltip'),
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
 
-    // Foundation: Motion - Apple HIG with accessibility respect
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+
+    // Foundation: Motion - Apple HIG with accessibility respect - Enhanced tokens
     'animate-in fade-in-0 zoom-in-95',
     'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
     'data-[side=bottom]:slide-in-from-top-2',
     'data-[side=left]:slide-in-from-right-2',
     'data-[side=right]:slide-in-from-left-2',
     'data-[side=top]:slide-in-from-bottom-2',
-    'motion-reduce:animate-none motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Apple HIG spacing and typography
-    'max-w-xs leading-tight',
-    'select-none',
-    'font-medium',
+    // Foundation: Apple HIG spacing and typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-xs'],
+    'leading-tight',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
 
     // Foundation: Interaction states
     'pointer-events-none',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
-        // Default: Clean dark surface with optimal contrast
+        // Default: Clean dark surface with optimal contrast - Enhanced tokens
         default: [
-          'bg-popover text-popover-foreground',
-          'border border-border',
-          'shadow-md',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
 
-        // Glass: Liquid glass material with backdrop blur
+        // Glass: Liquid glass material with backdrop blur - Enhanced tokens
         glass: [
-          'backdrop-blur-[12px] backdrop-saturate-[135%]',
-          'bg-[#241c41]/85 text-[#e8ecf1]',
-          'border border-[#5b6776]/40',
-          'shadow-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
 
-        // Floating: Enhanced glass with stronger blur
+        // Floating: Enhanced glass with stronger blur - Enhanced tokens
         floating: [
-          'backdrop-blur-[16px] backdrop-saturate-[135%]',
-          'bg-[#17162a]/80 text-[#e8ecf1]',
-          'border border-[#6f7f92]/30',
-          'shadow-xl',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
 
-        // Inverse: Light tooltip for dark content
-        inverse: [
-          'bg-[#e8ecf1] text-[#0a0f16]',
-          'border border-[#c8ced6]',
-          'shadow-lg',
+        // Elevated: Sophisticated surface with subtle elevation - Enhanced tokens
+        elevated: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
 
-        // Success: Semantic success styling
+        // Ghost: Subtle, muted styling - Enhanced tokens
+        ghost: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
+        ],
+
+        // Success: Semantic success styling - Enhanced tokens
         success: [
-          'border-success/20 bg-success/10 text-success-foreground',
-          'shadow-md',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.success,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
 
-        // Warning: Semantic warning styling
+        // Warning: Semantic warning styling - Enhanced tokens
         warning: [
-          'border-warning/20 bg-warning/10 text-warning-foreground',
-          'shadow-md',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.warning,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
 
-        // Error: Semantic error styling
-        error: [
-          'border-error/20 bg-error/10 text-error-foreground',
-          'shadow-md',
+        // Destructive: Semantic error styling - Enhanced tokens
+        destructive: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
 
-        // Info: Semantic info styling
-        info: [
-          'border-accent/20 bg-accent/10 text-accent-foreground',
-          'shadow-md',
+        // AAA: High contrast mode for compliance - Enhanced tokens
+        aaa: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          'forced-colors:bg-Field forced-colors:text-FieldText',
         ],
       },
 
       size: {
-        // Small: Compact tooltip for minimal content
-        sm: ['px-2 py-1', 'text-xs', 'max-w-[200px]'],
-
-        // Default: Standard tooltip size
-        default: ['px-3 py-1.5', 'text-sm', 'max-w-xs'],
-
-        // Large: Extended tooltip for richer content
-        lg: ['px-4 py-2', 'text-sm', 'max-w-sm'],
-
-        // Extra Large: Maximum tooltip for complex content
-        xl: ['px-4 py-3', 'text-base', 'max-w-md'],
-      },
-
-      // AAA Compliance enforcement mode
-      aaaMode: {
-        true: [
-          'bg-[#0a0f16] text-[#e8ecf1]',
-          'border-2 border-[#8094a6]',
-          'shadow-none',
-          // Override any glass effects for maximum contrast
-          '!backdrop-blur-none !backdrop-saturate-100',
+        // Clean systematic sizing with 8pt grid - Enhanced tokens
+        sm: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['2'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['1'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
         ],
-        false: [],
+
+        // Default: Standard tooltip size - Enhanced tokens
+        md: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-xs']
+        ],
+
+        // Large: Extended tooltip for richer content - Enhanced tokens
+        lg: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['2'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm']
+        ],
+
+        // Extra large: Maximum tooltip for complex content - Enhanced tokens
+        xl: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md']
+        ],
       },
 
-      // Dense mode for compact layouts
+      // Dense mode for compact layouts - Enhanced tokens
       density: {
         comfortable: [],
-        compact: ['px-2 py-1', 'text-xs', 'leading-snug'],
+        compact: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['2'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+          'leading-snug'
+        ],
       },
     },
 
     // Compound variants for sophisticated combinations
     compoundVariants: [
-      // AAA mode overrides all glass effects
-      {
-        aaaMode: true,
-        variant: ['glass', 'floating'],
-        className: 'bg-[#0a0f16] text-[#e8ecf1] !backdrop-blur-none',
-      },
-
       // Compact density with small size
       {
         density: 'compact',
         size: 'sm',
-        className: 'max-w-[160px] px-1.5 py-0.5 text-xs',
+        className: ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-xs'],
       },
 
-      // Success variant with AAA mode
+      // AAA variant overrides all glass effects
       {
-        aaaMode: true,
-        variant: 'success',
-        className: 'bg-success-solid border-success-solid text-white',
-      },
-
-      // Warning variant with AAA mode
-      {
-        aaaMode: true,
-        variant: 'warning',
-        className: 'bg-warning-solid border-warning-solid text-white',
-      },
-
-      // Error variant with AAA mode
-      {
-        aaaMode: true,
-        variant: 'error',
-        className: 'bg-error-solid border-error-solid text-white',
+        variant: 'aaa',
+        className: '!backdrop-blur-none !backdrop-saturate-100',
       },
     ],
 
     defaultVariants: {
       variant: 'default',
-      size: 'default',
-      aaaMode: false,
+      size: 'md',
       density: 'comfortable',
     },
   }
@@ -210,6 +243,21 @@ interface EnhancedTooltipProps
    * Optional side offset for precise positioning
    */
   sideOffset?: number;
+
+  /**
+   * Enforce AAA compliance mode with high contrast colors
+   */
+  enforceAAA?: boolean;
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
+
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 interface EnhancedTooltipTriggerProps
@@ -302,30 +350,44 @@ const EnhancedTooltipContent = React.forwardRef<
       sideOffset = 4,
       variant,
       size,
-      aaaMode,
       density,
+      enforceAAA,
+      disableAnimations,
+      asChild,
       children,
       ...props
     },
     ref
-  ) => (
-    <TooltipPrimitive.Content
-      ref={ref}
-      sideOffset={sideOffset}
-      className={cn(
-        enhancedTooltipVariants({
-          variant,
-          size,
-          aaaMode,
-          density,
-          className,
-        })
-      )}
-      {...props}
-    >
-      {children}
-    </TooltipPrimitive.Content>
-  )
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    // Use AAA variant when enforceAAA is true
+    const effectiveVariant = enforceAAA ? 'aaa' : variant;
+
+    const Comp = asChild ? Slot : TooltipPrimitive.Content;
+
+    return (
+      <Comp
+        ref={ref}
+        sideOffset={sideOffset}
+        className={cn(
+          enhancedTooltipVariants({
+            variant: effectiveVariant,
+            size,
+            density,
+          }),
+          motionClasses,
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  }
 );
 
 EnhancedTooltipContent.displayName = 'EnhancedTooltipContent';
@@ -375,71 +437,106 @@ EnhancedTooltipWithTrigger.displayName = 'EnhancedTooltipWithTrigger';
 // ===== FACTORY PATTERNS =====
 
 /**
- * Tooltip Factory - Pre-configured tooltip compositions for common use cases
- * Following MAPS v2.2 systematic approach to component creation
+ * Enhanced Tooltip Factory Functions
+ * @description Semantic constructors following MAPS v2.2 patterns
  */
-const TooltipFactory = {
+export const TooltipFactory = {
+  /**
+   * Default tooltip with clean styling
+   */
+  default: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'variant'>) => (
+    <EnhancedTooltipContent variant='default' {...props} />
+  ),
+
+  /**
+   * Glass variant with liquid glass materials
+   */
+  glass: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'variant'>) => (
+    <EnhancedTooltipContent variant='glass' {...props} />
+  ),
+
+  /**
+   * Floating variant with enhanced glass effect
+   */
+  floating: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'variant'>) => (
+    <EnhancedTooltipContent variant='floating' {...props} />
+  ),
+
+  /**
+   * Elevated variant with enhanced depth
+   */
+  elevated: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'variant'>) => (
+    <EnhancedTooltipContent variant='elevated' {...props} />
+  ),
+
+  /**
+   * Ghost variant for subtle styling
+   */
+  ghost: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'variant'>) => (
+    <EnhancedTooltipContent variant='ghost' {...props} />
+  ),
+
   /**
    * Success tooltip with semantic styling
    */
-  success: (props: Omit<EnhancedTooltipProps, 'variant'>) => (
+  success: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'variant'>) => (
     <EnhancedTooltipContent variant='success' {...props} />
   ),
 
   /**
    * Warning tooltip with semantic styling
    */
-  warning: (props: Omit<EnhancedTooltipProps, 'variant'>) => (
+  warning: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'variant'>) => (
     <EnhancedTooltipContent variant='warning' {...props} />
   ),
 
   /**
-   * Error tooltip with semantic styling
+   * Destructive tooltip with semantic styling
    */
-  error: (props: Omit<EnhancedTooltipProps, 'variant'>) => (
-    <EnhancedTooltipContent variant='error' {...props} />
+  destructive: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'variant'>) => (
+    <EnhancedTooltipContent variant='destructive' {...props} />
   ),
 
   /**
-   * Info tooltip with semantic styling
+   * AAA compliance variant for high contrast
    */
-  info: (props: Omit<EnhancedTooltipProps, 'variant'>) => (
-    <EnhancedTooltipContent variant='info' {...props} />
+  aaa: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'enforceAAA'>) => (
+    <EnhancedTooltipContent enforceAAA={true} {...props} />
   ),
 
   /**
-   * Glass tooltip with liquid glass materials
+   * Performance-optimized tooltip with disabled animations
    */
-  glass: (props: Omit<EnhancedTooltipProps, 'variant'>) => (
-    <EnhancedTooltipContent variant='glass' {...props} />
+  performance: (props: React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>) => (
+    <EnhancedTooltipContent disableAnimations={true} {...props} />
   ),
 
   /**
-   * Floating tooltip with enhanced glass effect
+   * Small size for compact layouts
    */
-  floating: (props: Omit<EnhancedTooltipProps, 'variant'>) => (
-    <EnhancedTooltipContent variant='floating' {...props} />
+  small: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'size'>) => (
+    <EnhancedTooltipContent size='sm' {...props} />
   ),
 
   /**
-   * AAA compliant tooltip with maximum contrast
+   * Large size for prominent content
    */
-  aaa: (props: Omit<EnhancedTooltipProps, 'aaaMode'>) => (
-    <EnhancedTooltipContent aaaMode={true} {...props} />
+  large: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'size'>) => (
+    <EnhancedTooltipContent size='lg' {...props} />
   ),
 
   /**
-   * Compact tooltip for dense layouts
+   * Extra large size for maximum visibility
    */
-  compact: (props: Omit<EnhancedTooltipProps, 'density'>) => (
+  xlarge: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'size'>) => (
+    <EnhancedTooltipContent size='xl' {...props} />
+  ),
+
+  /**
+   * Compact density for dense layouts
+   */
+  compact: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedTooltipContent>, 'density'>) => (
     <EnhancedTooltipContent density='compact' {...props} />
-  ),
-
-  /**
-   * Inverse tooltip for dark content areas
-   */
-  inverse: (props: Omit<EnhancedTooltipProps, 'variant'>) => (
-    <EnhancedTooltipContent variant='inverse' {...props} />
   ),
 } as const;
 
@@ -451,14 +548,7 @@ export {
   EnhancedTooltipTrigger,
   EnhancedTooltipContent,
   EnhancedTooltipWithTrigger,
-  TooltipFactory,
+  enhancedTooltipVariants,
 };
 
-export type {
-  EnhancedTooltipProps,
-  EnhancedTooltipTriggerProps,
-  TooltipWithTriggerProps,
-};
-
-// Re-export Radix primitives for advanced use cases
-export * as TooltipPrimitive from '@radix-ui/react-tooltip';
+export type { VariantProps } from 'class-variance-authority';

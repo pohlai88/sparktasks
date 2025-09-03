@@ -26,114 +26,140 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED BADGE VARIANTS =====
 
 const enhancedBadgeVariants = cva(
-  // Base styles - Apple HIG foundation
+  // Base styles - Apple HIG foundation - Enhanced tokens only
   [
-    'inline-flex items-center justify-center',
-    'rounded-full border font-medium',
-    'transition-all duration-200 ease-out',
-    'motion-reduce:transition-none',
-    'focus-visible:outline-none focus-visible:ring-2',
-    'focus-visible:ring-ring focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.inlineBlock,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.badgeHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
     // Typography baseline
-    'text-xs leading-none',
+    ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+    'leading-none',
     // Accessibility foundation
-    'select-none',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
   ],
   {
     variants: {
       variant: {
         // Primary semantic variants
         default: [
-          'bg-primary text-primary-foreground',
-          'border-primary/20',
-          'shadow-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.border,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
         secondary: [
-          'bg-secondary text-secondary-foreground',
-          'border-secondary/20',
-          'shadow-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.secondary.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.secondary.fg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.secondary.border,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
-        muted: ['bg-muted text-muted-foreground', 'border-muted-foreground/20'],
+        muted: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.card,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.muted,
+        ],
         accent: [
-          'bg-accent text-accent-foreground',
-          'border-accent/20',
-          'shadow-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.accent.bg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.accent.fg,
+          ENHANCED_DESIGN_TOKENS.foundation.color.brand.accent.border,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
 
         // Status semantic variants
         success: [
-          'bg-green-500/10 text-green-700 dark:text-green-400',
-          'border-green-500/20',
-          'shadow-sm shadow-green-500/10',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.border,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted,
         ],
         warning: [
-          'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400',
-          'border-yellow-500/20',
-          'shadow-sm shadow-yellow-500/10',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.border,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted,
         ],
         error: [
-          'bg-red-500/10 text-red-700 dark:text-red-400',
-          'border-red-500/20',
-          'shadow-sm shadow-red-500/10',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.border,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted,
         ],
         info: [
-          'bg-blue-500/10 text-blue-700 dark:text-blue-400',
-          'border-blue-500/20',
-          'shadow-sm shadow-blue-500/10',
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.border,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.muted,
         ],
 
         // Style variants
         outline: [
-          'border-border bg-transparent',
-          'text-foreground',
-          'hover:bg-accent hover:text-accent-foreground',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-aurora-accent pointer:hover:text-cosmic-dark',
         ],
         ghost: [
-          'border-transparent bg-transparent',
-          'text-muted-foreground',
-          'hover:bg-accent hover:text-accent-foreground',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          'pointer:hover:bg-aurora-accent pointer:hover:text-cosmic-dark',
         ],
 
         // Liquid glass variants
         glass: [
-          'bg-background/60 text-foreground',
-          'border-border/40',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
         floating: [
-          'bg-background/80 text-foreground',
-          'border-border/30',
-          'backdrop-blur-lg backdrop-saturate-[150%]',
-          'shadow-elevation-md',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
       },
       size: {
-        sm: ['h-4 px-1.5 text-[10px]', 'min-w-4'],
-        md: ['h-5 px-2 text-xs', 'min-w-5'],
-        lg: ['h-6 px-2.5 text-sm', 'min-w-6'],
-        xl: ['h-7 px-3 text-sm', 'min-w-7'],
+        sm: [
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+        ],
+        md: [
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+        ],
+        lg: [
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+        ],
+        xl: [
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+        ],
       },
       interactive: {
         true: [
-          'cursor-pointer',
-          'hover:scale-105 active:scale-95',
-          'focus-visible:ring-2',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+          'pointer:hover:scale-105',
+          'active:scale-95',
         ],
         false: '',
       },
       pulse: {
-        true: ['animate-pulse'],
+        true: [ENHANCED_DESIGN_TOKENS.foundation.animation.name.pulse],
         false: '',
       },
       dot: {
-        true: ['h-2 w-2 min-w-0 p-0', 'rounded-full'],
+        true: ['h-2 w-2 min-w-0 p-0', ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full],
         false: '',
       },
       enforceAAA: {
@@ -211,6 +237,11 @@ export interface EnhancedBadgeProps
    * Accessibility label for screen readers
    */
   'aria-label'?: string;
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 // ===== ENHANCED BADGE COMPONENT =====
@@ -234,6 +265,7 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
       onClick,
       onRemove,
       dismissible = false,
+      disableAnimations = false,
       children,
       ...props
     },
@@ -251,6 +283,11 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
 
     // Content to display
     const content = displayCount || children;
+
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
     // Handle click events
     const handleClick = React.useCallback(
@@ -312,6 +349,7 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
             dot,
             enforceAAA,
           }),
+          motionClasses,
           className
         )}
         onClick={handleClick}
@@ -345,12 +383,16 @@ const EnhancedBadge = React.forwardRef<HTMLDivElement, EnhancedBadgeProps>(
             {dismissible && (
               <button
                 onClick={handleRemove}
-                className="ml-1 rounded-full p-0.5 transition-colors hover:bg-surface-hover"
+                className={cn(
+                  'ml-1 rounded-full p-0.5',
+                  ENHANCED_DESIGN_TOKENS.foundation.motionComponents.badgeHover,
+                  'hover:bg-surface-hover'
+                )}
                 aria-label='Remove badge'
                 type='button'
               >
                 <svg
-                  className="h-3 w-3"
+                  className="size-3"
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -519,6 +561,14 @@ export const BadgeFactory = {
     >((props, ref) => <EnhancedBadge ref={ref} enforceAAA {...props} />),
   },
 
+  // Performance variant
+  performance: {
+    Badge: React.forwardRef<
+      HTMLDivElement,
+      Omit<EnhancedBadgeProps, 'disableAnimations'>
+    >((props, ref) => <EnhancedBadge ref={ref} disableAnimations={true} {...props} />),
+  },
+
   // Compound patterns
   notification: {
     Badge: React.forwardRef<
@@ -568,6 +618,7 @@ BadgeFactory.pulse.Badge.displayName = 'PulseBadge';
 BadgeFactory.small.Badge.displayName = 'SmallBadge';
 BadgeFactory.large.Badge.displayName = 'LargeBadge';
 BadgeFactory.aaa.Badge.displayName = 'AAABadge';
+BadgeFactory.performance.Badge.displayName = 'PerformanceBadge';
 BadgeFactory.notification.Badge.displayName = 'NotificationBadge';
 BadgeFactory.status.Badge.displayName = 'StatusBadge';
 BadgeFactory.count.Badge.displayName = 'CountBadge';

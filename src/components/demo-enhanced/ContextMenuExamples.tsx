@@ -29,7 +29,8 @@ import {
   User,
   Video,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 
 import { EnhancedButton } from '@/components/ui-enhanced/Button';
 import {
@@ -100,28 +101,28 @@ const BasicContextMenuExample: React.FC = () => {
         </ContextMenuTrigger>
         <ContextMenuContent className='w-64'>
           <ContextMenuItem>
-            <User className='mr-2 h-4 w-4' />
+            <User className='mr-2 size-4' />
             Profile
             <ContextMenuShortcut>⇧⌘P</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuItem>
-            <Settings className='mr-2 h-4 w-4' />
+            <Settings className='mr-2 size-4' />
             Settings
             <ContextMenuShortcut>⌘,</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuSeparator />
           <ContextMenuItem>
-            <Copy className='mr-2 h-4 w-4' />
+            <Copy className='mr-2 size-4' />
             Copy
             <ContextMenuShortcut>⌘C</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuItem>
-            <Share className='mr-2 h-4 w-4' />
+            <Share className='mr-2 size-4' />
             Share
           </ContextMenuItem>
           <ContextMenuSeparator />
           <ContextMenuItem variant='destructive'>
-            <Trash2 className='mr-2 h-4 w-4' />
+            <Trash2 className='mr-2 size-4' />
             Delete
             <ContextMenuShortcut>⌫</ContextMenuShortcut>
           </ContextMenuItem>
@@ -160,20 +161,20 @@ const VariantExamplesGrid: React.FC = () => {
               </ContextMenuTrigger>
               <ContextMenuContent variant={name} className='w-48'>
                 <ContextMenuItem>
-                  <FileText className='mr-2 h-4 w-4' />
+                  <FileText className='mr-2 size-4' />
                   New File
                 </ContextMenuItem>
                 <ContextMenuItem>
-                  <Folder className='mr-2 h-4 w-4' />
+                  <Folder className='mr-2 size-4' />
                   New Folder
                 </ContextMenuItem>
                 <ContextMenuSeparator />
                 <ContextMenuItem>
-                  <Copy className='mr-2 h-4 w-4' />
+                  <Copy className='mr-2 size-4' />
                   Copy
                 </ContextMenuItem>
                 <ContextMenuItem variant='destructive'>
-                  <Trash2 className='mr-2 h-4 w-4' />
+                  <Trash2 className='mr-2 size-4' />
                   Delete
                 </ContextMenuItem>
               </ContextMenuContent>
@@ -207,15 +208,15 @@ const FactoryPatternExample: React.FC = () => {
             children: (
               <>
                 <ContextMenuItem>
-                  <Music className='mr-2 h-4 w-4' />
+                  <Music className='mr-2 size-4' />
                   Audio
                 </ContextMenuItem>
                 <ContextMenuItem>
-                  <Video className='mr-2 h-4 w-4' />
+                  <Video className='mr-2 size-4' />
                   Video
                 </ContextMenuItem>
                 <ContextMenuItem>
-                  <Image className='mr-2 h-4 w-4' />
+                  <Image className='mr-2 size-4' />
                   Image
                 </ContextMenuItem>
               </>
@@ -236,15 +237,15 @@ const FactoryPatternExample: React.FC = () => {
             children: (
               <>
                 <ContextMenuItem>
-                  <Globe className='mr-2 h-4 w-4' />
+                  <Globe className='mr-2 size-4' />
                   Web
                 </ContextMenuItem>
                 <ContextMenuItem>
-                  <Book className='mr-2 h-4 w-4' />
+                  <Book className='mr-2 size-4' />
                   Documentation
                 </ContextMenuItem>
                 <ContextMenuItem>
-                  <Heart className='mr-2 h-4 w-4' />
+                  <Heart className='mr-2 size-4' />
                   Accessibility
                 </ContextMenuItem>
               </>
@@ -275,12 +276,12 @@ const ComplexMenuExample: React.FC = () => {
         <ContextMenuContent className='w-64'>
           <ContextMenuLabel>Actions</ContextMenuLabel>
           <ContextMenuItem>
-            <FileText className='mr-2 h-4 w-4' />
+            <FileText className='mr-2 size-4' />
             New File
             <ContextMenuShortcut>⌘N</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuItem>
-            <Folder className='mr-2 h-4 w-4' />
+            <Folder className='mr-2 size-4' />
             New Folder
             <ContextMenuShortcut>⇧⌘N</ContextMenuShortcut>
           </ContextMenuItem>
@@ -289,18 +290,18 @@ const ComplexMenuExample: React.FC = () => {
 
           <ContextMenuSub>
             <ContextMenuSubTrigger>
-              <Star className='mr-2 h-4 w-4' />
+              <Star className='mr-2 size-4' />
               Bookmarks
             </ContextMenuSubTrigger>
             <ContextMenuSubContent className='w-48'>
               <ContextMenuItem>
-                <Link className='mr-2 h-4 w-4' />
+                <Link className='mr-2 size-4' />
                 Add Bookmark
               </ContextMenuItem>
               <ContextMenuSeparator />
               {bookmarks.map((bookmark, index) => (
                 <ContextMenuItem key={index}>
-                  <Globe className='mr-2 h-4 w-4' />
+                  <Globe className='mr-2 size-4' />
                   {bookmark}
                 </ContextMenuItem>
               ))}
@@ -309,7 +310,7 @@ const ComplexMenuExample: React.FC = () => {
 
           <ContextMenuSub>
             <ContextMenuSubTrigger>
-              <Settings className='mr-2 h-4 w-4' />
+              <Settings className='mr-2 size-4' />
               Preferences
             </ContextMenuSubTrigger>
             <ContextMenuSubContent className='w-48'>
@@ -334,24 +335,24 @@ const ComplexMenuExample: React.FC = () => {
           <ContextMenuSeparator />
 
           <ContextMenuItem>
-            <Copy className='mr-2 h-4 w-4' />
+            <Copy className='mr-2 size-4' />
             Copy
             <ContextMenuShortcut>⌘C</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuItem>
-            <Edit3 className='mr-2 h-4 w-4' />
+            <Edit3 className='mr-2 size-4' />
             Edit
             <ContextMenuShortcut>⌘E</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuItem>
-            <Share className='mr-2 h-4 w-4' />
+            <Share className='mr-2 size-4' />
             Share
           </ContextMenuItem>
 
           <ContextMenuSeparator />
 
           <ContextMenuItem variant='destructive'>
-            <Trash2 className='mr-2 h-4 w-4' />
+            <Trash2 className='mr-2 size-4' />
             Delete
             <ContextMenuShortcut>⌫</ContextMenuShortcut>
           </ContextMenuItem>
@@ -379,16 +380,16 @@ const EnhancedContextMenuExample: React.FC = () => {
           }
         >
           <ContextMenuItem>
-            <Music className='mr-2 h-4 w-4' />
+            <Music className='mr-2 size-4' />
             Play Music
           </ContextMenuItem>
           <ContextMenuItem>
-            <Video className='mr-2 h-4 w-4' />
+            <Video className='mr-2 size-4' />
             Watch Video
           </ContextMenuItem>
           <ContextMenuSeparator />
           <ContextMenuItem>
-            <Share className='mr-2 h-4 w-4' />
+            <Share className='mr-2 size-4' />
             Share
           </ContextMenuItem>
         </EnhancedContextMenu>
@@ -403,16 +404,16 @@ const EnhancedContextMenuExample: React.FC = () => {
           }
         >
           <ContextMenuItem>
-            <Settings className='mr-2 h-4 w-4' />
+            <Settings className='mr-2 size-4' />
             Settings
           </ContextMenuItem>
           <ContextMenuItem>
-            <User className='mr-2 h-4 w-4' />
+            <User className='mr-2 size-4' />
             Profile
           </ContextMenuItem>
           <ContextMenuSeparator />
           <ContextMenuItem variant='destructive'>
-            <Trash2 className='mr-2 h-4 w-4' />
+            <Trash2 className='mr-2 size-4' />
             Delete
           </ContextMenuItem>
         </EnhancedContextMenu>

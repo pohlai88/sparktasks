@@ -49,7 +49,7 @@ const tableEmptyVariants = cva(
         ],
         glass: [
           ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
-          ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
       },
     },
@@ -120,8 +120,8 @@ const emptyActionVariants = cva(
   [
     'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2',
     'font-medium transition-colors',
-    ENHANCED_DESIGN_TOKENS.accessibility.motion.safe,
-    ENHANCED_DESIGN_TOKENS.accessibility.focus.ring,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
@@ -140,7 +140,7 @@ const emptyActionVariants = cva(
         ],
         outline: [
           'border bg-transparent',
-          ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
           'hover:bg-accent hover:text-accent-foreground',
         ],

@@ -1,6 +1,17 @@
-import { defineConfig } from 'vite'
+/**
+ * Vite Configuration - Primary Build System
+ * 
+ * Configuration Hierarchy:
+ * - Primary: Main build configuration for development and production
+ * - Extended by: vitest.config.ts (test configuration)
+ * - Aliases: Standardized path resolution for consistent imports
+ * - Build Target: ES2020 for modern browser compatibility
+ */
+
+import { resolve } from 'node:path'
+
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -118,10 +129,10 @@ export default defineConfig({
           if (name.endsWith('.css')) {
             return 'styles/[name]-[hash].[ext]'
           }
-          if (name.match(/\.(png|jpg|jpeg|gif|svg|webp)$/)) {
+          if (/\.(png|jpg|jpeg|gif|svg|webp)$/.test(name)) {
             return 'images/[name]-[hash].[ext]'  
           }
-          if (name.match(/\.(woff|woff2|eot|ttf|otf)$/)) {
+          if (/\.(woff|woff2|eot|ttf|otf)$/.test(name)) {
             return 'fonts/[name]-[hash].[ext]'
           }
           
@@ -155,7 +166,7 @@ export default defineConfig({
     legalComments: 'none'
   },
   server: {
-    port: 3000,
+    port: 9000,
     host: true, // Allow LAN access for mobile testing
     hmr: {
       host: 'localhost' // Fix HMR WebSocket connection issues

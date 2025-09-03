@@ -53,7 +53,7 @@ const formVariants = cva(
         glass: [
           ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
           'rounded-lg border p-6',
-          ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
       },
     },
@@ -108,12 +108,12 @@ const inputVariants = cva(
   [
     'flex w-full rounded-md border px-3 py-2',
     'placeholder:text-muted-foreground',
-    'transition-colors',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.formFieldFocus,
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-    ENHANCED_DESIGN_TOKENS.accessibility.focus.ring,
-    ENHANCED_DESIGN_TOKENS.accessibility.motion.safe,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
@@ -130,10 +130,9 @@ const inputVariants = cva(
       state: {
         default: '',
         error: [
-          ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
-          'border-red-500 focus:border-red-500',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
         ],
-        success: 'border-green-500 focus:border-green-500',
+        success: ENHANCED_DESIGN_TOKENS.foundation.color.border.success,
       },
       disabled: {
         true: [
@@ -155,13 +154,14 @@ const inputVariants = cva(
 const textareaVariants = cva(
   [
     'flex w-full rounded-md border px-3 py-2',
-    'resize-vertical placeholder:text-muted-foreground',
-    'min-h-[80px] transition-colors',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.resize.y,
+    'placeholder:text-muted-foreground',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.formFieldFocus,
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-    ENHANCED_DESIGN_TOKENS.accessibility.focus.ring,
-    ENHANCED_DESIGN_TOKENS.accessibility.motion.safe,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
@@ -213,9 +213,10 @@ const actionsVariants = cva(
 const buttonVariants = cva(
   [
     'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2',
-    'font-medium transition-colors',
-    ENHANCED_DESIGN_TOKENS.accessibility.motion.safe,
-    ENHANCED_DESIGN_TOKENS.accessibility.focus.ring,
+    'font-medium',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonFocus,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
@@ -431,10 +432,11 @@ function CheckboxField<TFormData extends FieldValues>({
           type='checkbox'
           disabled={disabled || field.disabled}
           className={cn(
-            'h-4 w-4 rounded border transition-colors',
+            'h-4 w-4 rounded border',
+            ENHANCED_DESIGN_TOKENS.foundation.motionComponents.formFieldFocus,
             ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-            ENHANCED_DESIGN_TOKENS.accessibility.focus.ring,
-            error && 'border-red-500'
+            ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+            error && ENHANCED_DESIGN_TOKENS.foundation.color.border.error
           )}
           {...fieldProps}
         />
@@ -558,15 +560,19 @@ export function EnhancedForm<TFormData extends FieldValues>({
     };
 
     switch (field.type) {
-      case 'textarea':
+      case 'textarea': {
         return <TextareaField key={String(field.name)} {...fieldProps} />;
-      case 'select':
+      }
+      case 'select': {
         return <SelectField key={String(field.name)} {...fieldProps} />;
+      }
       case 'checkbox':
-      case 'radio':
+      case 'radio': {
         return <CheckboxField key={String(field.name)} {...fieldProps} />;
-      default:
+      }
+      default: {
         return <TextField key={String(field.name)} {...fieldProps} />;
+      }
     }
   };
 
@@ -578,7 +584,7 @@ export function EnhancedForm<TFormData extends FieldValues>({
         {...props}
       >
         {/* Render Fields */}
-        {fields.map(renderField)}
+        {fields.map(field => renderField(field))}
 
         {/* Form Actions */}
         <div className={cn(actionsVariants({ layout }), actionsClassName)}>

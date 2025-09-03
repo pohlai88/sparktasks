@@ -39,47 +39,50 @@ import { cn } from '@/utils/cn';
 const railwayConductorVariants = cva(
   [
     // Foundation: Layout/shape - Clean Tailwind utilities
-    'w-full',
-    'space-y-6',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
     
     // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
     // MAPS4 Foundation: Motion - Respect user preferences
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         // Default: Clean conductor with subtle elevation
-        default: ['p-6', 'rounded-xl'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl],
         
         // Elevated: Enhanced depth with stronger shadow
         elevated: [
-          'p-8', 
-          'rounded-2xl',
-          'shadow-elevation-lg',
-          'border border-aurora-accent'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'], 
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
         ],
         
         // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
-          'p-6',
-          'rounded-xl',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
-          'border border-cosmic-border/30'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate['150'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
         ],
       },
       
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['space-y-4'],
-        md: ['space-y-6'],
-        lg: ['space-y-8'],
-        xl: ['space-y-10'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack['2xl']],
       },
     },
     
@@ -170,51 +173,76 @@ export function RailwayConductor({
   
   const getWorkflowStatusVariant = (status: ProjectWorkflow['status']): 'success' | 'warning' | 'info' | 'error' => {
     switch (status) {
-      case 'active': return 'success';
-      case 'paused': return 'warning';
-      case 'completed': return 'info';
-      case 'error': return 'error';
-      default: return 'info';
+      case 'active': { return 'success';
+      }
+      case 'paused': { return 'warning';
+      }
+      case 'completed': { return 'info';
+      }
+      case 'error': { return 'error';
+      }
+      default: { return 'info';
+      }
     }
   };
 
   const getRuleStatusVariant = (status: AutomationRule['status']): 'success' | 'warning' | 'info' | 'error' => {
     switch (status) {
-      case 'active': return 'success';
-      case 'inactive': return 'info';
-      case 'error': return 'error';
-      default: return 'info';
+      case 'active': { return 'success';
+      }
+      case 'inactive': { return 'info';
+      }
+      case 'error': { return 'error';
+      }
+      default: { return 'info';
+      }
     }
   };
 
   const getRulePriorityVariant = (priority: AutomationRule['priority']): 'success' | 'warning' | 'info' | 'error' => {
     switch (priority) {
-      case 'low': return 'success';
-      case 'medium': return 'info';
-      case 'high': return 'warning';
-      case 'critical': return 'error';
-      default: return 'info';
+      case 'low': { return 'success';
+      }
+      case 'medium': { return 'info';
+      }
+      case 'high': { return 'warning';
+      }
+      case 'critical': { return 'error';
+      }
+      default: { return 'info';
+      }
     }
   };
 
   const getPolicyCategoryVariant = (category: GovernancePolicy['category']): 'success' | 'warning' | 'info' | 'error' | 'secondary' => {
     switch (category) {
-      case 'quality': return 'success';
-      case 'security': return 'error';
-      case 'compliance': return 'warning';
-      case 'performance': return 'info';
-      case 'accessibility': return 'secondary';
-      default: return 'info';
+      case 'quality': { return 'success';
+      }
+      case 'security': { return 'error';
+      }
+      case 'compliance': { return 'warning';
+      }
+      case 'performance': { return 'info';
+      }
+      case 'accessibility': { return 'secondary';
+      }
+      default: { return 'info';
+      }
     }
   };
 
   const getPolicySeverityVariant = (severity: GovernancePolicy['severity']): 'success' | 'warning' | 'info' | 'error' => {
     switch (severity) {
-      case 'low': return 'success';
-      case 'medium': return 'info';
-      case 'high': return 'warning';
-      case 'critical': return 'error';
-      default: return 'info';
+      case 'low': { return 'success';
+      }
+      case 'medium': { return 'info';
+      }
+      case 'high': { return 'warning';
+      }
+      case 'critical': { return 'error';
+      }
+      default: { return 'info';
+      }
     }
   };
 
@@ -233,70 +261,78 @@ export function RailwayConductor({
   // ===== RENDER FUNCTIONS =====
 
   const renderConductorHeader = () => (
-    <div className="text-center mb-8">
-      <div className="flex items-center justify-center gap-3 mb-4">
-        <h1 className={cn(
-          'text-3xl font-bold',
+            <div className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl
+        )}>
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm
+      )}>
+        <h2 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Railway Conductor
-        </h1>
+        </h2>
         <EnhancedBadge variant="outline" size="lg">
           Project Orchestrator
         </EnhancedBadge>
       </div>
       
       <p className={cn(
-        'text-lg mb-4',
+        ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
       )}>
         Orchestrating project workflows, automation, and governance for {projectName}
       </p>
 
       {/* Project Stats */}
-      <div className="flex items-center justify-center gap-6 mb-6">
-        <div className="text-center">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg)}>
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
           <div className={cn(
-            'text-2xl font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
           )}>
             {workflows.length}
           </div>
           <div className={cn(
-            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>Active Workflows</div>
         </div>
         
-        <div className="text-center">
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
           <div className={cn(
-            'text-2xl font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
           )}>
             {automationRules.length}
           </div>
           <div className={cn(
-            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>Automation Rules</div>
         </div>
         
-        <div className="text-center">
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
           <div className={cn(
-            'text-2xl font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
           )}>
             {governancePolicies.length}
           </div>
           <div className={cn(
-            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>Governance Policies</div>
         </div>
       </div>
 
       {/* Project ID */}
-      <div className="text-center">
+      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
         <EnhancedBadge variant="outline" size="sm">
           Project ID: {projectId}
         </EnhancedBadge>
@@ -305,61 +341,67 @@ export function RailwayConductor({
   );
 
   const renderOverviewTab = () => (
-    <div className="space-y-6">
+    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
       {/* System Health */}
-      <EnhancedCard variant="elevated" className="p-6">
+      <EnhancedCard variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']}>
         <h3 className={cn(
-          'text-xl font-semibold mb-4',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           System Health Overview
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-3'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md
+        )}>
           <div className={cn(
-            'text-center p-4 rounded-lg',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
             ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
           )}>
             <div className={cn(
-              'text-2xl font-bold',
+              ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
               ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.bg
             )}>
               {workflows.filter(w => w.status === 'active').length}
             </div>
             <div className={cn(
-              'text-sm',
+              ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
             )}>Active Workflows</div>
           </div>
           
           <div className={cn(
-            'text-center p-4 rounded-lg',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
             ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
           )}>
             <div className={cn(
-              'text-2xl font-bold',
+              ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
               ENHANCED_DESIGN_TOKENS.foundation.color.feedback.info.bg
             )}>
               {automationRules.filter(r => r.status === 'active').length}
             </div>
             <div className={cn(
-              'text-sm',
+              ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
             )}>Active Rules</div>
           </div>
           
           <div className={cn(
-            'text-center p-4 rounded-lg',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
             ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
           )}>
             <div className={cn(
-              'text-2xl font-bold',
+              ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
               ENHANCED_DESIGN_TOKENS.foundation.color.brand.secondary.bg
             )}>
               {governancePolicies.filter(p => p.status === 'enforced').length}
             </div>
             <div className={cn(
-              'text-sm',
+              ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
             )}>Enforced Policies</div>
           </div>
@@ -367,28 +409,31 @@ export function RailwayConductor({
       </EnhancedCard>
 
       {/* Recent Activity */}
-      <EnhancedCard variant="elevated" className="p-6">
-        <h3 className={cn(
-          'text-xl font-semibold mb-4',
+      <EnhancedCard variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']}>
+        <h4 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Recent Activity
-        </h3>
+        </h4>
         
-        <div className="space-y-3">
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
           {workflows.slice(0, 3).map((workflow) => (
             <div key={workflow.id} className={cn(
-              'flex items-center justify-between p-3 rounded-lg',
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
               ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated
             )}>
               <div>
-                <div className="font-medium">{workflow.name}</div>
                 <div className={cn(
-                  'text-sm',
-                  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
-                )}>
-                  Last executed: {workflow.lastExecuted}
-                </div>
+                  ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>{workflow.name}</div>
+                              <div className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+              )}>
+                Last executed: {workflow.lastExecuted}
+              </div>
               </div>
               <EnhancedBadge
                 variant={getWorkflowStatusVariant(workflow.status)}
@@ -402,15 +447,15 @@ export function RailwayConductor({
       </EnhancedCard>
 
       {/* Quick Actions */}
-      <EnhancedCard variant="elevated" className="p-6">
-        <h3 className={cn(
-          'text-xl font-semibold mb-4',
+      <EnhancedCard variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']}>
+        <h4 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Quick Actions
-        </h3>
+        </h4>
         
-        <div className="flex flex-wrap gap-3">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.wrap.wrap, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
           <EnhancedButton variant="outline">
             Create Workflow
           </EnhancedButton>
@@ -432,14 +477,14 @@ export function RailwayConductor({
   );
 
   const renderWorkflowsTab = () => (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className={cn(
-          'text-xl font-semibold',
+    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+        <h4 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Project Workflows ({workflows.length})
-        </h3>
+        </h4>
         
         <EnhancedButton variant="outline" size="sm">
           Create Workflow
@@ -447,24 +492,31 @@ export function RailwayConductor({
       </div>
 
       {workflows.map((workflow) => (
-        <EnhancedCard key={workflow.id} variant="elevated" className="p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1">
+        <EnhancedCard key={workflow.id} variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4']}>
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between
+          )}>
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
               <h4 className={cn(
-                'font-semibold mb-1',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
               )}>
                 {workflow.name}
               </h4>
               <p className={cn(
-                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
               )}>
                 {workflow.description}
               </p>
             </div>
             
-            <div className="flex gap-2 ml-4">
+            <div className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm
+            )}>
               <EnhancedBadge
                 variant={getWorkflowStatusVariant(workflow.status)}
                 size="sm"
@@ -475,7 +527,9 @@ export function RailwayConductor({
           </div>
 
           <div className={cn(
-            'grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-4'],
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
             <div><strong>Step:</strong> {workflow.currentStep} / {workflow.totalSteps}</div>
@@ -485,22 +539,25 @@ export function RailwayConductor({
           </div>
 
           {/* Progress Bar */}
-          <div className="mb-3">
-            <div className="flex items-center justify-between mb-1">
+          <div>
+                        <div className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between
+            )}>
               <span className={cn(
-                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
               )}>Progress</span>
-              <span className="text-sm font-medium">{Math.round(workflow.progress * 100)}%</span>
+            <span className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+              ENHANCED_DESIGN_TOKENS.foundation.typography.label
+            )}>{Math.round(workflow.progress * 100)}%</span>
             </div>
-            <EnhancedProgress
-              value={workflow.progress}
-              variant="default"
-              size="sm"
-            />
+            <EnhancedProgress value={workflow.progress} max={1} variant="default" size="sm" />
           </div>
 
-          <div className="flex gap-2">
+          <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
             <EnhancedButton
               variant="ghost"
               size="sm"
@@ -523,14 +580,14 @@ export function RailwayConductor({
   );
 
   const renderAutomationTab = () => (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className={cn(
-          'text-xl font-semibold',
+    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+        <h4 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Automation Rules ({automationRules.length})
-        </h3>
+        </h4>
         
         <EnhancedButton variant="outline" size="sm">
           Add Rule
@@ -538,24 +595,31 @@ export function RailwayConductor({
       </div>
 
       {automationRules.map((rule) => (
-        <EnhancedCard key={rule.id} variant="elevated" className="p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1">
+        <EnhancedCard key={rule.id} variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4']}>
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between
+          )}>
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
               <h4 className={cn(
-                'font-semibold mb-1',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
               )}>
                 {rule.name}
               </h4>
               <p className={cn(
-                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
               )}>
                 {rule.description}
               </p>
             </div>
             
-            <div className="flex gap-2 ml-4">
+            <div className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm
+            )}>
               <EnhancedBadge
                 variant={getRuleStatusVariant(rule.status)}
                 size="sm"
@@ -573,7 +637,9 @@ export function RailwayConductor({
           </div>
 
           <div className={cn(
-            'grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-4'],
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
             <div><strong>Trigger:</strong> {rule.trigger.replace('_', ' ')}</div>
@@ -582,7 +648,7 @@ export function RailwayConductor({
             <div><strong>Last Run:</strong> {rule.lastExecuted}</div>
           </div>
 
-          <div className="flex gap-2">
+          <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
             <EnhancedButton
               variant="ghost"
               size="sm"
@@ -605,14 +671,14 @@ export function RailwayConductor({
   );
 
   const renderGovernanceTab = () => (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className={cn(
-          'text-xl font-semibold',
+    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+        <h4 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Governance Policies ({governancePolicies.length})
-        </h3>
+        </h4>
         
         <EnhancedButton variant="outline" size="sm">
           Add Policy
@@ -620,24 +686,31 @@ export function RailwayConductor({
       </div>
 
       {governancePolicies.map((policy) => (
-        <EnhancedCard key={policy.id} variant="elevated" className="p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1">
+        <EnhancedCard key={policy.id} variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4']}>
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between
+          )}>
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
               <h4 className={cn(
-                'font-semibold mb-1',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
               )}>
                 {policy.name}
               </h4>
               <p className={cn(
-                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
               )}>
                 {policy.description}
               </p>
             </div>
             
-            <div className="flex gap-2 ml-4">
+            <div className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm
+            )}>
               <EnhancedBadge
                 variant={getPolicyCategoryVariant(policy.category)}
                 size="sm"
@@ -655,7 +728,8 @@ export function RailwayConductor({
           </div>
 
           <div className={cn(
-            'grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-4'],
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
             <div><strong>Status:</strong> {policy.status}</div>
@@ -665,13 +739,20 @@ export function RailwayConductor({
           </div>
 
           {/* Compliance Score */}
-          <div className="mb-3">
-            <div className="flex items-center justify-between mb-1">
+          <div>
+                        <div className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between
+            )}>
               <span className={cn(
-                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
               )}>Compliance Score</span>
-              <span className="text-sm font-medium">{policy.complianceScore}%</span>
+            <span className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+              ENHANCED_DESIGN_TOKENS.foundation.typography.label
+            )}>{policy.complianceScore}%</span>
             </div>
             <EnhancedProgress
               value={policy.complianceScore / 100}
@@ -680,7 +761,7 @@ export function RailwayConductor({
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
             <EnhancedButton
               variant="ghost"
               size="sm"
@@ -704,28 +785,32 @@ export function RailwayConductor({
     <EnhancedTabs.Root
       value={activeTab}
       onValueChange={setActiveTab}
-      className="w-full"
+              className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
     >
-      <EnhancedTabs.List className="grid w-full grid-cols-4">
+      <EnhancedTabs.List className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[4]
+      )}>
         <EnhancedTabs.Trigger value="overview">Overview</EnhancedTabs.Trigger>
         <EnhancedTabs.Trigger value="workflows">Workflows ({workflows.length})</EnhancedTabs.Trigger>
         <EnhancedTabs.Trigger value="automation">Automation ({automationRules.length})</EnhancedTabs.Trigger>
         <EnhancedTabs.Trigger value="governance">Governance ({governancePolicies.length})</EnhancedTabs.Trigger>
       </EnhancedTabs.List>
       
-      <EnhancedTabs.Content value="overview" className="mt-6">
+              <EnhancedTabs.Content value="overview">
         {renderOverviewTab()}
       </EnhancedTabs.Content>
       
-      <EnhancedTabs.Content value="workflows" className="mt-6">
+              <EnhancedTabs.Content value="workflows">
         {renderWorkflowsTab()}
       </EnhancedTabs.Content>
       
-      <EnhancedTabs.Content value="automation" className="mt-6">
+              <EnhancedTabs.Content value="automation">
         {renderAutomationTab()}
       </EnhancedTabs.Content>
       
-      <EnhancedTabs.Content value="governance" className="mt-6">
+              <EnhancedTabs.Content value="governance">
         {renderGovernanceTab()}
       </EnhancedTabs.Content>
     </EnhancedTabs.Root>

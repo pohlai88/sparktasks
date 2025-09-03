@@ -39,47 +39,50 @@ import { cn } from '@/utils/cn';
 const railwayStationVariants = cva(
   [
     // Foundation: Layout/shape - Clean Tailwind utilities
-    'w-full',
-    'space-y-6',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
     
     // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
     // MAPS4 Foundation: Motion - Respect user preferences
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         // Default: Clean station with subtle elevation
-        default: ['p-6', 'rounded-xl'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl],
         
         // Elevated: Enhanced depth with stronger shadow
         elevated: [
-          'p-8', 
-          'rounded-2xl',
-          'shadow-elevation-lg',
-          'border border-aurora-accent'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'], 
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
         ],
         
         // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
-          'p-6',
-          'rounded-xl',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
-          'border border-cosmic-border/30'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
         ],
       },
       
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['space-y-4'],
-        md: ['space-y-6'],
-        lg: ['space-y-8'],
-        xl: ['space-y-10'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack['2xl']],
       },
     },
     
@@ -163,11 +166,16 @@ export function RailwayStation({
   
   const getStatusVariant = (status: RailwayStationProps['status']): 'success' | 'warning' | 'info' | 'secondary' => {
     switch (status) {
-      case 'completed': return 'success';
-      case 'in_progress': return 'warning';
-      case 'available': return 'info';
-      case 'locked': return 'secondary';
-      default: return 'secondary';
+      case 'completed': { return 'success';
+      }
+      case 'in_progress': { return 'warning';
+      }
+      case 'available': { return 'info';
+      }
+      case 'locked': { return 'secondary';
+      }
+      default: { return 'secondary';
+      }
     }
   };
 
@@ -177,31 +185,46 @@ export function RailwayStation({
 
   const getTaskStatusVariant = (status: StationTask['status']): 'success' | 'warning' | 'info' | 'secondary' => {
     switch (status) {
-      case 'completed': return 'success';
-      case 'in_progress': return 'warning';
-      case 'blocked': return 'secondary';
-      case 'pending': return 'info';
-      default: return 'info';
+      case 'completed': { return 'success';
+      }
+      case 'in_progress': { return 'warning';
+      }
+      case 'blocked': { return 'secondary';
+      }
+      case 'pending': { return 'info';
+      }
+      default: { return 'info';
+      }
     }
   };
 
   const getTaskPriorityVariant = (priority: StationTask['priority']): 'success' | 'warning' | 'info' | 'error' => {
     switch (priority) {
-      case 'low': return 'success';
-      case 'medium': return 'info';
-      case 'high': return 'warning';
-      case 'critical': return 'error';
-      default: return 'info';
+      case 'low': { return 'success';
+      }
+      case 'medium': { return 'info';
+      }
+      case 'high': { return 'warning';
+      }
+      case 'critical': { return 'error';
+      }
+      default: { return 'info';
+      }
     }
   };
 
   const getMilestoneStatusVariant = (status: StationMilestone['status']): 'success' | 'warning' | 'info' | 'error' => {
     switch (status) {
-      case 'completed': return 'success';
-      case 'in_progress': return 'warning';
-      case 'overdue': return 'error';
-      case 'upcoming': return 'info';
-      default: return 'info';
+      case 'completed': { return 'success';
+      }
+      case 'in_progress': { return 'warning';
+      }
+      case 'overdue': { return 'error';
+      }
+      case 'upcoming': { return 'info';
+      }
+      default: { return 'info';
+      }
     }
   };
 
@@ -226,14 +249,17 @@ export function RailwayStation({
   // ===== RENDER FUNCTIONS =====
 
   const renderStationHeader = () => (
-    <div className="text-center mb-8">
-      <div className="flex items-center justify-center gap-3 mb-4">
-        <h1 className={cn(
-          'text-3xl font-bold',
+    <div className={cn(
+      ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl
+    )}>
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
+        <h2 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           {stationName}
-        </h1>
+        </h2>
         <EnhancedBadge
           variant={getStatusVariant(status)}
           size="lg"
@@ -243,54 +269,54 @@ export function RailwayStation({
       </div>
       
       <p className={cn(
-        'text-lg mb-4',
+        ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
         ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
       )}>
         {description}
       </p>
 
       {/* Progress and Status */}
-      <div className="flex items-center justify-center gap-6 mb-6">
-        <div className="text-center">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg)}>
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
           <div className={cn(
-            'text-2xl font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
           )}>
             {Math.round(progress * 100)}%
           </div>
           <div className={cn(
-            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>Complete</div>
         </div>
         
-        <div className="text-center">
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
           <div className={cn(
-            'text-lg font-semibold',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>
             {pmbokPhase.charAt(0).toUpperCase() + pmbokPhase.slice(1)}
           </div>
           <div className={cn(
-            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>PMBOK Phase</div>
         </div>
         
-        <div className="text-center">
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
           <div className={cn(
-            'text-lg font-semibold',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>{estimatedDuration}</div>
           <div className={cn(
-            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>Duration</div>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="max-w-md mx-auto mb-6">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'], ENHANCED_DESIGN_TOKENS.foundation.layout.margin['x-auto'])}>
         <EnhancedProgress
           value={progress}
           variant="default"
@@ -299,7 +325,7 @@ export function RailwayStation({
       </div>
 
       {/* Academic Anchor */}
-      <div className="text-center">
+      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center}>
         <EnhancedBadge variant="outline" size="sm">
           Academic Anchor: {academicAnchor}
         </EnhancedBadge>
@@ -308,23 +334,26 @@ export function RailwayStation({
   );
 
   const renderOverviewTab = () => (
-    <div className="space-y-6">
+    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
       {/* Station Summary */}
-      <EnhancedCard variant="elevated" className="p-6">
-        <h3 className={cn(
-          'text-xl font-semibold mb-4',
-          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
-        )}>
-          Station Summary
-        </h3>
+      <EnhancedCard variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']}>
+                      <h3 className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
+                ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+              )}>
+                Station Summary
+              </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md
+        )}>
           <div>
             <strong>PMBOK Phase:</strong>
             <EnhancedBadge
               variant={getPMBOKVariant()}
               size="sm"
-              className="ml-2"
+              className={undefined}
             >
               {pmbokPhase}
             </EnhancedBadge>
@@ -335,7 +364,7 @@ export function RailwayStation({
             <EnhancedBadge
               variant={getStatusVariant(status)}
               size="sm"
-              className="ml-2"
+              className={undefined}
             >
               {status}
             </EnhancedBadge>
@@ -352,15 +381,15 @@ export function RailwayStation({
       </EnhancedCard>
 
       {/* Quick Actions */}
-      <EnhancedCard variant="elevated" className="p-6">
-        <h3 className={cn(
-          'text-xl font-semibold mb-4',
+      <EnhancedCard variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']}>
+        <h4 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Quick Actions
-        </h3>
+        </h4>
         
-        <div className="flex flex-wrap gap-3">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.wrap.wrap, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
           <EnhancedButton
             variant="outline"
             onClick={() => setIsEditing(!isEditing)}
@@ -383,14 +412,14 @@ export function RailwayStation({
   );
 
   const renderTasksTab = () => (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className={cn(
-          'text-xl font-semibold',
+    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+        <h4 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Station Tasks ({tasks.length})
-        </h3>
+        </h4>
         
         <EnhancedButton variant="outline" size="sm">
           Add Task
@@ -398,24 +427,24 @@ export function RailwayStation({
       </div>
 
       {tasks.map((task) => (
-        <EnhancedCard key={task.id} variant="elevated" className="p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1">
+        <EnhancedCard key={task.id} variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4']}>
+          <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
               <h4 className={cn(
-                'font-semibold mb-1',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
               )}>
                 {task.title}
               </h4>
               <p className={cn(
-                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
               )}>
                 {task.description}
               </p>
             </div>
             
-            <div className="flex gap-2 ml-4">
+            <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm, ENHANCED_DESIGN_TOKENS.foundation.layout.margin['4'])}>
               <EnhancedBadge
                 variant={getTaskStatusVariant(task.status)}
                 size="sm"
@@ -433,16 +462,18 @@ export function RailwayStation({
           </div>
 
           <div className={cn(
-          'grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3',
-          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
-        )}>
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-4'],
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>
             <div><strong>Assignee:</strong> {task.assignee}</div>
             <div><strong>Due:</strong> {task.dueDate}</div>
             <div><strong>Est. Hours:</strong> {task.estimatedHours}</div>
             <div><strong>Actual Hours:</strong> {task.actualHours}</div>
           </div>
 
-          <div className="flex gap-2">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
             <EnhancedButton
               variant="ghost"
               size="sm"
@@ -476,14 +507,14 @@ export function RailwayStation({
   );
 
   const renderMilestonesTab = () => (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className={cn(
-          'text-xl font-semibold',
+    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
+                <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+        <h4 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Station Milestones ({milestones.length})
-        </h3>
+        </h4>
         
         <EnhancedButton variant="outline" size="sm">
           Add Milestone
@@ -491,24 +522,24 @@ export function RailwayStation({
       </div>
 
       {milestones.map((milestone) => (
-        <EnhancedCard key={milestone.id} variant="elevated" className="p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1">
+        <EnhancedCard key={milestone.id} variant="elevated" className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4']}>
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+                                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
               <h4 className={cn(
-                'font-semibold mb-1',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
               )}>
                 {milestone.title}
               </h4>
               <p className={cn(
-                'text-sm',
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
               )}>
                 {milestone.description}
               </p>
             </div>
             
-            <div className="flex gap-2 ml-4">
+            <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm, ENHANCED_DESIGN_TOKENS.foundation.layout.margin['4'])}>
               <EnhancedBadge
                 variant={getMilestoneStatusVariant(milestone.status)}
                 size="sm"
@@ -519,14 +550,16 @@ export function RailwayStation({
           </div>
 
           <div className={cn(
-          'grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-3',
-          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
-        )}>
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'],
+            ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>
             <div><strong>Target Date:</strong> {milestone.targetDate}</div>
             <div><strong>Deliverables:</strong> {milestone.deliverables.length}</div>
           </div>
 
-          <div className="flex gap-2">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
             <EnhancedButton
               variant="ghost"
               size="sm"
@@ -554,23 +587,23 @@ export function RailwayStation({
     <EnhancedTabs.Root
       value={activeTab}
       onValueChange={setActiveTab}
-      className="w-full"
+              className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
     >
-      <EnhancedTabs.List className="grid w-full grid-cols-3">
+              <EnhancedTabs.List className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid, ENHANCED_DESIGN_TOKENS.foundation.layout.width.full, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[3])}>
         <EnhancedTabs.Trigger value="overview">Overview</EnhancedTabs.Trigger>
         <EnhancedTabs.Trigger value="tasks">Tasks ({tasks.length})</EnhancedTabs.Trigger>
         <EnhancedTabs.Trigger value="milestones">Milestones ({milestones.length})</EnhancedTabs.Trigger>
       </EnhancedTabs.List>
       
-      <EnhancedTabs.Content value="overview" className="mt-6">
+      <EnhancedTabs.Content value="overview">
         {renderOverviewTab()}
       </EnhancedTabs.Content>
       
-      <EnhancedTabs.Content value="tasks" className="mt-6">
+      <EnhancedTabs.Content value="tasks">
         {renderTasksTab()}
       </EnhancedTabs.Content>
       
-      <EnhancedTabs.Content value="milestones" className="mt-6">
+      <EnhancedTabs.Content value="milestones">
         {renderMilestonesTab()}
       </EnhancedTabs.Content>
     </EnhancedTabs.Root>

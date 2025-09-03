@@ -14,54 +14,72 @@
  * Part of the MAPS v3.0 layout enhanced component system.
  */
 
-import React, { forwardRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../../../utils/cn';
-
-// Import react-resizable-panels components
+import type React from 'react';
+import { forwardRef } from 'react';
 import {
   PanelGroup as RPPanelGroup,
   Panel as RPPanel,
   PanelResizeHandle as RPPanelResizeHandle,
-  type ImperativePanelHandle,
+  
   type PanelGroupProps as RPPanelGroupProps,
   type PanelProps as RPPanelProps,
   type PanelResizeHandleProps as RPPanelResizeHandleProps,
 } from 'react-resizable-panels';
 
+import { cn } from '../../../utils/cn';
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
+
+// Import react-resizable-panels components
+
 // PanelGroup Variants
 const panelGroupVariants = cva(
   [
     // Base styles
-    'relative flex h-full w-full',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
     // Enhanced styling
-    'rounded-md',
-    'bg-background',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
   ],
   {
     variants: {
       direction: {
-        horizontal: 'flex-row',
-        vertical: 'flex-col',
+        horizontal: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+        vertical: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
       },
       spacing: {
-        none: 'gap-0',
-        tight: 'gap-1',
-        normal: 'gap-2',
-        relaxed: 'gap-4',
-        loose: 'gap-6',
+        none: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.none,
+        tight: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+        normal: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+        relaxed: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+        loose: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
       },
       borderStyle: {
-        none: 'border-0',
-        subtle: 'border border-gray-200 dark:border-gray-700',
-        defined: 'border-2 border-gray-300 dark:border-gray-600',
-        prominent: 'border-2 border-blue-300 dark:border-blue-600',
+        none: ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+        subtle: cn(
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle
+        ),
+        defined: cn(
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thin,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+        ),
+        prominent: cn(
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thin,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
+        ),
       },
       surface: {
         default: '',
-        elevated: 'shadow-sm',
-        floating: 'shadow-md',
-        overlay: 'shadow-lg backdrop-blur-sm',
+        elevated: ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
+        floating: ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+        overlay: cn(
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm
+        ),
       },
     },
     defaultVariants: {
@@ -77,29 +95,30 @@ const panelGroupVariants = cva(
 const panelVariants = cva(
   [
     // Base styles
-    'relative flex flex-col overflow-hidden',
-    // Standard padding
-    'p-4',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
   ],
   {
     variants: {
       padding: {
-        none: 'p-0',
-        tight: 'p-2',
-        normal: 'p-4',
-        relaxed: 'p-6',
-        loose: 'p-8',
+        none: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[0],
+        tight: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+        normal: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+        relaxed: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+        loose: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[8],
       },
       scrollable: {
-        true: 'overflow-auto',
-        false: 'overflow-hidden',
+        true: ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.auto,
+        false: ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
       },
       surface: {
         default: '',
-        contrast: 'bg-gray-50 dark:bg-gray-800',
-        accent: 'bg-blue-50 dark:bg-blue-900/20',
-        warning: 'bg-yellow-50 dark:bg-yellow-900/20',
-        success: 'bg-green-50 dark:bg-green-900/20',
+        contrast: ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+        accent: ENHANCED_DESIGN_TOKENS.foundation.color.brand.accent.bg,
+        warning: ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle,
+        success: ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle,
       },
     },
     defaultVariants: {
@@ -114,24 +133,33 @@ const panelVariants = cva(
 const resizeHandleVariants = cva(
   [
     // Base styles
-    'relative flex items-center justify-center transition-colors',
-    'hover:bg-blue-100 dark:hover:bg-blue-900/30',
-    'focus:bg-blue-200 dark:focus:bg-blue-800/50',
-    'focus:outline-none focus:ring-2 focus:ring-blue-500',
-    // Interactive styling
-    'duration-200',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.colors,
+    ENHANCED_DESIGN_TOKENS.foundation.animation.duration[200],
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       direction: {
-        horizontal: 'h-full w-2 cursor-col-resize',
-        vertical: 'h-2 w-full cursor-row-resize',
+        horizontal: cn(
+          ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+          'w-2',
+          'cursor-col-resize'
+        ),
+        vertical: cn(
+          'h-2',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+          'cursor-row-resize'
+        ),
       },
       handleStyle: {
-        subtle: 'bg-transparent',
-        visible: 'bg-gray-200 dark:bg-gray-700',
-        prominent: 'bg-gray-300 dark:bg-gray-600',
-        accent: 'bg-blue-200 dark:bg-blue-700',
+        subtle: ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+        visible: ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+        prominent: ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+        accent: ENHANCED_DESIGN_TOKENS.foundation.color.brand.accent.bg,
       },
       withHandle: {
         true: '',
@@ -292,13 +320,25 @@ export const Panel = forwardRef<any, PanelProps>(
     const panelContent = (
       <>
         {title && (
-          <div className='mb-4 flex-shrink-0 border-b border-gray-200 pb-3 dark:border-gray-700'>
-            <h3 className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+          <div
+            className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.margin[4],
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0],
+              ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+              ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle
+            )}
+          >
+            <h3
+              className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+              )}
+            >
               {title}
             </h3>
           </div>
         )}
-        <div className='min-h-0 flex-1'>{children}</div>
+        <div className={cn('min-h-0', ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1])}>{children}</div>
       </>
     );
 
@@ -357,4 +397,6 @@ export const PanelResizeHandle = forwardRef<
 PanelResizeHandle.displayName = 'PanelResizeHandle';
 
 // Export everything needed
-export type { ImperativePanelHandle };
+
+
+export {type ImperativePanelHandle} from 'react-resizable-panels';

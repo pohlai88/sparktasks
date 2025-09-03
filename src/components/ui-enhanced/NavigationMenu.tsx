@@ -30,6 +30,7 @@ import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
 import { AccessibleIcon, Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED NAVIGATION MENU VARIANTS =====
@@ -40,48 +41,57 @@ import { cn } from '@/utils/cn';
  */
 const enhancedNavigationMenuVariants = cva(
   [
-    // Foundation: Layout positioning
-    'relative z-10',
+    // Foundation: Layout positioning - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    getZIndexClass('popover'),
 
-    // Foundation: Content layout with systematic spacing
-    'flex max-w-max flex-1 items-center justify-center',
+    // Foundation: Content layout with systematic spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['fit-content'] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.flex.alignment.center,
   ],
   {
     variants: {
       orientation: {
-        horizontal: 'flex-row',
-        vertical: 'flex-col items-start',
+        horizontal: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+        vertical: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start,
       },
 
-      // Liquid glass materials with governance
+      // Liquid glass materials with governance - Enhanced tokens
       vibrancy: {
         none: '',
         glass: [
-          'bg-background/80 backdrop-blur-md backdrop-saturate-150',
-          'border border-border/50',
-          'rounded-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
         ],
         floating: [
-          'bg-background/75 backdrop-blur-lg backdrop-saturate-150',
-          'border border-border/30',
-          'rounded-xl',
-          'shadow-elevation-high',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
       },
 
       // Size variants with platform awareness
       size: {
-        sm: 'gap-1 px-2 py-1',
-        md: 'gap-2 px-3 py-1.5',
-        lg: 'gap-3 px-4 py-2',
+        sm: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+        md: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+        lg: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
       },
 
-      // AAA compliance enforcement
+      // AAA compliance enforcement - Enhanced tokens
       enforceAAA: {
         false: '',
         true: [
-          // Enhanced contrast for AAA compliance
-          'border-border bg-background',
+          // Enhanced contrast for AAA compliance - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
         ],
       },
     },
@@ -100,17 +110,19 @@ const enhancedNavigationMenuVariants = cva(
  */
 const enhancedNavigationMenuListVariants = cva(
   [
-    // Foundation: Layout and spacing
-    'group flex flex-1 list-none items-center justify-center',
+    // Foundation: Layout and spacing - Enhanced tokens
+    'group',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1] + ' list-none ' + ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
 
-    // Foundation: Systematic spacing (8pt grid)
-    'gap-1',
+    // Foundation: Systematic spacing (8pt grid) - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
   ],
   {
     variants: {
       orientation: {
-        horizontal: 'flex-row space-x-1',
-        vertical: 'flex-col items-start space-y-1',
+        horizontal: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs,
+        vertical: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs,
       },
     },
 
@@ -134,48 +146,51 @@ const enhancedNavigationMenuItemVariants = cva('', {
  */
 const enhancedNavigationMenuTriggerVariants = cva(
   [
-    // Foundation: Layout and typography
-    'group flex items-center justify-between',
-    'text-sm font-medium leading-none',
+    // Foundation: Layout and typography - Enhanced tokens
+    'group',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'leading-none',
 
-    // Foundation: Platform-aware hit targets
-    'min-h-[44px] px-4 py-2',
-    '@media (hover: hover) { } min-h-[36px]',
+    // Foundation: Platform-aware hit targets - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
 
-    // Foundation: Apple HIG interaction patterns
-    'rounded-md',
-    'bg-transparent text-foreground',
+    // Foundation: Apple HIG interaction patterns - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
-    // Foundation: Transition and motion respect
-    'transition-colors duration-200 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Transition and motion respect - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.navHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Focus management (AAA compliant)
-    'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    // Foundation: Focus management (AAA compliant) - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Hover states (pointer-only for calm touch)
-    'pointer:hover:bg-muted pointer:hover:text-foreground',
-    'active:bg-muted/80',
+    // Foundation: Hover states (pointer-only for calm touch) - Enhanced tokens
+    'pointer:hover:bg-cosmic-void pointer:hover:text-cosmic-light',
+    'active:bg-cosmic-void/80',
 
-    // Foundation: Data state styling
-    'data-[active]:bg-muted data-[state=open]:bg-muted',
+    // Foundation: Data state styling - Enhanced tokens
+    'data-[active]:bg-cosmic-void data-[state=open]:bg-cosmic-void',
 
-    // Foundation: Disabled states
+    // Foundation: Disabled states - Enhanced tokens
     'disabled:pointer-events-none disabled:opacity-50',
   ],
   {
     variants: {
       variant: {
         default: '',
-        subtle: 'text-muted-foreground pointer:hover:text-foreground',
-        accent: 'text-accent pointer:hover:text-accent-hover',
+        subtle: ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary + ' pointer:hover:text-cosmic-light',
+        accent: 'text-aurora-accent pointer:hover:text-aurora-accent',
       },
 
       size: {
-        sm: 'h-9 px-3 text-xs',
-        md: 'min-h-[44px] px-4 py-2 text-sm',
-        lg: 'h-12 px-6 text-base',
+        sm: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        md: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+        lg: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
       },
     },
 
@@ -191,20 +206,23 @@ const enhancedNavigationMenuTriggerVariants = cva(
  */
 const enhancedNavigationMenuContentVariants = cva(
   [
-    // Foundation: Positioning and layout
-    'left-0 top-0 w-full',
+    // Foundation: Positioning and layout - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.positioning.left[0] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.positioning.top[0] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
-    // Foundation: Liquid glass materials (surface-only)
-    'bg-background/95 backdrop-blur-lg backdrop-saturate-150',
-    'border border-border/50',
-    'rounded-lg',
-    'shadow-elevation-high',
+    // Foundation: Liquid glass materials (surface-only) - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+    ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
 
-    // Foundation: Typography and spacing
-    'text-foreground',
-    'p-4',
+    // Foundation: Typography and spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
 
-    // Foundation: Motion with accessibility respect
+    // Foundation: Motion with accessibility respect - Enhanced tokens
     'data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out',
     'data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out',
     'data-[motion=from-end]:slide-in-from-right-52',
@@ -212,22 +230,23 @@ const enhancedNavigationMenuContentVariants = cva(
     'data-[motion=to-end]:slide-out-to-right-52',
     'data-[motion=to-start]:slide-out-to-left-52',
     'duration-200 ease-out',
-    'motion-reduce:duration-0',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Z-index management
-    'z-50',
+    // Foundation: Z-index management - Enhanced tokens
+    getZIndexClass('popover'),
   ],
   {
     variants: {
-      // Enhanced vibrancy with AAA protection
+      // Enhanced vibrancy with AAA protection - Enhanced tokens
       vibrancy: {
         standard: '',
         enhanced: [
-          'backdrop-saturate-180 bg-background/90 backdrop-blur-xl',
-          'border-border/30',
+          'backdrop-saturate-180 bg-cosmic-void/90 backdrop-blur-xl',
+          'border-cosmic-border/30',
         ],
         minimal: [
-          'border-border bg-background',
+          'border-cosmic-border',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
           'backdrop-blur-none backdrop-saturate-100',
         ],
       },
@@ -244,35 +263,37 @@ const enhancedNavigationMenuContentVariants = cva(
  */
 const enhancedNavigationMenuLinkVariants = cva(
   [
-    // Foundation: Layout and typography
-    'block select-none',
-    'rounded-md p-3',
-    'text-sm leading-none',
+    // Foundation: Layout and typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.block + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'leading-none',
 
-    // Foundation: Transition system
-    'transition-colors duration-200 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Transition system - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.navHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Interactive states
-    'text-foreground',
-    'pointer:hover:bg-muted pointer:hover:text-foreground',
-    'focus-visible:bg-muted focus-visible:text-foreground',
+    // Foundation: Interactive states - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    'pointer:hover:bg-cosmic-void pointer:hover:text-cosmic-light',
+    'focus-visible:bg-cosmic-void focus-visible:text-cosmic-light',
     'focus-visible:outline-none',
 
-    // Foundation: AAA focus management
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    // Foundation: AAA focus management - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
         default: '',
-        subtle: 'text-muted-foreground pointer:hover:text-foreground',
-        accent: 'text-accent pointer:hover:text-accent-hover',
+        subtle: ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary + ' pointer:hover:text-cosmic-light',
+        accent: 'text-aurora-accent pointer:hover:text-aurora-accent',
       },
 
       active: {
         false: '',
-        true: 'bg-muted font-medium text-foreground',
+        true: 'bg-cosmic-void font-medium ' + ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
       },
     },
 
@@ -287,41 +308,45 @@ const enhancedNavigationMenuLinkVariants = cva(
  * Navigation Menu Indicator variants for active state visualization
  */
 const enhancedNavigationMenuIndicatorVariants = cva([
-  // Foundation: Positioning
-  'top-full z-[1]',
-  'flex h-1.5 items-end justify-center overflow-hidden',
+  // Foundation: Positioning - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.positioning.top.full,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+  'h-1.5 items-end justify-center overflow-hidden',
 
-  // Foundation: Motion system
+  // Foundation: Motion system - Enhanced tokens
   'data-[state=visible]:animate-in data-[state=hidden]:animate-out',
   'data-[state=visible]:fade-in data-[state=hidden]:fade-out',
   'data-[state=hidden]:zoom-out-95 data-[state=visible]:zoom-in-95',
   'duration-200 ease-out',
-  'motion-reduce:duration-0',
+  ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 ]);
 
 /**
  * Navigation Menu Viewport variants for content container
  */
 const enhancedNavigationMenuViewportVariants = cva([
-  // Foundation: Positioning
+  // Foundation: Positioning - Enhanced tokens
   'origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)]',
   'w-full overflow-hidden',
 
-  // Foundation: Liquid glass with AAA compliance
-  'bg-background/95 backdrop-blur-lg backdrop-saturate-150',
-  'border border-border/50',
-  'rounded-lg',
-  'shadow-elevation-high',
+  // Foundation: Liquid glass with AAA compliance - Enhanced tokens
+  'bg-cosmic-void/95',
+  ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+  ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+  'border-cosmic-border/50',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+  ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
 
-  // Foundation: Typography
-  'text-foreground',
+  // Foundation: Typography - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
-  // Foundation: Animation system
+  // Foundation: Animation system - Enhanced tokens
   'data-[state=open]:animate-in data-[state=closed]:animate-out',
   'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90',
   'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
   'duration-200 ease-out',
-  'motion-reduce:duration-0',
+  ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 ]);
 
 // ===== ENHANCED NAVIGATION MENU INTERFACES =====
@@ -331,6 +356,7 @@ interface EnhancedNavigationMenuProps {
   vibrancy?: 'none' | 'glass' | 'floating';
   size?: 'sm' | 'md' | 'lg';
   enforceAAA?: boolean;
+  disableAnimations?: boolean;
   delayDuration?: number;
   skipDelayDuration?: number;
   'data-testid'?: string;
@@ -376,35 +402,44 @@ const EnhancedNavigationMenu = React.forwardRef<
       vibrancy = 'none',
       size = 'md',
       enforceAAA = false,
+      disableAnimations = false,
       delayDuration = 200,
       skipDelayDuration = 300,
       'data-testid': testId,
       ...props
     },
     ref
-  ) => (
-    <NavigationMenuPrimitive.Root
-      ref={ref}
-      className={cn(
-        enhancedNavigationMenuVariants({
-          orientation,
-          vibrancy,
-          size,
-          enforceAAA,
-        }),
-        className
-      )}
-      orientation={orientation}
-      delayDuration={delayDuration}
-      skipDelayDuration={skipDelayDuration}
-      data-aaa={enforceAAA ? 'true' : 'false'}
-      data-testid={testId}
-      {...props}
-    >
-      {children}
-      <EnhancedNavigationMenuViewport />
-    </NavigationMenuPrimitive.Root>
-  )
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    return (
+      <NavigationMenuPrimitive.Root
+        ref={ref}
+        className={cn(
+          enhancedNavigationMenuVariants({
+            orientation,
+            vibrancy,
+            size,
+            enforceAAA,
+          }),
+          motionClasses,
+          className
+        )}
+        orientation={orientation}
+        delayDuration={delayDuration}
+        skipDelayDuration={skipDelayDuration}
+        data-aaa={enforceAAA ? 'true' : 'false'}
+        data-testid={testId}
+        {...props}
+      >
+        {children}
+        <EnhancedNavigationMenuViewport />
+      </NavigationMenuPrimitive.Root>
+    );
+  }
 );
 
 /**
@@ -476,7 +511,7 @@ const EnhancedNavigationMenuTrigger = React.forwardRef<
         {showIndicator && (
           <AccessibleIcon>
             <ChevronDown
-              className="relative top-[1px] ml-1 size-3 transition duration-200 group-data-[state=open]:rotate-180"
+              className={`relative top-px ml-1 size-3 transition-colors duration-200 group-data-[state=open]:rotate-180`}
             />
           </AccessibleIcon>
         )}
@@ -618,6 +653,109 @@ EnhancedNavigationMenuIndicator.displayName =
 EnhancedNavigationMenuViewport.displayName =
   NavigationMenuPrimitive.Viewport.displayName;
 
+// ===== NAVIGATION MENU FACTORY PATTERN =====
+
+/**
+ * Factory for creating pre-configured navigation menu components
+ */
+const NavigationMenuFactory = {
+  /**
+   * Default navigation menu configuration
+   */
+  default: (props: Partial<EnhancedNavigationMenuProps> = {}) => ({
+    orientation: 'horizontal' as const,
+    vibrancy: 'none' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Glass navigation menu configuration
+   */
+  glass: (props: Partial<EnhancedNavigationMenuProps> = {}) => ({
+    orientation: 'horizontal' as const,
+    vibrancy: 'glass' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Floating navigation menu configuration
+   */
+  floating: (props: Partial<EnhancedNavigationMenuProps> = {}) => ({
+    orientation: 'horizontal' as const,
+    vibrancy: 'floating' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Vertical navigation menu configuration
+   */
+  vertical: (props: Partial<EnhancedNavigationMenuProps> = {}) => ({
+    orientation: 'vertical' as const,
+    vibrancy: 'none' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Small navigation menu configuration
+   */
+  small: (props: Partial<EnhancedNavigationMenuProps> = {}) => ({
+    orientation: 'horizontal' as const,
+    vibrancy: 'none' as const,
+    size: 'sm' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Large navigation menu configuration
+   */
+  large: (props: Partial<EnhancedNavigationMenuProps> = {}) => ({
+    orientation: 'horizontal' as const,
+    vibrancy: 'none' as const,
+    size: 'lg' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Accessible navigation menu configuration with AAA compliance
+   */
+  accessible: (props: Partial<EnhancedNavigationMenuProps> = {}) => ({
+    orientation: 'horizontal' as const,
+    vibrancy: 'none' as const,
+    size: 'md' as const,
+    enforceAAA: true,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Performance-optimized navigation menu with disabled animations
+   */
+  performance: (props: Partial<EnhancedNavigationMenuProps> = {}) => ({
+    orientation: 'horizontal' as const,
+    vibrancy: 'none' as const,
+    size: 'md' as const,
+    enforceAAA: false,
+    disableAnimations: true,
+    ...props,
+  }),
+};
+
 // ===== EXPORTS =====
 
 export {
@@ -629,6 +767,7 @@ export {
   EnhancedNavigationMenuLink,
   EnhancedNavigationMenuIndicator,
   EnhancedNavigationMenuViewport,
+  NavigationMenuFactory,
   enhancedNavigationMenuVariants,
   enhancedNavigationMenuTriggerVariants,
   enhancedNavigationMenuContentVariants,
@@ -641,3 +780,5 @@ export type {
   EnhancedNavigationMenuContentProps,
   EnhancedNavigationMenuLinkProps,
 };
+
+

@@ -30,6 +30,7 @@ import { Check, ChevronDown, Search, X } from 'lucide-react';
 import React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED COMBOBOX VARIANTS =====
@@ -40,101 +41,122 @@ import { cn } from '@/utils/cn';
  */
 const enhancedComboboxVariants = cva(
   [
-    // Foundation: Layout/shape - Clean systematic design
-    'relative flex w-full',
+    // Foundation: Layout/shape - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
-    // Foundation: Typography - Apple HIG hierarchy
-    'text-sm',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Shape - Systematic from design tokens
-    'rounded-md border',
+    // Foundation: Shape - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
 
-    // Foundation: Spacing - 8pt grid system
-    'min-h-10',
+    // Foundation: Spacing - Enhanced tokens (padding-based sizing)
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
 
-    // Foundation: Colors - Deep space foundation with ethereal accents
-    'bg-input text-foreground',
-    'border-border',
+    // Foundation: Colors - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
-    // Foundation: Motion - Respect user preferences
-    'transition-all duration-200 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: States - Disabled styling
+    // Foundation: States - Enhanced tokens
     'disabled:cursor-not-allowed disabled:opacity-50',
 
-    // Foundation: Focus - AAA compliant ring system
-    'focus-within:outline-none',
-    'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
+    // Foundation: Focus - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
         // Default: Clean, professional baseline
-        default: ['border-border bg-input', 'focus-within:border-ring'],
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          'focus-within:border-aurora-accent'
+        ],
 
         // Ghost: Minimal, elegant
         ghost: [
-          'border-transparent bg-transparent',
-          'focus-within:border-border focus-within:bg-input',
+          `${ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none} ${ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent}`,
+          'focus-within:border-cosmic-border focus-within:bg-cosmic-void',
         ],
 
         // Filled: Subtle depth
         filled: [
-          'border-transparent bg-muted',
-          'focus-within:border-border focus-within:bg-input',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          'focus-within:border-cosmic-border focus-within:bg-cosmic-void',
         ],
 
         // Outline: Clear boundaries
-        outline: ['border-border bg-transparent', 'focus-within:border-ring'],
+        outline: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          'focus-within:border-aurora-accent'
+        ],
 
         // Floating: Modern glass effect (when vibrancy enabled)
         floating: [
-          'border-border/50 bg-input/80',
-          'focus-within:border-ring focus-within:bg-input',
+          `${ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']} ${ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent}`,
+          'focus-within:border-aurora-accent focus-within:bg-cosmic-void',
         ],
       },
 
       size: {
-        // Clean systematic sizing with 8pt grid
-        sm: ['min-h-8 text-xs'],
-        md: ['min-h-10 text-sm'],
-        lg: ['min-h-12 text-base'],
-        // Touch: Platform-aware for mobile
-        touch: ['min-h-11 text-sm'],
+        // Clean systematic sizing with enhanced tokens
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2], ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        // Touch: Platform-aware for mobile (larger padding)
+        touch: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
       },
 
       // Validation state system
       state: {
         default: '',
         success: [
-          'border-success text-success-foreground',
-          'focus-within:ring-success',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.success,
+          'text-cosmic-dark',
+          'focus-within:ring-cosmic-success',
         ],
         warning: [
-          'border-warning text-warning-foreground',
-          'focus-within:ring-warning',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.warning,
+          'text-cosmic-dark',
+          'focus-within:ring-cosmic-warning',
         ],
         error: [
-          'border-error text-error-foreground',
-          'focus-within:ring-error',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
+          'text-cosmic-dark',
+          'focus-within:ring-cosmic-danger',
         ],
       },
 
       // Liquid glass materials
       vibrancy: {
         none: '',
-        glass: ['bg-input/80 backdrop-blur-md backdrop-saturate-150'],
+        glass: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150]
+        ],
         floating: [
-          'bg-input/75 backdrop-blur-lg backdrop-saturate-150',
-          'shadow-elevation-medium',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
       },
 
       // Density variations following Apple HIG
       density: {
-        comfortable: ['px-3 py-2'],
-        compact: ['px-2 py-1'],
+        comfortable: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2]],
+        compact: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1]],
       },
 
       // AAA compliance enforcement
@@ -142,8 +164,8 @@ const enhancedComboboxVariants = cva(
         false: '',
         true: [
           // Use AAA-compliant alternatives
-          'aaa:border-border-strong aaa:bg-background',
-          'aaa:focus-within:ring-accent-solid-aaa',
+          'aaa:border-cosmic-border-strong aaa:bg-cosmic-void',
+          'aaa:focus-within:ring-aurora-accent',
         ],
       },
     },
@@ -170,7 +192,7 @@ const enhancedComboboxVariants = cva(
       {
         vibrancy: ['glass', 'floating'],
         size: 'sm',
-        className: 'backdrop-blur-sm',
+        className: ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
       },
     ],
 
@@ -190,10 +212,10 @@ const enhancedComboboxVariants = cva(
  */
 const enhancedComboboxInputVariants = cva(
   [
-    // Foundation: Clean input styling
-    'flex-1 bg-transparent',
+    // Foundation: Clean input styling - Enhanced tokens
+    `${ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1]} ${ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent}`,
     'border-0 outline-none',
-    'placeholder:text-muted-foreground',
+    'placeholder:text-cosmic-subtle',
     'disabled:cursor-not-allowed disabled:opacity-50',
   ],
   {
@@ -214,11 +236,15 @@ const enhancedComboboxInputVariants = cva(
  */
 const enhancedComboboxContentVariants = cva(
   [
-    // Foundation: Elevated dropdown surface
-    'relative z-50 max-h-96 min-w-[8rem] overflow-hidden',
-    'bg-popover text-popover-foreground rounded-md border shadow-elevation-high',
+    // Foundation: Elevated dropdown surface - Enhanced tokens
+    `${getZIndexClass('popover')} ${ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative} max-h-96 min-w-[8rem] ${ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden}`,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
 
-    // Foundation: Motion
+    // Foundation: Motion - Enhanced tokens
     'animate-in fade-in-0 zoom-in-95',
     'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
 
@@ -230,10 +256,16 @@ const enhancedComboboxContentVariants = cva(
     variants: {
       vibrancy: {
         none: '',
-        glass: ['bg-popover/95 backdrop-blur-md backdrop-saturate-150'],
+        glass: [
+          'bg-cosmic-void/95',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150]
+        ],
         floating: [
-          'bg-popover/90 backdrop-blur-lg backdrop-saturate-150',
-          'shadow-elevation-floating',
+          'bg-cosmic-void/90',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
       },
     },
@@ -248,22 +280,29 @@ const enhancedComboboxContentVariants = cva(
  */
 const enhancedComboboxItemVariants = cva(
   [
-    // Foundation: Item layout
-    'relative flex cursor-pointer select-none items-center',
-    'rounded-sm px-2 py-1.5 text-sm text-foreground',
+    // Foundation: Item layout - Enhanced tokens
+    'relative',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+    'select-none',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    'rounded-sm px-2 py-1.5',
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
-    // Foundation: States
-    'aria-selected:bg-accent aria-selected:text-accent-foreground',
+    // Foundation: States - Enhanced tokens
+    'aria-selected:bg-aurora-accent aria-selected:text-cosmic-dark',
     'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
 
-    // Foundation: Motion
-    'transition-colors duration-150 motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Focus
-    'focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-none',
+    // Foundation: Focus - Enhanced tokens
+    'focus-visible:bg-aurora-accent focus-visible:text-cosmic-dark focus-visible:outline-none',
 
-    // Foundation: Hover
-    'hover:bg-muted',
+    // Foundation: Hover - Enhanced tokens
+    'hover:bg-cosmic-void/50',
   ],
   {
     variants: {
@@ -290,6 +329,12 @@ interface EnhancedComboboxProps
    * Polymorphic rendering support
    */
   asChild?: boolean;
+
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
 
   /**
    * Current value
@@ -415,6 +460,7 @@ const EnhancedCombobox = React.forwardRef<
       enforceAAA,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       asChild: _asChild = false, // Not used since we always render as button
+      disableAnimations = false,
       value,
       defaultValue,
       onValueChange,
@@ -485,6 +531,11 @@ const EnhancedCombobox = React.forwardRef<
       return options.find(option => option.value === currentValue);
     }, [options, currentValue]);
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     return (
       <ComboboxPrimitive.Root open={open} onOpenChange={setOpen}>
         <ComboboxPrimitive.Trigger asChild disabled={disabled}>
@@ -499,24 +550,34 @@ const EnhancedCombobox = React.forwardRef<
                 density,
                 enforceAAA,
               }),
+              motionClasses,
               className
             )}
             type='button'
             {...props}
           >
-            <div className="flex flex-1 items-center gap-2">
+            <div className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1],
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm
+            )}>
               {selectedOption ? (
-                <span className="text-foreground">
+                <span className={ENHANCED_DESIGN_TOKENS.foundation.color.content.primary}>
                   {selectedOption.label}
                 </span>
               ) : (
-                <span className="text-muted-foreground">
+                <span className={ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary}>
                   {placeholder}
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs
+            )}>
               {clearable && selectedOption && (
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <div
@@ -533,13 +594,20 @@ const EnhancedCombobox = React.forwardRef<
                       handleValueChange('');
                     }
                   }}
-                  className="flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm opacity-50 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className={cn(
+                    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+                    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+                    ENHANCED_DESIGN_TOKENS.foundation.icon.size.md,
+                    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+                    'cursor-pointer opacity-50 pointer:hover:opacity-100',
+                    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+                  )}
                   aria-label='Clear selection'
                 >
-                  <X className="h-3 w-3" />
+                  <X className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)} />
                 </div>
               )}
-              <ChevronDown className="h-4 w-4 opacity-50" />
+              <ChevronDown className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.md, 'opacity-50')} />
             </div>
 
             {/* Hidden input for form submission */}
@@ -564,12 +632,24 @@ const EnhancedCombobox = React.forwardRef<
             sideOffset={4}
           >
             {searchable && (
-              <div className="flex items-center border-b border-border px-3">
-                <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+              <div className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+                ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3]
+              )}>
+                <Search className={cn('mr-2 shrink-0 opacity-50', ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)} />
                 <input
                   className={cn(
                     enhancedComboboxInputVariants({ density }),
-                    'flex h-10 w-full bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50'
+                    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+                    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+                    ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+                    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+                    'outline-none',
+                    'placeholder:text-cosmic-subtle',
+                    'disabled:cursor-not-allowed disabled:opacity-50'
                   )}
                   placeholder={searchPlaceholder}
                   value={currentSearchValue}
@@ -578,9 +658,14 @@ const EnhancedCombobox = React.forwardRef<
               </div>
             )}
 
-            <div className="max-h-[300px] overflow-auto p-1">
+            <div className={cn('max-h-[300px]', ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.auto, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1])}>
               {filteredOptions.length === 0 ? (
-                <div className="py-6 text-center text-sm text-muted-foreground">
+                <div className={cn(
+                  'py-6',
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+                  ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+                )}>
                   {emptyMessage}
                 </div>
               ) : (
@@ -591,7 +676,7 @@ const EnhancedCombobox = React.forwardRef<
                       enhancedComboboxItemVariants({ density }),
                       option.disabled && 'pointer-events-none opacity-50',
                       option.value === currentValue &&
-                        'bg-accent text-accent-foreground'
+                        'bg-aurora-accent text-cosmic-dark'
                     )}
                     onClick={() =>
                       !option.disabled && handleValueChange(option.value)
@@ -609,14 +694,7 @@ const EnhancedCombobox = React.forwardRef<
                     tabIndex={option.disabled ? -1 : 0}
                     aria-selected={option.value === currentValue}
                   >
-                    <Check
-                      className={cn(
-                        'mr-2 h-4 w-4',
-                        option.value === currentValue
-                          ? 'opacity-100'
-                          : 'opacity-0'
-                      )}
-                    />
+                    <Check className={cn('mr-2', ENHANCED_DESIGN_TOKENS.foundation.icon.size.md, option.value === currentValue ? 'opacity-100' : 'opacity-0')} />
                     {option.label}
                   </div>
                 ))
@@ -765,6 +843,19 @@ const ComboboxFactory = {
     density: 'comfortable' as const,
     searchable: true,
     clearable: true,
+    ...overrides,
+  }),
+
+  /**
+   * Performance-optimized combobox with disabled animations
+   */
+  performance: (overrides?: Partial<EnhancedComboboxProps>) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    density: 'comfortable' as const,
+    disableAnimations: true,
+    searchable: true,
+    clearable: false,
     ...overrides,
   }),
 };

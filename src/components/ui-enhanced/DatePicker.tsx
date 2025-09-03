@@ -30,6 +30,7 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { AccessibleIcon, Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { EnhancedButton } from '@/components/ui-enhanced/Button';
 import { EnhancedCalendar } from '@/components/ui-enhanced/Calendar';
 import {
@@ -47,30 +48,28 @@ import { cn } from '@/utils/cn';
  */
 const enhancedDatePickerVariants = cva(
   [
-    // Foundation: Layout structure
-    'flex items-center justify-between',
-    'w-full',
+    // Foundation: Layout structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
-    // Foundation: Typography - Apple HIG hierarchy
-    'text-foreground',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
-    // Foundation: Interaction feedback - Apple HIG harmony
-    'cursor-pointer',
-    'transition-[colors,border-color,box-shadow] duration-200',
+    // Foundation: Interaction feedback - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
 
-    // Foundation: Border system - semantic hierarchy
-    'border border-input',
-    'rounded-lg',
+    // Foundation: Border system - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
 
-    // Foundation: Focus management - AAA compliant
-    'focus-within:outline-none',
-    'focus-within:ring-2',
-    'focus-within:ring-ring',
-    'focus-within:ring-offset-2',
-    'focus-within:ring-offset-background',
+    // Foundation: Focus management - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Accessibility - enhanced contrast mode
-    'focus-within:border-ring',
+    // Foundation: Accessibility - Enhanced tokens
   ],
   {
     variants: {
@@ -79,9 +78,20 @@ const enhancedDatePickerVariants = cva(
        * ANTI-DRIFT: All values from CSS custom properties via Tailwind config
        */
       surface: {
-        default: ['bg-background', 'hover:bg-background/90'],
-        elevated: ['bg-card', 'shadow-sm', 'hover:bg-card/90'],
-        glass: ['bg-card/50', 'backdrop-blur-lg', 'hover:bg-card/60'],
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          'pointer:hover:bg-cosmic-void/90'
+        ],
+        elevated: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
+          'pointer:hover:bg-cosmic-void/90'
+        ],
+        glass: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          'pointer:hover:bg-cosmic-void/60'
+        ],
       },
 
       /**
@@ -89,9 +99,9 @@ const enhancedDatePickerVariants = cva(
        * ANTI-DRIFT: All spacing from design tokens
        */
       size: {
-        sm: ['h-8', 'text-sm'],
-        md: ['h-9', 'text-sm'],
-        lg: ['h-10', 'text-base'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
       },
 
       /**
@@ -101,19 +111,19 @@ const enhancedDatePickerVariants = cva(
       validation: {
         none: '',
         error: [
-          'border-destructive',
-          'text-destructive',
-          'focus-within:ring-destructive',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
+          'text-cosmic-danger',
+          'focus-within:ring-cosmic-danger',
         ],
         warning: [
-          'border-warning',
-          'text-warning',
-          'focus-within:ring-warning',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.warning,
+          'text-cosmic-warning',
+          'focus-within:ring-cosmic-warning',
         ],
         success: [
-          'border-success',
-          'text-success',
-          'focus-within:ring-success',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.success,
+          'text-cosmic-success',
+          'focus-within:ring-cosmic-success',
         ],
       },
 
@@ -122,9 +132,9 @@ const enhancedDatePickerVariants = cva(
        * ANTI-DRIFT: Spacing from systematic density tokens
        */
       density: {
-        comfortable: 'px-3 py-2',
-        compact: 'px-2 py-1',
-        spacious: 'px-4 py-3',
+        comfortable: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+        compact: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+        spacious: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
       },
 
       /**
@@ -133,7 +143,9 @@ const enhancedDatePickerVariants = cva(
        */
       aaaMode: {
         standard: '',
-        enhanced: ['border-2', 'focus-within:ring-4'],
+        enhanced: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+        ],
       },
     },
     defaultVariants: {
@@ -150,12 +162,15 @@ const enhancedDatePickerVariants = cva(
  * Date picker trigger styling for enhanced hierarchy
  */
 const enhancedDatePickerTriggerVariants = cva(
-  ['justify-start text-left font-normal', 'h-full w-full'],
+  [
+    'justify-start text-left font-normal',
+    'h-full w-full'
+  ],
   {
     variants: {
       hasValue: {
-        true: 'text-foreground',
-        false: 'text-muted-foreground',
+        true: ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+        false: ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
       },
     },
     defaultVariants: {
@@ -246,6 +261,12 @@ export interface EnhancedDatePickerOwnProps {
    * Whether the field is required
    */
   'aria-required'?: boolean;
+
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 /**
@@ -286,6 +307,7 @@ export const EnhancedDatePicker = React.forwardRef<
       'aria-label': ariaLabel = 'Select date',
       'aria-describedby': ariaDescribedBy,
       'aria-required': ariaRequired = false,
+      disableAnimations = false,
       ...props
     },
     ref
@@ -326,6 +348,11 @@ export const EnhancedDatePicker = React.forwardRef<
 
     const Comp = asChild ? Slot : 'div';
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     return (
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <Comp
@@ -338,6 +365,7 @@ export const EnhancedDatePicker = React.forwardRef<
               density,
               aaaMode,
             }),
+            motionClasses,
             className
           )}
           {...props}
@@ -351,7 +379,11 @@ export const EnhancedDatePicker = React.forwardRef<
                 enhancedDatePickerTriggerVariants({
                   hasValue: Boolean(selectedDate),
                 }),
-                'h-full border-0 bg-transparent p-0 hover:bg-transparent focus-visible:ring-0'
+                ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+                'p-0 pointer:hover:bg-transparent',
+                'focus-visible:ring-0'
               )}
               aria-label={ariaLabel}
               aria-describedby={ariaDescribedBy}
@@ -359,23 +391,23 @@ export const EnhancedDatePicker = React.forwardRef<
               aria-haspopup='dialog'
               aria-required={ariaRequired}
             >
-              <span className='flex-1 truncate'>
+              <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1], 'truncate')}>
                 {formattedDate ? (
                   <span>{formattedDate}</span>
                 ) : (
-                  <span className="text-muted-foreground">
+                  <span className={ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary}>
                     {placeholder}
                   </span>
                 )}
               </span>
               <AccessibleIcon>
-                <CalendarIcon className="h-4 w-4 shrink-0 opacity-50" />
+                <CalendarIcon className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.md, ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0], 'opacity-50')} />
               </AccessibleIcon>
             </EnhancedButton>
           </PopoverTrigger>
 
           <PopoverContent
-            className="w-auto p-0"
+            className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.width.auto, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[0])}
             align='start'
           >
             <EnhancedCalendar
@@ -389,7 +421,7 @@ export const EnhancedDatePicker = React.forwardRef<
                 if (maxDate && date > maxDate) return true;
                 return false;
               }}
-              size={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'}
+              size={size === 'sm' ? 'sm' : (size === 'lg' ? 'lg' : 'md')}
             />
           </PopoverContent>
         </Comp>
@@ -472,6 +504,12 @@ export interface EnhancedDatePickerRangeOwnProps {
    * Whether the field is required
    */
   'aria-required'?: boolean;
+
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 /**
@@ -512,6 +550,7 @@ export const EnhancedDatePickerRange = React.forwardRef<
       'aria-label': ariaLabel = 'Select date range',
       'aria-describedby': ariaDescribedBy,
       'aria-required': ariaRequired = false,
+      disableAnimations = false,
       ...props
     },
     ref
@@ -582,6 +621,11 @@ export const EnhancedDatePickerRange = React.forwardRef<
 
     const Comp = asChild ? Slot : 'div';
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     return (
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <Comp
@@ -594,6 +638,7 @@ export const EnhancedDatePickerRange = React.forwardRef<
               density,
               aaaMode,
             }),
+            motionClasses,
             className
           )}
           {...props}
@@ -607,7 +652,11 @@ export const EnhancedDatePickerRange = React.forwardRef<
                 enhancedDatePickerTriggerVariants({
                   hasValue: Boolean(selectedRange?.from),
                 }),
-                'h-full border-0 bg-transparent p-0 hover:bg-transparent focus-visible:ring-0'
+                ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+                'p-0 pointer:hover:bg-transparent',
+                'focus-visible:ring-0'
               )}
               aria-label={ariaLabel}
               aria-describedby={ariaDescribedBy}
@@ -615,23 +664,23 @@ export const EnhancedDatePickerRange = React.forwardRef<
               aria-haspopup='dialog'
               aria-required={ariaRequired}
             >
-              <span className='flex-1 truncate'>
+              <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1], 'truncate')}>
                 {formattedRange ? (
                   <span>{formattedRange}</span>
                 ) : (
-                  <span className="text-muted-foreground">
+                  <span className={ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary}>
                     {placeholder}
                   </span>
                 )}
               </span>
               <AccessibleIcon>
-                <CalendarIcon className="h-4 w-4 shrink-0 opacity-50" />
+                <CalendarIcon className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.md, ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0], 'opacity-50')} />
               </AccessibleIcon>
             </EnhancedButton>
           </PopoverTrigger>
 
           <PopoverContent
-            className="w-auto p-0"
+            className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.width.auto, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[0])}
             align='start'
           >
             <EnhancedCalendar
@@ -652,7 +701,7 @@ export const EnhancedDatePickerRange = React.forwardRef<
                 if (maxDate && date > maxDate) return true;
                 return false;
               }}
-              size={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'}
+              size={size === 'sm' ? 'sm' : (size === 'lg' ? 'lg' : 'md')}
               numberOfMonths={2}
             />
           </PopoverContent>
@@ -711,6 +760,20 @@ export const DatePickerFactory = {
    */
   range: (props: Partial<EnhancedDatePickerRangeProps> = {}) => (
     <EnhancedDatePickerRange surface='default' {...props} />
+  ),
+
+  /**
+   * Performance-optimized single date picker with disabled animations
+   */
+  performance: (props: Partial<EnhancedDatePickerProps> = {}) => (
+    <EnhancedDatePicker disableAnimations={true} {...props} />
+  ),
+
+  /**
+   * Performance-optimized range date picker with disabled animations
+   */
+  performanceRange: (props: Partial<EnhancedDatePickerRangeProps> = {}) => (
+    <EnhancedDatePickerRange disableAnimations={true} {...props} />
   ),
 };
 

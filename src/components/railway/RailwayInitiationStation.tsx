@@ -8,30 +8,34 @@
  * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
  * - Radix Compatibility: ✅ Polymorphic pattern ready
  * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
+ * - Railway App Shell SSOT: ✅ Full compliance with v4.0 standards
  *
  * ARCHITECTURE INTEGRATION:
  * - MAPS4 Enhanced Tokens → Railway Initiation Station variants → Cosmic user experience
  * - MAPS4 Guidelines → Railway Initiation Station behavior → Accessibility excellence
  * - Railway Ecosystem → Initiation Station → Project Management
+ * - Railway App Shell SSOT → Initiation Station → Standardized development pattern
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
  * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
+ * → railway station (initiation|budget|schedule|conductor) → project lifecycle
  *
  * VERSION: 4.0.0
  * LAST UPDATED: 2025-01-27
+ * SSOT COMPLIANCE: Railway App Shell SSOT v4.0
  */
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { EnhancedBadge } from '@/components/ui-enhanced/Badge';
 import { EnhancedButton } from '@/components/ui-enhanced/Button';
 import { EnhancedCard } from '@/components/ui-enhanced/Card';
 import { EnhancedInput } from '@/components/ui-enhanced/Input';
-import { EnhancedTextarea } from '@/components/ui-enhanced/Textarea';
-import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
 import { EnhancedProgress } from '@/components/ui-enhanced/Progress';
+import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
+import { EnhancedTextarea } from '@/components/ui-enhanced/Textarea';
 import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
@@ -43,48 +47,53 @@ import { cn } from '@/utils/cn';
  */
 const railwayInitiationStationVariants = cva(
   [
-    // Foundation: Layout/shape - Clean Tailwind utilities
-    'w-full max-w-6xl mx-auto',
-    'space-y-8',
+    // Foundation: Layout/shape - Enhanced design tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-6xl'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.margin['x-auto'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
     
     // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
     // MAPS4 Foundation: Motion - Respect user preferences
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         // Default: Clean initiation station with subtle elevation
-        default: ['p-8', 'rounded-2xl'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl']],
         
         // Elevated: Enhanced depth with stronger shadow
         elevated: [
-          'p-10', 
-          'rounded-3xl',
-          'shadow-elevation-lg',
-          'border border-aurora-accent'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10'], 
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['3xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
         ],
         
         // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
-          'p-8',
-          'rounded-2xl',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
-          'border border-cosmic-border/30'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
         ],
       },
       
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['space-y-6', 'p-6'],
-        md: ['space-y-8', 'p-8'],
-        lg: ['space-y-10', 'p-10'],
-        xl: ['space-y-12', 'p-12'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8']],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10']],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['12']],
       },
     },
     
@@ -214,7 +223,7 @@ export function RailwayInitiationStation({
     budget: {
       estimated: projectData?.budget?.estimated || 0,
       currency: projectData?.budget?.currency || 'USD',
-      approvalRequired: projectData?.budget?.approvalRequired || true,
+      approvalRequired: projectData?.budget?.approvalRequired ?? true,
     },
     timeline: {
       startDate: projectData?.timeline?.startDate || '',
@@ -291,6 +300,8 @@ export function RailwayInitiationStation({
     return Math.round((completedSteps / totalSteps) * 100);
   };
 
+  const completionPct = useMemo(() => calculateCompletion(), [steps]);
+
   const handleSave = () => {
     const completionPercentage = calculateCompletion();
     const dataToSave = { ...formData, completionPercentage };
@@ -305,14 +316,18 @@ export function RailwayInitiationStation({
 
   const getStepStatusColor = (status: InitiationStep['status']) => {
     switch (status) {
-      case 'completed':
+      case 'completed': {
         return 'success';
-      case 'in_progress':
+      }
+      case 'in_progress': {
         return 'warning';
-      case 'blocked':
+      }
+      case 'blocked': {
         return 'error';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
@@ -331,7 +346,10 @@ export function RailwayInitiationStation({
       className={cn(railwayInitiationStationVariants({ variant, size }))}
     >
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md
+      )}>
                  <h1 className={cn(
            ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium,
            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -346,10 +364,9 @@ export function RailwayInitiationStation({
         </p>
         
         {/* Progress Overview */}
-        <div className="flex items-center justify-center space-x-4">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           <EnhancedProgress
-            value={calculateCompletion()}
-            className="w-64"
+            value={completionPct}
             variant="default"
             size="md"
           />
@@ -357,7 +374,7 @@ export function RailwayInitiationStation({
              ENHANCED_DESIGN_TOKENS.foundation.typography.label,
              ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
            )}>
-             {calculateCompletion()}% Complete
+            {completionPct}% Complete
            </span>
         </div>
       </div>
@@ -366,25 +383,25 @@ export function RailwayInitiationStation({
       <EnhancedTabs.Root
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-full"
+        className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
       >
-        <EnhancedTabs.List className="grid w-full grid-cols-6">
+        <EnhancedTabs.List className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid, ENHANCED_DESIGN_TOKENS.foundation.layout.width.full, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[6])}>
           {tabs.map((tab) => (
             <EnhancedTabs.Trigger
               key={tab.id}
               value={tab.id}
-              className="flex items-center space-x-2"
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}
             >
               <span>{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
+              <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.hidden, ENHANCED_DESIGN_TOKENS.foundation.layout.display.inline)}>{tab.label}</span>
             </EnhancedTabs.Trigger>
           ))}
         </EnhancedTabs.List>
 
         {/* Overview Tab */}
-        <EnhancedTabs.Content value="overview" className="space-y-6">
+        <EnhancedTabs.Content value="overview" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -392,21 +409,27 @@ export function RailwayInitiationStation({
                  Initiation Progress
                </h3>
               
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-3']
+              )}>
                 {steps.map((step) => (
                   <div
                     key={step.id}
                     className={cn(
-                      "p-4 rounded-lg border transition-all duration-200",
-                                             step.status === 'completed' && "border-cosmic-success bg-cosmic-success/5",
-                       step.status === 'in_progress' && "border-cosmic-warning bg-cosmic-warning/5",
-                       step.status === 'blocked' && "border-cosmic-danger bg-cosmic-danger/5",
-                       step.status === 'pending' && "border-cosmic-border bg-cosmic-muted/5"
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], 
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg, 
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, 
+                      ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+                      step.status === 'completed' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle),
+                      step.status === 'in_progress' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle),
+                      step.status === 'blocked' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle),
+                      step.status === 'pending' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)
                     )}
                   >
-                    <div className="flex items-start justify-between mb-2">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <h4 className={cn(
-                        "font-medium",
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                       )}>
                         {step.title}
@@ -425,13 +448,12 @@ export function RailwayInitiationStation({
                        {step.description}
                      </p>
                     {step.required && (
-                                             <span className={cn(
-                         "inline-block mt-2",
-                         ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
-                         "text-cosmic-warning"
-                       )}>
-                         Required
-                       </span>
+                      <span className={cn(
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+                        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted
+                      )}>
+                        Required
+                      </span>
                     )}
                   </div>
                 ))}
@@ -441,9 +463,9 @@ export function RailwayInitiationStation({
         </EnhancedTabs.Content>
 
         {/* Project Charter Tab */}
-        <EnhancedTabs.Content value="charter" className="space-y-6">
+        <EnhancedTabs.Content value="charter" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -451,8 +473,11 @@ export function RailwayInitiationStation({
                  Project Charter
                </h3>
               
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-4">
+              <div className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2']
+              )}>
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                   <EnhancedInput
                     label="Project Name"
                     placeholder="Enter project name"
@@ -481,7 +506,7 @@ export function RailwayInitiationStation({
                   />
                 </div>
                 
-                <div className="space-y-4">
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                   <EnhancedTextarea
                     label="Project Description"
                     placeholder="Describe the project purpose and scope"
@@ -498,9 +523,9 @@ export function RailwayInitiationStation({
         </EnhancedTabs.Content>
 
         {/* Stakeholders Tab */}
-        <EnhancedTabs.Content value="stakeholders" className="space-y-6">
+        <EnhancedTabs.Content value="stakeholders" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -508,8 +533,8 @@ export function RailwayInitiationStation({
                 Stakeholder Analysis
               </h3>
               
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
+                <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                   <h4 className={cn(
                     ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -526,7 +551,7 @@ export function RailwayInitiationStation({
                 </div>
                 
                 {formData.stakeholders.map((stakeholder, index) => (
-                  <div key={index} className="flex items-center space-x-2">
+                  <div key={index} className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
                     <EnhancedInput
                       placeholder="Enter stakeholder name or role"
                       value={stakeholder}
@@ -549,9 +574,9 @@ export function RailwayInitiationStation({
         </EnhancedTabs.Content>
 
         {/* Business Case Tab */}
-        <EnhancedTabs.Content value="business-case" className="space-y-6">
+        <EnhancedTabs.Content value="business-case" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -559,7 +584,7 @@ export function RailwayInitiationStation({
                 Business Case
               </h3>
               
-              <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                 <EnhancedTextarea
                   label="Business Case"
                   placeholder="Describe the business justification, ROI, and strategic value"
@@ -570,13 +595,13 @@ export function RailwayInitiationStation({
                   rows={6}
                 />
                 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2'])}>
                   <EnhancedInput
                     label="Estimated Budget"
                     type="number"
                     placeholder="0"
                     value={formData.budget.estimated}
-                    onChange={(e) => handleNestedChange('budget', 'estimated', parseFloat(e.target.value) || 0)}
+                    onChange={(e) => handleNestedChange('budget', 'estimated', Number.parseFloat(e.target.value) || 0)}
                     variant="default"
                     size="md"
                   />
@@ -596,9 +621,9 @@ export function RailwayInitiationStation({
         </EnhancedTabs.Content>
 
         {/* Risks & Constraints Tab */}
-        <EnhancedTabs.Content value="risks" className="space-y-6">
+        <EnhancedTabs.Content value="risks" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -606,8 +631,11 @@ export function RailwayInitiationStation({
                 Risks & Constraints
               </h3>
               
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-4">
+              <div className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2']
+              )}>
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                   <h4 className={cn(
                     ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -615,7 +643,7 @@ export function RailwayInitiationStation({
                     Objectives
                   </h4>
                   {formData.objectives.map((objective, index) => (
-                    <div key={index} className="flex items-center space-x-2">
+                    <div key={index} className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
                       <EnhancedInput
                         placeholder="Enter project objective"
                         value={objective}
@@ -641,7 +669,7 @@ export function RailwayInitiationStation({
                   </EnhancedButton>
                 </div>
                 
-                <div className="space-y-4">
+                <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                   <h4 className={cn(
                     ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -649,7 +677,7 @@ export function RailwayInitiationStation({
                     Risks
                   </h4>
                   {formData.risks.map((risk, index) => (
-                    <div key={index} className="flex items-center space-x-2">
+                    <div key={index} className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
                       <EnhancedInput
                         placeholder="Enter potential risk"
                         value={risk}
@@ -680,9 +708,9 @@ export function RailwayInitiationStation({
         </EnhancedTabs.Content>
 
         {/* Approval Tab */}
-        <EnhancedTabs.Content value="approval" className="space-y-6">
+        <EnhancedTabs.Content value="approval" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -690,8 +718,8 @@ export function RailwayInitiationStation({
                 Approval & Governance
               </h3>
               
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
+                <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
                   <span className={cn(
                     ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                     ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -706,7 +734,10 @@ export function RailwayInitiationStation({
                   </EnhancedBadge>
                 </div>
                 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2']
+                )}>
                   <EnhancedInput
                     label="Start Date"
                     type="date"
@@ -732,8 +763,8 @@ export function RailwayInitiationStation({
       </EnhancedTabs.Root>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-6 border-t border-border">
-        <div className="flex items-center space-x-4">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           <EnhancedButton
             onClick={onRollback}
             variant="outline"

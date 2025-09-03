@@ -427,11 +427,11 @@ export const ComponentsDemo: React.FC = () => {
                 <h3 className='text-lg font-medium text-foreground'>Success</h3>
                 <div className='space-y-3'>
                   <EnhancedButton variant='success'>
-                    <Check className='h-4 w-4' />
+                    <Check className='size-4' />
                     Confirm Action
                   </EnhancedButton>
                   <EnhancedButton variant='success' disabled>
-                    <Check className='h-4 w-4' />
+                    <Check className='size-4' />
                     Disabled Success
                   </EnhancedButton>
                 </div>
@@ -481,7 +481,7 @@ export const ComponentsDemo: React.FC = () => {
               <div className='space-y-4'>
                 <h3 className='text-lg font-medium text-foreground'>Touch</h3>
                 <EnhancedButton size='touch' variant='primary'>
-                  <Plus className='h-4 w-4' />
+                  <Plus className='size-4' />
                   Touch-Friendly
                 </EnhancedButton>
               </div>
@@ -536,7 +536,7 @@ export const ComponentsDemo: React.FC = () => {
                   pending={isDownloading}
                   variant='primary'
                   className='w-full'
-                  icon={<Download className='h-4 w-4' />}
+                  icon={<Download className='size-4' />}
                   loadingText='Downloading file...'
                 >
                   {isDownloading ? 'Downloading...' : 'Download File'}
@@ -557,7 +557,7 @@ export const ComponentsDemo: React.FC = () => {
                   className='w-full'
                   icon={
                     <Heart
-                      className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`}
+                      className={`size-4 ${isLiked ? 'fill-current' : ''}`}
                     />
                   }
                 >
@@ -577,7 +577,7 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedButton
                     size='sm'
                     variant='outline'
-                    icon={<SkipBack className='h-4 w-4' />}
+                    icon={<SkipBack className='size-4' />}
                     iconPosition='only'
                     aria-label='Previous track'
                   />
@@ -587,9 +587,9 @@ export const ComponentsDemo: React.FC = () => {
                     onClick={() => setIsPlaying(!isPlaying)}
                     icon={
                       isPlaying ? (
-                        <Pause className='h-4 w-4' />
+                        <Pause className='size-4' />
                       ) : (
-                        <Play className='h-4 w-4' />
+                        <Play className='size-4' />
                       )
                     }
                     iconPosition='only'
@@ -598,7 +598,7 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedButton
                     size='sm'
                     variant='outline'
-                    icon={<SkipForward className='h-4 w-4' />}
+                    icon={<SkipForward className='size-4' />}
                     iconPosition='only'
                     aria-label='Next track'
                   />
@@ -717,7 +717,7 @@ export const ComponentsDemo: React.FC = () => {
                   </EnhancedButton>
                   <EnhancedButton
                     variant='outline'
-                    icon={<X className='h-4 w-4' />}
+                    icon={<X className='size-4' />}
                   >
                     Cancel
                   </EnhancedButton>
@@ -733,28 +733,28 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedButton
                     size='sm'
                     variant='outline'
-                    icon={<Download className='h-4 w-4' />}
+                    icon={<Download className='size-4' />}
                     iconPosition='only'
                     aria-label='Download'
                   />
                   <EnhancedButton
                     size='sm'
                     variant='outline'
-                    icon={<Heart className='h-4 w-4' />}
+                    icon={<Heart className='size-4' />}
                     iconPosition='only'
                     aria-label='Like'
                   />
                   <EnhancedButton
                     size='sm'
                     variant='outline'
-                    icon={<Plus className='h-4 w-4' />}
+                    icon={<Plus className='size-4' />}
                     iconPosition='only'
                     aria-label='Add'
                   />
                   <EnhancedButton
                     size='sm'
                     variant='outline'
-                    icon={<Check className='h-4 w-4' />}
+                    icon={<Check className='size-4' />}
                     iconPosition='only'
                     aria-label='Confirm'
                   />
@@ -830,7 +830,7 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedButton
                       variant='error'
                       className='w-full'
-                      icon={<AlertTriangle className='h-4 w-4' />}
+                      icon={<AlertTriangle className='size-4' />}
                     >
                       Delete Account
                     </EnhancedButton>
@@ -847,7 +847,7 @@ export const ComponentsDemo: React.FC = () => {
                     <div className='py-4'>
                       <div className='rounded-md border border-destructive/20 bg-destructive/10 p-4'>
                         <div className='flex items-center gap-2'>
-                          <AlertTriangle className='h-5 w-5 flex-shrink-0 text-destructive' />
+                          <AlertTriangle className='size-5 shrink-0 text-destructive' />
                           <p className='font-medium text-destructive'>
                             Warning: This action is irreversible
                           </p>
@@ -886,7 +886,7 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedButton
                       variant='outline'
                       className='w-full'
-                      icon={<Info className='h-4 w-4' />}
+                      icon={<Info className='size-4' />}
                     >
                       System Information
                     </EnhancedButton>
@@ -952,7 +952,7 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedButton
                       variant='secondary'
                       className='w-full'
-                      icon={<User className='h-4 w-4' />}
+                      icon={<User className='size-4' />}
                     >
                       Edit Profile
                     </EnhancedButton>
@@ -1038,7 +1038,7 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedButton
                       variant='ghost'
                       className='w-full'
-                      icon={<Settings className='h-4 w-4' />}
+                      icon={<Settings className='size-4' />}
                     >
                       Open Settings
                     </EnhancedButton>
@@ -1077,7 +1077,7 @@ export const ComponentsDemo: React.FC = () => {
                             <span className='text-sm text-foreground'>
                               High Contrast
                             </span>
-                            <input type='checkbox' className='h-4 w-4' />
+                            <input type='checkbox' className='size-4' />
                           </div>
                         </div>
                       </div>
@@ -1091,7 +1091,7 @@ export const ComponentsDemo: React.FC = () => {
                             <span className='text-sm text-foreground'>
                               Reduce Motion
                             </span>
-                            <input type='checkbox' className='h-4 w-4' />
+                            <input type='checkbox' className='size-4' />
                           </div>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm text-foreground'>
@@ -1100,7 +1100,7 @@ export const ComponentsDemo: React.FC = () => {
                             <input
                               type='checkbox'
                               defaultChecked
-                              className='h-4 w-4'
+                              className='size-4'
                             />
                           </div>
                           <div className='flex items-center justify-between'>
@@ -1110,7 +1110,7 @@ export const ComponentsDemo: React.FC = () => {
                             <input
                               type='checkbox'
                               defaultChecked
-                              className='h-4 w-4'
+                              className='size-4'
                             />
                           </div>
                         </div>
@@ -1128,7 +1128,7 @@ export const ComponentsDemo: React.FC = () => {
                             <input
                               type='checkbox'
                               defaultChecked
-                              className='h-4 w-4'
+                              className='size-4'
                             />
                           </div>
                           <div className='flex items-center justify-between'>
@@ -1175,7 +1175,7 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedButton
                       variant='primary'
                       className='w-full'
-                      icon={<MessageSquare className='h-4 w-4' />}
+                      icon={<MessageSquare className='size-4' />}
                     >
                       Send Feedback
                     </EnhancedButton>
@@ -1258,25 +1258,25 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Full keyboard navigation support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Screen reader optimized ARIA labels
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Focus trap and restoration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Escape key and click-outside closing
                     </span>
@@ -1284,25 +1284,25 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass backdrop blur effects
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion-reduced animations
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Windows High Contrast support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Radix UI primitive foundation
                     </span>
@@ -1487,31 +1487,31 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Complete field composition system
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Start and end icon support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Keyboard-accessible clear button
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Platform-aware touch targets
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass vibrancy effects
                     </span>
@@ -1519,31 +1519,31 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility enforcement
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Forced Colors mode support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Autofill contrast protection
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Complete ARIA attribute system
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       MAPS v2.2 token compliance
                     </span>
@@ -1941,31 +1941,31 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       MAPS v2.2 typography foundation
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Apple HIG semantic hierarchy
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Complete ARIA label association
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Required state visual indicators
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Form integration patterns
                     </span>
@@ -1973,31 +1973,31 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility compliance
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion preference respect
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Polymorphic component architecture
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Advanced form field grouping
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Dark-first design philosophy
                     </span>
@@ -2086,7 +2086,7 @@ export const ComponentsDemo: React.FC = () => {
                 </EnhancedCardContent>
                 <EnhancedCardFooter justify='center'>
                   <EnhancedButton variant='outline' size='sm'>
-                    <Settings className='mr-2 h-4 w-4' />
+                    <Settings className='mr-2 size-4' />
                     Configure
                   </EnhancedButton>
                 </EnhancedCardFooter>
@@ -2108,11 +2108,11 @@ export const ComponentsDemo: React.FC = () => {
                       'Interactive card demonstrates click handling'
                     )
                   }
-                  className='cursor-pointer transition-all hover:scale-[1.02]'
+                  className='cursor-pointer transition-all pointer:hover:scale-105'
                 >
                   <EnhancedCardHeader>
                     <EnhancedCardTitle className='flex items-center'>
-                      <MessageSquare className='mr-2 h-5 w-5' />
+                      <MessageSquare className='mr-2 size-5' />
                       Interactive Features
                     </EnhancedCardTitle>
                     <EnhancedCardDescription>
@@ -2137,7 +2137,7 @@ export const ComponentsDemo: React.FC = () => {
                     <EnhancedCardTitle className='flex items-center justify-between'>
                       <span>Likeable Content</span>
                       <Heart
-                        className={`h-5 w-5 transition-colors ${isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
+                        className={`size-5 transition-colors ${isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
                       />
                     </EnhancedCardTitle>
                     <EnhancedCardDescription>
@@ -2299,7 +2299,7 @@ export const ComponentsDemo: React.FC = () => {
               <div className='mx-auto max-w-md'>
                 <EnhancedCard variant='floating' className='overflow-hidden'>
                   <div className='flex aspect-video items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20 p-6'>
-                    <Play className='h-12 w-12 text-primary' />
+                    <Play className='size-12 text-primary' />
                   </div>
                   <EnhancedCardHeader>
                     <EnhancedCardTitle>Media Card Example</EnhancedCardTitle>
@@ -2311,7 +2311,7 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedCardContent>
                     <div className='space-y-3'>
                       <div className='flex items-center space-x-2'>
-                        <User className='h-4 w-4 text-muted-foreground' />
+                        <User className='size-4 text-muted-foreground' />
                         <span className='text-sm text-muted-foreground'>
                           John Doe
                         </span>
@@ -2325,14 +2325,14 @@ export const ComponentsDemo: React.FC = () => {
                   <EnhancedCardFooter justify='between' className='bg-muted/20'>
                     <div className='flex space-x-2'>
                       <EnhancedButton variant='ghost' size='sm'>
-                        <Heart className='h-4 w-4' />
+                        <Heart className='size-4' />
                       </EnhancedButton>
                       <EnhancedButton variant='ghost' size='sm'>
-                        <MessageSquare className='h-4 w-4' />
+                        <MessageSquare className='size-4' />
                       </EnhancedButton>
                     </div>
                     <EnhancedButton variant='primary' size='sm'>
-                      <Play className='mr-2 h-4 w-4' />
+                      <Play className='mr-2 size-4' />
                       Watch Now
                     </EnhancedButton>
                   </EnhancedCardFooter>
@@ -2487,26 +2487,26 @@ export const ComponentsDemo: React.FC = () => {
               </h3>
               <div className='flex flex-wrap gap-3'>
                 <EnhancedBadge
-                  icon={<Mail className='h-3 w-3' />}
+                  icon={<Mail className='size-3' />}
                   variant='default'
                 >
                   Mail
                 </EnhancedBadge>
                 <EnhancedBadge
-                  icon={<AlertTriangle className='h-3 w-3' />}
+                  icon={<AlertTriangle className='size-3' />}
                   iconPosition='right'
                   variant='warning'
                 >
                   Warning
                 </EnhancedBadge>
                 <EnhancedBadge
-                  icon={<Check className='h-3 w-3' />}
+                  icon={<Check className='size-3' />}
                   variant='success'
                 >
                   Complete
                 </EnhancedBadge>
                 <EnhancedBadge
-                  icon={<Settings className='h-3 w-3' />}
+                  icon={<Settings className='size-3' />}
                   iconPosition='right'
                   variant='ghost'
                 >
@@ -2768,8 +2768,8 @@ export const ComponentsDemo: React.FC = () => {
                   <h4 className='font-medium text-foreground'>User Status</h4>
                   <div className='space-y-3'>
                     <div className='flex items-center gap-3'>
-                      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-muted'>
-                        <User className='h-4 w-4' />
+                      <div className='flex size-8 items-center justify-center rounded-full bg-muted'>
+                        <User className='size-4' />
                       </div>
                       <div className='flex-1'>
                         <div className='text-sm font-medium'>John Doe</div>
@@ -2780,8 +2780,8 @@ export const ComponentsDemo: React.FC = () => {
                       </div>
                     </div>
                     <div className='flex items-center gap-3'>
-                      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-muted'>
-                        <User className='h-4 w-4' />
+                      <div className='flex size-8 items-center justify-center rounded-full bg-muted'>
+                        <User className='size-4' />
                       </div>
                       <div className='flex-1'>
                         <div className='text-sm font-medium'>Jane Smith</div>
@@ -2792,8 +2792,8 @@ export const ComponentsDemo: React.FC = () => {
                       </div>
                     </div>
                     <div className='flex items-center gap-3'>
-                      <div className='flex h-8 w-8 items-center justify-center rounded-full bg-muted'>
-                        <User className='h-4 w-4' />
+                      <div className='flex size-8 items-center justify-center rounded-full bg-muted'>
+                        <User className='size-4' />
                       </div>
                       <div className='flex-1'>
                         <div className='text-sm font-medium'>Bob Wilson</div>
@@ -2897,7 +2897,7 @@ export const ComponentsDemo: React.FC = () => {
                       <EnhancedBreadcrumbItem>
                         <EnhancedBreadcrumbLink href='/'>
                           <svg
-                            className='h-4 w-4'
+                            className='size-4'
                             fill='currentColor'
                             viewBox='0 0 20 20'
                           >
@@ -3313,7 +3313,7 @@ export const ComponentsDemo: React.FC = () => {
                         }}
                       >
                         <svg
-                          className='h-4 w-4'
+                          className='size-4'
                           fill='currentColor'
                           viewBox='0 0 20 20'
                         >
@@ -4201,7 +4201,7 @@ export const ComponentsDemo: React.FC = () => {
                   variant='info'
                   title='Custom Icon Alert'
                   description='This alert uses a custom icon instead of the default variant icon.'
-                  icon={<Settings className='h-4 w-4' />}
+                  icon={<Settings className='size-4' />}
                 />
                 <EnhancedAlert
                   variant='warning'
@@ -4242,7 +4242,7 @@ export const ComponentsDemo: React.FC = () => {
                   title='Custom Close Icon'
                   description='This alert features a custom close icon.'
                   dismissible
-                  closeIcon={<X className='h-4 w-4' />}
+                  closeIcon={<X className='size-4' />}
                   onDismiss={() =>
                     showToast(
                       'success',
@@ -4419,7 +4419,7 @@ export const ComponentsDemo: React.FC = () => {
                       variant='warning'
                       title='Maintenance Scheduled'
                       description='System maintenance is scheduled for tonight at 2:00 AM.'
-                      icon={<AlertTriangle className='h-4 w-4' />}
+                      icon={<AlertTriangle className='size-4' />}
                       actions={
                         <EnhancedButton size='sm' variant='outline'>
                           Learn More
@@ -4430,7 +4430,7 @@ export const ComponentsDemo: React.FC = () => {
                       variant='info'
                       title='New Feature Available'
                       description='Check out our latest feature update!'
-                      icon={<Info className='h-4 w-4' />}
+                      icon={<Info className='size-4' />}
                       dismissible
                     />
                   </div>
@@ -4615,7 +4615,7 @@ export const ComponentsDemo: React.FC = () => {
                       primaryAction={{
                         label: 'Start Creating',
                         onClick: () => console.log('Create'),
-                        icon: <Plus className='h-4 w-4' />,
+                        icon: <Plus className='size-4' />,
                       }}
                     />
                   </div>
@@ -4747,7 +4747,7 @@ export const ComponentsDemo: React.FC = () => {
                       primaryAction={{
                         label: 'Add Idea',
                         onClick: () => console.log('Add idea'),
-                        icon: <Plus className='h-3 w-3' />,
+                        icon: <Plus className='size-3' />,
                       }}
                     />
                   </div>
@@ -4766,7 +4766,7 @@ export const ComponentsDemo: React.FC = () => {
                       primaryAction={{
                         label: 'Create Project',
                         onClick: () => console.log('Create project'),
-                        icon: <Plus className='h-4 w-4' />,
+                        icon: <Plus className='size-4' />,
                       }}
                       secondaryAction={{
                         label: 'Learn More',
@@ -5318,37 +5318,37 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       MAPS v2.2 dark-first foundation
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Apple HIG spacing & hierarchy
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass vibrancy effects
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Comprehensive decoration system
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Radix primitive foundation
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Factory pattern support
                     </span>
@@ -5356,37 +5356,37 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       WCAG AAA compliance mode
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Semantic vs decorative modes
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Horizontal & vertical orientation
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Content embedding support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion preference respect
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Anti-drift token enforcement
                     </span>
@@ -5528,28 +5528,28 @@ export const ComponentsDemo: React.FC = () => {
                           variant='outline'
                           className='h-20 flex-col'
                         >
-                          <Settings className='mb-2 h-6 w-6' />
+                          <Settings className='mb-2 size-6' />
                           Settings
                         </EnhancedButton>
                         <EnhancedButton
                           variant='outline'
                           className='h-20 flex-col'
                         >
-                          <User className='mb-2 h-6 w-6' />
+                          <User className='mb-2 size-6' />
                           Profile
                         </EnhancedButton>
                         <EnhancedButton
                           variant='outline'
                           className='h-20 flex-col'
                         >
-                          <Mail className='mb-2 h-6 w-6' />
+                          <Mail className='mb-2 size-6' />
                           Messages
                         </EnhancedButton>
                         <EnhancedButton
                           variant='outline'
                           className='h-20 flex-col'
                         >
-                          <Search className='mb-2 h-6 w-6' />
+                          <Search className='mb-2 size-6' />
                           Search
                         </EnhancedButton>
                       </div>
@@ -5571,7 +5571,7 @@ export const ComponentsDemo: React.FC = () => {
                       </EnhancedSheetHeader>
                       <div className='space-y-3 py-4'>
                         <div className='flex items-center gap-3 rounded bg-muted/50 p-2'>
-                          <div className='h-2 w-2 rounded-full bg-blue-500' />
+                          <div className='size-2 rounded-full bg-blue-500' />
                           <div className='flex-1'>
                             <p className='text-sm font-medium'>System Update</p>
                             <p className='text-xs text-muted-foreground'>
@@ -5580,7 +5580,7 @@ export const ComponentsDemo: React.FC = () => {
                           </div>
                         </div>
                         <div className='flex items-center gap-3 rounded bg-muted/50 p-2'>
-                          <div className='h-2 w-2 rounded-full bg-green-500' />
+                          <div className='size-2 rounded-full bg-green-500' />
                           <div className='flex-1'>
                             <p className='text-sm font-medium'>Task Complete</p>
                             <p className='text-xs text-muted-foreground'>
@@ -5850,55 +5850,55 @@ export const ComponentsDemo: React.FC = () => {
                   <div className='rounded-lg border border-border bg-card p-6'>
                     <ul className='space-y-3'>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           Apple HIG motion system
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           Focus trap management
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           Polymorphic pattern support
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           Liquid glass materials
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           Factory pattern configurations
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           Responsive design system
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           Anti-drift enforcement
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           Motion preference respect
                         </span>
                       </li>
                       <li className='flex items-center gap-2'>
-                        <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                        <Check className='size-4 shrink-0 text-success' />
                         <span className='text-foreground'>
                           CVA variant system
                         </span>
@@ -5950,14 +5950,14 @@ export const ComponentsDemo: React.FC = () => {
                             variant='ghost'
                             className='w-full justify-start'
                           >
-                            <Settings className='mr-2 h-4 w-4' />
+                            <Settings className='mr-2 size-4' />
                             Settings
                           </EnhancedButton>
                           <EnhancedButton
                             variant='ghost'
                             className='w-full justify-start'
                           >
-                            <User className='mr-2 h-4 w-4' />
+                            <User className='mr-2 size-4' />
                             Profile
                           </EnhancedButton>
                         </div>
@@ -6069,9 +6069,9 @@ export const ComponentsDemo: React.FC = () => {
                           <EnhancedButton
                             variant='outline'
                             size='sm'
-                            className='h-10 w-10 p-0'
+                            className='size-10 p-0'
                           >
-                            <Heart className='h-4 w-4' />
+                            <Heart className='size-4' />
                           </EnhancedButton>
                         </div>
                       </EnhancedDrawerFooter>
@@ -6140,21 +6140,21 @@ export const ComponentsDemo: React.FC = () => {
                             variant='ghost'
                             className='h-12 w-full justify-start'
                           >
-                            <Download className='mr-3 h-5 w-5' />
+                            <Download className='mr-3 size-5' />
                             Download
                           </EnhancedButton>
                           <EnhancedButton
                             variant='ghost'
                             className='h-12 w-full justify-start'
                           >
-                            <MessageSquare className='mr-3 h-5 w-5' />
+                            <MessageSquare className='mr-3 size-5' />
                             Share
                           </EnhancedButton>
                           <EnhancedButton
                             variant='ghost'
                             className='h-12 w-full justify-start text-destructive'
                           >
-                            <X className='mr-3 h-5 w-5' />
+                            <X className='mr-3 size-5' />
                             Delete
                           </EnhancedButton>
                         </div>
@@ -6178,7 +6178,7 @@ export const ComponentsDemo: React.FC = () => {
                       <EnhancedDrawerBody>
                         <div className='space-y-6'>
                           <div className='flex items-center space-x-4'>
-                            <div className='flex h-16 w-16 items-center justify-center rounded-lg bg-muted/50'>
+                            <div className='flex size-16 items-center justify-center rounded-lg bg-muted/50'>
                               <div className='text-2xl'>🎵</div>
                             </div>
                             <div>
@@ -6192,23 +6192,23 @@ export const ComponentsDemo: React.FC = () => {
                             <EnhancedButton
                               variant='ghost'
                               size='sm'
-                              className='h-10 w-10 p-0'
+                              className='size-10 p-0'
                             >
-                              <SkipBack className='h-5 w-5' />
+                              <SkipBack className='size-5' />
                             </EnhancedButton>
                             <EnhancedButton
                               variant='primary'
                               size='lg'
                               className='rounded-full'
                             >
-                              <Play className='h-6 w-6' />
+                              <Play className='size-6' />
                             </EnhancedButton>
                             <EnhancedButton
                               variant='ghost'
                               size='sm'
-                              className='h-10 w-10 p-0'
+                              className='size-10 p-0'
                             >
-                              <SkipForward className='h-5 w-5' />
+                              <SkipForward className='size-5' />
                             </EnhancedButton>
                           </div>
                         </div>
@@ -6346,61 +6346,61 @@ export const ComponentsDemo: React.FC = () => {
                 <div className='rounded-lg border border-border bg-card p-6'>
                   <ul className='space-y-3'>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Mobile-first gesture support with touch interactions
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Apple HIG motion system with natural spring animations
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Snap behavior for proximity and precision interactions
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Safe area inset handling for modern mobile devices
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Liquid glass materials with backdrop blur effects
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Factory pattern configurations for rapid development
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Comprehensive keyboard navigation and focus management
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         WCAG AAA compliance with enforced mode option
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Anti-drift enforcement with token-only references
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Platform-aware 44px minimum touch targets
                       </span>
@@ -6796,25 +6796,25 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Full Radix Select integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Apple HIG interaction patterns
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Dark-first design philosophy
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass material variants
                     </span>
@@ -6822,25 +6822,25 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Complete keyboard navigation
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Screen reader optimized
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Platform-aware focus management
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Enhanced tokens integration
                     </span>
@@ -7225,31 +7225,31 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Full Radix Checkbox integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Apple HIG touch targets (44px)
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Dark-first design philosophy
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass material variants
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Three-state support (unchecked/checked/indeterminate)
                     </span>
@@ -7257,31 +7257,31 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       WCAG AAA accessibility compliance
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Platform-aware focus management
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Enhanced tokens integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Comprehensive test coverage
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion-safe animation patterns
                     </span>
@@ -7315,7 +7315,7 @@ export const ComponentsDemo: React.FC = () => {
                     <PopoverWithTrigger
                       trigger={
                         <EnhancedButton variant='outline' size='sm'>
-                          <Info className='h-4 w-4' />
+                          <Info className='size-4' />
                           Info
                         </EnhancedButton>
                       }
@@ -7335,7 +7335,7 @@ export const ComponentsDemo: React.FC = () => {
                     <PopoverWithTrigger
                       trigger={
                         <EnhancedButton variant='ghost' size='sm'>
-                          <User className='h-4 w-4' />
+                          <User className='size-4' />
                           Profile
                         </EnhancedButton>
                       }
@@ -7344,8 +7344,8 @@ export const ComponentsDemo: React.FC = () => {
                     >
                       <div className='space-y-3'>
                         <div className='flex items-center gap-3'>
-                          <div className='flex h-10 w-10 items-center justify-center rounded-full bg-accent/20'>
-                            <User className='h-5 w-5' />
+                          <div className='flex size-10 items-center justify-center rounded-full bg-accent/20'>
+                            <User className='size-5' />
                           </div>
                           <div>
                             <h4 className='font-medium text-foreground'>
@@ -7370,7 +7370,7 @@ export const ComponentsDemo: React.FC = () => {
                     <PopoverWithTrigger
                       trigger={
                         <EnhancedButton variant='outline' size='sm'>
-                          <MessageSquare className='h-4 w-4' />
+                          <MessageSquare className='size-4' />
                           Comments
                         </EnhancedButton>
                       }
@@ -7390,7 +7390,7 @@ export const ComponentsDemo: React.FC = () => {
                     <PopoverWithTrigger
                       trigger={
                         <EnhancedButton variant='ghost' size='sm'>
-                          <Settings className='h-4 w-4' />
+                          <Settings className='size-4' />
                           Settings
                         </EnhancedButton>
                       }
@@ -7434,7 +7434,7 @@ export const ComponentsDemo: React.FC = () => {
                     <PopoverWithTrigger
                       trigger={
                         <EnhancedButton variant='outline' size='sm'>
-                          <AlertTriangle className='h-4 w-4' />
+                          <AlertTriangle className='size-4' />
                           Alert
                         </EnhancedButton>
                       }
@@ -7453,7 +7453,7 @@ export const ComponentsDemo: React.FC = () => {
                     <PopoverWithTrigger
                       trigger={
                         <EnhancedButton variant='ghost' size='sm'>
-                          <Mail className='h-4 w-4' />
+                          <Mail className='size-4' />
                           Mail
                         </EnhancedButton>
                       }
@@ -7466,7 +7466,7 @@ export const ComponentsDemo: React.FC = () => {
                             Quick Compose
                           </h4>
                           <PopoverClose>
-                            <X className='h-4 w-4' />
+                            <X className='size-4' />
                           </PopoverClose>
                         </div>
                         <div className='space-y-3'>
@@ -7671,7 +7671,7 @@ export const ComponentsDemo: React.FC = () => {
                       <PopoverWithTrigger
                         trigger={
                           <EnhancedButton variant='ghost' size='sm'>
-                            <Info className='h-3 w-3' />
+                            <Info className='size-3' />
                           </EnhancedButton>
                         }
                         size='sm'
@@ -7697,7 +7697,7 @@ export const ComponentsDemo: React.FC = () => {
                       <PopoverWithTrigger
                         trigger={
                           <EnhancedButton variant='ghost' size='sm'>
-                            <Info className='h-3 w-3' />
+                            <Info className='size-3' />
                           </EnhancedButton>
                         }
                         size='lg'
@@ -7735,7 +7735,7 @@ export const ComponentsDemo: React.FC = () => {
                     <PopoverWithTrigger
                       trigger={
                         <EnhancedButton variant='outline'>
-                          <Settings className='h-4 w-4' />
+                          <Settings className='size-4' />
                           Actions
                         </EnhancedButton>
                       }
@@ -7748,7 +7748,7 @@ export const ComponentsDemo: React.FC = () => {
                           size='sm'
                           className='w-full justify-start'
                         >
-                          <User className='h-4 w-4' />
+                          <User className='size-4' />
                           Edit Profile
                         </EnhancedButton>
                         <EnhancedButton
@@ -7756,7 +7756,7 @@ export const ComponentsDemo: React.FC = () => {
                           size='sm'
                           className='w-full justify-start'
                         >
-                          <Settings className='h-4 w-4' />
+                          <Settings className='size-4' />
                           Settings
                         </EnhancedButton>
                         <EnhancedButton
@@ -7764,7 +7764,7 @@ export const ComponentsDemo: React.FC = () => {
                           size='sm'
                           className='w-full justify-start'
                         >
-                          <Download className='h-4 w-4' />
+                          <Download className='size-4' />
                           Export Data
                         </EnhancedButton>
                         <div className='my-1 border-t border-border' />
@@ -7773,7 +7773,7 @@ export const ComponentsDemo: React.FC = () => {
                           size='sm'
                           className='w-full justify-start text-destructive hover:text-destructive'
                         >
-                          <X className='h-4 w-4' />
+                          <X className='size-4' />
                           Delete Account
                         </EnhancedButton>
                       </div>
@@ -7869,31 +7869,31 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Full Radix Popover integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Apple HIG positioning system
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Dark-first design philosophy
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass material variants
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Collision detection and avoidance
                     </span>
@@ -7901,31 +7901,31 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       WCAG AAA accessibility compliance
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Platform-aware focus management
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Enhanced tokens integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Comprehensive test coverage
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion-safe animation patterns
                     </span>
@@ -8204,31 +8204,31 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Full Radix AlertDialog integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Apple HIG color system integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Dark-first design philosophy
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass material variants
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Enhanced button integration
                     </span>
@@ -8236,31 +8236,31 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       WCAG AAA accessibility compliance
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Platform-aware focus management
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Enhanced tokens integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Comprehensive test coverage
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Smooth backdrop transitions
                     </span>
@@ -8290,7 +8290,7 @@ export const ComponentsDemo: React.FC = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <EnhancedButton variant='outline' className='w-full gap-2'>
-                      <User className='h-4 w-4' />
+                      <User className='size-4' />
                       John Doe
                     </EnhancedButton>
                   </DropdownMenuTrigger>
@@ -8299,13 +8299,13 @@ export const ComponentsDemo: React.FC = () => {
                     <DropdownMenuSeparator />
 
                     <DropdownMenuItem className='gap-2'>
-                      <User className='h-4 w-4' />
+                      <User className='size-4' />
                       <span>Profile</span>
                       <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem className='gap-2'>
-                      <Settings className='h-4 w-4' />
+                      <Settings className='size-4' />
                       <span>Settings</span>
                       <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </DropdownMenuItem>
@@ -8314,16 +8314,16 @@ export const ComponentsDemo: React.FC = () => {
 
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger className='gap-2'>
-                        <Plus className='h-4 w-4' />
+                        <Plus className='size-4' />
                         <span>Invite users</span>
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
                         <DropdownMenuItem className='gap-2'>
-                          <Mail className='h-4 w-4' />
+                          <Mail className='size-4' />
                           <span>Email</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className='gap-2'>
-                          <MessageSquare className='h-4 w-4' />
+                          <MessageSquare className='size-4' />
                           <span>Message</span>
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
@@ -8332,7 +8332,7 @@ export const ComponentsDemo: React.FC = () => {
                     <DropdownMenuSeparator />
 
                     <DropdownMenuItem variant='destructive' className='gap-2'>
-                      <X className='h-4 w-4' />
+                      <X className='size-4' />
                       <span>Log out</span>
                       <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                     </DropdownMenuItem>
@@ -8350,7 +8350,7 @@ export const ComponentsDemo: React.FC = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <EnhancedButton variant='outline' className='w-full gap-2'>
-                      <Settings className='h-4 w-4' />
+                      <Settings className='size-4' />
                       Preferences
                     </EnhancedButton>
                   </DropdownMenuTrigger>
@@ -8460,25 +8460,25 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Full Radix DropdownMenu integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Complete keyboard navigation support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Screen reader optimized ARIA labels
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Submenu and nested menu support
                     </span>
@@ -8486,25 +8486,25 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass backdrop blur effects
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Checkbox and radio item support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Keyboard shortcuts display
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility enforcement
                     </span>
@@ -8812,25 +8812,25 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Dark-first philosophy with ethereal accents
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Apple HIG harmony and systematic spacing
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Semantic color variants (success, warning, destructive)
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Multiple size variants (sm, default, lg)
                     </span>
@@ -8838,25 +8838,25 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Density control (comfortable, compact)
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Factory functions for rapid development
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility compliance mode
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass materials and smooth animations
                     </span>
@@ -9253,31 +9253,31 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Dark-first philosophy with ethereal accents
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Platform-aware touch targets (44px minimum)
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Semantic color variants with sophisticated shadows
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Range sliders with multiple value support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Multiple size variants (sm, default, lg)
                     </span>
@@ -9285,31 +9285,31 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Value formatters (percentage, currency, time, units)
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass materials with backdrop blur
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Factory functions for rapid development
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility compliance mode
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Density control and step validation
                     </span>
@@ -9404,13 +9404,13 @@ export const ComponentsDemo: React.FC = () => {
                           <span className='text-sm text-foreground'>
                             Auto-save enabled
                           </span>
-                          <div className='h-2 w-2 rounded-full bg-success' />
+                          <div className='size-2 rounded-full bg-success' />
                         </div>
                         <div className='flex items-center justify-between'>
                           <span className='text-sm text-foreground'>
                             Dark mode
                           </span>
-                          <div className='h-2 w-2 rounded-full bg-success' />
+                          <div className='size-2 rounded-full bg-success' />
                         </div>
                       </div>
                     </EnhancedTabsContent>
@@ -9578,7 +9578,7 @@ export const ComponentsDemo: React.FC = () => {
                       </p>
                       <div className='space-y-3'>
                         <div className='flex items-center gap-3'>
-                          <div className='h-10 w-10 rounded-full bg-accent' />
+                          <div className='size-10 rounded-full bg-accent' />
                           <div>
                             <div className='text-sm font-medium text-foreground'>
                               John Doe
@@ -9604,7 +9604,7 @@ export const ComponentsDemo: React.FC = () => {
                           <span className='text-sm text-foreground'>
                             Two-factor authentication
                           </span>
-                          <div className='h-2 w-2 rounded-full bg-success' />
+                          <div className='size-2 rounded-full bg-success' />
                         </div>
                         <div className='flex items-center justify-between'>
                           <span className='text-sm text-foreground'>
@@ -10040,37 +10040,37 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Radix UI Tabs primitive foundation
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       MAPS v2.2 design token integration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Four distinct visual variants
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Apple HIG interaction patterns
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Comprehensive keyboard navigation
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Factory functions for rapid development
                     </span>
@@ -10078,37 +10078,37 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility compliance mode
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass material variants
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion preference respect
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Enhanced focus indicators
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Screen reader optimized ARIA
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Dark-first design philosophy
                     </span>
@@ -10210,7 +10210,7 @@ export const ComponentsDemo: React.FC = () => {
                         'Your action was completed successfully'
                       )
                     }
-                    icon={<Check className='h-4 w-4' />}
+                    icon={<Check className='size-4' />}
                   >
                     Show Success Toast
                   </EnhancedButton>
@@ -10225,7 +10225,7 @@ export const ComponentsDemo: React.FC = () => {
                         'Please try again or contact support'
                       )
                     }
-                    icon={<X className='h-4 w-4' />}
+                    icon={<X className='size-4' />}
                   >
                     Show Error Toast
                   </EnhancedButton>
@@ -10240,7 +10240,7 @@ export const ComponentsDemo: React.FC = () => {
                         'Please review your input before proceeding'
                       )
                     }
-                    icon={<AlertTriangle className='h-4 w-4' />}
+                    icon={<AlertTriangle className='size-4' />}
                   >
                     Show Warning Toast
                   </EnhancedButton>
@@ -10255,7 +10255,7 @@ export const ComponentsDemo: React.FC = () => {
                         "Here's some helpful information for you"
                       )
                     }
-                    icon={<Info className='h-4 w-4' />}
+                    icon={<Info className='size-4' />}
                   >
                     Show Info Toast
                   </EnhancedButton>
@@ -10495,37 +10495,37 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Radix UI Toast primitives foundation
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Complete semantic variant system
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass materials and vibrancy
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Factory pattern for quick composition
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility compliance mode
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Semantic icon system integration
                     </span>
@@ -10533,37 +10533,37 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Keyboard navigation and screen reader support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Auto-dismiss with manual override
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion-reduce animation support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Touch-friendly close and action buttons
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Provider-based global state management
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       MAPS v2.2 design token compliance
                     </span>
@@ -10602,7 +10602,7 @@ export const ComponentsDemo: React.FC = () => {
                         size='sm'
                         variant='ghost'
                         onClick={() => removeToast(toast.id)}
-                        icon={<X className='h-3 w-3' />}
+                        icon={<X className='size-3' />}
                         iconPosition='only'
                         aria-label={`Dismiss ${toast.title} notification`}
                       />
@@ -10642,7 +10642,7 @@ export const ComponentsDemo: React.FC = () => {
                       onPressedChange={setPlaybackToggled}
                       aria-label='Toggle playback'
                     >
-                      <Play className='h-4 w-4' />
+                      <Play className='size-4' />
                     </EnhancedToggle>
                     <EnhancedToggle
                       pressed={muteToggled}
@@ -10695,7 +10695,7 @@ export const ComponentsDemo: React.FC = () => {
                       onPressedChange={setFeatureToggled}
                       aria-label='Toggle feature'
                     >
-                      <Settings className='h-4 w-4' />
+                      <Settings className='size-4' />
                     </EnhancedToggle>
                   </div>
                 </div>
@@ -10715,7 +10715,7 @@ export const ComponentsDemo: React.FC = () => {
                     pressed={false}
                     aria-label='Small toggle'
                   >
-                    <Plus className='h-3 w-3' />
+                    <Plus className='size-3' />
                   </EnhancedToggle>
                 </div>
 
@@ -10728,7 +10728,7 @@ export const ComponentsDemo: React.FC = () => {
                     pressed={false}
                     aria-label='Medium toggle'
                   >
-                    <Settings className='h-4 w-4' />
+                    <Settings className='size-4' />
                   </EnhancedToggle>
                 </div>
 
@@ -10739,7 +10739,7 @@ export const ComponentsDemo: React.FC = () => {
                     pressed={false}
                     aria-label='Large toggle'
                   >
-                    <User className='h-5 w-5' />
+                    <User className='size-5' />
                   </EnhancedToggle>
                 </div>
               </div>
@@ -10760,7 +10760,7 @@ export const ComponentsDemo: React.FC = () => {
                     pressed={false}
                     aria-label='Standard toggle'
                   >
-                    <Mail className='h-4 w-4' />
+                    <Mail className='size-4' />
                   </EnhancedToggle>
                 </div>
 
@@ -10773,7 +10773,7 @@ export const ComponentsDemo: React.FC = () => {
                     pressed={false}
                     aria-label='Liquid glass toggle'
                   >
-                    <Lock className='h-4 w-4' />
+                    <Lock className='size-4' />
                   </EnhancedToggle>
                 </div>
               </div>
@@ -10793,7 +10793,7 @@ export const ComponentsDemo: React.FC = () => {
                     {ToggleFactory.default({
                       pressed: false,
                       'aria-label': 'Default toggle',
-                      children: <Settings className='h-4 w-4' />,
+                      children: <Settings className='size-4' />,
                     })}
                   </div>
                   <p className='mt-2 text-sm text-muted-foreground'>
@@ -10843,7 +10843,7 @@ export const ComponentsDemo: React.FC = () => {
                     {ToggleFactory.success({
                       pressed: false,
                       'aria-label': 'Success toggle',
-                      children: <Check className='h-4 w-4' />,
+                      children: <Check className='size-4' />,
                     })}
                   </div>
                   <p className='mt-2 text-sm text-muted-foreground'>
@@ -10859,7 +10859,7 @@ export const ComponentsDemo: React.FC = () => {
                     {ToggleFactory.aaa({
                       pressed: false,
                       'aria-label': 'AAA accessible toggle',
-                      children: <User className='h-4 w-4' />,
+                      children: <User className='size-4' />,
                     })}
                   </div>
                   <p className='mt-2 text-sm text-muted-foreground'>
@@ -10875,7 +10875,7 @@ export const ComponentsDemo: React.FC = () => {
                     {ToggleFactory.glass({
                       pressed: false,
                       'aria-label': 'Glass material toggle',
-                      children: <Eye className='h-4 w-4' />,
+                      children: <Eye className='size-4' />,
                     })}
                   </div>
                   <p className='mt-2 text-sm text-muted-foreground'>
@@ -11047,14 +11047,14 @@ export const ComponentsDemo: React.FC = () => {
                         pressed={false}
                         aria-label='Standard toggle'
                       >
-                        <Settings className='h-4 w-4' />
+                        <Settings className='size-4' />
                       </EnhancedToggle>
                       <EnhancedToggle
                         variant='outline'
                         pressed={false}
                         aria-label='Outline toggle'
                       >
-                        <User className='h-4 w-4' />
+                        <User className='size-4' />
                       </EnhancedToggle>
                     </div>
                     <p className='text-sm text-muted-foreground'>
@@ -11072,7 +11072,7 @@ export const ComponentsDemo: React.FC = () => {
                         pressed={false}
                         aria-label='AAA standard toggle'
                       >
-                        <Settings className='h-4 w-4' />
+                        <Settings className='size-4' />
                       </EnhancedToggle>
                       <EnhancedToggle
                         aaaMode
@@ -11080,7 +11080,7 @@ export const ComponentsDemo: React.FC = () => {
                         pressed={false}
                         aria-label='AAA outline toggle'
                       >
-                        <User className='h-4 w-4' />
+                        <User className='size-4' />
                       </EnhancedToggle>
                     </div>
                     <p className='text-sm text-muted-foreground'>
@@ -11099,37 +11099,37 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       7 comprehensive variants with semantic meaning
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       4 size options including touch-friendly
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass materials and vibrancy
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Factory pattern for semantic construction
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Enhanced hooks for state management
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility compliance mode
                     </span>
@@ -11137,37 +11137,37 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Full keyboard navigation support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Screen reader optimized ARIA attributes
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Icon system with semantic context
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Group management for related toggles
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion-reduced animation support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       MAPS v2.2 design token compliance
                     </span>
@@ -11771,37 +11771,37 @@ export const ComponentsDemo: React.FC = () => {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       7 semantic variants for different content types
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Multiple size options with responsive scaling
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       3 animation types including shimmer wave
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Liquid glass materials and surface variants
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Factory patterns for consistent construction
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Compound components for complex layouts
                     </span>
@@ -11809,37 +11809,37 @@ export const ComponentsDemo: React.FC = () => {
                 </ul>
                 <ul className='space-y-2 text-sm'>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       AAA accessibility compliance mode
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Motion-reduced animation support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Screen reader optimized ARIA attributes
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Polymorphic rendering with asChild support
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       Custom width and height configuration
                     </span>
                   </li>
                   <li className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                    <Check className='size-4 shrink-0 text-success' />
                     <span className='text-foreground'>
                       MAPS v2.2 design token compliance
                     </span>
@@ -12063,25 +12063,25 @@ export const ComponentsDemo: React.FC = () => {
                   </h4>
                   <ul className='space-y-2'>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Dark-first foundation with ethereal accents
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Apple HIG interaction patterns
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Systematic 8pt grid spacing
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Platform-aware touch targets (44px minimum)
                       </span>
@@ -12094,25 +12094,25 @@ export const ComponentsDemo: React.FC = () => {
                   </h4>
                   <ul className='space-y-2'>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         WCAG AAA compliance with enforced mode
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Comprehensive keyboard navigation
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Optimized pagination range calculation
                       </span>
                     </li>
                     <li className='flex items-center gap-2'>
-                      <Check className='h-4 w-4 flex-shrink-0 text-success' />
+                      <Check className='size-4 shrink-0 text-success' />
                       <span className='text-foreground'>
                         Polymorphic asChild pattern support
                       </span>

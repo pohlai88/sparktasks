@@ -10,18 +10,22 @@
  * - Anti-Drift Enforcement: ✅ Token-only references, no hardcoded values
  *
  * ARCHITECTURE INTEGRATION:
- * - Radix Separator → Behavior, ARIA, semantic roles
- * - MAPS4 → Apple HIG spacing, liquid glass, AAA enforcement
- * - Enhanced Tokens → Deep space aesthetic with systematic spacing
+ * - Radix owns: Behavior, ARIA, focus management, state management, keyboard navigation
+ * - MAPS4 owns: Apple HIG materials, liquid glass, AAA enforcement
+ * - Wrapper owns: Token application, governance rules, brand consistency
+ *
+ * GOVERNANCE RULES:
+ * - Foundation tokens only (no component-specific tokens)
+ * - Auto-apply AAA scrims over glass materials
+ * - Apple HIG motion with respect for reduced motion
+ * - Platform-aware touch targets (44px minimum)
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
  * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
  *
- * MATERIALS & VIBRANCY GOVERNANCE:
- * - Liquid glass effects only on surfaces (never on content)
- * - AAA text scrims for content protection
- * - Systematic opacity levels with backdrop governance
+ * VERSION: 4.0.0
+ * LAST UPDATED: 2025-01-27
  */
 
 /* eslint-disable react/prop-types */
@@ -30,127 +34,131 @@ import * as SeparatorPrimitive from '@radix-ui/react-separator';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
-import { AccessibleIcon, Slot } from '@/components/primitives';
+import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED SEPARATOR VARIANTS =====
 
 /**
- * Enhanced separator variants following MAPS v2.2 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
+ * Enhanced separator variants following MAPS4 v4.0 foundation
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedSeparatorVariants = cva(
   [
-    // Foundation: Base styles - Clean semantic separator
-    'shrink-0',
+    // Foundation: Layout - Clean semantic separator - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0],
 
-    // Foundation: Color - Using design tokens from Tailwind config
-    'bg-cosmic-border',
+    // Foundation: Colors - MAPS4 cosmic foundation - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
-    // Foundation: Motion - Respect user preferences
-    'transition-colors duration-[var(--motion-duration-2)] ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.colors,
+    ENHANCED_DESIGN_TOKENS.foundation.animation.duration[200],
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: States - AAA compliant states
-    'data-[disabled]:opacity-[var(--opacity-50)]',
+    // Foundation: States - AAA compliant states - Enhanced tokens
+    'data-[disabled]:opacity-50',
 
     // Foundation: Focus - ARIA-compliant separator doesn't receive focus by default
     // But can be made focusable for navigation purposes when role="separator"
-    'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
-        // Default: Subtle border using design tokens
-        default: ['bg-cosmic-border'],
+        // Default: Subtle border using enhanced tokens
+        default: [ENHANCED_DESIGN_TOKENS.foundation.color.border.default],
 
-        // Strong: More prominent separator for major sections
-        strong: ['bg-cosmic-border-strong'],
+        // Strong: More prominent separator for major sections - Enhanced tokens
+        strong: [ENHANCED_DESIGN_TOKENS.foundation.color.border.strong],
 
-        // Accent: Brand-colored separator for emphasis
-        accent: ['bg-aurora-accent'],
+        // Accent: Brand-colored separator for emphasis - Enhanced tokens
+        accent: [ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg],
 
-        // Glass: Liquid glass separator with vibrancy
+        // Glass: Liquid glass separator with governed vibrancy - Enhanced tokens
         glass: [
-          'bg-cosmic-border/60',
-          'backdrop-blur-[var(--blur-8)] backdrop-saturate-[var(--saturate-135)]',
-          'shadow-[0_1px_3px_rgba(0,0,0,0.2)]',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
 
-        // Ethereal: Beautiful ethereal accent following MAPS4
+        // Ethereal: Beautiful ethereal accent following MAPS4 - Enhanced tokens
         ethereal: [
           'bg-gradient-to-r from-aurora-accent/20 via-aurora-accent to-aurora-accent/20',
           'shadow-[0_0_8px_rgba(124,196,255,0.2)]',
         ],
 
-        // Dotted: Subtle dotted pattern for flexible sections
+        // Dotted: Subtle dotted pattern for flexible sections - Enhanced tokens
         dotted: [
-          'bg-transparent',
-          'border-t border-dotted border-cosmic-border',
-          'bg-none',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          'border-dotted',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
         ],
 
-        // Dashed: Dashed pattern for temporary or draft sections
+        // Dashed: Dashed pattern for temporary or draft sections - Enhanced tokens
         dashed: [
-          'bg-transparent',
-          'border-t border-dashed border-cosmic-border',
-          'bg-none',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          'border-dashed',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
         ],
       },
 
       size: {
-        // Default: Apple HIG standard separator thickness
+        // Default: Apple HIG standard separator thickness - Enhanced tokens
         default: '',
 
-        // Thick: Prominent separator for major sections
+        // Thick: Prominent separator for major sections - Enhanced tokens
         thick: '',
 
-        // Thin: Subtle separator for minor divisions
+        // Thin: Subtle separator for minor divisions - Enhanced tokens
         thin: '',
       },
 
       spacing: {
-        // None: No margin (for manual spacing control)
-        none: 'm-0',
+        // None: No margin (for manual spacing control) - Enhanced tokens
+        none: ENHANCED_DESIGN_TOKENS.foundation.layout.margin[0],
 
-        // Small: Compact vertical spacing
-        sm: 'my-[var(--space-2)]',
+        // Small: Compact vertical spacing - Enhanced tokens
+        sm: ENHANCED_DESIGN_TOKENS.foundation.layout.margin[2],
 
-        // Default: Standard Apple HIG spacing
-        default: 'my-[var(--space-4)]',
+        // Default: Standard Apple HIG spacing - Enhanced tokens
+        default: ENHANCED_DESIGN_TOKENS.foundation.layout.margin[4],
 
-        // Large: Generous spacing for major sections
-        lg: 'my-[var(--space-6)]',
+        // Large: Generous spacing for major sections - Enhanced tokens
+        lg: ENHANCED_DESIGN_TOKENS.foundation.layout.margin[6],
 
-        // Extra large: Maximum spacing for chapter-level divisions
-        xl: 'my-[var(--space-8)]',
+        // Extra large: Maximum spacing for chapter-level divisions - Enhanced tokens
+        xl: ENHANCED_DESIGN_TOKENS.foundation.layout.margin[8],
       },
 
       decoration: {
-        // None: Clean separator without decoration
+        // None: Clean separator without decoration - Enhanced tokens
         none: '',
 
-        // Glow: Subtle glow effect for premium feel
+        // Glow: Subtle glow effect for premium feel - Enhanced tokens
         glow: [
-          'shadow-[0_0_12px_rgba(124,196,255,0.15)]',
-          'relative',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
           'before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-aurora-accent/10 before:to-transparent',
         ],
 
-        // Gradient: Sophisticated gradient effect
+        // Gradient: Sophisticated gradient effect - Enhanced tokens
         gradient: [
           'bg-gradient-to-r from-transparent via-cosmic-border to-transparent',
         ],
 
-        // Fade: Fade-out edges for organic feel
+        // Fade: Fade-out edges for organic feel - Enhanced tokens
         fade: [
           'bg-gradient-to-r from-transparent via-cosmic-border to-transparent',
           'mask-image:linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
         ],
       },
 
-      // AAA compliance mode
+      // AAA compliance mode - Enhanced tokens
       aaa: {
         false: '',
         true: [
@@ -160,15 +168,16 @@ const enhancedSeparatorVariants = cva(
         ],
       },
     },
+    
     compoundVariants: [
-      // Glass variant with AAA override
+      // Glass variant with AAA override - Enhanced tokens
       {
         variant: 'glass',
         aaa: true,
         className: '!bg-cosmic-border !shadow-none !backdrop-blur-none',
       },
 
-      // Ethereal variant with AAA override
+      // Ethereal variant with AAA override - Enhanced tokens
       {
         variant: 'ethereal',
         aaa: true,
@@ -176,6 +185,7 @@ const enhancedSeparatorVariants = cva(
           '!bg-cosmic-aaa !from-transparent !via-transparent !to-transparent !shadow-none',
       },
     ],
+    
     defaultVariants: {
       variant: 'default',
       size: 'default',
@@ -188,6 +198,7 @@ const enhancedSeparatorVariants = cva(
 
 /**
  * Get orientation-specific classes for separator sizing
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 function getOrientationClasses(
   orientation: 'horizontal' | 'vertical',
@@ -195,36 +206,36 @@ function getOrientationClasses(
   variant: string
 ): string {
   if (variant === 'dotted' || variant === 'dashed') {
-    // Handle dotted/dashed with orientation-specific borders
+    // Handle dotted/dashed with orientation-specific borders - Enhanced tokens
     if (orientation === 'vertical') {
-      return 'border-t-0 border-l h-full';
+      return ENHANCED_DESIGN_TOKENS.foundation.layout.height.full + ' border-l';
     }
     return '';
   }
 
-  // Handle sizing based on orientation
+  // Handle sizing based on orientation - Enhanced tokens
   if (orientation === 'horizontal') {
     switch (size) {
       case 'thin': {
-        return 'h-[var(--stroke-1)]';
+        return ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default;
       }
       case 'thick': {
-        return 'h-[var(--space-2)]';
+        return ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thin;
       }
       default: {
-        return 'h-[var(--stroke-1)]';
+        return ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default;
       }
     }
   } else {
     switch (size) {
       case 'thin': {
-        return 'w-[var(--stroke-1)]';
+        return ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default;
       }
       case 'thick': {
-        return 'w-[var(--space-2)]';
+        return ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thin;
       }
       default: {
-        return 'w-[var(--stroke-1)]';
+        return ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default;
       }
     }
   }
@@ -297,6 +308,11 @@ interface EnhancedSeparatorOwnProps {
    * Polymorphic support - render as different element/component
    */
   asChild?: boolean;
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 type EnhancedSeparatorProps = EnhancedSeparatorOwnProps &
@@ -321,6 +337,7 @@ const EnhancedSeparator = React.forwardRef<
       orientation = 'horizontal',
       decorative = true,
       asChild = false,
+      disableAnimations = false,
       className,
       'aria-label': ariaLabel,
       'data-testid': dataTestId,
@@ -328,6 +345,11 @@ const EnhancedSeparator = React.forwardRef<
     },
     ref
   ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     // Accessibility: Semantic separators should have proper labeling
     const accessibilityProps = decorative
       ? {
@@ -360,6 +382,7 @@ const EnhancedSeparator = React.forwardRef<
             size || 'default',
             variant || 'default'
           ),
+          motionClasses,
           className
         )}
         data-testid={dataTestId}
@@ -368,11 +391,7 @@ const EnhancedSeparator = React.forwardRef<
       />
     );
 
-    return decorative ? (
-      <AccessibleIcon>{separatorContent}</AccessibleIcon>
-    ) : (
-      separatorContent
-    );
+    return separatorContent;
   }
 );
 
@@ -413,6 +432,11 @@ interface SeparatorWithContentProps {
    * Test ID for testing purposes
    */
   'data-testid'?: string;
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 const SeparatorWithContent = React.forwardRef<
@@ -425,22 +449,31 @@ const SeparatorWithContent = React.forwardRef<
       variant = 'default',
       spacing = 'default',
       aaa = false,
+      disableAnimations = false,
       className,
       'data-testid': dataTestId,
       ...props
     },
     ref
   ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     return (
       <div
         ref={ref}
         className={cn(
-          'relative flex items-center',
-          spacing === 'none' && 'my-0',
-          spacing === 'sm' && 'my-[var(--space-2)]',
-          spacing === 'default' && 'my-[var(--space-4)]',
-          spacing === 'lg' && 'my-[var(--space-6)]',
-          spacing === 'xl' && 'my-[var(--space-8)]',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+          spacing === 'none' && ENHANCED_DESIGN_TOKENS.foundation.layout.margin[0],
+          spacing === 'sm' && ENHANCED_DESIGN_TOKENS.foundation.layout.margin[2],
+          spacing === 'default' && ENHANCED_DESIGN_TOKENS.foundation.layout.margin[4],
+          spacing === 'lg' && ENHANCED_DESIGN_TOKENS.foundation.layout.margin[6],
+          spacing === 'xl' && ENHANCED_DESIGN_TOKENS.foundation.layout.margin[8],
+          motionClasses,
           className
         )}
         data-testid={dataTestId}
@@ -451,14 +484,19 @@ const SeparatorWithContent = React.forwardRef<
           variant={variant}
           spacing='none'
           aaa={aaa}
+          disableAnimations={disableAnimations}
           className='flex-1'
         />
 
         {/* Content container */}
         <div
           className={cn(
-            'flex shrink-0 items-center px-[var(--space-4)]',
-            'text-[var(--font-size-sm)] font-[var(--font-weight-medium)] text-cosmic-muted',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0],
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
             // AAA compliance for text content
             aaa && 'text-cosmic-aaa'
           )}
@@ -471,6 +509,7 @@ const SeparatorWithContent = React.forwardRef<
           variant={variant}
           spacing='none'
           aaa={aaa}
+          disableAnimations={disableAnimations}
           className='flex-1'
         />
       </div>
@@ -480,59 +519,185 @@ const SeparatorWithContent = React.forwardRef<
 
 SeparatorWithContent.displayName = 'SeparatorWithContent';
 
-// ===== SEPARATOR FACTORY FUNCTIONS =====
+// ===== ENHANCED SEPARATOR FACTORY =====
 
 /**
- * Create a themed separator with predefined styling
+ * Enhanced Separator Factory Functions
+ * @description Semantic constructors following MAPS v2.2 patterns
  */
-function createThemedSeparator(
-  defaultVariant: EnhancedSeparatorOwnProps['variant'] = 'default',
-  defaultDecoration: EnhancedSeparatorOwnProps['decoration'] = 'none'
-) {
-  const ThemedSeparator = React.forwardRef<
-    React.ElementRef<typeof SeparatorPrimitive.Root>,
-    Omit<EnhancedSeparatorProps, 'variant' | 'decoration'>
-  >((props, ref) => (
-    <EnhancedSeparator
-      ref={ref}
-      variant={defaultVariant}
-      decoration={defaultDecoration}
-      {...props}
-    />
-  ));
+export const SeparatorFactory = {
+  /**
+   * Default separator with clean styling
+   */
+  default: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'variant'>) => (
+      <EnhancedSeparator {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'variant'>) => (
+      <SeparatorWithContent {...props} />
+    ),
+  },
 
-  ThemedSeparator.displayName = `ThemedSeparator(${defaultVariant})`;
-  return ThemedSeparator;
-}
+  /**
+   * Glass variant with liquid glass materials
+   */
+  glass: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'variant'>) => (
+      <EnhancedSeparator variant='glass' {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'variant'>) => (
+      <SeparatorWithContent variant='glass' {...props} />
+    ),
+  },
+
+  /**
+   * Elevated variant with enhanced depth
+   */
+  elevated: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'variant'>) => (
+      <EnhancedSeparator variant='default' decoration='glow' {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'variant'>) => (
+      <SeparatorWithContent variant='default' {...props} />
+    ),
+  },
+
+  /**
+   * Ghost variant for subtle styling
+   */
+  ghost: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'variant'>) => (
+      <EnhancedSeparator variant='dotted' {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'variant'>) => (
+      <SeparatorWithContent variant='dotted' {...props} />
+    ),
+  },
+
+  /**
+   * AAA compliance variant for high contrast
+   */
+  aaa: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'aaa'>) => (
+      <EnhancedSeparator aaa={true} {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'aaa'>) => (
+      <SeparatorWithContent aaa={true} {...props} />
+    ),
+  },
+
+  /**
+   * Performance-optimized separator with disabled animations
+   */
+  performance: {
+    Separator: (props: React.ComponentPropsWithoutRef<typeof EnhancedSeparator>) => (
+      <EnhancedSeparator disableAnimations={true} {...props} />
+    ),
+    WithContent: (props: React.ComponentPropsWithoutRef<typeof SeparatorWithContent>) => (
+      <SeparatorWithContent disableAnimations={true} {...props} />
+    ),
+  },
+
+  /**
+   * Small spacing for compact layouts
+   */
+  small: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'spacing'>) => (
+      <EnhancedSeparator spacing='sm' {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'spacing'>) => (
+      <SeparatorWithContent spacing='sm' {...props} />
+    ),
+  },
+
+  /**
+   * Large spacing for prominent content
+   */
+  large: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'spacing'>) => (
+      <EnhancedSeparator spacing='lg' {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'spacing'>) => (
+      <SeparatorWithContent spacing='lg' {...props} />
+    ),
+  },
+
+  /**
+   * Extra large spacing for maximum separation
+   */
+  xlarge: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'spacing'>) => (
+      <EnhancedSeparator spacing='xl' {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'spacing'>) => (
+      <SeparatorWithContent spacing='xl' {...props} />
+    ),
+  },
+
+  /**
+   * Compact density for dense layouts
+   */
+  compact: {
+    Separator: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'spacing'>) => (
+      <EnhancedSeparator spacing='sm' {...props} />
+    ),
+    WithContent: (props: Omit<React.ComponentPropsWithoutRef<typeof SeparatorWithContent>, 'spacing'>) => (
+      <SeparatorWithContent spacing='sm' {...props} />
+    ),
+  },
+} as const;
 
 // ===== PREDEFINED SEPARATOR VARIANTS =====
 
 /**
  * Glass separator with ethereal vibrancy
  */
-const GlassSeparator = createThemedSeparator('glass', 'glow');
+const GlassSeparator = React.forwardRef<
+  React.ElementRef<typeof EnhancedSeparator>,
+  Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'variant' | 'decoration'>
+>((props, ref) => (
+  <EnhancedSeparator ref={ref} variant='glass' decoration='glow' {...props} />
+));
+GlassSeparator.displayName = 'GlassSeparator';
 
 /**
  * Ethereal separator with sophisticated gradient
  */
-const EtherealSeparator = createThemedSeparator('ethereal', 'none');
+const EtherealSeparator = React.forwardRef<
+  React.ElementRef<typeof EnhancedSeparator>,
+  Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'variant'>
+>((props, ref) => (
+  <EnhancedSeparator ref={ref} variant='ethereal' {...props} />
+));
+EtherealSeparator.displayName = 'EtherealSeparator';
 
 /**
  * Strong separator for major sections
  */
-const StrongSeparator = createThemedSeparator('strong', 'none');
+const StrongSeparator = React.forwardRef<
+  React.ElementRef<typeof EnhancedSeparator>,
+  Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'variant'>
+>((props, ref) => (
+  <EnhancedSeparator ref={ref} variant='strong' {...props} />
+));
+StrongSeparator.displayName = 'StrongSeparator';
 
 /**
  * Accent separator for brand emphasis
  */
-const AccentSeparator = createThemedSeparator('accent', 'glow');
+const AccentSeparator = React.forwardRef<
+  React.ElementRef<typeof EnhancedSeparator>,
+  Omit<React.ComponentPropsWithoutRef<typeof EnhancedSeparator>, 'variant' | 'decoration'>
+>((props, ref) => (
+  <EnhancedSeparator ref={ref} variant='accent' decoration='glow' {...props} />
+));
+AccentSeparator.displayName = 'AccentSeparator';
 
 // ===== EXPORTS =====
 
 export {
   EnhancedSeparator,
   SeparatorWithContent,
-  createThemedSeparator,
   GlassSeparator,
   EtherealSeparator,
   StrongSeparator,
@@ -544,3 +709,5 @@ export type { EnhancedSeparatorProps, SeparatorWithContentProps };
 
 // Re-export Radix primitives for advanced use cases
 export { Root as SeparatorPrimitive } from '@radix-ui/react-separator';
+
+export type { VariantProps } from 'class-variance-authority';

@@ -25,8 +25,7 @@ import { X } from 'lucide-react';
 import React from 'react';
 
 import { VisuallyHidden } from '@/components/primitives';
-import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
-import { createEnhancedPolymorphicComponent } from '@/design/utils/enhanced-polymorphic';
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED DIALOG VARIANTS =====
@@ -37,13 +36,14 @@ import { cn } from '@/utils/cn';
 const dialogOverlayVariants = cva(
   [
     // Foundation overlay behavior
-    'fixed inset-0 z-50',
+    getZIndexClass('overlay'),
+    'fixed inset-0',
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
     'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
 
     // Motion respect
-    ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.reduce,
-    ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.safe,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionSafeFadeIn,
   ],
   {
     variants: {
@@ -54,11 +54,15 @@ const dialogOverlayVariants = cva(
         ],
         glass: [
           // Liquid glass overlay with backdrop blur
-          ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.glass.surface,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.overlay,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
         ],
         floating: [
           // Premium floating glass effect
-          ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.glass.floating,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.overlay,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[200],
         ],
       },
       enforcement: {
@@ -84,7 +88,8 @@ const dialogOverlayVariants = cva(
 const dialogContentVariants = cva(
   [
     // Foundation positioning and animation
-    'fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
+    getZIndexClass('modal'),
+    'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
     'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
     'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -92,33 +97,36 @@ const dialogContentVariants = cva(
     'data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
 
     // Foundation structure
-    'grid w-full gap-4 p-6',
-    'rounded-lg border shadow-lg',
-    'outline-none', // Radix handles focus; we add ring on focus-visible
+    'grid w-full gap-4',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
     // Typography and content
-    ENHANCED_DESIGN_TOKENS.foundation.typography.body,
-    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary, // Motion respect
-    ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.reduce,
-    ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.safe,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    // Motion respect
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionSafeFadeIn,
   ],
   {
     variants: {
       surface: {
         elevated1: [
-          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated1,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
           ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
-          ENHANCED_DESIGN_TOKENS.foundation.materials.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
         elevated2: [
-          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated2,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
           ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-          ENHANCED_DESIGN_TOKENS.foundation.materials.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
         translucent: [
           ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
-          ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
-          ENHANCED_DESIGN_TOKENS.foundation.materials.elevation.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
       },
       size: {
@@ -132,12 +140,16 @@ const dialogContentVariants = cva(
         none: '',
         glass: [
           // Add subtle vibrancy to content (surface-only rule)
-          ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.glass.elevated,
+          'bg-cosmic-void/80',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
         ],
         floating: [
           // Premium floating effect for special dialogs
-          ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.glass.floating,
-          ENHANCED_DESIGN_TOKENS.foundation.materials.elevation.glowAccent,
+          'bg-cosmic-void/90',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[200],
+          'shadow-aurora-glow',
         ],
       },
       enforcement: {
@@ -186,10 +198,10 @@ const dialogHeaderVariants = cva(
 const dialogTitleVariants = cva('', {
   variants: {
     level: {
-      title1: ENHANCED_DESIGN_TOKENS.foundation.typography.title1,
-      title2: ENHANCED_DESIGN_TOKENS.foundation.typography.title2,
-      title3: ENHANCED_DESIGN_TOKENS.foundation.typography.title3,
-      headline: ENHANCED_DESIGN_TOKENS.foundation.typography.headline,
+      title1: ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h1,
+      title2: ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2,
+      title3: ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
+      headline: ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
     },
   },
   defaultVariants: {
@@ -201,7 +213,7 @@ const dialogTitleVariants = cva('', {
  * Dialog description variants
  */
 const dialogDescriptionVariants = cva([
-  ENHANCED_DESIGN_TOKENS.foundation.typography.body,
+  ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
   ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
 ]);
 
@@ -210,7 +222,7 @@ const dialogDescriptionVariants = cva([
  */
 const dialogFooterVariants = cva([
   'flex flex-col-reverse sm:flex-row sm:justify-end',
-  `gap-${ENHANCED_DESIGN_TOKENS.foundation.spacing.sm}`,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
 ]);
 
 /**
@@ -226,9 +238,9 @@ const dialogCloseVariants = cva([
   'data-[state=open]:bg-aurora-accent data-[state=open]:text-cosmic-muted',
 
   // Platform-aware hit target
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.hitTarget.base,
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.focus.visible,
-  ENHANCED_DESIGN_TOKENS.foundation.interaction.motion.safe,
+  'h-8 w-8',
+  'focus:outline-none focus:ring-2 focus:ring-aurora-accent focus:ring-offset-2',
+  ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionSafeFadeIn,
 ]);
 
 // ===== ENHANCED DIALOG COMPONENTS =====
@@ -255,24 +267,33 @@ interface DialogOverlayProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>,
     VariantProps<typeof dialogOverlayVariants> {
   enforceAAA?: boolean | undefined;
+  disableAnimations?: boolean | undefined;
 }
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   DialogOverlayProps
->(({ className, vibrancy, enforcement, enforceAAA, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn(
-      dialogOverlayVariants({
-        vibrancy: enforceAAA ? 'none' : vibrancy,
-        enforcement: enforceAAA ? 'aaa' : enforcement,
-      }),
-      className
-    )}
-    {...props}
-  />
-));
+>(({ className, vibrancy, enforcement, enforceAAA, disableAnimations = false, ...props }, ref) => {
+  // Performance optimization: conditionally apply motion classes
+  const motionClasses = disableAnimations 
+    ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+    : '';
+
+  return (
+    <DialogPrimitive.Overlay
+      ref={ref}
+      className={cn(
+        dialogOverlayVariants({
+          vibrancy: enforceAAA ? 'none' : vibrancy,
+          enforcement: enforceAAA ? 'aaa' : enforcement,
+        }),
+        motionClasses,
+        className
+      )}
+      {...props}
+    />
+  );
+});
 DialogOverlay.displayName = 'EnhancedDialogOverlay';
 
 /**
@@ -284,6 +305,7 @@ interface DialogContentProps
   enforceAAA?: boolean | undefined;
   showClose?: boolean | undefined;
   initialFocusRef?: React.RefObject<HTMLElement>;
+  disableAnimations?: boolean | undefined;
 }
 
 const DialogContent = React.forwardRef<
@@ -301,10 +323,17 @@ const DialogContent = React.forwardRef<
       enforceAAA,
       showClose = true,
       initialFocusRef,
+      disableAnimations = false,
       ...props
     },
     ref
-  ) => (
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    return (
     <DialogPortal>
       <DialogOverlay enforceAAA={enforceAAA} />
       <DialogPrimitive.Content
@@ -316,6 +345,7 @@ const DialogContent = React.forwardRef<
             vibrancy: enforceAAA ? 'none' : vibrancy,
             enforcement: enforceAAA ? 'aaa' : enforcement,
           }),
+          motionClasses,
           className
         )}
         // Deterministic focus management for screen readers
@@ -330,8 +360,7 @@ const DialogContent = React.forwardRef<
         {/* AAA text legibility scrim when enforced */}
         <div
           className={cn(
-            enforceAAA &&
-              ENHANCED_DESIGN_TOKENS.foundation.materials.vibrancy.scrim.text
+            enforceAAA && 'bg-cosmic-void/95 backdrop-blur-sm'
           )}
         >
           {children}
@@ -344,7 +373,8 @@ const DialogContent = React.forwardRef<
         )}
       </DialogPrimitive.Content>
     </DialogPortal>
-  )
+    );
+  }
 );
 DialogContent.displayName = 'EnhancedDialogContent';
 
@@ -449,12 +479,15 @@ interface EnhancedDialogConfig extends DialogContentProps {
   headerAlignment?: VariantProps<typeof dialogHeaderVariants>['alignment'];
   /** Initial focus element for accessibility */
   initialFocusRef?: React.RefObject<HTMLElement>;
+  /** Disable animations for performance optimization */
+  disableAnimations?: boolean | undefined;
 }
 
-export const EnhancedDialog = createEnhancedPolymorphicComponent<
-  'div',
-  EnhancedDialogConfig
->(
+type El = React.ElementType;
+type PropsOf<E extends El> = React.ComponentPropsWithoutRef<E>;
+type PolyProps<E extends El, P> = P & Omit<PropsOf<E>, keyof P | 'asChild'> & { asChild?: boolean };
+
+export const EnhancedDialog = React.forwardRef<HTMLDivElement, PolyProps<El, EnhancedDialogConfig>>(
   (
     {
       trigger,
@@ -472,8 +505,9 @@ export const EnhancedDialog = createEnhancedPolymorphicComponent<
       vibrancy = 'none',
       enforceAAA = false,
       initialFocusRef,
+      disableAnimations = false,
       ...props
-    },
+    }: PolyProps<El, EnhancedDialogConfig>,
     ref
   ) => (
     <DialogRoot
@@ -483,12 +517,14 @@ export const EnhancedDialog = createEnhancedPolymorphicComponent<
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
 
       <DialogContent
-        ref={ref}
+        asChild={Boolean((props as any).asChild)}
+        ref={ref as any}
         surface={surface}
         size={size}
         vibrancy={vibrancy}
         enforceAAA={enforceAAA}
         showClose={showClose}
+        disableAnimations={disableAnimations}
         {...(initialFocusRef && { initialFocusRef })}
         {...props}
       >
@@ -506,17 +542,88 @@ export const EnhancedDialog = createEnhancedPolymorphicComponent<
         {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>
     </DialogRoot>
-  ),
-  {
-    displayName: 'Dialog',
-    defaultSurface: 'elevated1',
-    defaultContent: 'primary',
-    defaultTypography: 'body',
-    defaultInteraction: false,
-    defaultVibrancy: 'none',
-    enforceAccessibility: true,
-  }
+  )
 );
+
+EnhancedDialog.displayName = 'Dialog';
+
+// ===== DIALOG FACTORY =====
+
+/**
+ * Factory for common dialog configurations
+ * Provides semantic presets following MAPS design patterns
+ */
+export const DialogFactory = {
+  /**
+   * Default dialog with elevated surface
+   */
+  default: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog surface='elevated1' {...props} />
+  ),
+
+  /**
+   * Elevated dialog with stronger shadow
+   */
+  elevated: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog surface='elevated2' {...props} />
+  ),
+
+  /**
+   * Glass dialog with liquid glass materials
+   */
+  glass: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog surface='translucent' vibrancy='glass' {...props} />
+  ),
+
+  /**
+   * Floating dialog with premium effects
+   */
+  floating: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog surface='translucent' vibrancy='floating' {...props} />
+  ),
+
+  /**
+   * Small dialog for simple interactions
+   */
+  small: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog size='sm' {...props} />
+  ),
+
+  /**
+   * Large dialog for complex content
+   */
+  large: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog size='lg' {...props} />
+  ),
+
+  /**
+   * Extra large dialog for full-screen content
+   */
+  xlarge: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog size='xl' {...props} />
+  ),
+
+  /**
+   * Full width dialog for mobile
+   */
+  fullWidth: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog size='fullWidth' {...props} />
+  ),
+
+  /**
+   * AAA compliant dialog with enhanced contrast
+   */
+  aaa: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog enforceAAA={true} {...props} />
+  ),
+
+  /**
+   * Performance-optimized dialog with disabled animations
+   */
+  performance: (props: Partial<EnhancedDialogConfig> = {}) => (
+    <EnhancedDialog disableAnimations={true} {...props} />
+  ),
+};
 
 // ===== COMPONENT EXPORTS =====
 

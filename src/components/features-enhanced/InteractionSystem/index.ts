@@ -22,7 +22,3 @@ export type {
   ScreenReaderInstructions,
 } from './DragDropProvider';
 export { DragDropPatterns } from './DragDropProvider';
-
-// ===== RE-EXPORTS =====
-
-export * from './DragDropProvider';

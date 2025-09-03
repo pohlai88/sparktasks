@@ -13,9 +13,9 @@
  * - Liquid Glass Materials: Governed vibrancy system
  */
 
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* ===== DARK-FIRST FOUNDATION LAYER ===== */
 
@@ -39,10 +39,10 @@
     --cosmic-disabled: 120 128 140; /* #78808c - Cosmic disabled (3.8:1) */
 
     /* MAPS4 Aurora Accent System - Primary brand colors */
-    --aurora-accent: 124 196 255; /* #7cc4ff - Aurora accent */
+    --aurora-accent: 59 130 246; /* #3b82f6 - Better contrast aurora accent */
     --cosmic-primary: 124 196 255; /* #7cc4ff - Cosmic primary */
     --cosmic-primary-hover: 144 206 255; /* #90ceff - Cosmic primary hover */
-    --cosmic-dark: 20 35 60; /* #14233c - Cosmic dark for text on light backgrounds */
+    --cosmic-dark: 15 25 45; /* #0f192d - Better contrast cosmic dark for text on light backgrounds */
 
     /* MAPS4 Cosmic Cyan System - Secondary brand colors */
     --cosmic-cyan: 120 255 214; /* #78ffd6 - Cosmic cyan */
@@ -75,7 +75,7 @@
 
     /* MAPS4 Interactive States */
     --ring: 124 196 255; /* #7cc4ff - Aurora accent focus rings */
-    --cosmic-muted: 36 28 65; /* #241c41 - Cosmic muted backgrounds */
+    --cosmic-muted: 156 163 175; /* #9ca3af - Better contrast cosmic muted text */
 
     /* MAPS4 Motion System Variables */
     --motion-duration-instant: 75ms;
@@ -96,17 +96,38 @@
     --cosmic-input-border: var(--cosmic-border);
     --cosmic-input-placeholder: var(--stellar-muted);
 
-    /* MAPS4 Z-Index Management */
+    /* MAPS4 Z-Index Management (aligned to Tailwind named layers) */
     --z-surface: 0;
-    --z-overlay: 10;
-    --z-modal: 20;
-    --z-popover: 30;
-    --z-toast: 40;
-    --z-tooltip: 50;
+    --z-overlay: 100;
+    --z-modal: 1300;
+    --z-popover: 1100;
+    --z-toast: 1400;
+    --z-tooltip: 1500;
 
     /* MAPS4 Additional Cosmic Variables */
     --nebula-accent: 19 36 61; /* #13243d - Nebula accent */
     --cosmic-ring-offset: 10 15 22; /* #0a0f16 - Cosmic ring offset */
+    
+    /* Semantic aliases for Tailwind color tokens */
+    --background: var(--deep-space);
+    --foreground: var(--cosmic-light);
+    --background-panel: var(--stellar-surface);
+    --background-elevated: var(--cosmic-void);
+    --foreground-muted: var(--stellar-muted);
+    --foreground-subtle: var(--cosmic-subtle);
+    --border: var(--cosmic-border);
+    --border-strong: var(--cosmic-border-strong);
+    --border-accent: var(--aurora-accent);
+    --input: var(--cosmic-input);
+    --primary: var(--cosmic-primary);
+    --primary-hover: var(--cosmic-primary-hover);
+    
+    /* MAPS4 Missing CSS Variables for Tailwind Integration */
+    --ring-offset: 10 15 22; /* #0a0f16 - Cosmic ring offset */
+    --accent: 124 196 255; /* #7cc4ff - Aurora accent */
+    --success: 64 214 163; /* #40d6a3 - Cosmic success */
+    --error: 255 107 107; /* #ff6b6b - Cosmic danger */
+    --warning: 255 209 102; /* #ffd166 - Cosmic warning */
 
       /* MAPS4 Component-Specific Variables - Required for 10/10 Button Component */
   --opacity-disabled: 0.5;
@@ -158,6 +179,11 @@
     --card-scale-active: 0.98;
     --badge-scale-hover: 1.05;
     --badge-scale-active: 0.95;
+    
+    /* MAPS4 Missing Shadow Variables */
+    --shadow-elevation-low: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
+    --shadow-elevation-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
 
   /**
@@ -176,7 +202,7 @@
     --cosmic-disabled: 163 163 163;
 
     /* MAPS4 Aurora Accent System - Light mode variants */
-    --aurora-accent: 124 196 255; /* #7cc4ff - Aurora accent (consistent) */
+    --aurora-accent: 59 130 246; /* #3b82f6 - Better contrast aurora accent (consistent) */
     --cosmic-primary: 124 196 255; /* #7cc4ff - Cosmic primary */
     --cosmic-primary-hover: 104 176 199; /* #68b0c7 - Cosmic primary hover (darker) */
     --cosmic-dark: 255 255 255; /* #ffffff - White text on dark backgrounds */
@@ -212,7 +238,7 @@
 
     /* MAPS4 Interactive States - Light mode */
     --ring: 124 196 255; /* #7cc4ff - Aurora accent focus rings */
-    --cosmic-muted: 245 245 245;
+    --cosmic-muted: 75 85 99; /* #4b5563 - Better contrast for light mode */
 
     /* MAPS4 Elevation & Glass Materials - Light mode */
     --card: 255 255 255;
@@ -275,6 +301,11 @@
     --card-scale-active: 0.98;
     --badge-scale-hover: 1.05;
     --badge-scale-active: 0.95;
+    
+    /* MAPS4 Missing Shadow Variables */
+    --shadow-elevation-low: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
+    --shadow-elevation-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
 
   /**

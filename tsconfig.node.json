@@ -1,4 +1,5 @@
 {
+  "comment": "TypeScript Configuration for Node.js Tools - Build and Test Configuration Files",
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true,
@@ -6,7 +7,11 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": ["node"]
+    "types": [
+      "node",
+      "vitest/globals",
+      "vitest/importMeta"
+    ]
   },
   "include": ["vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
 }

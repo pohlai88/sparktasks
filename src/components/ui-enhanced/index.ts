@@ -1,11 +1,20 @@
 /**
- * Enhanced UI Components - MAPS v2.2 Export Index
+ * Enhanced UI Components - MAPS v4.0 Export Index
  *
  * Centralized exports for Enhanced UI components following
  * proper module organization patterns and MAPS architecture
+ * 
+ * ORGANIZATION:
+ * 1. Primitives & Foundation
+ * 2. Basic Form Components
+ * 3. Layout & Structure Components
+ * 4. Interactive & Navigation Components
+ * 5. Feedback & Display Components
+ * 6. Utility & Specialized Components
+ * 7. Common Types & Utilities
  */
 
-// ===== PRIMITIVES - MAPS v2.2 Radix Utilities =====
+// ===== 1. PRIMITIVES & FOUNDATION =====
 // Required for migration: All accessibility and composition patterns
 export {
   AccessibleIcon,
@@ -21,13 +30,295 @@ export type {
   DirectionProviderProps,
 } from '../primitives';
 
-// Enhanced Button Component
-export { EnhancedButton, enhancedButtonVariants } from './Button';
+// ===== 2. BASIC FORM COMPONENTS =====
+// Core input and form elements
 
-// Enhanced Button Types
+// Button
+export { EnhancedButton, enhancedButtonVariants } from './Button';
 export type { EnhancedButtonOwnProps, ButtonVariantProps } from './Button';
 
-// Enhanced Alert Component
+// Input
+export { EnhancedInput, EnhancedInputField, enhancedInputVariants } from './Input';
+export type { EnhancedInputOwnProps, InputVariantProps } from './Input';
+
+// Textarea
+export { EnhancedTextarea, enhancedTextareaVariants } from './Textarea';
+export type { EnhancedTextareaProps } from './Textarea';
+
+// Checkbox
+export { Checkbox, CheckboxWithLabel, CheckboxGroup } from './Checkbox';
+export type { CheckboxWithLabelProps, CheckboxGroupProps } from './Checkbox';
+
+// Switch
+export { EnhancedSwitch, enhancedSwitchVariants, SwitchFactory } from './Switch';
+export type { EnhancedSwitchProps } from './Switch';
+
+// Radio Group
+export {
+  EnhancedRadioGroup,
+  EnhancedRadioGroupItem,
+  EnhancedRadioGroupCard,
+  enhancedRadioGroupVariants,
+  enhancedRadioItemVariants,
+  enhancedRadioIndicatorVariants,
+  enhancedRadioLabelVariants,
+} from './RadioGroup';
+
+// Select
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
+} from './Select';
+
+export type {
+  SelectTriggerVariants,
+  SelectContentVariants,
+  SelectItemVariants,
+} from './Select';
+
+// Label
+export {
+  EnhancedLabel,
+  LabelWithField,
+  FormFieldGroup,
+  enhancedLabelVariants,
+  createLabelWithField,
+} from './Label';
+
+export type {
+  EnhancedLabelOwnProps,
+  LabelVariantProps,
+  LabelWithFieldProps,
+  FormFieldGroupProps,
+} from './Label';
+
+// ===== 3. LAYOUT & STRUCTURE COMPONENTS =====
+// Components for organizing and structuring content
+
+// Card
+export {
+  EnhancedCard,
+  EnhancedCardHeader,
+  EnhancedCardTitle,
+  EnhancedCardDescription,
+  EnhancedCardContent,
+  EnhancedCardFooter,
+  EnhancedCards,
+  CardFactory,
+  enhancedCardVariants,
+  enhancedCardHeaderVariants,
+  enhancedCardTitleVariants,
+  enhancedCardDescriptionVariants,
+  enhancedCardContentVariants,
+  enhancedCardFooterVariants,
+} from './Card';
+
+export type {
+  EnhancedCardOwnProps,
+  EnhancedCardHeaderProps,
+  EnhancedCardTitleProps,
+  EnhancedCardDescriptionProps,
+  EnhancedCardContentProps,
+  EnhancedCardFooterProps,
+  CardVariantProps,
+} from './Card';
+
+// Separator
+export {
+  EnhancedSeparator,
+  SeparatorWithContent,
+  GlassSeparator,
+  EtherealSeparator,
+  StrongSeparator,
+  AccentSeparator,
+  enhancedSeparatorVariants,
+  SeparatorPrimitive,
+} from './Separator';
+
+export type {
+  EnhancedSeparatorProps,
+  SeparatorWithContentProps,
+} from './Separator';
+
+// Skeleton
+export {
+  EnhancedSkeleton,
+  SkeletonFactory,
+  SkeletonTextLines,
+  SkeletonCard,
+  SkeletonTable,
+  enhancedSkeletonVariants,
+} from './Skeleton';
+
+export type {
+  EnhancedSkeletonProps,
+  SkeletonTextLinesProps,
+  SkeletonCardProps,
+  SkeletonTableProps,
+} from './Skeleton';
+
+// Aspect Ratio
+export {
+  EnhancedAspectRatio,
+  AspectRatioFactory,
+  AspectRatioImage,
+  AspectRatioVideo,
+  AspectRatioPlaceholder,
+  enhancedAspectRatioVariants,
+  enhancedAspectRatioContentVariants,
+  ASPECT_RATIO_PRESETS,
+  calculateAspectRatio,
+  getAspectRatioName,
+  getDimensionsFromRatio,
+  AspectRatioPrimitive,
+} from './AspectRatio';
+
+export type {
+  EnhancedAspectRatioProps,
+  AspectRatioVariantProps,
+  AspectRatioContentVariantProps,
+} from './AspectRatio';
+
+// Scroll Area
+export {
+  EnhancedScrollArea,
+  EnhancedScrollbar,
+  EnhancedScrollAreaWithProtection,
+  EnhancedVirtualizedScrollArea,
+  enhancedScrollAreaVariants,
+  enhancedScrollViewportVariants,
+  enhancedScrollbarVariants,
+  enhancedScrollThumbVariants,
+  enhancedScrollCornerVariants,
+} from './ScrollArea';
+
+// ===== 4. INTERACTIVE & NAVIGATION COMPONENTS =====
+// Components for user interaction and navigation
+
+// Toggle
+export {
+  enhancedToggleVariants,
+  ToggleFactory,
+  ToggleIcons,
+  useEnhancedToggle,
+  useEnhancedToggleGroup,
+} from './Toggle';
+
+export type { EnhancedToggleProps } from './Toggle';
+
+// Toggle Group
+export {
+  ToggleGroupFactory,
+  ToggleGroupItemFactory,
+  ToggleGroupIcons,
+  useEnhancedToggleGroupMulti,
+} from './ToggleGroup';
+
+export type { EnhancedToggleGroupProps, EnhancedToggleGroupItemProps } from './ToggleGroup';
+
+// Toolbar
+export {
+  ToolbarFactory,
+  ToolbarButtonFactory,
+  ToolbarIcons,
+  enhancedToolbarSeparatorVariants,
+  enhancedToolbarToggleGroupVariants,
+} from './Toolbar';
+
+export type {
+  EnhancedToolbarProps,
+  EnhancedToolbarButtonProps,
+  EnhancedToolbarLinkProps,
+  EnhancedToolbarSeparatorProps,
+  EnhancedToolbarToggleGroupProps,
+  EnhancedToolbarToggleItemProps,
+} from './Toolbar';
+
+// Tabs
+export {
+  EnhancedTabs,
+  EnhancedTabsRoot,
+  EnhancedTabsList,
+  EnhancedTabsTrigger,
+  EnhancedTabsContent,
+  enhancedTabsRootVariants,
+  enhancedTabsListVariants,
+  enhancedTabsTriggerVariants,
+  enhancedTabsContentVariants,
+  TabsFactory,
+} from './Tabs';
+
+export type {
+  EnhancedTabsRootProps,
+  EnhancedTabsListProps,
+  EnhancedTabsTriggerProps,
+  EnhancedTabsContentProps,
+} from './Tabs';
+
+// Accordion
+export {
+  EnhancedAccordion,
+  EnhancedAccordionRoot,
+  EnhancedAccordionItem,
+  EnhancedAccordionTrigger,
+  EnhancedAccordionContent,
+  EnhancedAccordionItemComplete,
+  AccordionFactory,
+  AccordionPrimitive,
+} from './Accordion';
+
+export type {
+  EnhancedAccordionRootProps,
+  EnhancedAccordionItemProps,
+  EnhancedAccordionTriggerProps,
+  EnhancedAccordionContentProps,
+  EnhancedAccordionItemCompleteProps,
+} from './Accordion';
+
+// Collapsible
+export {
+  EnhancedCollapsible,
+  EnhancedCollapsibleRoot,
+  EnhancedCollapsibleTrigger,
+  EnhancedCollapsibleContent,
+  EnhancedCollapsibleComplete,
+  CollapsibleFactory,
+  CollapsiblePrimitive,
+} from './Collapsible';
+
+export type {
+  EnhancedCollapsibleRootProps,
+  EnhancedCollapsibleTriggerProps,
+  EnhancedCollapsibleContentProps,
+  EnhancedCollapsibleCompleteProps,
+} from './Collapsible';
+
+// Slider
+export {
+  EnhancedSlider,
+  enhancedSliderVariants,
+  enhancedSliderTrackVariants,
+  enhancedSliderRangeVariants,
+  enhancedSliderThumbVariants,
+  SliderFactory,
+  SliderFormatters,
+  useEnhancedSlider,
+} from './Slider';
+
+export type { EnhancedSliderProps } from './Slider';
+
+// ===== 5. FEEDBACK & DISPLAY COMPONENTS =====
+// Components for user feedback and information display
+
+// Alert
 export {
   EnhancedAlert,
   AlertFactory,
@@ -39,10 +330,9 @@ export {
   createNotificationAlert,
 } from './Alert';
 
-// Enhanced Alert Types
 export type { EnhancedAlertProps } from './Alert';
 
-// Enhanced Badge Component
+// Badge
 export {
   EnhancedBadge,
   BadgeFactory,
@@ -52,64 +342,57 @@ export {
   createNotificationBadge,
 } from './Badge';
 
-// Enhanced Badge Types
 export type { EnhancedBadgeProps } from './Badge';
 
-// Enhanced Breadcrumb Component
+// Progress
 export {
-  EnhancedBreadcrumb,
-  EnhancedBreadcrumbList,
-  EnhancedBreadcrumbItem,
-  EnhancedBreadcrumbLink,
-  EnhancedBreadcrumbPage,
-  EnhancedBreadcrumbSeparator,
-  EnhancedBreadcrumbEllipsis,
-  BreadcrumbFactory,
-  enhancedBreadcrumbVariants,
-  createHomeBreadcrumb,
-  createBreadcrumbPath,
-  truncateBreadcrumb,
-} from './Breadcrumb';
+  EnhancedProgress,
+  CircularProgress,
+  SteppedProgress,
+  enhancedProgressVariants,
+  enhancedProgressIndicatorVariants,
+} from './Progress';
 
-// Enhanced Breadcrumb Types
-export type {
-  EnhancedBreadcrumbProps,
-  EnhancedBreadcrumbListProps,
-  EnhancedBreadcrumbItemProps,
-  EnhancedBreadcrumbLinkProps,
-  EnhancedBreadcrumbPageProps,
-  EnhancedBreadcrumbSeparatorProps,
-  EnhancedBreadcrumbEllipsisProps,
-  BreadcrumbVariantProps,
-} from './Breadcrumb';
+export type { ProgressProps, CircularProps, SteppedProps } from './Progress';
 
-// Enhanced Calendar Component
+// Toast
 export {
-  EnhancedCalendar,
-  EnhancedCalendarHeader,
-  EnhancedCalendarNav,
-  EnhancedCalendarGrid,
-  EnhancedCalendarDay,
-  EnhancedCalendarWeekday,
-  CalendarFactory,
-  enhancedCalendarVariants,
-  createDateDisabled,
-  formatCalendarDate,
-  getCalendarMonthInfo,
-} from './Calendar';
+  EnhancedToastComponents,
+  enhancedToastVariants,
+  enhancedToastViewportVariants,
+  enhancedToastTitleVariants,
+  enhancedToastDescriptionVariants,
+  enhancedToastActionVariants,
+  enhancedToastCloseVariants,
+  ToastFactory,
+  getToastIcon,
+  ToastPrimitive,
+} from './Toast';
 
-// Enhanced Calendar Types
 export type {
-  EnhancedCalendarProps,
-  EnhancedCalendarHeaderProps,
-  EnhancedCalendarNavProps,
-  EnhancedCalendarGridProps,
-  EnhancedCalendarDayProps,
-  EnhancedCalendarWeekdayProps,
-  CalendarVariantProps,
-} from './Calendar';
+  EnhancedToastViewportProps,
+  EnhancedToastProps,
+  EnhancedToastTitleProps,
+  EnhancedToastDescriptionProps,
+  EnhancedToastActionProps,
+  EnhancedToastCloseProps,
+} from './Toast';
 
-// Enhanced Command Component
+// Tooltip
+export {
+  EnhancedTooltipProvider,
+  EnhancedTooltipRoot,
+  EnhancedTooltipTrigger,
+  EnhancedTooltipContent,
+  EnhancedTooltipWithTrigger,
+  TooltipFactory,
+  enhancedTooltipVariants,
+} from './Tooltip';
+
+// ===== 6. UTILITY & SPECIALIZED COMPONENTS =====
+// Advanced and specialized component systems
+
+// Command (Command Palette)
 export {
   EnhancedCommand,
   EnhancedCommandInput,
@@ -129,7 +412,6 @@ export {
   enhancedCommandShortcutVariants,
 } from './Command';
 
-// Enhanced Command Types
 export type {
   EnhancedCommandProps,
   EnhancedCommandInputProps,
@@ -141,7 +423,7 @@ export type {
   EnhancedCommandShortcutProps,
 } from './Command';
 
-// Enhanced Combobox Component
+// Combobox
 export {
   EnhancedCombobox,
   EnhancedComboboxInput,
@@ -154,7 +436,6 @@ export {
   enhancedComboboxItemVariants,
 } from './Combobox';
 
-// Enhanced Combobox Types
 export type {
   EnhancedComboboxProps,
   EnhancedComboboxInputProps,
@@ -163,42 +444,98 @@ export type {
   ComboboxOption,
 } from './Combobox';
 
-// Enhanced Card Component
+// Calendar
 export {
-  EnhancedCard,
-  EnhancedCardHeader,
-  EnhancedCardTitle,
-  EnhancedCardDescription,
-  EnhancedCardContent,
-  EnhancedCardFooter,
-  EnhancedCards,
-  CardFactory,
-  enhancedCardVariants,
-  enhancedCardHeaderVariants,
-  enhancedCardTitleVariants,
-  enhancedCardDescriptionVariants,
-  enhancedCardContentVariants,
-  enhancedCardFooterVariants,
-} from './Card';
+  EnhancedCalendar,
+  EnhancedCalendarHeader,
+  EnhancedCalendarNav,
+  EnhancedCalendarGrid,
+  EnhancedCalendarDay,
+  EnhancedCalendarWeekday,
+  CalendarFactory,
+  enhancedCalendarVariants,
+  createDateDisabled,
+  formatCalendarDate,
+  getCalendarMonthInfo,
+} from './Calendar';
 
-// Enhanced Card Types
 export type {
-  EnhancedCardOwnProps,
-  EnhancedCardHeaderProps,
-  EnhancedCardTitleProps,
-  EnhancedCardDescriptionProps,
-  EnhancedCardContentProps,
-  EnhancedCardFooterProps,
-  CardVariantProps,
-} from './Card';
+  EnhancedCalendarProps,
+  EnhancedCalendarHeaderProps,
+  EnhancedCalendarNavProps,
+  EnhancedCalendarGridProps,
+  EnhancedCalendarDayProps,
+  EnhancedCalendarWeekdayProps,
+  CalendarVariantProps,
+} from './Calendar';
 
-// Enhanced Checkbox Component
-export { Checkbox, CheckboxWithLabel, CheckboxGroup } from './Checkbox';
+// Date Picker
+export {
+  EnhancedDatePicker,
+  EnhancedDatePickerRange,
+  DatePickerFactory,
+  enhancedDatePickerVariants,
+} from './DatePicker';
 
-// Enhanced Checkbox Types
-export type { CheckboxWithLabelProps, CheckboxGroupProps } from './Checkbox';
+export type {
+  EnhancedDatePickerProps,
+  EnhancedDatePickerRangeProps,
+  DatePickerVariantProps,
+} from './DatePicker';
 
-// Enhanced Dialog Component
+// Breadcrumb
+export {
+  EnhancedBreadcrumb,
+  EnhancedBreadcrumbList,
+  EnhancedBreadcrumbItem,
+  EnhancedBreadcrumbLink,
+  EnhancedBreadcrumbPage,
+  EnhancedBreadcrumbSeparator,
+  EnhancedBreadcrumbEllipsis,
+  BreadcrumbFactory,
+  enhancedBreadcrumbVariants,
+  createHomeBreadcrumb,
+  createBreadcrumbPath,
+  truncateBreadcrumb,
+} from './Breadcrumb';
+
+export type {
+  EnhancedBreadcrumbProps,
+  EnhancedBreadcrumbListProps,
+  EnhancedBreadcrumbItemProps,
+  EnhancedBreadcrumbLinkProps,
+  EnhancedBreadcrumbPageProps,
+  EnhancedBreadcrumbSeparatorProps,
+  EnhancedBreadcrumbEllipsisProps,
+  BreadcrumbVariantProps,
+} from './Breadcrumb';
+
+// Pagination
+export {
+  EnhancedPagination,
+  EnhancedPaginationRoot,
+  EnhancedPaginationItem,
+  EnhancedPaginationEllipsis,
+  EnhancedPaginationComplete,
+  PaginationFactory,
+  enhancedPaginationRootVariants,
+  enhancedPaginationItemVariants,
+  enhancedPaginationEllipsisVariants,
+  usePaginationRange,
+} from './Pagination';
+
+export type {
+  EnhancedPaginationRootProps,
+  EnhancedPaginationItemProps,
+  EnhancedPaginationEllipsisProps,
+  EnhancedPaginationCompleteProps,
+  PaginationConfig,
+} from './Pagination';
+
+// ===== 7. OVERLAY & MODAL COMPONENTS =====
+// Components for overlays, modals, and popups
+
+// Dialog
 export {
   Dialog,
   DialogPortal,
@@ -213,7 +550,6 @@ export {
   EnhancedDialog,
 } from './Dialog';
 
-// Enhanced Dialog Types
 export type {
   DialogOverlayProps,
   DialogContentProps,
@@ -224,27 +560,7 @@ export type {
   EnhancedDialogProps,
 } from './Dialog';
 
-// Enhanced Input Component
-export {
-  EnhancedInput,
-  EnhancedInputField,
-  enhancedInputVariants,
-} from './Input';
-
-// Enhanced Input Types
-export type { EnhancedInputOwnProps, InputVariantProps } from './Input';
-
-// Enhanced Textarea Component
-export {
-  EnhancedTextarea,
-  createTextarea,
-  enhancedTextareaVariants,
-} from './Textarea';
-
-// Enhanced Textarea Types
-export type { EnhancedTextareaOwnProps, TextareaVariantProps } from './Textarea';
-
-// Enhanced AlertDialog Component
+// Alert Dialog
 export {
   AlertDialog,
   AlertDialogTrigger,
@@ -262,7 +578,6 @@ export {
   enhancedAlertDialogOverlayVariants,
 } from './AlertDialog';
 
-// Enhanced AlertDialog Types
 export type {
   AlertDialogOverlayProps,
   AlertDialogContentProps,
@@ -275,7 +590,7 @@ export type {
   EnhancedAlertDialogProps,
 } from './AlertDialog';
 
-// Enhanced Popover Component
+// Popover
 export {
   Popover,
   PopoverTrigger,
@@ -289,58 +604,78 @@ export {
   enhancedPopoverTriggerVariants,
 } from './Popover';
 
-// Enhanced Popover Types
 export type {
   PopoverContentProps,
   PopoverTriggerProps,
   PopoverWithTriggerProps,
 } from './Popover';
 
-// Enhanced Select Component
+// Sheet
 export {
-  Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
-  SelectContent,
-  SelectLabel,
-  SelectItem,
-  SelectSeparator,
-  SelectScrollUpButton,
-  SelectScrollDownButton,
-} from './Select';
+  EnhancedSheet,
+  EnhancedSheetTrigger,
+  EnhancedSheetPortal,
+  EnhancedSheetOverlay,
+  EnhancedSheetContent,
+  EnhancedSheetHeader,
+  EnhancedSheetTitle,
+  EnhancedSheetDescription,
+  EnhancedSheetFooter,
+  EnhancedSheetClose,
+  SheetFactory,
+  enhancedSheetOverlayVariants,
+  enhancedSheetContentVariants,
+  enhancedSheetHeaderVariants,
+  enhancedSheetTitleVariants,
+  enhancedSheetDescriptionVariants,
+  enhancedSheetFooterVariants,
+  enhancedSheetCloseVariants,
+} from './Sheet';
 
-// Enhanced Select Types
 export type {
-  SelectTriggerVariants,
-  SelectContentVariants,
-  SelectItemVariants,
-} from './Select';
+  EnhancedSheetContentProps,
+  EnhancedSheetHeaderProps,
+  EnhancedSheetTitleProps,
+  EnhancedSheetDescriptionProps,
+  EnhancedSheetFooterProps,
+  EnhancedSheetCloseProps,
+} from './Sheet';
 
-// Enhanced Avatar Component
+// Drawer
 export {
-  EnhancedAvatar,
-  EnhancedAvatarRoot,
-  EnhancedAvatarImage,
-  EnhancedAvatarFallback,
-  enhancedAvatarVariants,
-  enhancedAvatarImageVariants,
-  enhancedAvatarFallbackVariants,
-  getAvatarInitials,
-  getStatusColor,
-} from './Avatar';
+  EnhancedDrawer,
+  EnhancedDrawerTrigger,
+  EnhancedDrawerPortal,
+  EnhancedDrawerOverlay,
+  EnhancedDrawerContent,
+  EnhancedDrawerHeader,
+  EnhancedDrawerTitle,
+  EnhancedDrawerDescription,
+  EnhancedDrawerBody,
+  EnhancedDrawerFooter,
+  EnhancedDrawerClose,
+  DrawerFactory,
+  enhancedDrawerOverlayVariants,
+  enhancedDrawerContentVariants,
+  enhancedDrawerHandleVariants,
+  enhancedDrawerCloseVariants,
+} from './Drawer';
 
-// Enhanced Avatar Types
 export type {
-  EnhancedAvatarOwnProps,
-  EnhancedAvatarImageOwnProps,
-  EnhancedAvatarFallbackOwnProps,
-  AvatarVariantProps,
-  AvatarImageVariantProps,
-  AvatarFallbackVariantProps,
-} from './Avatar';
+  EnhancedDrawerContentProps,
+  EnhancedDrawerHeaderProps,
+  EnhancedDrawerTitleProps,
+  EnhancedDrawerDescriptionProps,
+  EnhancedDrawerBodyProps,
+  EnhancedDrawerFooterProps,
+  EnhancedDrawerCloseProps,
+  DrawerVariantProps,
+} from './Drawer';
 
-// Enhanced DropdownMenu Component
+// ===== 8. MENU & NAVIGATION COMPONENTS =====
+// Components for menus and navigation systems
+
+// Dropdown Menu
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -366,7 +701,6 @@ export {
   createDropdownMenu,
 } from './DropdownMenu';
 
-// Enhanced DropdownMenu Types
 export type {
   EnhancedDropdownMenuContentOwnProps,
   EnhancedDropdownMenuItemOwnProps,
@@ -377,214 +711,7 @@ export type {
   CreateDropdownMenuOptions,
 } from './DropdownMenu';
 
-// Enhanced Label Component
-export {
-  EnhancedLabel,
-  LabelWithField,
-  FormFieldGroup,
-  enhancedLabelVariants,
-  createLabelWithField,
-} from './Label';
-
-// Enhanced Label Types
-export type {
-  EnhancedLabelOwnProps,
-  LabelVariantProps,
-  LabelWithFieldProps,
-  FormFieldGroupProps,
-} from './Label';
-
-// Enhanced Separator Component
-export {
-  EnhancedSeparator,
-  SeparatorWithContent,
-  createThemedSeparator,
-  GlassSeparator,
-  EtherealSeparator,
-  StrongSeparator,
-  AccentSeparator,
-  enhancedSeparatorVariants,
-  SeparatorPrimitive,
-} from './Separator';
-
-// Enhanced Separator Types
-export type {
-  EnhancedSeparatorProps,
-  SeparatorWithContentProps,
-} from './Separator';
-
-// Enhanced Sheet Component
-export {
-  EnhancedSheet,
-  EnhancedSheetTrigger,
-  EnhancedSheetPortal,
-  EnhancedSheetOverlay,
-  EnhancedSheetContent,
-  EnhancedSheetHeader,
-  EnhancedSheetTitle,
-  EnhancedSheetDescription,
-  EnhancedSheetFooter,
-  EnhancedSheetClose,
-  SheetFactory,
-  enhancedSheetOverlayVariants,
-  enhancedSheetContentVariants,
-  enhancedSheetHeaderVariants,
-  enhancedSheetTitleVariants,
-  enhancedSheetDescriptionVariants,
-  enhancedSheetFooterVariants,
-  enhancedSheetCloseVariants,
-} from './Sheet';
-
-// Enhanced Sheet Types
-export type {
-  EnhancedSheetContentProps,
-  EnhancedSheetHeaderProps,
-  EnhancedSheetTitleProps,
-  EnhancedSheetDescriptionProps,
-  EnhancedSheetFooterProps,
-  EnhancedSheetCloseProps,
-} from './Sheet';
-
-// Enhanced Skeleton Component
-export {
-  EnhancedSkeleton,
-  SkeletonFactory,
-  SkeletonTextLines,
-  SkeletonCard,
-  SkeletonTable,
-  enhancedSkeletonVariants,
-} from './Skeleton';
-
-// Enhanced Skeleton Types
-export type {
-  EnhancedSkeletonProps,
-  SkeletonTextLinesProps,
-  SkeletonCardProps,
-  SkeletonTableProps,
-} from './Skeleton';
-
-// Enhanced Switch Component
-export {
-  EnhancedSwitch,
-  enhancedSwitchVariants,
-  SwitchFactory,
-} from './Switch';
-
-// Enhanced Switch Types
-export type { EnhancedSwitchProps } from './Switch';
-
-// Enhanced Tabs Component
-export {
-  EnhancedTabs,
-  EnhancedTabsRoot,
-  EnhancedTabsList,
-  EnhancedTabsTrigger,
-  EnhancedTabsContent,
-  enhancedTabsRootVariants,
-  enhancedTabsListVariants,
-  enhancedTabsTriggerVariants,
-  enhancedTabsContentVariants,
-  TabsFactory,
-} from './Tabs';
-
-// Enhanced Tabs Types
-export type {
-  EnhancedTabsRootProps,
-  EnhancedTabsListProps,
-  EnhancedTabsTriggerProps,
-  EnhancedTabsContentProps,
-} from './Tabs';
-
-// Enhanced Toast Component
-export {
-  EnhancedToastProvider,
-  EnhancedToastViewport,
-  EnhancedToast,
-  EnhancedToastTitle,
-  EnhancedToastDescription,
-  EnhancedToastAction,
-  EnhancedToastClose,
-  EnhancedToastComponents,
-  enhancedToastVariants,
-  enhancedToastViewportVariants,
-  enhancedToastTitleVariants,
-  enhancedToastDescriptionVariants,
-  enhancedToastActionVariants,
-  enhancedToastCloseVariants,
-  ToastFactory,
-  getToastIcon,
-  ToastPrimitive,
-} from './Toast';
-
-// Enhanced Toast Types
-export type {
-  EnhancedToastViewportProps,
-  EnhancedToastProps,
-  EnhancedToastTitleProps,
-  EnhancedToastDescriptionProps,
-  EnhancedToastActionProps,
-  EnhancedToastCloseProps,
-} from './Toast';
-
-// Enhanced Tooltip Component
-export {
-  EnhancedTooltipProvider,
-  EnhancedTooltipRoot,
-  EnhancedTooltipTrigger,
-  EnhancedTooltipContent,
-  EnhancedTooltipWithTrigger,
-  TooltipFactory,
-  TooltipPrimitive,
-} from './Tooltip';
-
-// Enhanced Tooltip Types
-export type {
-  EnhancedTooltipProps,
-  EnhancedTooltipTriggerProps,
-  TooltipWithTriggerProps,
-} from './Tooltip';
-
-// Enhanced Accordion Component
-export {
-  EnhancedAccordion,
-  EnhancedAccordionRoot,
-  EnhancedAccordionItem,
-  EnhancedAccordionTrigger,
-  EnhancedAccordionContent,
-  EnhancedAccordionItemComplete,
-  AccordionFactory,
-  AccordionPrimitive,
-} from './Accordion';
-
-// Enhanced Accordion Types
-export type {
-  EnhancedAccordionRootProps,
-  EnhancedAccordionItemProps,
-  EnhancedAccordionTriggerProps,
-  EnhancedAccordionContentProps,
-  EnhancedAccordionItemCompleteProps,
-} from './Accordion';
-
-// Enhanced Collapsible Component
-export {
-  EnhancedCollapsible,
-  EnhancedCollapsibleRoot,
-  EnhancedCollapsibleTrigger,
-  EnhancedCollapsibleContent,
-  EnhancedCollapsibleComplete,
-  CollapsibleFactory,
-  CollapsiblePrimitive,
-} from './Collapsible';
-
-// Enhanced Collapsible Types
-export type {
-  EnhancedCollapsibleRootProps,
-  EnhancedCollapsibleTriggerProps,
-  EnhancedCollapsibleContentProps,
-  EnhancedCollapsibleCompleteProps,
-} from './Collapsible';
-
-// Enhanced ContextMenu Component
+// Context Menu
 export {
   ContextMenu,
   ContextMenuTrigger,
@@ -608,35 +735,13 @@ export {
   ContextMenuPrimitive,
 } from './ContextMenu';
 
-// Enhanced ContextMenu Types
 export type {
   ContextMenuContentProps,
   ContextMenuItemProps,
   EnhancedContextMenuProps,
 } from './ContextMenu';
 
-// Enhanced HoverCard Component
-export {
-  HoverCard,
-  HoverCardTrigger,
-  HoverCardContent,
-  HoverCardArrow,
-  HoverCardPortal,
-  EnhancedHoverCard,
-  enhancedHoverCardContentVariants,
-  enhancedHoverCardTriggerVariants,
-  HoverCardFactory,
-  HoverCardPrimitive,
-} from './HoverCard';
-
-// Enhanced HoverCard Types
-export type {
-  HoverCardContentProps,
-  HoverCardTriggerProps,
-  EnhancedHoverCardProps,
-} from './HoverCard';
-
-// Enhanced NavigationMenu Component
+// Navigation Menu
 export {
   EnhancedNavigationMenu,
   EnhancedNavigationMenuList,
@@ -652,7 +757,6 @@ export {
   enhancedNavigationMenuLinkVariants,
 } from './NavigationMenu';
 
-// Enhanced NavigationMenu Types
 export type {
   EnhancedNavigationMenuProps,
   EnhancedNavigationMenuTriggerProps,
@@ -660,7 +764,7 @@ export type {
   EnhancedNavigationMenuLinkProps,
 } from './NavigationMenu';
 
-// Enhanced MenuBar Component
+// Menu Bar
 export {
   MenuBar,
   MenuBarMenu,
@@ -682,206 +786,52 @@ export {
   enhancedMenuBarItemVariants,
 } from './MenuBar';
 
-// Enhanced Progress Component
+// Hover Card
 export {
-  EnhancedProgress,
-  CircularProgress,
-  SteppedProgress,
-  enhancedProgressVariants,
-  enhancedProgressIndicatorVariants,
-} from './Progress';
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+  HoverCardArrow,
+  HoverCardPortal,
+  EnhancedHoverCard,
+  enhancedHoverCardContentVariants,
+  enhancedHoverCardTriggerVariants,
+  HoverCardFactory,
+  HoverCardPrimitive,
+} from './HoverCard';
 
-// Enhanced Progress Types
-export type { ProgressProps, CircularProps, SteppedProps } from './Progress';
-
-// Enhanced RadioGroup Component
-export {
-  EnhancedRadioGroup,
-  EnhancedRadioGroupItem,
-  EnhancedRadioGroupCard,
-  enhancedRadioGroupVariants,
-  enhancedRadioItemVariants,
-  enhancedRadioIndicatorVariants,
-  enhancedRadioLabelVariants,
-} from './RadioGroup';
-
-// Enhanced ScrollArea Component
-export {
-  EnhancedScrollArea,
-  EnhancedScrollbar,
-  EnhancedScrollAreaWithProtection,
-  EnhancedVirtualizedScrollArea,
-  enhancedScrollAreaVariants,
-  enhancedScrollViewportVariants,
-  enhancedScrollbarVariants,
-  enhancedScrollThumbVariants,
-  enhancedScrollCornerVariants,
-} from './ScrollArea';
-
-// Enhanced Slider Component
-export {
-  EnhancedSlider,
-  enhancedSliderVariants,
-  enhancedSliderTrackVariants,
-  enhancedSliderRangeVariants,
-  enhancedSliderThumbVariants,
-  SliderFactory,
-  SliderFormatters,
-  useEnhancedSlider,
-} from './Slider';
-
-// Enhanced Slider Types
-export type { EnhancedSliderProps } from './Slider';
-
-// Enhanced Toggle Component
-export {
-  EnhancedToggle,
-  enhancedToggleVariants,
-  ToggleFactory,
-  ToggleIcons,
-  useEnhancedToggle,
-  useEnhancedToggleGroup,
-} from './Toggle';
-
-// Enhanced Toggle Types
-export type { EnhancedToggleProps } from './Toggle';
-
-// Enhanced ToggleGroup Component
-export {
-  ToggleGroup,
-  ToggleGroupItem,
-  ToggleGroupFactory,
-  ToggleGroupItemFactory,
-  ToggleGroupIcons,
-  useEnhancedToggleGroupMulti,
-  toggleGroupVariants,
-  toggleGroupItemVariants,
-} from './ToggleGroup';
-
-// Enhanced ToggleGroup Types
-export type { ToggleGroupProps, ToggleGroupItemProps } from './ToggleGroup';
-
-// Enhanced Toolbar Component
-export {
-  Toolbar,
-  ToolbarButton,
-  ToolbarLink,
-  ToolbarSeparator,
-  ToolbarToggleGroup,
-  ToolbarToggleItem,
-  ToolbarFactory,
-  ToolbarButtonFactory,
-  ToolbarIcons,
-  toolbarVariants,
-  toolbarButtonVariants,
-  toolbarSeparatorVariants,
-  toolbarToggleGroupVariants,
-} from './Toolbar';
-
-// Enhanced Toolbar Types
 export type {
-  ToolbarProps,
-  ToolbarButtonProps,
-  ToolbarLinkProps,
-  ToolbarSeparatorProps,
-  ToolbarToggleGroupProps,
-  ToolbarToggleItemProps,
-} from './Toolbar';
+  HoverCardContentProps,
+  HoverCardTriggerProps,
+  EnhancedHoverCardProps,
+} from './HoverCard';
 
-// Enhanced Pagination Component
+// Avatar
 export {
-  EnhancedPagination,
-  EnhancedPaginationRoot,
-  EnhancedPaginationItem,
-  EnhancedPaginationEllipsis,
-  EnhancedPaginationComplete,
-  PaginationFactory,
-  enhancedPaginationRootVariants,
-  enhancedPaginationItemVariants,
-  enhancedPaginationEllipsisVariants,
-  usePaginationRange,
-} from './Pagination';
+  EnhancedAvatar,
+  EnhancedAvatarRoot,
+  EnhancedAvatarImage,
+  EnhancedAvatarFallback,
+  enhancedAvatarVariants,
+  enhancedAvatarImageVariants,
+  enhancedAvatarFallbackVariants,
+  getAvatarInitials,
+  getStatusColor,
+} from './Avatar';
 
-// Enhanced Pagination Types
 export type {
-  EnhancedPaginationRootProps,
-  EnhancedPaginationItemProps,
-  EnhancedPaginationEllipsisProps,
-  EnhancedPaginationCompleteProps,
-  PaginationConfig,
-} from './Pagination';
+  EnhancedAvatarOwnProps,
+  EnhancedAvatarImageOwnProps,
+  EnhancedAvatarFallbackOwnProps,
+  AvatarVariantProps,
+  AvatarImageVariantProps,
+  AvatarFallbackVariantProps,
+} from './Avatar';
 
-// Enhanced AspectRatio Component
-export {
-  EnhancedAspectRatio,
-  AspectRatioFactory,
-  AspectRatioImage,
-  AspectRatioVideo,
-  AspectRatioPlaceholder,
-  enhancedAspectRatioVariants,
-  enhancedAspectRatioContentVariants,
-  ASPECT_RATIO_PRESETS,
-  calculateAspectRatio,
-  getAspectRatioName,
-  getDimensionsFromRatio,
-  AspectRatioPrimitive,
-} from './AspectRatio';
+// ===== 9. SPECIALIZED COMPONENTS =====
+// Components for specific use cases
 
-// Enhanced AspectRatio Types
-export type {
-  EnhancedAspectRatioProps,
-  AspectRatioVariantProps,
-  AspectRatioContentVariantProps,
-} from './AspectRatio';
-
-// Enhanced DatePicker Component
-export {
-  EnhancedDatePicker,
-  EnhancedDatePickerRange,
-  DatePickerFactory,
-  enhancedDatePickerVariants,
-} from './DatePicker';
-
-// Enhanced DatePicker Types
-export type {
-  EnhancedDatePickerProps,
-  EnhancedDatePickerRangeProps,
-  DatePickerVariantProps,
-} from './DatePicker';
-
-// Enhanced Drawer Component
-export {
-  EnhancedDrawer,
-  EnhancedDrawerTrigger,
-  EnhancedDrawerPortal,
-  EnhancedDrawerOverlay,
-  EnhancedDrawerContent,
-  EnhancedDrawerHeader,
-  EnhancedDrawerTitle,
-  EnhancedDrawerDescription,
-  EnhancedDrawerBody,
-  EnhancedDrawerFooter,
-  EnhancedDrawerClose,
-  DrawerFactory,
-  enhancedDrawerOverlayVariants,
-  enhancedDrawerContentVariants,
-  enhancedDrawerHandleVariants,
-  enhancedDrawerCloseVariants,
-} from './Drawer';
-
-// Enhanced Drawer Types
-export type {
-  EnhancedDrawerContentProps,
-  EnhancedDrawerHeaderProps,
-  EnhancedDrawerTitleProps,
-  EnhancedDrawerDescriptionProps,
-  EnhancedDrawerBodyProps,
-  EnhancedDrawerFooterProps,
-  EnhancedDrawerCloseProps,
-  DrawerVariantProps,
-} from './Drawer';
-
-// Enhanced EmptyState Component
+// Empty State
 export {
   EnhancedEmptyState,
   EmptyStateFactory,
@@ -889,24 +839,13 @@ export {
   HUMANIZED_MESSAGES,
 } from './EmptyState';
 
-// Enhanced EmptyState Types
 export type {
   EnhancedEmptyStateOwnProps,
   EmptyStateVariantProps,
   MessageType,
 } from './EmptyState';
 
-// ===== COMPOUND EXPORTS FOR RAILWAY COMPONENTS =====
-// These exports provide the exact names that Railway components are importing
+// ===== 10. COMMON TYPES & UTILITIES =====
+// Shared types and utilities used across components
 
-// Individual component exports for Railway components
-// Note: These are already exported above, no need for duplicate exports
-// export { EnhancedCard } from './Card';        // Already exported above
-// export { EnhancedProgress } from './Progress'; // Already exported above  
-// export { EnhancedBadge } from './Badge';      // Already exported above
-// export { EnhancedInput } from './Input';      // Already exported above
-// export { EnhancedTabs } from './Tabs';        // Already exported above
-// export { EnhancedSeparator } from './Separator'; // Already exported above
-// export { EnhancedSkeleton } from './Skeleton'; // Already exported above
-// export { EnhancedAlert } from './Alert';      // Already exported above
-// export { Select } from './Select';            // Already exported above
+export type { VariantProps } from 'class-variance-authority';

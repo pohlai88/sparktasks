@@ -18,17 +18,16 @@
  * - AAA compliance enforcement
  */
 
-import React, { useState } from 'react';
 import {
   Settings,
-  Palette,
-  Globe,
   Shield,
   Zap,
   Cloud,
   Database,
   Users,
 } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
 
 import {
   EnhancedRadioGroup,
@@ -514,7 +513,7 @@ const RadioGroupDemo: React.FC = () => {
                 value='basic'
                 title='Basic Plan'
                 description='Perfect for individuals getting started'
-                icon={<Users className='h-5 w-5' />}
+                icon={<Users className='size-5' />}
                 enforceAAA={demoState.aaaMode}
                 cardVariant='default'
               />
@@ -522,7 +521,7 @@ const RadioGroupDemo: React.FC = () => {
                 value='standard'
                 title='Standard Plan'
                 description='Great for small teams and growing businesses'
-                icon={<Zap className='h-5 w-5' />}
+                icon={<Zap className='size-5' />}
                 enforceAAA={demoState.aaaMode}
                 cardVariant='elevated'
               />
@@ -530,7 +529,7 @@ const RadioGroupDemo: React.FC = () => {
                 value='pro'
                 title='Pro Plan'
                 description='Advanced features for power users'
-                icon={<Shield className='h-5 w-5' />}
+                icon={<Shield className='size-5' />}
                 enforceAAA={demoState.aaaMode}
                 cardVariant='glass'
               />
@@ -556,21 +555,21 @@ const RadioGroupDemo: React.FC = () => {
                 value='manual'
                 title='Manual Backup'
                 description='Create backups manually when needed'
-                icon={<Database className='h-5 w-5' />}
+                icon={<Database className='size-5' />}
                 enforceAAA={demoState.aaaMode}
               />
               <EnhancedRadioGroupCard
                 value='automatic'
                 title='Automatic Backup'
                 description='Daily automatic backups to cloud storage'
-                icon={<Cloud className='h-5 w-5' />}
+                icon={<Cloud className='size-5' />}
                 enforceAAA={demoState.aaaMode}
               />
               <EnhancedRadioGroupCard
                 value='hybrid'
                 title='Hybrid Approach'
                 description='Combination of automatic and manual backups'
-                icon={<Settings className='h-5 w-5' />}
+                icon={<Settings className='size-5' />}
                 enforceAAA={demoState.aaaMode}
               />
             </EnhancedRadioGroup>

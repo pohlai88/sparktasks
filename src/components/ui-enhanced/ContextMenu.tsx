@@ -27,7 +27,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import React from 'react';
 
-import { AccessibleIcon } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED CONTEXT MENU VARIANTS =====
@@ -38,13 +38,17 @@ import { cn } from '@/utils/cn';
  */
 const enhancedContextMenuContentVariants = cva(
   [
-    // Foundation: Layout & Structure
-    'relative z-50 min-w-[8rem]',
-    'overflow-hidden rounded-lg',
-    'border border-border-subtle',
+    // Foundation: Layout & Structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    getZIndexClass('popover'),
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
 
-    // Foundation: Dark-First Philosophy - Solid background for readability
-    'text-content-primary bg-background-elevated',
+    // Foundation: Colors - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
 
     // Foundation: Liquid Glass Materials (Surface-Only)
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
@@ -55,63 +59,82 @@ const enhancedContextMenuContentVariants = cva(
     'data-[side=right]:slide-in-from-left-2',
     'data-[side=top]:slide-in-from-bottom-2',
 
-    // Foundation: Elevation & Shadow System
-    'shadow-lg',
+    // Foundation: Elevation & Shadow System - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
 
-    // Foundation: Motion - Respect user preferences
-    'motion-reduce:transition-none',
-    'motion-reduce:animate-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Apple HIG Interaction
     'will-change-[opacity,transform]',
 
     // Foundation: Accessibility
-    'focus:outline-none',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
-        // Default: Clean solid background styling
-        default: ['border-border-subtle bg-background-elevated', 'shadow-lg'],
+        // Default: Clean solid background styling - Enhanced tokens
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg
+        ],
 
-        // Glass: Liquid glass vibrancy (Surface-Only) with solid background
+        // Glass: Liquid glass vibrancy - Enhanced tokens
         glass: [
-          'backdrop-blur-[12px] backdrop-saturate-[135%]',
-          'bg-background-translucent/80',
-          'border-border-subtle/50',
-          'shadow-xl shadow-background/20',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
 
-        // Floating: Enhanced elevation
+        // Floating: Enhanced elevation - Enhanced tokens
         floating: [
-          'border-border-subtle bg-background-elevated',
-          'shadow-xl shadow-background/30',
-          'ring-1 ring-border-subtle/20',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
 
-        // Outlined: Subtle border emphasis
-        outlined: ['border-border bg-background-elevated', 'shadow-md'],
+        // Outlined: Subtle border emphasis - Enhanced tokens
+        outlined: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md
+        ],
 
-        // Ghost: Minimal styling
-        ghost: ['border-transparent bg-background-elevated/50', 'shadow-sm'],
+        // Ghost: Minimal styling - Enhanced tokens
+        ghost: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm
+        ],
 
-        // Filled: Strong background
-        filled: ['border-border-subtle bg-background-panel', 'shadow-lg'],
+        // Filled: Strong background - Enhanced tokens
+        filled: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg
+        ],
       },
 
       size: {
-        sm: 'p-1',
-        md: 'p-2',
-        lg: 'p-3',
+        sm: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+        md: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+        lg: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
       },
 
       // AAA Compliance Mode
       aaaMode: {
         true: [
-          'border-border-strong bg-background',
-          'shadow-lg',
-          'contrast-more:bg-background',
-          'contrast-more:border-border-strong',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          'contrast-more:bg-cosmic-void',
+          'contrast-more:border-cosmic-border-strong',
           'forced-colors:border-[ButtonBorder]',
           'forced-colors:bg-[ButtonFace]',
           // Override any glass effects for maximum contrast
@@ -121,8 +144,8 @@ const enhancedContextMenuContentVariants = cva(
 
       // Density variations for different contexts
       density: {
-        comfortable: 'p-2',
-        compact: 'p-1',
+        comfortable: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+        compact: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
       },
     },
     defaultVariants: {
@@ -139,62 +162,72 @@ const enhancedContextMenuContentVariants = cva(
  */
 const enhancedContextMenuItemVariants = cva(
   [
-    // Foundation: Layout & Interaction
-    'relative flex cursor-pointer select-none items-center gap-2',
-    'rounded-md px-3 py-2 text-sm font-medium',
-    'text-content-primary',
+    // Foundation: Layout & Interaction - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+    'select-none',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'font-medium',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
     // Foundation: Apple HIG Touch Targets
     'min-h-[36px]',
 
-    // Foundation: Interaction States
-    'transition-colors duration-200 ease-out',
-    'hover:bg-background-elevated',
-    'focus:bg-background-elevated focus:outline-none',
-    'active:bg-background-elevated',
+    // Foundation: Interaction States - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    'pointer:hover:bg-cosmic-void/50',
+    'focus:bg-cosmic-void/50',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+    'active:bg-cosmic-void/50',
 
-    // Foundation: Motion Respect
-    'motion-reduce:transition-none',
+    // Foundation: Motion Respect - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Disabled State
     'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-    'data-[disabled]:text-content-disabled',
+    'data-[disabled]:text-cosmic-disabled',
 
-    // Foundation: Highlight State (keyboard navigation)
-    'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
+    // Foundation: Highlight State (keyboard navigation) - Enhanced tokens
+    'data-[highlighted]:bg-aurora-accent data-[highlighted]:text-cosmic-dark',
   ],
   {
     variants: {
       variant: {
         default: [
-          'hover:bg-background-elevated/80',
-          'focus:bg-background-elevated/80',
-          'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
+          'pointer:hover:bg-cosmic-void/80',
+          'focus:bg-cosmic-void/80',
+          'data-[highlighted]:bg-aurora-accent data-[highlighted]:text-cosmic-dark',
         ],
 
         ghost: [
-          'hover:bg-background-elevated/30',
-          'focus:bg-background-elevated/30',
-          'data-[highlighted]:bg-accent/80 data-[highlighted]:text-accent-foreground',
+          'pointer:hover:bg-cosmic-void/30',
+          'focus:bg-cosmic-void/30',
+          'data-[highlighted]:bg-aurora-accent/80 data-[highlighted]:text-cosmic-dark',
         ],
 
         destructive: [
-          'text-destructive hover:bg-destructive/10',
-          'focus:bg-destructive/10',
-          'data-[highlighted]:bg-destructive data-[highlighted]:text-destructive-foreground',
+          'text-cosmic-danger pointer:hover:bg-cosmic-danger/10',
+          'focus:bg-cosmic-danger/10',
+          'data-[highlighted]:bg-cosmic-danger data-[highlighted]:text-cosmic-dark',
         ],
       },
 
       // AAA Compliance Mode
       aaaMode: {
         true: [
-          'text-contrast-aaa',
-          'hover:bg-background-elevated',
-          'focus:bg-background-elevated',
-          'data-[highlighted]:bg-contrast-aaa data-[highlighted]:text-background',
-          'contrast-more:text-content-primary',
+          'text-cosmic-light',
+          'pointer:hover:bg-cosmic-void',
+          'focus:bg-cosmic-void',
+          'data-[highlighted]:bg-aurora-accent data-[highlighted]:text-cosmic-dark',
+          'contrast-more:text-cosmic-light',
           'contrast-more:border',
-          'contrast-more:border-border-strong',
+          'contrast-more:border-cosmic-border-strong',
           'forced-colors:text-[ButtonText]',
           'forced-colors:bg-[ButtonFace]',
           'forced-colors:border-[ButtonBorder]',
@@ -202,9 +235,9 @@ const enhancedContextMenuItemVariants = cva(
       },
 
       size: {
-        sm: 'min-h-[32px] px-2 py-1 text-xs',
-        md: 'min-h-[36px] px-3 py-2 text-sm',
-        lg: 'min-h-[44px] px-4 py-3 text-base',
+        sm: ['min-h-[32px]', ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2], ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: ['min-h-[36px]', ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: ['min-h-[44px]', ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
       },
     },
     defaultVariants: {
@@ -236,6 +269,11 @@ interface ContextMenuContentProps {
   density?: VariantProps<typeof enhancedContextMenuContentVariants>['density'];
   className?: string;
   children?: React.ReactNode;
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 const ContextMenuContent = React.forwardRef<
@@ -250,29 +288,38 @@ const ContextMenuContent = React.forwardRef<
       size = 'md',
       aaaMode = false,
       density = 'comfortable',
+      disableAnimations = false,
       children,
       ...props
     },
     ref
-  ) => (
-    <RadixContextMenu.Portal>
-      <RadixContextMenu.Content
-        ref={ref}
-        className={cn(
-          enhancedContextMenuContentVariants({
-            variant,
-            size,
-            aaaMode,
-            density,
-          }),
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </RadixContextMenu.Content>
-    </RadixContextMenu.Portal>
-  )
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    return (
+      <RadixContextMenu.Portal>
+        <RadixContextMenu.Content
+          ref={ref}
+          className={cn(
+            enhancedContextMenuContentVariants({
+              variant,
+              size,
+              aaaMode,
+              density,
+            }),
+            motionClasses,
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </RadixContextMenu.Content>
+      </RadixContextMenu.Portal>
+    );
+  }
 );
 ContextMenuContent.displayName = RadixContextMenu.Content.displayName;
 
@@ -356,11 +403,9 @@ const ContextMenuCheckboxItem = React.forwardRef<
       )}
       {...props}
     >
-      <span className="absolute left-2 flex size-3.5 items-center justify-center">
+      <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute, 'left-2', ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex, ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, 'justify-center')}>
         <RadixContextMenu.ItemIndicator>
-          <AccessibleIcon>
-            <Check className="size-4" />
-          </AccessibleIcon>
+          <Check className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)} aria-hidden="true" />
         </RadixContextMenu.ItemIndicator>
       </span>
       {children}
@@ -401,11 +446,9 @@ const ContextMenuRadioItem = React.forwardRef<
       )}
       {...props}
     >
-      <span className="absolute left-2 flex size-3.5 items-center justify-center">
+      <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute, 'left-2', ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex, ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, 'justify-center')}>
         <RadixContextMenu.ItemIndicator>
-          <AccessibleIcon>
-            <Circle className="size-4 fill-current" />
-          </AccessibleIcon>
+          <Circle className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm, 'fill-current')} aria-hidden="true" />
         </RadixContextMenu.ItemIndicator>
       </span>
       {children}
@@ -427,7 +470,12 @@ const ContextMenuLabel = React.forwardRef<
   <RadixContextMenu.Label
     ref={ref}
     className={cn(
-      'text-content-secondary pointer-events-none select-none px-3 py-2 text-xs font-semibold',
+      ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+      'pointer-events-none select-none',
+      ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+      ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+      ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+      'font-semibold',
       inset && 'pl-8',
       className
     )}
@@ -447,7 +495,13 @@ const ContextMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <RadixContextMenu.Separator
     ref={ref}
-    className={cn('-mx-1 my-1 h-px bg-border-subtle', className)}
+    className={cn(
+      ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+      ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.margin[1],
+      className
+    )}
     {...props}
   />
 ));
@@ -463,7 +517,10 @@ const ContextMenuShortcut: React.FC<{
   return (
     <span
       className={cn(
-        'text-content-tertiary pointer-events-none ml-auto select-none text-xs font-medium tracking-wider',
+        ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
+        'pointer-events-none ml-auto select-none',
+        ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        'font-medium tracking-wider',
         className
       )}
       {...props}
@@ -509,9 +566,7 @@ const ContextMenuSubTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <AccessibleIcon>
-        <ChevronRight className="ml-auto size-4" />
-      </AccessibleIcon>
+      <ChevronRight className={cn('ml-auto', ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)} aria-hidden="true" />
     </RadixContextMenu.SubTrigger>
   )
 );
@@ -571,6 +626,11 @@ interface EnhancedContextMenuProps {
   modal?: boolean;
   onOpenChange?: (open: boolean) => void;
   className?: string;
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
@@ -583,6 +643,7 @@ const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
   modal = true,
   onOpenChange,
   className,
+  disableAnimations = false,
   ...props
 }) => {
   return (
@@ -597,6 +658,7 @@ const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
         size={size}
         aaaMode={aaaMode}
         density={density}
+        disableAnimations={disableAnimations}
         {...(className && { className })}
       >
         {children}
@@ -665,6 +727,13 @@ const ContextMenuFactory = {
    */
   filled: (props: Omit<EnhancedContextMenuProps, 'variant'>) => (
     <EnhancedContextMenu variant='filled' {...props} />
+  ),
+
+  /**
+   * Performance-optimized context menu with disabled animations
+   */
+  performance: (props: Omit<EnhancedContextMenuProps, 'disableAnimations'>) => (
+    <EnhancedContextMenu disableAnimations={true} {...props} />
   ),
 } as const;
 

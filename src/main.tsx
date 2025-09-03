@@ -11,13 +11,34 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { bootstrap } from './bootstrap'
+
 import { App } from './App.tsx'
 import './index.css'
 
-// ===== APPLICATION BOOTSTRAP =====
+function mount() {
+  bootstrap()
+  ReactDOM.createRoot(document.querySelector('#root')!).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  )
+}
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+async function start() {
+  try {
+    if ((import.meta as any).env?.DEV) {
+      const { worker } = await import('./mocks/browser')
+      await worker.start({
+        onUnhandledRequest: 'bypass',
+        serviceWorker: { url: '/mockServiceWorker.js' },
+      })
+    }
+  } catch (err) {
+    console.warn('[msw] failed to start, continuing without mocks', err)
+  } finally {
+    mount()
+  }
+}
+
+start()

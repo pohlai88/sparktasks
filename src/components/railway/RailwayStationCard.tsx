@@ -1,11 +1,14 @@
-import { useMemo, KeyboardEvent } from "react";
+import type { KeyboardEvent } from "react";
+import { useMemo } from "react";
+
+import { ENHANCED_DESIGN_TOKENS } from "../../design/enhanced-tokens";
 import type { RailwayStation, StationStatus } from "../../types/railway";
 import { RailwayStationZ } from "../../types/railway";
-import { EnhancedCard } from "../ui-enhanced/Card";
-import { EnhancedBadge } from "../ui-enhanced/Badge";
-import { EnhancedProgress } from "../ui-enhanced/Progress";
-import { ENHANCED_DESIGN_TOKENS } from "../../design/enhanced-tokens";
 import { cn } from "../../utils/cn";
+import { EnhancedBadge } from "../ui-enhanced/Badge";
+import { EnhancedCard } from "../ui-enhanced/Card";
+import { EnhancedButton } from "../ui-enhanced/Button";
+import { EnhancedProgress } from "../ui-enhanced/Progress";
 
 export type RailwayStationProps = {
   station: RailwayStation;
@@ -66,25 +69,25 @@ export function RailwayStationCard({
       variant="elevated"
       size="md"
       className={cn(
-        "transition-all duration-200 ease-out",
-        "hover:scale-[1.02] active:scale-[0.98]",
-        interactive && "cursor-pointer",
-        disabled && "opacity-60 cursor-not-allowed hover:scale-100 active:scale-100"
+        ENHANCED_DESIGN_TOKENS.foundation.motionComponents.cardHover,
+        ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+        interactive && ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+        disabled && ENHANCED_DESIGN_TOKENS.foundation.layout.cursor['not-allowed']
       )}
     >
-      <div className="space-y-4">
+      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
         {/* Header */}
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+                          <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
             <h3 className={cn(
-              "text-lg font-semibold mb-2",
+              ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
             )}>
               {parsed.name}
             </h3>
             {parsed.description && (
               <p className={cn(
-                "text-sm",
+                ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
               )}>
                 {parsed.description}
@@ -98,23 +101,23 @@ export function RailwayStationCard({
             data-variant={badgeVariant}
             variant={badgeVariant}
             size="sm"
-            className="ml-4"
+            className={undefined}
           >
             {parsed.status}
           </EnhancedBadge>
         </div>
 
         {/* Progress Bar */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+          <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
             <span className={cn(
-              "text-sm font-medium",
+              ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
             )}>
               Progress
             </span>
             <span className={cn(
-              "text-sm font-bold",
+              ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
             )}>
               {clamped}%
@@ -129,10 +132,10 @@ export function RailwayStationCard({
         </div>
 
         {/* Station Details */}
-        <div className="space-y-3">
+        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
           {/* Index */}
           <div className={cn(
-            'text-xs',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
             <strong>Position:</strong> {parsed.index + 1}
@@ -141,7 +144,7 @@ export function RailwayStationCard({
           {/* ETA */}
           {parsed.eta && (
             <div className={cn(
-              'text-xs',
+              ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
             )}>
               <strong>ETA:</strong> {parsed.eta}
@@ -150,10 +153,10 @@ export function RailwayStationCard({
 
           {/* Metrics */}
           {parsed.metrics && (
-            <div className="space-y-1">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs}>
               {parsed.metrics.openIssues !== undefined && (
                 <div className={cn(
-                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
                   ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                 )}>
                   <strong>Open Issues:</strong> {parsed.metrics.openIssues}
@@ -161,7 +164,7 @@ export function RailwayStationCard({
               )}
               {parsed.metrics.risks !== undefined && (
                 <div className={cn(
-                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
                   ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                 )}>
                   <strong>Risks:</strong> {parsed.metrics.risks}
@@ -169,7 +172,7 @@ export function RailwayStationCard({
               )}
               {parsed.metrics.budgetVariancePct !== undefined && (
                 <div className={cn(
-                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
                   ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                 )}>
                   <strong>Budget Variance:</strong> {parsed.metrics.budgetVariancePct}%
@@ -180,10 +183,10 @@ export function RailwayStationCard({
 
           {/* Links */}
           {parsed.links && (
-            <div className="space-y-1">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs}>
               {parsed.links.href && (
                 <div className={cn(
-                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
                   ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                 )}>
                   <strong>Link:</strong> {parsed.links.href}
@@ -191,7 +194,7 @@ export function RailwayStationCard({
               )}
               {parsed.links.docIds && parsed.links.docIds.length > 0 && (
                 <div className={cn(
-                  'text-xs',
+                  ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
                   ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                 )}>
                   <strong>Documents:</strong> {parsed.links.docIds.join(", ")}
@@ -204,35 +207,31 @@ export function RailwayStationCard({
         {/* Action Buttons */}
         {onAction && (
           <div className={cn(
-            'flex space-x-2 pt-4 border-t',
+            ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.md,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
             ENHANCED_DESIGN_TOKENS.foundation.color.border.default
           )}>
-            <button
+            <EnhancedButton
               onClick={(e) => {
                 e.stopPropagation();
                 onAction(parsed.id, "open");
               }}
-              className={cn(
-                "px-3 py-1 text-xs rounded",
-                ENHANCED_DESIGN_TOKENS.recipes.button.variant.primary,
-                "hover:opacity-80 transition-opacity"
-              )}
+              variant="outline"
+              size="sm"
             >
               Open
-            </button>
-            <button
+            </EnhancedButton>
+            <EnhancedButton
               onClick={(e) => {
                 e.stopPropagation();
                 onAction(parsed.id, "advance");
               }}
-              className={cn(
-                "px-3 py-1 text-xs rounded",
-                ENHANCED_DESIGN_TOKENS.recipes.button.variant.primary,
-                "hover:opacity-80 transition-opacity"
-              )}
+              variant="primary"
+              size="sm"
             >
               Advance
-            </button>
+            </EnhancedButton>
           </div>
         )}
       </div>
@@ -244,17 +243,23 @@ function mapStatusToBadge(
   status: StationStatus
 ): "success" | "warning" | "error" | "accent" | "muted" | "secondary" {
   switch (status) {
-    case "completed":
+    case "completed": {
       return "success";
-    case "delayed":
+    }
+    case "delayed": {
       return "warning";
-    case "blocked":
+    }
+    case "blocked": {
       return "error";
-    case "active":
+    }
+    case "active": {
       return "accent";
-    case "planned":
+    }
+    case "planned": {
       return "muted";
-    case "cancelled":
+    }
+    case "cancelled": {
       return "secondary";
+    }
   }
 }

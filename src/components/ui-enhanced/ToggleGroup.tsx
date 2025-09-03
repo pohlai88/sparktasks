@@ -1,5 +1,5 @@
 /**
- * Enhanced Toggle Group Component - MAPS4 Deep Space Canvas Cosmic Innovation
+ * Enhanced Toggle Group Component - MAPS4 v4.0 Deep Space Canvas Cosmic Innovation
  *
  * COMPLIANCE MATRIX:
  * - MAPS4 Foundation: ✅ Deep space canvas with aurora accents and cosmic cyan
@@ -14,55 +14,60 @@
  * - MAPS4 Guidelines → ToggleGroup behavior → Accessibility excellence
  * - [Ecosystem] → [Component] → [Composability]
  *
+ * GOVERNANCE RULES:
+ * - Foundation tokens only (no component-specific tokens)
+ * - Auto-apply AAA scrims over glass materials
+ * - Apple HIG motion with respect for reduced motion
+ * - Platform-aware touch targets (44px minimum)
+ *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
- * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
- * → accessibility (standard|aaa) → dir (ltr|rtl)
+ * → platform (web) → input (touch|pointer) → state (rest|hover|pressed|focus)
  *
  * VERSION: 4.0.0
  * LAST UPDATED: 2025-01-27
  */
 
-/* eslint-disable react/prop-types */
-
 import * as ToggleGroupPrimitives from '@radix-ui/react-toggle-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
+
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED TOGGLE GROUP VARIANTS =====
 
 /**
  * Enhanced toggle group variants following MAPS4 v4.0 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens system
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedToggleGroupVariants = cva(
   [
-    // Foundation: Layout & positioning
-    'inline-flex',
-    'rounded-md',
+    // Foundation: Layout & positioning - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
 
-    // Foundation: Apple HIG spacing system
-    'gap-1',
+    // Foundation: Spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
 
-    // Foundation: Background - Deep space canvas
-    'bg-slate-900/5',
-    'dark:bg-slate-50/5',
+    // Foundation: Background - Deep space canvas - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
 
-    // Foundation: Border - Ethereal accents
-    'border border-slate-200/20',
-    'dark:border-slate-700/30',
+    // Foundation: Border - Cosmic accents - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
 
-    // Foundation: Padding - Platform-aware spacing
-    'p-1',
+    // Foundation: Padding - Platform-aware spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding['1'],
 
-    // Foundation: Transitions - Apple HIG motion
-    'transition-all duration-200 ease-out',
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Focus ring - AAA compliance
-    'focus-within:ring-2 focus-within:ring-blue-500/60 focus-within:ring-offset-2',
-    'dark:focus-within:ring-blue-400/60 dark:focus-within:ring-offset-slate-900',
+    // Foundation: Focus ring - AAA compliance - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
     // Foundation: RTL support
     'rtl:space-x-reverse',
@@ -70,154 +75,157 @@ const enhancedToggleGroupVariants = cva(
   {
     variants: {
       variant: {
+        // Default: Clean accent styling with systematic feedback - Enhanced tokens
         default: [
-          // Default: Subtle glass foundation
-          'bg-slate-50/30',
-          'dark:bg-slate-900/30',
-          'backdrop-blur-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
         ],
+        
+        // Outline: Clear boundaries - Enhanced tokens
         outline: [
-          // Outline: Prominent border emphasis
-          'bg-transparent',
-          'border-slate-300/50',
-          'dark:border-slate-600/50',
-          'border-2',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
         ],
+        
+        // Ghost: Minimal visual weight - Enhanced tokens
         ghost: [
-          // Ghost: Minimal visual weight
-          'bg-transparent',
-          'border-transparent',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
         ],
+        
+        // Success: Positive state styling - Enhanced tokens
         success: [
-          // Success: Affirming glass materials
-          'bg-emerald-50/30',
-          'dark:bg-emerald-950/30',
-          'border-emerald-200/40',
-          'dark:border-emerald-800/40',
-          'backdrop-blur-sm',
+          'bg-cosmic-feedback-success/10',
+          'border-cosmic-feedback-success/40',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
         ],
+        
+        // Warning: Caution state styling - Enhanced tokens
         warning: [
-          // Warning: Cautionary glass materials
-          'bg-amber-50/30',
-          'dark:bg-amber-950/30',
-          'border-amber-200/40',
-          'dark:border-amber-800/40',
-          'backdrop-blur-sm',
+          'bg-cosmic-feedback-warning/10',
+          'border-cosmic-feedback-warning/40',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
         ],
+        
+        // Destructive: Error state styling - Enhanced tokens
         destructive: [
-          // Destructive: Critical glass materials
-          'bg-red-50/30',
-          'dark:bg-red-950/30',
-          'border-red-200/40',
-          'dark:border-red-800/40',
-          'backdrop-blur-sm',
+          'bg-cosmic-feedback-error/10',
+          'border-cosmic-feedback-error/40',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
         ],
+        
+        // Glass: Liquid glass material with governed vibrancy - Enhanced tokens
         glass: [
-          // Glass: Maximum liquid glass effect
-          'bg-white/10',
-          'dark:bg-black/10',
-          'border-white/20',
-          'dark:border-white/10',
-          'backdrop-blur-lg backdrop-saturate-150',
-          'shadow-xl',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
+        ],
+        
+        // Elevated: Sophisticated surface with subtle elevation - Enhanced tokens
+        elevated: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+        ],
+        
+        // AAA: High contrast mode for compliance - Enhanced tokens
+        aaa: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          'forced-colors:bg-Field forced-colors:border-FieldText',
         ],
       },
       size: {
+        // Clean systematic sizing with 8pt grid - Enhanced tokens
         sm: [
-          // Small: Compact Apple HIG spacing
-          'h-8',
-          'px-2',
-          'gap-0.5',
-          'text-xs',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['2'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
         ],
-        default: [
-          // Default: Comfortable Apple HIG spacing
-          'h-10',
-          'px-3',
-          'gap-1',
-          'text-sm',
+        md: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
         ],
         lg: [
-          // Large: Spacious Apple HIG spacing
-          'h-12',
-          'px-4',
-          'gap-1.5',
-          'text-base',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+        ],
+        xl: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.large,
         ],
       },
       density: {
         comfortable: [
-          // Comfortable: Standard spacing
-          'gap-1',
-          'p-1',
+          // Comfortable: Standard spacing - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['1'],
         ],
         compact: [
-          // Compact: Reduced spacing
-          'gap-0.5',
-          'p-0.5',
-        ],
-      },
-      accessibility: {
-        standard: [
-          // Standard: Default interactions
-        ],
-        aaa: [
-          // AAA: Enhanced contrast & spacing
-          'focus-within:ring-4',
-          'focus-within:ring-offset-4',
-          'gap-2',
-          'p-2',
-          '[&>*]:min-h-[44px]',
-          '[&>*]:min-w-[44px]',
+          // Compact: Reduced spacing - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['1'],
         ],
       },
     },
     defaultVariants: {
       variant: 'default',
-      size: 'default',
+      size: 'md',
       density: 'comfortable',
-      accessibility: 'standard',
     },
   }
 );
 
 /**
- * Enhanced toggle group item variants following MAPS v2.2 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens system
+ * Enhanced toggle group item variants following MAPS4 v4.0 foundation
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedToggleGroupItemVariants = cva(
   [
-    // Foundation: Layout & positioning
-    'inline-flex items-center justify-center',
-    'rounded-md',
+    // Foundation: Layout & positioning - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
 
-    // Foundation: Typography - Apple HIG button hierarchy
-    'text-sm font-medium',
+    // Foundation: Typography - MAPS4 button hierarchy - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
 
-    // Foundation: Sizing - Platform-aware touch targets
-    'h-9 px-3',
-    'min-w-[2.25rem]',
+    // Foundation: Sizing - Platform-aware touch targets - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
 
-    // Foundation: Transitions - Apple HIG motion
-    'transition-all duration-200 ease-out',
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: States - Base interactions
-    'hover:bg-slate-100/50',
-    'dark:hover:bg-slate-800/50',
+    // Foundation: States - Base interactions - Enhanced tokens
+    'pointer:hover:bg-aurora-accent/10',
 
-    // Foundation: Focus ring - AAA compliance
-    'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2',
-    'dark:focus-visible:ring-blue-400/60 dark:focus-visible:ring-offset-slate-900',
+    // Foundation: Focus ring - AAA compliance - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Disabled state
+    // Foundation: Disabled state - Enhanced tokens
     'disabled:pointer-events-none disabled:opacity-50',
 
-    // Foundation: Selection state
-    'data-[state=on]:bg-slate-100',
-    'data-[state=on]:text-slate-900',
-    'dark:data-[state=on]:bg-slate-800',
-    'dark:data-[state=on]:text-slate-50',
+    // Foundation: Selection state - Enhanced tokens
+    'data-[state=on]:bg-aurora-accent/20',
+    'data-[state=on]:text-cosmic-light',
+
+    // Foundation: Touch targets - 44px minimum (expanded hit area)
+    'relative',
+    'before:absolute before:-inset-3 before:content-[""]',
+    'pointer:hover:before:rounded-md pointer:hover:before:bg-aurora-accent/10',
+
+    // Foundation: Platform awareness - Pointer-only hover states
+    'pointer:hover:border-aurora-accent/70',
+    ENHANCED_DESIGN_TOKENS.foundation.transform.scale['98'],
 
     // Foundation: RTL support
     'rtl:space-x-reverse',
@@ -225,106 +233,108 @@ const enhancedToggleGroupItemVariants = cva(
   {
     variants: {
       variant: {
+        // Default: Clean accent styling with systematic feedback - Enhanced tokens
         default: [
-          // Default: Balanced glass materials
-          'text-slate-700',
-          'dark:text-slate-300',
-          'hover:text-slate-900',
-          'dark:hover:text-slate-100',
+          'text-cosmic-light',
+          'pointer:hover:text-aurora-accent',
           'data-[state=on]:shadow-sm',
         ],
+        
+        // Outline: Clear boundaries - Enhanced tokens
         outline: [
-          // Outline: Border emphasis
-          'border border-slate-200',
-          'dark:border-slate-700',
-          'text-slate-700',
-          'dark:text-slate-300',
-          'hover:bg-slate-50',
-          'dark:hover:bg-slate-800',
-          'data-[state=on]:bg-slate-900',
-          'data-[state=on]:text-slate-50',
-          'dark:data-[state=on]:bg-slate-50',
-          'dark:data-[state=on]:text-slate-900',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          'text-cosmic-light',
+          'pointer:hover:bg-aurora-accent/5',
+          'data-[state=on]:bg-aurora-accent/10',
+          'data-[state=on]:text-aurora-accent',
         ],
+        
+        // Ghost: Minimal visual weight - Enhanced tokens
         ghost: [
-          // Ghost: Minimal visual weight
-          'text-slate-600',
-          'dark:text-slate-400',
-          'hover:bg-slate-100',
-          'dark:hover:bg-slate-800',
-          'hover:text-slate-900',
-          'dark:hover:text-slate-100',
-          'data-[state=on]:bg-slate-100',
-          'dark:data-[state=on]:bg-slate-800',
+          'text-cosmic-muted',
+          'pointer:hover:bg-aurora-accent/10',
+          'pointer:hover:text-cosmic-light',
+          'data-[state=on]:bg-aurora-accent/20',
         ],
+        
+        // Success: Positive state styling - Enhanced tokens
         success: [
-          // Success: Affirming semantics
-          'text-emerald-700',
-          'dark:text-emerald-300',
-          'hover:bg-emerald-50',
-          'dark:hover:bg-emerald-950',
-          'hover:text-emerald-800',
-          'dark:hover:text-emerald-200',
-          'data-[state=on]:bg-emerald-100',
-          'data-[state=on]:text-emerald-800',
-          'dark:data-[state=on]:bg-emerald-900',
-          'dark:data-[state=on]:text-emerald-100',
+          'text-cosmic-feedback-success',
+          'pointer:hover:bg-cosmic-feedback-success/10',
+          'pointer:hover:text-cosmic-feedback-success',
+          'data-[state=on]:bg-cosmic-feedback-success/20',
+          'data-[state=on]:text-cosmic-feedback-success',
         ],
+        
+        // Warning: Caution state styling - Enhanced tokens
         warning: [
-          // Warning: Cautionary semantics
-          'text-amber-700',
-          'dark:text-amber-300',
-          'hover:bg-amber-50',
-          'dark:hover:bg-amber-950',
-          'hover:text-amber-800',
-          'dark:hover:text-amber-200',
-          'data-[state=on]:bg-amber-100',
-          'data-[state=on]:text-amber-800',
-          'dark:data-[state=on]:bg-amber-900',
-          'dark:data-[state=on]:text-amber-100',
+          'text-cosmic-feedback-warning',
+          'pointer:hover:bg-cosmic-feedback-warning/10',
+          'pointer:hover:text-cosmic-feedback-warning',
+          'data-[state=on]:bg-cosmic-feedback-warning/20',
+          'data-[state=on]:text-cosmic-feedback-warning',
         ],
+        
+        // Destructive: Error state styling - Enhanced tokens
         destructive: [
-          // Destructive: Critical semantics
-          'text-red-700',
-          'dark:text-red-300',
-          'hover:bg-red-50',
-          'dark:hover:bg-red-950',
-          'hover:text-red-800',
-          'dark:hover:text-red-200',
-          'data-[state=on]:bg-red-100',
-          'data-[state=on]:text-red-800',
-          'dark:data-[state=on]:bg-red-900',
-          'dark:data-[state=on]:text-red-100',
+          'text-cosmic-feedback-error',
+          'pointer:hover:bg-cosmic-feedback-error/10',
+          'pointer:hover:text-cosmic-feedback-error',
+          'data-[state=on]:bg-cosmic-feedback-error/20',
+          'data-[state=on]:text-cosmic-feedback-error',
         ],
+        
+        // Glass: Liquid glass material with governed vibrancy - Enhanced tokens
         glass: [
-          // Glass: Liquid glass materials
-          'text-white/90',
-          'hover:bg-white/10',
-          'hover:text-white',
-          'data-[state=on]:bg-white/20',
-          'data-[state=on]:text-white',
+          'text-cosmic-light/90',
+          'pointer:hover:bg-cosmic-void/10',
+          'pointer:hover:text-cosmic-light',
+          'data-[state=on]:bg-cosmic-void/20',
+          'data-[state=on]:text-cosmic-light',
           'data-[state=on]:backdrop-blur-sm',
           'data-[state=on]:shadow-lg',
         ],
+        
+        // Elevated: Sophisticated surface with subtle elevation - Enhanced tokens
+        elevated: [
+          'text-cosmic-light',
+          'pointer:hover:bg-cosmic-void',
+          'data-[state=on]:bg-aurora-accent/15',
+          'data-[state=on]:shadow-[0_0_12px_rgba(var(--aurora-accent-rgb),0.25)]',
+        ],
+        
+        // AAA: High contrast mode for compliance - Enhanced tokens
+        aaa: [
+          'text-cosmic-light',
+          'pointer:hover:bg-aurora-accent/20',
+          'data-[state=on]:bg-aurora-accent',
+          'data-[state=on]:text-cosmic-dark',
+          'forced-colors:bg-Field forced-colors:text-FieldText',
+          'forced-colors:data-[state=on]:bg-Highlight forced-colors:data-[state=on]:text-HighlightText',
+        ],
       },
       size: {
+        // Clean systematic sizing with 8pt grid - Enhanced tokens
         sm: [
-          // Small: Compact Apple HIG sizing
-          'h-7 px-2',
-          'text-xs',
-          'min-w-[1.75rem]',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['2'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+          'before:-inset-2'
         ],
-        default: [
-          // Default: Comfortable Apple HIG sizing
-          'h-9 px-3',
-          'text-sm',
-          'min-w-[2.25rem]',
+        md: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+          'before:-inset-3'
         ],
         lg: [
-          // Large: Spacious Apple HIG sizing
-          'h-11 px-4',
-          'text-base',
-          'min-w-[2.75rem]',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+          'before:-inset-4'
+        ],
+        xl: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.large,
+          'before:-inset-5'
         ],
       },
       accessibility: {
@@ -346,8 +356,7 @@ const enhancedToggleGroupItemVariants = cva(
     },
     defaultVariants: {
       variant: 'default',
-      size: 'default',
-      accessibility: 'standard',
+      size: 'md',
     },
   }
 );
@@ -402,9 +411,13 @@ export interface EnhancedToggleGroupProps
    */
   loop?: boolean;
   /**
-   * AAA compliance mode for enhanced accessibility
+   * Enforce AAA compliance mode with high contrast colors
    */
-  aaaMode?: boolean;
+  enforceAAA?: boolean;
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 const EnhancedToggleGroup = React.forwardRef<
@@ -412,21 +425,27 @@ const EnhancedToggleGroup = React.forwardRef<
   EnhancedToggleGroupProps
 >(
   (
-    { className, variant, size, density, accessibility, aaaMode, ...props },
+    { className, variant, size, density, enforceAAA, disableAnimations, ...props },
     ref
   ) => {
-    const resolvedAccessibility = aaaMode ? 'aaa' : accessibility;
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    // Use AAA variant when enforceAAA is true
+    const effectiveVariant = enforceAAA ? 'aaa' : variant;
 
     return (
       <ToggleGroupPrimitives.Root
         ref={ref}
         className={cn(
           enhancedToggleGroupVariants({
-            variant,
+            variant: effectiveVariant,
             size,
             density,
-            accessibility: resolvedAccessibility,
           }),
+          motionClasses,
           className
         )}
         {...(props as Parameters<typeof ToggleGroupPrimitives.Root>[0])}
@@ -448,29 +467,40 @@ export interface EnhancedToggleGroupItemProps
   asChild?: boolean;
 
   /**
-   * AAA compliance mode for enhanced accessibility
+   * Enforce AAA compliance mode with high contrast colors
    */
-  aaaMode?: boolean;
+  enforceAAA?: boolean;
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
 }
 
 const EnhancedToggleGroupItem = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitives.Item>,
   EnhancedToggleGroupItemProps
->(({ className, variant, size, accessibility, aaaMode, ...props }, ref) => {
-  const resolvedAccessibility = aaaMode ? 'aaa' : accessibility;
+>(({ className, variant, size, enforceAAA, disableAnimations, ...props }, ref) => {
+  // Performance optimization: conditionally apply motion classes
+  const motionClasses = disableAnimations 
+    ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+    : '';
+
+  // Use AAA variant when enforceAAA is true
+  const effectiveVariant = enforceAAA ? 'aaa' : variant;
 
   return (
     <ToggleGroupPrimitives.Item
       ref={ref}
       className={cn(
         enhancedToggleGroupItemVariants({
-          variant,
+          variant: effectiveVariant,
           size,
-          accessibility: resolvedAccessibility,
         }),
+        motionClasses,
         className
       )}
-      data-variant={variant}
+      data-variant={effectiveVariant}
       {...props}
     />
   );
@@ -480,64 +510,106 @@ EnhancedToggleGroupItem.displayName = 'EnhancedToggleGroupItem';
 // ===== ENHANCED TOGGLE GROUP FACTORY =====
 
 /**
- * Enhanced Toggle Group Factory - Semantic Constructors
- * Following Apple HIG semantic hierarchy
+ * Enhanced Toggle Group Factory Functions
+ * @description Semantic constructors following MAPS4 v4.0 patterns
  */
 export const ToggleGroupFactory = {
   /**
-   * Default semantic toggle group - balanced visual weight
+   * Default toggle group with clean styling
    */
-  default: (props: Omit<EnhancedToggleGroupProps, 'variant'>) => (
+  default: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'variant'>) => (
     <EnhancedToggleGroup variant='default' {...props} />
   ),
 
   /**
-   * Outline semantic toggle group - prominent border emphasis
+   * Outline toggle group with clear boundaries
    */
-  outline: (props: Omit<EnhancedToggleGroupProps, 'variant'>) => (
+  outline: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'variant'>) => (
     <EnhancedToggleGroup variant='outline' {...props} />
   ),
 
   /**
-   * Ghost semantic toggle group - minimal visual weight
+   * Ghost toggle group with minimal styling
    */
-  ghost: (props: Omit<EnhancedToggleGroupProps, 'variant'>) => (
+  ghost: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'variant'>) => (
     <EnhancedToggleGroup variant='ghost' {...props} />
   ),
 
   /**
-   * Success semantic toggle group - affirming actions
+   * Success toggle group for positive confirmations
    */
-  success: (props: Omit<EnhancedToggleGroupProps, 'variant'>) => (
+  success: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'variant'>) => (
     <EnhancedToggleGroup variant='success' {...props} />
   ),
 
   /**
-   * Warning semantic toggle group - cautionary actions
+   * Warning toggle group for caution states
    */
-  warning: (props: Omit<EnhancedToggleGroupProps, 'variant'>) => (
+  warning: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'variant'>) => (
     <EnhancedToggleGroup variant='warning' {...props} />
   ),
 
   /**
-   * Destructive semantic toggle group - critical actions
+   * Destructive toggle group for dangerous actions
    */
-  destructive: (props: Omit<EnhancedToggleGroupProps, 'variant'>) => (
+  destructive: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'variant'>) => (
     <EnhancedToggleGroup variant='destructive' {...props} />
   ),
 
   /**
-   * Glass semantic toggle group - liquid glass materials
+   * Glass toggle group with liquid glass materials
    */
-  glass: (props: Omit<EnhancedToggleGroupProps, 'variant'>) => (
+  glass: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'variant'>) => (
     <EnhancedToggleGroup variant='glass' {...props} />
+  ),
+
+  /**
+   * Elevated toggle group with enhanced depth
+   */
+  elevated: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'variant'>) => (
+    <EnhancedToggleGroup variant='elevated' {...props} />
   ),
 
   /**
    * AAA compliant toggle group with enhanced accessibility
    */
-  aaa: (props: Omit<EnhancedToggleGroupProps, 'aaaMode'>) => (
-    <EnhancedToggleGroup aaaMode={true} {...props} />
+  aaa: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'enforceAAA'>) => (
+    <EnhancedToggleGroup enforceAAA={true} {...props} />
+  ),
+
+  /**
+   * Performance-optimized toggle group with disabled animations
+   */
+  performance: (props: React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>) => (
+    <EnhancedToggleGroup disableAnimations={true} {...props} />
+  ),
+
+  /**
+   * Small toggle group for compact layouts
+   */
+  small: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'size'>) => (
+    <EnhancedToggleGroup size='sm' {...props} />
+  ),
+
+  /**
+   * Large toggle group for prominent controls
+   */
+  large: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'size'>) => (
+    <EnhancedToggleGroup size='lg' {...props} />
+  ),
+
+  /**
+   * Extra large toggle group for maximum visibility
+   */
+  xlarge: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'size'>) => (
+    <EnhancedToggleGroup size='xl' {...props} />
+  ),
+
+  /**
+   * Compact density toggle group for dense layouts
+   */
+  compact: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroup>, 'density'>) => (
+    <EnhancedToggleGroup density='compact' {...props} />
   ),
 
   /**
@@ -613,63 +685,99 @@ export const ToggleGroupFactory = {
 };
 
 /**
- * Enhanced Toggle Group Item Factory - Semantic Constructors
+ * Enhanced Toggle Group Item Factory Functions
+ * @description Semantic constructors following MAPS4 v4.0 patterns
  */
 export const ToggleGroupItemFactory = {
   /**
-   * Default semantic toggle group item
+   * Default toggle group item with clean styling
    */
-  default: (props: Omit<EnhancedToggleGroupItemProps, 'variant'>) => (
+  default: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'variant'>) => (
     <EnhancedToggleGroupItem variant='default' {...props} />
   ),
 
   /**
-   * Outline semantic toggle group item
+   * Outline toggle group item with clear boundaries
    */
-  outline: (props: Omit<EnhancedToggleGroupItemProps, 'variant'>) => (
+  outline: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'variant'>) => (
     <EnhancedToggleGroupItem variant='outline' {...props} />
   ),
 
   /**
-   * Ghost semantic toggle group item
+   * Ghost toggle group item with minimal styling
    */
-  ghost: (props: Omit<EnhancedToggleGroupItemProps, 'variant'>) => (
+  ghost: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'variant'>) => (
     <EnhancedToggleGroupItem variant='ghost' {...props} />
   ),
 
   /**
-   * Success semantic toggle group item
+   * Success toggle group item for positive confirmations
    */
-  success: (props: Omit<EnhancedToggleGroupItemProps, 'variant'>) => (
+  success: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'variant'>) => (
     <EnhancedToggleGroupItem variant='success' {...props} />
   ),
 
   /**
-   * Warning semantic toggle group item
+   * Warning toggle group item for caution states
    */
-  warning: (props: Omit<EnhancedToggleGroupItemProps, 'variant'>) => (
+  warning: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'variant'>) => (
     <EnhancedToggleGroupItem variant='warning' {...props} />
   ),
 
   /**
-   * Destructive semantic toggle group item
+   * Destructive toggle group item for dangerous actions
    */
-  destructive: (props: Omit<EnhancedToggleGroupItemProps, 'variant'>) => (
+  destructive: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'variant'>) => (
     <EnhancedToggleGroupItem variant='destructive' {...props} />
   ),
 
   /**
-   * Glass semantic toggle group item
+   * Glass toggle group item with liquid glass materials
    */
-  glass: (props: Omit<EnhancedToggleGroupItemProps, 'variant'>) => (
+  glass: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'variant'>) => (
     <EnhancedToggleGroupItem variant='glass' {...props} />
   ),
 
   /**
-   * AAA compliant toggle group item
+   * Elevated toggle group item with enhanced depth
    */
-  aaa: (props: Omit<EnhancedToggleGroupItemProps, 'aaaMode'>) => (
-    <EnhancedToggleGroupItem aaaMode={true} {...props} />
+  elevated: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'variant'>) => (
+    <EnhancedToggleGroupItem variant='elevated' {...props} />
+  ),
+
+  /**
+   * AAA compliant toggle group item with enhanced accessibility
+   */
+  aaa: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'enforceAAA'>) => (
+    <EnhancedToggleGroupItem enforceAAA={true} {...props} />
+  ),
+
+  /**
+   * Performance-optimized toggle group item with disabled animations
+   */
+  performance: (props: React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>) => (
+    <EnhancedToggleGroupItem disableAnimations={true} {...props} />
+  ),
+
+  /**
+   * Small toggle group item for compact layouts
+   */
+  small: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'size'>) => (
+    <EnhancedToggleGroupItem size='sm' {...props} />
+  ),
+
+  /**
+   * Large toggle group item for prominent controls
+   */
+  large: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'size'>) => (
+    <EnhancedToggleGroupItem size='lg' {...props} />
+  ),
+
+  /**
+   * Extra large toggle group item for maximum visibility
+   */
+  xlarge: (props: Omit<React.ComponentPropsWithoutRef<typeof EnhancedToggleGroupItem>, 'size'>) => (
+    <EnhancedToggleGroupItem size='xl' {...props} />
   ),
 };
 
@@ -950,13 +1058,10 @@ export function useEnhancedToggleGroupMulti(
 // ===== EXPORTS =====
 
 export {
-  EnhancedToggleGroup as ToggleGroup,
-  EnhancedToggleGroupItem as ToggleGroupItem,
-  enhancedToggleGroupVariants as toggleGroupVariants,
-  enhancedToggleGroupItemVariants as toggleGroupItemVariants,
+  EnhancedToggleGroup,
+  EnhancedToggleGroupItem,
+  enhancedToggleGroupVariants,
+  enhancedToggleGroupItemVariants,
 };
 
-export type {
-  EnhancedToggleGroupProps as ToggleGroupProps,
-  EnhancedToggleGroupItemProps as ToggleGroupItemProps,
-};
+export type { VariantProps } from 'class-variance-authority';

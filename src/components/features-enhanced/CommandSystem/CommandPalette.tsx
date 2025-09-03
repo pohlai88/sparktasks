@@ -17,11 +17,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ArrowRight, Hash } from 'lucide-react';
 import React from 'react';
 
-import {
-  getAdaptiveMotionClasses,
-  prefersReducedMotion,
-} from '@/components/primitives/motion-utils';
-import { useZIndex } from '@/components/primitives/use-z-index';
+import { getAdaptiveMotionClasses, prefersReducedMotion } from '@/design/enhanced-tokens';
+import { getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== COMMAND INTERFACES =====
@@ -232,11 +229,11 @@ export function CommandPalette({
 
   // ===== MAPS v3.0 INTEGRATIONS =====
 
-  // Z-Index orchestration for modal layering
-  const { zIndexClass } = useZIndex('command-palette', 'modal');
+  // Z-Index token class for modal layering
+  const zIndexClass = getZIndexClass('modal');
 
   // Motion presets for animations
-  const motionClasses = getAdaptiveMotionClasses('all');
+  const motionClasses = getAdaptiveMotionClasses('fadeInStandard');
   const isReducedMotion = prefersReducedMotion();
 
   // ===== DYNAMIC COMMANDS =====
@@ -340,7 +337,7 @@ export function CommandPalette({
     return {
       id: 'recent',
       heading: 'Recent',
-      icon: <Hash className='h-4 w-4' />,
+      icon: <Hash className='size-4' />,
       commands: recentCmds,
       priority: -1, // Show first
     };
@@ -445,7 +442,7 @@ export function CommandPalette({
             >
               {/* Search Input */}
               <div className='flex items-center border-b border-border-subtle px-4'>
-                <Search className='mr-3 h-4 w-4 text-foreground-muted' />
+                <Search className='mr-3 size-4 text-foreground-muted' />
                 <Command.Input
                   value={currentSearchValue}
                   onValueChange={handleSearchChange}
@@ -453,7 +450,7 @@ export function CommandPalette({
                   className='flex-1 border-none bg-transparent py-4 text-foreground outline-none placeholder:text-foreground-muted'
                 />
                 {loading && (
-                  <div className='ml-3 h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent' />
+                  <div className='ml-3 size-4 animate-spin rounded-full border-2 border-accent border-t-transparent' />
                 )}
               </div>
 
@@ -466,7 +463,7 @@ export function CommandPalette({
                 {allGroups.map(group => (
                   <Command.Group key={group.id} heading={group.heading}>
                     {group.heading && (
-                      <div className='flex items-center gap-2 px-2 py-2 text-xs font-medium uppercase tracking-wide text-foreground-muted'>
+                      <div className='flex items-center gap-2 p-2 text-xs font-medium uppercase tracking-wide text-foreground-muted'>
                         {group.icon}
                         {group.heading}
                       </div>
@@ -487,7 +484,7 @@ export function CommandPalette({
                       >
                         {/* Command Icon */}
                         {command.icon && (
-                          <div className='flex h-5 w-5 flex-shrink-0 items-center justify-center'>
+                          <div className='flex size-5 shrink-0 items-center justify-center'>
                             {command.icon}
                           </div>
                         )}
@@ -513,11 +510,11 @@ export function CommandPalette({
 
                         {/* Keyboard Shortcut */}
                         {command.shortcut && command.shortcut.length > 0 && (
-                          <div className='flex flex-shrink-0 items-center gap-1'>
+                          <div className='flex shrink-0 items-center gap-1'>
                             {command.shortcut.map((key, index) => (
                               <kbd
                                 key={index}
-                                className='bg-surface-elevated inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded border border-border-subtle px-1.5 font-mono text-xs text-foreground-muted'
+                                className='bg-surface-elevated inline-flex h-6 min-w-6 items-center justify-center rounded border border-border-subtle px-1.5 font-mono text-xs text-foreground-muted'
                               >
                                 {key}
                               </kbd>
@@ -526,7 +523,7 @@ export function CommandPalette({
                         )}
 
                         {/* Arrow Indicator */}
-                        <ArrowRight className='h-4 w-4 text-foreground-muted opacity-0 transition-opacity group-data-[selected=true]:opacity-100' />
+                        <ArrowRight className='size-4 text-foreground-muted opacity-0 transition-opacity group-data-[selected=true]:opacity-100' />
                       </Command.Item>
                     ))}
                   </Command.Group>
@@ -545,27 +542,27 @@ export function CommandPalette({
 export const DefaultCommandCategories = {
   navigation: {
     heading: 'Navigate',
-    icon: <Hash className='h-4 w-4' />,
+    icon: <Hash className='size-4' />,
     shortcuts: ['g', 'n'],
   },
   actions: {
     heading: 'Actions',
-    icon: <Hash className='h-4 w-4' />,
+    icon: <Hash className='size-4' />,
     shortcuts: ['a'],
   },
   search: {
     heading: 'Search',
-    icon: <Search className='h-4 w-4' />,
+    icon: <Search className='size-4' />,
     shortcuts: ['s'],
   },
   settings: {
     heading: 'Settings',
-    icon: <Hash className='h-4 w-4' />,
+    icon: <Hash className='size-4' />,
     shortcuts: ['p'],
   },
   help: {
     heading: 'Help & Support',
-    icon: <Hash className='h-4 w-4' />,
+    icon: <Hash className='size-4' />,
     shortcuts: ['h', '?'],
   },
 } as const;

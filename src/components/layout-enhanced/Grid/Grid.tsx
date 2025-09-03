@@ -12,10 +12,13 @@
  * - Developer Experience: Intuitive APIs that make complex layouts simple to implement
  */
 
-import React, { forwardRef } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type React from 'react';
+import { forwardRef } from 'react';
+
 import { cn } from '../../../utils/cn';
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
 
 // ===== GRID PATTERNS =====
 
@@ -29,25 +32,27 @@ const GridPatterns = {
 
 // ===== VARIANTS =====
 
-const gridVariants = cva(['grid'], {
+const gridVariants = cva([
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid,
+], {
   variants: {
     // Grid Structure
     columns: {
-      1: 'grid-cols-1',
-      2: 'grid-cols-2',
-      3: 'grid-cols-3',
-      4: 'grid-cols-4',
-      5: 'grid-cols-5',
-      6: 'grid-cols-6',
-      7: 'grid-cols-7',
-      8: 'grid-cols-8',
-      9: 'grid-cols-9',
-      10: 'grid-cols-10',
-      11: 'grid-cols-11',
-      12: 'grid-cols-12',
-      auto: 'grid-cols-auto',
-      'min-content': 'grid-cols-min',
-      'max-content': 'grid-cols-max',
+      1: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[1],
+      2: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[2],
+      3: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[3],
+      4: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[4],
+      5: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[5],
+      6: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[6],
+      7: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[7],
+      8: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[8],
+      9: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[9],
+      10: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[10],
+      11: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[11],
+      12: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[12],
+      auto: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns.auto,
+      'min-content': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns.auto, // closest token
+      'max-content': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns.auto, // closest token
     },
 
     rows: {
@@ -64,13 +69,13 @@ const gridVariants = cva(['grid'], {
 
     // Gap Control
     gap: {
-      none: 'gap-0',
-      xs: 'gap-1',
-      sm: 'gap-2',
-      md: 'gap-4',
-      lg: 'gap-6',
-      xl: 'gap-8',
-      '2xl': 'gap-12',
+      none: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.none,
+      xs: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+      sm: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+      md: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+      lg: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+      xl: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+      '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap['2xl'],
     },
 
     gapX: {
@@ -95,10 +100,10 @@ const gridVariants = cva(['grid'], {
 
     // Alignment
     alignItems: {
-      start: 'items-start',
-      center: 'items-center',
-      end: 'items-end',
-      stretch: 'items-stretch',
+      start: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start,
+      center: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      end: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.end,
+      stretch: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.stretch,
     },
 
     justifyItems: {
@@ -109,44 +114,44 @@ const gridVariants = cva(['grid'], {
     },
 
     alignContent: {
-      start: 'content-start',
-      center: 'content-center',
-      end: 'content-end',
-      stretch: 'content-stretch',
-      between: 'content-between',
-      around: 'content-around',
-      evenly: 'content-evenly',
+      start: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.content.start,
+      center: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.content.center,
+      end: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.content.end,
+      stretch: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.content.center,
+      between: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.content.between,
+      around: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.content.around,
+      evenly: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.content.evenly,
     },
 
     justifyContent: {
-      start: 'justify-start',
-      center: 'justify-center',
-      end: 'justify-end',
-      stretch: 'justify-stretch',
-      between: 'justify-between',
-      around: 'justify-around',
-      evenly: 'justify-evenly',
+      start: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.start,
+      center: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+      end: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.end,
+      stretch: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, // closest
+      between: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between,
+      around: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.around,
+      evenly: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.evenly,
     },
 
     // Auto-placement
     autoFlow: {
-      row: 'grid-flow-row',
-      column: 'grid-flow-col',
-      dense: 'grid-flow-row-dense',
-      'row-dense': 'grid-flow-row-dense',
-      'column-dense': 'grid-flow-col-dense',
+      row: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.flow.row,
+      column: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.flow.col,
+      dense: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.flow.dense,
+      'row-dense': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.flow.dense,
+      'column-dense': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.flow.dense,
     },
 
     autoColumns: {
-      min: 'auto-cols-min',
-      max: 'auto-cols-max',
-      fr: 'auto-cols-fr',
+      min: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.autoCols.min,
+      max: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.autoCols.max,
+      fr: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.autoCols.fr,
     },
 
     autoRows: {
-      min: 'auto-rows-min',
-      max: 'auto-rows-max',
-      fr: 'auto-rows-fr',
+      min: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.autoRows.min,
+      max: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.autoRows.max,
+      fr: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.autoRows.fr,
     },
   },
   defaultVariants: {
@@ -255,7 +260,7 @@ export const Grid = forwardRef<
       ? Object.entries(responsive)
           .map(([breakpoint, config]) => {
             const prefix =
-              breakpoint === 'sm' ? 'sm:' : breakpoint === 'md' ? 'md:' : 'lg:';
+              breakpoint === 'sm' ? 'sm:' : (breakpoint === 'md' ? 'md:' : 'lg:');
             const classes = [];
 
             if (config.columns && typeof config.columns === 'number') {

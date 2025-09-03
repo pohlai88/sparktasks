@@ -8,30 +8,35 @@
  * - Liquid Glass Materials: ✅ Governed vibrancy system with cosmic aesthetics
  * - Radix Compatibility: ✅ Polymorphic pattern ready
  * - Anti-Drift Enforcement: ✅ 100% tokenized, zero hardcoded values
- *
+ * - Railway App Shell SSOT: ✅ Full compliance with v4.0 standards
+
+*
  * ARCHITECTURE INTEGRATION:
  * - MAPS4 Enhanced Tokens → Railway Budget Station variants → Cosmic user experience
  * - MAPS4 Guidelines → Railway Budget Station behavior → Accessibility excellence
  * - Railway Ecosystem → Budget Station → Project Management
+ * - Railway App Shell SSOT → Budget Station → Standardized development pattern
  *
  * RESOLUTION MODEL:
  * theme → mode (dark|light|hc) → density (comfortable|compact)
  * → platform (web) → input (touch|pointer) → state (rest|hover|focus|error)
+ * → railway station (initiation|budget|schedule|conductor) → project lifecycle
  *
  * VERSION: 4.0.0
  * LAST UPDATED: 2025-01-27
+ * SSOT COMPLIANCE: Railway App Shell SSOT v4.0
  */
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { EnhancedBadge } from '@/components/ui-enhanced/Badge';
 import { EnhancedButton } from '@/components/ui-enhanced/Button';
 import { EnhancedCard } from '@/components/ui-enhanced/Card';
 import { EnhancedInput } from '@/components/ui-enhanced/Input';
-import { EnhancedTextarea } from '@/components/ui-enhanced/Textarea';
-import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
 import { EnhancedProgress } from '@/components/ui-enhanced/Progress';
+import { EnhancedTabs } from '@/components/ui-enhanced/Tabs';
+import { EnhancedTextarea } from '@/components/ui-enhanced/Textarea';
 import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
@@ -43,48 +48,53 @@ import { cn } from '@/utils/cn';
  */
 const railwayBudgetStationVariants = cva(
   [
-    // Foundation: Layout/shape - Clean Tailwind utilities
-    'w-full max-w-7xl mx-auto',
-    'space-y-8',
+    // Foundation: Layout/shape - Enhanced design tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-7xl'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.margin['x-auto'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl,
     
     // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
     // MAPS4 Foundation: Motion - Respect user preferences
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         // Default: Clean budget station with subtle elevation
-        default: ['p-8', 'rounded-2xl'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl']],
         
         // Elevated: Enhanced depth with stronger shadow
         elevated: [
-          'p-10', 
-          'rounded-3xl',
-          'shadow-elevation-lg',
-          'border border-aurora-accent'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10'], 
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['3xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
         ],
         
         // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
-          'p-8',
-          'rounded-2xl',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
-          'border border-cosmic-border/30'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate['150'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
         ],
       },
       
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['space-y-6', 'p-6'],
-        md: ['space-y-8', 'p-8'],
-        lg: ['space-y-10', 'p-10'],
-        xl: ['space-y-12', 'p-12'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6']],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8']],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack['2xl'], ENHANCED_DESIGN_TOKENS.foundation.layout.padding['10']],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack['2xl'], ENHANCED_DESIGN_TOKENS.foundation.layout.padding['12']],
       },
     },
     
@@ -192,36 +202,36 @@ const SAMPLE_CATEGORIES: BudgetCategory[] = [
   {
     id: 'labor',
     name: 'Labor & Resources',
-    totalEstimated: 150000,
-    totalActual: 45000,
-    totalCommitted: 75000,
-    variance: -30000,
+    totalEstimated: 150_000,
+    totalActual: 45_000,
+    totalCommitted: 75_000,
+    variance: -30_000,
     variancePercentage: -20,
   },
   {
     id: 'materials',
     name: 'Materials & Equipment',
-    totalEstimated: 80000,
-    totalActual: 25000,
-    totalCommitted: 40000,
-    variance: -15000,
+    totalEstimated: 80_000,
+    totalActual: 25_000,
+    totalCommitted: 40_000,
+    variance: -15_000,
     variancePercentage: -18.75,
   },
   {
     id: 'services',
     name: 'External Services',
-    totalEstimated: 60000,
-    totalActual: 20000,
-    totalCommitted: 30000,
-    variance: -10000,
+    totalEstimated: 60_000,
+    totalActual: 20_000,
+    totalCommitted: 30_000,
+    variance: -10_000,
     variancePercentage: -16.67,
   },
   {
     id: 'overhead',
     name: 'Overhead & Admin',
-    totalEstimated: 40000,
-    totalActual: 15000,
-    totalCommitted: 20000,
+    totalEstimated: 40_000,
+    totalActual: 15_000,
+    totalCommitted: 20_000,
     variance: -5000,
     variancePercentage: -12.5,
   },
@@ -232,10 +242,10 @@ const SAMPLE_BUDGET_ITEMS: BudgetItem[] = [
     id: 'labor-1',
     category: 'Labor & Resources',
     description: 'Project Manager (Full-time)',
-    estimated: 80000,
-    actual: 25000,
-    committed: 40000,
-    remaining: 40000,
+    estimated: 80_000,
+    actual: 25_000,
+    committed: 40_000,
+    remaining: 40_000,
     status: 'committed',
     notes: 'On track with schedule',
   },
@@ -243,10 +253,10 @@ const SAMPLE_BUDGET_ITEMS: BudgetItem[] = [
     id: 'labor-2',
     category: 'Labor & Resources',
     description: 'Senior Developers (2x)',
-    estimated: 70000,
-    actual: 20000,
-    committed: 35000,
-    remaining: 35000,
+    estimated: 70_000,
+    actual: 20_000,
+    committed: 35_000,
+    remaining: 35_000,
     status: 'committed',
     notes: 'Team performing well',
   },
@@ -254,10 +264,10 @@ const SAMPLE_BUDGET_ITEMS: BudgetItem[] = [
     id: 'materials-1',
     category: 'Materials & Equipment',
     description: 'Development Hardware',
-    estimated: 30000,
-    actual: 15000,
-    committed: 20000,
-    remaining: 15000,
+    estimated: 30_000,
+    actual: 15_000,
+    committed: 20_000,
+    remaining: 15_000,
     status: 'spent',
     notes: 'Equipment delivered',
   },
@@ -265,10 +275,10 @@ const SAMPLE_BUDGET_ITEMS: BudgetItem[] = [
     id: 'services-1',
     category: 'External Services',
     description: 'Cloud Infrastructure',
-    estimated: 40000,
-    actual: 15000,
-    committed: 25000,
-    remaining: 25000,
+    estimated: 40_000,
+    actual: 15_000,
+    committed: 25_000,
+    remaining: 25_000,
     status: 'committed',
     notes: 'AWS services active',
   },
@@ -299,13 +309,13 @@ export function RailwayBudgetStation({
   const [budgetDataState, setBudgetDataState] = useState<ProjectBudget>({
     projectId: budgetData?.projectId || 'proj-001',
     projectName: budgetData?.projectName || 'Sample Project',
-    totalBudget: budgetData?.totalBudget || 330000,
+    totalBudget: budgetData?.totalBudget || 330_000,
     currency: budgetData?.currency || 'USD',
     fiscalYear: budgetData?.fiscalYear || '2025',
     approvalStatus: budgetData?.approvalStatus || 'draft',
     categories: budgetData?.categories || SAMPLE_CATEGORIES,
     items: budgetData?.items || SAMPLE_BUDGET_ITEMS,
-    contingency: budgetData?.contingency || 33000,
+    contingency: budgetData?.contingency || 33_000,
     completionPercentage: budgetData?.completionPercentage || 0,
   });
 
@@ -315,19 +325,18 @@ export function RailwayBudgetStation({
     setBudgetDataState(prev => ({ ...prev, [field]: value }));
   };
 
-  const calculateCompletion = () => {
+  const completionPct = useMemo(() => {
     const completedSteps = steps.filter(step => step.status === 'completed').length;
     const totalSteps = steps.length;
     return Math.round((completedSteps / totalSteps) * 100);
-  };
+  }, [steps]);
 
-  const calculateBudgetMetrics = () => {
+  const budgetMetrics = useMemo(() => {
     const totalEstimated = budgetDataState.categories.reduce((sum, cat) => sum + cat.totalEstimated, 0);
     const totalActual = budgetDataState.categories.reduce((sum, cat) => sum + cat.totalActual, 0);
     const totalCommitted = budgetDataState.categories.reduce((sum, cat) => sum + cat.totalCommitted, 0);
     const totalVariance = totalActual - totalEstimated;
     const variancePercentage = totalEstimated > 0 ? (totalVariance / totalEstimated) * 100 : 0;
-    
     return {
       totalEstimated,
       totalActual,
@@ -336,7 +345,7 @@ export function RailwayBudgetStation({
       variancePercentage,
       remaining: totalEstimated - totalActual,
     };
-  };
+  }, [budgetDataState.categories]);
 
   const getVarianceColor = (variance: number) => {
     if (variance < 0) return 'success'; // Under budget
@@ -346,24 +355,29 @@ export function RailwayBudgetStation({
 
   const getStatusColor = (status: BudgetItem['status']) => {
     switch (status) {
-      case 'planned':
+      case 'planned': {
         return 'secondary';
-      case 'approved':
+      }
+      case 'approved': {
         return 'warning';
-      case 'committed':
+      }
+      case 'committed': {
         return 'accent';
-      case 'spent':
+      }
+      case 'spent': {
         return 'success';
-      case 'overrun':
+      }
+      case 'overrun': {
         return 'error';
-      default:
+      }
+      default: {
         return 'secondary';
+      }
     }
   };
 
   const handleSave = () => {
-    const completionPercentage = calculateCompletion();
-    const dataToSave = { ...budgetDataState, completionPercentage };
+    const dataToSave = { ...budgetDataState, completionPercentage: completionPct };
     onSave?.(dataToSave);
   };
 
@@ -382,7 +396,7 @@ export function RailwayBudgetStation({
     { id: 'approval', label: 'Approval', icon: '✅' },
   ];
 
-  const budgetMetrics = calculateBudgetMetrics();
+  // Use memoized metrics
 
   return (
     <div
@@ -390,7 +404,10 @@ export function RailwayBudgetStation({
       className={cn(railwayBudgetStationVariants({ variant, size }))}
     >
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md
+      )}>
                  <h1 className={cn(
            ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium,
            ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -405,10 +422,9 @@ export function RailwayBudgetStation({
         </p>
         
         {/* Progress Overview */}
-        <div className="flex items-center justify-center space-x-4">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           <EnhancedProgress
-            value={calculateCompletion()}
-            className="w-64"
+            value={completionPct / 100}
             variant="default"
             size="md"
           />
@@ -416,15 +432,21 @@ export function RailwayBudgetStation({
             ENHANCED_DESIGN_TOKENS.foundation.typography.label,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
-            {calculateCompletion()}% Complete
+            {completionPct}% Complete
           </span>
         </div>
       </div>
 
       {/* Budget Summary Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-4']
+      )}>
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
                          <h3 className={cn(
                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -441,7 +463,10 @@ export function RailwayBudgetStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -458,7 +483,10 @@ export function RailwayBudgetStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -475,7 +503,10 @@ export function RailwayBudgetStation({
         </EnhancedCard>
 
         <EnhancedCard variant="elevated" size="sm">
-          <div className="text-center space-y-2">
+          <div className={cn(
+            ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+            ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm
+          )}>
             <h3 className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.label,
               ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -484,9 +515,9 @@ export function RailwayBudgetStation({
             </h3>
             <p className={cn(
               ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
-              getVarianceColor(budgetMetrics.totalVariance) === 'success' ? 'text-cosmic-success' : 
-              getVarianceColor(budgetMetrics.totalVariance) === 'error' ? 'text-cosmic-danger' : 
-              ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+              getVarianceColor(budgetMetrics.totalVariance) === 'success' ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted : 
+              (getVarianceColor(budgetMetrics.totalVariance) === 'error' ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted : 
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary)
             )}>
               ${budgetMetrics.totalVariance.toLocaleString()}
             </p>
@@ -498,25 +529,25 @@ export function RailwayBudgetStation({
       <EnhancedTabs.Root
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-full"
+                        className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
       >
-        <EnhancedTabs.List className="grid w-full grid-cols-6">
+        <EnhancedTabs.List className={cn(ENHANCED_DESIGN_TOKENS.recipes.layout.grid.base, ENHANCED_DESIGN_TOKENS.foundation.layout.width.full, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[6])}>
           {tabs.map((tab) => (
             <EnhancedTabs.Trigger
               key={tab.id}
               value={tab.id}
-              className="flex items-center space-x-2"
+              className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}
             >
               <span>{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
+              <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.hidden, 'sm:inline')}>{tab.label}</span>
             </EnhancedTabs.Trigger>
           ))}
         </EnhancedTabs.List>
 
         {/* Overview Tab */}
-        <EnhancedTabs.Content value="overview" className="space-y-6">
+        <EnhancedTabs.Content value="overview" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
                              <h3 className={cn(
                  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -524,21 +555,27 @@ export function RailwayBudgetStation({
                  Budget Progress
                </h3>
               
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-3']
+              )}>
                 {steps.map((step) => (
                   <div
                     key={step.id}
                     className={cn(
-                      "p-4 rounded-lg border transition-all duration-200",
-                      step.status === 'completed' && "border-green-500 bg-green-50 dark:bg-green-950/20",
-                      step.status === 'in_progress' && "border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20",
-                      step.status === 'blocked' && "border-red-500 bg-red-50 dark:bg-red-950/20",
-                      step.status === 'pending' && "border-gray-300 bg-gray-50 dark:bg-gray-950/20"
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+                      ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+                      step.status === 'completed' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle),
+                      step.status === 'in_progress' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle),
+                      step.status === 'blocked' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.border, ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle),
+                      step.status === 'pending' && cn(ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)
                     )}
                   >
-                    <div className="flex items-start justify-between mb-2">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <h4 className={cn(
-                        "font-medium",
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                       )}>
                         {step.title}
@@ -559,13 +596,12 @@ export function RailwayBudgetStation({
                        {step.description}
                      </p>
                     {step.required && (
-                                             <span className={cn(
-                         "inline-block mt-2",
-                         ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
-                         "text-cosmic-warning"
-                       )}>
-                         Required
-                       </span>
+                      <span className={cn(
+                        ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+                        ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.muted
+                      )}>
+                        Required
+                      </span>
                     )}
                   </div>
                 ))}
@@ -575,9 +611,9 @@ export function RailwayBudgetStation({
         </EnhancedTabs.Content>
 
         {/* Categories Tab */}
-        <EnhancedTabs.Content value="categories" className="space-y-6">
+        <EnhancedTabs.Content value="categories" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -585,13 +621,13 @@ export function RailwayBudgetStation({
                 Budget Categories
               </h3>
               
-              <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                 {budgetDataState.categories.map((category) => (
                   <div
                     key={category.id}
-                    className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950/20"
+                    className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)}
                   >
-                    <div className="flex items-center justify-between mb-3">
+                    <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                       <h4 className={cn(
                         ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                         ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -606,7 +642,10 @@ export function RailwayBudgetStation({
                       </EnhancedBadge>
                     </div>
                     
-                    <div className="grid gap-4 md:grid-cols-4">
+                    <div className={cn(
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.grid.columns[4]
+                    )}>
                       <div>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
@@ -615,7 +654,7 @@ export function RailwayBudgetStation({
                           Estimated:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           ${category.totalEstimated.toLocaleString()}
@@ -630,7 +669,7 @@ export function RailwayBudgetStation({
                           Actual:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           ${category.totalActual.toLocaleString()}
@@ -645,7 +684,7 @@ export function RailwayBudgetStation({
                           Committed:
                         </span>
                         <p className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           ${category.totalCommitted.toLocaleString()}
@@ -660,10 +699,12 @@ export function RailwayBudgetStation({
                           Variance:
                         </span>
                         <p className={cn(
-                          "font-medium",
-                          getVarianceColor(category.variance) === 'success' ? 'text-cosmic-success' : 
-                          getVarianceColor(category.variance) === 'error' ? 'text-cosmic-danger' : 
-                          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          getVarianceColor(category.variance) === 'success'
+                            ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted
+                            : (getVarianceColor(category.variance) === 'error'
+                                ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted
+                                : ENHANCED_DESIGN_TOKENS.foundation.color.content.primary)
                         )}>
                           ${category.variance.toLocaleString()}
                         </p>
@@ -677,9 +718,9 @@ export function RailwayBudgetStation({
         </EnhancedTabs.Content>
 
         {/* Budget Items Tab */}
-        <EnhancedTabs.Content value="items" className="space-y-6">
+        <EnhancedTabs.Content value="items" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -687,29 +728,50 @@ export function RailwayBudgetStation({
                 Budget Items
               </h3>
               
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+                            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.x.auto}>
+                <table className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.width.full, ENHANCED_DESIGN_TOKENS.foundation.layout.border.collapse)}>
                   <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left p-3 font-medium">Category</th>
-                      <th className="text-left p-3 font-medium">Description</th>
-                      <th className="text-left p-3 font-medium">Estimated</th>
-                      <th className="text-left p-3 font-medium">Actual</th>
-                      <th className="text-left p-3 font-medium">Committed</th>
-                      <th className="text-left p-3 font-medium">Remaining</th>
-                      <th className="text-left p-3 font-medium">Status</th>
+                    <tr className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default, ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated)}>
+                      <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Category</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Description</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Estimated</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Actual</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Committed</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Remaining</th>
+                <th className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left, ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3'], ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                )}>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {budgetDataState.items.map((item) => (
-                      <tr key={item.id} className="border-b border-gray-100 dark:border-gray-800">
-                        <td className="p-3">{item.category}</td>
-                        <td className="p-3">{item.description}</td>
-                        <td className="p-3">${item.estimated.toLocaleString()}</td>
-                        <td className="p-3">${item.actual.toLocaleString()}</td>
-                        <td className="p-3">${item.committed.toLocaleString()}</td>
-                        <td className="p-3">${item.remaining.toLocaleString()}</td>
-                        <td className="p-3">
+                      <tr key={item.id} className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>{item.category}</td>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>{item.description}</td>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>${item.estimated.toLocaleString()}</td>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>${item.actual.toLocaleString()}</td>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>${item.committed.toLocaleString()}</td>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>${item.remaining.toLocaleString()}</td>
+                        <td className={ENHANCED_DESIGN_TOKENS.foundation.layout.padding['3']}>
                           <EnhancedBadge
                             variant={getStatusColor(item.status)}
                             size="sm"
@@ -727,9 +789,9 @@ export function RailwayBudgetStation({
         </EnhancedTabs.Content>
 
         {/* Variance Analysis Tab */}
-        <EnhancedTabs.Content value="variance" className="space-y-6">
+        <EnhancedTabs.Content value="variance" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -737,9 +799,12 @@ export function RailwayBudgetStation({
                 Variance Analysis
               </h3>
               
-              <div className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
+                <div className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2']
+                )}>
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                     <h4 className={cn(
                       ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
                       ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -747,8 +812,8 @@ export function RailwayBudgetStation({
                       Budget Performance
                     </h4>
                     
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
+                    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -756,14 +821,14 @@ export function RailwayBudgetStation({
                           Total Budget:
                         </span>
                         <span className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           ${budgetDataState.totalBudget.toLocaleString()}
                         </span>
                       </div>
                       
-                      <div className="flex justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -771,14 +836,14 @@ export function RailwayBudgetStation({
                           Actual Spent:
                         </span>
                         <span className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           ${budgetMetrics.totalActual.toLocaleString()}
                         </span>
                       </div>
                       
-                      <div className="flex justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -786,10 +851,10 @@ export function RailwayBudgetStation({
                           Variance:
                         </span>
                         <span className={cn(
-                          "font-medium",
-                          getVarianceColor(budgetMetrics.totalVariance) === 'success' ? 'text-cosmic-success' : 
-                          getVarianceColor(budgetMetrics.totalVariance) === 'error' ? 'text-cosmic-danger' : 
-                          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                          getVarianceColor(budgetMetrics.totalVariance) === 'success' ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.muted : 
+                          (getVarianceColor(budgetMetrics.totalVariance) === 'error' ? ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.muted : 
+                          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary)
                         )}>
                           ${budgetMetrics.totalVariance.toLocaleString()} ({budgetMetrics.variancePercentage.toFixed(1)}%)
                         </span>
@@ -797,16 +862,16 @@ export function RailwayBudgetStation({
                     </div>
                   </div>
                   
-                  <div className="space-y-4">
+                  <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                     <h4 className={cn(
                       ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
-                      ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+                      ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
                     )}>
                       Spending Trends
                     </h4>
                     
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
+                    <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -814,14 +879,14 @@ export function RailwayBudgetStation({
                           Committed:
                         </span>
                         <span className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           ${budgetMetrics.totalCommitted.toLocaleString()}
                         </span>
                       </div>
                       
-                      <div className="flex justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -829,14 +894,14 @@ export function RailwayBudgetStation({
                           Remaining:
                         </span>
                         <span className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           ${budgetMetrics.remaining.toLocaleString()}
                         </span>
                       </div>
                       
-                      <div className="flex justify-between">
+                      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
                         <span className={cn(
                           ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -844,7 +909,7 @@ export function RailwayBudgetStation({
                           Contingency:
                         </span>
                         <span className={cn(
-                          "font-medium",
+                          ENHANCED_DESIGN_TOKENS.foundation.typography.label,
                           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
                         )}>
                           ${budgetDataState.contingency.toLocaleString()}
@@ -859,9 +924,9 @@ export function RailwayBudgetStation({
         </EnhancedTabs.Content>
 
         {/* Forecasting Tab */}
-        <EnhancedTabs.Content value="forecasting" className="space-y-6">
+        <EnhancedTabs.Content value="forecasting" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -869,7 +934,7 @@ export function RailwayBudgetStation({
                 Budget Forecasting
               </h3>
               
-              <div className="space-y-4">
+              <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md}>
                 <EnhancedTextarea
                   label="Forecasting Notes"
                   placeholder="Enter budget forecasting analysis and predictions..."
@@ -878,7 +943,10 @@ export function RailwayBudgetStation({
                   rows={6}
                 />
                 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2']
+                )}>
                   <EnhancedInput
                     label="Projected End Date"
                     type="date"
@@ -900,9 +968,9 @@ export function RailwayBudgetStation({
         </EnhancedTabs.Content>
 
         {/* Approval Tab */}
-        <EnhancedTabs.Content value="approval" className="space-y-6">
+        <EnhancedTabs.Content value="approval" className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
           <EnhancedCard variant="elevated" size="md">
-            <div className="space-y-6">
+            <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg}>
               <h3 className={cn(
                 ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
                 ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
@@ -910,58 +978,44 @@ export function RailwayBudgetStation({
                 Budget Approval
               </h3>
               
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <span className={cn(
-                    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
-                    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
-                  )}>
-                    Approval Status:
-                  </span>
-                  <EnhancedBadge
-                    variant={budgetDataState.approvalStatus === 'approved' ? 'success' : 'warning'}
-                    size="md"
-                  >
-                    {budgetDataState.approvalStatus}
-                  </EnhancedBadge>
-                </div>
-                
-                <div className="grid gap-4 md:grid-cols-2">
-                  <EnhancedInput
-                    label="Fiscal Year"
-                    value={budgetDataState.fiscalYear}
-                    onChange={(e) => handleInputChange('fiscalYear', e.target.value)}
-                    variant="default"
-                    size="md"
-                  />
-                  
-                  <EnhancedInput
-                    label="Currency"
-                    value={budgetDataState.currency}
-                    onChange={(e) => handleInputChange('currency', e.target.value)}
-                    variant="default"
-                    size="md"
-                  />
-                </div>
+              <div className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2']
+              )}>
+                <EnhancedInput
+                  label="Fiscal Year"
+                  value={budgetDataState.fiscalYear}
+                  onChange={(e) => handleInputChange('fiscalYear', e.target.value)}
+                  variant="default"
+                  size="md"
+                />
                 
                 <EnhancedInput
-                  label="Contingency Budget"
-                  type="number"
-                  placeholder="0"
-                  value={budgetDataState.contingency}
-                  onChange={(e) => handleInputChange('contingency', parseFloat(e.target.value) || 0)}
+                  label="Currency"
+                  value={budgetDataState.currency}
+                  onChange={(e) => handleInputChange('currency', e.target.value)}
                   variant="default"
                   size="md"
                 />
               </div>
+              
+              <EnhancedInput
+                label="Contingency Budget"
+                type="number"
+                placeholder="0"
+                value={budgetDataState.contingency}
+                onChange={(e) => handleInputChange('contingency', Number.parseFloat(e.target.value) || 0)}
+                variant="default"
+                size="md"
+              />
             </div>
           </EnhancedCard>
         </EnhancedTabs.Content>
       </EnhancedTabs.Root>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center space-x-4">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between, ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default, ENHANCED_DESIGN_TOKENS.foundation.color.border.default)}>
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           <EnhancedButton
             onClick={onRollback}
             variant="outline"

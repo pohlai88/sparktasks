@@ -42,7 +42,7 @@ const faqData = [
  */
 export function AccordionDemo() {
   return (
-    <div className='bg-deep-space min-h-screen space-y-8 p-8'>
+    <div className='min-h-screen space-y-8 bg-deep-space p-8'>
       {/* Header */}
       <div className='mb-12 space-y-4 text-center'>
         <h1 className='text-text-primary text-4xl font-medium'>

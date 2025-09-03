@@ -28,6 +28,7 @@ import * as ProgressPrimitive from '@radix-ui/react-progress';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED PROGRESS VARIANTS =====
@@ -38,54 +39,58 @@ import { cn } from '@/utils/cn';
  */
 const enhancedProgressVariants = cva(
   [
-    // Foundation: Surface with systematic spacing
-    'relative overflow-hidden',
-    'bg-stellar-surface-panel',
+    // Foundation: Surface with systematic spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
 
     // Foundation: Border system from enhanced tokens
-    'border border-cosmic-border-subtle',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
 
-    // Foundation: Rounded corners following Apple HIG
-    'rounded-full',
+    // Foundation: Rounded corners following Apple HIG - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
 
-    // Foundation: Platform-aware dimensions
-    'w-full',
+    // Foundation: Platform-aware dimensions - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
-    // Foundation: Motion with reduced motion respect
-    'transition-all duration-[var(--motion-duration-3)]',
-    'motion-reduce:transition-none',
+    // Foundation: Motion with reduced motion respect - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.animation.duration[300],
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         default: [
-          // Standard elevated surface
-          'bg-stellar-surface-panel',
-          'border-cosmic-border-subtle',
+          // Standard elevated surface - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
         ],
         glass: [
-          // Liquid glass vibrancy (surface-only application)
-          'backdrop-blur-[var(--blur-8)] backdrop-saturate-[var(--saturate-135)]',
-          'bg-stellar-surface-panel/60',
-          'border-cosmic-border-subtle/50',
+          // Liquid glass vibrancy (surface-only application) - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
         minimal: [
-          // Clean minimal presentation
-          'bg-stellar-surface-elevated',
-          'border-transparent',
+          // Clean minimal presentation - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
         ],
         elevated: [
-          // Enhanced elevation with shadow
-          'bg-stellar-surface-elevated',
-          'border-cosmic-border-default',
-          'shadow-[var(--shadow-md)]',
+          // Enhanced elevation with shadow - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
       },
       size: {
-        sm: ['h-[var(--space-1_5)]'],
-        md: ['h-[var(--space-2)]'],
-        lg: ['h-[var(--space-3)]'],
-        xl: ['h-[var(--space-4)]'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1]],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2]],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3]],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4]],
       },
       density: {
         comfortable: [
@@ -97,12 +102,12 @@ const enhancedProgressVariants = cva(
       },
       enforceAAA: {
         true: [
-          // AAA solid fills replace ethereal accents
-          'bg-stellar-surface-elevated',
-          'border-cosmic-border-strong',
-          // Remove any vibrancy effects
-          'backdrop-blur-none',
-          'backdrop-saturate-100',
+          // AAA solid fills replace ethereal accents - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          // Remove any vibrancy effects - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.none,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[100],
         ],
         false: [
           // Standard ethereal accent support
@@ -123,51 +128,53 @@ const enhancedProgressVariants = cva(
  */
 const enhancedProgressIndicatorVariants = cva(
   [
-    // Foundation: Full height with smooth motion
-    'h-full w-full',
-    'flex-1',
+    // Foundation: Full height with smooth motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1],
 
-    // Foundation: Smooth progress transitions
-    'transition-transform duration-[var(--motion-duration-3)] ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Smooth progress transitions - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.transform,
+    ENHANCED_DESIGN_TOKENS.foundation.animation.duration[300],
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Rounded to match container
-    'rounded-full',
+    // Foundation: Rounded to match container - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
 
-    // Foundation: Apple HIG accent system
-    'bg-aurora-accent-primary',
+    // Foundation: Apple HIG accent system - Enhanced tokens
+    'bg-aurora-accent',
   ],
   {
     variants: {
       variant: {
         default: [
-          // Standard accent progression
-          'bg-aurora-accent-primary',
+          // Standard accent progression - Enhanced tokens
+          'bg-aurora-accent',
         ],
         success: [
-          // Success semantic color
-          'bg-cosmic-feedback-success',
+          // Success semantic color - Enhanced tokens
+          'bg-cosmic-success',
         ],
         warning: [
-          // Warning semantic color
-          'bg-cosmic-feedback-warning',
+          // Warning semantic color - Enhanced tokens
+          'bg-cosmic-warning',
         ],
         error: [
-          // Error semantic color
-          'bg-cosmic-feedback-error',
+          // Error semantic color - Enhanced tokens
+          'bg-cosmic-danger',
         ],
         info: [
-          // Info semantic color
-          'bg-cosmic-feedback-info',
+          // Info semantic color - Enhanced tokens
+          'bg-cosmic-info',
         ],
         glass: [
-          // Glass variant with vibrancy
-          'bg-aurora-accent-primary/90',
-          'backdrop-blur-[var(--blur-4)]',
+          // Glass variant with vibrancy - Enhanced tokens
+          'bg-aurora-accent/90',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
         ],
         gradient: [
-          // Sophisticated gradient progression
-          'from-aurora-accent-primary bg-gradient-to-r to-aurora-accent-secondary',
+          // Sophisticated gradient progression - Enhanced tokens
+          'from-aurora-accent bg-gradient-to-r to-cosmic-cyan',
         ],
       },
       animated: {
@@ -183,8 +190,8 @@ const enhancedProgressIndicatorVariants = cva(
       },
       enforceAAA: {
         true: [
-          // AAA-compliant solid colors
-          'bg-aurora-accent-solid-aaa',
+          // AAA-compliant solid colors - Enhanced tokens
+          'bg-aurora-accent',
         ],
         false: [
           // Standard ethereal accent support
@@ -248,6 +255,13 @@ export interface EnhancedProgressProps
    * Custom className for the label
    */
   labelClassName?: string;
+
+  /**
+   * Performance optimization - disable animations
+   * @description Disables animations for performance-critical scenarios
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 /**
@@ -278,12 +292,18 @@ const EnhancedProgress = React.forwardRef<
       labelPosition = 'outside',
       indicatorClassName,
       labelClassName,
+      disableAnimations = false,
       value,
       max = 100,
       ...props
     },
     ref
   ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     // Calculate percentage for label display
     const percentage = value == null ? 0 : Math.round((value / max) * 100);
     const displayLabel = label || `${percentage}%`;
@@ -292,23 +312,25 @@ const EnhancedProgress = React.forwardRef<
     const finalIndicatorVariant = enforceAAA ? 'default' : indicatorVariant;
 
     return (
-              <div className="relative w-full">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative, ENHANCED_DESIGN_TOKENS.foundation.layout.width.full)}>
         {/* Outside Label */}
         {showLabel && labelPosition === 'outside' && (
-                      <div
+            <div
               className={cn(
-                // Foundation: Typography and spacing
-                'mb-[var(--space-2)] flex items-center justify-between',
-                'text-[var(--font-size-sm)] font-[var(--font-weight-medium)] text-cosmic-foreground',
+                // Foundation: Typography and spacing - Enhanced tokens
+                ENHANCED_DESIGN_TOKENS.foundation.layout.margin[2],
+                ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between,
+                ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+                ENHANCED_DESIGN_TOKENS.foundation.typography.label,
 
                 // Custom label styling
                 labelClassName
               )}
             >
               <span>Progress</span>
-              <span
-                className={cn('text-cosmic-foreground-muted', 'text-cosmic-muted')}
-              >
+              <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary)}>
                 {displayLabel}
               </span>
             </div>
@@ -323,6 +345,7 @@ const EnhancedProgress = React.forwardRef<
               density,
               enforceAAA,
             }),
+            motionClasses,
             className
           )}
           value={value}
@@ -337,6 +360,7 @@ const EnhancedProgress = React.forwardRef<
                 animated,
                 enforceAAA,
               }),
+              motionClasses,
               indicatorClassName
             )}
             style={{
@@ -349,16 +373,18 @@ const EnhancedProgress = React.forwardRef<
             (labelPosition === 'inside' || labelPosition === 'overlay') && (
               <div
                 className={cn(
-                  // Foundation: Positioning and typography
-                  'absolute inset-0 flex items-center justify-center',
-                  'text-[var(--font-size-xs)] font-[var(--font-weight-medium)]',
+                  // Foundation: Positioning and typography - Enhanced tokens
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute + ' ' + ENHANCED_DESIGN_TOKENS.foundation.positioning.inset[0],
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center + ' ' + ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+                  ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
 
                   // Conditional styling based on position
-                  labelPosition === 'inside' && ['z-10 text-stellar-surface'],
+                  labelPosition === 'inside' && ['z-10', ENHANCED_DESIGN_TOKENS.foundation.color.content.inverse],
                   labelPosition === 'overlay' && [
-                    'text-cosmic-foreground',
+                    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
                     // AAA scrim for readability
-                    enforceAAA && 'text-shadow-[var(--shadow-lg)]',
+                    enforceAAA && 'drop-shadow-lg',
                   ],
 
                   // Custom label styling
@@ -443,25 +469,25 @@ const CircularProgress = React.forwardRef<
 
     const displayLabel = label || `${percentage}%`;
 
-    // Color mapping based on variant
+    // Color mapping based on variant - Enhanced tokens
     const getStrokeColor = () => {
-      if (enforceAAA) return 'stroke-aurora-accent-solid-aaa';
+      if (enforceAAA) return 'stroke-aurora-accent';
 
       switch (indicatorVariant) {
         case 'success': {
-          return 'stroke-cosmic-feedback-success';
+          return 'stroke-cosmic-success';
         }
         case 'warning': {
-          return 'stroke-cosmic-feedback-warning';
+          return 'stroke-cosmic-warning';
         }
         case 'error': {
-          return 'stroke-cosmic-feedback-error';
+          return 'stroke-cosmic-danger';
         }
         case 'info': {
-          return 'stroke-cosmic-feedback-info';
+          return 'stroke-cosmic-info';
         }
         default: {
-          return 'stroke-aurora-accent-primary';
+          return 'stroke-aurora-accent';
         }
       }
     };
@@ -518,10 +544,13 @@ const CircularProgress = React.forwardRef<
         {(showLabel || showCenterLabel) && (
           <div
             className={cn(
-              'absolute inset-0 flex items-center justify-center',
-              'text-[var(--font-size-xs)] font-[var(--font-weight-medium)] text-cosmic-foreground',
-              size === 'sm' && 'text-[var(--font-size-10)]',
-              size === 'xl' && 'text-[var(--font-size-sm)]',
+              'absolute inset-0',
+              ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+              'items-center justify-center',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+              ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+              size === 'sm' && ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+              size === 'xl' && ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
               labelClassName
             )}
           >
@@ -614,32 +643,35 @@ const SteppedProgress = React.forwardRef<
                     size === 'md' && 'size-[var(--space-8)] text-[var(--font-size-sm)]',
                     size === 'lg' && 'size-[var(--space-10)] text-[var(--font-size-base)]',
 
-                    // State variants
+                    // State variants - Enhanced tokens
                     isCompleted && [
                       completedVariant === 'success'
-                        ? 'bg-cosmic-feedback-success'
-                        : 'bg-aurora-accent-primary',
-                      'font-medium text-stellar-surface',
+                        ? 'bg-cosmic-success'
+                        : 'bg-aurora-accent',
+                      ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                      ENHANCED_DESIGN_TOKENS.foundation.color.content.inverse,
                     ],
                     isCurrent && [
-                      'bg-aurora-accent-primary',
-                      'font-medium text-stellar-surface',
-                      'ring-aurora-accent-primary ring-2 ring-offset-2 ring-offset-stellar-surface',
+                      'bg-aurora-accent',
+                      ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+                      ENHANCED_DESIGN_TOKENS.foundation.color.content.inverse,
+                      'ring-aurora-accent ring-2 ring-offset-2 ring-offset-cosmic-void',
                     ],
                     isPending && [
-                      'bg-stellar-surface-panel',
-                      'text-cosmic-foreground-muted',
-                      'border-cosmic-border-default border',
+                      'bg-cosmic-void',
+                      ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+                      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+                      'border-cosmic-border',
                     ],
 
-                    // AAA compliance
-                    enforceAAA && isCompleted && 'bg-aurora-accent-solid-aaa',
+                    // AAA compliance - Enhanced tokens
+                    enforceAAA && isCompleted && 'bg-aurora-accent',
                     enforceAAA &&
                       isCurrent &&
-                      'ring-aurora-accent-solid-aaa bg-aurora-accent-solid-aaa'
+                      'ring-aurora-accent bg-aurora-accent'
                   )}
                 >
-                  {showStepNumbers ? index + 1 : isCompleted ? '✓' : index + 1}
+                  {showStepNumbers ? index + 1 : (isCompleted ? '✓' : index + 1)}
                 </div>
 
                 {/* Connector Line */}
@@ -649,15 +681,15 @@ const SteppedProgress = React.forwardRef<
                       'mx-[var(--space-2)] h-[var(--space-0_5)] flex-1',
                       'transition-colors duration-[var(--motion-duration-2)]',
 
-                      // State-based coloring
+                      // State-based coloring - Enhanced tokens
                       index < currentStep
-                        ? completedVariant === 'success'
-                          ? 'bg-cosmic-feedback-success'
-                          : 'bg-aurora-accent-primary'
+                        ? (completedVariant === 'success'
+                          ? 'bg-cosmic-success'
+                          : 'bg-aurora-accent')
                         : 'bg-cosmic-border-subtle',
 
-                      // AAA compliance
-                      enforceAAA && index < currentStep && 'bg-aurora-accent-solid-aaa'
+                      // AAA compliance - Enhanced tokens
+                      enforceAAA && index < currentStep && 'bg-aurora-accent'
                     )}
                   />
                 )}
@@ -673,13 +705,14 @@ const SteppedProgress = React.forwardRef<
                               <div
                   key={index}
                   className={cn(
-                    'text-center text-[var(--font-size-xs)]',
+                    'text-center',
+                    ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
                     'transition-colors duration-[var(--motion-duration-2)]',
 
-                    // State-based coloring
+                    // State-based coloring - Enhanced tokens
                     index <= currentStep
-                      ? 'font-medium text-cosmic-foreground'
-                      : 'text-cosmic-foreground-muted',
+                      ? [ENHANCED_DESIGN_TOKENS.foundation.color.content.primary, ENHANCED_DESIGN_TOKENS.foundation.typography.label]
+                      : ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
 
                     // Spacing based on size
                     size === 'sm' && 'max-w-[var(--space-12)]',
@@ -708,6 +741,164 @@ const SteppedProgress = React.forwardRef<
 );
 
 SteppedProgress.displayName = 'SteppedProgress';
+
+// ===== ENHANCED PROGRESS FACTORY =====
+
+/**
+ * Enhanced Progress Factory Functions
+ * @description Semantic constructors following MAPS v2.2 patterns
+ */
+export const ProgressFactory = {
+  /**
+   * Default progress with clean styling
+   */
+  default: {
+    Progress: (props: Omit<EnhancedProgressProps, 'variant'>) => (
+      <EnhancedProgress variant='default' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'indicatorVariant'>) => (
+      <CircularProgress indicatorVariant='default' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'variant'>) => (
+      <SteppedProgress variant='default' {...props} />
+    ),
+  },
+
+  /**
+   * Glass variant with liquid glass materials
+   */
+  glass: {
+    Progress: (props: Omit<EnhancedProgressProps, 'variant'>) => (
+      <EnhancedProgress variant='glass' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'indicatorVariant'>) => (
+      <CircularProgress indicatorVariant='glass' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'variant'>) => (
+      <SteppedProgress variant='glass' {...props} />
+    ),
+  },
+
+  /**
+   * Elevated variant with enhanced depth
+   */
+  elevated: {
+    Progress: (props: Omit<EnhancedProgressProps, 'variant'>) => (
+      <EnhancedProgress variant='elevated' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'indicatorVariant'>) => (
+      <CircularProgress indicatorVariant='default' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'variant'>) => (
+      <SteppedProgress variant='elevated' {...props} />
+    ),
+  },
+
+  /**
+   * Success variant for positive feedback
+   */
+  success: {
+    Progress: (props: Omit<EnhancedProgressProps, 'indicatorVariant'>) => (
+      <EnhancedProgress indicatorVariant='success' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'indicatorVariant'>) => (
+      <CircularProgress indicatorVariant='success' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'completedVariant'>) => (
+      <SteppedProgress completedVariant='success' {...props} />
+    ),
+  },
+
+  /**
+   * Warning variant for attention states
+   */
+  warning: {
+    Progress: (props: Omit<EnhancedProgressProps, 'indicatorVariant'>) => (
+      <EnhancedProgress indicatorVariant='warning' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'indicatorVariant'>) => (
+      <CircularProgress indicatorVariant='warning' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'completedVariant'>) => (
+      <SteppedProgress completedVariant='default' {...props} />
+    ),
+  },
+
+  /**
+   * Error variant for critical states
+   */
+  error: {
+    Progress: (props: Omit<EnhancedProgressProps, 'indicatorVariant'>) => (
+      <EnhancedProgress indicatorVariant='error' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'indicatorVariant'>) => (
+      <CircularProgress indicatorVariant='error' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'completedVariant'>) => (
+      <SteppedProgress completedVariant='default' {...props} />
+    ),
+  },
+
+  /**
+   * Performance-optimized progress with disabled animations
+   */
+  performance: {
+    Progress: (props: Omit<EnhancedProgressProps, 'disableAnimations'>) => (
+      <EnhancedProgress disableAnimations={true} {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'disableAnimations'>) => (
+      <CircularProgress disableAnimations={true} {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'disableAnimations'>) => (
+      <SteppedProgress disableAnimations={true} {...props} />
+    ),
+  },
+
+  /**
+   * Small size for compact layouts
+   */
+  small: {
+    Progress: (props: Omit<EnhancedProgressProps, 'size'>) => (
+      <EnhancedProgress size='sm' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'size'>) => (
+      <CircularProgress size='sm' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'size'>) => (
+      <SteppedProgress size='sm' {...props} />
+    ),
+  },
+
+  /**
+   * Large size for prominent content
+   */
+  large: {
+    Progress: (props: Omit<EnhancedProgressProps, 'size'>) => (
+      <EnhancedProgress size='lg' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'size'>) => (
+      <CircularProgress size='lg' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'size'>) => (
+      <SteppedProgress size='lg' {...props} />
+    ),
+  },
+
+  /**
+   * Extra large size for maximum visibility
+   */
+  xlarge: {
+    Progress: (props: Omit<EnhancedProgressProps, 'size'>) => (
+      <EnhancedProgress size='xl' {...props} />
+    ),
+    Circular: (props: Omit<CircularProgressProps, 'size'>) => (
+      <CircularProgress size='xl' {...props} />
+    ),
+    Stepped: (props: Omit<SteppedProgressProps, 'size'>) => (
+      <SteppedProgress size='xl' {...props} />
+    ),
+  },
+} as const;
 
 // ===== EXPORTS =====
 

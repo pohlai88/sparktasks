@@ -30,6 +30,7 @@ import { Search } from 'lucide-react';
 import * as React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED COMMAND VARIANTS =====
@@ -40,56 +41,76 @@ import { cn } from '@/utils/cn';
  */
 const enhancedCommandVariants = cva(
   [
-    // Foundation: Layout structure
-    'flex h-full w-full flex-col overflow-hidden',
+    // Foundation: Layout structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
 
-    // Foundation: Shape - Apple HIG rounded corners
-    'rounded-lg',
+    // Foundation: Shape - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
 
-    // Foundation: Colors - Deep space foundation with ethereal accents
-    'bg-background text-foreground',
-    'border border-border',
+    // Foundation: Colors - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
-    // Foundation: Elevation - Subtle depth
-    'shadow-elevation-medium',
+    // Foundation: Elevation - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
 
     // Foundation: Focus management
-    'focus-visible:outline-none',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
-        default: ['border-border bg-background'],
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas
+        ],
         elevated: [
-          'border-border-strong bg-background-elevated',
-          'shadow-elevation-high',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
         glass: [
-          'border-border/20 bg-background/80',
-          'backdrop-blur-sm backdrop-saturate-[135%]',
-          'shadow-glass',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
         floating: [
-          'border-border/30 bg-background-panel/80',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-high',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
       },
       size: {
-        sm: ['max-h-64 max-w-xs', 'text-xs'],
-        md: ['max-h-80 max-w-sm', 'text-sm'],
-        lg: ['max-h-96 max-w-md', 'text-base'],
-        xl: ['max-h-[32rem] max-w-lg', 'text-base'],
-        full: ['h-full w-full', 'text-sm'],
+        sm: ['max-h-64 max-w-xs', ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: ['max-h-80 max-w-sm', ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: ['max-h-96 max-w-md', ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        xl: ['max-h-[32rem] max-w-lg', ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        full: ['h-full w-full', ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
       },
       density: {
-        comfortable: ['gap-2 p-2'],
-        compact: ['gap-1 p-1'],
+        comfortable: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+        ],
+        compact: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+        ],
       },
       enforceAAA: {
         false: '',
         true: [
-          'aaa:border-accent-solid-aaa aaa:bg-background',
+          'aaa:border-aurora-accent aaa:bg-cosmic-void',
           'aaa:shadow-none',
         ],
       },
@@ -108,42 +129,58 @@ const enhancedCommandVariants = cva(
  */
 const enhancedCommandInputVariants = cva(
   [
-    // Foundation: Layout
-    'flex h-10 w-full rounded-md',
+    // Foundation: Layout - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
 
-    // Foundation: Colors
-    'bg-transparent text-foreground',
-    'border-0 border-b border-border',
+    // Foundation: Colors - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
-    // Foundation: Typography
-    'px-3 py-2 text-sm',
-    'placeholder:text-muted-foreground',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'placeholder:text-cosmic-subtle',
 
     // Foundation: States
     'disabled:cursor-not-allowed disabled:opacity-50',
 
-    // Foundation: Focus - Clean underline focus
+    // Foundation: Focus - Enhanced tokens
     'focus-visible:outline-none',
-    'focus-visible:border-accent',
+    'focus-visible:border-aurora-accent',
 
-    // Foundation: Motion
-    'transition-colors duration-200',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.inputFocus,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
-        default: ['border-border focus-visible:border-accent'],
-        ghost: ['border-transparent focus-visible:border-border'],
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          'focus-visible:border-aurora-accent'
+        ],
+        ghost: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          'focus-visible:border-cosmic-border'
+        ],
         filled: [
-          'rounded-md border-transparent bg-muted',
-          'focus-visible:border-accent focus-visible:bg-background',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          'focus-visible:border-aurora-accent focus-visible:bg-cosmic-void',
         ],
       },
       enforceAAA: {
         false: '',
         true: [
-          'aaa:border-accent-solid-aaa aaa:focus-visible:border-accent-solid-aaa',
+          'aaa:border-aurora-accent aaa:focus-visible:border-aurora-accent',
         ],
       },
     },
@@ -160,10 +197,13 @@ const enhancedCommandInputVariants = cva(
 const enhancedCommandListVariants = cva(
   [
     // Foundation: Layout
-    'max-h-80 overflow-y-auto overflow-x-hidden',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.y.auto,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.x.hidden,
+    'max-h-80',
 
     // Foundation: Spacing
-    'px-1 py-2',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
 
     // Foundation: Scrolling
     'scroll-smooth',
@@ -193,39 +233,45 @@ const enhancedCommandListVariants = cva(
  */
 const enhancedCommandItemVariants = cva(
   [
-    // Foundation: Layout & interaction base
-    'relative flex cursor-pointer select-none items-center',
-    'rounded-md px-2 py-1.5 text-sm',
+    // Foundation: Layout & interaction base - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+    'select-none',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Colors
-    'text-foreground',
+    // Foundation: Colors - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
-    // Foundation: States - Apple-quality interactions
-    'aria-selected:bg-accent aria-selected:text-accent-foreground',
+    // Foundation: States - Enhanced tokens
+    'aria-selected:bg-aurora-accent aria-selected:text-cosmic-dark',
     'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
 
-    // Foundation: Motion
-    'transition-colors duration-150',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Focus
+    // Foundation: Focus - Enhanced tokens
     'focus-visible:outline-none',
-    'focus-visible:bg-accent focus-visible:text-accent-foreground',
+    'focus-visible:bg-aurora-accent focus-visible:text-cosmic-dark',
   ],
   {
     variants: {
       variant: {
         default: [
-          'hover:bg-accent/10',
-          'aria-selected:bg-accent aria-selected:text-accent-foreground',
+          'pointer:hover:bg-aurora-accent/10',
+          'aria-selected:bg-aurora-accent aria-selected:text-cosmic-dark',
         ],
         ghost: [
-          'hover:bg-muted',
-          'aria-selected:bg-muted aria-selected:text-foreground',
+          'pointer:hover:bg-cosmic-void/50',
+          'aria-selected:bg-cosmic-void aria-selected:text-cosmic-light',
         ],
         subtle: [
-          'hover:bg-muted/50',
-          'aria-selected:bg-accent/20 aria-selected:text-accent',
+          'pointer:hover:bg-cosmic-void/30',
+          'aria-selected:bg-aurora-accent/20 aria-selected:text-aurora-accent',
         ],
       },
       density: {
@@ -235,8 +281,8 @@ const enhancedCommandItemVariants = cva(
       enforceAAA: {
         false: '',
         true: [
-          'aaa:aria-selected:bg-accent-solid-aaa aaa:aria-selected:text-white',
-          'aaa:focus-visible:bg-accent-solid-aaa aaa:focus-visible:text-white',
+          'aaa:aria-selected:bg-aurora-accent aaa:aria-selected:text-cosmic-dark',
+          'aaa:focus-visible:bg-aurora-accent aaa:focus-visible:text-cosmic-dark',
         ],
       },
     },
@@ -254,13 +300,13 @@ const enhancedCommandItemVariants = cva(
 const enhancedCommandGroupVariants = cva(
   [
     // Foundation: Layout
-    'overflow-hidden',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
 
     // Foundation: Spacing
-    'p-1',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
 
     // Foundation: Typography
-    'text-foreground',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
   ],
   {
     variants: {
@@ -280,13 +326,14 @@ const enhancedCommandGroupVariants = cva(
  */
 const enhancedCommandSeparatorVariants = cva([
   // Foundation: Layout
-  '-mx-1 h-px',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
-  // Foundation: Colors
-  'bg-border',
+  // Foundation: Border as separator line
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+  ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
   // Foundation: Spacing
-  'my-1',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.margin[1],
 ]);
 
 /**
@@ -297,17 +344,18 @@ const enhancedCommandShortcutVariants = cva(
     // Foundation: Layout
     'ml-auto',
 
-    // Foundation: Typography
-    'text-xs tracking-widest',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+    'tracking-widest',
 
-    // Foundation: Colors
-    'text-muted-foreground',
+    // Foundation: Colors - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
   ],
   {
     variants: {
       enforceAAA: {
         false: '',
-        true: ['aaa:text-foreground-muted'],
+        true: ['aaa:text-cosmic-light'],
       },
     },
     defaultVariants: {
@@ -327,6 +375,11 @@ export interface EnhancedCommandProps
   asChild?: boolean;
   enforceAAA?: boolean;
   className?: string;
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 const EnhancedCommand = React.forwardRef<
@@ -334,16 +387,22 @@ const EnhancedCommand = React.forwardRef<
   EnhancedCommandProps
 >(
   (
-    { className, variant, size, density, enforceAAA, asChild, ...props },
+    { className, variant, size, density, enforceAAA, disableAnimations = false, asChild, ...props },
     ref
   ) => {
     const Comp = asChild ? Slot : CommandPrimitive;
+
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
     return (
       <Comp
         ref={ref}
         className={cn(
           enhancedCommandVariants({ variant, size, density, enforceAAA }),
+          motionClasses,
           className
         )}
         data-aaa={enforceAAA}
@@ -371,11 +430,21 @@ const EnhancedCommandInput = React.forwardRef<
 >(({ className, variant, enforceAAA, ...props }, ref) => {
   return (
     <div
-      className="flex items-center border-b border-border px-3"
+      className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+        'border-b',
+        ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+        'px-3'
+      )}
       data-cmdk-input-wrapper=''
     >
       <Search
-        className="mr-2 h-4 w-4 shrink-0 text-muted-foreground"
+        className={cn(
+          'mr-2 shrink-0',
+          ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
+        )}
       />
       <CommandPrimitive.Input
         ref={ref}
@@ -436,7 +505,10 @@ const EnhancedCommandEmpty = React.forwardRef<
     <Comp
       ref={ref}
       className={cn(
-        'py-6 text-center text-sm text-muted-foreground',
+        'py-6',
+        ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+        ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+        ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
         className
       )}
       {...props}
@@ -607,6 +679,17 @@ export const CommandFactory = {
     variant: 'elevated' as const,
     size: 'full' as const,
     density: 'comfortable' as const,
+    ...props,
+  }),
+
+  /**
+   * Performance-optimized command palette with disabled animations
+   */
+  performance: (props?: Partial<EnhancedCommandProps>) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    density: 'comfortable' as const,
+    disableAnimations: true,
     ...props,
   }),
 } as const;

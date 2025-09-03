@@ -26,6 +26,7 @@ import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+
 import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
@@ -40,96 +41,120 @@ const AvatarContext = React.createContext<{
 
 /**
  * Enhanced avatar variants following MAPS4 v4.0 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced-tokens CSS custom properties
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced design tokens
  */
 const enhancedAvatarVariants = cva(
   [
-    // Foundation: Layout - Clean systematic approach
-    'relative flex shrink-0',
-    'overflow-hidden rounded-full',
+    // Foundation: Layout - Clean systematic approach - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.shrink[0],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
 
     // Foundation: Motion - Respect user preferences
-    'transition-all duration-[var(--motion-duration-2)] ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.cardHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Focus - AAA compliant ring system
-    'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
     // Foundation: Apple HIG interaction patterns
-    'hover:ring-1 hover:ring-border-accent/30',
-    'active:scale-[0.98]',
+    'pointer:hover:ring-1 pointer:hover:ring-aurora-accent/30',
+    ENHANCED_DESIGN_TOKENS.foundation.transform.scale['98'],
   ],
   {
     variants: {
       size: {
-        xs: 'h-[var(--space-6)] w-[var(--space-6)]', // 24px - Compact lists, chat
-        sm: 'h-[var(--space-8)] w-[var(--space-8)]', // 32px - Dense layouts
-        md: 'h-[var(--space-10)] w-[var(--space-10)]', // 40px - Standard default
-        lg: 'h-[var(--space-12)] w-[var(--space-12)]', // 48px - Prominent display
-        xl: 'h-[var(--space-16)] w-[var(--space-16)]', // 64px - Profile headers
-        '2xl': 'h-[var(--space-20)] w-[var(--space-20)]', // 80px - Hero avatars
-        touch: 'h-[var(--space-11)] w-[var(--space-11)]', // 44px - Touch-friendly
+        xs: ENHANCED_DESIGN_TOKENS.foundation.avatar.size.xs, // 24px
+        sm: ENHANCED_DESIGN_TOKENS.foundation.avatar.size.sm, // 32px
+        md: ENHANCED_DESIGN_TOKENS.foundation.avatar.size.md, // 40px
+        lg: ENHANCED_DESIGN_TOKENS.foundation.avatar.size.lg, // 48px
+        xl: ENHANCED_DESIGN_TOKENS.foundation.avatar.size.xl, // 64px
+        '2xl': ENHANCED_DESIGN_TOKENS.foundation.avatar.size['2xl'], // 80px
+        touch: ENHANCED_DESIGN_TOKENS.foundation.avatar.size.touch, // 44px
       },
 
       variant: {
         // Default: Clean surface styling
-        default: ['border border-border bg-muted'],
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.card,
+        ],
 
         // Outline: Elegant border emphasis
-        outline: ['border-2 border-border-accent bg-background'],
+        outline: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+        ],
 
         // Soft: Subtle elevated appearance
         soft: [
-          'border border-border-subtle bg-background-elevated',
-          'shadow-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
 
         // Glass: Liquid glass material (surface-only)
         glass: [
-          'bg-background/80 backdrop-blur-md backdrop-saturate-150',
-          'border border-border-accent/20',
-          'shadow-md',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
 
         // Floating: Enhanced glass with elevation
         floating: [
-          'bg-background/75 backdrop-blur-lg backdrop-saturate-150',
-          'border border-border-accent/30',
-          'shadow-lg shadow-accent/10',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
 
         // Success: Success semantic color
         success: [
-          'border border-success/30 bg-success/10',
-          'ring-1 ring-success/20',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.border,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.subtle,
         ],
 
         // Warning: Warning semantic color
         warning: [
-          'border border-warning/30 bg-warning/10',
-          'ring-1 ring-warning/20',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.border,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.warning.subtle,
         ],
 
         // Error: Error semantic color
-        error: ['border border-error/30 bg-error/10', 'ring-1 ring-error/20'],
+        error: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.border,
+          ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.subtle,
+        ],
       },
 
       // Status indicators for presence/activity
       status: {
         none: '',
-        online: 'ring-2 ring-success',
-        offline: 'ring-2 ring-muted',
-        away: 'ring-2 ring-warning',
-        busy: 'ring-2 ring-error',
+        online: '',
+        offline: '',
+        away: '',
+        busy: '',
       },
 
       // Interactive states
       interactive: {
         false: '',
         true: [
-          'cursor-pointer',
-          'hover:shadow-md hover:shadow-accent/20',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+          'hover:shadow-md hover:shadow-aurora-accent/20',
           'hover:scale-105',
           'focus-visible:scale-105',
         ],
@@ -140,7 +165,7 @@ const enhancedAvatarVariants = cva(
         false: '',
         true: [
           // Use AAA-compliant alternatives
-          'contrast-more:border-2 contrast-more:border-foreground',
+          'contrast-more:border-2 contrast-more:border-cosmic-light',
         ],
       },
     },
@@ -151,8 +176,10 @@ const enhancedAvatarVariants = cva(
         variant: ['glass', 'floating'],
         interactive: true,
         class: [
-          'hover:bg-background/60 hover:backdrop-blur-xl',
-          'focus-visible:bg-background/60 focus-visible:backdrop-blur-xl',
+          'hover:bg-background/60',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.xl,
+          'focus-visible:bg-background/60',
+          'focus-visible:backdrop-blur-xl',
         ],
       },
 
@@ -188,8 +215,11 @@ const enhancedAvatarVariants = cva(
  * Enhanced avatar image variants
  */
 const enhancedAvatarImageVariants = cva([
-  'aspect-square h-full w-full object-cover',
-  'transition-opacity duration-200',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.aspect.square,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.object.cover,
+  ENHANCED_DESIGN_TOKENS.foundation.motionPatterns.fadeInStandard,
 ]);
 
 /**
@@ -197,20 +227,25 @@ const enhancedAvatarImageVariants = cva([
  */
 const enhancedAvatarFallbackVariants = cva(
   [
-    'flex h-full w-full items-center justify-center',
-    'bg-muted text-muted-foreground',
-    'select-none',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.height.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.card,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
   ],
   {
     variants: {
       size: {
-        xs: 'text-xs',
-        sm: 'text-xs',
-        md: 'text-sm',
-        lg: 'text-base',
-        xl: 'text-lg',
-        '2xl': 'text-xl',
-        touch: 'text-sm',
+        xs: ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        sm: ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        md: ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+        lg: ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+        xl: ENHANCED_DESIGN_TOKENS.foundation.typography.body.large,
+        '2xl': ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
+        touch: ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
       },
     },
     defaultVariants: {
@@ -242,6 +277,10 @@ interface EnhancedAvatarOwnProps {
   status?: 'none' | 'online' | 'offline' | 'away' | 'busy';
   interactive?: boolean;
   enforceAAA?: boolean;
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
   'aria-label'?: string;
   'data-testid'?: string;
 }
@@ -323,6 +362,7 @@ const EnhancedAvatarRoot = React.forwardRef<
       status = 'none',
       interactive = false,
       enforceAAA = false,
+      disableAnimations = false,
       className,
       children,
       'aria-label': ariaLabel,
@@ -357,6 +397,11 @@ const EnhancedAvatarRoot = React.forwardRef<
       [responsiveSize]
     );
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     // Handle keyboard interactions for accessibility
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -384,6 +429,7 @@ const EnhancedAvatarRoot = React.forwardRef<
               interactive,
               enforceAAA,
             }),
+            motionClasses,
             className
           )}
           aria-label={ariaLabel}
@@ -431,6 +477,79 @@ const EnhancedAvatar = Object.assign(EnhancedAvatarRoot, {
   Image: EnhancedAvatarImage,
   Fallback: EnhancedAvatarFallbackWithContext,
 });
+
+// ===== FACTORY COMPONENTS =====
+
+/**
+ * Avatar Factory - Pre-configured variants for rapid development
+ */
+const AvatarFactory = {
+  // Size variants
+  xs: (props: Omit<EnhancedAvatarOwnProps, 'size'>) => (
+    <EnhancedAvatar size='xs' {...props} />
+  ),
+  sm: (props: Omit<EnhancedAvatarOwnProps, 'size'>) => (
+    <EnhancedAvatar size='sm' {...props} />
+  ),
+  md: (props: Omit<EnhancedAvatarOwnProps, 'size'>) => (
+    <EnhancedAvatar size='md' {...props} />
+  ),
+  lg: (props: Omit<EnhancedAvatarOwnProps, 'size'>) => (
+    <EnhancedAvatar size='lg' {...props} />
+  ),
+  xl: (props: Omit<EnhancedAvatarOwnProps, 'size'>) => (
+    <EnhancedAvatar size='xl' {...props} />
+  ),
+  '2xl': (props: Omit<EnhancedAvatarOwnProps, 'size'>) => (
+    <EnhancedAvatar size='2xl' {...props} />
+  ),
+  touch: (props: Omit<EnhancedAvatarOwnProps, 'size'>) => (
+    <EnhancedAvatar size='touch' {...props} />
+  ),
+
+  // Surface variants
+  default: (props: Omit<EnhancedAvatarOwnProps, 'variant'>) => (
+    <EnhancedAvatar variant='default' {...props} />
+  ),
+  outline: (props: Omit<EnhancedAvatarOwnProps, 'variant'>) => (
+    <EnhancedAvatar variant='outline' {...props} />
+  ),
+  soft: (props: Omit<EnhancedAvatarOwnProps, 'variant'>) => (
+    <EnhancedAvatar variant='soft' {...props} />
+  ),
+  glass: (props: Omit<EnhancedAvatarOwnProps, 'variant'>) => (
+    <EnhancedAvatar variant='glass' {...props} />
+  ),
+  floating: (props: Omit<EnhancedAvatarOwnProps, 'variant'>) => (
+    <EnhancedAvatar variant='floating' {...props} />
+  ),
+
+  // Status variants
+  success: (props: Omit<EnhancedAvatarOwnProps, 'variant'>) => (
+    <EnhancedAvatar variant='success' {...props} />
+  ),
+  warning: (props: Omit<EnhancedAvatarOwnProps, 'variant'>) => (
+    <EnhancedAvatar variant='warning' {...props} />
+  ),
+  error: (props: Omit<EnhancedAvatarOwnProps, 'variant'>) => (
+    <EnhancedAvatar variant='error' {...props} />
+  ),
+
+  // Interactive variants
+  interactive: (props: Omit<EnhancedAvatarOwnProps, 'interactive'>) => (
+    <EnhancedAvatar interactive={true} {...props} />
+  ),
+
+  // AAA compliance variant
+  aaa: (props: Omit<EnhancedAvatarOwnProps, 'enforceAAA'>) => (
+    <EnhancedAvatar enforceAAA={true} {...props} />
+  ),
+
+  // Performance variant
+  performance: (props: Omit<EnhancedAvatarOwnProps, 'disableAnimations'>) => (
+    <EnhancedAvatar disableAnimations={true} {...props} />
+  ),
+};
 
 // ===== UTILITY FUNCTIONS =====
 
@@ -486,6 +605,7 @@ export {
   EnhancedAvatarRoot,
   EnhancedAvatarImage,
   EnhancedAvatarFallback,
+  AvatarFactory,
   enhancedAvatarVariants,
   enhancedAvatarImageVariants,
   enhancedAvatarFallbackVariants,

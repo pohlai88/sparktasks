@@ -14,7 +14,7 @@ export default defineConfig({
   fullyParallel: true,
   timeout: 45_000,
   expect: {
-    timeout: 7_000,
+    timeout: 7000,
     // Visual comparison settings
     toHaveScreenshot: {
       threshold: 0.2,
@@ -58,13 +58,13 @@ export default defineConfig({
   // Test filtering based on tags
   ...(isSmoke ? { grep: /@smoke/ } : {}),
   ...(isCritical ? { grep: /@critical/ } : {}),
-  ...(!(isSmoke || isCritical) ? { grepInvert: /@quarantine/ } : {}), // Exclude flaky tests from normal runs
+  ...((isSmoke || isCritical) ? {} : { grepInvert: /@quarantine/ }), // Exclude flaky tests from normal runs
 
   globalSetup: './tests/e2e/global-setup.ts',
   globalTeardown: './tests/e2e/global-teardown.ts',
 
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || 'http://localhost:9000',
     testIdAttribute: 'data-testid',
     trace: isCI ? 'retain-on-failure' : 'on-first-retry',
     screenshot: 'only-on-failure',
@@ -147,8 +147,8 @@ export default defineConfig({
 
   // Development server configuration
   webServer: {
-    command: process.env.WEB_COMMAND || 'npm run dev',
-    url: process.env.BASE_URL || 'http://localhost:3000',
+    command: process.env.WEB_COMMAND || 'npm run dev -- --port 9000',
+    url: process.env.BASE_URL || 'http://localhost:9000',
     reuseExistingServer: !isCI,
     timeout: 120_000,
     env: {

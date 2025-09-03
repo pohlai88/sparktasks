@@ -29,6 +29,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import React from 'react';
 
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
@@ -40,63 +41,68 @@ import { cn } from '@/utils/cn';
  */
 const enhancedMenuBarVariants = cva(
   [
-    // Foundation: Surface with liquid glass optional
-    'bg-background-elevated',
-    'border border-border',
+    // Foundation: Surface with liquid glass optional - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
-    // Foundation: Layout with systematic spacing
-    'flex h-10 items-center space-x-1',
-    'rounded-md p-1',
+    // Foundation: Layout with systematic spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
 
-    // Foundation: Typography from Apple semantic hierarchy
-    'text-sm font-medium',
+    // Foundation: Typography from Apple semantic hierarchy - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Platform-aware interactions
-    'transition-colors duration-200',
+    // Foundation: Platform-aware interactions - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.menuHover,
   ],
   {
     variants: {
       variant: {
         default: [
-          // Standard elevated surface
-          'bg-background-elevated',
-          'border-border',
+          // Standard elevated surface - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
         ],
         glass: [
-          // Liquid glass vibrancy (surface-only application)
-          'backdrop-blur-[12px] backdrop-saturate-[135%]',
-          'bg-background-panel/80',
-          'border-border/50',
+          // Liquid glass vibrancy (surface-only application) - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
         ghost: [
-          // Minimal presentation
-          'bg-transparent',
-          'border-transparent',
+          // Minimal presentation - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
         ],
       },
       size: {
-        sm: ['h-8', 'text-xs', 'space-x-0.5', 'p-0.5'],
-        md: ['h-10', 'text-sm', 'space-x-1', 'p-1'],
-        lg: ['h-12', 'text-base', 'space-x-1.5', 'p-1.5'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.typography.caption, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1]],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1]],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2]],
       },
       density: {
         comfortable: [
-          // Standard platform-aware spacing
-          'space-x-1',
+          // Standard platform-aware spacing - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
         ],
         compact: [
-          // Reduced spacing for dense layouts
-          'space-x-0.5',
+          // Reduced spacing for dense layouts - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs,
         ],
       },
       enforceAAA: {
         true: [
-          // AAA solid fills replace ethereal accents
-          'bg-background-elevated',
-          'border-border-strong',
+          // AAA solid fills replace ethereal accents - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
           // Remove any vibrancy effects
-          'backdrop-blur-none',
-          'backdrop-saturate-100',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.none,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[100],
         ],
         false: [
           // Allow ethereal accents and liquid glass
@@ -117,63 +123,66 @@ const enhancedMenuBarVariants = cva(
  */
 const enhancedMenuBarTriggerVariants = cva(
   [
-    // Foundation: Typography from Apple semantic hierarchy
-    'text-sm font-medium',
+    // Foundation: Typography from Apple semantic hierarchy - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Platform-aware hit targets
-    'flex cursor-default select-none items-center',
-    'rounded-sm px-3 py-1.5',
+    // Foundation: Platform-aware hit targets - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
 
-    // Foundation: Interactive states with systematic transitions
-    'transition-colors duration-200',
+    // Foundation: Interactive states with systematic transitions - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.menuHover,
 
-    // Foundation: Focus management
-    'focus:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    // Foundation: Focus management - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Disabled state
+    // Foundation: Disabled state - Enhanced tokens
     'disabled:pointer-events-none disabled:opacity-50',
   ],
   {
     variants: {
       variant: {
         default: [
-          // Content hierarchy colors
-          'text-foreground',
-          'hover:bg-muted',
-          'hover:text-foreground',
-          'data-[state=open]:bg-accent',
-          'data-[state=open]:text-accent-foreground',
+          // Content hierarchy colors - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-cosmic-void',
+          'pointer:hover:text-cosmic-light',
+          'data-[state=open]:bg-aurora-accent',
+          'data-[state=open]:text-cosmic-dark',
         ],
         glass: [
-          // Liquid glass with content protection
-          'text-foreground',
-          'hover:bg-background-panel/60',
-          'hover:backdrop-blur-[8px]',
-          'data-[state=open]:bg-accent/80',
-          'data-[state=open]:text-accent-foreground',
-          'data-[state=open]:backdrop-blur-[12px]',
+          // Liquid glass with content protection - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-cosmic-void/60',
+          'pointer:hover:backdrop-blur-sm',
+          'data-[state=open]:bg-aurora-accent/80',
+          'data-[state=open]:text-cosmic-dark',
+          'data-[state=open]:backdrop-blur-md',
         ],
         ghost: [
-          // Minimal variant
-          'text-foreground-muted',
-          'hover:bg-muted/50',
-          'hover:text-foreground',
-          'data-[state=open]:bg-accent/20',
-          'data-[state=open]:text-accent-foreground',
+          // Minimal variant - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          'pointer:hover:bg-cosmic-void/50',
+          'pointer:hover:text-cosmic-light',
+          'data-[state=open]:bg-aurora-accent/20',
+          'data-[state=open]:text-cosmic-dark',
         ],
       },
       size: {
-        sm: ['h-7', 'px-2', 'py-1', 'text-xs'],
-        md: ['h-8', 'px-3', 'py-1.5', 'text-sm'],
-        lg: ['h-10', 'px-4', 'py-2', 'text-base'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.typography.caption, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1]],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2]],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3]],
       },
       enforceAAA: {
         true: [
-          // High contrast for AAA compliance
-          'hover:bg-background-elevated',
-          'data-[state=open]:bg-accent-solid-aaa',
-          'data-[state=open]:text-background',
+          // High contrast for AAA compliance - Enhanced tokens
+          'pointer:hover:bg-cosmic-void',
+          'data-[state=open]:bg-aurora-accent',
+          'data-[state=open]:text-cosmic-dark',
           // Remove vibrancy effects
           'backdrop-blur-none',
         ],
@@ -195,15 +204,17 @@ const enhancedMenuBarTriggerVariants = cva(
  */
 const enhancedMenuBarContentVariants = cva(
   [
-    // Foundation: Surface elevation with liquid glass
-    'z-50 min-w-[12rem]',
-    'rounded-md border',
-    'p-1',
+    // Foundation: Surface elevation with liquid glass - Enhanced tokens
+    getZIndexClass('popover'),
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1],
 
-    // Foundation: Typography and spacing
-    'text-sm',
+    // Foundation: Typography and spacing - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Animation with reduced motion respect
+    // Foundation: Animation with reduced motion respect - Enhanced tokens
     'data-[state=open]:animate-in',
     'data-[state=closed]:animate-out',
     'data-[state=closed]:fade-out-0',
@@ -215,54 +226,55 @@ const enhancedMenuBarContentVariants = cva(
     'data-[side=right]:slide-in-from-left-2',
     'data-[side=top]:slide-in-from-bottom-2',
 
-    // Motion respect
+    // Motion respect - Enhanced tokens
     'motion-reduce:animate-none',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Shadow system
-    'shadow-lg',
+    // Foundation: Shadow system - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
   ],
   {
     variants: {
       variant: {
         default: [
-          // Standard elevated surface
-          'bg-background-elevated',
-          'border-border',
-          'text-foreground',
+          // Standard elevated surface - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
         ],
         glass: [
-          // Liquid glass vibrancy with content protection
-          'backdrop-blur-[16px] backdrop-saturate-[135%]',
-          'bg-background-panel/85',
-          'border-border/50',
-          'text-foreground',
+          // Liquid glass vibrancy with content protection - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
           // AAA scrim for content protection
-          '[&>*]:bg-background/5',
-          '[&>*]:backdrop-blur-[2px]',
+          '[&>*]:bg-cosmic-void/5',
+          '[&>*]:backdrop-blur-sm',
         ],
         elevated: [
-          // Higher elevation for floating menus
-          'bg-background-panel',
-          'border-border',
-          'text-foreground',
-          'shadow-xl',
+          // Higher elevation for floating menus - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
       },
       size: {
-        sm: ['min-w-[8rem]', 'text-xs', 'p-0.5'],
-        md: ['min-w-[12rem]', 'text-sm', 'p-1'],
-        lg: ['min-w-[16rem]', 'text-base', 'p-1.5'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-xs'], ENHANCED_DESIGN_TOKENS.foundation.typography.caption, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1]],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1]],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2]],
       },
       enforceAAA: {
         true: [
-          // AAA solid surfaces
-          'bg-background-elevated',
-          'border-border-strong',
-          'text-foreground',
+          // AAA solid surfaces - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
           // Remove vibrancy effects
-          'backdrop-blur-none',
-          'backdrop-saturate-100',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.none,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[100],
           '[&>*]:bg-transparent',
           '[&>*]:backdrop-blur-none',
         ],
@@ -284,59 +296,66 @@ const enhancedMenuBarContentVariants = cva(
  */
 const enhancedMenuBarItemVariants = cva(
   [
-    // Foundation: Platform-aware hit targets
-    'relative flex cursor-default select-none items-center',
-    'rounded-sm px-2 py-1.5',
+    // Foundation: Platform-aware hit targets - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.relative,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.select.none,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
 
-    // Foundation: Typography
-    'text-sm',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Interactive states
-    'transition-colors duration-200',
+    // Foundation: Interactive states - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.menuHover,
 
-    // Foundation: Focus management
-    'focus:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    // Foundation: Focus management - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Disabled state
+    // Foundation: Disabled state - Enhanced tokens
     'disabled:pointer-events-none disabled:opacity-50',
   ],
   {
     variants: {
       variant: {
         default: [
-          'text-foreground',
-          'hover:bg-muted',
-          'hover:text-foreground',
-          'data-[highlighted]:bg-accent',
-          'data-[highlighted]:text-accent-foreground',
+          // Default variant - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-cosmic-void',
+          'pointer:hover:text-cosmic-light',
+          'data-[highlighted]:bg-aurora-accent',
+          'data-[highlighted]:text-cosmic-dark',
         ],
         destructive: [
-          'text-error-foreground',
-          'hover:bg-error/10',
-          'hover:text-error-foreground',
-          'data-[highlighted]:bg-error',
-          'data-[highlighted]:text-background',
+          // Destructive variant - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.error,
+          'pointer:hover:bg-cosmic-danger/10',
+          'pointer:hover:text-cosmic-danger',
+          'data-[highlighted]:bg-cosmic-danger',
+          'data-[highlighted]:text-cosmic-dark',
         ],
         success: [
-          'text-success-foreground',
-          'hover:bg-success/10',
-          'hover:text-success-foreground',
-          'data-[highlighted]:bg-success',
-          'data-[highlighted]:text-background',
+          // Success variant - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.success,
+          'pointer:hover:bg-cosmic-success/10',
+          'pointer:hover:text-cosmic-success',
+          'data-[highlighted]:bg-cosmic-success',
+          'data-[highlighted]:text-cosmic-dark',
         ],
       },
       size: {
-        sm: ['h-7', 'px-1.5', 'py-1', 'text-xs'],
-        md: ['h-8', 'px-2', 'py-1.5', 'text-sm'],
-        lg: ['h-10', 'px-3', 'py-2', 'text-base'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.typography.caption, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[1]],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2]],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3]],
       },
       enforceAAA: {
         true: [
-          // High contrast states
-          'data-[highlighted]:bg-accent-solid-aaa',
-          'data-[highlighted]:text-background',
-          'hover:bg-background-panel',
+          // High contrast states - Enhanced tokens
+          'data-[highlighted]:bg-aurora-accent',
+          'data-[highlighted]:text-cosmic-dark',
+          'pointer:hover:bg-cosmic-void',
         ],
         false: [
           // Allow ethereal effects
@@ -361,6 +380,7 @@ const MenuBar = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Root> &
     VariantProps<typeof enhancedMenuBarVariants> & {
       asChild?: boolean;
+      disableAnimations?: boolean;
     }
 >(
   (
@@ -371,17 +391,24 @@ const MenuBar = React.forwardRef<
       density,
       enforceAAA,
       asChild = false,
+      disableAnimations = false,
       ...props
     },
     ref
   ) => {
     const Comp = asChild ? Slot : MenubarPrimitive.Root;
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     return (
       <Comp
         ref={ref}
         className={cn(
           enhancedMenuBarVariants({ variant, size, density, enforceAAA }),
+          motionClasses,
           className
         )}
         {...props}
@@ -488,7 +515,7 @@ const MenuBarItem = React.forwardRef<
             inset && 'pl-8',
             className
           )}
-          {...(props as React.ComponentPropsWithoutRef<'div'>)}
+          {...(props as unknown as React.ComponentPropsWithoutRef<'div'>)}
         />
       );
     }
@@ -531,10 +558,16 @@ const MenuBarCheckboxItem = React.forwardRef<
       {...props}
     >
       <span
-              className="absolute left-2 flex size-3.5 items-center justify-center"
+        className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+          ENHANCED_DESIGN_TOKENS.foundation.positioning.left['2'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.flex.alignment.center,
+          ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm
+        )}
       >
         <MenubarPrimitive.ItemIndicator>
-          <Check className="size-4" />
+          <Check className={ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm} />
         </MenubarPrimitive.ItemIndicator>
       </span>
       {children}
@@ -561,10 +594,16 @@ const MenuBarRadioItem = React.forwardRef<
     {...props}
   >
     <span
-              className="absolute left-2 flex size-3.5 items-center justify-center"
+      className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+        ENHANCED_DESIGN_TOKENS.foundation.positioning.left['2'],
+        ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.flex.alignment.center,
+        ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm
+      )}
     >
       <MenubarPrimitive.ItemIndicator>
-        <Circle className="size-2 fill-current" />
+        <Circle className={cn(ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm, 'fill-current')} />
       </MenubarPrimitive.ItemIndicator>
     </span>
     {children}
@@ -584,8 +623,11 @@ const MenuBarLabel = React.forwardRef<
   <MenubarPrimitive.Label
     ref={ref}
     className={cn(
-      // Foundation: Typography hierarchy
-      'px-2 py-1.5 text-xs font-semibold text-foreground-muted',
+      // Foundation: Typography hierarchy - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+      ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+      'font-semibold',
+      ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
       inset && 'pl-8',
       className
     )}
@@ -604,8 +646,11 @@ const MenuBarSeparator = React.forwardRef<
   <MenubarPrimitive.Separator
     ref={ref}
     className={cn(
-      // Foundation: Border system
-      '-mx-1 my-1 h-px bg-border',
+      // Foundation: Border system - Enhanced tokens
+      ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+      ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.margin[1],
       className
     )}
     {...props}
@@ -623,8 +668,11 @@ const MenuBarShortcut = ({
   return (
     <span
       className={cn(
-        // Foundation: Typography hierarchy
-        'ml-auto text-xs font-normal text-foreground-muted',
+        // Foundation: Typography hierarchy - Enhanced tokens
+        ENHANCED_DESIGN_TOKENS.foundation.layout.margin['l-auto'],
+        ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        'font-normal',
+        ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
         className
       )}
       {...props}
@@ -656,14 +704,14 @@ const MenuBarSubTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         enhancedMenuBarItemVariants({ variant, size, enforceAAA }),
-        'data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
+        'data-[state=open]:bg-aurora-accent data-[state=open]:text-cosmic-dark',
         inset && 'pl-8',
         className
       )}
       {...props}
     >
       {children}
-      <ChevronRight className="ml-auto size-4" />
+      <ChevronRight className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.margin['l-auto'], ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm)} />
     </MenubarPrimitive.SubTrigger>
   )
 );
@@ -698,6 +746,109 @@ MenuBarSubContent.displayName = 'MenuBarSubContent';
  */
 const MenuBarRadioGroup = MenubarPrimitive.RadioGroup;
 
+// ===== MENU BAR FACTORY PATTERN =====
+
+/**
+ * Factory for creating pre-configured menu bar components
+ */
+const MenuBarFactory = {
+  /**
+   * Default menu bar configuration
+   */
+  default: (props: Partial<React.ComponentPropsWithoutRef<typeof MenuBar>> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    density: 'comfortable' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Glass menu bar configuration
+   */
+  glass: (props: Partial<React.ComponentPropsWithoutRef<typeof MenuBar>> = {}) => ({
+    variant: 'glass' as const,
+    size: 'md' as const,
+    density: 'comfortable' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Ghost menu bar configuration
+   */
+  ghost: (props: Partial<React.ComponentPropsWithoutRef<typeof MenuBar>> = {}) => ({
+    variant: 'ghost' as const,
+    size: 'md' as const,
+    density: 'comfortable' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Small menu bar configuration
+   */
+  small: (props: Partial<React.ComponentPropsWithoutRef<typeof MenuBar>> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    density: 'comfortable' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Large menu bar configuration
+   */
+  large: (props: Partial<React.ComponentPropsWithoutRef<typeof MenuBar>> = {}) => ({
+    variant: 'default' as const,
+    size: 'lg' as const,
+    density: 'comfortable' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Compact menu bar configuration
+   */
+  compact: (props: Partial<React.ComponentPropsWithoutRef<typeof MenuBar>> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    density: 'compact' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Accessible menu bar configuration with AAA compliance
+   */
+  accessible: (props: Partial<React.ComponentPropsWithoutRef<typeof MenuBar>> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    density: 'comfortable' as const,
+    enforceAAA: true,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Performance-optimized menu bar with disabled animations
+   */
+  performance: (props: Partial<React.ComponentPropsWithoutRef<typeof MenuBar>> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    density: 'comfortable' as const,
+    enforceAAA: false,
+    disableAnimations: true,
+    ...props,
+  }),
+};
+
 // ===== EXPORTS =====
 
 export {
@@ -715,6 +866,7 @@ export {
   MenuBarSubTrigger,
   MenuBarSubContent,
   MenuBarRadioGroup,
+  MenuBarFactory,
 };
 
 export type { VariantProps } from 'class-variance-authority';

@@ -12,10 +12,13 @@
  * - Developer Experience: Intuitive APIs that make complex layouts simple to implement
  */
 
-import React, { forwardRef } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type React from 'react';
+import { forwardRef } from 'react';
+
 import { cn } from '../../../utils/cn';
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
 
 // ===== GRID CONFIG TYPE =====
 
@@ -29,13 +32,15 @@ export interface GridConfig {
 
 // ===== VARIANTS =====
 
-const responsiveGridVariants = cva(['grid', '@container'], {
+const responsiveGridVariants = cva([
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid,
+], {
   variants: {
     // Container Query Features
     containerType: {
-      size: '@container/size',
-      'inline-size': '@container/inline-size',
-      'block-size': '@container/block-size',
+      size: ENHANCED_DESIGN_TOKENS.foundation.container.type.size,
+      'inline-size': ENHANCED_DESIGN_TOKENS.foundation.container.type.inline,
+      'block-size': ENHANCED_DESIGN_TOKENS.foundation.container.type.size,
     },
 
     // Auto-sizing options
@@ -46,7 +51,7 @@ const responsiveGridVariants = cva(['grid', '@container'], {
 
     // Performance
     virtualized: {
-      true: 'overflow-hidden',
+      true: ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
       false: '',
     },
   },
@@ -167,12 +172,20 @@ export const ResponsiveGrid = forwardRef<
     const containerQueryClasses: string[] = [];
 
     if (gridConfig) {
-      Object.entries(gridConfig).forEach(([breakpoint, config]) => {
+      for (const [breakpoint, config] of Object.entries(gridConfig)) {
         const bp = breakpoints[breakpoint as keyof typeof breakpoints];
         if (bp && config) {
           // Convert columns to grid class
           if (typeof config.columns === 'number') {
-            containerQueryClasses.push(`@[${bp}]:grid-cols-${config.columns}`);
+            const colToken = (ENHANCED_DESIGN_TOKENS.foundation.layout.grid
+              .columns as unknown as Record<string, string>)[
+              String(config.columns)
+            ];
+            if (colToken) {
+              containerQueryClasses.push(`@[${bp}]:${colToken}`);
+            } else {
+              containerQueryClasses.push(`@[${bp}]:grid-cols-${config.columns}`);
+            }
           }
 
           // Convert rows to grid class
@@ -182,24 +195,25 @@ export const ResponsiveGrid = forwardRef<
 
           // Handle gap
           if (config.gap) {
-            const gapClass =
-              config.gap === 'xs'
-                ? '1'
-                : config.gap === 'sm'
-                  ? '2'
-                  : config.gap === 'md'
-                    ? '4'
-                    : config.gap === 'lg'
-                      ? '6'
-                      : config.gap === 'xl'
-                        ? '8'
-                        : config.gap;
-            containerQueryClasses.push(`@[${bp}]:gap-${gapClass}`);
+            const gapMap: Record<string, string> = {
+              xs: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+              sm: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+              md: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+              lg: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+              xl: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+            } as const;
+            const gapToken = gapMap[String(config.gap)] || `gap-${config.gap}`;
+            containerQueryClasses.push(`@[${bp}]:${gapToken}`);
           }
 
           // Handle alignment
           if (config.alignItems) {
-            containerQueryClasses.push(`@[${bp}]:items-${config.alignItems}`);
+            const itemsMap = ENHANCED_DESIGN_TOKENS.foundation.layout.flex
+              .items as unknown as Record<string, string>;
+            const itemsToken = itemsMap[String(config.alignItems)];
+            containerQueryClasses.push(
+              `@[${bp}]:${itemsToken || `items-${config.alignItems}`}`
+            );
           }
           if (config.justifyItems) {
             containerQueryClasses.push(
@@ -207,7 +221,7 @@ export const ResponsiveGrid = forwardRef<
             );
           }
         }
-      });
+      }
     }
 
     // Default auto-responsive grid if no specific config provided

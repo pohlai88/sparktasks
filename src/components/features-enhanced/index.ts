@@ -21,34 +21,20 @@
 
 // ===== COMMAND SYSTEM =====
 
-export * from './CommandSystem';
-
-// ===== INTERACTION SYSTEM =====
-
-export * from './InteractionSystem';
-
-// ===== FILE SYSTEM =====
-
-export * from './FileSystem';
-
-// ===== CONTENT SYSTEM =====
-
-export * from './ContentSystem';
-
-// ===== SYSTEM EXPORTS =====
-
-// Command System
 export {
   CommandPalette,
   CommandRegistry,
   useCommandRegistry,
 } from './CommandSystem';
 
-// Interaction System
+// ===== INTERACTION SYSTEM =====
+
 export { DragDropProvider } from './InteractionSystem';
 
-// File System
+// ===== FILE SYSTEM =====
+
 export { SimpleUpload, UppyAdapter } from './FileSystem';
 
-// Content System
+// ===== CONTENT SYSTEM =====
+
 export { SimpleEditor } from './ContentSystem';

@@ -24,6 +24,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { Slot } from '@/components/primitives';
 import { cn } from '@/utils/cn';
 
@@ -35,110 +36,134 @@ import { cn } from '@/utils/cn';
  */
 const enhancedInputVariants = cva(
   [
-    // Foundation: Layout/shape - Using semantic tokens
-    'flex w-full',
+    // Foundation: Layout/shape - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
-    // Foundation: Typography - Cosmic hierarchy (from enhanced tokens)
-    'text-[var(--font-size-sm)]', // matches our typography.footnote base size
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Shape - Systematic from design tokens
-    'rounded-[var(--radius-md)] border',
+    // Foundation: Shape - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
 
-    // Foundation: Spacing - 8pt grid system
-    'px-[var(--space-3)] py-[var(--space-2)]',
+    // Foundation: Spacing - Enhanced tokens (sizes control padding; no duplicate axis padding)
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
 
-    // Foundation: Colors - Deep space foundation with ethereal accents
-    'bg-stellar-input text-cosmic-foreground',
-    'border-cosmic-border',
+    // Foundation: Colors - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
-    // Foundation: Placeholder - Subtle hierarchy
-    'placeholder:text-cosmic-muted-foreground',
+    // Foundation: Placeholder - Enhanced tokens
+    'placeholder:text-cosmic-subtle',
 
-    // Foundation: Motion - Respect user preferences (from enhanced tokens)
-    'transition-all duration-[var(--motion-duration-2)] ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.inputFocus,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: States - Disabled styling
-    'disabled:cursor-not-allowed disabled:opacity-[var(--opacity-50)]',
+    // Foundation: States - Enhanced tokens
+    'disabled:cursor-not-allowed disabled:opacity-50',
 
-    // Foundation: File input specific
-    'file:border-0 file:bg-transparent file:text-[var(--font-size-sm)] file:font-[var(--font-weight-medium)]',
+    // Foundation: File input specific - Enhanced tokens
+    'file:border-0 file:bg-transparent',
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'file:font-medium',
 
-    // Foundation: Focus - AAA compliant ring system (from enhanced tokens)
-    'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stellar-surface',
+    // Foundation: Focus - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
-        // Default: Clean, professional baseline
-        default: ['border-cosmic-border bg-stellar-input', 'focus-visible:border-aurora-accent'],
+        // Default: Clean, professional baseline - Enhanced tokens
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          'focus-visible:border-aurora-accent',
+        ],
 
-        // Ghost: Minimal, elegant
+        // Ghost: Minimal, elegant - Enhanced tokens
         ghost: [
-          'border-transparent bg-transparent',
-          'focus-visible:border-cosmic-border focus-visible:bg-stellar-input',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          'focus-visible:border-cosmic-border focus-visible:bg-cosmic-void',
         ],
 
-        // Filled: Subtle depth
+        // Filled: Subtle depth - Enhanced tokens
         filled: [
-          'border-transparent bg-cosmic-muted',
-          'focus-visible:border-cosmic-border focus-visible:bg-stellar-input',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          'focus-visible:border-cosmic-border focus-visible:bg-cosmic-void',
         ],
 
-        // Outline: Clear boundaries
-        outline: ['border-cosmic-border bg-transparent', 'focus-visible:border-aurora-accent'],
+        // Outline: Clear boundaries - Enhanced tokens
+        outline: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          'focus-visible:border-aurora-accent',
+        ],
 
-        // Floating: Modern glass effect (when vibrancy enabled)
+        // Floating: Modern glass effect (when vibrancy enabled) - Enhanced tokens
         floating: [
-          'border-cosmic-border/50 bg-stellar-input/80',
-          'focus-visible:border-aurora-accent focus-visible:bg-stellar-input',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          'focus-visible:border-aurora-accent focus-visible:bg-cosmic-void',
         ],
       },
 
       size: {
-        // Clean systematic sizing with 8pt grid
-        sm: ['h-[var(--space-8)] px-[var(--space-2)] text-[var(--font-size-xs)]', 'gap-[var(--space-1)]'],
-        md: ['h-[var(--space-10)] px-[var(--space-3)] text-[var(--font-size-sm)]', 'gap-[var(--space-2)]'],
-        lg: ['h-[var(--space-12)] px-[var(--space-4)] text-[var(--font-size-base)]', 'gap-[var(--space-2)]'],
-        // Touch: Platform-aware for mobile
-        touch: ['h-[var(--space-11)] px-[var(--space-3)] text-[var(--font-size-sm)]', 'gap-[var(--space-2)]'],
+        // Clean systematic sizing with 8pt grid - Enhanced tokens
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2], ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        // Touch: Platform-aware for mobile - Enhanced tokens
+        touch: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
       },
 
-      // Validation state system
+      // Validation state system - Enhanced tokens
       state: {
         default: '',
         success: [
-          'border-cosmic-feedback-success text-cosmic-feedback-success-foreground',
-          'focus-visible:ring-cosmic-feedback-success',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.success,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.success,
+          'focus-visible:ring-cosmic-success',
         ],
         warning: [
-          'border-cosmic-feedback-warning text-cosmic-feedback-warning-foreground',
-          'focus-visible:ring-cosmic-feedback-warning',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.warning,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.warning,
+          'focus-visible:ring-cosmic-warning',
         ],
         error: [
-          'border-cosmic-feedback-error text-cosmic-feedback-error-foreground',
-          'focus-visible:ring-cosmic-feedback-error',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.error,
+          'focus-visible:ring-cosmic-danger',
         ],
       },
 
-      // Liquid glass materials
+      // Liquid glass materials - Enhanced tokens
       vibrancy: {
         none: '',
-        glass: ['bg-stellar-input/80 backdrop-blur-[var(--blur-md)] backdrop-saturate-[var(--saturate-150)]'],
+        glass: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+        ],
         floating: [
-          'bg-stellar-input/75 backdrop-blur-[var(--blur-lg)] backdrop-saturate-[var(--saturate-150)]',
-          'shadow-[var(--shadow-elevation-medium)]',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
       },
 
-      // AAA compliance enforcement
+      // AAA compliance enforcement - Enhanced tokens
       enforceAAA: {
         false: '',
         true: [
-          // Use AAA-compliant alternatives
-          'aaa:border-cosmic-border-strong aaa:bg-stellar-surface',
-          'aaa:focus-visible:ring-aurora-accent-solid-aaa',
+          // Use AAA-compliant alternatives - Enhanced tokens
+          'aaa:border-cosmic-border-strong aaa:bg-cosmic-void',
+          'aaa:focus-visible:ring-aurora-accent',
         ],
       },
     },
@@ -192,6 +217,7 @@ interface EnhancedInputOwnProps {
   state?: 'default' | 'success' | 'warning' | 'error';
   vibrancy?: 'none' | 'glass' | 'floating';
   enforceAAA?: boolean;
+  disableAnimations?: boolean;
 
   // Input enhancement props
   startIcon?: React.ReactNode;
@@ -249,6 +275,7 @@ const EnhancedInput = React.forwardRef<
       state = 'default',
       vibrancy = 'none',
       enforceAAA = false,
+      disableAnimations = false,
 
       startIcon,
       endIcon,
@@ -319,6 +346,11 @@ const EnhancedInput = React.forwardRef<
     const describedBy =
       describedByParts.length > 0 ? describedByParts.join(' ') : undefined;
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     // Check if input has content for clearable functionality
     const hasValue = value !== undefined && value !== '' && value !== null;
 
@@ -327,14 +359,17 @@ const EnhancedInput = React.forwardRef<
       clearable && hasValue && !props.disabled && !props.readOnly;
 
     return (
-      <div className={cn('space-y-2', containerClassName)}>
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm, containerClassName)}>
         {/* Label */}
         {label && (
           <label
             htmlFor={inputId}
             className={cn(
-              'text-[var(--font-size-sm)] font-[var(--font-weight-medium)] text-cosmic-foreground',
-              'flex items-center gap-[var(--space-1)]',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+              ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+              'gap-1',
               labelClassName
             )}
             data-required={required}
@@ -351,7 +386,7 @@ const EnhancedInput = React.forwardRef<
             )}
             {optional && (
               <span
-                className="text-[var(--font-size-xs)] text-cosmic-muted-foreground"
+                className="text-cosmic-muted-foreground text-[var(--font-size-xs)]"
               >
                 (optional)
               </span>
@@ -364,7 +399,8 @@ const EnhancedInput = React.forwardRef<
           <p
             id={`${inputId}-description`}
             className={cn(
-              'text-[var(--font-size-sm)] text-cosmic-muted-foreground',
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+              ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
               descriptionClassName
             )}
           >
@@ -377,10 +413,21 @@ const EnhancedInput = React.forwardRef<
           {/* Start Icon */}
           {startIcon && (
             <div
-              className="pointer-events-none absolute left-[var(--space-3)] top-1/2 -translate-y-1/2 text-cosmic-muted-foreground"
+              className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+                ENHANCED_DESIGN_TOKENS.foundation.positioning.left[3],
+                ENHANCED_DESIGN_TOKENS.foundation.positioning.top['1/2'],
+                ENHANCED_DESIGN_TOKENS.foundation.transform.translate['y-1/2']
+              )}
             >
               <div
-                className="flex size-[var(--space-4)] items-center justify-center"
+                className={cn(
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+                  ENHANCED_DESIGN_TOKENS.foundation.icon.size.md,
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+                  ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center
+                )}
               >
                 {startIcon}
               </div>
@@ -403,19 +450,20 @@ const EnhancedInput = React.forwardRef<
                     vibrancy,
                     enforceAAA,
                   }),
+                  motionClasses,
                   // Icon spacing adjustments
                   startIcon &&
                     (responsiveSize === 'sm'
-                      ? 'pl-[var(--space-8)]'
-                      : responsiveSize === 'lg'
-                        ? 'pl-[var(--space-12)]'
-                        : 'pl-[var(--space-10)]'),
+                      ? 'pl-8'
+                      : (responsiveSize === 'lg'
+                        ? 'pl-12'
+                        : 'pl-10')),
                   (endIcon || showClearButton || loading) &&
                     (responsiveSize === 'sm'
-                      ? 'pr-[var(--space-8)]'
-                      : responsiveSize === 'lg'
-                        ? 'pr-[var(--space-12)]'
-                        : 'pr-[var(--space-10)]'),
+                      ? 'pr-8'
+                      : (responsiveSize === 'lg'
+                        ? 'pr-12'
+                        : 'pr-10')),
                   className
                 )}
                 aria-label={ariaLabel}
@@ -438,12 +486,24 @@ const EnhancedInput = React.forwardRef<
           {/* End Content (Loading, Clear, or End Icon) */}
           {(loading || showClearButton || endIcon) && (
             <div
-              className="absolute right-[var(--space-3)] top-1/2 flex -translate-y-1/2 items-center gap-[var(--space-1)]"
+              className={cn(
+                ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+                ENHANCED_DESIGN_TOKENS.foundation.positioning.right[3],
+                ENHANCED_DESIGN_TOKENS.foundation.positioning.top['1/2'],
+                ENHANCED_DESIGN_TOKENS.foundation.transform.translate['y-1/2'],
+                ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs
+              )}
             >
               {/* Loading Spinner */}
               {loading && (
                 <div
-                  className="size-[var(--space-4)] animate-spin text-cosmic-muted-foreground"
+                  className={cn(
+                    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+                    ENHANCED_DESIGN_TOKENS.foundation.icon.size.md,
+                    ENHANCED_DESIGN_TOKENS.foundation.animation.name.spin
+                  )}
                 >
                   <svg
                     fill='none'
@@ -473,9 +533,11 @@ const EnhancedInput = React.forwardRef<
                   type='button'
                   onClick={onClear}
                   className={cn(
-                    'size-[var(--space-4)] min-h-[var(--space-8)] text-cosmic-muted-foreground transition-colors',
-                    'hover:text-cosmic-foreground',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2'
+                    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+                    ENHANCED_DESIGN_TOKENS.foundation.icon.size.md,
+                    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+                    'pointer:hover:text-cosmic-light',
+                    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary
                   )}
                   aria-label='Clear input'
                   tabIndex={0}
@@ -498,7 +560,10 @@ const EnhancedInput = React.forwardRef<
               {/* End Icon */}
               {endIcon && !loading && !showClearButton && (
                 <div
-                  className="size-[var(--space-4)] text-cosmic-muted-foreground"
+                  className={cn(
+                    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+                    'size-4'
+                  )}
                 >
                   {endIcon}
                 </div>
@@ -511,7 +576,7 @@ const EnhancedInput = React.forwardRef<
         {hint && !errorMessage && (
           <p
             id={`${inputId}-hint`}
-            className={cn('text-[var(--font-size-xs)] text-cosmic-muted-foreground', hintClassName)}
+            className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary, ENHANCED_DESIGN_TOKENS.foundation.typography.caption, hintClassName)}
           >
             {hint}
           </p>
@@ -521,7 +586,7 @@ const EnhancedInput = React.forwardRef<
         {errorMessage && (
           <p
             id={`${inputId}-error`}
-            className={cn('text-[var(--font-size-xs)] text-cosmic-feedback-error', errorClassName)}
+            className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.error, ENHANCED_DESIGN_TOKENS.foundation.typography.caption, errorClassName)}
             role='alert'
             aria-live='polite'
           >
@@ -551,7 +616,196 @@ const EnhancedInputField = React.forwardRef<
 
 EnhancedInputField.displayName = 'EnhancedInputField';
 
+// ===== INPUT FACTORY PATTERN =====
+
+/**
+ * Factory for creating pre-configured input components
+ */
+const InputFactory = {
+  /**
+   * Default input configuration
+   */
+  default: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Ghost input configuration
+   */
+  ghost: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'ghost' as const,
+    size: 'md' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Filled input configuration
+   */
+  filled: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'filled' as const,
+    size: 'md' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Outline input configuration
+   */
+  outline: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'outline' as const,
+    size: 'md' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Floating input configuration
+   */
+  floating: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'floating' as const,
+    size: 'md' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Glass input configuration
+   */
+  glass: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    state: 'default' as const,
+    vibrancy: 'glass' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Accessible input configuration with AAA compliance
+   */
+  accessible: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: true,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Small input configuration
+   */
+  small: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Large input configuration
+   */
+  large: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'lg' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Touch input configuration for mobile
+   */
+  touch: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'touch' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Success input configuration
+   */
+  success: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    state: 'success' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Warning input configuration
+   */
+  warning: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    state: 'warning' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Error input configuration
+   */
+  error: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    state: 'error' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Performance-optimized input with disabled animations
+   */
+  performance: (props: Partial<EnhancedInputOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'md' as const,
+    state: 'default' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: true,
+    ...props,
+  }),
+};
+
 // ===== EXPORTS =====
 
-export { EnhancedInput, EnhancedInputField, enhancedInputVariants };
+export { EnhancedInput, EnhancedInputField, enhancedInputVariants, InputFactory };
 export type { EnhancedInputOwnProps, InputVariantProps };

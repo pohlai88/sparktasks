@@ -55,10 +55,12 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-import { EnhancedButton } from './Button';
 
 import { AccessibleIcon } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
+
+import { EnhancedButton } from './Button';
 
 // ===== STEVE JOBS INSPIRED MESSAGING SYSTEM =====
 
@@ -239,121 +241,134 @@ const HUMANIZED_MESSAGES = {
  */
 const enhancedEmptyStateVariants = cva(
   [
-    // Foundation: Layout - Centered, peaceful composition
-    'flex min-h-[400px] w-full flex-col items-center justify-center',
-    'text-center',
+    // Foundation: Layout - Centered, peaceful composition - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.alignment.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
 
-    // Foundation: Spacing - 8pt grid system for perfect rhythm
-    'gap-6 px-8 py-12',
+    // Foundation: Spacing - 8pt grid system for perfect rhythm - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[8],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[12],
 
-    // Foundation: Motion - Gentle, Apple-quality animations
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Gentle, Apple-quality animations - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.cardHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Focus management for keyboard navigation
-    'focus-visible:outline-none',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
-        // Default: Clean, approachable baseline
-        default: ['text-foreground'],
+        // Default: Clean, approachable baseline - Enhanced tokens
+        default: [ENHANCED_DESIGN_TOKENS.foundation.color.content.primary],
 
-        // Gentle: Soft, encouraging appearance
-        gentle: ['text-muted-foreground'],
+        // Gentle: Soft, encouraging appearance - Enhanced tokens
+        gentle: [ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary],
 
-        // Inspiring: Uplifting, motivational presence
+        // Inspiring: Uplifting, motivational presence - Enhanced tokens
         inspiring: [
-          'text-foreground',
-          'bg-gradient-to-br from-background via-background to-accent/5',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'bg-gradient-to-br from-cosmic-void via-cosmic-void to-aurora-accent/5',
         ],
 
-        // Peaceful: Calm, meditative atmosphere
+        // Peaceful: Calm, meditative atmosphere - Enhanced tokens
         peaceful: [
-          'text-muted-foreground',
-          'bg-gradient-to-br from-background via-muted/10 to-background',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+          'bg-gradient-to-br from-cosmic-void via-cosmic-border/10 to-cosmic-void',
         ],
 
-        // Magical: Wonder and possibility
+        // Magical: Wonder and possibility - Enhanced tokens
         magical: [
-          'text-foreground',
-          'bg-gradient-to-br from-background via-accent/5 to-accent-secondary/5',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'bg-gradient-to-br from-cosmic-void via-aurora-accent/5 to-cosmic-cyan/5',
         ],
       },
 
       size: {
-        // Systematic sizing following 8pt grid
-        sm: ['min-h-[300px]', 'gap-4', 'px-6', 'py-8'],
-        md: ['min-h-[400px]', 'gap-6', 'px-8', 'py-12'],
-        lg: ['min-h-[500px]', 'gap-8', 'px-12', 'py-16'],
-        xl: ['min-h-[600px]', 'gap-10', 'px-16', 'py-20'],
+        // Systematic sizing following 8pt grid - Enhanced tokens
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[8]],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[8], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[12]],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl, ENHANCED_DESIGN_TOKENS.foundation.layout.padding[12], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[16]],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap['2xl'], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[16], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[20]],
       },
 
-      // Liquid glass materials for ethereal feel
+      // Liquid glass materials for ethereal feel - Enhanced tokens
       vibrancy: {
         none: '',
         glass: [
-          'bg-background/80 backdrop-blur-md backdrop-saturate-150',
-          'rounded-xl border border-border/30',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
         floating: [
-          'bg-background/75 backdrop-blur-lg backdrop-saturate-150',
-          'rounded-2xl border border-border/40',
-          'shadow-elevation-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
       },
 
-      // Emotional tone following Steve Jobs' human-centered design
+      // Emotional tone following Steve Jobs' human-centered design - Enhanced tokens
       emotion: {
-        curiosity: ['text-accent'],
-        potential: ['text-foreground'],
-        connection: ['text-accent-secondary'],
-        discovery: ['text-primary'],
-        encouragement: ['text-success'],
-        inspiration: ['text-warning'],
-        ambition: ['text-accent'],
-        nostalgia: ['text-muted-foreground'],
-        joy: ['text-primary'],
-        expression: ['text-accent-secondary'],
-        growth: ['text-success'],
-        gratitude: ['text-warning'],
-        adventure: ['text-accent'],
-        determination: ['text-primary'],
-        belonging: ['text-success'],
-        serenity: ['text-muted-foreground'],
-        wonder: ['text-accent-secondary'],
-        wisdom: ['text-foreground'],
+        curiosity: ['text-aurora-accent'],
+        potential: [ENHANCED_DESIGN_TOKENS.foundation.color.content.primary],
+        connection: ['text-cosmic-cyan'],
+        discovery: ['text-aurora-accent'],
+        encouragement: ['text-cosmic-success'],
+        inspiration: ['text-cosmic-warning'],
+        ambition: ['text-aurora-accent'],
+        nostalgia: [ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary],
+        joy: ['text-aurora-accent'],
+        expression: ['text-cosmic-cyan'],
+        growth: ['text-cosmic-success'],
+        gratitude: ['text-cosmic-warning'],
+        adventure: ['text-aurora-accent'],
+        determination: ['text-aurora-accent'],
+        belonging: ['text-cosmic-success'],
+        serenity: [ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary],
+        wonder: ['text-cosmic-cyan'],
+        wisdom: [ENHANCED_DESIGN_TOKENS.foundation.color.content.primary],
       },
 
-      // AAA compliance enforcement
+      // AAA compliance enforcement - Enhanced tokens
       enforceAAA: {
         false: '',
         true: [
           // Use AAA-compliant alternatives
-          'aaa:text-foreground-strong',
-          'aaa:bg-background-aaa',
+          'aaa:text-cosmic-light',
+          'aaa:bg-cosmic-void',
         ],
       },
     },
 
     compoundVariants: [
-      // Gentle + glass = serene experience
+      // Gentle + glass = serene experience - Enhanced tokens
       {
         variant: 'gentle',
         vibrancy: 'glass',
-        class: 'bg-background/60 backdrop-blur-[16px]',
+        class: cn(ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent, ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md),
       },
-      // Inspiring + floating = elevated presence
+      // Inspiring + floating = elevated presence - Enhanced tokens
       {
         variant: 'inspiring',
         vibrancy: 'floating',
-        class: 'shadow-elevation-xl shadow-accent/10',
+        class: ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
       },
-      // Magical + floating = enchanting experience
+      // Magical + floating = enchanting experience - Enhanced tokens
       {
         variant: 'magical',
         vibrancy: 'floating',
-        class: 'shadow-elevation-xl shadow-accent-secondary/15',
+        class: ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
       },
     ],
 
@@ -372,13 +387,16 @@ const enhancedEmptyStateVariants = cva(
  */
 const enhancedIconVariants = cva(
   [
-    // Foundation: Size and positioning
-    'flex h-16 w-16 items-center justify-center',
-    'rounded-full',
+    // Foundation: Size and positioning - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.avatar.size.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
 
-    // Foundation: Gentle animation following Apple principles
-    'transition-all duration-500 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Gentle animation following Apple principles - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.cardHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Steve Jobs Touch: Subtle breathing animation
     'animate-pulse-gentle',
@@ -386,21 +404,22 @@ const enhancedIconVariants = cva(
   {
     variants: {
       variant: {
-        default: ['bg-muted text-muted-foreground'],
-        gentle: ['bg-muted/50 text-muted-foreground'],
-        inspiring: ['bg-accent/10 text-accent', 'shadow-lg shadow-accent/20'],
-        peaceful: ['bg-muted/30 text-muted-foreground'],
+        default: ['bg-cosmic-border', ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary],
+        gentle: ['bg-cosmic-border/50', ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary],
+        inspiring: ['bg-aurora-accent/10', 'text-aurora-accent', ENHANCED_DESIGN_TOKENS.foundation.elevation.lg, 'shadow-aurora-accent/20'],
+        peaceful: ['bg-cosmic-border/30', ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary],
         magical: [
-          'bg-gradient-to-br from-accent/10 to-accent-secondary/10',
-          'text-accent',
-          'shadow-lg shadow-accent/15',
+          'bg-gradient-to-br from-aurora-accent/10 to-cosmic-cyan/10',
+          'text-aurora-accent',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          'shadow-aurora-accent/15',
         ],
       },
       size: {
-        sm: ['h-12 w-12'],
-        md: ['h-16 w-16'],
-        lg: ['h-20 w-20'],
-        xl: ['h-24 w-24'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.avatar.size.sm],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.avatar.size.lg],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.avatar.size.xl],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.avatar.size['2xl']],
       },
     },
     defaultVariants: {
@@ -415,41 +434,42 @@ const enhancedIconVariants = cva(
  */
 const enhancedTitleVariants = cva(
   [
-    // Foundation: Apple HIG typography
-    'text-xl font-semibold leading-tight tracking-tight',
-    'text-foreground',
+    // Foundation: Apple HIG typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
+    'font-semibold leading-tight tracking-tight',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
-    // Foundation: Motion respect
-    'transition-colors duration-200 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion respect - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       size: {
-        sm: ['text-lg'],
-        md: ['text-xl'],
-        lg: ['text-2xl'],
-        xl: ['text-3xl'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h1],
       },
       emotion: {
-        curiosity: ['text-accent'],
-        potential: ['text-foreground'],
-        connection: ['text-accent-secondary'],
-        discovery: ['text-primary'],
-        encouragement: ['text-success'],
-        inspiration: ['text-warning'],
-        ambition: ['text-accent'],
-        nostalgia: ['text-muted-foreground'],
-        joy: ['text-primary'],
-        expression: ['text-accent-secondary'],
-        growth: ['text-success'],
-        gratitude: ['text-warning'],
-        adventure: ['text-accent'],
-        determination: ['text-primary'],
-        belonging: ['text-success'],
-        serenity: ['text-muted-foreground'],
-        wonder: ['text-accent-secondary'],
-        wisdom: ['text-foreground'],
+        curiosity: ['text-aurora-accent'],
+        potential: [ENHANCED_DESIGN_TOKENS.foundation.color.content.primary],
+        connection: ['text-cosmic-cyan'],
+        discovery: ['text-aurora-accent'],
+        encouragement: ['text-cosmic-success'],
+        inspiration: ['text-cosmic-warning'],
+        ambition: ['text-aurora-accent'],
+        nostalgia: [ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary],
+        joy: ['text-aurora-accent'],
+        expression: ['text-cosmic-cyan'],
+        growth: ['text-cosmic-success'],
+        gratitude: ['text-cosmic-warning'],
+        adventure: ['text-aurora-accent'],
+        determination: ['text-aurora-accent'],
+        belonging: ['text-cosmic-success'],
+        serenity: [ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary],
+        wonder: ['text-cosmic-cyan'],
+        wisdom: [ENHANCED_DESIGN_TOKENS.foundation.color.content.primary],
       },
     },
     defaultVariants: {
@@ -464,21 +484,23 @@ const enhancedTitleVariants = cva(
  */
 const enhancedDescriptionVariants = cva(
   [
-    // Foundation: Typography for readability
-    'max-w-md text-base leading-relaxed',
-    'text-muted-foreground',
+    // Foundation: Typography for readability - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'],
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+    'leading-relaxed',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
 
-    // Foundation: Motion
-    'transition-colors duration-200 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       size: {
-        sm: ['max-w-sm text-sm'],
-        md: ['max-w-md text-base'],
-        lg: ['max-w-lg text-lg'],
-        xl: ['max-w-xl text-xl'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-lg'], ENHANCED_DESIGN_TOKENS.foundation.typography.body.large],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-xl'], ENHANCED_DESIGN_TOKENS.foundation.typography.body.large],
       },
     },
     defaultVariants: {
@@ -492,22 +514,23 @@ const enhancedDescriptionVariants = cva(
  */
 const enhancedActionHintVariants = cva(
   [
-    // Foundation: Subtle, encouraging text
-    'text-sm leading-normal',
-    'text-muted-foreground/80',
-    'max-w-sm',
+    // Foundation: Subtle, encouraging text - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    'leading-normal',
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'],
 
-    // Foundation: Motion
-    'transition-colors duration-200 ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       size: {
-        sm: ['max-w-xs text-xs'],
-        md: ['max-w-sm text-sm'],
-        lg: ['max-w-md text-base'],
-        xl: ['max-w-lg text-lg'],
+        sm: ['max-w-xs', ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: ['max-w-sm', ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: ['max-w-md', ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        xl: ['max-w-lg', ENHANCED_DESIGN_TOKENS.foundation.typography.body.large],
       },
     },
     defaultVariants: {
@@ -588,6 +611,11 @@ interface EnhancedEmptyStateOwnProps {
   enforceAAA?: boolean;
 
   /**
+   * Disable animations for performance optimization
+   */
+  disableAnimations?: boolean;
+
+  /**
    * Custom className
    */
   className?: string;
@@ -649,6 +677,7 @@ const EnhancedEmptyState = React.forwardRef<
       size = 'md',
       vibrancy = 'none',
       enforceAAA = false,
+      disableAnimations = false,
       className,
       children,
       'data-testid': testId,
@@ -656,6 +685,10 @@ const EnhancedEmptyState = React.forwardRef<
     },
     ref
   ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
     // Get humanized message data
     const messageData =
       HUMANIZED_MESSAGES[messageType] || HUMANIZED_MESSAGES.search;
@@ -689,6 +722,7 @@ const EnhancedEmptyState = React.forwardRef<
             emotion,
             enforceAAA,
           }),
+          motionClasses,
           className
         )}
         data-aaa={enforceAAA ? 'true' : 'false'}
@@ -702,7 +736,7 @@ const EnhancedEmptyState = React.forwardRef<
         <AccessibleIcon label={`Empty state icon for ${finalTitle}`}>
           <div className={enhancedIconVariants({ variant, size })}>
             <IconComponent
-              className="h-full w-full"
+              className="size-full"
               size={
                 size === 'sm'
                   ? 24
@@ -716,7 +750,7 @@ const EnhancedEmptyState = React.forwardRef<
           </div>
         </AccessibleIcon>{' '}
         {/* Content section */}
-        <div className="space-y-4">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md)}>
           {/* Title */}
           <h2
             className={enhancedTitleVariants({ size, emotion })}
@@ -746,7 +780,12 @@ const EnhancedEmptyState = React.forwardRef<
         {/* Actions */}
         {(primaryAction || secondaryAction) && (
           <div
-            className="flex flex-col gap-3 sm:flex-row sm:gap-4"
+            className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+              ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+              'sm:flex-row'
+            )}
           >
             {primaryAction && (
               <EnhancedButton
@@ -759,12 +798,12 @@ const EnhancedEmptyState = React.forwardRef<
                 size={
                   size === 'sm'
                     ? 'sm'
-                    : size === 'lg' || size === 'xl'
+                    : (size === 'lg' || size === 'xl'
                       ? 'lg'
-                      : 'md'
+                      : 'md')
                 }
                 {...(testId && { 'data-testid': `${testId}-primary-action` })}
-                className='min-w-[var(--space-30)]'
+                className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.width['min-content'])}
               >
                 {primaryAction.label}
               </EnhancedButton>
@@ -778,12 +817,12 @@ const EnhancedEmptyState = React.forwardRef<
                 size={
                   size === 'sm'
                     ? 'sm'
-                    : size === 'lg' || size === 'xl'
+                    : (size === 'lg' || size === 'xl'
                       ? 'lg'
-                      : 'md'
+                      : 'md')
                 }
                 {...(testId && { 'data-testid': `${testId}-secondary-action` })}
-                className='min-w-[var(--space-30)]'
+                className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.width['min-content'])}
               >
                 {secondaryAction.label}
               </EnhancedButton>
@@ -791,7 +830,7 @@ const EnhancedEmptyState = React.forwardRef<
           </div>
         )}{' '}
         {/* Custom children content */}
-        {children && <div className='mt-6'>{children}</div>}
+        {children && <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.margin[6])}>{children}</div>}
       </div>
     );
   }
@@ -799,13 +838,137 @@ const EnhancedEmptyState = React.forwardRef<
 
 EnhancedEmptyState.displayName = 'EnhancedEmptyState';
 
+// ===== EMPTY STATE FACTORY =====
+
+/**
+ * Factory for creating pre-configured empty state components
+ */
+const EmptyStateFactory = {
+  /**
+   * Default empty state configuration
+   */
+  default: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'search' as const,
+    variant: 'default' as const,
+    size: 'md' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Gentle empty state configuration
+   */
+  gentle: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'search' as const,
+    variant: 'gentle' as const,
+    size: 'md' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Inspiring empty state configuration
+   */
+  inspiring: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'projects' as const,
+    variant: 'inspiring' as const,
+    size: 'md' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Peaceful empty state configuration
+   */
+  peaceful: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'peaceful' as const,
+    variant: 'peaceful' as const,
+    size: 'md' as const,
+    vibrancy: 'glass' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Magical empty state configuration
+   */
+  magical: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'magical' as const,
+    variant: 'magical' as const,
+    size: 'md' as const,
+    vibrancy: 'floating' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Accessible empty state configuration with AAA compliance
+   */
+  accessible: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'search' as const,
+    variant: 'default' as const,
+    size: 'md' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: true,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Small empty state configuration
+   */
+  small: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'search' as const,
+    variant: 'default' as const,
+    size: 'sm' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Large empty state configuration
+   */
+  large: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'search' as const,
+    variant: 'default' as const,
+    size: 'lg' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Performance-optimized empty state with disabled animations
+   */
+  performance: (props: Partial<EnhancedEmptyStateOwnProps> = {}) => ({
+    messageType: 'search' as const,
+    variant: 'default' as const,
+    size: 'md' as const,
+    vibrancy: 'none' as const,
+    enforceAAA: false,
+    disableAnimations: true,
+    ...props,
+  }),
+};
+
 // ===== EMPTY STATE FACTORY FUNCTIONS =====
 
 /**
  * Factory functions for common empty state patterns
  * Following Steve Jobs' philosophy of making complex things simple
  */
-const EmptyStateFactory = {
+const EmptyStateFactoryFunctions = {
   /**
    * Search results empty state
    */
@@ -990,7 +1153,12 @@ const EmptyStateFactory = {
 export {
   EnhancedEmptyState,
   EmptyStateFactory,
+  EmptyStateFactoryFunctions,
   enhancedEmptyStateVariants,
+  enhancedIconVariants,
+  enhancedTitleVariants,
+  enhancedDescriptionVariants,
+  enhancedActionHintVariants,
   HUMANIZED_MESSAGES,
 };
 

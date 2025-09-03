@@ -31,8 +31,3 @@ export type {
   UppyAdapterProps,
 } from './UppyAdapter';
 export { UppyPresets } from './UppyAdapter';
-
-// ===== RE-EXPORTS =====
-
-export * from './SimpleUpload';
-export * from './UppyAdapter';

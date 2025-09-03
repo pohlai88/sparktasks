@@ -1,5 +1,4 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
 
 interface TokenScaffold {
   category: string;
@@ -359,7 +358,7 @@ function parseTokenPath(path: string): { category: string[]; key: string } {
   const parts = path.split('.');
   return {
     category: parts.slice(0, -1),
-    key: parts[parts.length - 1],
+    key: parts.at(-1),
   };
 }
 
@@ -368,7 +367,7 @@ function getNestedValue(obj: any, path: string[]): any {
 }
 
 function setNestedValue(obj: any, path: string[], value: any): void {
-  const lastKey = path[path.length - 1];
+  const lastKey = path.at(-1);
   const parentPath = path.slice(0, -1);
 
   let current = obj;
@@ -462,12 +461,12 @@ function scaffoldTokens(classNames: string[]): void {
       const { category, key } = parseTokenPath(scaffold.category);
       const existing = getNestedValue(tokens, [...category, key]);
 
-      if (!existing) {
+      if (existing) {
+        console.log(`  ⚠️ Already exists: ${scaffold.suggestion}`);
+      } else {
         setNestedValue(tokens, [...category, key], scaffold.value);
         scaffolded.push(scaffold);
         console.log(`  ✅ Added: ${scaffold.suggestion} = "${scaffold.value}"`);
-      } else {
-        console.log(`  ⚠️ Already exists: ${scaffold.suggestion}`);
       }
 
       suggestions.push(`Use: ${scaffold.suggestion}`);
@@ -481,13 +480,13 @@ function scaffoldTokens(classNames: string[]): void {
         suggestions.push(
           `Consider: DESIGN_TOKENS.recipe.component.color.variant.text`
         );
-      } else if (className.match(/^p[xy]?-\d+$/)) {
+      } else if (/^p[xy]?-\d+$/.test(className)) {
         suggestions.push(
-          `Consider: DESIGN_TOKENS.layout.padding.${className.replace(/[^a-z0-9]/g, '')}`
+          `Consider: DESIGN_TOKENS.layout.padding.${className.replaceAll(/[^a-z0-9]/g, '')}`
         );
       } else {
         suggestions.push(
-          `Consider adding: DESIGN_TOKENS.layout.${className.replace(/-/g, '')} = "${className}"`
+          `Consider adding: DESIGN_TOKENS.layout.${className.replaceAll('-', '')} = "${className}"`
         );
       }
       console.log(`  ❓ Unknown class: ${className} - manual review needed`);
@@ -501,7 +500,7 @@ function scaffoldTokens(classNames: string[]): void {
     console.log(`\n💡 Next steps:`);
     console.log(`1. Review and update src/design/tokens.ts with new tokens`);
     console.log(`2. Replace hardcoded classes with token references:`);
-    suggestions.forEach(s => console.log(`   ${s}`));
+    for (const s of suggestions) console.log(`   ${s}`);
     console.log(`3. Run tests to ensure no regressions`);
 
     // Write scaffolded structure to a temporary file

@@ -28,6 +28,11 @@ export const ENHANCED_DESIGN_TOKENS = {
   // FOUNDATION LAYER - Core design tokens
   // ============================================================================
   foundation: {
+    // Focus ring bundle to deduplicate focus-visible styling
+    focus: {
+      ringPrimary:
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aurora-accent focus-visible:ring-offset-2',
+    },
     // ============================================================================
     // MOTION TOKENS - Animation and transition patterns
     // ============================================================================
@@ -89,44 +94,6 @@ export const ENHANCED_DESIGN_TOKENS = {
       accordionHover: 'transition-colors duration-200 ease-out',
       accordionExpand: 'transition-all duration-300 ease-out',
       accordionCollapse: 'transition-all duration-250 ease-in',
-    },
-
-    // Legacy Tailwind-compatible patterns
-    motionLegacy: {
-      // Common transition patterns
-      'transition-all-200': 'transition-all duration-200 ease-out',
-      'transition-all-300': 'transition-all duration-300 ease-out',
-      'transition-colors-200': 'transition-colors duration-200',
-      'transition-colors-150': 'transition-colors duration-150',
-      'transition-opacity-200': 'transition-opacity duration-200',
-      'transition-transform-200': 'transition-transform duration-200 ease-out',
-      'transition-transform-300': 'transition-transform duration-300 ease-out',
-      
-      // Duration presets
-      'duration-75': 'duration-75',
-      'duration-100': 'duration-100',
-      'duration-150': 'duration-150',
-      'duration-200': 'duration-200',
-      'duration-250': 'duration-250',
-      'duration-300': 'duration-300',
-      'duration-350': 'duration-350',
-      'duration-400': 'duration-400',
-      'duration-500': 'duration-500',
-      'duration-600': 'duration-600',
-      'duration-700': 'duration-700',
-      
-      // Easing presets
-      'ease-linear': 'ease-linear',
-      'ease-in': 'ease-in',
-      'ease-out': 'ease-out',
-      'ease-in-out': 'ease-in-out',
-      
-      // Motion reduction tokens
-      'motion-reduce-none': 'motion-reduce:transition-none motion-reduce:animate-none',
-      'motion-reduce-slow': 'motion-reduce:duration-1000 motion-reduce:ease-linear',
-      'motion-reduce-minimal': 'motion-reduce:duration-500 motion-reduce:ease-out',
-      'motion-reduce-duration-0': 'motion-reduce:duration-0',
-      'motion-reduce-animate-none': 'motion-reduce:animate-none',
     },
 
     // Semantic motion patterns
@@ -191,7 +158,36 @@ export const ENHANCED_DESIGN_TOKENS = {
       border: 'transition-border-color',
     },
 
-         // ============================================================================
+    // Tailwind integration layer for components
+    tailwind: {
+      components: {
+        badgeHover: 'transition-all duration-200 ease-out',
+        badgeActive: 'transition-all duration-150 ease-in',
+        badgeFocus: 'transition-all duration-100 ease-out',
+        buttonHover: 'transition-all duration-200 ease-out',
+        buttonActive: 'transition-all duration-150 ease-in',
+        buttonFocus: 'transition-all duration-100 ease-out',
+        cardHover: 'transition-all duration-300 ease-out',
+        cardActive: 'transition-all duration-200 ease-in',
+        cardFocus: 'transition-all duration-150 ease-out',
+      },
+      legacy: {
+        'motion-reduce-none': 'motion-reduce:transition-none motion-reduce:animate-none',
+        'motion-safe-fade': 'motion-safe:transition-opacity motion-safe:duration-200',
+      },
+      base: {
+        'inline-flex': 'inline-flex',
+        'items-center': 'items-center',
+        'justify-center': 'justify-center',
+        'rounded-full': 'rounded-full',
+        'border': 'border',
+        'font-medium': 'font-medium',
+      },
+    },
+
+
+
+    // ============================================================================
     // COLOR TOKENS - MAPS4 Cosmic Color System
     // ============================================================================
     
@@ -302,6 +298,7 @@ export const ENHANCED_DESIGN_TOKENS = {
         subtle: 'border-cosmic-border-subtle',
         strong: 'border-cosmic-border-strong',
         aurora: 'border-aurora-accent',
+        'aurora-accent': 'border-aurora-accent',
         cosmic: 'border-cosmic-cyan',
         success: 'border-cosmic-success',
         warning: 'border-cosmic-warning',
@@ -358,6 +355,21 @@ export const ENHANCED_DESIGN_TOKENS = {
     // ============================================================================
     
     layout: {
+      // Display patterns - Cosmic visibility control
+      display: {
+        block: 'block',
+        inline: 'inline',
+        flex: 'flex',
+        grid: 'grid',
+        hidden: 'hidden',
+        inlineBlock: 'inline-block',
+        inlineFlex: 'inline-flex',
+        inlineGrid: 'inline-grid',
+        table: 'table',
+        tableCell: 'table-cell',
+        tableRow: 'table-row',
+      },
+
       // Text alignment patterns
       alignment: {
         center: 'text-center',
@@ -406,6 +418,28 @@ export const ENHANCED_DESIGN_TOKENS = {
           '1-3-6': 'grid-cols-1 md:grid-cols-3 lg:grid-cols-6',
           '2-4-8': 'grid-cols-2 md:grid-cols-4 lg:grid-cols-8',
         },
+            // Advanced grid patterns
+        flow: {
+          row: 'grid-flow-row',
+          col: 'grid-flow-col',
+          dense: 'grid-flow-dense',
+        },
+        autoCols: {
+          auto: 'auto-cols-auto',
+          min: 'auto-cols-min',
+          max: 'auto-cols-max',
+          fr: 'auto-cols-fr',
+        },
+        autoRows: {
+          auto: 'auto-rows-auto',
+          min: 'auto-rows-min',
+          max: 'auto-rows-max',
+          fr: 'auto-rows-fr',
+        },
+        span: {
+          colFull: 'col-span-full',
+          rowFull: 'row-span-full',
+        },
       },
 
       // Flexbox system for cosmic flexible layouts
@@ -445,6 +479,142 @@ export const ENHANCED_DESIGN_TOKENS = {
           'wrap-reverse': 'flex-wrap-reverse',
           nowrap: 'flex-nowrap',
         },
+        // DELTA PACK: Advanced flexbox patterns
+        grow: {
+          initial: 'flex-initial',
+          auto: 'flex-auto',
+          none: 'flex-none',
+        },
+        content: {
+          start: 'content-start',
+          end: 'content-end',
+          center: 'content-center',
+          between: 'content-between',
+          around: 'content-around',
+          evenly: 'content-evenly',
+        },
+        self: {
+          start: 'self-start',
+          end: 'self-end',
+          center: 'self-center',
+          stretch: 'self-stretch',
+          baseline: 'self-baseline',
+        },
+        place: {
+          itemsStart: 'place-items-start',
+          itemsEnd: 'place-items-end',
+          itemsCenter: 'place-items-center',
+          itemsStretch: 'place-items-stretch',
+          itemsBaseline: 'place-items-baseline',
+          selfStart: 'place-self-start',
+          selfEnd: 'place-self-end',
+          selfCenter: 'place-self-center',
+          selfStretch: 'place-self-stretch',
+          selfBaseline: 'place-self-baseline',
+        },
+      },
+
+      // DELTA PACK: Object positioning and aspect ratios
+      object: {
+        cover: 'object-cover',
+        contain: 'object-contain',
+        fill: 'object-fill',
+        none: 'object-none',
+        scaleDown: 'object-scale-down',
+      },
+
+      aspect: {
+        video: 'aspect-video',
+        square: 'aspect-square',
+        auto: 'aspect-auto',
+      },
+
+      // DELTA PACK: Overflow and overscroll patterns
+      overflow: {
+        hidden: 'overflow-hidden',
+        auto: 'overflow-auto',
+        scroll: 'overflow-scroll',
+        visible: 'overflow-visible',
+        clip: 'overflow-clip',
+        // Directional overflow
+        x: {
+          auto: 'overflow-x-auto',
+          hidden: 'overflow-x-hidden',
+          scroll: 'overflow-x-scroll',
+          visible: 'overflow-x-visible',
+          clip: 'overflow-x-clip',
+        },
+        y: {
+          auto: 'overflow-y-auto',
+          hidden: 'overflow-y-hidden',
+          scroll: 'overflow-y-scroll',
+          visible: 'overflow-y-visible',
+          clip: 'overflow-y-clip',
+        },
+      },
+
+      overscroll: {
+        auto: 'overscroll-auto',
+        contain: 'overscroll-contain',
+        none: 'overscroll-none',
+        x: {
+          auto: 'overscroll-x-auto',
+          contain: 'overscroll-x-contain',
+          none: 'overscroll-x-none',
+        },
+        y: {
+          auto: 'overscroll-y-auto',
+          contain: 'overscroll-y-contain',
+          none: 'overscroll-y-none',
+        },
+      },
+
+      // DELTA PACK: Text wrapping and selection
+      whitespace: {
+        normal: 'whitespace-normal',
+        nowrap: 'whitespace-nowrap',
+        pre: 'whitespace-pre',
+        preLine: 'whitespace-pre-line',
+        preWrap: 'whitespace-pre-wrap',
+        breakSpaces: 'whitespace-break-spaces',
+      },
+
+      break: {
+        normal: 'break-normal',
+        words: 'break-words',
+        all: 'break-all',
+        keep: 'break-keep',
+      },
+
+      select: {
+        none: 'select-none',
+        text: 'select-text',
+        all: 'select-all',
+        auto: 'select-auto',
+      },
+
+      // DELTA PACK: Cursor and resize patterns
+      cursor: {
+        auto: 'cursor-auto',
+        default: 'cursor-default',
+        pointer: 'cursor-pointer',
+        wait: 'cursor-wait',
+        text: 'cursor-text',
+        move: 'cursor-move',
+        'not-allowed': 'cursor-not-allowed',
+        help: 'cursor-help',
+        progress: 'cursor-progress',
+        crosshair: 'cursor-crosshair',
+        'vertical-text': 'cursor-vertical-text',
+        grab: 'cursor-grab',
+        grabbing: 'cursor-grabbing',
+      },
+
+      resize: {
+        none: 'resize-none',
+        y: 'resize-y',
+        x: 'resize-x',
+        auto: 'resize-auto',
       },
 
       // Spacing patterns for cosmic content separation
@@ -479,17 +649,6 @@ export const ENHANCED_DESIGN_TOKENS = {
         },
       },
 
-      // Display patterns for cosmic visibility control
-      display: {
-        block: 'block',
-        inline: 'inline',
-        inlineBlock: 'inline-block',
-        flex: 'flex',
-        grid: 'grid',
-        hidden: 'hidden',
-        visible: 'visible',
-      },
-
       // Position patterns for cosmic positioning system
       position: {
         relative: 'relative',
@@ -497,15 +656,6 @@ export const ENHANCED_DESIGN_TOKENS = {
         fixed: 'fixed',
         sticky: 'sticky',
         static: 'static',
-      },
-
-      // Overflow patterns for cosmic content containment
-      overflow: {
-        hidden: 'overflow-hidden',
-        auto: 'overflow-auto',
-        scroll: 'overflow-scroll',
-        visible: 'overflow-visible',
-        clip: 'overflow-clip',
       },
 
       // Width tokens for cosmic container sizing
@@ -527,6 +677,12 @@ export const ENHANCED_DESIGN_TOKENS = {
         'min-content': 'min-w-min',
         'max-content': 'max-w-max',
         'fit-content': 'w-fit',
+        // DELTA PACK: Fractional widths (minimal set)
+        '1/2': 'w-1/2',
+        '1/3': 'w-1/3',
+        '2/3': 'w-2/3',
+        '1/4': 'w-1/4',
+        '3/4': 'w-3/4',
       },
 
       // Height tokens for cosmic container sizing
@@ -538,6 +694,12 @@ export const ENHANCED_DESIGN_TOKENS = {
         'max-content': 'max-h-max',
         'min-content': 'min-h-min',
         'fit-content': 'h-fit',
+        // DELTA PACK: Fractional heights (minimal set)
+        '1/2': 'h-1/2',
+        '1/3': 'h-1/3',
+        '2/3': 'h-2/3',
+        '1/4': 'h-1/4',
+        '3/4': 'h-3/4',
       },
 
       // Padding tokens for cosmic content breathing
@@ -588,6 +750,46 @@ export const ENHANCED_DESIGN_TOKENS = {
         'b-auto': 'mb-auto',
         'l-auto': 'ml-auto',
         'r-auto': 'mr-auto',
+        top: {
+          0: 'mt-0',
+          1: 'mt-1',
+          2: 'mt-2',
+          3: 'mt-3',
+          4: 'mt-4',
+          5: 'mt-5',
+          6: 'mt-6',
+          8: 'mt-8',
+          10: 'mt-10',
+          12: 'mt-12',
+          16: 'mt-16',
+          20: 'mt-20',
+          24: 'mt-24',
+          32: 'mt-32',
+          40: 'mt-40',
+          48: 'mt-48',
+          56: 'mt-56',
+          64: 'mt-64',
+        },
+        bottom: {
+          0: 'mb-0',
+          1: 'mb-1',
+          2: 'mb-2',
+          3: 'mb-3',
+          4: 'mb-4',
+          5: 'mb-5',
+          6: 'mb-6',
+          8: 'mb-8',
+          10: 'mb-10',
+          12: 'mb-12',
+          16: 'mb-16',
+          20: 'mb-20',
+          24: 'mb-24',
+          32: 'mb-32',
+          40: 'mb-40',
+          48: 'mb-48',
+          56: 'mb-56',
+          64: 'mb-64',
+        },
       },
 
       // Border tokens for cosmic boundary definition
@@ -646,6 +848,37 @@ export const ENHANCED_DESIGN_TOKENS = {
           0: 'flex-shrink-0',
           1: 'flex-shrink',
         },
+      },
+      // Divide tokens for borders between children
+      divide: {
+        y: 'divide-y',
+        x: 'divide-x',
+        none: 'divide-y-0',
+        subtle: 'divide-border',
+        strong: 'divide-cosmic-border-strong',
+        subtleCosmic: 'divide-cosmic-border/30',
+      },
+    },
+
+    // Icon size tokens (common sizes)
+    icon: {
+      size: {
+        sm: 'size-4',
+        md: 'size-5',
+        lg: 'size-6',
+      },
+    },
+
+    // Avatar size aliases (semantic class bundles)
+    avatar: {
+      size: {
+        xs: 'h-6 w-6',
+        sm: 'h-8 w-8',
+        md: 'h-10 w-10',
+        lg: 'h-12 w-12',
+        xl: 'h-16 w-16',
+        '2xl': 'h-20 w-20',
+        touch: 'h-11 w-11',
       },
     },
 
@@ -707,6 +940,7 @@ export const ENHANCED_DESIGN_TOKENS = {
         0: 'backdrop-saturate-0',
         50: 'backdrop-saturate-50',
         100: 'backdrop-saturate-100',
+        135: 'backdrop-saturate-135',
         150: 'backdrop-saturate-150',
         200: 'backdrop-saturate-200',
       },
@@ -731,6 +965,790 @@ export const ENHANCED_DESIGN_TOKENS = {
         125: 'backdrop-contrast-125',
         150: 'backdrop-contrast-150',
         200: 'backdrop-contrast-200',
+      },
+    },
+
+    // ============================================================================
+    // TRANSFORM TOKENS - MAPS4 Cosmic Transform System
+    // ============================================================================
+    
+    transform: {
+      // Scale transformations
+      scale: {
+        none: 'scale-0',
+        '50': 'scale-50',
+        '75': 'scale-75',
+        '90': 'scale-90',
+        '95': 'scale-95',
+        '98': 'scale-98',
+        '100': 'scale-100',
+        '105': 'scale-105',
+        '110': 'scale-110',
+        '125': 'scale-125',
+        '150': 'scale-150',
+        '200': 'scale-200',
+        'x-50': 'scale-x-50',
+        'x-75': 'scale-x-75',
+        'x-90': 'scale-x-90',
+        'x-95': 'scale-x-95',
+        'x-100': 'scale-x-100',
+        'x-105': 'scale-x-105',
+        'x-110': 'scale-x-110',
+        'x-125': 'scale-x-125',
+        'x-150': 'scale-x-150',
+        'x-200': 'scale-x-200',
+        'y-50': 'scale-y-50',
+        'y-75': 'scale-y-75',
+        'y-90': 'scale-y-90',
+        'y-95': 'scale-y-95',
+        'y-100': 'scale-y-100',
+        'y-105': 'scale-y-105',
+        'y-110': 'scale-y-110',
+        'y-125': 'scale-y-125',
+        'y-150': 'scale-y-150',
+        'y-200': 'scale-y-200',
+      },
+
+      // Rotate transformations
+      rotate: {
+        none: 'rotate-0',
+        '1': 'rotate-1',
+        '2': 'rotate-2',
+        '3': 'rotate-3',
+        '6': 'rotate-6',
+        '12': 'rotate-12',
+        '45': 'rotate-45',
+        '90': 'rotate-90',
+        '180': 'rotate-180',
+        '270': 'rotate-270',
+        '360': 'rotate-360',
+        '-1': '-rotate-1',
+        '-2': '-rotate-2',
+        '-3': '-rotate-3',
+        '-6': '-rotate-6',
+        '-12': '-rotate-12',
+        '-45': '-rotate-45',
+        '-90': '-rotate-90',
+        '-180': '-rotate-180',
+        '-270': '-rotate-270',
+        '-360': '-rotate-360',
+      },
+
+      // Translate transformations
+      translate: {
+        'x-0': 'translate-x-0',
+        'x-1': 'translate-x-1',
+        'x-2': 'translate-x-2',
+        'x-3': 'translate-x-3',
+        'x-4': 'translate-x-4',
+        'x-5': 'translate-x-5',
+        'x-6': 'translate-x-6',
+        'x-8': 'translate-x-8',
+        'x-10': 'translate-x-10',
+        'x-12': 'translate-x-12',
+        'x-16': 'translate-x-16',
+        'x-20': 'translate-x-20',
+        'x-24': 'translate-x-24',
+        'x-32': 'translate-x-32',
+        'x-40': 'translate-x-40',
+        'x-48': 'translate-x-48',
+        'x-56': 'translate-x-56',
+        'x-64': 'translate-x-64',
+        'x-80': 'translate-x-80',
+        'x-96': 'translate-x-96',
+        'x-px': 'translate-x-px',
+        'x-0.5': 'translate-x-0.5',
+        'x-1.5': 'translate-x-1.5',
+        'x-2.5': 'translate-x-2.5',
+        'x-3.5': 'translate-x-3.5',
+        'x-1/2': 'translate-x-1/2',
+        'x-1/3': 'translate-x-1/3',
+        'x-2/3': 'translate-x-2/3',
+        'x-1/4': 'translate-x-1/4',
+        'x-3/4': 'translate-x-3/4',
+        'x-full': 'translate-x-full',
+        'y-0': 'translate-y-0',
+        'y-1': 'translate-y-1',
+        'y-2': 'translate-y-2',
+        'y-3': 'translate-y-3',
+        'y-4': 'translate-y-4',
+        'y-5': 'translate-y-5',
+        'y-6': 'translate-y-6',
+        'y-8': 'translate-y-8',
+        'y-10': 'translate-y-10',
+        'y-12': 'translate-y-12',
+        'y-16': 'translate-y-16',
+        'y-20': 'translate-y-20',
+        'y-24': 'translate-y-24',
+        'y-32': 'translate-y-32',
+        'y-40': 'translate-y-40',
+        'y-48': 'translate-y-48',
+        'y-56': 'translate-y-56',
+        'y-64': 'translate-y-64',
+        'y-80': 'translate-y-80',
+        'y-96': 'translate-y-96',
+        'y-px': 'translate-y-px',
+        'y-0.5': 'translate-y-0.5',
+        'y-1.5': 'translate-y-1.5',
+        'y-2.5': 'translate-y-2.5',
+        'y-3.5': 'translate-y-3.5',
+        'y-1/2': 'translate-y-1/2',
+        'y-1/3': 'translate-y-1/3',
+        'y-2/3': 'translate-y-2/3',
+        'y-1/4': 'translate-y-1/4',
+        'y-3/4': 'translate-y-3/4',
+        'y-full': 'translate-y-full',
+      },
+
+      // Skew transformations
+      skew: {
+        'x-0': 'skew-x-0',
+        'x-1': 'skew-x-1',
+        'x-2': 'skew-x-2',
+        'x-3': 'skew-x-3',
+        'x-6': 'skew-x-6',
+        'x-12': 'skew-x-12',
+        'y-0': 'skew-y-0',
+        'y-1': 'skew-y-1',
+        'y-2': 'skew-y-2',
+        'y-3': 'skew-y-3',
+        'y-6': 'skew-y-6',
+        'y-12': 'skew-y-12',
+        '-x-1': '-skew-x-1',
+        '-x-2': '-skew-x-2',
+        '-x-3': '-skew-x-3',
+        '-x-6': '-skew-x-6',
+        '-x-12': '-skew-x-12',
+        '-y-1': '-skew-y-1',
+        '-y-2': '-skew-y-2',
+        '-y-3': '-skew-y-3',
+        '-y-6': '-skew-y-6',
+        '-y-12': '-skew-y-12',
+      },
+
+      // Transform origin
+      origin: {
+        center: 'origin-center',
+        top: 'origin-top',
+        'top-right': 'origin-top-right',
+        right: 'origin-right',
+        'bottom-right': 'origin-bottom-right',
+        bottom: 'origin-bottom',
+        'bottom-left': 'origin-bottom-left',
+        left: 'origin-left',
+        'top-left': 'origin-top-left',
+      },
+
+      // Transform style
+      style: {
+        flat: 'transform-gpu',
+        preserve: 'transform-none',
+      },
+    },
+
+    // ============================================================================
+    // FILTER TOKENS - MAPS4 Cosmic Filter System
+    // ============================================================================
+    
+    filter: {
+      // Blur filters
+      blur: {
+        none: 'blur-none',
+        sm: 'blur-sm',
+        default: 'blur',
+        md: 'blur-md',
+        lg: 'blur-lg',
+        xl: 'blur-xl',
+        '2xl': 'blur-2xl',
+        '3xl': 'blur-3xl',
+      },
+
+      // Brightness filters
+      brightness: {
+        0: 'brightness-0',
+        50: 'brightness-50',
+        75: 'brightness-75',
+        90: 'brightness-90',
+        95: 'brightness-95',
+        100: 'brightness-100',
+        105: 'brightness-105',
+        110: 'brightness-110',
+        125: 'brightness-125',
+        150: 'brightness-150',
+        200: 'brightness-200',
+      },
+
+      // Contrast filters
+      contrast: {
+        0: 'contrast-0',
+        50: 'contrast-50',
+        75: 'contrast-75',
+        100: 'contrast-100',
+        125: 'contrast-125',
+        150: 'contrast-150',
+        200: 'contrast-200',
+      },
+
+      // Grayscale filters
+      grayscale: {
+        0: 'grayscale-0',
+        default: 'grayscale',
+      },
+
+      // Hue rotate filters
+      hueRotate: {
+        0: 'hue-rotate-0',
+        15: 'hue-rotate-15',
+        30: 'hue-rotate-30',
+        60: 'hue-rotate-60',
+        90: 'hue-rotate-90',
+        180: 'hue-rotate-180',
+        '-15': '-hue-rotate-15',
+        '-30': '-hue-rotate-30',
+        '-60': '-hue-rotate-60',
+        '-90': '-hue-rotate-90',
+        '-180': '-hue-rotate-180',
+      },
+
+      // Invert filters
+      invert: {
+        0: 'invert-0',
+        default: 'invert',
+      },
+
+      // Saturate filters
+      saturate: {
+        0: 'saturate-0',
+        50: 'saturate-50',
+        100: 'saturate-100',
+        150: 'saturate-150',
+        200: 'saturate-200',
+      },
+
+      // Sepia filters
+      sepia: {
+        0: 'sepia-0',
+        default: 'sepia',
+      },
+
+      // Drop shadow filters
+      dropShadow: {
+        none: 'drop-shadow-none',
+        sm: 'drop-shadow-sm',
+        default: 'drop-shadow',
+        md: 'drop-shadow-md',
+        lg: 'drop-shadow-lg',
+        xl: 'drop-shadow-xl',
+        '2xl': 'drop-shadow-2xl',
+      },
+    },
+
+    // ============================================================================
+    // ANIMATION TOKENS - MAPS4 Cosmic Animation System
+    // ============================================================================
+    
+    animation: {
+      // Animation names
+      name: {
+        none: 'animate-none',
+        spin: 'animate-spin',
+        ping: 'animate-ping',
+        pulse: 'animate-pulse',
+        bounce: 'animate-bounce',
+        'fade-in': 'animate-fade-in',
+        'slide-up': 'animate-slide-up',
+        'scale-in': 'animate-scale-in',
+        'bounce-gentle': 'animate-bounce-gentle',
+      },
+
+      // Animation duration
+      duration: {
+        75: 'duration-75',
+        100: 'duration-100',
+        150: 'duration-150',
+        200: 'duration-200',
+        300: 'duration-300',
+        500: 'duration-500',
+        700: 'duration-700',
+        1000: 'duration-1000',
+        0: 'duration-0',
+        120: 'duration-120',
+        160: 'duration-160',
+        180: 'duration-180',
+        220: 'duration-220',
+        600: 'duration-600',
+      },
+
+      // Animation timing function
+      timing: {
+        linear: 'ease-linear',
+        in: 'ease-in',
+        out: 'ease-out',
+        'in-out': 'ease-in-out',
+        standard: 'ease-standard',
+        entrance: 'ease-entrance',
+        exit: 'ease-exit',
+        spring: 'ease-spring',
+      },
+
+      // Animation delay
+      delay: {
+        75: 'delay-75',
+        100: 'delay-100',
+        150: 'delay-150',
+        200: 'delay-200',
+        300: 'delay-300',
+        500: 'delay-500',
+        700: 'delay-700',
+        1000: 'delay-1000',
+        0: 'delay-0',
+      },
+
+      // Animation iteration count
+      iteration: {
+        1: 'animate-once',
+        infinite: 'animate-infinite',
+      },
+
+      // Animation fill mode
+      fill: {
+        none: 'animate-fill-none',
+        forwards: 'animate-fill-forwards',
+        backwards: 'animate-fill-backwards',
+        both: 'animate-fill-both',
+      },
+    },
+
+    // ============================================================================
+    // POSITIONING TOKENS - MAPS4 Cosmic Positioning System
+    // ============================================================================
+    
+    positioning: {
+      // Top positioning
+      top: {
+        0: 'top-0',
+        auto: 'top-auto',
+        '1': 'top-1',
+        '2': 'top-2',
+        '3': 'top-3',
+        '4': 'top-4',
+        '5': 'top-5',
+        '6': 'top-6',
+        '8': 'top-8',
+        '10': 'top-10',
+        '12': 'top-12',
+        '16': 'top-16',
+        '20': 'top-20',
+        '24': 'top-24',
+        '32': 'top-32',
+        '40': 'top-40',
+        '48': 'top-48',
+        '56': 'top-56',
+        '64': 'top-64',
+        '1/2': 'top-1/2',
+        '1/3': 'top-1/3',
+        '2/3': 'top-2/3',
+        '1/4': 'top-1/4',
+        '3/4': 'top-3/4',
+        full: 'top-full',
+        '-1': '-top-1',
+        '-2': '-top-2',
+        '-3': '-top-3',
+        '-4': '-top-4',
+        '-5': '-top-5',
+        '-6': '-top-6',
+        '-8': '-top-8',
+        '-10': '-top-10',
+        '-12': '-top-12',
+        '-16': '-top-16',
+        '-20': '-top-20',
+        '-24': '-top-24',
+        '-32': '-top-32',
+        '-40': '-top-40',
+        '-48': '-top-48',
+        '-56': '-top-56',
+        '-64': '-top-64',
+        '-1/2': '-top-1/2',
+        '-1/3': '-top-1/3',
+        '-2/3': '-top-2/3',
+        '-1/4': '-top-1/4',
+        '-3/4': '-top-3/4',
+        '-full': '-top-full',
+      },
+
+      // Right positioning
+      right: {
+        0: 'right-0',
+        auto: 'right-auto',
+        '1': 'right-1',
+        '2': 'right-2',
+        '3': 'right-3',
+        '4': 'right-4',
+        '5': 'right-5',
+        '6': 'right-6',
+        '8': 'right-8',
+        '10': 'right-10',
+        '12': 'right-12',
+        '16': 'right-16',
+        '20': 'right-20',
+        '24': 'right-24',
+        '32': 'right-32',
+        '40': 'right-40',
+        '48': 'right-48',
+        '56': 'right-56',
+        '64': 'right-64',
+        '1/2': 'right-1/2',
+        '1/3': 'right-1/3',
+        '2/3': 'right-2/3',
+        '1/4': 'right-1/4',
+        '3/4': 'right-3/4',
+        full: 'right-full',
+        '-1': '-right-1',
+        '-2': '-right-2',
+        '-3': '-right-3',
+        '-4': '-right-4',
+        '-5': '-right-5',
+        '-6': '-right-6',
+        '-8': '-right-8',
+        '-10': '-right-10',
+        '-12': '-right-12',
+        '-16': '-right-16',
+        '-20': '-right-20',
+        '-24': '-right-24',
+        '-32': '-right-32',
+        '-40': '-right-40',
+        '-48': '-right-48',
+        '-56': '-right-56',
+        '-64': '-right-64',
+        '-1/2': '-right-1/2',
+        '-1/3': '-right-1/3',
+        '-2/3': '-right-2/3',
+        '-1/4': '-right-1/4',
+        '-3/4': '-right-3/4',
+        '-full': '-right-full',
+      },
+
+      // Bottom positioning
+      bottom: {
+        0: 'bottom-0',
+        auto: 'bottom-auto',
+        '1': 'bottom-1',
+        '2': 'bottom-2',
+        '3': 'bottom-3',
+        '4': 'bottom-4',
+        '5': 'bottom-5',
+        '6': 'bottom-6',
+        '8': 'bottom-8',
+        '10': 'bottom-10',
+        '12': 'bottom-12',
+        '16': 'bottom-16',
+        '20': 'bottom-20',
+        '24': 'bottom-24',
+        '32': 'bottom-32',
+        '40': 'bottom-40',
+        '48': 'bottom-48',
+        '56': 'bottom-56',
+        '64': 'bottom-64',
+        '1/2': 'bottom-1/2',
+        '1/3': 'bottom-1/3',
+        '2/3': 'bottom-2/3',
+        '1/4': 'bottom-1/4',
+        '3/4': 'bottom-3/4',
+        full: 'bottom-full',
+        '-1': '-bottom-1',
+        '-2': '-bottom-2',
+        '-3': '-bottom-3',
+        '-4': '-bottom-4',
+        '-5': '-bottom-5',
+        '-6': '-bottom-6',
+        '-8': '-bottom-8',
+        '-10': '-bottom-10',
+        '-12': '-bottom-12',
+        '-16': '-bottom-16',
+        '-20': '-bottom-20',
+        '-24': '-bottom-24',
+        '-32': '-bottom-32',
+        '-40': '-bottom-40',
+        '-48': '-bottom-48',
+        '-56': '-bottom-56',
+        '-64': '-bottom-64',
+        '-1/2': '-bottom-1/2',
+        '-1/3': '-bottom-1/3',
+        '-2/3': '-bottom-2/3',
+        '-1/4': '-bottom-1/4',
+        '-3/4': '-bottom-3/4',
+        '-full': '-bottom-full',
+      },
+
+      // Left positioning
+      left: {
+        0: 'left-0',
+        auto: 'left-auto',
+        '1': 'left-1',
+        '2': 'left-2',
+        '3': 'left-3',
+        '4': 'left-4',
+        '5': 'left-5',
+        '6': 'left-6',
+        '8': 'left-8',
+        '10': 'left-10',
+        '12': 'left-12',
+        '16': 'left-16',
+        '20': 'left-20',
+        '24': 'left-24',
+        '32': 'left-32',
+        '40': 'left-40',
+        '48': 'left-48',
+        '56': 'left-56',
+        '64': 'left-64',
+        '1/2': 'left-1/2',
+        '1/3': 'left-1/3',
+        '2/3': 'left-2/3',
+        '1/4': 'left-1/4',
+        '3/4': 'left-3/4',
+        full: 'left-full',
+        '-1': '-left-1',
+        '-2': '-left-2',
+        '-3': '-left-3',
+        '-4': '-left-4',
+        '-5': '-left-5',
+        '-6': '-left-6',
+        '-8': '-left-8',
+        '-10': '-left-10',
+        '-12': '-left-12',
+        '-16': '-left-16',
+        '-20': '-left-20',
+        '-24': '-left-24',
+        '-32': '-left-32',
+        '-40': '-left-40',
+        '-48': '-left-48',
+        '-56': '-left-56',
+        '-64': '-left-64',
+        '-1/2': '-left-1/2',
+        '-1/3': '-left-1/3',
+        '-2/3': '-left-2/3',
+        '-1/4': '-left-1/4',
+        '-3/4': '-left-3/4',
+        '-full': '-left-full',
+      },
+
+      // Inset positioning
+      inset: {
+        0: 'inset-0',
+        auto: 'inset-auto',
+        '1': 'inset-1',
+        '2': 'inset-2',
+        '3': 'inset-3',
+        '4': 'inset-4',
+        '5': 'inset-5',
+        '6': 'inset-6',
+        '8': 'inset-8',
+        '10': 'inset-10',
+        '12': 'inset-12',
+        '16': 'inset-16',
+        '20': 'inset-20',
+        '24': 'inset-24',
+        '32': 'inset-32',
+        '40': 'inset-40',
+        '48': 'inset-48',
+        '56': 'inset-56',
+        '64': 'inset-64',
+        '1/2': 'inset-1/2',
+        '1/3': 'inset-1/3',
+        '2/3': 'inset-2/3',
+        '1/4': 'inset-1/4',
+        '3/4': 'inset-3/4',
+        full: 'inset-full',
+        '-1': '-inset-1',
+        '-2': '-inset-2',
+        '-3': '-inset-3',
+        '-4': '-inset-4',
+        '-5': '-inset-5',
+        '-6': '-inset-6',
+        '-8': '-inset-8',
+        '-10': '-inset-10',
+        '-12': '-inset-12',
+        '-16': '-inset-16',
+        '-20': '-inset-20',
+        '-24': '-inset-24',
+        '-32': '-inset-32',
+        '-40': '-inset-40',
+        '-48': '-inset-48',
+        '-56': '-inset-56',
+        '-64': '-inset-64',
+        '-1/2': '-inset-1/2',
+        '-1/3': '-inset-1/3',
+        '-2/3': '-inset-2/3',
+        '-1/4': '-inset-1/4',
+        '-3/4': '-inset-3/4',
+        '-full': '-inset-full',
+      },
+    },
+
+    // ============================================================================
+    // INTERACTION TOKENS - MAPS4 Cosmic Interaction System
+    // ============================================================================
+    
+    interaction: {
+      // Group variants
+      group: {
+        hover: 'group-hover:',
+        focus: 'group-focus:',
+        active: 'group-active:',
+        disabled: 'group-disabled:',
+        checked: 'group-checked:',
+        'focus-within': 'group-focus-within:',
+        'focus-visible': 'group-focus-visible:',
+        'peer-checked': 'peer-checked:',
+        'peer-disabled': 'peer-disabled:',
+        'peer-focus': 'peer-focus:',
+        'peer-hover': 'peer-hover:',
+        'peer-active': 'peer-active:',
+        'peer-focus-within': 'peer-focus-within:',
+        'peer-focus-visible': 'peer-focus-visible:',
+      },
+
+      // Data attribute variants
+      data: {
+        'state-checked': 'data-[state=checked]:',
+        'state-unchecked': 'data-[state=unchecked]:',
+        'state-open': 'data-[state=open]:',
+        'state-closed': 'data-[state=closed]:',
+        'state-on': 'data-[state=on]:',
+        'state-off': 'data-[state=off]:',
+        'state-visible': 'data-[state=visible]:',
+        'state-hidden': 'data-[state=hidden]:',
+        'state-active': 'data-[state=active]:',
+        'state-inactive': 'data-[state=inactive]:',
+      },
+
+      // Print variants
+      print: {
+        block: 'print:block',
+        inline: 'print:inline',
+        inlineBlock: 'print:inline-block',
+        flex: 'print:flex',
+        grid: 'print:grid',
+        hidden: 'print:hidden',
+        visible: 'print:visible',
+      },
+
+      // Orientation variants
+      orientation: {
+        portrait: 'portrait:',
+        landscape: 'landscape:',
+      },
+
+      // Motion variants
+      motion: {
+        safe: 'motion-safe:',
+        reduce: 'motion-reduce:',
+      },
+
+      // Contrast variants
+      contrast: {
+        more: 'contrast-more:',
+        less: 'contrast-less:',
+      },
+
+      // Forced colors variants
+      forcedColors: {
+        active: 'forced-colors:',
+      },
+
+      // Supports variants
+      supports: {
+        backdrop: '@supports (backdrop-filter: blur(0))',
+        grid: '@supports (display: grid)',
+        flexbox: '@supports (display: flex)',
+      },
+    },
+
+    // ============================================================================
+    // CONTAINER QUERY TOKENS - MAPS4 Cosmic Container System
+    // ============================================================================
+    
+    container: {
+      // Container type
+      type: {
+        inline: 'container-type-inline',
+        size: 'container-type-size',
+        normal: 'container-type-normal',
+      },
+
+      // Container queries
+      query: {
+        sm: '@container (min-width: 640px)',
+        md: '@container (min-width: 768px)',
+        lg: '@container (min-width: 1024px)',
+        xl: '@container (min-width: 1280px)',
+        '2xl': '@container (min-width: 1536px)',
+      },
+    },
+
+    // ============================================================================
+    // COMPREHENSIVE FRACTIONAL SIZING - MAPS4 Cosmic Sizing System
+    // ============================================================================
+    
+    fractional: {
+      // Width fractions
+      width: {
+        '1/2': 'w-1/2',
+        '1/3': 'w-1/3',
+        '2/3': 'w-2/3',
+        '1/4': 'w-1/4',
+        '2/4': 'w-2/4',
+        '3/4': 'w-3/4',
+        '1/5': 'w-1/5',
+        '2/5': 'w-2/5',
+        '3/5': 'w-3/5',
+        '4/5': 'w-4/5',
+        '1/6': 'w-1/6',
+        '2/6': 'w-2/6',
+        '3/6': 'w-3/6',
+        '4/6': 'w-4/6',
+        '5/6': 'w-5/6',
+        '1/12': 'w-1/12',
+        '2/12': 'w-2/12',
+        '3/12': 'w-3/12',
+        '4/12': 'w-4/12',
+        '5/12': 'w-5/12',
+        '6/12': 'w-6/12',
+        '7/12': 'w-7/12',
+        '8/12': 'w-8/12',
+        '9/12': 'w-9/12',
+        '10/12': 'w-10/12',
+        '11/12': 'w-11/12',
+      },
+
+      // Height fractions
+      height: {
+        '1/2': 'h-1/2',
+        '1/3': 'h-1/3',
+        '2/3': 'h-2/3',
+        '1/4': 'h-1/4',
+        '2/4': 'h-2/4',
+        '3/4': 'h-3/4',
+        '1/5': 'h-1/5',
+        '2/5': 'h-2/5',
+        '3/5': 'h-3/5',
+        '4/5': 'h-4/5',
+        '1/6': 'h-1/6',
+        '2/6': 'h-2/6',
+        '3/6': 'h-3/6',
+        '4/6': 'h-4/6',
+        '5/6': 'h-5/6',
+        '1/12': 'h-1/12',
+        '2/12': 'h-2/12',
+        '3/12': 'h-3/12',
+        '4/12': 'h-4/12',
+        '5/12': 'h-5/12',
+        '6/12': 'h-6/12',
+        '7/12': 'h-7/12',
+        '8/12': 'h-8/12',
+        '9/12': 'h-9/12',
+        '10/12': 'h-10/12',
+        '11/12': 'h-11/12',
       },
     },
   },
@@ -876,6 +1894,12 @@ export const ENHANCED_DESIGN_TOKENS = {
         info: 'bg-cosmic-info text-cosmic-dark',
       },
     },
+    // Component recipes (accordion baseline)
+    accordion: {
+      root: 'w-full',
+      trigger: 'flex w-full items-center justify-between text-left',
+      content: '',
+    },
   },
 
     // ============================================================================
@@ -912,9 +1936,21 @@ export type LayoutTokens = DesignTokens['foundation']['layout'];
 export type ElevationTokens = DesignTokens['foundation']['elevation'];
 export type BackdropTokens = DesignTokens['foundation']['backdrop'];
 
+// DELTA PACK: New token types
+export type GridTokens = DesignTokens['foundation']['layout']['grid'];
+export type FlexTokens = DesignTokens['foundation']['layout']['flex'];
+export type ObjectTokens = DesignTokens['foundation']['layout']['object'];
+export type AspectTokens = DesignTokens['foundation']['layout']['aspect'];
+export type OverflowTokens = DesignTokens['foundation']['layout']['overflow'];
+export type OverscrollTokens = DesignTokens['foundation']['layout']['overscroll'];
+export type WhitespaceTokens = DesignTokens['foundation']['layout']['whitespace'];
+export type BreakTokens = DesignTokens['foundation']['layout']['break'];
+export type SelectTokens = DesignTokens['foundation']['layout']['select'];
+export type CursorTokens = DesignTokens['foundation']['layout']['cursor'];
+export type ResizeTokens = DesignTokens['foundation']['layout']['resize'];
+
 // Motion-specific types
 export type MotionComponentsTokens = DesignTokens['foundation']['motionComponents'];
-export type MotionLegacyTokens = DesignTokens['foundation']['motionLegacy'];
 export type MotionPatternsTokens = DesignTokens['foundation']['motionPatterns'];
 export type MotionAccessibilityTokens = DesignTokens['foundation']['motionAccessibility'];
 export type MotionTransitionTokens = DesignTokens['foundation']['motionTransition'];
@@ -944,7 +1980,6 @@ export const DesignTokensSchema = z.object({
   foundation: z.object({
     // Motion validation
     motionComponents: z.record(z.string()),
-    motionLegacy: z.record(z.string()),
     motionPatterns: z.record(z.string()),
     motionAccessibility: z.record(z.string()),
     motionTransition: z.record(z.string()),
@@ -983,11 +2018,17 @@ export const DesignTokensSchema = z.object({
     
     // Layout validation
     layout: z.object({
+      display: z.record(z.string()),
       alignment: z.record(z.string()),
       grid: z.object({
         columns: z.record(z.string()),
         gap: z.record(z.string()),
         responsive: z.record(z.string()),
+        // Advanced grid patterns
+        flow: z.record(z.string()),
+        autoCols: z.record(z.string()),
+        autoRows: z.record(z.string()),
+        span: z.record(z.string()),
       }),
       flex: z.object({
         direction: z.record(z.string()),
@@ -995,15 +2036,45 @@ export const DesignTokensSchema = z.object({
         items: z.record(z.string()),
         justify: z.record(z.string()),
         wrap: z.record(z.string()),
+        // Advanced flexbox patterns
+        grow: z.record(z.string()),
+        content: z.record(z.string()),
+        self: z.record(z.string()),
+        place: z.record(z.string()),
       }),
+      // Object positioning and aspect ratios
+      object: z.record(z.string()),
+      aspect: z.record(z.string()),
+      // Overflow and overscroll patterns
+      overflow: z.object({
+        hidden: z.string(),
+        auto: z.string(),
+        scroll: z.string(),
+        visible: z.string(),
+        clip: z.string(),
+        x: z.record(z.string()),
+        y: z.record(z.string()),
+      }),
+      overscroll: z.object({
+        auto: z.string(),
+        contain: z.string(),
+        none: z.string(),
+        x: z.record(z.string()),
+        y: z.record(z.string()),
+      }),
+      // Text wrapping and selection
+      whitespace: z.record(z.string()),
+      break: z.record(z.string()),
+      select: z.record(z.string()),
+      // Cursor and resize patterns
+      cursor: z.record(z.string()),
+      resize: z.record(z.string()),
       spacing: z.object({
         stack: z.record(z.string()),
         cluster: z.record(z.string()),
         responsive: z.record(z.string()),
       }),
-      display: z.record(z.string()),
       position: z.record(z.string()),
-      overflow: z.record(z.string()),
       width: z.record(z.string()),
       height: z.record(z.string()),
       padding: z.record(z.string()),
@@ -1020,6 +2091,72 @@ export const DesignTokensSchema = z.object({
         basis: z.record(z.string()),
         shrink: z.record(z.string()),
       }),
+    }),
+    
+    // Transform validation
+    transform: z.object({
+      scale: z.record(z.string()),
+      rotate: z.record(z.string()),
+      translate: z.record(z.string()),
+      skew: z.record(z.string()),
+      origin: z.record(z.string()),
+      style: z.record(z.string()),
+    }),
+    
+    // Filter validation
+    filter: z.object({
+      blur: z.record(z.string()),
+      brightness: z.record(z.string()),
+      contrast: z.record(z.string()),
+      grayscale: z.record(z.string()),
+      hueRotate: z.record(z.string()),
+      invert: z.record(z.string()),
+      saturate: z.record(z.string()),
+      sepia: z.record(z.string()),
+      dropShadow: z.record(z.string()),
+    }),
+    
+    // Animation validation
+    animation: z.object({
+      name: z.record(z.string()),
+      duration: z.record(z.string()),
+      timing: z.record(z.string()),
+      delay: z.record(z.string()),
+      iteration: z.record(z.string()),
+      fill: z.record(z.string()),
+    }),
+    
+    // Positioning validation
+    positioning: z.object({
+      top: z.record(z.string()),
+      right: z.record(z.string()),
+      bottom: z.record(z.string()),
+      left: z.record(z.string()),
+      inset: z.record(z.string()),
+    }),
+    
+    // Interaction validation
+    interaction: z.object({
+      group: z.record(z.string()),
+      data: z.record(z.string()),
+      print: z.record(z.string()),
+      orientation: z.record(z.string()),
+      motion: z.record(z.string()),
+      contrast: z.record(z.string()),
+      forcedColors: z.record(z.string()),
+      supports: z.record(z.string()),
+    }),
+    
+    // Container validation
+    container: z.object({
+      type: z.record(z.string()),
+      query: z.record(z.string()),
+    }),
+    
+    // Fractional validation
+    fractional: z.object({
+      width: z.record(z.string()),
+      height: z.record(z.string()),
     }),
     
     // Elevation validation
@@ -1131,15 +2268,18 @@ export const getMotionToken = (key: keyof MotionComponentsTokens) => {
 };
 
 export const getColorToken = (category: keyof ColorTokens, key: string) => {
-  return ENHANCED_DESIGN_TOKENS.foundation.color[category][key];
+  const categoryObj = ENHANCED_DESIGN_TOKENS.foundation.color[category];
+  return (categoryObj as Record<string, string>)[key];
 };
 
 export const getLayoutToken = (category: keyof LayoutTokens, key: string) => {
-  return ENHANCED_DESIGN_TOKENS.foundation.layout[category][key];
+  const categoryObj = ENHANCED_DESIGN_TOKENS.foundation.layout[category];
+  return (categoryObj as Record<string, string>)[key];
 };
 
 export const getTypographyToken = (category: keyof TypographyTokens, key: string) => {
-  return ENHANCED_DESIGN_TOKENS.foundation.typography[category][key];
+  const categoryObj = ENHANCED_DESIGN_TOKENS.foundation.typography[category];
+  return (categoryObj as Record<string, string>)[key];
 };
 
 export const getElevationToken = (key: keyof ElevationTokens) => {
@@ -1151,8 +2291,74 @@ export const getZIndexToken = (key: keyof ZIndexTokens) => {
 };
 
 export const getBackdropToken = (category: keyof BackdropTokens, key: string) => {
-  return ENHANCED_DESIGN_TOKENS.foundation.backdrop[category][key];
+  const categoryObj = ENHANCED_DESIGN_TOKENS.foundation.backdrop[category];
+  return (categoryObj as Record<string, string>)[key];
 };
+
+// ---------------------------------------------------------------------------
+// Minimal SSOT-compatible helpers (class-returning)
+// ---------------------------------------------------------------------------
+
+// Named z-index layers backed by Tailwind theme.extend.zIndex
+export type ZIndexNamedLayer = 'surface' | 'overlay' | 'popover' | 'modal' | 'toast' | 'tooltip';
+export const getZIndexClass = (name: ZIndexNamedLayer): `z-${ZIndexNamedLayer}` => `z-${name}`;
+
+// Motion helpers mapped to existing token maps
+export const getMotionPattern = (
+  pattern: keyof typeof ENHANCED_DESIGN_TOKENS.foundation.motionPatterns
+) => ENHANCED_DESIGN_TOKENS.foundation.motionPatterns[pattern];
+
+export const getComponentMotion = (
+  component: keyof typeof ENHANCED_DESIGN_TOKENS.foundation.motionComponents
+) => ENHANCED_DESIGN_TOKENS.foundation.motionComponents[component];
+
+export const getMotionPreset = (
+  preset: keyof typeof ENHANCED_DESIGN_TOKENS.foundation.motionTransition
+) => ENHANCED_DESIGN_TOKENS.foundation.motionTransition[preset];
+
+// Tailwind reduced motion variant helper (returns variant prefix)
+export const getReducedMotionVariant = (preferSafe: boolean = true) =>
+  preferSafe ? 'motion-safe' : 'motion-reduce';
+
+// ---------------------------------------------------------------------------
+// Back-compat motion helpers (to replace legacy motion-utils imports)
+// ---------------------------------------------------------------------------
+
+export type AdaptiveMotionOptions = {
+  respectReducedMotion?: boolean;
+  respectHighContrast?: boolean;
+};
+
+export function prefersReducedMotion(): boolean {
+  if (typeof globalThis === 'undefined' || !globalThis.matchMedia) return false;
+  return globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+export function getAdaptiveMotionClasses(
+  pattern: keyof typeof ENHANCED_DESIGN_TOKENS.foundation.motionPatterns |
+    keyof typeof ENHANCED_DESIGN_TOKENS.foundation.motionComponents,
+  options: AdaptiveMotionOptions = {}
+): string {
+  const { respectReducedMotion = true } = options;
+
+  if (respectReducedMotion && prefersReducedMotion()) {
+    return ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone;
+  }
+
+  const patterns = ENHANCED_DESIGN_TOKENS.foundation.motionPatterns as Record<string, string>;
+  const components = ENHANCED_DESIGN_TOKENS.foundation.motionComponents as Record<string, string>;
+
+  if (pattern in patterns) {
+    const cls = patterns[pattern as string];
+    if (cls) return cls;
+  }
+  if (pattern in components) {
+    const cls = components[pattern as string];
+    if (cls) return cls;
+  }
+
+  return ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all;
+}
 
 // ============================================================================
 // DEFAULT EXPORT

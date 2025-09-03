@@ -46,7 +46,7 @@ const wizardVariants = cva(['mx-auto w-full max-w-4xl'], {
       glass: [
         ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
         'rounded-lg border',
-        ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+        ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
       ],
     },
   },
@@ -94,7 +94,10 @@ const stepItemVariants = cva(['relative flex items-center gap-3'], {
 
 const stepCircleVariants = cva(
   [
-    'flex items-center justify-center rounded-full border-2 font-medium transition-colors',
+    'flex items-center justify-center rounded-full border-2 font-medium',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.formFieldFocus,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
     'h-10 w-10',
     'duration-200 ease-in-out',
   ],
@@ -104,12 +107,12 @@ const stepCircleVariants = cva(
         completed: [
           ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.bg,
           ENHANCED_DESIGN_TOKENS.foundation.color.feedback.success.fg,
-          'border-green-500',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.success,
         ],
         current: [
           ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg,
           ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg,
-          'border-blue-500',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora,
         ],
         pending: [
           ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
@@ -119,7 +122,7 @@ const stepCircleVariants = cva(
         error: [
           ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.bg,
           ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg,
-          'border-red-500',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
         ],
       },
     },
@@ -141,9 +144,11 @@ const navigationVariants = cva([
 const buttonVariants = cva(
   [
     'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2',
-    'font-medium transition-colors',
+    'font-medium',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonFocus,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
     'duration-200 ease-in-out',
-    'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
   ],
   {
     variants: {
@@ -422,7 +427,8 @@ function Navigation({
           >
             <div
               className={cn(
-                'h-2 rounded-full transition-all duration-300',
+                'h-2 rounded-full',
+                ENHANCED_DESIGN_TOKENS.foundation.motionComponents.cardHover,
                 ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg
               )}
               style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
@@ -546,14 +552,14 @@ export function FormWizard<TFormData extends FieldValues>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const isStepValid = await trigger(fieldNames as any);
 
-    if (!isStepValid) {
-      setErrorSteps(prev => new Set(prev).add(currentStep));
-    } else {
+    if (isStepValid) {
       setErrorSteps(prev => {
         const next = new Set(prev);
         next.delete(currentStep);
         return next;
       });
+    } else {
+      setErrorSteps(prev => new Set(prev).add(currentStep));
     }
 
     return isStepValid;
@@ -563,10 +569,10 @@ export function FormWizard<TFormData extends FieldValues>({
   const goToStep = React.useCallback(
     (stepIndex: number) => {
       if (stepIndex >= 0 && stepIndex < steps.length) {
-        if (controlledCurrentStep !== undefined) {
-          onStepChange?.(stepIndex);
-        } else {
+        if (controlledCurrentStep === undefined) {
           setUncontrolledCurrentStep(stepIndex);
+        } else {
+          onStepChange?.(stepIndex);
         }
       }
     },
@@ -710,34 +716,35 @@ export function FormWizard<TFormData extends FieldValues>({
                           disabled={field.disabled}
                           className={cn(
                             'flex w-full rounded-md border px-3 py-2',
-                            'resize-vertical placeholder:text-muted-foreground',
-                            'min-h-[80px] transition-colors',
+                            ENHANCED_DESIGN_TOKENS.foundation.layout.resize.y,
+                            'placeholder:text-muted-foreground',
+                            ENHANCED_DESIGN_TOKENS.foundation.motionComponents.formFieldFocus,
                             ENHANCED_DESIGN_TOKENS.foundation.color.surface
                               .canvas,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content
                               .primary,
                             ENHANCED_DESIGN_TOKENS.foundation.color.border
                               .default,
-                            'focus:ring-2 focus:ring-primary focus:ring-offset-2',
+                            ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
                             fieldError && 'border-red-500 focus:border-red-500'
                           )}
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           {...register(field.name as any)}
                         />
-                      ) : field.type === 'select' ? (
+                      ) : (field.type === 'select' ? (
                         <select
                           id={String(field.name)}
                           disabled={field.disabled}
                           className={cn(
                             'flex h-10 w-full rounded-md border px-3 py-2',
-                            'transition-colors',
+                            ENHANCED_DESIGN_TOKENS.foundation.motionComponents.formFieldFocus,
                             ENHANCED_DESIGN_TOKENS.foundation.color.surface
                               .canvas,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content
                               .primary,
                             ENHANCED_DESIGN_TOKENS.foundation.color.border
                               .default,
-                            'focus:ring-2 focus:ring-primary focus:ring-offset-2',
+                            ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
                             fieldError && 'border-red-500 focus:border-red-500'
                           )}
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -761,20 +768,20 @@ export function FormWizard<TFormData extends FieldValues>({
                           disabled={field.disabled}
                           className={cn(
                             'flex h-10 w-full rounded-md border px-3 py-2',
-                            'transition-colors placeholder:text-muted-foreground',
+                            ENHANCED_DESIGN_TOKENS.foundation.motionComponents.formFieldFocus + ' placeholder:text-muted-foreground',
                             ENHANCED_DESIGN_TOKENS.foundation.color.surface
                               .canvas,
                             ENHANCED_DESIGN_TOKENS.foundation.color.content
                               .primary,
                             ENHANCED_DESIGN_TOKENS.foundation.color.border
                               .default,
-                            'focus:ring-2 focus:ring-primary focus:ring-offset-2',
+                            ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
                             fieldError && 'border-red-500 focus:border-red-500'
                           )}
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           {...register(field.name as any)}
                         />
-                      )}
+                      ))}
 
                       {field.description && (
                         <div

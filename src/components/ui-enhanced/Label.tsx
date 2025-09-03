@@ -26,6 +26,7 @@ import * as LabelPrimitive from '@radix-ui/react-label';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED LABEL VARIANTS =====
@@ -36,73 +37,74 @@ import { cn } from '@/utils/cn';
  */
 const enhancedLabelVariants = cva(
   [
-    // MAPS4 Foundation: Typography - Cosmic hierarchy via CSS vars
-    'text-[var(--font-size-sm)]',
-    'font-[var(--font-weight-medium)]',
+    // MAPS4 Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
     'leading-normal',
     
-    // MAPS4 Foundation: Motion - Respect user preferences via CSS vars
-    'transition-colors duration-[var(--motion-duration-2)] ease-out',
-    'motion-reduce:transition-none',
+    // MAPS4 Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
     
-    // MAPS4 Foundation: Accessibility - AAA compliance ready
-    'cursor-default',
+    // MAPS4 Foundation: Accessibility - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
     
-    // MAPS4 Foundation: States - Proper form label behavior
-    'peer-disabled:cursor-not-allowed peer-disabled:opacity-[var(--opacity-disabled)]',
-    'data-[invalid]:text-cosmic-feedback-error-foreground',
-    'data-[required]:after:ml-[var(--space-1)] data-[required]:after:text-cosmic-feedback-error-foreground data-[required]:after:content-["*"]',
+    // MAPS4 Foundation: States - Enhanced tokens
+    'peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
+    'data-[invalid]:text-cosmic-danger',
+    'data-[required]:after:ml-1 data-[required]:after:text-cosmic-danger data-[required]:after:content-["*"]',
   ],
   {
     variants: {
-      // Typography variants following MAPS4 cosmic hierarchy
+      // Typography variants following MAPS4 cosmic hierarchy - Enhanced tokens
       variant: {
-        default: 'text-cosmic-foreground',
+        default: ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
         primary: 'text-aurora-accent',
-        secondary: 'text-cosmic-muted-foreground',
-        destructive: 'text-cosmic-feedback-error-foreground',
-        muted: 'text-cosmic-muted-foreground',
-        accent: 'text-aurora-accent-foreground',
+        secondary: ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+        destructive: ENHANCED_DESIGN_TOKENS.foundation.color.content.error,
+        muted: ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+        accent: 'text-aurora-accent',
       },
 
-      // Size variants following MAPS4 v4.0 typography scale
+      // Size variants following MAPS4 v4.0 typography scale - Enhanced tokens
       size: {
-        xs: 'text-[var(--font-size-xs)]',
-        sm: 'text-[var(--font-size-sm)]',
-        md: 'text-[var(--font-size-sm)] font-[var(--font-weight-medium)]',
-        lg: 'text-[var(--font-size-base)] font-[var(--font-weight-medium)]',
-        xl: 'text-[var(--font-size-lg)] font-[var(--font-weight-semibold)]',
+        xs: ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        sm: ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+        md: ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+        lg: ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
+        xl: ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
       },
 
-      // Enhanced interactive states
+      // Enhanced interactive states - Enhanced tokens
       interactive: {
         true: [
-          'cursor-pointer',
-          'hover:text-aurora-accent-foreground',
-          'data-[state=checked]:text-aurora-accent-foreground',
-          'focus-visible:outline-none focus-visible:ring-[var(--ring-2)] focus-visible:ring-aurora-accent focus-visible:ring-offset-[var(--ring-offset-2)] focus-visible:ring-offset-stellar-surface',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+          'pointer:hover:text-aurora-accent',
+          'data-[state=checked]:text-aurora-accent',
+          ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
         ],
-        false: 'cursor-default',
+        false: ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.default,
       },
 
-      // AAA compliance enforcement mode
+      // AAA compliance enforcement mode - Enhanced tokens
       enforceAAA: {
         true: [
-          'text-cosmic-foreground',
-          'contrast-more:text-cosmic-foreground',
-          'contrast-more:font-[var(--font-weight-semibold)]',
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'contrast-more:text-cosmic-light',
+          'contrast-more:font-semibold',
         ],
         false: '',
       },
 
-      // Premium liquid glass variant
+      // Premium liquid glass variant - Enhanced tokens
       glass: {
         true: [
-          'backdrop-blur-[var(--blur-sm)]',
-          'bg-stellar-surface/80',
-          'border border-cosmic-border/50',
-          'rounded-[var(--radius-md)] px-[var(--space-3)] py-[var(--space-1_5)]',
-          'shadow-[var(--shadow-sm)]',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
         false: '',
       },
@@ -166,6 +168,11 @@ export interface EnhancedLabelOwnProps
    * Alias for enforceAAA prop
    */
   aaa?: boolean | undefined;
+
+  /**
+   * Whether to disable animations for performance
+   */
+  disableAnimations?: boolean | undefined;
 }
 
 export type LabelVariantProps = VariantProps<typeof enhancedLabelVariants>;
@@ -191,6 +198,7 @@ const EnhancedLabel = React.forwardRef<
       disabled,
       onInteraction,
       aaa,
+      disableAnimations = false,
       children,
       ...props
     },
@@ -199,8 +207,13 @@ const EnhancedLabel = React.forwardRef<
     // Handle aaa alias
     const finalEnforceAAA = aaa ?? enforceAAA;
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     return (
-      <div className="space-y-[var(--space-1)]">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs)}>
         <LabelPrimitive.Root
           ref={ref}
           className={cn(
@@ -211,12 +224,13 @@ const EnhancedLabel = React.forwardRef<
               enforceAAA: finalEnforceAAA,
               glass,
             }),
+            motionClasses,
             // Dynamic data attributes for state management
             required && 'data-required',
             invalid && 'data-invalid',
-            disabled && 'cursor-not-allowed opacity-[var(--opacity-disabled)]',
+            disabled && 'cursor-not-allowed opacity-50',
             showFocus &&
-              'focus-visible:outline-none focus-visible:ring-[var(--ring-2)] focus-visible:ring-aurora-accent',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aurora-accent',
             className
           )}
           data-required={required}
@@ -230,7 +244,7 @@ const EnhancedLabel = React.forwardRef<
         </LabelPrimitive.Root>
 
         {description && (
-          <p className="text-[var(--font-size-xs)] leading-relaxed text-cosmic-muted-foreground">
+          <p className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary, 'leading-relaxed', ENHANCED_DESIGN_TOKENS.foundation.typography.caption)}>
             {description}
           </p>
         )}
@@ -343,7 +357,7 @@ const LabelWithField = React.forwardRef<
         required={required}
         invalid={invalid || !!finalError}
         className={cn(
-          layout === 'horizontal' && 'flex min-w-[var(--space-30)] items-center',
+          layout === 'horizontal' && 'flex min-w-[120px] items-center',
           className
         )}
         {...labelProps}
@@ -354,14 +368,14 @@ const LabelWithField = React.forwardRef<
 
     if (layout === 'horizontal') {
       return (
-        <div className="flex items-start gap-[var(--space-4)]">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md)}>
           {labelElement}
-          <div className="flex-1 space-y-[var(--space-1)]">
+          <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1], ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm)}>
             {enhancedField}
             {finalError && (
               <p
                 id={errorId}
-                className="text-[var(--font-size-xs)] leading-relaxed text-cosmic-feedback-error-foreground"
+                className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.error, 'leading-relaxed', ENHANCED_DESIGN_TOKENS.foundation.typography.caption)}
                 role='alert'
                 aria-live='polite'
               >
@@ -374,13 +388,13 @@ const LabelWithField = React.forwardRef<
     }
 
     return (
-      <div className="space-y-[var(--space-2)]">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md)}>
         {labelElement}
         {enhancedField}
         {finalError && (
           <p
             id={errorId}
-            className="text-[var(--font-size-xs)] leading-relaxed text-cosmic-feedback-error-foreground"
+            className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.error, 'leading-relaxed', ENHANCED_DESIGN_TOKENS.foundation.typography.caption)}
             role='alert'
             aria-live='polite'
           >
@@ -485,9 +499,12 @@ const FormFieldGroup = React.forwardRef<
       <fieldset
         ref={ref}
         className={cn(
-          'space-y-[var(--space-3)]',
-          'rounded-[var(--radius-lg)] border border-cosmic-border p-[var(--space-4)]',
-          'bg-stellar-surface/50',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          'border-cosmic-border',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+          'bg-cosmic-void/50',
           className
         )}
         aria-describedby={cn(errorId, descriptionId).trim() || undefined}
@@ -496,12 +513,16 @@ const FormFieldGroup = React.forwardRef<
       >
         {finalLegend && (
           <legend
-            className="-ml-[var(--space-2)] px-[var(--space-2)] text-[var(--font-size-sm)] font-[var(--font-weight-semibold)] text-cosmic-foreground"
+            className={cn(
+              ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+              '-ml-2 px-2 font-semibold',
+              ENHANCED_DESIGN_TOKENS.foundation.typography.body.small
+            )}
           >
             {finalLegend}
             {required && (
               <span
-                className="ml-[var(--space-1)] text-cosmic-feedback-error-foreground"
+                className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.error, 'ml-1')}
                 aria-label='required'
               >
                 *
@@ -513,7 +534,7 @@ const FormFieldGroup = React.forwardRef<
         {description && (
           <p
             id={descriptionId}
-            className="text-[var(--font-size-xs)] leading-relaxed text-cosmic-muted-foreground"
+            className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary, 'leading-relaxed', ENHANCED_DESIGN_TOKENS.foundation.typography.caption)}
           >
             {description}
           </p>
@@ -521,10 +542,10 @@ const FormFieldGroup = React.forwardRef<
 
         <div
           className={cn(
-            layout === 'horizontal' && 'flex flex-wrap gap-[var(--space-4)]',
+            layout === 'horizontal' && 'flex flex-wrap gap-4',
             layout === 'grid' &&
-              `grid grid-cols-1 gap-[var(--space-4)] md:grid-cols-${finalColumns}`,
-            layout === 'vertical' && 'space-y-[var(--space-4)]'
+              `md:grid-cols-${finalColumns} grid grid-cols-1 gap-4`,
+            layout === 'vertical' && ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md
           )}
         >
           {children}
@@ -533,7 +554,7 @@ const FormFieldGroup = React.forwardRef<
         {finalError && (
           <p
             id={errorId}
-            className="text-[var(--font-size-xs)] leading-relaxed text-cosmic-feedback-error-foreground"
+            className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.content.error, 'leading-relaxed', ENHANCED_DESIGN_TOKENS.foundation.typography.caption)}
             role='alert'
             aria-live='polite'
           >
@@ -583,9 +604,185 @@ export function createLabelWithField<T extends React.ElementType>(
   return LabelFieldComponent;
 }
 
+// ===== LABEL FACTORY PATTERN =====
+
+/**
+ * Factory for creating pre-configured label components
+ */
+const LabelFactory = {
+  /**
+   * Default label configuration
+   */
+  default: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Primary label configuration
+   */
+  primary: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'primary' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Secondary label configuration
+   */
+  secondary: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'secondary' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Destructive label configuration
+   */
+  destructive: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'destructive' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Muted label configuration
+   */
+  muted: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'muted' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Accent label configuration
+   */
+  accent: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'accent' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Interactive label configuration
+   */
+  interactive: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    interactive: true,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Glass label configuration
+   */
+  glass: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: true,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Accessible label configuration with AAA compliance
+   */
+  accessible: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: true,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Small label configuration
+   */
+  small: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'xs' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Large label configuration
+   */
+  large: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'lg' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Extra large label configuration
+   */
+  xl: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'xl' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: false,
+    ...props,
+  }),
+
+  /**
+   * Performance-optimized label with disabled animations
+   */
+  performance: (props: Partial<EnhancedLabelOwnProps> = {}) => ({
+    variant: 'default' as const,
+    size: 'sm' as const,
+    interactive: false,
+    enforceAAA: false,
+    glass: false,
+    disableAnimations: true,
+    ...props,
+  }),
+};
+
 // ===== EXPORTS =====
 
-export { EnhancedLabel, LabelWithField, FormFieldGroup, enhancedLabelVariants };
+export { EnhancedLabel, LabelWithField, FormFieldGroup, enhancedLabelVariants, LabelFactory };
 export type { LabelWithFieldProps, FormFieldGroupProps };
 
 // Default export for convenience

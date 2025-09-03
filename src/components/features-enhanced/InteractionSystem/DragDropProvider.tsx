@@ -42,10 +42,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
-import {
-  getAdaptiveMotionClasses,
-  prefersReducedMotion,
-} from '@/components/primitives/motion-utils';
+import { getAdaptiveMotionClasses, prefersReducedMotion } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== DRAG & DROP INTERFACES =====
@@ -208,7 +205,7 @@ export function DragDropProvider({
 
   // ===== MOTION INTEGRATION =====
 
-  const motionClasses = getAdaptiveMotionClasses('transform');
+  const motionClasses = getAdaptiveMotionClasses('slideInStandard');
 
   // ===== EVENT HANDLERS =====
 
@@ -273,7 +270,7 @@ export function DragDropProvider({
   const announcements = React.useMemo(
     () => ({
       ...defaultAnnouncements,
-      ...(accessibility?.announcements || {}),
+      ...accessibility?.announcements,
     }),
     [accessibility?.announcements]
   );
@@ -340,7 +337,6 @@ export interface SortableListProps<T>
 
   // Animation
   animateLayoutChanges?: boolean;
-  transition?: any; // TODO: Use proper transition type from dnd-kit
 
   // Constraints
   maxItems?: number;
@@ -362,7 +358,6 @@ export function SortableList<T>({
   surface = 'elevated',
   spacing = 'md',
   orientation = 'vertical',
-  transition,
   className,
   itemClassName,
 }: SortableListProps<T>) {
@@ -406,11 +401,11 @@ export function SortableList<T>({
               key={keyExtractor(item)}
               id={keyExtractor(item)}
               index={index}
+              data={item}
               surface={surface}
               spacing={spacing}
               disabled={disabled}
               handle={handle}
-              transition={transition}
               className={itemClassName || ''}
             >
               {renderItem}
@@ -427,10 +422,10 @@ export function SortableList<T>({
 interface SortableItemProps<T> extends VariantProps<typeof sortableItemVariants> {
   id: string;
   index: number;
+  data: T;
   disabled?: boolean;
   handle?: boolean;
   animateLayoutChanges?: boolean | ((args: Record<string, unknown>) => boolean);
-  transition?: Record<string, unknown>; // TODO: Use proper transition type from dnd-kit
   children: (item: T, index: number, isDragging: boolean) => React.ReactNode;
   className?: string;
 }
@@ -438,11 +433,11 @@ interface SortableItemProps<T> extends VariantProps<typeof sortableItemVariants>
 function SortableItem<T>({
   id,
   index,
+  data,
   surface = 'elevated',
   spacing = 'md',
   disabled = false,
   handle = false,
-  transition,
   children,
   className,
 }: SortableItemProps<T>) {
@@ -456,7 +451,7 @@ function SortableItem<T>({
   } = useSortable({
     id,
     disabled,
-    transition,
+    // useSortable infers internal transition; omit explicit transition to satisfy types
   });
 
   const style: React.CSSProperties = {
@@ -476,7 +471,7 @@ function SortableItem<T>({
       )}
       {...itemProps}
     >
-      {children({ id }, index, isDragging)}
+      {children(data, index, isDragging)}
     </div>
   );
 }
@@ -637,7 +632,7 @@ export function FileDropZone({
 
   const handleFiles = React.useCallback(
     (files: FileList | File[]) => {
-      const fileArray = Array.from(files);
+      const fileArray = [...files];
 
       // Limit number of files
       const limitedFiles = maxFiles ? fileArray.slice(0, maxFiles) : fileArray;
@@ -764,7 +759,7 @@ export function FileDropZone({
 
       {loading && (
         <div className='bg-surface-overlay/50 absolute inset-0 flex items-center justify-center'>
-          <div className='h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent' />
+          <div className='size-6 animate-spin rounded-full border-2 border-accent border-t-transparent' />
         </div>
       )}
     </div>

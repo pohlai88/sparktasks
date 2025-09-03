@@ -28,6 +28,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED CARD VARIANTS =====
@@ -38,66 +39,88 @@ import { cn } from '@/utils/cn';
  */
 const enhancedCardVariants = cva(
   [
-    // Foundation: Layout/shape - Clean Tailwind utilities
-    'rounded-lg',
+    // Foundation: Layout/shape - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
 
-    // Foundation: Colors - Deep space foundation with ethereal accents
-    'bg-card text-card-foreground',
-    'border border-border',
+    // Foundation: Colors - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.card,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
     // Foundation: Motion - Respect user preferences
-    'transition-all duration-200 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.cardHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Focus management for interactive cards
-    'focus-visible:outline-none',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
         // Default: Clean card with subtle elevation
-        default: ['border-border bg-card', 'shadow-sm'],
+        default: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.card,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
+        ],
 
         // Elevated: Enhanced depth with stronger shadow
-        elevated: ['border-border bg-background-elevated', 'shadow-md'],
+        elevated: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+        ],
 
         // Outlined: Emphasis on borders
-        outlined: ['border-2 border-border bg-card', 'shadow-none'],
+        outlined: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.card,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.none,
+        ],
 
         // Ghost: Minimal styling
-        ghost: ['border-transparent bg-transparent', 'shadow-none'],
+        ghost: [
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.none,
+        ],
 
         // Glass: Liquid glass materials
         glass: [
-          'border-border/30 bg-card/80',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
         ],
 
         // Floating: Enhanced glass with stronger shadow
         floating: [
-          'border-border/40 bg-card/75',
-          'backdrop-blur-lg backdrop-saturate-[135%]',
-          'shadow-elevation-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
       },
 
       size: {
-        // Clean systematic sizing with 8pt grid
-        sm: ['p-3'],
-        md: ['p-4'],
-        lg: ['p-6'],
-        xl: ['p-8'],
+        // Clean systematic sizing with enhanced tokens
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3]],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4]],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6]],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding[8]],
       },
 
       interactive: {
         false: '',
         true: [
-          'cursor-pointer',
-          'hover:border-border-strong hover:shadow-md',
-          'active:scale-[0.98]',
-          'focus-visible:ring-2',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
+          'pointer:hover:border-cosmic-border-strong pointer:hover:shadow-md',
+          `active:${ENHANCED_DESIGN_TOKENS.foundation.transform.scale['98']}`,
+          ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
         ],
       },
 
@@ -106,9 +129,9 @@ const enhancedCardVariants = cva(
         false: '',
         true: [
           // Use AAA-compliant alternatives
-          'aaa:border-foreground/20 aaa:bg-background',
+          'aaa:border-cosmic-light/20 aaa:bg-cosmic-void',
           'aaa:shadow-lg',
-          'aaa:text-foreground',
+          'aaa:text-cosmic-light',
         ],
       },
     },
@@ -119,29 +142,29 @@ const enhancedCardVariants = cva(
         variant: 'glass',
         interactive: true,
         class: [
-          'hover:bg-card/85 hover:backdrop-blur-lg',
-          'hover:shadow-elevation-lg',
+          `pointer:hover:${ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg}`,
+          'pointer:hover:shadow-lg',
         ],
       },
       {
         variant: 'floating',
         interactive: true,
         class: [
-          'hover:bg-card/80 hover:backdrop-blur-xl',
-          'hover:shadow-elevation-xl',
-          'hover:translate-y-[-2px]',
+          `pointer:hover:${ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.xl}`,
+          'pointer:hover:shadow-xl',
+          `pointer:hover:${ENHANCED_DESIGN_TOKENS.foundation.transform.translate['y-0.5']}`,
         ],
       },
       // AAA-enforced glass adjustments
       {
         variant: 'glass',
         enforceAAA: true,
-        class: 'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]', // AAA scrim for guaranteed legibility
+        class: ENHANCED_DESIGN_TOKENS.foundation.elevation.inner,
       },
       {
         variant: 'floating',
         enforceAAA: true,
-        class: 'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]', // AAA scrim for guaranteed legibility
+        class: ENHANCED_DESIGN_TOKENS.foundation.elevation.inner,
       },
     ],
 
@@ -160,9 +183,11 @@ const enhancedCardVariants = cva(
 const enhancedCardHeaderVariants = cva(
   [
     // Foundation: Layout
-    'flex flex-col space-y-1.5',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm,
 
-    // Foundation: Spacing - 8pt grid system
+    // Foundation: Spacing - Enhanced tokens
     'px-6 py-4',
   ],
   {
@@ -185,17 +210,17 @@ const enhancedCardHeaderVariants = cva(
  */
 const enhancedCardTitleVariants = cva(
   [
-    // Foundation: Typography - Apple HIG hierarchy
-    'text-lg font-semibold leading-none tracking-tight',
-    'text-card-foreground',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
   ],
   {
     variants: {
       size: {
-        sm: ['text-base font-medium'],
-        md: ['text-lg font-semibold'],
-        lg: ['text-xl font-semibold'],
-        xl: ['text-2xl font-bold'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h5],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h2],
       },
     },
     defaultVariants: {
@@ -210,16 +235,17 @@ const enhancedCardTitleVariants = cva(
 const enhancedCardDescriptionVariants = cva(
   [
     // Foundation: Typography
-    'text-sm text-muted-foreground',
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
     'leading-relaxed',
   ],
   {
     variants: {
       size: {
-        sm: ['text-xs'],
-        md: ['text-sm'],
-        lg: ['text-base'],
-        xl: ['text-lg'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.typography.body.large],
       },
     },
     defaultVariants: {
@@ -257,13 +283,15 @@ const enhancedCardContentVariants = cva(
 const enhancedCardFooterVariants = cva(
   [
     // Foundation: Layout
-    'flex items-center',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
 
-    // Foundation: Spacing - 8pt grid system
+    // Foundation: Spacing - Enhanced tokens
     'px-6 py-4',
 
     // Foundation: Visual separation
-    'border-t border-border',
+    'border-t',
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
   ],
   {
     variants: {
@@ -274,12 +302,12 @@ const enhancedCardFooterVariants = cva(
         xl: ['px-8 py-6'],
       },
       justify: {
-        start: ['justify-start'],
-        end: ['justify-end'],
-        center: ['justify-center'],
-        between: ['justify-between'],
-        around: ['justify-around'],
-        evenly: ['justify-evenly'],
+        start: [ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.start],
+        end: [ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.end],
+        center: [ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center],
+        between: [ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between],
+        around: [ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.around],
+        evenly: [ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.evenly],
       },
     },
     defaultVariants: {
@@ -303,6 +331,7 @@ interface EnhancedCardOwnProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   interactive?: boolean;
   enforceAAA?: boolean;
+  disableAnimations?: boolean;
   'data-testid'?: string;
 }
 
@@ -362,6 +391,7 @@ const EnhancedCard = React.forwardRef<
       size = 'md',
       interactive = false,
       enforceAAA = false,
+      disableAnimations = false,
       className,
       'data-testid': testId,
       ...props
@@ -369,6 +399,11 @@ const EnhancedCard = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : 'div';
+
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
     return (
       <Comp
@@ -380,6 +415,7 @@ const EnhancedCard = React.forwardRef<
             interactive,
             enforceAAA,
           }),
+          motionClasses,
           className
         )}
         role={interactive ? 'button' : undefined}
@@ -621,6 +657,23 @@ export const CardFactory = {
         'enforceAAA'
       >
     ) => <EnhancedCard enforceAAA={true} {...props} />,
+    Header: EnhancedCardHeader,
+    Title: EnhancedCardTitle,
+    Description: EnhancedCardDescription,
+    Content: EnhancedCardContent,
+    Footer: EnhancedCardFooter,
+  },
+
+  /**
+   * Performance-optimized card with disabled animations
+   */
+  performance: {
+    Card: (
+      props: Omit<
+        EnhancedCardOwnProps & React.HTMLAttributes<HTMLDivElement>,
+        'disableAnimations'
+      >
+    ) => <EnhancedCard disableAnimations={true} {...props} />,
     Header: EnhancedCardHeader,
     Title: EnhancedCardTitle,
     Description: EnhancedCardDescription,

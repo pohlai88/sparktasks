@@ -11,74 +11,79 @@
  * - Developer Experience: Intuitive APIs that make complex layouts simple to implement
  */
 
-import React, { forwardRef } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type React from 'react';
+import { forwardRef } from 'react';
+
 import { cn } from '../../../utils/cn';
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
 
 // ===== VARIANTS =====
 
-const clusterVariants = cva(['flex'], {
+const clusterVariants = cva([
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+], {
   variants: {
     // Spacing Control - using Tailwind's gap utilities
     gap: {
-      none: 'gap-0',
-      xs: 'gap-1', // 4px
-      sm: 'gap-2', // 8px
-      md: 'gap-4', // 16px
-      lg: 'gap-6', // 24px
-      xl: 'gap-8', // 32px
-      '2xl': 'gap-12', // 48px
+      none: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.none,
+      xs: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+      sm: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+      md: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+      lg: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+      xl: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+      '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap['2xl'],
     },
 
     gapX: {
-      none: 'gap-x-0',
-      xs: 'gap-x-1',
-      sm: 'gap-x-2',
-      md: 'gap-x-4',
-      lg: 'gap-x-6',
-      xl: 'gap-x-8',
-      '2xl': 'gap-x-12',
+      none: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.none,
+      xs: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs,
+      sm: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+      md: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.md,
+      lg: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.lg,
+      xl: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xl,
+      '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster['2xl'],
     },
 
     gapY: {
-      none: 'gap-y-0',
-      xs: 'gap-y-1',
-      sm: 'gap-y-2',
-      md: 'gap-y-4',
-      lg: 'gap-y-6',
-      xl: 'gap-y-8',
-      '2xl': 'gap-y-12',
+      none: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.none,
+      xs: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs,
+      sm: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm,
+      md: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md,
+      lg: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
+      xl: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl,
+      '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack['2xl'],
     },
 
     // Flex Behavior
     wrap: {
-      wrap: 'flex-wrap',
-      nowrap: 'flex-nowrap',
-      'wrap-reverse': 'flex-wrap-reverse',
+      wrap: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.wrap.wrap,
+      nowrap: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.wrap.nowrap,
+      'wrap-reverse': ENHANCED_DESIGN_TOKENS.foundation.layout.flex.wrap['wrap-reverse'],
     },
 
     align: {
-      start: 'items-start',
-      center: 'items-center',
-      end: 'items-end',
-      baseline: 'items-baseline',
-      stretch: 'items-stretch',
+      start: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start,
+      center: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      end: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.end,
+      baseline: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.baseline,
+      stretch: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.stretch,
     },
 
     justify: {
-      start: 'justify-start',
-      center: 'justify-center',
-      end: 'justify-end',
-      between: 'justify-between',
-      around: 'justify-around',
-      evenly: 'justify-evenly',
+      start: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.start,
+      center: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+      end: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.end,
+      between: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between,
+      around: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.around,
+      evenly: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.evenly,
     },
 
     // Direction Control
     direction: {
-      row: 'flex-row',
-      'row-reverse': 'flex-row-reverse',
+      row: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row,
+      'row-reverse': ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction['row-reverse'],
     },
   },
   defaultVariants: {
@@ -152,28 +157,51 @@ export const Cluster = forwardRef<
     const responsiveClasses = responsive
       ? Object.entries(responsive)
           .map(([breakpoint, config]) => {
-            const prefix =
-              breakpoint === 'sm' ? 'sm:' : breakpoint === 'md' ? 'md:' : 'lg:';
-            const classes = [];
+            const prefix = breakpoint === 'sm' ? 'sm:' : (breakpoint === 'md' ? 'md:' : 'lg:');
+            const classes: string[] = [];
 
-            if (config.gap)
-              classes.push(
-                `${prefix}gap-${config.gap === 'none' ? '0' : config.gap === 'xs' ? '1' : config.gap === 'sm' ? '2' : config.gap === 'md' ? '4' : config.gap === 'lg' ? '6' : config.gap === 'xl' ? '8' : '12'}`
-              );
-            if (config.gapX)
-              classes.push(
-                `${prefix}gap-x-${config.gapX === 'none' ? '0' : config.gapX === 'xs' ? '1' : config.gapX === 'sm' ? '2' : config.gapX === 'md' ? '4' : config.gapX === 'lg' ? '6' : config.gapX === 'xl' ? '8' : '12'}`
-              );
-            if (config.gapY)
-              classes.push(
-                `${prefix}gap-y-${config.gapY === 'none' ? '0' : config.gapY === 'xs' ? '1' : config.gapY === 'sm' ? '2' : config.gapY === 'md' ? '4' : config.gapY === 'lg' ? '6' : config.gapY === 'xl' ? '8' : '12'}`
-              );
-            if (config.align) classes.push(`${prefix}items-${config.align}`);
-            if (config.justify)
-              classes.push(`${prefix}justify-${config.justify}`);
-            if (config.direction)
-              classes.push(`${prefix}flex-${config.direction}`);
-            if (config.wrap) classes.push(`${prefix}flex-${config.wrap}`);
+            const gapMap: Record<string, string> = {
+              none: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.none,
+              xs: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+              sm: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+              md: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+              lg: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+              xl: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+              '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap['2xl'],
+            } as const;
+
+            const gapXMap: Record<string, string> = {
+              none: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.none,
+              xs: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xs,
+              sm: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+              md: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.md,
+              lg: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.lg,
+              xl: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.xl,
+              '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster['2xl'],
+            } as const;
+
+            const gapYMap: Record<string, string> = {
+              none: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.none,
+              xs: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs,
+              sm: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm,
+              md: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md,
+              lg: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
+              xl: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl,
+              '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack['2xl'],
+            } as const;
+
+            const alignMap = ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items as Record<string, string>;
+            const justifyMap = ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify as Record<string, string>;
+            const dirMap = ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction as Record<string, string>;
+            const wrapMap = ENHANCED_DESIGN_TOKENS.foundation.layout.flex.wrap as Record<string, string>;
+
+            if (config.gap) classes.push(prefix + gapMap[config.gap]);
+            if (config.gapX) classes.push(prefix + gapXMap[config.gapX]);
+            if (config.gapY) classes.push(prefix + gapYMap[config.gapY]);
+            if (config.align) classes.push(prefix + alignMap[config.align]);
+            if (config.justify) classes.push(prefix + justifyMap[config.justify]);
+            if (config.direction) classes.push(prefix + dirMap[config.direction]);
+            if (config.wrap) classes.push(prefix + wrapMap[config.wrap]);
 
             return classes.join(' ');
           })

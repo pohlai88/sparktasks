@@ -28,60 +28,61 @@ import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED ALERT DIALOG VARIANTS =====
 
 /**
  * Enhanced alert dialog overlay variants following MAPS4 v4.0 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens system
  */
 const enhancedAlertDialogOverlayVariants = cva([
-  // Foundation: Layout - Full viewport coverage
-  'fixed',
+  // Foundation: Layout - Full viewport coverage - Enhanced tokens only
+  ENHANCED_DESIGN_TOKENS.foundation.layout.position.fixed,
   'inset-0',
-  'z-50',
+  getZIndexClass('overlay'),
 
   // Foundation: Materials - Sophisticated overlay with depth
-  'bg-black/80',
-  'backdrop-blur-sm',
+  ENHANCED_DESIGN_TOKENS.foundation.color.surface.scrim,
+  ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
 
   // Foundation: Motion - Respect user preferences
   'data-[state=open]:animate-in',
   'data-[state=closed]:animate-out',
   'data-[state=closed]:fade-out-0',
   'data-[state=open]:fade-in-0',
-  'motion-reduce:animate-none',
+  ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 ]);
 
 /**
  * Enhanced alert dialog content variants following MAPS4 v4.0 foundation
- * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
+ * ANTI-DRIFT ENFORCEMENT: ALL values from enhanced tokens system
  */
 const enhancedAlertDialogContentVariants = cva(
   [
-    // Foundation: Layout - Centered modal positioning
-    'fixed',
-    'left-[50%]',
-    'top-[50%]',
-    'z-50',
-    'translate-x-[-50%]',
-    'translate-y-[-50%]',
-    'grid',
-    'w-full',
+    // Foundation: Layout - Centered modal positioning - Enhanced tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.fixed,
+    'left-1/2',
+    'top-1/2',
+    getZIndexClass('modal'),
+    '-translate-x-1/2',
+    '-translate-y-1/2',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.grid,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
     'max-w-lg',
-    'gap-4',
-    'p-6',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
 
     // Foundation: Materials - Deep space canvas with elevation
-    'border',
-    'border-border',
-    'bg-background',
-    'shadow-lg',
-    'rounded-lg',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
 
     // Foundation: Motion - Apple HIG entrance patterns
-    'duration-200',
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.modalEnter,
     'data-[state=open]:animate-in',
     'data-[state=closed]:animate-out',
     'data-[state=closed]:fade-out-0',
@@ -89,47 +90,55 @@ const enhancedAlertDialogContentVariants = cva(
     'data-[state=closed]:zoom-out-95',
     'data-[state=open]:zoom-in-95',
     'data-[state=closed]:slide-out-to-left-1/2',
-    'data-[state=closed]:slide-out-to-top-[48%]',
+    'data-[state=closed]:slide-out-to-top-1/2',
     'data-[state=open]:slide-in-from-left-1/2',
-    'data-[state=open]:slide-in-from-top-[48%]',
-    'motion-reduce:animate-none',
+    'data-[state=open]:slide-in-from-top-1/2',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Focus management - AAA compliance
-    'focus:outline-none',
-    'focus-visible:ring-2',
-    'focus-visible:ring-accent',
-    'focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-background',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
         default: [
           // Default: Clean elevated surface
-          'bg-background',
-          'border-border',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
         ],
         glass: [
           // Glass: Liquid glass material with vibrancy
-          'backdrop-blur-md',
-          'backdrop-saturate-150',
-          'bg-background/90',
-          'border-border/50',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
           // AAA scrim protection for text content
           'supports-[backdrop-filter]:bg-background/80',
         ],
         destructive: [
           // Destructive: Subtle warning indication
-          'border-destructive/20',
-          'bg-background',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.error,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
           // Gentle destructive accent without overwhelming
-          'shadow-destructive/10',
+          'shadow-cosmic-danger/10',
         ],
       },
       size: {
-        sm: ['max-w-md', 'p-4', 'gap-3'],
-        default: ['max-w-lg', 'p-6', 'gap-4'],
-        lg: ['max-w-xl', 'p-8', 'gap-6'],
+        sm: [
+          'max-w-md',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+        ],
+        default: [
+          'max-w-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+        ],
+        lg: [
+          'max-w-xl',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding[8],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+        ],
       },
     },
     defaultVariants: {
@@ -143,10 +152,10 @@ const enhancedAlertDialogContentVariants = cva(
  * Enhanced alert dialog header variants
  */
 const enhancedAlertDialogHeaderVariants = cva([
-  'flex',
-  'flex-col',
-  'space-y-2',
-  'text-center',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
   'sm:text-left',
 ]);
 
@@ -154,12 +163,12 @@ const enhancedAlertDialogHeaderVariants = cva([
  * Enhanced alert dialog footer variants
  */
 const enhancedAlertDialogFooterVariants = cva([
-  'flex',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
   'flex-col-reverse',
   'sm:flex-row',
   'sm:justify-end',
   'sm:space-x-2',
-  'gap-2',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
   'sm:gap-0',
 ]);
 
@@ -167,9 +176,8 @@ const enhancedAlertDialogFooterVariants = cva([
  * Enhanced alert dialog title variants following Apple semantic hierarchy
  */
 const enhancedAlertDialogTitleVariants = cva([
-  'text-lg',
-  'font-semibold',
-  'text-foreground',
+  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
   'leading-none',
   'tracking-tight',
 ]);
@@ -178,8 +186,8 @@ const enhancedAlertDialogTitleVariants = cva([
  * Enhanced alert dialog description variants
  */
 const enhancedAlertDialogDescriptionVariants = cva([
-  'text-sm',
-  'text-muted-foreground',
+  ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
   'leading-relaxed',
 ]);
 
@@ -307,6 +315,16 @@ export interface EnhancedAlertDialogProps extends AlertDialogContentProps {
    * Visual style for the action button
    */
   actionVariant?: 'default' | 'destructive';
+
+  /**
+   * Performance optimization - disable animations
+   */
+  disableAnimations?: boolean;
+
+  /**
+   * Polymorphic support - render as different element/component
+   */
+  asChild?: boolean;
 }
 
 // ===== BASE COMPONENTS =====
@@ -433,27 +451,19 @@ const AlertDialogAction = React.forwardRef<
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
-      // Foundation: Apple HIG button styling
+      // Foundation: Apple HIG button styling - Enhanced tokens only
       'inline-flex',
-      'h-10',
-      'items-center',
-      'justify-center',
-      'rounded-md',
-      'px-4',
-      'py-2',
-      'text-sm',
-      'font-medium',
-      'transition-colors',
-      'duration-200',
-      'ease-out',
-      'motion-reduce:transition-none',
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+      ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+      ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+      ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+      ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
       // Foundation: Focus management
-      'focus:outline-none',
-      'focus-visible:ring-2',
-      'focus-visible:ring-accent',
-      'focus-visible:ring-offset-2',
-      'focus-visible:ring-offset-background',
+      ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
       // Foundation: Interactive states
       'disabled:pointer-events-none',
@@ -462,11 +472,15 @@ const AlertDialogAction = React.forwardRef<
       // Variant-specific styling
       variant === 'destructive'
         ? [
-            'bg-destructive',
-            'text-destructive-foreground',
-            'hover:bg-destructive/90',
+            ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.bg,
+            ENHANCED_DESIGN_TOKENS.foundation.color.feedback.error.fg,
+            'hover:bg-cosmic-danger/90',
           ]
-        : ['bg-primary', 'text-primary-foreground', 'hover:bg-primary/90'],
+        : [
+            ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.bg,
+            ENHANCED_DESIGN_TOKENS.foundation.color.brand.primary.fg,
+            'hover:bg-aurora-accent/90',
+          ],
 
       className
     )}
@@ -485,34 +499,26 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      // Foundation: Apple HIG button styling
+      // Foundation: Apple HIG button styling - Enhanced tokens only
       'inline-flex',
-      'h-10',
-      'items-center',
-      'justify-center',
-      'rounded-md',
-      'border',
-      'border-input',
-      'bg-background',
-      'px-4',
-      'py-2',
-      'text-sm',
-      'font-medium',
-      'transition-colors',
-      'duration-200',
-      'ease-out',
-      'motion-reduce:transition-none',
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+      ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+      ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
+      ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+      ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+      ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+      ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
       // Foundation: Interactive states
       'hover:bg-accent',
       'hover:text-accent-foreground',
 
       // Foundation: Focus management
-      'focus:outline-none',
-      'focus-visible:ring-2',
-      'focus-visible:ring-accent',
-      'focus-visible:ring-offset-2',
-      'focus-visible:ring-offset-background',
+      ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
       // Foundation: Disabled state
       'disabled:pointer-events-none',
@@ -553,10 +559,18 @@ const EnhancedAlertDialog = React.forwardRef<
       variant,
       size,
       className,
+      disableAnimations = false,
+      asChild = false,
       ...props
     },
     ref
-  ) => (
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    return (
     <AlertDialog
       {...(open !== undefined && { open })}
       {...(onOpenChange && { onOpenChange })}
@@ -566,7 +580,7 @@ const EnhancedAlertDialog = React.forwardRef<
         ref={ref}
         variant={variant}
         size={size}
-        {...(className && { className })}
+        className={cn(className, motionClasses)}
         {...props}
       >
         <AlertDialogHeader>
@@ -581,9 +595,60 @@ const EnhancedAlertDialog = React.forwardRef<
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+    );
+  }
 );
 EnhancedAlertDialog.displayName = 'EnhancedAlertDialog';
+
+// ===== FACTORY PATTERNS =====
+
+/**
+ * AlertDialog Factory - Pre-configured alert dialog compositions for common use cases
+ * Following MAPS4 systematic approach to component creation with performance optimizations
+ */
+const AlertDialogFactory = {
+  /**
+   * Default alert dialog with clean styling
+   */
+  default: (props: Omit<EnhancedAlertDialogProps, 'variant'>) => (
+    <EnhancedAlertDialog variant='default' {...props} />
+  ),
+
+  /**
+   * Glass alert dialog with liquid glass materials
+   */
+  glass: (props: Omit<EnhancedAlertDialogProps, 'variant'>) => (
+    <EnhancedAlertDialog variant='glass' {...props} />
+  ),
+
+  /**
+   * Destructive alert dialog for critical actions
+   */
+  destructive: (props: Omit<EnhancedAlertDialogProps, 'variant' | 'actionVariant'>) => (
+    <EnhancedAlertDialog variant='destructive' actionVariant='destructive' {...props} />
+  ),
+
+  /**
+   * Performance-optimized alert dialog with disabled animations
+   */
+  performance: (props: Omit<EnhancedAlertDialogProps, 'disableAnimations'>) => (
+    <EnhancedAlertDialog disableAnimations={true} {...props} />
+  ),
+
+  /**
+   * Small alert dialog for compact layouts
+   */
+  compact: (props: Omit<EnhancedAlertDialogProps, 'size'>) => (
+    <EnhancedAlertDialog size='sm' {...props} />
+  ),
+
+  /**
+   * Large alert dialog for detailed content
+   */
+  spacious: (props: Omit<EnhancedAlertDialogProps, 'size'>) => (
+    <EnhancedAlertDialog size='lg' {...props} />
+  ),
+} as const;
 
 // ===== EXPORTS =====
 
@@ -600,6 +665,7 @@ export {
   AlertDialogAction,
   AlertDialogCancel,
   EnhancedAlertDialog,
+  AlertDialogFactory,
   enhancedAlertDialogContentVariants,
   enhancedAlertDialogOverlayVariants,
 };

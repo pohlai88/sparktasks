@@ -29,33 +29,7 @@ export { RadixSlot } from './Slot';
 export { default as DirectionProvider } from './DirectionProvider';
 export type { DirectionProviderProps } from './DirectionProvider';
 
-// CLEAN ARCHITECTURE LAYER - Z-INDEX REGISTRY
-export {
-  registerComponentLayer,
-  getZIndex,
-  getTailwindClass,
-  hasConflict,
-  performAutoCleanup,
-  validateTokenName,
-  getDebuggerSnapshot,
-  getAvailableLayers,
-  getLayerStats,
-  getConflictResolution,
-  resetRegistry,
-} from './z-index-registry';
-
-// CLEAN ARCHITECTURE LAYER - MOTION UTILITIES
-export {
-  getMotionClasses,
-  getMotionValues,
-  createTransition,
-  prefersReducedMotion,
-  getAdaptiveMotionClasses,
-  getAvailableMotionPresets,
-} from './motion-utils';
-
-// CLEAN ARCHITECTURE LAYER - REACT HOOKS
-export { useZIndex, useZIndexDebugger } from './use-z-index';
+// CLEAN ARCHITECTURE LAYER - (Deprecated exports removed to enforce SSOT)
 
 // CLEAN ARCHITECTURE LAYER - DEMO
 // export {
@@ -66,20 +40,4 @@ export { useZIndex, useZIndexDebugger } from './use-z-index';
 //   ZIndexDebugPanel,
 // } from './architecture-demo';
 
-// Clean Architecture Types
-export type {
-  ZIndexToken,
-  ComponentLayerEntry,
-  ConflictResolution,
-  LayerDebugInfo,
-  MotionPreset,
-  MotionOptions,
-  ZIndexLayerName,
-  MotionDuration,
-  MotionEasing,
-  ValidationResult,
-  isValidLayerName,
-  isValidMotionPreset,
-  isValidMotionDuration,
-  isValidMotionEasing,
-} from './types';
+// Clean Architecture Types (removed; legacy types file deleted to enforce SSOT)

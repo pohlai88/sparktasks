@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:analyze": "node scripts/bundle-analysis-simple.cjs",
+    "build:analyze": "tsx src/components/container-bundle/bundle-analysis.ts",
     "build:report": "npm run build && npm run build:analyze",
     "build:stats": "vite build --mode production --stats",
     "preview": "vite preview",
@@ -30,6 +30,7 @@
     "test:coverage:component": "vitest run --coverage tests/components",
     "test:coverage:integration": "vitest run --coverage tests/integration",
     "test:e2e": "playwright test",
+    "test:e2e:port": "BASE_URL=http://localhost:9000 playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:critical": "playwright test --grep @critical",
     "test:e2e:smoke": "playwright test --grep @smoke",
@@ -40,9 +41,9 @@
     "test:mocking": "playwright test --grep @mocking",
     "test:e2e:report": "playwright show-report test-results/e2e-report",
     "test:e2e:debug": "playwright test --debug",
-    "db:snapshot:create": "node tests/e2e/data/db-setup.js create-snapshot",
-    "db:snapshot:restore": "node tests/e2e/data/db-setup.js restore-snapshot",
-    "db:reset": "node tests/e2e/data/db-setup.js reset",
+    "db:snapshot:create": "tsx tests/e2e/data/db-setup.ts create-snapshot",
+    "db:snapshot:restore": "tsx tests/e2e/data/db-setup.ts restore-snapshot",
+    "db:reset": "tsx tests/e2e/data/db-setup.ts reset",
     "seed:base": "tsx tests/e2e/data/seed.base.ts",
     "seed:scenario": "tsx tests/e2e/data/run-scenario.ts",
     "test:data-contracts": "tsx tests/e2e/data/seed.contract.test.ts",
@@ -54,7 +55,7 @@
     "audit:drift": "npm run lint:governance && npm run typecheck && npm run test:unit",
     "validate:imports": "eslint src/components/ui-enhanced/**/*.tsx --rule 'no-restricted-imports:error'",
     "validate:naming": "eslint src/components/ui-enhanced/**/*.tsx --rule 'no-restricted-syntax:error'",
-    "update-exports": "node scripts/update-component-exports.js",
+    "update-exports": "tsx scripts/update-component-exports.ts",
     "lint:report": "eslint \"src/**/*.{ts,tsx}\" -f json -o .eslint-report.json",
     "dead:exports": "ts-prune -p tsconfig.json",
     "format": "prettier --write src/**/*.{ts,tsx,js,jsx,css,md,json}",
@@ -68,7 +69,10 @@
     "ssot:scorecard": "npx tsx scripts/scorecard.ts",
     "ssot:help": "echo 'SSOT Commands:\\n  ssot:scorecard - Generate comprehensive component compliance report\\n  tokens:scaffold - Add missing DESIGN_TOKENS\\n\\nThe scorecard method provides complete SSOT analysis and compliance tracking.'",
     "tokens:scaffold": "npx tsx scripts/scaffold-tokens.ts",
-    "new": "node scripts/new-component.cjs",
+    "ssot:audit": "tsx scripts/ssot-audits.ts",
+    "ssot:audit:ci": "node --max-old-space-size=3072 ./node_modules/.bin/tsx scripts/ssot-audits.ts",
+    "preflight": "npm run ssot:audit && npm run lint && npm run typecheck",
+    "new": "tsx scripts/new-component.ts",
     "precommit": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit",
     "prepare": "husky"
   },
@@ -157,7 +161,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.5.0",
     "@types/jest-axe": "^3.5.9",
-    "@types/node": "^20.19.0",
+    "@types/node": "^20.19.11",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
@@ -169,7 +173,6 @@
     "autoprefixer": "^10.4.0",
     "axe-playwright": "^2.1.0",
     "eslint": "^8.57.1",
-    "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-import": "^2.32.0",
@@ -209,5 +212,10 @@
   "volta": {
     "node": "22.18.0",
     "npm": "10.8.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

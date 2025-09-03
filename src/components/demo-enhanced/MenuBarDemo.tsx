@@ -46,7 +46,8 @@ import {
   Shield,
   HelpCircle,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 
 import {
   MenuBar,
@@ -160,24 +161,24 @@ const MenuBarDemo: React.FC = () => {
               {/* File Menu */}
               <MenuBarMenu>
                 <MenuBarTrigger enforceAAA={demoState.aaaMode}>
-                  <File className='mr-2 h-4 w-4' />
+                  <File className='mr-2 size-4' />
                   File
                 </MenuBarTrigger>
                 <MenuBarContent enforceAAA={demoState.aaaMode}>
                   <MenuBarItem>
-                    <Plus className='mr-2 h-4 w-4' />
+                    <Plus className='mr-2 size-4' />
                     New
                     <MenuBarShortcut>⌘N</MenuBarShortcut>
                   </MenuBarItem>
                   <MenuBarItem>
-                    <FolderOpen className='mr-2 h-4 w-4' />
+                    <FolderOpen className='mr-2 size-4' />
                     Open
                     <MenuBarShortcut>⌘O</MenuBarShortcut>
                   </MenuBarItem>
                   <MenuBarSeparator />
                   <MenuBarSub>
                     <MenuBarSubTrigger>
-                      <FileText className='mr-2 h-4 w-4' />
+                      <FileText className='mr-2 size-4' />
                       Recent Files
                     </MenuBarSubTrigger>
                     <MenuBarSubContent>
@@ -190,12 +191,12 @@ const MenuBarDemo: React.FC = () => {
                   </MenuBarSub>
                   <MenuBarSeparator />
                   <MenuBarItem>
-                    <Save className='mr-2 h-4 w-4' />
+                    <Save className='mr-2 size-4' />
                     Save
                     <MenuBarShortcut>⌘S</MenuBarShortcut>
                   </MenuBarItem>
                   <MenuBarItem>
-                    <Download className='mr-2 h-4 w-4' />
+                    <Download className='mr-2 size-4' />
                     Export
                     <MenuBarShortcut>⌘E</MenuBarShortcut>
                   </MenuBarItem>
@@ -214,23 +215,23 @@ const MenuBarDemo: React.FC = () => {
               {/* Edit Menu */}
               <MenuBarMenu>
                 <MenuBarTrigger enforceAAA={demoState.aaaMode}>
-                  <Edit className='mr-2 h-4 w-4' />
+                  <Edit className='mr-2 size-4' />
                   Edit
                 </MenuBarTrigger>
                 <MenuBarContent enforceAAA={demoState.aaaMode}>
                   <MenuBarItem>
-                    <Undo className='mr-2 h-4 w-4' />
+                    <Undo className='mr-2 size-4' />
                     Undo
                     <MenuBarShortcut>⌘Z</MenuBarShortcut>
                   </MenuBarItem>
                   <MenuBarItem>
-                    <Redo className='mr-2 h-4 w-4' />
+                    <Redo className='mr-2 size-4' />
                     Redo
                     <MenuBarShortcut>⌘⇧Z</MenuBarShortcut>
                   </MenuBarItem>
                   <MenuBarSeparator />
                   <MenuBarItem>
-                    <Copy className='mr-2 h-4 w-4' />
+                    <Copy className='mr-2 size-4' />
                     Copy
                     <MenuBarShortcut>⌘C</MenuBarShortcut>
                   </MenuBarItem>
@@ -249,7 +250,7 @@ const MenuBarDemo: React.FC = () => {
               {/* View Menu */}
               <MenuBarMenu>
                 <MenuBarTrigger enforceAAA={demoState.aaaMode}>
-                  <Eye className='mr-2 h-4 w-4' />
+                  <Eye className='mr-2 size-4' />
                   View
                 </MenuBarTrigger>
                 <MenuBarContent enforceAAA={demoState.aaaMode}>
@@ -264,22 +265,22 @@ const MenuBarDemo: React.FC = () => {
                     }
                   >
                     <MenuBarRadioItem value='list'>
-                      <List className='mr-2 h-4 w-4' />
+                      <List className='mr-2 size-4' />
                       List View
                     </MenuBarRadioItem>
                     <MenuBarRadioItem value='grid'>
-                      <Grid className='mr-2 h-4 w-4' />
+                      <Grid className='mr-2 size-4' />
                       Grid View
                     </MenuBarRadioItem>
                     <MenuBarRadioItem value='gallery'>
-                      <Palette className='mr-2 h-4 w-4' />
+                      <Palette className='mr-2 size-4' />
                       Gallery View
                     </MenuBarRadioItem>
                   </MenuBarRadioGroup>
                   <MenuBarSeparator />
                   <MenuBarSub>
                     <MenuBarSubTrigger>
-                      <Monitor className='mr-2 h-4 w-4' />
+                      <Monitor className='mr-2 size-4' />
                       Theme
                     </MenuBarSubTrigger>
                     <MenuBarSubContent>
@@ -293,15 +294,15 @@ const MenuBarDemo: React.FC = () => {
                         }
                       >
                         <MenuBarRadioItem value='light'>
-                          <Sun className='mr-2 h-4 w-4' />
+                          <Sun className='mr-2 size-4' />
                           Light
                         </MenuBarRadioItem>
                         <MenuBarRadioItem value='dark'>
-                          <Moon className='mr-2 h-4 w-4' />
+                          <Moon className='mr-2 size-4' />
                           Dark
                         </MenuBarRadioItem>
                         <MenuBarRadioItem value='system'>
-                          <Monitor className='mr-2 h-4 w-4' />
+                          <Monitor className='mr-2 size-4' />
                           System
                         </MenuBarRadioItem>
                       </MenuBarRadioGroup>
@@ -314,7 +315,7 @@ const MenuBarDemo: React.FC = () => {
                       handleStateChange('sidebarVisible', checked === true)
                     }
                   >
-                    <Folder className='mr-2 h-4 w-4' />
+                    <Folder className='mr-2 size-4' />
                     Show Sidebar
                   </MenuBarCheckboxItem>
                 </MenuBarContent>
@@ -323,16 +324,16 @@ const MenuBarDemo: React.FC = () => {
               {/* Help Menu */}
               <MenuBarMenu>
                 <MenuBarTrigger enforceAAA={demoState.aaaMode}>
-                  <HelpCircle className='mr-2 h-4 w-4' />
+                  <HelpCircle className='mr-2 size-4' />
                   Help
                 </MenuBarTrigger>
                 <MenuBarContent enforceAAA={demoState.aaaMode}>
                   <MenuBarItem>
-                    <HelpCircle className='mr-2 h-4 w-4' />
+                    <HelpCircle className='mr-2 size-4' />
                     Documentation
                   </MenuBarItem>
                   <MenuBarItem>
-                    <Zap className='mr-2 h-4 w-4' />
+                    <Zap className='mr-2 size-4' />
                     Keyboard Shortcuts
                   </MenuBarItem>
                   <MenuBarSeparator />
@@ -366,21 +367,21 @@ const MenuBarDemo: React.FC = () => {
             >
               <MenuBarMenu>
                 <MenuBarTrigger variant='glass' enforceAAA={demoState.aaaMode}>
-                  <Settings className='mr-2 h-4 w-4' />
+                  <Settings className='mr-2 size-4' />
                   Tools
                 </MenuBarTrigger>
                 <MenuBarContent variant='glass' enforceAAA={demoState.aaaMode}>
                   <MenuBarItem>
-                    <Shield className='mr-2 h-4 w-4' />
+                    <Shield className='mr-2 size-4' />
                     Security Settings
                   </MenuBarItem>
                   <MenuBarItem>
-                    <Palette className='mr-2 h-4 w-4' />
+                    <Palette className='mr-2 size-4' />
                     Appearance
                   </MenuBarItem>
                   <MenuBarSeparator />
                   <MenuBarItem>
-                    <Share className='mr-2 h-4 w-4' />
+                    <Share className='mr-2 size-4' />
                     Export Settings
                   </MenuBarItem>
                 </MenuBarContent>
@@ -388,13 +389,13 @@ const MenuBarDemo: React.FC = () => {
 
               <MenuBarMenu>
                 <MenuBarTrigger variant='glass' enforceAAA={demoState.aaaMode}>
-                  <MoreHorizontal className='mr-2 h-4 w-4' />
+                  <MoreHorizontal className='mr-2 size-4' />
                   More
                 </MenuBarTrigger>
                 <MenuBarContent variant='glass' enforceAAA={demoState.aaaMode}>
                   <MenuBarItem>Advanced Options</MenuBarItem>
                   <MenuBarItem variant='destructive'>
-                    <Trash2 className='mr-2 h-4 w-4' />
+                    <Trash2 className='mr-2 size-4' />
                     Reset All Settings
                   </MenuBarItem>
                 </MenuBarContent>
@@ -454,28 +455,28 @@ const MenuBarDemo: React.FC = () => {
               <MenuBar size='lg' enforceAAA={demoState.aaaMode}>
                 <MenuBarMenu>
                   <MenuBarTrigger size='lg' enforceAAA={demoState.aaaMode}>
-                    <File className='mr-2 h-5 w-5' />
+                    <File className='mr-2 size-5' />
                     File
                   </MenuBarTrigger>
                   <MenuBarContent size='lg' enforceAAA={demoState.aaaMode}>
                     <MenuBarItem size='lg'>
-                      <Plus className='mr-2 h-5 w-5' />
+                      <Plus className='mr-2 size-5' />
                       New Document
                     </MenuBarItem>
                     <MenuBarItem size='lg'>
-                      <FolderOpen className='mr-2 h-5 w-5' />
+                      <FolderOpen className='mr-2 size-5' />
                       Open File
                     </MenuBarItem>
                   </MenuBarContent>
                 </MenuBarMenu>
                 <MenuBarMenu>
                   <MenuBarTrigger size='lg' enforceAAA={demoState.aaaMode}>
-                    <Edit className='mr-2 h-5 w-5' />
+                    <Edit className='mr-2 size-5' />
                     Edit
                   </MenuBarTrigger>
                   <MenuBarContent size='lg' enforceAAA={demoState.aaaMode}>
                     <MenuBarItem size='lg'>
-                      <Copy className='mr-2 h-5 w-5' />
+                      <Copy className='mr-2 size-5' />
                       Copy
                     </MenuBarItem>
                     <MenuBarItem size='lg'>Paste</MenuBarItem>

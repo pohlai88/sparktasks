@@ -1,0 +1,22 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:9000",
+      "localStorage": [
+        {
+          "name": "auth_token",
+          "value": "test-token-admin-001"
+        },
+        {
+          "name": "auth_user",
+          "value": "{\"id\":\"user-001-admin\",\"email\":\"admin+test@sparktasks.local\",\"name\":\"Test Admin\",\"role\":\"admin\",\"createdAt\":\"2024-01-01T00:00:00.000Z\",\"workspaceId\":\"workspace-001\",\"preferences\":{\"theme\":\"light\",\"notifications\":true,\"timezone\":\"UTC\"},\"mfaEnabled\":false,\"lastLogin\":\"2024-01-01T00:00:00.000Z\"}"
+        },
+        {
+          "name": "app_preferences",
+          "value": "{\"theme\":\"light\",\"language\":\"en-US\",\"timezone\":\"UTC\"}"
+        }
+      ]
+    }
+  ]
+}

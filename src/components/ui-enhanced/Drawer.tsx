@@ -36,6 +36,7 @@ import { X } from 'lucide-react';
 import * as React from 'react';
 
 import { AccessibleIcon, Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED DRAWER VARIANTS =====
@@ -45,17 +46,20 @@ import { cn } from '@/utils/cn';
  * ANTI-DRIFT ENFORCEMENT: ALL values from Tailwind config CSS custom properties
  */
 const enhancedDrawerOverlayVariants = cva([
-  // Foundation: Overlay base styling
-  'fixed inset-0 z-50',
-  'bg-black/60 backdrop-blur-[2px]',
+  // Foundation: Overlay base styling - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.position.fixed,
+  ENHANCED_DESIGN_TOKENS.foundation.positioning.inset[0],
+  getZIndexClass('overlay'),
+  ENHANCED_DESIGN_TOKENS.foundation.color.surface.overlay,
+  ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.sm,
 
   // Foundation: Motion - Mobile-optimized transitions
   'data-[state=open]:animate-in data-[state=closed]:animate-out',
   'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
   'data-[state=closed]:duration-200 data-[state=open]:duration-300',
 
-  // Foundation: Respect motion preferences
-  'motion-reduce:transition-none',
+  // Foundation: Respect motion preferences - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 ]);
 
 /**
@@ -63,14 +67,21 @@ const enhancedDrawerOverlayVariants = cva([
  */
 const enhancedDrawerContentVariants = cva(
   [
-    // Foundation: Mobile-first positioning
-    'fixed inset-x-0 bottom-0 z-50',
-    'flex flex-col',
+    // Foundation: Mobile-first positioning - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.position.fixed,
+    ENHANCED_DESIGN_TOKENS.foundation.positioning.left[0],
+    ENHANCED_DESIGN_TOKENS.foundation.positioning.right[0],
+    ENHANCED_DESIGN_TOKENS.foundation.positioning.bottom[0],
+    getZIndexClass('modal'),
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
 
-    // Foundation: Mobile-optimized styling
-    'border-t border-border bg-background',
+    // Foundation: Mobile-optimized styling - Enhanced tokens
+    'border-t',
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     'rounded-t-2xl',
-    'shadow-2xl shadow-black/20',
+    ENHANCED_DESIGN_TOKENS.foundation.elevation['2xl'],
 
     // Foundation: Touch-friendly spacing
     'max-h-[90vh] min-h-[200px]',
@@ -81,10 +92,10 @@ const enhancedDrawerContentVariants = cva(
     'data-[state=closed]:duration-200 data-[state=open]:duration-300',
 
     // Foundation: Focus management
-    'focus-visible:outline-none',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Motion preferences
-    'motion-reduce:transition-none',
+    // Foundation: Motion preferences - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Mobile: Safe area handling
     'pb-safe-area-inset-bottom',
@@ -107,22 +118,28 @@ const enhancedDrawerContentVariants = cva(
        */
       surface: {
         elevated: [
-          'border-border bg-background-elevated',
-          'shadow-elevation-high',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
         panel: [
-          'border-border-strong bg-background-panel',
-          'shadow-elevation-floating',
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.strong,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
         glass: [
-          'bg-background/95 backdrop-blur-xl backdrop-saturate-150',
-          'border-border/50',
-          'shadow-elevation-glass',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
         floating: [
-          'bg-background/90 backdrop-blur-2xl backdrop-saturate-150',
-          'border-border/30',
-          'shadow-elevation-floating',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
       },
 
@@ -150,8 +167,8 @@ const enhancedDrawerContentVariants = cva(
       enforceAAA: {
         false: '',
         true: [
-          'aaa:bg-background-aaa aaa:border-border-aaa',
-          'aaa:shadow-elevation-aaa',
+          'aaa:bg-cosmic-void aaa:border-cosmic-border-strong',
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
       },
     },
@@ -169,30 +186,37 @@ const enhancedDrawerContentVariants = cva(
  * Drawer handle variants for mobile gesture indication
  */
 const enhancedDrawerHandleVariants = cva([
-  // Foundation: Handle styling
-  'mx-auto mb-4 mt-2',
-  'h-1.5 w-12',
-  'rounded-full',
-  'bg-muted-foreground/30',
+  // Foundation: Handle styling - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.margin['x-auto'],
+  'mb-4 mt-2',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.height['1/4'],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
 
-  // Foundation: Interactive feedback
-  'transition-colors duration-200',
-  'group-hover:bg-muted-foreground/50',
+  // Foundation: Interactive feedback - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+  'pointer:hover:opacity-80',
 
-  // Foundation: Touch target
-  'cursor-grab active:cursor-grabbing',
+  // Foundation: Touch target - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.grab,
+  'active:cursor-grabbing',
 ]);
 
 /**
  * Enhanced drawer header variants
  */
 const enhancedDrawerHeaderVariants = cva([
-  // Foundation: Header layout
-  'flex flex-col space-y-2',
-  'px-6 pb-2 pt-4',
+  // Foundation: Header layout - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
 
-  // Foundation: Border for content separation
-  'border-b border-border/50',
+  // Foundation: Border for content separation - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+  ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
   // Foundation: Mobile-optimized spacing
   'min-h-[60px]',
@@ -202,9 +226,9 @@ const enhancedDrawerHeaderVariants = cva([
  * Enhanced drawer title variants
  */
 const enhancedDrawerTitleVariants = cva([
-  // Foundation: Typography following Apple HIG
-  'text-lg font-semibold leading-tight tracking-tight',
-  'text-foreground',
+  // Foundation: Typography following Apple HIG - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
   // Foundation: Mobile-optimized spacing
   'px-0',
@@ -214,8 +238,9 @@ const enhancedDrawerTitleVariants = cva([
  * Enhanced drawer description variants
  */
 const enhancedDrawerDescriptionVariants = cva([
-  // Foundation: Typography for secondary text
-  'text-sm text-muted-foreground',
+  // Foundation: Typography for secondary text - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
   'leading-relaxed',
 ]);
 
@@ -223,13 +248,15 @@ const enhancedDrawerDescriptionVariants = cva([
  * Enhanced drawer body variants
  */
 const enhancedDrawerBodyVariants = cva([
-  // Foundation: Scrollable content area
-  'flex-1 overflow-y-auto',
-  'px-6 py-4',
+  // Foundation: Scrollable content area - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.y.auto,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
 
   // Foundation: Mobile scroll behavior
-  'overscroll-behavior-contain',
-  '-webkit-overflow-scrolling: touch',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.overscroll.y.contain,
+  // WebKit momentum scrolling behavior is handled by Tailwind configs
 
   // Foundation: Focus management within scrollable area
   'focus-within:scroll-smooth',
@@ -239,12 +266,16 @@ const enhancedDrawerBodyVariants = cva([
  * Enhanced drawer footer variants
  */
 const enhancedDrawerFooterVariants = cva([
-  // Foundation: Footer layout
-  'flex flex-col-reverse gap-2 p-6',
-  'sm:flex-row sm:justify-end sm:space-x-2',
+  // Foundation: Footer layout - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+  'flex-col-reverse',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6],
+  'sm:flex-row sm:justify-end',
 
-  // Foundation: Border for visual separation
-  'border-t border-border/50',
+  // Foundation: Border for visual separation - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+  ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
 
   // Foundation: Mobile-safe area handling
   'pb-safe-area-inset-bottom',
@@ -255,24 +286,27 @@ const enhancedDrawerFooterVariants = cva([
  */
 const enhancedDrawerCloseVariants = cva([
   // Foundation: Positioning in mobile context
-  'absolute right-4 top-4',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+  ENHANCED_DESIGN_TOKENS.foundation.positioning.right[4],
+  ENHANCED_DESIGN_TOKENS.foundation.positioning.top[4],
 
   // Foundation: Touch-optimized size
-  'rounded-full p-2',
-  'h-10 w-10',
+  ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.full,
+  ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.height['max-content'],
+  ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-content'],
 
-  // Foundation: Colors and states
-  'text-muted-foreground',
-  'hover:bg-muted hover:text-foreground',
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-  'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  // Foundation: Colors and states - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+  'pointer:hover:bg-cosmic-void/50 pointer:hover:text-cosmic-light',
+  ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-  // Foundation: Motion
-  'transition-all duration-200 ease-out',
-  'motion-reduce:transition-none',
+  // Foundation: Motion - Enhanced tokens
+  ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+  ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
   // Foundation: Touch feedback
-  'active:scale-95',
+  `active:${ENHANCED_DESIGN_TOKENS.foundation.transform.scale['95']}`,
 
   // Foundation: Disabled state
   'disabled:pointer-events-none disabled:opacity-50',
@@ -311,6 +345,11 @@ interface EnhancedDrawerContentProps
    * Custom handle content
    */
   handleContent?: React.ReactNode;
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 interface EnhancedDrawerHandleProps
@@ -448,11 +487,17 @@ const EnhancedDrawerContent = React.forwardRef<
       className,
       children,
       asChild = false,
+      disableAnimations = false,
       ...props
     },
     ref
   ) => {
     const Comp = asChild ? Slot : DrawerPrimitive.Content;
+
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
     return (
       <EnhancedDrawerPortal>
@@ -467,6 +512,7 @@ const EnhancedDrawerContent = React.forwardRef<
               handle,
               enforceAAA,
             }),
+            motionClasses,
             'group', // For handle hover effects
             className
           )}
@@ -488,7 +534,7 @@ const EnhancedDrawerContent = React.forwardRef<
               className={cn(enhancedDrawerCloseVariants())}
               aria-label='Close drawer'
             >
-              <X className="h-5 w-5" />
+              <X className="size-5" />
             </button>
           </DrawerPrimitive.Close>
         </Comp>
@@ -698,6 +744,17 @@ const DrawerFactory = {
     surface: 'panel' as const,
     handle: 'auto' as const,
     snap: 'always' as const,
+    ...overrides,
+  }),
+
+  /**
+   * Performance-optimized drawer with disabled animations
+   */
+  performance: (overrides?: Partial<EnhancedDrawerContentProps>) => ({
+    size: 'lg' as const,
+    surface: 'elevated' as const,
+    handle: 'visible' as const,
+    disableAnimations: true,
     ...overrides,
   }),
 };

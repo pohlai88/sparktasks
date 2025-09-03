@@ -52,7 +52,7 @@ const tableToolbarVariants = cva(
         ],
         glass: [
           ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
-          ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
         ],
       },
     },
@@ -73,8 +73,8 @@ const searchInputVariants = cva(
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
-    ENHANCED_DESIGN_TOKENS.accessibility.focus.ring,
-    ENHANCED_DESIGN_TOKENS.accessibility.motion.safe,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
@@ -94,8 +94,8 @@ const toolbarButtonVariants = cva(
   [
     'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2',
     'font-medium transition-colors',
-    ENHANCED_DESIGN_TOKENS.accessibility.motion.safe,
-    ENHANCED_DESIGN_TOKENS.accessibility.focus.ring,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
@@ -149,7 +149,7 @@ const densityOptionVariants = cva(
   [
     'inline-flex items-center justify-center rounded-sm px-2 py-1',
     'text-sm font-medium transition-colors',
-    ENHANCED_DESIGN_TOKENS.accessibility.motion.safe,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
@@ -174,7 +174,7 @@ const densityOptionVariants = cva(
 const bulkActionsVariants = cva([
   'flex items-center gap-2 rounded-md border px-3 py-2',
   ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
-  ENHANCED_DESIGN_TOKENS.foundation.color.border.accent,
+  ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
   'shadow-sm',
 ]);
 
@@ -311,12 +311,12 @@ function BulkActions({
             >
               {Icon && React.isValidElement(Icon)
                 ? Icon
-                : Icon && typeof Icon === 'function'
+                : (Icon && typeof Icon === 'function'
                   ? React.createElement(
                       Icon as React.ComponentType<{ className?: string }>,
                       { className: 'h-4 w-4' }
                     )
-                  : null}
+                  : null)}
               <VisuallyHidden>{action.label}</VisuallyHidden>
             </button>
           );
@@ -349,7 +349,7 @@ function FilterIndicator({
           ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary
         )}
       >
-        {activeFilters.length} filter{activeFilters.length !== 1 ? 's' : ''}{' '}
+        {activeFilters.length} filter{activeFilters.length === 1 ? '' : 's'}{' '}
         applied
       </span>
 

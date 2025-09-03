@@ -11,60 +11,68 @@
  * - Developer Experience: Intuitive APIs that make complex layouts simple to implement
  */
 
-import React, { forwardRef } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type React from 'react';
+import { forwardRef } from 'react';
+
 import { cn } from '../../../utils/cn';
+import { ENHANCED_DESIGN_TOKENS } from '../../../design/enhanced-tokens';
 
 // ===== VARIANTS =====
 
-const stackVariants = cva(['flex'], {
+const stackVariants = cva([
+  ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+], {
   variants: {
     // Spacing Control - using Tailwind's gap utilities
     gap: {
-      none: 'gap-0',
-      xs: 'gap-1', // 4px
-      sm: 'gap-2', // 8px
-      md: 'gap-4', // 16px
-      lg: 'gap-6', // 24px
-      xl: 'gap-8', // 32px
-      '2xl': 'gap-12', // 48px
-      '3xl': 'gap-16', // 64px
+      none: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.none,
+      xs: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+      sm: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+      md: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+      lg: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+      xl: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+      '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap['2xl'],
+      '3xl': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap['3xl'],
     },
 
     // Alignment Options
     align: {
-      start: 'items-start',
-      center: 'items-center',
-      end: 'items-end',
-      stretch: 'items-stretch',
+      start: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start,
+      center: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      end: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.end,
+      stretch: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.stretch,
     },
 
     justify: {
-      start: 'justify-start',
-      center: 'justify-center',
-      end: 'justify-end',
-      between: 'justify-between',
-      around: 'justify-around',
-      evenly: 'justify-evenly',
+      start: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.start,
+      center: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+      end: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.end,
+      between: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between,
+      around: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.around,
+      evenly: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.evenly,
     },
 
     // Direction Control
     direction: {
-      column: 'flex-col',
-      'column-reverse': 'flex-col-reverse',
+      column: ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.col,
+      'column-reverse': ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction['col-reverse'],
     },
 
     // Dividers
     divider: {
-      true: 'divide-y',
+      true: cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.divide.y,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.divide.subtle
+      ),
       false: '',
     },
 
     dividerColor: {
-      subtle: 'divide-border-subtle',
-      muted: 'divide-border',
-      accent: 'divide-border-accent',
+      subtle: ENHANCED_DESIGN_TOKENS.foundation.layout.divide.subtle,
+      muted: ENHANCED_DESIGN_TOKENS.foundation.layout.divide.subtle,
+      accent: ENHANCED_DESIGN_TOKENS.foundation.layout.divide.subtleCosmic,
     },
   },
   defaultVariants: {
@@ -128,18 +136,38 @@ export const Stack = forwardRef<
       ? Object.entries(responsive)
           .map(([breakpoint, config]) => {
             const prefix =
-              breakpoint === 'sm' ? 'sm:' : breakpoint === 'md' ? 'md:' : 'lg:';
+              breakpoint === 'sm' ? 'sm:' : (breakpoint === 'md' ? 'md:' : 'lg:');
             const classes = [];
 
-            if (config.gap)
-              classes.push(
-                `${prefix}gap-${config.gap === 'none' ? '0' : config.gap === 'xs' ? '1' : config.gap === 'sm' ? '2' : config.gap === 'md' ? '4' : config.gap === 'lg' ? '6' : config.gap === 'xl' ? '8' : config.gap === '2xl' ? '12' : '16'}`
-              );
-            if (config.align) classes.push(`${prefix}items-${config.align}`);
-            if (config.justify)
-              classes.push(`${prefix}justify-${config.justify}`);
-            if (config.direction)
-              classes.push(`${prefix}flex-${config.direction}`);
+            if (config.gap) {
+              const gapMap: Record<string, string> = {
+                none: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.none,
+                xs: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xs,
+                sm: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm,
+                md: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.md,
+                lg: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.lg,
+                xl: ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl,
+                '2xl': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap['2xl'],
+                '3xl': ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap['3xl'],
+              };
+              const gapToken = gapMap[String(config.gap)] || `gap-${config.gap}`;
+              classes.push(`${prefix}${gapToken}`);
+            }
+            if (config.align) {
+              const itemsMap = ENHANCED_DESIGN_TOKENS.foundation.layout.flex
+                .items as unknown as Record<string, string>;
+              classes.push(`${prefix}${itemsMap[String(config.align)] || `items-${config.align}`}`);
+            }
+            if (config.justify) {
+              const justifyMap = ENHANCED_DESIGN_TOKENS.foundation.layout.flex
+                .justify as unknown as Record<string, string>;
+              classes.push(`${prefix}${justifyMap[String(config.justify)] || `justify-${config.justify}`}`);
+            }
+            if (config.direction) {
+              const dirMap = ENHANCED_DESIGN_TOKENS.foundation.layout.flex
+                .direction as unknown as Record<string, string>;
+              classes.push(`${prefix}${dirMap[String(config.direction)] || `flex-${config.direction}`}`);
+            }
 
             return classes.join(' ');
           })

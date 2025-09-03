@@ -28,6 +28,7 @@ import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED COLLAPSIBLE VARIANTS =====
@@ -38,68 +39,75 @@ import { cn } from '@/utils/cn';
  */
 const enhancedCollapsibleRootVariants = cva(
   [
-    // Foundation: Layout structure
-    'w-full',
+    // Foundation: Layout structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
 
-    // Foundation: Motion - Apple HIG with accessibility respect
-    'motion-reduce:transition-none',
+    // Foundation: Motion - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         default: [
-          // Surface: Deep space foundation
-          'bg-background-elevated',
-          'border border-border-subtle',
-          'rounded-lg',
+          // Surface: Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.elevated,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.subtle,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
         ],
         ghost: [
           // Surface: Minimal styling
-          'bg-transparent',
-          'border-transparent',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.none,
         ],
         glass: [
           // Surface: Liquid glass materials
-          'backdrop-blur-[12px] backdrop-saturate-[135%]',
-          'bg-background-translucent/80',
-          'border border-border-subtle/50',
-          'rounded-lg',
-          'shadow-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.sm,
         ],
         floating: [
           // Surface: Elevated glass with shadow
-          'backdrop-blur-[8px] backdrop-saturate-[135%]',
-          'bg-background-elevated/85',
-          'border border-border-subtle/30',
-          'rounded-xl',
-          'shadow-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
         ],
         outlined: [
           // Surface: Prominent border focus
-          'bg-transparent',
-          'border-2 border-border-accent',
-          'rounded-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.thick,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
         ],
         filled: [
           // Surface: Solid background emphasis
-          'bg-background-panel',
-          'border-border-default border',
-          'rounded-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.panel,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
         ],
       },
       aaaMode: {
         false: '',
         true: [
           // AAA Compliance: Enhanced contrast and focus
-          'contrast-more:bg-background',
-          'contrast-more:border-border-strong',
+          'contrast-more:bg-cosmic-void',
+          'contrast-more:border-cosmic-border-strong',
           'forced-colors:border-[ButtonBorder]',
           'forced-colors:bg-[ButtonFace]',
         ],
       },
       density: {
-        default: 'space-y-1',
-        compact: 'space-y-0.5',
+        default: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xs,
+        compact: ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.none,
       },
     },
     defaultVariants: {
@@ -115,30 +123,33 @@ const enhancedCollapsibleRootVariants = cva(
  */
 const enhancedCollapsibleTriggerVariants = cva(
   [
-    // Foundation: Interactive element
-    'group flex w-full items-center justify-between gap-2',
-    'px-4 py-3',
-    'text-left',
+    // Foundation: Interactive element - Enhanced tokens
+    'group',
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.alignment.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.cluster.sm,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.left,
 
-    // Foundation: Typography - Apple semantic
-    'text-sm font-medium',
-    'text-content-primary',
+    // Foundation: Typography - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.label,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
     // Foundation: Interaction - Touch targets
-    'min-h-[44px]',
-    'cursor-pointer',
+    // Touch targets via hit-target utilities or padding; avoid fixed heights
+    ENHANCED_DESIGN_TOKENS.foundation.layout.cursor.pointer,
     'select-none',
 
-    // Foundation: States - Apple HIG feedback
-    'transition-all duration-200 ease-out',
-    'hover:bg-surface-hover',
-    'active:bg-surface-pressed',
-    'focus-visible:outline-none',
-    'focus-visible:ring-border-focus focus-visible:ring-2',
-    'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    // Foundation: States - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    'pointer:hover:bg-cosmic-void/50',
+    'active:bg-cosmic-void/80',
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
     // Foundation: Motion respect
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
     // Foundation: Disabled state
     'disabled:opacity-50',
@@ -149,38 +160,38 @@ const enhancedCollapsibleTriggerVariants = cva(
     variants: {
       variant: {
         default: [
-          'hover:bg-background-panel/50',
-          'active:bg-background-panel/80',
+          'pointer:hover:bg-cosmic-void/50',
+          'active:bg-cosmic-void/80',
         ],
         ghost: [
-          'hover:bg-background-elevated/30',
-          'active:bg-background-elevated/50',
+          'pointer:hover:bg-cosmic-void/30',
+          'active:bg-cosmic-void/50',
         ],
         glass: [
-          'hover:backdrop-blur-[14px]',
-          'hover:bg-background-translucent/90',
-          'active:bg-background-translucent/95',
+          `pointer:hover:${ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.lg}`,
+          'pointer:hover:bg-cosmic-void/90',
+          'active:bg-cosmic-void/95',
         ],
         floating: [
-          'hover:shadow-md',
-          'hover:bg-background-elevated/95',
+          'pointer:hover:shadow-md',
+          'pointer:hover:bg-cosmic-void/95',
           'active:shadow-sm',
         ],
         outlined: [
-          'hover:bg-background-elevated/20',
-          'active:bg-background-elevated/40',
+          'pointer:hover:bg-cosmic-void/20',
+          'active:bg-cosmic-void/40',
         ],
         filled: [
-          'hover:bg-background-overlay/20',
-          'active:bg-background-overlay/40',
+          'pointer:hover:bg-cosmic-void/20',
+          'active:bg-cosmic-void/40',
         ],
       },
       aaaMode: {
         false: '',
         true: [
           // AAA Compliance: Enhanced contrast
-          'contrast-more:text-content-primary',
-          'contrast-more:border contrast-more:border-border-strong',
+          'contrast-more:text-cosmic-light',
+          'contrast-more:border contrast-more:border-cosmic-border-strong',
           'forced-colors:text-[ButtonText]',
           'forced-colors:bg-[ButtonFace]',
           'forced-colors:border-[ButtonBorder]',
@@ -199,19 +210,21 @@ const enhancedCollapsibleTriggerVariants = cva(
  */
 const enhancedCollapsibleContentVariants = cva(
   [
-    // Foundation: Layout structure
-    'overflow-hidden',
-    'px-4 pb-3',
+    // Foundation: Layout structure - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3],
 
-    // Foundation: Content styling
-    'text-content-secondary text-sm',
+    // Foundation: Content styling - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Animation - Apple HIG motion
-    'data-[state=closed]:animate-slide-up',
-    'data-[state=open]:animate-slide-down',
+    // Foundation: Animation - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.animation.name['slide-up'],
+    ENHANCED_DESIGN_TOKENS.foundation.animation.name['slide-up'],
 
     // Foundation: Motion respect
-    'motion-reduce:animate-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
     'motion-reduce:data-[state=closed]:hidden',
   ],
   {
@@ -221,11 +234,14 @@ const enhancedCollapsibleContentVariants = cva(
         ghost: '',
         glass: [
           // Enhanced backdrop for readability
-          'backdrop-blur-[8px]',
-          'bg-background-scrim/20',
-          'rounded-b-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.lg,
         ],
-        floating: ['bg-background-elevated/30', 'rounded-b-xl'],
+        floating: [
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl,
+        ],
         outlined: '',
         filled: '',
       },
@@ -233,8 +249,8 @@ const enhancedCollapsibleContentVariants = cva(
         false: '',
         true: [
           // AAA Compliance: Text readability
-          'contrast-more:text-content-primary',
-          'contrast-more:bg-background-scrim/40',
+          'contrast-more:text-cosmic-light',
+          'contrast-more:bg-cosmic-void/40',
           'forced-colors:text-[WindowText]',
           'forced-colors:bg-[Window]',
         ],
@@ -253,32 +269,32 @@ const enhancedCollapsibleContentVariants = cva(
 const enhancedCollapsibleIconVariants = cva(
   [
     // Foundation: Icon sizing
-    'h-4 w-4',
-    'text-content-tertiary',
+    ENHANCED_DESIGN_TOKENS.foundation.icon.size.sm,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary,
 
-    // Foundation: Animation - Smooth rotation
-    'transition-transform duration-200 ease-out',
+    // Foundation: Animation - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
     'group-data-[state=open]:rotate-180',
 
     // Foundation: Motion respect
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
     'motion-reduce:group-data-[state=open]:rotate-0',
   ],
   {
     variants: {
       variant: {
         default: '',
-        ghost: 'text-content-secondary',
-        glass: 'text-content-accent',
-        floating: 'text-content-accent',
-        outlined: 'text-content-accent',
+        ghost: ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary,
+        glass: ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+        floating: ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+        outlined: ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
         filled: '',
       },
       aaaMode: {
         false: '',
         true: [
           // AAA Compliance: Icon visibility
-          'contrast-more:text-content-primary',
+          'contrast-more:text-cosmic-light',
           'forced-colors:text-[ButtonText]',
         ],
       },
@@ -309,6 +325,11 @@ interface EnhancedCollapsibleRootProps
    */
   density?: 'default' | 'compact';
   /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
+  /**
    * Children components
    */
   children: React.ReactNode;
@@ -329,6 +350,11 @@ interface EnhancedCollapsibleTriggerProps
    * @default false
    */
   aaaMode?: boolean;
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
   /**
    * Show/hide the expand/collapse icon
    * @default true
@@ -361,6 +387,11 @@ interface EnhancedCollapsibleContentProps
    */
   aaaMode?: boolean;
   /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
+  /**
    * Polymorphic support - render as different element/component
    */
   asChild?: boolean;
@@ -392,6 +423,11 @@ interface EnhancedCollapsibleCompleteProps {
    * @default "default"
    */
   density?: 'default' | 'compact';
+  /**
+   * Disable animations for performance optimization
+   * @default false
+   */
+  disableAnimations?: boolean;
   /**
    * Show/hide the expand/collapse icon
    * @default true
@@ -439,6 +475,7 @@ const EnhancedCollapsibleRoot = React.forwardRef<
       variant,
       aaaMode,
       density,
+      disableAnimations = false,
       asChild = false,
       children,
       ...props
@@ -446,6 +483,11 @@ const EnhancedCollapsibleRoot = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : CollapsiblePrimitive.Root;
+
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
     return (
       <Comp
@@ -455,8 +497,9 @@ const EnhancedCollapsibleRoot = React.forwardRef<
             variant,
             aaaMode,
             density,
-            className,
-          })
+          }),
+          motionClasses,
+          className
         )}
         {...props}
       >
@@ -480,6 +523,7 @@ const EnhancedCollapsibleTrigger = React.forwardRef<
       className,
       variant,
       aaaMode,
+      disableAnimations = false,
       showIcon = true,
       icon: IconComponent = ChevronDown,
       iconPosition = 'right',
@@ -491,6 +535,11 @@ const EnhancedCollapsibleTrigger = React.forwardRef<
   ) => {
     const Comp = asChild ? Slot : CollapsiblePrimitive.Trigger;
 
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
     return (
       <Comp
         ref={ref}
@@ -498,8 +547,9 @@ const EnhancedCollapsibleTrigger = React.forwardRef<
           enhancedCollapsibleTriggerVariants({
             variant,
             aaaMode,
-            className,
-          })
+          }),
+          motionClasses,
+          className
         )}
         {...props}
       >
@@ -512,7 +562,7 @@ const EnhancedCollapsibleTrigger = React.forwardRef<
           />
         )}
 
-        <span className='flex-1'>{children}</span>
+        <span className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow[1])}>{children}</span>
 
         {showIcon && iconPosition === 'right' && (
           <IconComponent
@@ -537,10 +587,15 @@ const EnhancedCollapsibleContent = React.forwardRef<
   EnhancedCollapsibleContentProps
 >(
   (
-    { className, variant, aaaMode, asChild = false, children, ...props },
+    { className, variant, aaaMode, disableAnimations = false, asChild = false, children, ...props },
     ref
   ) => {
     const Comp = asChild ? Slot : CollapsiblePrimitive.Content;
+
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
 
     return (
       <Comp
@@ -549,8 +604,9 @@ const EnhancedCollapsibleContent = React.forwardRef<
           enhancedCollapsibleContentVariants({
             variant,
             aaaMode,
-            className,
-          })
+          }),
+          motionClasses,
+          className
         )}
         {...props}
       >
@@ -576,6 +632,7 @@ const EnhancedCollapsibleComplete = React.forwardRef<
       variant,
       aaaMode = false,
       density = 'default',
+      disableAnimations = false,
       showIcon = true,
       icon,
       iconPosition = 'right',
@@ -589,19 +646,25 @@ const EnhancedCollapsibleComplete = React.forwardRef<
       variant={variant}
       aaaMode={aaaMode}
       density={density}
+      disableAnimations={disableAnimations}
       className={className}
       {...props}
     >
       <EnhancedCollapsibleTrigger
         variant={variant}
         aaaMode={aaaMode}
+        disableAnimations={disableAnimations}
         showIcon={showIcon}
         {...(icon && { icon })}
         iconPosition={iconPosition}
       >
         {trigger}
       </EnhancedCollapsibleTrigger>
-      <EnhancedCollapsibleContent variant={variant} aaaMode={aaaMode}>
+      <EnhancedCollapsibleContent 
+        variant={variant} 
+        aaaMode={aaaMode}
+        disableAnimations={disableAnimations}
+      >
         {content}
       </EnhancedCollapsibleContent>
     </EnhancedCollapsibleRoot>
@@ -682,6 +745,13 @@ const CollapsibleFactory = {
    */
   compact: (props: Omit<EnhancedCollapsibleRootProps, 'density'>) => (
     <EnhancedCollapsibleRoot density='compact' {...props} />
+  ),
+
+  /**
+   * Performance-optimized collapsible with disabled animations
+   */
+  performance: (props: Omit<EnhancedCollapsibleRootProps, 'disableAnimations'>) => (
+    <EnhancedCollapsibleRoot disableAnimations={true} {...props} />
   ),
 } as const;
 

@@ -9,11 +9,14 @@
  * - AAA Accessibility: ✅ WCAG 2.1 AA compliance with enforcement mode
  */
 
-import { RailwayMap } from '@/components/railway/RailwayMap'
 import { CharterWizard } from '@/components/railway/CharterWizard'
-import { RailwayStation } from '@/components/railway/RailwayStation'
 import { RailwayConductor } from '@/components/railway/RailwayConductor'
+import { RailwayMap } from '@/components/railway/RailwayMap'
+import { RailwayStation } from '@/components/railway/RailwayStation'
 import { ENHANCED_DESIGN_TOKENS } from '@/design/enhanced-tokens'
+import { AuthProvider } from '@/auth/AuthProvider'
+import { RequireAuth } from '@/components/auth/RequireAuth'
+import { LogoutButton } from '@/components/auth/LogoutButton'
 import { cn } from '@/utils/cn'
 
 // ===== MOCK DATA FOR DEMONSTRATION =====
@@ -137,11 +140,12 @@ const mockStationData = {
 
 export function App(): JSX.Element {
   return (
-    <div className={cn(
-      'min-h-screen w-full',
-      ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
-      ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
-    )}>
+    <AuthProvider>
+      <div className={cn(
+        'min-h-screen w-full',
+        ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
+        ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
+      )}>
       {/* Application Header */}
       <header className={cn(
         'border-b border-border',
@@ -149,12 +153,15 @@ export function App(): JSX.Element {
         'sticky top-0 z-50'
       )}>
         <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
           <h1 className={cn(
             'text-2xl font-bold',
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>
             🚂 Sparktasks Railway
           </h1>
+          <LogoutButton />
+          </div>
           <p className={cn(
             'text-sm',
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
@@ -165,11 +172,12 @@ export function App(): JSX.Element {
       </header>
 
       {/* Main Application Content */}
-      <main className="container mx-auto px-6 py-8 space-y-12">
+      <main className="container mx-auto space-y-12 px-6 py-8">
+        <RequireAuth>
         {/* Railway Map Section */}
         <section>
           <h2 className={cn(
-            'text-xl font-semibold mb-6',
+            'mb-6 text-xl font-semibold',
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>
             Project Railway Map
@@ -182,7 +190,7 @@ export function App(): JSX.Element {
                 name: 'Initiating', 
                 pmbokPhase: 'initiating' as const,
                 status: 'completed' as const, 
-                progress: 1.0,
+                progress: 1,
                 academicAnchor: 'Project Initiation',
                 description: 'Project charter and scope definition',
                 estimatedDuration: '1 week',
@@ -193,7 +201,7 @@ export function App(): JSX.Element {
                 name: 'Planning', 
                 pmbokPhase: 'planning' as const,
                 status: 'completed' as const, 
-                progress: 1.0,
+                progress: 1,
                 academicAnchor: 'Project Planning',
                 description: 'Detailed project planning and scheduling',
                 estimatedDuration: '2 weeks',
@@ -215,7 +223,7 @@ export function App(): JSX.Element {
                 name: 'Monitoring', 
                 pmbokPhase: 'monitoring' as const,
                 status: 'available' as const, 
-                progress: 0.0,
+                progress: 0,
                 academicAnchor: 'Project Monitoring',
                 description: 'Progress tracking and control',
                 estimatedDuration: '2 weeks',
@@ -226,7 +234,7 @@ export function App(): JSX.Element {
                 name: 'Closing', 
                 pmbokPhase: 'closing' as const,
                 status: 'available' as const, 
-                progress: 0.0,
+                progress: 0,
                 academicAnchor: 'Project Closure',
                 description: 'Project completion and handover',
                 estimatedDuration: '1 week',
@@ -241,7 +249,7 @@ export function App(): JSX.Element {
         {/* Railway Station Section */}
         <section>
           <h2 className={cn(
-            'text-xl font-semibold mb-6',
+            'mb-6 text-xl font-semibold',
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>
             Current Station: Build System Restoration
@@ -265,7 +273,7 @@ export function App(): JSX.Element {
         {/* Railway Conductor Section */}
         <section>
           <h2 className={cn(
-            'text-xl font-semibold mb-6',
+            'mb-6 text-xl font-semibold',
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>
             Project Conductor Dashboard
@@ -290,7 +298,7 @@ export function App(): JSX.Element {
         {/* Charter Wizard Section */}
         <section>
           <h2 className={cn(
-            'text-xl font-semibold mb-6',
+            'mb-6 text-xl font-semibold',
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>
             Project Charter Wizard
@@ -303,6 +311,7 @@ export function App(): JSX.Element {
             }}
           />
         </section>
+        </RequireAuth>
       </main>
 
       {/* Application Footer */}
@@ -320,6 +329,7 @@ export function App(): JSX.Element {
           </p>
         </div>
       </footer>
-    </div>
+      </div>
+    </AuthProvider>
   )
 }

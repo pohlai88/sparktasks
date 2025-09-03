@@ -1,6 +1,4 @@
-import fs from 'fs';
-import path from 'path';
-import { execSync } from 'child_process';
+import fs from 'node:fs';
 
 interface ComponentScore {
   name: string;
@@ -172,9 +170,9 @@ function calculateTokenCoverage(componentName: string): number {
     ];
 
     let specificSemanticUsages = 0;
-    specificSemanticPatterns.forEach(pattern => {
+    for (const pattern of specificSemanticPatterns) {
       specificSemanticUsages += (content.match(pattern) || []).length;
-    });
+    }
 
     // Look for recipe patterns
     const recipePatterns = [
@@ -185,9 +183,9 @@ function calculateTokenCoverage(componentName: string): number {
     ];
 
     let recipeUsageCount = 0;
-    recipePatterns.forEach(pattern => {
+    for (const pattern of recipePatterns) {
       recipeUsageCount += (content.match(pattern) || []).length;
-    });
+    }
 
     // Count total styling points
     const classNameOccurrences = (content.match(/className/g) || []).length;
@@ -429,14 +427,13 @@ async function main() {
 
     if (highPriorityIncomplete > 0) {
       console.log('\n🎯 Next priorities:');
-      scores
+      for (const s of scores
         .filter(s => s.priority === 'High' && s.status !== '✅ Complete')
-        .slice(0, 3)
-        .forEach(s => {
+        .slice(0, 3)) {
           console.log(
             `  • ${s.name}: ${s.hardcodedClasses} hardcoded classes, ${s.tokenCoverage}% token coverage`
           );
-        });
+        }
     }
   } catch (error) {
     console.error('❌ Error generating scorecard:', error);

@@ -36,48 +36,51 @@ import { cn } from '@/utils/cn';
  */
 const railwayMapVariants = cva(
   [
-    // Foundation: Layout/shape - Clean Tailwind utilities
-    'w-full',
-    'space-y-6',
+    // Foundation: Layout/shape - Enhanced design tokens only
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width.full,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg,
     
     // MAPS4 Foundation: Colors - Deep space foundation with aurora accents and cosmic cyan
     ENHANCED_DESIGN_TOKENS.foundation.color.surface.canvas,
     ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
     
     // MAPS4 Foundation: Motion - Respect user preferences
-    'transition-all duration-300 ease-out',
-    'motion-reduce:transition-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
   ],
   {
     variants: {
       variant: {
         // Default: Clean railway map with subtle elevation
-        default: ['p-6', 'rounded-xl'],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'], ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl],
         
         // Elevated: Enhanced depth with stronger shadow
         elevated: [
-          'p-8', 
-          'rounded-2xl',
-          'shadow-elevation-lg',
-          'border border-aurora-accent'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['8'], 
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius['2xl'],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.aurora
         ],
         
         // Glass: Liquid glass materials with cosmic aesthetics
         glass: [
-          'p-6',
-          'rounded-xl',
-          'backdrop-blur-md backdrop-saturate-[135%]',
-          'shadow-elevation-md',
-          'border border-cosmic-border/30'
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.xl,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.md,
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30']
         ],
       },
       
       size: {
         // Clean systematic sizing with 8pt grid
-        sm: ['space-y-4'],
-        md: ['space-y-6'],
-        lg: ['space-y-8'],
-        xl: ['space-y-10'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.md],
+        md: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.lg],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl],
       },
     },
     
@@ -136,40 +139,48 @@ export function RailwayMap({
   
   const getStatusVariant = (status: RailwayStation['status']): 'success' | 'warning' | 'info' | 'secondary' => {
     switch (status) {
-      case 'completed': return 'success';
-      case 'in_progress': return 'warning';
-      case 'available': return 'info';
-      case 'locked': return 'secondary';
-      default: return 'secondary';
+      case 'completed': { return 'success';
+      }
+      case 'in_progress': { return 'warning';
+      }
+      case 'available': { return 'info';
+      }
+      case 'locked': { return 'secondary';
+      }
+      default: { return 'secondary';
+      }
     }
   };
 
   const getPMBOKVariant = (pmbokPhase: RailwayStation['pmbokPhase']): 'outline' => {
     switch (pmbokPhase) {
-      case 'initiating': return 'outline';
-      case 'planning': return 'outline';
-      case 'executing': return 'outline';
-      case 'monitoring': return 'outline';
-      case 'closing': return 'outline';
-      default: return 'outline';
+      case 'initiating': { return 'outline';
+      }
+      case 'planning': { return 'outline';
+      }
+      case 'executing': { return 'outline';
+      }
+      case 'monitoring': { return 'outline';
+      }
+      case 'closing': { return 'outline';
+      }
+      default: { return 'outline';
+      }
     }
   };
 
   const getStationCardVariants = (station: RailwayStation) => {
     const baseVariants = [
-      'transition-all duration-200 ease-out',
-      'hover:scale-[1.02]',
-      'active:scale-[0.98]',
+      ENHANCED_DESIGN_TOKENS.foundation.motionTransition.all,
       'cursor-pointer',
     ];
 
     if (station.status === 'locked') {
       return [
         ...baseVariants,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.display.block,
         'opacity-60',
         'cursor-not-allowed',
-        'hover:scale-100',
-        'active:scale-100',
       ];
     }
 
@@ -200,7 +211,9 @@ export function RailwayMap({
       }}
       onKeyDown={(e) => {
         if (station.status !== 'locked') {
-          if (e.key === 'Enter' || e.key === ' ') {
+          switch (e.key) {
+          case 'Enter': 
+          case ' ': {
             e.preventDefault();
             if (onStationClick) {
               onStationClick(station);
@@ -208,7 +221,11 @@ export function RailwayMap({
             if (onStationNavigate) {
               onStationNavigate(station.id);
             }
-          } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          
+          break;
+          }
+          case 'ArrowRight': 
+          case 'ArrowDown': {
             e.preventDefault();
             // Navigate to next available station
             const currentIndex = stations.findIndex(s => s.id === station.id);
@@ -216,7 +233,11 @@ export function RailwayMap({
             if (nextStation) {
               handleStationFocus(nextStation.id);
             }
-          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          
+          break;
+          }
+          case 'ArrowLeft': 
+          case 'ArrowUp': {
             e.preventDefault();
             // Navigate to previous available station
             const currentIndex = stations.findIndex(s => s.id === station.id);
@@ -224,24 +245,28 @@ export function RailwayMap({
             if (prevStation) {
               handleStationFocus(prevStation.id);
             }
+          
+          break;
+          }
+          // No default
           }
         }
       }}
-      tabIndex={station.status !== 'locked' ? 0 : -1}
+      tabIndex={station.status === 'locked' ? -1 : 0}
       role="button"
       aria-label={`${station.name} - ${station.status} - Progress: ${Math.round(station.progress * 100)}%`}
     >
       {/* Station Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
+      <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.start, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
+                        <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.flexbox.grow['1']}>
           <h3 className={cn(
-            'text-lg font-semibold mb-2',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h4,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>
             {station.name}
           </h3>
           <p className={cn(
-            'text-sm',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
             {station.description}
@@ -252,23 +277,25 @@ export function RailwayMap({
         <EnhancedBadge
           variant={getStatusVariant(station.status)}
           size="sm"
-          className="ml-4"
+          className={ENHANCED_DESIGN_TOKENS.foundation.layout.margin['4']}
         >
           {station.status.replace('_', ' ')}
         </EnhancedBadge>
       </div>
 
       {/* Progress Bar */}
-      <div className="mb-4">
-        <div className="flex items-center justify-between mb-2">
+              <div>
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.between)}>
           <span className={cn(
-            'text-sm font-medium',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.label,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
             Progress
           </span>
           <span className={cn(
-            'text-sm font-bold',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+            ENHANCED_DESIGN_TOKENS.foundation.typography.display.small,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
           )}>
             {Math.round(station.progress * 100)}%
@@ -282,9 +309,9 @@ export function RailwayMap({
       </div>
 
       {/* Station Details */}
-      <div className="space-y-3">
+      <div className={ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.sm}>
         {/* PMBOK Phase */}
-        <div className="flex items-center space-x-2">
+        <div className={cn(ENHANCED_DESIGN_TOKENS.foundation.layout.flex.direction.row, ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center, ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.sm)}>
           <EnhancedBadge
             variant={getPMBOKVariant(station.pmbokPhase)}
             size="sm"
@@ -295,7 +322,7 @@ export function RailwayMap({
 
         {/* Academic Anchor */}
         <div className={cn(
-          'text-xs',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
         )}>
           <strong>Academic Anchor:</strong> {station.academicAnchor}
@@ -303,7 +330,7 @@ export function RailwayMap({
 
         {/* Duration */}
         <div className={cn(
-          'text-xs',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
         )}>
           <strong>Estimated Duration:</strong> {station.estimatedDuration}
@@ -312,7 +339,7 @@ export function RailwayMap({
         {/* Dependencies */}
         {station.dependencies.length > 0 && (
           <div className={cn(
-            'text-xs',
+            ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
             ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
           )}>
             <strong>Dependencies:</strong> {station.dependencies.join(', ')}
@@ -323,7 +350,8 @@ export function RailwayMap({
       {/* Navigation Button */}
       {station.status !== 'locked' && onStationNavigate && (
         <div className={cn(
-          'mt-4 pt-4 border-t',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.padding['4'],
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
           ENHANCED_DESIGN_TOKENS.foundation.color.border.default
         )}>
           <EnhancedButton
@@ -339,7 +367,7 @@ export function RailwayMap({
                 onStationNavigate(station.id);
               }
             }}
-            className="w-full"
+                            className={ENHANCED_DESIGN_TOKENS.foundation.layout.width.full}
             aria-label={`Navigate to ${station.name}`}
           >
             Navigate to Station
@@ -350,9 +378,10 @@ export function RailwayMap({
       {/* Station Connector Line */}
       {index < stations.length - 1 && (
         <div className={cn(
-          'absolute left-1/2 -bottom-3 w-0.5 h-6',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+          '-bottom-3 left-1/2 h-6 w-0.5',
           'bg-gradient-to-b from-border to-transparent',
-          'transform -translate-x-1/2'
+          '-translate-x-1/2'
         )} />
       )}
     </EnhancedCard>
@@ -368,15 +397,18 @@ export function RailwayMap({
       tabIndex={-1}
     >
       {/* Railway Map Header */}
-      <div className="text-center mb-8">
-        <h1 className={cn(
-          'text-3xl font-bold mb-2',
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+        ENHANCED_DESIGN_TOKENS.foundation.layout.spacing.stack.xl
+      )}>
+        <h2 className={cn(
+          ENHANCED_DESIGN_TOKENS.foundation.typography.display.medium,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.primary
         )}>
           Project Railway Map
-        </h1>
+        </h2>
         <p className={cn(
-          'text-lg',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.heading.h3,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.secondary
         )}>
           Navigate through project phases with precision and elegance
@@ -384,17 +416,22 @@ export function RailwayMap({
       </div>
 
       {/* Railway Stations Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className={cn(
+        ENHANCED_DESIGN_TOKENS.foundation.layout.grid.responsive['1-2-3'],
+        ENHANCED_DESIGN_TOKENS.foundation.layout.grid.gap.xl
+      )}>
         {stations.map((station, index) => renderStationCard(station, index))}
       </div>
 
       {/* Railway Map Footer */}
               <div className={cn(
-          'text-center mt-8 pt-6 border-t',
-          ENHANCED_DESIGN_TOKENS.foundation.color.border.default
-        )}>
+                ENHANCED_DESIGN_TOKENS.foundation.layout.alignment.center,
+                ENHANCED_DESIGN_TOKENS.foundation.layout.padding['6'],
+                ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+                ENHANCED_DESIGN_TOKENS.foundation.color.border.default
+              )}>
         <p className={cn(
-          'text-sm',
+          ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
           ENHANCED_DESIGN_TOKENS.foundation.color.content.tertiary
         )}>
           Project ID: {projectId} • {stations.length} Stations • 

@@ -10,10 +10,10 @@
  * - Keyboard navigation
  */
 
+import CharacterCount from '@tiptap/extension-character-count';
+import Placeholder from '@tiptap/extension-placeholder';
 import { useEditor, EditorContent, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Placeholder from '@tiptap/extension-placeholder';
-import CharacterCount from '@tiptap/extension-character-count';
 import { cva, type VariantProps } from 'class-variance-authority';
 import {
   Bold,
@@ -31,7 +31,7 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-import { getAdaptiveMotionClasses } from '@/components/primitives/motion-utils';
+import { getAdaptiveMotionClasses } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== INTERFACES =====
@@ -502,7 +502,7 @@ export function SimpleEditor({
 
   // ===== MOTION INTEGRATION =====
 
-  const motionClasses = getAdaptiveMotionClasses('all');
+  const motionClasses = getAdaptiveMotionClasses('fadeInStandard');
 
   // ===== TOOLBAR CONFIG =====
 
@@ -573,10 +573,10 @@ export function SimpleEditor({
         )}
         style={{
           minHeight: minHeight
-            ? minHeight - (toolbar !== false ? 48 : 0)
+            ? minHeight - (toolbar === false ? 0 : 48)
             : undefined,
           maxHeight: maxHeight
-            ? maxHeight - (toolbar !== false ? 48 : 0)
+            ? maxHeight - (toolbar === false ? 0 : 48)
             : undefined,
           overflowY: maxHeight ? 'auto' : undefined,
         }}

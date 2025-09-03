@@ -32,6 +32,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
 import { Slot } from '@/components/primitives';
+import { ENHANCED_DESIGN_TOKENS, getZIndexClass } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== ENHANCED POPOVER VARIANTS =====
@@ -42,25 +43,25 @@ import { cn } from '@/utils/cn';
  */
 const enhancedPopoverVariants = cva(
   [
-    // Foundation: Layout - Clean positioning and size constraints
-    'z-50',
-    'min-w-[var(--space-32)]',
-    'max-w-[var(--space-96)]',
-    'overflow-hidden',
-    'rounded-[var(--radius-md)]',
+    // Foundation: Layout - Clean positioning and size constraints - Enhanced tokens
+    getZIndexClass('popover'),
+    ENHANCED_DESIGN_TOKENS.foundation.layout.width['fit-content'],
+    ENHANCED_DESIGN_TOKENS.foundation.layout.overflow.hidden,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
 
-    // Foundation: Typography - Apple HIG hierarchy
-    'text-[var(--font-size-sm)]',
+    // Foundation: Typography - Apple HIG hierarchy - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
 
-    // Foundation: Materials - Deep space canvas with elevation
-    'border border-cosmic-border',
-    'bg-stellar-surface',
-    'text-cosmic-foreground',
+    // Foundation: Materials - Deep space canvas with elevation - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+    ENHANCED_DESIGN_TOKENS.foundation.color.surface.popover,
+    ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
 
-    // Foundation: Elevation - Sophisticated depth
-    'shadow-[var(--shadow-lg)]',
+    // Foundation: Elevation - Sophisticated depth - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.elevation.lg,
 
-    // Foundation: Motion - Respect user preferences
+    // Foundation: Motion - Respect user preferences - Enhanced tokens
     'data-[state=open]:animate-in',
     'data-[state=closed]:animate-out',
     'data-[state=closed]:fade-out-0',
@@ -71,47 +72,43 @@ const enhancedPopoverVariants = cva(
     'data-[side=left]:slide-in-from-right-2',
     'data-[side=right]:slide-in-from-left-2',
     'data-[side=top]:slide-in-from-bottom-2',
-    'motion-reduce:animate-none',
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Enhanced padding for content
-    'p-[var(--space-4)]',
+    // Foundation: Enhanced padding for content - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4],
 
-    // Foundation: Focus management - AAA compliance
-    'focus:outline-none',
-    'focus-visible:ring-2',
-    'focus-visible:ring-aurora-accent',
-    'focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-stellar-surface',
+    // Foundation: Focus management - AAA compliance - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
   ],
   {
     variants: {
       variant: {
         default: [
-          // Default: Clean elevated surface
-          'bg-stellar-surface',
-          'border-cosmic-border',
+          // Default: Clean elevated surface - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.popover,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
         ],
         glass: [
-          // Glass: Liquid glass material with vibrancy
-          'backdrop-blur-[var(--blur-md)]',
-          'backdrop-saturate-[var(--saturate-150)]',
-          'bg-stellar-surface/80',
-          'border-cosmic-border/50',
-          // AAA scrim protection for text content
-          'supports-[backdrop-filter]:bg-stellar-surface/60',
+          // Glass: Liquid glass material with vibrancy - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.blur.md,
+          ENHANCED_DESIGN_TOKENS.foundation.backdrop.saturate[150],
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.translucent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border['cosmic-border-30'],
+          // AAA scrim protection for text content - Enhanced tokens
+          'supports-[backdrop-filter]:bg-cosmic-void/60',
         ],
         elevated: [
-          // Elevated: Higher contrast for important content
-          'bg-stellar-surface-elevated',
-          'border-cosmic-border',
-          'shadow-[var(--shadow-xl)]',
+          // Elevated: Higher contrast for important content - Enhanced tokens
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.popover,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.elevation.xl,
         ],
       },
       size: {
-        sm: ['min-w-[var(--space-24)]', 'max-w-[var(--space-80)]', 'p-[var(--space-3)]', 'text-[var(--font-size-xs)]'],
-        default: ['min-w-[var(--space-32)]', 'max-w-[var(--space-96)]', 'p-[var(--space-4)]', 'text-[var(--font-size-sm)]'],
-        lg: ['min-w-[var(--space-48)]', 'max-w-[var(--space-112)]', 'p-[var(--space-6)]', 'text-[var(--font-size-base)]'],
-        xl: ['min-w-[var(--space-64)]', 'max-w-[var(--space-128)]', 'p-[var(--space-6)]', 'text-[var(--font-size-base)]'],
+        sm: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-xs'], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3], ENHANCED_DESIGN_TOKENS.foundation.typography.caption],
+        default: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-sm'], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4], ENHANCED_DESIGN_TOKENS.foundation.typography.body.small],
+        lg: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-md'], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
+        xl: [ENHANCED_DESIGN_TOKENS.foundation.layout.width['max-lg'], ENHANCED_DESIGN_TOKENS.foundation.layout.padding[6], ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium],
       },
     },
     defaultVariants: {
@@ -126,54 +123,50 @@ const enhancedPopoverVariants = cva(
  */
 const enhancedPopoverTriggerVariants = cva(
   [
-    // Foundation: Clean trigger styling
-    'inline-flex',
-    'items-center',
-    'justify-center',
-    'rounded-[var(--radius-md)]',
-    'transition-colors',
-    'duration-[var(--motion-duration-2)]',
-    'ease-out',
-    'motion-reduce:transition-none',
+    // Foundation: Clean trigger styling - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.inline,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+    ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.md,
+    ENHANCED_DESIGN_TOKENS.foundation.motionComponents.buttonHover,
+    ENHANCED_DESIGN_TOKENS.foundation.motionPatterns.fadeInStandard,
+    ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone,
 
-    // Foundation: Focus management
-    'focus:outline-none',
-    'focus-visible:ring-2',
-    'focus-visible:ring-aurora-accent',
-    'focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-stellar-surface',
+    // Foundation: Focus management - Enhanced tokens
+    ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
 
-    // Foundation: Interactive states
+    // Foundation: Interactive states - Enhanced tokens
     'disabled:pointer-events-none',
-    'disabled:opacity-[var(--opacity-50)]',
+    'disabled:opacity-50',
   ],
   {
     variants: {
       variant: {
         default: [
-          'bg-transparent',
-          'text-cosmic-foreground',
-          'hover:bg-aurora-accent/10',
-          'hover:text-aurora-accent-foreground',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-aurora-accent/10',
+          'pointer:hover:text-aurora-accent-foreground',
         ],
         outline: [
-          'border',
-          'border-cosmic-input',
-          'bg-stellar-surface',
-          'hover:bg-aurora-accent/10',
-          'hover:text-aurora-accent-foreground',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.border.width.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.border.default,
+          ENHANCED_DESIGN_TOKENS.foundation.color.surface.popover,
+          'pointer:hover:bg-aurora-accent/10',
+          'pointer:hover:text-aurora-accent-foreground',
         ],
         ghost: [
-          'bg-transparent',
-          'text-cosmic-foreground',
-          'hover:bg-aurora-accent/10',
-          'hover:text-aurora-accent-foreground',
+          ENHANCED_DESIGN_TOKENS.foundation.layout.background.transparent,
+          ENHANCED_DESIGN_TOKENS.foundation.color.content.primary,
+          'pointer:hover:bg-aurora-accent/10',
+          'pointer:hover:text-aurora-accent-foreground',
         ],
       },
       size: {
-        sm: 'h-[var(--space-8)] px-[var(--space-2)] text-[var(--font-size-xs)]',
-        default: 'h-[var(--space-9)] px-[var(--space-3)] text-[var(--font-size-sm)]',
-        lg: 'h-[var(--space-10)] px-[var(--space-4)] text-[var(--font-size-base)]',
+        sm: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[2] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.typography.caption,
+        default: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[3] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.typography.body.small,
+        lg: ENHANCED_DESIGN_TOKENS.foundation.layout.padding[4] + ' ' + ENHANCED_DESIGN_TOKENS.foundation.typography.body.medium,
       },
     },
     defaultVariants: {
@@ -216,6 +209,13 @@ export interface PopoverContentProps
    * @default 10
    */
   collisionPadding?: number;
+
+  /**
+   * Performance optimization - disable animations
+   * @description Disables animations for performance-critical scenarios
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 export interface PopoverTriggerProps
@@ -229,6 +229,13 @@ export interface PopoverTriggerProps
    * Polymorphic support - render as different element/component
    */
   asChild?: boolean;
+
+  /**
+   * Performance optimization - disable animations
+   * @description Disables animations for performance-critical scenarios
+   * @default false
+   */
+  disableAnimations?: boolean;
 }
 
 export interface PopoverWithTriggerProps
@@ -306,7 +313,12 @@ const Popover = PopoverPrimitive.Root;
 const PopoverTrigger = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Trigger>,
   PopoverTriggerProps
->(({ className, variant, size, asChild = false, ...props }, ref) => {
+>(({ className, variant, size, disableAnimations = false, asChild = false, ...props }, ref) => {
+  // Performance optimization: conditionally apply motion classes
+  const motionClasses = disableAnimations 
+    ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+    : '';
+
   const Comp = asChild ? Slot : PopoverPrimitive.Trigger;
 
   return (
@@ -314,6 +326,7 @@ const PopoverTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         enhancedPopoverTriggerVariants({ variant, size }),
+        motionClasses,
         className
       )}
       {...props}
@@ -344,6 +357,7 @@ const PopoverContent = React.forwardRef<
       className,
       variant,
       size,
+      disableAnimations = false,
       sideOffset = 4,
       alignOffset = 0,
       avoidCollisions = true,
@@ -351,19 +365,26 @@ const PopoverContent = React.forwardRef<
       ...props
     },
     ref
-  ) => (
-    <PopoverPrimitive.Portal>
-      <PopoverPrimitive.Content
-        ref={ref}
-        sideOffset={sideOffset}
-        alignOffset={alignOffset}
-        avoidCollisions={avoidCollisions}
-        collisionPadding={collisionPadding}
-        className={cn(enhancedPopoverVariants({ variant, size }), className)}
-        {...props}
-      />
-    </PopoverPrimitive.Portal>
-  )
+  ) => {
+    // Performance optimization: conditionally apply motion classes
+    const motionClasses = disableAnimations 
+      ? ENHANCED_DESIGN_TOKENS.foundation.motionAccessibility.motionReduceNone
+      : '';
+
+    return (
+      <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
+          ref={ref}
+          sideOffset={sideOffset}
+          alignOffset={alignOffset}
+          avoidCollisions={avoidCollisions}
+          collisionPadding={collisionPadding}
+          className={cn(enhancedPopoverVariants({ variant, size }), motionClasses, className)}
+          {...props}
+        />
+      </PopoverPrimitive.Portal>
+    );
+  }
 );
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
@@ -376,7 +397,7 @@ const PopoverArrow = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <PopoverPrimitive.Arrow
     ref={ref}
-    className={cn('fill-stellar-surface', 'stroke-cosmic-border', 'stroke-[var(--stroke-1)]', className)}
+    className={cn(ENHANCED_DESIGN_TOKENS.foundation.color.surface.popover.replace('bg-', 'fill-'), ENHANCED_DESIGN_TOKENS.foundation.color.border.default.replace('border-', 'stroke-'), className)}
     {...props}
   />
 ));
@@ -392,22 +413,19 @@ const PopoverClose = React.forwardRef<
   <PopoverPrimitive.Close
     ref={ref}
     className={cn(
-      'absolute',
-      'right-[var(--space-2)]',
-      'top-[var(--space-2)]',
-      'inline-flex',
-      'size-[var(--space-6)]',
-      'items-center',
-      'justify-center',
-      'rounded-[var(--radius-sm)]',
-      'opacity-[var(--opacity-70)]',
-      'ring-offset-stellar-surface',
-      'transition-opacity',
-      'hover:opacity-100',
-      'focus:outline-none',
-      'focus:ring-2',
-      'focus:ring-aurora-accent',
-      'focus:ring-offset-2',
+      ENHANCED_DESIGN_TOKENS.foundation.layout.position.absolute,
+      ENHANCED_DESIGN_TOKENS.foundation.positioning.right['2'],
+      ENHANCED_DESIGN_TOKENS.foundation.positioning.top['2'],
+      ENHANCED_DESIGN_TOKENS.foundation.layout.display.inline,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.display.flex,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.items.center,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.flex.justify.center,
+      ENHANCED_DESIGN_TOKENS.foundation.icon.size.md,
+      ENHANCED_DESIGN_TOKENS.foundation.layout.border.radius.sm,
+      'opacity-70',
+      ENHANCED_DESIGN_TOKENS.foundation.motionPatterns.fadeInStandard,
+      'pointer:hover:opacity-100',
+      ENHANCED_DESIGN_TOKENS.foundation.focus.ringPrimary,
       'disabled:pointer-events-none',
       className
     )}
@@ -464,8 +482,8 @@ const PopoverWithTrigger = React.forwardRef<
         variant={variant}
         size={size}
         {...(className !== undefined && { className })}
-        {...(closeOnEscape || { onEscapeKeyDown: e => e.preventDefault() })}
-        {...(closeOnOutsideClick || { onPointerDownOutside: e => e.preventDefault() })}
+        {...(closeOnEscape ? {} : { onEscapeKeyDown: e => e.preventDefault() })}
+        {...(closeOnOutsideClick ? {} : { onPointerDownOutside: e => e.preventDefault() })}
         {...contentProps}
       >
         {children}
@@ -474,6 +492,119 @@ const PopoverWithTrigger = React.forwardRef<
   )
 );
 PopoverWithTrigger.displayName = 'PopoverWithTrigger';
+
+// ===== ENHANCED POPOVER FACTORY =====
+
+/**
+ * Enhanced Popover Factory Functions
+ * @description Semantic constructors following MAPS v2.2 patterns
+ */
+export const PopoverFactory = {
+  /**
+   * Default popover with clean styling
+   */
+  default: {
+    Root: Popover,
+    Trigger: (props: Omit<PopoverTriggerProps, 'variant'>) => (
+      <PopoverTrigger variant='default' {...props} />
+    ),
+    Content: (props: Omit<PopoverContentProps, 'variant'>) => (
+      <PopoverContent variant='default' {...props} />
+    ),
+    Arrow: PopoverArrow,
+    Close: PopoverClose,
+  },
+
+  /**
+   * Glass variant with liquid glass materials
+   */
+  glass: {
+    Root: Popover,
+    Trigger: (props: Omit<PopoverTriggerProps, 'variant'>) => (
+      <PopoverTrigger variant='default' {...props} />
+    ),
+    Content: (props: Omit<PopoverContentProps, 'variant'>) => (
+      <PopoverContent variant='glass' {...props} />
+    ),
+    Arrow: PopoverArrow,
+    Close: PopoverClose,
+  },
+
+  /**
+   * Elevated variant with enhanced depth
+   */
+  elevated: {
+    Root: Popover,
+    Trigger: (props: Omit<PopoverTriggerProps, 'variant'>) => (
+      <PopoverTrigger variant='default' {...props} />
+    ),
+    Content: (props: Omit<PopoverContentProps, 'variant'>) => (
+      <PopoverContent variant='elevated' {...props} />
+    ),
+    Arrow: PopoverArrow,
+    Close: PopoverClose,
+  },
+
+  /**
+   * Performance-optimized popover with disabled animations
+   */
+  performance: {
+    Root: Popover,
+    Trigger: (props: Omit<PopoverTriggerProps, 'disableAnimations'>) => (
+      <PopoverTrigger disableAnimations={true} {...props} />
+    ),
+    Content: (props: Omit<PopoverContentProps, 'disableAnimations'>) => (
+      <PopoverContent disableAnimations={true} {...props} />
+    ),
+    Arrow: PopoverArrow,
+    Close: PopoverClose,
+  },
+
+  /**
+   * Small size for compact layouts
+   */
+  small: {
+    Root: Popover,
+    Trigger: (props: Omit<PopoverTriggerProps, 'size'>) => (
+      <PopoverTrigger size='sm' {...props} />
+    ),
+    Content: (props: Omit<PopoverContentProps, 'size'>) => (
+      <PopoverContent size='sm' {...props} />
+    ),
+    Arrow: PopoverArrow,
+    Close: PopoverClose,
+  },
+
+  /**
+   * Large size for prominent content
+   */
+  large: {
+    Root: Popover,
+    Trigger: (props: Omit<PopoverTriggerProps, 'size'>) => (
+      <PopoverTrigger size='lg' {...props} />
+    ),
+    Content: (props: Omit<PopoverContentProps, 'size'>) => (
+      <PopoverContent size='lg' {...props} />
+    ),
+    Arrow: PopoverArrow,
+    Close: PopoverClose,
+  },
+
+  /**
+   * Extra large size for maximum content
+   */
+  xlarge: {
+    Root: Popover,
+    Trigger: (props: Omit<PopoverTriggerProps, 'size'>) => (
+      <PopoverTrigger size='lg' {...props} />
+    ),
+    Content: (props: Omit<PopoverContentProps, 'size'>) => (
+      <PopoverContent size='xl' {...props} />
+    ),
+    Arrow: PopoverArrow,
+    Close: PopoverClose,
+  },
+} as const;
 
 // ===== EXPORTS =====
 

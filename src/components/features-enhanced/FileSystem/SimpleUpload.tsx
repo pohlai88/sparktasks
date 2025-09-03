@@ -28,7 +28,7 @@ import {
   type FileRejection as DropzoneFileRejection,
 } from 'react-dropzone';
 
-import { getAdaptiveMotionClasses } from '@/components/primitives/motion-utils';
+import { getAdaptiveMotionClasses } from '@/design/enhanced-tokens';
 import { cn } from '@/utils/cn';
 
 // ===== UPLOAD INTERFACES =====
@@ -95,7 +95,7 @@ const simpleUploadVariants = cva(
       },
       state: {
         default: '',
-        dragActive: 'bg-accent-bg/10 scale-[1.02] border-accent',
+        dragActive: 'bg-accent-bg/10 scale-105 border-accent',
         dragAccept: 'border-success bg-success/10',
         dragReject: 'border-error bg-error/10',
         uploading: 'bg-accent-bg/5 border-accent',
@@ -256,7 +256,7 @@ export function SimpleUpload({
 
   // ===== MOTION INTEGRATION =====
 
-  const motionClasses = getAdaptiveMotionClasses('all');
+  const motionClasses = getAdaptiveMotionClasses('fadeInStandard');
 
   // ===== FILE VALIDATION =====
 
@@ -298,7 +298,7 @@ export function SimpleUpload({
   } = useDropzone({
     ...(accept && {
       accept: Array.isArray(accept)
-        ? accept.reduce((acc, type) => ({ ...acc, [type]: [] }), {})
+        ? Object.fromEntries(accept.map(( type) => [type, []]))
         : { [accept]: [] },
     }),
     multiple,
@@ -560,7 +560,7 @@ export function SimpleUpload({
         <div className='text-center'>
           {/* Icon */}
           <div className='mb-4 text-foreground-muted'>
-            {placeholder?.icon || <Upload className='mx-auto h-12 w-12' />}
+            {placeholder?.icon || <Upload className='mx-auto size-12' />}
           </div>
 
           {/* Title */}
@@ -589,7 +589,7 @@ export function SimpleUpload({
           {/* Error Message */}
           {error && (
             <div className='mt-4 flex items-center gap-2 text-sm text-error'>
-              <AlertCircle className='h-4 w-4' />
+              <AlertCircle className='size-4' />
               {error}
             </div>
           )}
@@ -599,7 +599,7 @@ export function SimpleUpload({
         {uploading && (
           <div className='bg-surface-overlay/50 absolute inset-0 flex items-center justify-center rounded-lg backdrop-blur-sm'>
             <div className='text-center'>
-              <div className='mx-auto mb-2 h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent' />
+              <div className='mx-auto mb-2 size-8 animate-spin rounded-full border-2 border-accent border-t-transparent' />
               <p className='text-sm text-foreground'>Uploading...</p>
             </div>
           </div>
@@ -657,46 +657,51 @@ function QueueItem({
   onRetry,
 }: QueueItemProps) {
   const getFileIcon = (file: File) => {
-    if (file.type.startsWith('image/')) return <Image className='h-5 w-5' />;
-    if (file.type.startsWith('video/')) return <Video className='h-5 w-5' />;
-    if (file.type.startsWith('audio/')) return <Music className='h-5 w-5' />;
+    if (file.type.startsWith('image/')) return <Image className='size-5' />;
+    if (file.type.startsWith('video/')) return <Video className='size-5' />;
+    if (file.type.startsWith('audio/')) return <Music className='size-5' />;
     if (file.type.includes('zip') || file.type.includes('rar'))
-      return <Archive className='h-5 w-5' />;
-    return <FileText className='h-5 w-5' />;
+      return <Archive className='size-5' />;
+    return <FileText className='size-5' />;
   };
 
   const getStatusText = (status: UploadQueueItem['status']) => {
     switch (status) {
-      case 'pending':
+      case 'pending': {
         return 'Pending';
-      case 'uploading':
+      }
+      case 'uploading': {
         return 'Uploading';
-      case 'completed':
+      }
+      case 'completed': {
         return 'Completed';
-      case 'error':
+      }
+      case 'error': {
         return 'Failed';
-      case 'paused':
+      }
+      case 'paused': {
         return 'Paused';
+      }
     }
   };
 
   return (
     <div className={queueItemVariants({ status: item.status })}>
       {/* File Icon & Preview */}
-      <div className='flex-shrink-0'>
+      <div className='shrink-0'>
         {showPreview && item.file.type.startsWith('image/') ? (
-          <div className='bg-surface-subtle h-10 w-10 overflow-hidden rounded'>
+          <div className='bg-surface-subtle size-10 overflow-hidden rounded'>
             <img
               src={URL.createObjectURL(item.file)}
               alt={item.file.name}
-              className='h-full w-full object-cover'
+              className='size-full object-cover'
               onLoad={e =>
                 URL.revokeObjectURL((e.target as HTMLImageElement).src)
               }
             />
           </div>
         ) : (
-          <div className='bg-surface-subtle flex h-10 w-10 items-center justify-center rounded text-foreground-muted'>
+          <div className='bg-surface-subtle flex size-10 items-center justify-center rounded text-foreground-muted'>
             {getFileIcon(item.file)}
           </div>
         )}
@@ -761,7 +766,7 @@ function QueueItem({
           onClick={() => onRemove(item.id)}
           className='p-1 text-foreground-muted transition-colors hover:text-foreground'
         >
-          <X className='h-4 w-4' />
+          <X className='size-4' />
         </button>
       </div>
     </div>
@@ -779,7 +784,7 @@ function formatFileSize(bytes: number): string {
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+  return `${Number.parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
 }
 
 function chunk<T>(array: T[], size: number): T[][] {
