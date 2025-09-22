@@ -99,7 +99,7 @@
     "@tiptap/extension-character-count": "^2.26.1",
     "@tiptap/extension-placeholder": "^2.26.1",
     "@tiptap/react": "^2.26.1",
-    "@tiptap/starter-kit": "^2.26.1",
+    "@tiptap/starter-kit": "^3.4.4",
     "@types/react-router-dom": "^5.3.3",
     "@uppy/aws-s3": "^4.3.2",
     "@uppy/core": "^4.5.3",
